@@ -1,0 +1,31 @@
+html,
+body {
+    max-width: 780px;
+    height: 100%;
+    margin: 0 auto;
+    background-image: url("../images/greyzz.png");
+}
+#page {
+    padding-top: 32px;
+}
+#me {
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+}
+#social-links {
+    margin-top: 20px;
+}
+#social-links img {
+    width: 42px;
+    margin: 0 6px;
+}
+
+/* Retina mode */
+@media screen and (-webkit-min-device-pixel-ratio: 2),
+screen and (max-moz-device-pixel-ratio: 2) {
+    body {
+        background-image: url("../images/greyzz_@2X.png");
+    }
+}
+
