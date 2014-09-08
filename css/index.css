@@ -25,6 +25,33 @@ body {
     font-size: 0.9em;
 }
 
+#page .sub.header .icon {
+    display: inline-block;
+    padding-right: 0.1em;
+}
+
+#page .ui.list .item > .icon {
+    display: inline-block;
+    margin-right: 0.1em;
+    float: none;
+}
+
+#self-rank .header,
+#self-rank p{
+    margin: 0em;
+}
+
+#self-rank .item .header {
+    font-size: 1.1em;
+}
+
+/* mobile */
+@media screen and (max-width: 767px) {
+    #self-rank .column {
+        padding-top: 0em !important;
+        margin-top: 1em !important;
+    }
+}
 /* Retina mode */
 @media screen and (-webkit-min-device-pixel-ratio: 2),
 screen and (max-moz-device-pixel-ratio: 2) {
