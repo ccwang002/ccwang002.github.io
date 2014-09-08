@@ -4,6 +4,7 @@ body {
     height: 100%;
     margin: 0 auto;
     background-image: url("../images/greyzz.png");
+    font-family: sans-serif;
 }
 #page {
     padding-top: 32px;
