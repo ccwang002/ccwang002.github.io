@@ -20,6 +20,9 @@ body {
     width: 42px;
     margin: 0 6px;
 }
+.qa-section {
+    font-size: 0.9em;
+}
 
 /* Retina mode */
 @media screen and (-webkit-min-device-pixel-ratio: 2),
