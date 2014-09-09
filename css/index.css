@@ -6,6 +6,27 @@ body {
     background-image: url("../images/greyzz.png");
     font-family: sans-serif;
 }
+
+a:link {
+    text-decoration: none;
+}
+a[href^="http"]:link {
+    color: #00B5AD;
+}
+a[href^="http"]:hover {
+    text-decoration: underline;
+    color: #00B5AD;
+}
+#talk a[href^="http"]:hover {
+    color: #D95C5C;
+}
+
+p.talk-date {
+    float: right;
+    font-size: 0.9em;
+    color: rgba(0, 0, 0, 0.5);
+}
+
 #page {
     padding-top: 32px;
 }
@@ -25,19 +46,13 @@ body {
     font-size: 0.9em;
 }
 
-#page .sub.header .icon {
+.header .icon,
+.sub.header .icon {
     display: inline-block;
     padding-right: 0.1em;
 }
 
-#page .ui.list .item > .icon {
-    display: inline-block;
-    margin-right: 0.1em;
-    float: none;
-}
-
-.stackable .header,
-.stackable p {
+.stackable .header {
     margin: 0em;
 }
 
@@ -46,16 +61,25 @@ body {
 }
 
 .ui.grid .stackable .column {
-    margin-top: 0.75em !important;
-    margin-bottom: 0.75em !important;
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
 }
 
 #conf-attend .icon {
     width: 1em;
     margin-right: 0em;
 }
+#self-rank p,
+#conf-attend p {
+    margin: 0em;
+}
 
-
+#talk p:not(.talk-date) {
+    margin-top: 0.25em;
+}
+#talk .column {
+    margin: 0.5em 0;
+}
 /* mobile */
 @media screen and (max-width: 767px) {
     .ui.grid .stackable .column {
@@ -63,6 +87,12 @@ body {
         margin-top: 0.75em !important;
         margin-bottom: 0.75em !important;
     }
+    p.talk-date {
+        float: none;
+        margin-bottom: 0em;
+    }
+}
+
 }
 /* Retina mode */
 @media screen and (-webkit-min-device-pixel-ratio: 2),
