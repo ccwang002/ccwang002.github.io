@@ -43,7 +43,6 @@
             Self-rated from <i class="star green icon"></i><i class="star green icon"></i><i class="star green icon"></i> to <i class="star green icon"></i>.
           </div>
         </h3>
-
         <div class="four column stackable ui grid" id="self-rank">
           <div class="column"><div class="ui basic segment">
               <h4 class="header">Python <i class="star green icon"></i><i class="star green icon"></i><i class="star green icon"></i></h4>
@@ -73,6 +72,68 @@
           </div></div>
         </div><!-- /.stackable.grid -->
 
+        <h3 class="ui header">Conference Attendance
+          <div class="sub header">
+            More info of
+            speaker <i class="user purple icon link popup" data-content="Talk title"></i>|
+            poster <i class="file purple icon link popup" data-content="Poster title"></i>|
+            staff <i class="sitemap purple icon link popup" data-content="Position"></i>
+            by hover
+          </div>
+        </h3>
+        <div class="two column stackable ui grid" id="conf-attend">
+          <div class="column"><div class="ui basic segment">
+              <h4 class="header">China R Conference
+                <i class="user purple icon link popup" data-content="Interactive Visualization with R"></i>
+              </h4>
+              <p>Beijing, May 2014</p>
+          </div></div>
+          <div class="column"><div class="ui basic segment">
+              <h4 class="header">PyCon APAC
+                <i class="user purple icon link popup" data-content="Handy Parallel(Distributed) Computing in Python"></i>
+                <i class="user purple icon link popup" data-content="Statistics in Python with R"></i>
+                <i class="sitemap purple icon link popup" data-content="Public relation &amp; web editor"></i>
+              </h4>
+              <p>Taipei, May 2014</p>
+          </div></div>
+          <div class="column"><div class="ui basic segment">
+              <h4 class="header">Taiwan R Conference
+                <i class="user purple icon link popup" data-content="R Visualization using ggplot2"></i>
+              </h4>
+              <p>Taipei, Dec 2013</p>
+          </div></div>
+          <div class="column"><div class="ui basic segment">
+              <h4 class="header">PyCon APAC
+                <i class="user purple icon link popup" data-content="Nextbiopy"></i>
+              </h4>
+              <p>Tokyo, Sep 2013</p>
+          </div></div>
+          <div class="column"><div class="ui basic segment">
+              <h4 class="header">Coscup</h4>
+              <p>Taipei, Aug 2013</p>
+          </div></div>
+          <div class="column"><div class="ui basic segment">
+              <h4 class="header">PyCon Taiwan</h4>
+              <p>Taipei, May 2013</p>
+          </div></div>
+          <div class="column"><div class="ui basic segment">
+              <h4 class="header">American Associate for Cancer Research (AACR)
+                <i class="file purple icon link popup" data-content="Identification of novel miRNAs in breast data of the next generation sequencing using miRDeep2 and Galaxy"></i>
+              </h4>
+              <p>Washington D.C., Apr 2013</p>
+          </div></div>
+          <div class="column"><div class="ui basic segment">
+              <h4 class="header">WebConf Taiwan</h4>
+              <p>Taipei, Feb 2013</p>
+          </div></div>
+          <div class="column"><div class="ui basic segment">
+              <h4 class="header">AVS International Symposium &amp; Exhibition
+                <i class="user purple icon link popup" data-content="CMOS MEMS metal-based tactile sensors development"></i>
+              </h4>
+              <p>Tampa, Florida, Oct 2012</p>
+          </div></div>
+        </div><!-- /.stackable.grid -->
+
         <div class="ui segment teal piled qa-section">
           <h4 class="ui teal header">How to pronunce my (nick)name?</h4>
           <p>亮亮 is composed of a character <strong>亮</strong> repeated two times with same pronuncitaion, <em>liang</em>. Mind the pitch because in Chinese different pitches point to different words. Use <a href="https://translate.google.com.tw/?hl=zh-TW#zh-CN/zh-TW/%E4%BA%AE%E4%BA%AE">Google translator</a> and click <i class="square volume up icon"></i> on the bottom-right of any panel to hear the pronuncitaion. It does a fair job.</p>
@@ -82,5 +143,12 @@
     </div></div><!-- /.column --><!-- /.row -->
   </div><!-- /.page -->
   <script src="javascript/semantic.min.js"></script>
+  <script type="text/javascript" charset="utf-8">
+    $('i.icon.popup').popup({
+      position : 'top right',
+      transition : 'fade up',
+      variation : 'inverted',
+    });
+  </script>
 </body>
 </html>

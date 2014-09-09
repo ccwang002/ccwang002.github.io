@@ -36,20 +36,32 @@ body {
     float: none;
 }
 
-#self-rank .header,
-#self-rank p{
+.stackable .header,
+.stackable p {
     margin: 0em;
 }
 
-#self-rank .item .header {
+.stackable .column .header {
     font-size: 1.1em;
 }
 
+.ui.grid .stackable .column {
+    margin-top: 0.75em !important;
+    margin-bottom: 0.75em !important;
+}
+
+#conf-attend .icon {
+    width: 1em;
+    margin-right: 0em;
+}
+
+
 /* mobile */
 @media screen and (max-width: 767px) {
-    #self-rank .column {
+    .ui.grid .stackable .column {
         padding-top: 0em !important;
-        margin-top: 1em !important;
+        margin-top: 0.75em !important;
+        margin-bottom: 0.75em !important;
     }
 }
 /* Retina mode */
