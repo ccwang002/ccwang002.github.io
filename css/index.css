@@ -69,6 +69,11 @@ p.talk-date {
     width: 1em;
     margin-right: 0em;
 }
+
+#self-rank .icon {
+    font-size: 0.8em;
+}
+
 #self-rank p,
 #conf-attend p {
     margin: 0em;
@@ -94,9 +99,14 @@ p.talk-date {
         float: none;
         margin-bottom: 0em;
     }
+    #self-rank .icon {
+        font-size: 0.9em;
+    }
+    #self-rank .icon:first-child {
+        margin-left: 0.5em;
+    }
 }
 
-}
 /* Retina mode */
 @media screen and (-webkit-min-device-pixel-ratio: 2),
 screen and (max-moz-device-pixel-ratio: 2) {
