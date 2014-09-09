@@ -80,6 +80,9 @@ p.talk-date {
 #talk .column {
     margin: 0.5em 0;
 }
+#talk .icon {
+    display: inline-block;
+}
 /* mobile */
 @media screen and (max-width: 767px) {
     .ui.grid .stackable .column {
