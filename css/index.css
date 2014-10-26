@@ -20,8 +20,12 @@ a[href^="http"]:hover {
 #talk a[href^="http"]:hover {
     color: #D95C5C;
 }
+#proj a[href^="http"]:hover {
+    color: #6ECFF5;
+}
 
-p.talk-date {
+p.talk-date,
+p.proj-date {
     float: right;
     font-size: 0.9em;
     color: rgba(0, 0, 0, 0.5);
@@ -74,9 +78,13 @@ p.talk-date {
     font-size: 0.8em;
 }
 
-#self-rank p,
-#conf-attend p {
+#self-rank p {
     margin: 0em;
+}
+#conf-attend p {
+    margin-top: 0.15em;
+    margin-bottom: 0em;
+    color: grey;
 }
 
 #talk p:not(.talk-date) {
@@ -92,10 +100,11 @@ p.talk-date {
 @media screen and (max-width: 767px) {
     .ui.grid .stackable .column {
         padding-top: 0em !important;
-        margin-top: 0.75em !important;
-        margin-bottom: 0.75em !important;
     }
-    p.talk-date {
+    #talk > .column, #proj > .column {
+        margin-bottom: 1.5em !important;
+    }
+    p.talk-date, p.proj-date {
         float: none;
         margin-bottom: 0em;
     }
@@ -104,6 +113,9 @@ p.talk-date {
     }
     #self-rank .icon:first-child {
         margin-left: 0.5em;
+    }
+    #conf-attend p {
+        font-size: 0.9em;
     }
 }
 
