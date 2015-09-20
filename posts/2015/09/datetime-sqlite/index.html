@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
+  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="http://blog.liang2.tw/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="http://blog.liang2.tw/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="http://blog.liang2.tw/theme/css/font-awesome.min.css">
+  <link href="http://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Liang2" />
+<meta name="description" content="整理在 Python 中處理時區的問題，並如何自 SQLite 存取考慮時區的時間" />
+<meta name="keywords" content="zh, datetime, pytz, sqlite, python">
+<meta property="og:site_name" content="Liang2's blog"/>
+<meta property="og:title" content="Datetime in SQLite and Python"/>
+<meta property="og:description" content="整理在 Python 中處理時區的問題，並如何自 SQLite 存取考慮時區的時間"/>
+<meta property="og:locale" content="zh_TW"/>
+<meta property="og:url" content="http://blog.liang2.tw/posts/2015/09/datetime-sqlite/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2015-09-28 12:00:00+08:00"/>
+<meta property="article:modified_time" content="2015-09-28 12:00:00+08:00"/>
+<meta property="article:author" content="http://blog.liang2.tw/author/liang2.html">
+<meta property="article:section" content="Coding"/>
+<meta property="article:tag" content="zh"/>
+<meta property="article:tag" content="datetime"/>
+<meta property="article:tag" content="pytz"/>
+<meta property="article:tag" content="sqlite"/>
+<meta property="article:tag" content="python"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Datetime in SQLite and Python">
+<meta name="twitter:description" content="整理在 Python 中處理時區的問題，並如何自 SQLite 存取考慮時區的時間">
+  <title>Datetime in SQLite and Python &ndash; Liang2's blog</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="http://blog.liang2.tw">
+        <img src="http://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
+      </a>
+      <h1><a href="http://blog.liang2.tw">Liang2's Blog</a></h1>
+      <p>Code / Stat / Bioinfo</p>
+      <nav>
+        <ul class="list">
+          <li><a href="http://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
+          <li><a href="http://blog.liang2.tw/talks/#talks">Talks</a></li>
+          <li><a href="http://blog.liang2.tw/research/#research">Research</a></li>
+          <li><a href="http://blog.liang2.tw/projects/#projects">Projects</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
+        <li><a class="sc-envelope-o" href="mailto:ccwang002@gmail.com" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
+        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="http://blog.liang2.tw">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+      <a href="http://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="datetime-sqlite">Datetime in SQLite and&nbsp;Python</h1>
+    <p>Posted on Sep 28, 2015
+      in <a href="http://blog.liang2.tw/category/coding.html">Coding</a>
+    </p>
+  </header>
+  <div>
+    <p>要正確處理時間並不容易。承接<a href="../flask-draw-member">我們先前的例子</a>，其實是直接把時間轉換出來的字串存在 SQLite&nbsp;裡。這有幾個問題。</p>
+<p>首先是時區的問題。我們直接把 server 所在時區的時間存到資料庫去，台北的時區為 <a href="https://en.wikipedia.org/wiki/Asia/Taipei">Asia/Taipei</a> (<span class="caps">UTC</span>+8)。如果今天 server 跑到另一個時區，例如東京 Asia/Tokyo (<span class="caps">UTC</span>+9)&nbsp;好了，這時候資料庫裡就包含了兩個時區的時間，但因為是字串是完全看不出差異的。</p>
+<p>再來用字串存時間也有一些問題。首先是排序，雖然我們的例子是能正確的排序，但如果時間格式換了（像 <code>%H:%M:%S %Y-%m-%d</code>）那就不一定。再來可以看到後續想處理時間就會比較複雜。不過這一部份是因為 SQLite 沒有專門處理日期時間的資料型態，像 PostgreSQL&nbsp;就能看得懂。</p>
+<p>所以想要正確處理時間有幾個要點：</p>
+<ul>
+<li>存到資料庫的時間應該要 <span class="caps">UTC</span>&nbsp;來表示</li>
+<li>在處理時間時（排序、顯示、處理時區），應該轉成正確的資料格式（例如 <a href="https://docs.python.org/3.5/library/datetime.html#datetime-objects">datetime</a>）</li>
+<li>呈現給使用者時再轉換到該人（或&nbsp;server）所在時區</li>
+</ul>
+<p>底下是比較正確處理時間的方式。</p>
+<div class="toc">
+<ul>
+<li><a href="#timezone">時區（Timezone）</a></li>
+<li><a href="#datetime-in-sqlite-again">Datetime in SQLite, again</a><ul>
+<li><a href="#python-3-timezone">Python 3 內建 timezone&nbsp;支援</a></li>
+</ul>
+</li>
+<li><a href="#python-sqlite-adapter">讓 Python 內建 SQLite adapter&nbsp;支援時區</a></li>
+<li><a href="#_1">總結</a></li>
+</ul>
+</div>
+<h3 id="timezone">時區（Timezone）</h3>
+<p>我們都還沒有處理過時區。時區在 Python 內建的 datetime 只是個「概念」，也就是說，使用者可以傳進去不同的時區（存在 <code>datetime.tzinfo</code> 中），Python 能針對有提供時區的 datetime&nbsp;做正確的判斷。但台北的時區是多少，紐約的時區是多少它不知道。</p>
+<p>為什麼不處理各地時區這麼重要的概念？因為時間變動的速度很快，加上日光節約時間每年可能都不一樣，Python&nbsp;下一版還沒出時區的資訊已經更新了很多次。</p>
+<p>因此在 Python 中實際上時區處理靠得是第三方套件 <a href="http://pythonhosted.org/pytz/">pytz</a>。像安裝 Flask 一樣，用 <code>pip install pytz</code> 就可以了。</p>
+<p>實際操作看看。</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>      <span class="c"># local time</span>
+<span class="go">datetime.datetime(2015, 9, 29, 16, 33, 39, 537111)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>   <span class="c"># UTC time</span>
+<span class="go">datetime.datetime(2015, 9, 29, 8, 33, 39, 538745)</span>
+</pre></div>
+
+
+<p>首先，可以看到 datetime 本身提供了 <code>now()</code> 以及 <code>utcnow()</code> 兩個 function 來拿到現在的時間。台北是 <span class="caps">UTC</span>+8 所以時間比 <span class="caps">UTC</span> 時間字面上快 8 小時。注意到兩個回傳的 datetime&nbsp;物件都沒有包含時區的資訊。</p>
+<p>處理時間原則上都以 <span class="caps">UTC</span> 為基準。我們建立一個 <span class="caps">UTC</span> 的現在時間存在變數 <code>utcnow</code>，並且用 pytz 處理時間。Import pytz 進來，並且定義了兩個時區：<span class="caps">UTC</span> 以及 <span class="caps">TPE</span>（台北時間）。</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pytz</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">utc</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">utc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tpe</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s">&#39;Asia/Taipei&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">utcnow</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">utcnow</span>
+<span class="go">datetime.datetime(2015, 9, 29, 8, 38, 14, 738241)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">utc</span><span class="o">.</span><span class="n">fromutc</span><span class="p">(</span><span class="n">utcnow</span><span class="p">)</span>
+<span class="go">datetime.datetime(2015, 9, 29, 8, 38, 14, 738241, tzinfo=&lt;UTC&gt;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tpe</span><span class="o">.</span><span class="n">fromutc</span><span class="p">(</span><span class="n">utcnow</span><span class="p">)</span>
+<span class="go">datetime.datetime(2015, 9, 29, 16, 38, 14, 738241, tzinfo=&lt;DstTzInfo &#39;Asia/Taipei&#39; CST+8:00:00 STD&gt;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">utc</span><span class="o">.</span><span class="n">fromutc</span><span class="p">(</span><span class="n">utcnow</span><span class="p">)</span> <span class="o">==</span> <span class="n">tpe</span><span class="o">.</span><span class="n">fromutc</span><span class="p">(</span><span class="n">utcnow</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+
+
+<p>用 pytz 定義的時區處理 datetime 之後就會多了 <code>tzinfo</code> 的資訊。這時也能正確比較不同時區的時間。</p>
+<p>如何處理一個任意定義的時間呢？例如 2016&nbsp;年台北元旦好了，</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="go">&#39;2016-01-01 00:00:00&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tpe_2016_newyear</span> <span class="o">=</span> <span class="n">tpe</span><span class="o">.</span><span class="n">localize</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tpe_2016_newyear</span>
+<span class="go">datetime.datetime(2016, 1, 1, 0, 0, tzinfo=&lt;DstTzInfo &#39;Asia/Taipei&#39; CST+8:00:00 STD&gt;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">utc</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">tpe_2016_newyear</span><span class="p">)</span>
+<span class="go">datetime.datetime(2015, 12, 31, 16, 0, tzinfo=&lt;UTC&gt;)</span>
+</pre></div>
+
+
+<p>使用 <code>.localize(&lt;datetime&gt;)</code> 給予一個初始沒有時區資訊的 <code>datetime</code> 時區。有了時區之後，要在不同時區間轉換就使用 <code>.normalize(&lt;datetime&gt;)</code>。</p>
+<p>可以再查查當台北 2016&nbsp;元旦時，美國東岸時間是幾點。</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">est</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s">&#39;US/Eastern&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">est</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">tpe_2016_newyear</span><span class="p">)</span>
+<span class="go">datetime.datetime(2015, 12, 31, 11, 0, tzinfo=&lt;DstTzInfo &#39;US/Eastern&#39; EST-1 day, 19:00:00 STD&gt;)</span>
+</pre></div>
+
+
+<p>以後要看球賽轉播、重要發表就不會再搞不清楚時間了。</p>
+<h3 id="datetime-in-sqlite-again">Datetime in SQLite,&nbsp;again</h3>
+<p>我們會處理 datetime 與時區了，那麼就來改寫一下本來 SQLite 存時間的方式。其實 Python datetime 支援 SQLite 轉換，同樣從<a href="https://docs.python.org/3.5/library/sqlite3.html#default-adapters-and-converters">Python module 說明文件</a>裡面拿出來的。</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pytz</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">utc</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">utc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tpe</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s">&#39;Asia/Taipei&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s">&quot;test.db&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">detect_types</span><span class="o">=</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">PARSE_DECLTYPES</span><span class="o">|</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">PARSE_COLNAMES</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;CREATE TABLE test(dt timestamp)&#39;</span><span class="p">)</span>
+<span class="go">&lt;sqlite3.Cursor object at 0x10a59b960&gt;</span>
+</pre></div>
+
+
+<p>資料欄位的設為 <code>timestamp</code>，並且在連接的時候設定 <code>PARSE_DECLTYPES</code> 及 <code>PARSE_COLNAMES</code>，稍後可以看到他們的效果。&nbsp;趕快把時間存進去吧。</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">utcnow</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">utcnow</span>
+<span class="go">datetime.datetime(2015, 9, 29, 12, 48, 16, 671538)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">db</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="s">&#39;INSERT INTO test(dt) VALUES (?)&#39;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="n">utcnow</span><span class="p">,</span> <span class="p">)</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">&lt;sqlite3.Cursor object at 0x1082380a0&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tpe_2016_newyear</span> <span class="o">=</span> <span class="n">tpe</span><span class="o">.</span><span class="n">localize</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">utc</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">tpe_2016_newyear</span><span class="p">)</span>
+<span class="go">datetime.datetime(2015, 12, 31, 16, 0, tzinfo=&lt;UTC&gt;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">utc_dt</span> <span class="o">=</span> <span class="n">utc</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">tpe_2016_newyear</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">db</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="s">&#39;INSERT INTO test(dt) VALUES (?)&#39;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="n">utc_dt</span><span class="p">,</span> <span class="p">)</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">&lt;sqlite3.Cursor object at 0x10a59b960&gt;</span>
+</pre></div>
+
+
+<p>存了兩個時間，一個是 <span class="caps">UTC</span> 的現在時間，另一個是以 <span class="caps">UTC</span> 表示的台北 2016 元旦。注意兩個時間都把 <span class="caps">UTC</span> 時區去掉了，因為在某些情況底下 SQLite 與 python 的 datetime adapter 會看不懂時區（這是個 <a href="https://bugs.python.org/issue19065">bug #19065</a>）。</p>
+<p>如果用 SQLite 可以看到時間都是以 <span class="caps">UTC</span> 呈現。仍可以用它內建的 <code>datetime('&lt;UTC time&gt;', 'localtime')</code> 把 <span class="caps">UTC</span>&nbsp;時間字串轉換成電腦的當地時間。這樣處理是容易與其他應用程式相容的。</p>
+<div class="highlight"><pre><span class="go">-- sqlite3 test.db</span>
+<span class="gp">sqlite&gt; </span><span class="p">.</span><span class="k">schema</span>
+<span class="go">CREATE TABLE test(dt timestamp);</span>
+<span class="gp">sqlite&gt; </span><span class="k">SELECT</span> <span class="n">dt</span> <span class="k">FROM</span> <span class="n">test</span><span class="p">;</span>
+<span class="go">2015-09-29 12:48:16.671538</span>
+<span class="go">2015-12-31 16:00:00</span>
+<span class="gp">sqlite&gt; </span><span class="k">SELECT</span> <span class="n">datetime</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="s1">&#39;localtime&#39;</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">test</span><span class="p">;</span>
+<span class="go">2015-09-29 20:48:16</span>
+<span class="go">2016-01-01 00:00:00</span>
+</pre></div>
+
+
+<p>再用 Python 讀回來仍然是 datetime&nbsp;格式：</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ret_vals</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;SELECT dt AS &quot;[timestamp]&quot; FROM test&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ret_vals</span>
+<span class="go">[(datetime.datetime(2015, 9, 29, 12, 48, 16, 671538),),</span>
+<span class="go"> (datetime.datetime(2015, 12, 31, 16, 0),)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">tpe</span><span class="o">.</span><span class="n">fromutc</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ret_vals</span><span class="p">]</span>
+<span class="go">[datetime.datetime(2015, 9, 29, 20, 48, 16, 671538, tzinfo=&lt;DstTzInfo &#39;Asia/Taipei&#39; CST+8:00:00 STD&gt;),</span>
+<span class="go"> datetime.datetime(2016, 1, 1, 0, 0, tzinfo=&lt;DstTzInfo &#39;Asia/Taipei&#39; CST+8:00:00 STD&gt;)]</span>
+</pre></div>
+
+
+<h4 id="python-3-timezone">Python 3 內建 timezone&nbsp;支援</h4>
+<p>為了寫這篇 blog 又研究了一下內建的 datetime.timezone。Python 2 沒有這個功能，不過基本的 timedelta&nbsp;有，所以要自己做應該也是做得到…吧？</p>
+<p>內建的 datetime.timezone 由一個 utcoffset 做建立，基本上就是傳個相對於 <span class="caps">UTC</span> 的時間差，以 datetime.timedelta 表示。一樣內建帶有 <span class="caps">UTC</span>&nbsp;時區，這邊試著建了台北以及東京的時間。</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tpe_now</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tpe_now</span>
+<span class="go">datetime.datetime(2015, 9, 29, 20, 40, 49, 347568)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">utc</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tpe_delta</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tpe</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="n">tpe_delta</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jpn_delta</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jpn</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="n">jpn_delta</span><span class="p">)</span>
+</pre></div>
+
+
+<p>我人在台北，所以 datetime.datetime.now() 會給我台北時間，再用 timedelta&nbsp;手動算出各時區的時間。</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">utc_now</span> <span class="o">=</span> <span class="n">tpe_now</span> <span class="o">-</span> <span class="n">tpe_delta</span>  <span class="c"># manually time shift</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jpn_now</span> <span class="o">=</span> <span class="n">utc_now</span> <span class="o">+</span> <span class="n">jpn_delta</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">utc_now</span>
+<span class="go">datetime.datetime(2015, 9, 29, 12, 40, 49, 347568)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tpe_now</span> <span class="o">==</span> <span class="n">utc_now</span>
+<span class="go">False</span>
+</pre></div>
+
+
+<p>直接比較這些算出來的時間，不意外不相等，因為預設的 tzinfo&nbsp;是空的。</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tpe_now</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">tpe</span><span class="p">)</span>
+<span class="go">datetime.datetime(2015, 9, 29, 20, 40, 49, 347568, tzinfo=datetime.timezone(datetime.timedelta(0, 28800)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tpe_now</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">tpe</span><span class="p">)</span> <span class="o">==</span> <span class="n">utc_now</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">utc</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jpn_now</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">jpn</span><span class="p">)</span> <span class="o">==</span> <span class="n">tpe_now</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">tpe</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+
+
+<p>給了各地的時區的 tzinfo 之後，可以看到 datetime&nbsp;在做比較的時候是有考慮時區位移的。</p>
+<p>接著再來看一下pytz 與內建 datetime.timezone&nbsp;的相容程度。</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pytz</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pytz_utc</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">utc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pytz_tpe</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s">&#39;Asia/Taipei&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">jpn_now</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">jpn</span><span class="p">))</span>
+<span class="go">datetime.datetime(2015, 9, 29, 12, 40, 49, 347568, tzinfo=&lt;UTC&gt;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pytz_tpe</span><span class="o">.</span><span class="n">localize</span><span class="p">(</span><span class="n">tpe_now</span><span class="p">)</span> <span class="o">==</span> <span class="n">utc_now</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">utc</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+
+
+<p>比較跟轉換都沒有問題，可以放心轉換。</p>
+<h3 id="python-sqlite-adapter">讓 Python 內建 SQLite adapter&nbsp;支援時區</h3>
+<p>看了一下 <a href="https://bugs.python.org/issue19065">Python issue 19065</a>，之所以沒有解決其實是缺 patch，因為現在的 patch 並不相容 Python 2.x（沒有 datetime.timezone），然後 pysqlite 的維護者並沒有想要支援 timezone&nbsp;的意思。</p>
+<p>不過那只是內建的 adapter for datetime.datetime object，要自己做也沒問題。參考 issue 裡面提供的解法（在 Github <a href="https://gist.github.com/acdha/6655391">gist</a>&nbsp;上）。</p>
+<div class="highlight"><pre><span class="c"># tz_aware_adpater.py</span>
+<span class="c"># Adapt from https://gist.github.com/acdha/6655391</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+
+<span class="k">def</span> <span class="nf">tz_aware_timestamp_adapter</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+    <span class="n">datepart</span><span class="p">,</span> <span class="n">timepart</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">b</span><span class="s">&quot; &quot;</span><span class="p">)</span>
+    <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">datepart</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">b</span><span class="s">&quot;-&quot;</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">b</span><span class="s">&quot;+&quot;</span> <span class="ow">in</span> <span class="n">timepart</span><span class="p">:</span>
+        <span class="n">timepart</span><span class="p">,</span> <span class="n">tz_offset</span> <span class="o">=</span> <span class="n">timepart</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="n">b</span><span class="s">&quot;+&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tz_offset</span> <span class="o">==</span> <span class="n">b</span><span class="s">&#39;00:00&#39;</span><span class="p">:</span>
+            <span class="n">tzinfo</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">hours</span><span class="p">,</span> <span class="n">minutes</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">tz_offset</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;:&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">tzinfo</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span>
+                <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="n">hours</span><span class="p">,</span> <span class="n">minutes</span><span class="o">=</span><span class="n">minutes</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tzinfo</span> <span class="o">=</span> <span class="k">None</span>
+
+    <span class="n">timepart_full</span> <span class="o">=</span> <span class="n">timepart</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">b</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
+    <span class="n">hours</span><span class="p">,</span> <span class="n">minutes</span><span class="p">,</span> <span class="n">seconds</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">timepart_full</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">b</span><span class="s">&quot;:&quot;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">timepart_full</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">microseconds</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s">&#39;{:0&lt;6.6}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">timepart_full</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">()))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">microseconds</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">val</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span>
+        <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hours</span><span class="p">,</span> <span class="n">minutes</span><span class="p">,</span> <span class="n">seconds</span><span class="p">,</span> <span class="n">microseconds</span><span class="p">,</span>
+        <span class="n">tzinfo</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">val</span>
+
+<span class="n">sqlite3</span><span class="o">.</span><span class="n">register_converter</span><span class="p">(</span><span class="s">&#39;timestamp&#39;</span><span class="p">,</span> <span class="n">tz_aware_timestamp_adapter</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="go">python3 -i tz_aware_adpater.py</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s">&#39;test.db&#39;</span><span class="p">,</span>
+<span class="gp">... </span>     <span class="n">detect_types</span><span class="o">=</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">PARSE_DECLTYPES</span><span class="o">|</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">PARSE_COLNAMES</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pytz</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tpe</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s">&#39;Asia/Taipei&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pycontw</span> <span class="o">=</span> <span class="n">tpe</span><span class="o">.</span><span class="n">localize</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">pycontw</span><span class="p">)</span>
+<span class="go">&#39;2016-06-03 08:00:00+08:00&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s">&#39;INSERT INTO test(dt) VALUES (?)&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">[(</span><span class="n">pycontw</span><span class="p">,),</span> <span class="p">(</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">pycontw</span><span class="p">),)]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+
+
+<p>存了兩個帶有時區的時間（兩個時間是相同的）。先從 SQLite&nbsp;來讀讀看。</p>
+<div class="highlight"><pre><span class="gp">sqlite&gt; </span><span class="k">SELECT</span> <span class="n">dt</span> <span class="k">FROM</span> <span class="n">test</span><span class="p">;</span>
+<span class="go">2015-09-29 12:48:16.671538</span>
+<span class="go">2015-12-31 16:00:00</span>
+<span class="go">2016-06-03 08:00:00+08:00</span>
+<span class="go">2016-06-03 00:00:00+00:00</span>
+<span class="gp">sqlite&gt; </span><span class="k">SELECT</span> <span class="n">datetime</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="s1">&#39;localtime&#39;</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">test</span><span class="p">;</span>
+<span class="go">2015-09-29 20:48:16</span>
+<span class="go">2016-01-01 00:00:00</span>
+<span class="go">2016-06-03 08:00:00</span>
+<span class="go">2016-06-03 08:00:00</span>
+</pre></div>
+
+
+<p>時區是直接寫到 SQLite 裡面，沒有的話就當成是 <span class="caps">UTC</span>&nbsp;時區。</p>
+<p>再用 Python 讀回來，測一下修改的&nbsp;adapter。</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">dts</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;SELECT dt FROM test&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dts</span>
+<span class="go">[(datetime.datetime(2015, 9, 29, 12, 48, 16, 671538),),</span>
+<span class="go"> (datetime.datetime(2015, 12, 31, 16, 0),),</span>
+<span class="go"> (datetime.datetime(2016, 6, 3, 8, 0, tzinfo=datetime.timezone(datetime.timedelta(0, 28800))),),</span>
+<span class="go"> (datetime.datetime(2016, 6, 3, 0, 0, tzinfo=datetime.timezone.utc),)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">tpe</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">dts</span><span class="p">[</span><span class="mi">2</span><span class="p">:]]</span>
+<span class="go">[datetime.datetime(2016, 6, 3, 8, 0, tzinfo=&lt;DstTzInfo &#39;Asia/Taipei&#39; CST+8:00:00 STD&gt;),</span>
+<span class="go"> datetime.datetime(2016, 6, 3, 8, 0, tzinfo=&lt;DstTzInfo &#39;Asia/Taipei&#39; CST+8:00:00 STD&gt;)]</span>
+</pre></div>
+
+
+<p>讀回來沒有問題，如果要完整處理所有情況（前面兩個 datetime 是 naive&nbsp;沒有時區）</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="p">[(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">utc</span><span class="p">)</span> <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tzinfo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+<span class="gp">... </span>  <span class="k">else</span> <span class="n">utc</span><span class="o">.</span><span class="n">localize</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="gp">... </span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">dts</span><span class="p">]</span>
+<span class="go">[datetime.datetime(2015, 9, 29, 12, 48, 16, 671538, tzinfo=&lt;UTC&gt;),</span>
+<span class="go"> datetime.datetime(2015, 12, 31, 16, 0, tzinfo=&lt;UTC&gt;),</span>
+<span class="go"> datetime.datetime(2016, 6, 3, 0, 0, tzinfo=&lt;UTC&gt;),</span>
+<span class="go"> datetime.datetime(2016, 6, 3, 0, 0, tzinfo=&lt;UTC&gt;)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">tpe</span><span class="p">)</span> <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tzinfo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+<span class="gp">... </span>  <span class="k">else</span> <span class="n">tpe</span><span class="o">.</span><span class="n">fromutc</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="gp">... </span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">dts</span><span class="p">]</span>
+<span class="go">[datetime.datetime(2015, 9, 29, 20, 48, 16, 671538, tzinfo=&lt;DstTzInfo &#39;Asia/Taipei&#39; CST+8:00:00 STD&gt;),</span>
+<span class="go"> datetime.datetime(2016, 1, 1, 0, 0, tzinfo=&lt;DstTzInfo &#39;Asia/Taipei&#39; CST+8:00:00 STD&gt;),</span>
+<span class="go"> datetime.datetime(2016, 6, 3, 8, 0, tzinfo=&lt;DstTzInfo &#39;Asia/Taipei&#39; CST+8:00:00 STD&gt;),</span>
+<span class="go"> datetime.datetime(2016, 6, 3, 8, 0, tzinfo=&lt;DstTzInfo &#39;Asia/Taipei&#39; CST+8:00:00 STD&gt;)]</span>
+</pre></div>
+
+
+<h3 id="_1">總結</h3>
+<p>時區真的很煩，尤其是很多地方不一定都完整支援時區，最好的情況還是用 <span class="caps">UTC</span>&nbsp;溝通，只有在真的需要時再轉換成當地時間。</p>
+<p>如果大家對時區很有興趣，不久前 <a href="https://www.python.org/dev/peps/pep-0495/"><span class="caps">PEP</span> 495</a> 已經被接受，沒有意外應該會出現在 Python 3.6&nbsp;裡面，它處理的是日光節約時間的問題。（感覺在臺灣對日光節約時間完全沒有概念啊）</p>
+<p>不得不說要正確處理時間…很麻煩啊。</p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="http://blog.liang2.tw/tag/zh.html">zh</a>
+      <a href="http://blog.liang2.tw/tag/datetime.html">datetime</a>
+      <a href="http://blog.liang2.tw/tag/pytz.html">pytz</a>
+      <a href="http://blog.liang2.tw/tag/sqlite.html">sqlite</a>
+      <a href="http://blog.liang2.tw/tag/python.html">python</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'liang2';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+  <!-- Justfont webfont -->
+  <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "Datetime in SQLite and&nbsp;Python",
+  "headline": "Datetime in SQLite and&nbsp;Python",
+  "datePublished": "2015-09-28 12:00:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Liang2",
+    "url": "http://blog.liang2.tw/author/liang2.html"
+  },
+  "image": "http://blog.liang2.tw/pics/headpic.jpg",
+  "url": "http://blog.liang2.tw/posts/2015/09/datetime-sqlite/",
+  "description": "整理在 Python 中處理時區的問題，並如何自 SQLite 存取考慮時區的時間"
+}
+</script></body>
+</html>

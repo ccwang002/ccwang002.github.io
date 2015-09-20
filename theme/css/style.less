@@ -1,0 +1,616 @@
+@orange: #D9411E;
+@light-orange: #FF5A09;
+@white: #FAFAFA;
+@grey: #333333;
+@light-grey:  #eeeeee;
+@med-grey:  #999999;
+@dark-grey: #242121;
+@sans: 'Lato', xingothic-tc, 'Source Hans  Sans TC', sans-serif;
+@mono: 'Inconsolata', 'Source Code Pro', 'Consolas', Menlo, monospace;
+@kai: 'Crimson Text', cwtexqkai, "標楷體", "BiauKai", "Kaiti TC", "Kaiti", "DFLiKaiShu", "DFKai-sb", serif;
+@line-height: 1.6em;
+@main-text-inner: 34em;
+@main-text-margin: 3.5em;
+@main-text-margin-large: 6em;
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  line-height: 1.1em;
+}
+
+h1{
+  font-size: 2.4em
+}
+
+h2 {
+  font-size: 2em
+}
+
+h3 {
+  font-size: 1.6em
+}
+
+h4 {
+  font-size: 1.36em
+}
+
+h5 {
+  font-size: 1.2em
+}
+
+h6 {
+  font-size: 1.1em
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: @white;
+  color: @dark-grey;
+  font-family: @sans;
+  font-size: 18px;
+  line-height: @line-height;
+  font-weight: 300;
+}
+
+strong {
+  font-weight: 600;
+}
+
+a {
+  color: @orange;
+  text-decoration: none;
+}
+
+a:hover {
+  color: @light-orange;
+}
+
+
+p {
+  margin: 1em auto;
+}
+
+// Fix sup and sub affecting line height
+
+sup, sub {
+   vertical-align: baseline;
+   position: relative;
+   top: -0.4em;
+   line-height: 0em;
+}
+sub {
+    top: 0.4em;
+}
+
+hr {
+  color: @light-grey;
+  background-color: @light-grey;
+  height: 1px;
+  border: none;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+img {
+  max-width: 100%;
+}
+
+.figure {
+  line-height: 1.2em;
+  font-size: 0.8em;
+
+  margin: 2em 0;
+
+  .caption, .legend {
+    padding: 0 0.2em;
+  }
+
+  p {
+    span.fig {
+      font-weight: 600;
+    }
+    margin: 0 0 0.5em 0;
+    font-weight: 300;
+  }
+}
+
+.align-center {
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 75%;
+  text-align: center;
+
+  p {
+    text-align: center;
+  }
+  p.left {
+    text-align: left;
+  }
+  p.right {
+    text-align: right;
+  }
+}
+
+table {
+  overflow: auto;
+  margin: 0 auto;
+}
+
+aside {
+  background-color: @grey;
+  color: @white;
+  text-align: center;
+
+  a {
+    color: @white;
+  }
+
+  a:hover {
+    color: @light-grey;
+  }
+
+  h1,h2,h3,h4,h5,h6 {
+    font-weight: 300;
+  }
+
+  div {
+    padding: 20px;
+    margin: 0;
+
+    img {
+      border-radius: 50%;
+      max-width: 140px;
+    }
+
+    h1 {
+      margin: 15px 0 5px 0;
+    }
+
+    p {
+      margin: 0 0 15px 0;
+      font-size: .92em;
+    }
+  }
+  nav {
+    ul {
+      li {
+        display: inline;
+        line-height: 1.6em;
+        font-size: 1.28em;
+      }
+    }
+    ul.list {
+      padding: 0.5em 0;
+    }
+  }
+}
+
+main {
+
+  max-width: @main-text-inner + 2 * @main-text-margin;
+
+  nav {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: .72em;
+    padding: 0.3em 0 0.3em 0;
+    border-bottom: @light-grey 1px solid;
+
+    a {
+      padding: 0 4px 0 4px;
+      border-right: @light-grey 1px solid;
+    }
+
+    :first-child {
+      border-left: @light-grey 1px solid;
+    }
+  }
+
+  .pagination {
+    margin: 4% 8% 2% 8%;
+    position: relative;
+    height: @line-height;
+  }
+
+  .social-share {
+    p {
+      font-size: .8em;
+    }
+  }
+
+  article {
+    margin: 0 @main-text-margin 2em @main-text-margin;
+
+    header {
+      h1, h2 {
+        margin-top: 1em;
+        margin-bottom: 0;
+      }
+
+      p {
+        color: @med-grey;
+        font-size: 0.82em;
+      }
+    }
+
+    h2, h3 {
+      margin-top: 2em;
+      margin-bottom: 0.8em;
+    }
+
+    h4, h5, h6 {
+      margin-top: 1.5em;
+      margin-bottom: 0.5em;
+    }
+
+    div {
+
+      h1, h2, h3, h4, h5 {
+          & + p {
+            margin-top: 1em;
+          }
+      }
+
+      p + p {
+        margin-top: @line-height;
+      }
+
+      p img {
+        vertical-align: bottom;
+      }
+
+      a {
+        white-space: pre-wrap; /* css-3 */
+        word-wrap: break-word; /* Internet Explorer 5.5+ */
+      }
+    }
+
+    code, kbd, samp, pre {
+      font-family: @mono;
+    }
+
+    blockquote, pre {
+      background-color: rgba(128,128,128,0.05);
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+      border-left: 8px solid rgba(128,128,128,0.075);
+      border-left-width: 10px;
+    }
+
+    blockquote {
+      padding: 10px 20px;
+      font-family: @kai;
+      font-weight: 400;
+      font-size: 1.1em;
+    }
+
+    pre {
+      padding: 4px;
+      font-size: .9em;
+      line-height: 1.2em;
+      overflow-x: auto;
+    }
+
+    samp {
+      white-space: pre;
+      display: block;
+      overflow-x: auto;
+    }
+
+    kbd {
+      padding: 0em .4em;
+      border: 1px solid rgba(63,63,63,0.25);
+      box-shadow: 0 1px 0 rgba(63,63,63,0.25);
+      background-color: #fff;
+      color: #333;
+      border-radius: 3px;
+      display: inline-block;
+      margin: 0 .1em;
+      white-space: nowrap;
+      font-size: .78em;
+    }
+
+    code {
+      font-size: .85em;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      color: #c25;
+      padding: 1px 3px;
+      background-color: #f7f7f9;
+      border: 1px solid #e1e1e8;
+      border-radius: 3px;
+    }
+
+    .comment-count {
+      font-size: .8em;
+    }
+
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+
+      thead:first-child tr:first-child th {
+         border-top: 0;
+      }
+
+      th, td {
+        padding: 8px;
+        line-height: 20px;
+        vertical-align: top;
+        border-top: 1px solid #ddd;
+      }
+    }
+  }
+
+  a.btn-cont-read {
+      background-color: @white;
+      color: @orange;
+      box-shadow: 0px 0px 0px 1px @orange;
+    }
+
+  a.btn-cont-read:hover {
+      background-color: @orange;
+      color: @white;
+      box-shadow: none;
+    }
+
+  footer {
+    padding-top: 4px;
+    border-top: @light-grey 1px solid;
+    line-height: 1em;
+
+    p {
+      margin: 0 0px;
+      text-align: center;
+      padding: 0 40px 0 40px;
+      color: @med-grey;
+      font-size: 11px;
+    }
+  }
+}
+
+.tag-cloud {
+  a {
+    background-color: @orange;
+    padding: .2em .6em .2em;
+    font-size: .74em;
+    line-height: 1;
+    color: @white;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+  }
+
+  a:hover {
+    background-color: @light-orange;
+  }
+}
+
+a.btn {
+  background-color: @orange;
+  padding: .4em .6em;
+  font-size: .9em;
+  line-height: 1;
+  color: @white;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em;
+  display: inline-block;
+}
+
+a.btn:hover {
+  background-color: @light-orange;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+.float-right {
+  position: absolute;
+  right: 0em;
+}
+
+ul.list, ul.social {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.list {
+  padding: 1em 0 1em 0;
+
+  li {
+    padding: 4px;
+  }
+}
+
+ul.social {
+  font-size: 1.6em;
+  padding-top: 20px;
+
+  li {
+    display: inline;
+  }
+
+  a:hover {
+    z-index: 2;
+    -webkit-transform: translateY(-5px);
+    transform: translateY(-5px);
+  }
+
+  a {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    border-radius: 100%;
+    text-align: center;
+    font-size: .8em;
+    line-height: 36px;
+  }
+
+  a.sc-facebook {
+    background-color: #3e5b98;
+  }
+
+  a.sc-google {
+    background-color: #d93e2d;
+  }
+
+  a.sc-pinterest {
+    background-color: #c92619;
+  }
+
+  a.sc-linkedin {
+    background-color: #3371b7;
+  }
+
+  a.sc-rss {
+    background-color: #f26109;
+  }
+
+  a.sc-stack-overflow {
+    background-color: #ff9900;
+  }
+
+  a.sc-twitter {
+    background-color: #4da7de;
+  }
+
+  a.sc-youtube {
+    background-color: #e02a20;
+  }
+
+  a.sc-github, a.sc-github-alt {
+    background-color: #111010;
+  }
+
+  a.sc-bitbucket {
+    background-color: #205081;
+  }
+
+  a.sc-envelope-o {
+    background-color: #578AD6;
+  }
+}
+
+//
+// Desktop
+//
+
+@media screen and (min-width: 768px) {
+  aside {
+    width: 25%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+
+    div {
+      padding: 36px 18px;
+
+      nav {
+        ul {
+          li {
+            padding: 0 !important;
+            display: block;
+          }
+        }
+      }
+
+      ul.social {
+        padding-top: 32px;
+      }
+    }
+  }
+
+  main {
+    width: 75%;
+    position: absolute;
+    top: 0;
+    left: 25%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+
+    article {
+      ul.list {
+        li {
+          padding: 2px;
+        }
+      }
+    }
+  }
+}
+
+//
+// Smaller Desktop
+//
+
+@media screen and (max-width: 767px) {
+  main {
+    table {
+      border: 1px solid @med-grey;
+      padding: 0.5em;
+      display: block;
+    }
+  }
+}
+
+//
+// Mobile
+//
+
+@media screen and (max-width: 480px) {
+  blockquote {
+    margin: auto 5%;
+  }
+  .align-center {
+    max-width: 100%;
+  }
+  main {
+    max-width: 100%;
+
+    article {
+      margin: 0 8% 2em;
+    }
+  }
+}
+
+//
+// Larger Desktop
+//
+
+@media screen and (min-width: 1281px) {
+  aside {
+    width: 32%;
+  }
+
+  main {
+    width: 68%;
+    left: 32%;
+    max-width: @main-text-inner + 2 * @main-text-margin-large;
+
+    article {
+      margin: 0 @main-text-margin-large 2em @main-text-margin-large;
+    }
+  }
+}
+// vim: ts=2 sts=2 sw=2

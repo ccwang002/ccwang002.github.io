@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
+  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="http://blog.liang2.tw/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="http://blog.liang2.tw/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="http://blog.liang2.tw/theme/css/font-awesome.min.css">
+  <link href="http://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Liang2" />
+<meta name="description" content="TL;DR Use Zotero to sync references, webpages, and everything. 一開始會想要收集 reference 無非是做研究。寫論文、平常報告進度需要放上 citation ..." />
+<meta name="keywords" content="zh, zotero">
+<meta property="og:site_name" content="Liang2's blog"/>
+<meta property="og:title" content="使用 Zotero 管理文獻書目"/>
+<meta property="og:description" content="TL;DR Use Zotero to sync references, webpages, and everything. 一開始會想要收集 reference 無非是做研究。寫論文、平常報告進度需要放上 citation ..."/>
+<meta property="og:locale" content="zh_TW"/>
+<meta property="og:url" content="http://blog.liang2.tw/posts/2015/09/ref-management-zotero/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2015-09-26 00:00:00+08:00"/>
+<meta property="article:modified_time" content="2015-09-26 00:00:00+08:00"/>
+<meta property="article:author" content="http://blog.liang2.tw/author/liang2.html">
+<meta property="article:section" content="Coding"/>
+<meta property="article:tag" content="zh"/>
+<meta property="article:tag" content="zotero"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="使用 Zotero 管理文獻書目">
+<meta name="twitter:description" content="TL;DR Use Zotero to sync references, webpages, and everything. 一開始會想要收集 reference 無非是做研究。寫論文、平常報告進度需要放上 citation ...">
+<meta property="og:image" content="http://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotero.png">
+<meta name="twitter:image" content="http://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotero.png">
+  <title>使用 Zotero 管理文獻書目 &ndash; Liang2's blog</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="http://blog.liang2.tw">
+        <img src="http://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
+      </a>
+      <h1><a href="http://blog.liang2.tw">Liang2's Blog</a></h1>
+      <p>Code / Stat / Bioinfo</p>
+      <nav>
+        <ul class="list">
+          <li><a href="http://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
+          <li><a href="http://blog.liang2.tw/talks/#talks">Talks</a></li>
+          <li><a href="http://blog.liang2.tw/research/#research">Research</a></li>
+          <li><a href="http://blog.liang2.tw/projects/#projects">Projects</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
+        <li><a class="sc-envelope-o" href="mailto:ccwang002@gmail.com" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
+        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="http://blog.liang2.tw">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+      <a href="http://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="ref-management-zotero">使用 Zotero&nbsp;管理文獻書目</h1>
+    <p>Posted on Sep 26, 2015
+      in <a href="http://blog.liang2.tw/category/coding.html">Coding</a>
+    </p>
+  </header>
+  <div>
+    <p><strong><span class="caps">TL</span>;<span class="caps">DR</span></strong> Use Zotero to sync references, webpages, and&nbsp;everything.</p>
+<p>一開始會想要收集 reference 無非是做研究。寫論文、平常報告進度需要放上 citation，而在學術界最常就是 cite 別人的期刊。期刊 citation&nbsp;有它一定的格式，而且每個期刊用的格式不同，手打容易錯，也很難維護。所以最好的方式就是把期刊完整的資訊存在資料庫，然後引用的時候再插到文件裡面。</p>
+<p>整個問題就變成怎麼管理這些期刊資訊。</p>
+<div class="toc">
+<ul>
+<li><a href="#bibtex-is-for-latex">BibTex is for LaTeX</a><ul>
+<li><a href="#bibdesk">BibDesk</a></li>
+</ul>
+</li>
+<li><a href="#endnote-is-for-word">EndNote is for&nbsp;Word</a></li>
+<li><a href="#zotero-bridges-the-both-world">Zotero bridges the both world</a><ul>
+<li><a href="#zotfile">Zotfile</a></li>
+<li><a href="#how-to-sync-data-storage">How to sync data&nbsp;storage</a></li>
+</ul>
+</li>
+<li><a href="#_1">總結</a></li>
+</ul>
+</div>
+<h3 id="bibtex-is-for-latex">BibTex is for&nbsp;LaTeX</h3>
+<p>在 <a href="https://www.latex-project.org/">LaTeX</a> 當中可以利用 <a href="http://www.bibtex.org/">BibTeX</a>（或更新的 <a href="https://www.ctan.org/pkg/biblatex">BibLaTeX</a>）提供的流程處理 citation 與管理 reference（即 <a href="https://en.wikibooks.org/wiki/LaTeX/Bibliography_Management">Bibliography 管理</a>）。他把所有 reference&nbsp;集中在一個純文字的檔案，</p>
+<div class="highlight"><pre>@article<span class="nb">{</span>Calin:2006aa,
+    Author = <span class="nb">{</span>Calin, George A. and Croce, Carlo M.<span class="nb">}</span>,
+    Journal = <span class="nb">{</span>Nat Rev Cancer<span class="nb">}</span>,
+    Month = <span class="nb">{</span>11<span class="nb">}</span>,
+    Number = <span class="nb">{</span>11<span class="nb">}</span>,
+    Pages = <span class="nb">{</span>857--866<span class="nb">}</span>,
+    Title = <span class="nb">{</span>MicroRNA signatures in human cancers<span class="nb">}</span>,
+    Volume = <span class="nb">{</span>6<span class="nb">}</span>,
+    Year = <span class="nb">{</span>2006<span class="nb">}}</span>
+</pre></div>
+
+
+<p>每篇文章會有一個 cite key，在內文用到的時候就可以引用，而 BibTeX 就會根據現在定義的 style 去放 citation 以及在文末加上對應的&nbsp;reference。</p>
+<h4 id="bibdesk">BibDesk</h4>
+<p>真正讓 BibTeX 能在日常生活中很好使用，有一部份要歸功於像 <a href="http://bibdesk.sourceforge.net/">BibDesk</a>&nbsp;這樣的圖形工具。</p>
+<p><a href="http://bibdesk.sourceforge.net/">BibDesk</a> 是個 <span class="caps">OSX</span> 的應用程式，包含在 <a href="https://tug.org/mactex/">MacTex</a> distribution 裡面。除了能自動從匯入來自網站或不同格式的 citation 之外，還有檔案附件的功能，能把例如論文的 <span class="caps">PDF</span>、Supplementary files 自動跟對應的條目做連接，重新命名並放在一個架構化的資料夾。重新命名跟歸檔的方式都能自訂，例如可以照 期刊名稱/年份 去分類，然後把這個資料夾放在 Dropbox&nbsp;上就完成了自動同步。</p>
+<div class="figure">
+  <img src="http://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/bibdesk_usage.png"/>
+  <p class="caption center"><span class="fig">BibDesk&nbsp;使用畫面</span></p>
+</div>
+
+<p>這樣解決了幾乎所有寫 paper&nbsp;會碰到的問題。</p>
+<p>平常會有個超級大的 BibTeX 檔，裡面有所有各式各樣的 reference。要寫 paper 的時候就把相關的 paper 拿出來 export 成一個小的檔案，然後把一些條目裡不相關的資訊拿掉，就不用再去想文獻引用的部份。我有好幾年都是這樣管理 reference&nbsp;的。</p>
+<h3 id="endnote-is-for-word">EndNote is for&nbsp;Word</h3>
+<p>不過不是所有人都用 LaTeX 寫 paper，例如我們實驗室就只有我一個人用 LaTeX，其他人都用 Word。Word 上面就沒這麼簡單又好用的管理工具了。最多人用的是&nbsp;EndNote。它是付費的，但因為我是公立大學的學生，所以謝謝各位納稅人，讓我能免費使用它（鞠躬）。</p>
+<p>EndNote 做到的功能跟 BibTeX 一樣，用了它之後在 word 裡面就不用再管理書目的格式。不過我平常都是從別的地方把 reference export 再丟進 EndNote&nbsp;裡，所以也不清楚它有什麼別的功能。</p>
+<p>噢，他有個好處就是在 <span class="caps">OSX</span> 和在 Windows&nbsp;上都一樣好用。</p>
+<h3 id="zotero-bridges-the-both-world">Zotero bridges the both&nbsp;world</h3>
+<p>BibDesk (BibTeX) 真的很方便，讓我有時候想要管理一些很經典的技術文章，想要存一些有用的不論是 <span class="caps">PDF</span>、影片、網站，都想要放到 BibDesk 裡面。但這些地方都沒有提供 BibTex citation format&nbsp;讓人直接複製貼上，而且它的語法也沒有設計要解決這麼多來源，所以寫起來很卡、很花時間。</p>
+<p>另一方面，現在查資料都是用瀏覽器，看到一篇論文，如果要 Export citation、打開 BibDesk、Import citation、Download <span class="caps">PDF</span>(s)、Link <span class="caps">PDF</span>(s)&nbsp;這一連串動作也很麻煩。</p>
+<p>所以就有了 <a href="https://www.zotero.org/">Zotero</a> [zoh-<span class="caps">TAIR</span>-oh] 這整合在瀏覽器的工具。目前支援 Firefox、Chrome、Safari，也有提供 Plugin 給 Word 或 LibreOffice 使用。所以它應該足夠取代前面的工具，雖然我並沒有結合 Word&nbsp;使用過。</p>
+<p>基本畫面蠻簡單的，大概所有的書目管理軟體都差不多，只是它是整合在 Browser&nbsp;當中，</p>
+<div class="figure">
+  <img src="http://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotero.png"/>
+  <p class="caption center"><span class="fig">Zotero&nbsp;使用畫面</span></p>
+</div>
+
+<p>使用很簡單，就兩個按鈕 <img src="http://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotero_icon.png" style="height: 1.6em;"/>，左邊打開 Zotero 視窗，右邊把當前網頁存進自己的 library 裡，它右下角就會出現處理的訊息，如果是期刊網站而且有 full text <span class="caps">PDF</span> 的權限，就會一起把 <span class="caps">PDF</span>&nbsp;都存起來。</p>
+<div class="figure align-center">
+  <img src="http://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotero_saving.png"/>
+</div>
+
+<div class="figure align-center">
+  <img src="http://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotero_citation.png"/>
+</div>
+
+<p>平常要放到論文裡時，我還是會先匯出到 BibTeX 或 EndNote。不過它額外還有好用的功能，能把 citation 輸出成 <span class="caps">RTF</span>/<span class="caps">HTML</span> 的 bibliography，這可以直接貼在 Powerpoint&nbsp;做投影片很方便。</p>
+<blockquote>
+<ol>
+<li>Torsten Thomas, Jack Gilbert <span class="amp">&amp;</span> Folker Meyer. Metagenomics - a guide from sampling to data analysis. <em>Microbial Informatics and Experimentation</em> <strong>2</strong>, 3&nbsp;(2012).</li>
+</ol>
+</blockquote>
+<p>Zotero 有提供免費 <span class="caps">300MB</span> 讓使用者同步 library，這對於單純 citation 本身已經很足夠了，它也支援同步到自己架設的&nbsp;WebDAV。</p>
+<p><span class="caps">PS</span>: Zotero 採用 <span class="caps">AGPL</span> v3 授權，原始碼在 <a href="https://github.com/zotero/zotero">Github</a>&nbsp;上。</p>
+<h4 id="zotfile">Zotfile</h4>
+<p>Zotero 內建的 <span class="caps">PDF</span> attachment 功能不如 BibDesk 這麼完整，因此有 <a href="http://zotfile.com/">Zotfile</a> 來額外管理 <span class="caps">PDF</span> 檔案的功能。再者 Zotero 的空間有限，會想把 <span class="caps">PDF</span> 等大的檔案放在像 Dropbox 的地方，不要都用 Zotero&nbsp;同步。</p>
+<div class="figure align-center">
+  <img src="http://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotfile_file_location.png"/>
+  <p class="caption left">自訂 (<span class="caps">PDF</span>) 檔案存放路徑，底下可以再設定子目錄。在這邊是會按照<code>期刊名/年分</code>去分目錄。</p>
+</div>
+
+<div class="figure align-center">
+  <img src="http://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotfile_rename_setting.png"/>
+  <p class="caption">自訂檔案命名規則</p>
+</div>
+
+<p>不過如果是同步到 Dropbox 的話，可能每台電腦的路徑都不一樣，例如 <span class="caps">OSX</span> 可能是 <code>/Users/me/Dropbox</code>，但 Debian 可能是 <code>/home/me/Dropbox</code>，這時候存放的路徑就要改成相對路徑。</p>
+<div class="figure align-center">
+  <img src="http://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotero_file_location.png"/>
+  <p class="caption">Zotero Advanced 設定裡修改 library&nbsp;相關檔案的路徑。</p>
+</div>
+
+<p>這邊要額外說明一下 Linked Attachment Base Directory 以及 Data Directory 的差異。像 <span class="caps">PDF</span> 這類如果被 Zotfile 所管理的檔案，或是自己手動選「Attach Link &hellip;」的檔案，他使用的是 linked attachment，icon 會有個連結的符號 <img src="http://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotfile_fileicon.png" style="height: 1.6em;"/>。其他像 Webpage Snapshot 或是預設的 <span class="caps">PDF</span> 檔都是放在 Data&nbsp;Directory。</p>
+<h4 id="how-to-sync-data-storage">How to sync data&nbsp;storage</h4>
+<p>如果要進一步讓 data storage 也用 Dropbox 同步的話，參考官網關於 <a href="https://www.zotero.org/support/sync">sync 的介紹</a>，<span class="caps">OSX</span> 上 Zotero Firefox&nbsp;的資料會存放在</p>
+<div class="highlight"><pre>~/Library/Application Support/Firefox/Profiles/xxxxxxxx.default/zotero
+</pre></div>
+
+
+<p>其中 data storage 就在底下的 <code>storage</code> 資料夾。官網建議不要把 Zotero 的 SQLite database 等都同步在 Dropbox 上，所以只要把這個資料移到 Dropbox 再 soft link&nbsp;回來就可以了。</p>
+<h3 id="_1">總結</h3>
+<p><a href="https://www.zotero.org/">Zotero</a>&nbsp;是個實用並且跟瀏覽器整合的文獻（書目）管理工具。但它也能處理像網頁等其他網路上也很常見的格式，也能與既有的工具、文件編輯軟體結合，並有同步功能，非常適合作為外部記憶庫。</p>
+<p>（應該要用英文寫的，什麼時候才會有第一篇英文 blog post <span class="caps">QAQ</span>）</p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="http://blog.liang2.tw/tag/zh.html">zh</a>
+      <a href="http://blog.liang2.tw/tag/zotero.html">zotero</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'liang2';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+  <!-- Justfont webfont -->
+  <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "使用 Zotero&nbsp;管理文獻書目",
+  "headline": "使用 Zotero&nbsp;管理文獻書目",
+  "datePublished": "2015-09-26 00:00:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Liang2",
+    "url": "http://blog.liang2.tw/author/liang2.html"
+  },
+  "image": "http://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotero.png",
+  "url": "http://blog.liang2.tw/posts/2015/09/ref-management-zotero/",
+  "description": "TL;DR Use Zotero to sync references, webpages, and everything. 一開始會想要收集 reference 無非是做研究。寫論文、平常報告進度需要放上 citation ..."
+}
+</script></body>
+</html>
