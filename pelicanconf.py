@@ -5,7 +5,7 @@ from pathlib import Path
 import re
 
 AUTHOR = 'Liang2'
-SITENAME = "Liang2's personal site"
+SITENAME = "Liang2's blog"
 SITEURL = '/'
 
 PATH = 'content'
@@ -20,9 +20,20 @@ USE_FOLDER_AS_CATEGORY = False
 
 
 # Static path
+STATIC_PATHS = ['pics', 'B233544E.pub.asc', 'CNAME']
+ARTICLE_PATHS = []
+
+# Find blog post dirs based on regular expression
 _CONTENT_DIR = Path('content')
-STATIC_PATHS = ['blogs/2015-09', 'pics', 'B233544E.pub.asc', 'CNAME']
-ARTICLE_PATHS = ['blogs/2015-09', '2015']
+_BLOG_ROOT = _CONTENT_DIR / 'blogs'
+blog_dirs_by_month = []
+for dir_pth in _BLOG_ROOT.iterdir():
+    if dir_pth.is_dir() and re.match(r'^\d{4}-\d{2}$', dir_pth.stem):
+        blog_dirs_by_month.append(
+            dir_pth.relative_to(_CONTENT_DIR).as_posix()
+        )
+STATIC_PATHS += blog_dirs_by_month
+ARTICLE_PATHS += blog_dirs_by_month
 
 # Plugin
 PLUGIN_PATHS = ['./pelican-plugins', ]
