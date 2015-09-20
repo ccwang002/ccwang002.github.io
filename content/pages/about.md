@@ -4,7 +4,7 @@ Title: About me
 
 Hi, I'm Liang Bo Wang (王亮博). Most people call me 亮亮 (Liang-liang, or liang<sup>2</sup>).
 
-I'm master student in Bioinfo, National Taiwan University. My previous interns include Microsoft Research Asia (MSRA) and [Pinkoi].
+I'm a master student in Bioinfo, National Taiwan University. My previous interns include Microsoft Research Asia (MSRA) and [Pinkoi].
 
 [Pinkoi]: http://www.pinkoi.com/
 
