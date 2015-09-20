@@ -17,7 +17,7 @@ DEFAULT_LANG = 'zh-Hant'
 DEFAULT_DATE = 'fs'
 DEFAULT_DATE_FORMAT = '%b %d, %Y'
 USE_FOLDER_AS_CATEGORY = False
-
+TYPOGRIFY = True
 
 # Static path
 STATIC_PATHS = ['pics', 'B233544E.pub.asc', 'CNAME']
