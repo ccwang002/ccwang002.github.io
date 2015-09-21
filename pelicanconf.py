@@ -6,11 +6,13 @@ import re
 
 AUTHOR = 'Liang2'
 SITENAME = "Liang2's blog"
-SITEURL = '/'
+SITEURL = ''
 
 PATH = 'content'
 ARTICLE_URL = 'posts/{date:%Y}/{date:%m}/{slug}/'
 ARTICLE_SAVE_AS = 'posts/{date:%Y}/{date:%m}/{slug}/index.html'
+ARTICLE_LANG_URL = 'posts/{date:%Y}/{date:%m}/{slug}/{lang}.html'
+ARTICLE_LANG_SAVE_AS = 'posts/{date:%Y}/{date:%m}/{slug}/{lang}.html'
 TIMEZONE = 'Asia/Taipei'
 
 DEFAULT_LANG = 'zh-Hant'
@@ -18,6 +20,12 @@ DEFAULT_DATE = 'fs'
 DEFAULT_DATE_FORMAT = '%b %d, %Y'
 USE_FOLDER_AS_CATEGORY = False
 TYPOGRIFY = True
+MD_EXTENSIONS = [
+    'codehilite(css_class=highlight)',
+    'smarty',
+    'toc',
+    'extra',
+]
 
 # Static path
 STATIC_PATHS = ['pics', 'B233544E.pub.asc', 'CNAME']
@@ -37,7 +45,7 @@ ARTICLE_PATHS += blog_dirs_by_month
 
 # Plugin
 PLUGIN_PATHS = ['./pelican-plugins', ]
-PLUGINS = ['liquid_tags.img', 'render_math']
+PLUGINS = ['render_math']
 
 # Theme
 THEME = "./theme-flex"
