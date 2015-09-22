@@ -96,9 +96,13 @@ Pelican 大部份的主題都集中在 <http://pelicanthemes.com/>，有縮圖�
 
 Theme template 用 Jinja2，一開始只要調整 `base`、`index`、`article`、`page` 這幾頁跟 blog 最相關的就能改變主要的外觀。好在兩欄式的網頁 code 讀起來也很舒適。看了一下只要把 responsive 調整一下，讓手機內文寬度夠、很大的螢幕不要滿版整體看起來就差不多。大致上 theme 就這樣定下來了。
 
-唯一很討厭左側的大頭照，有夠煩的，還再想該放什麼來關掉它，放初音好了。
+細部的 CSS 修正，Flex 有用 [LESS] 和 [gulp] 處理前端的設定。LESS 變數跟 nesting rules 不會讓 CSS 變得很髒；每次改完跑個 gulp 就有新的 `style.min.css` 很方便。
+
+唯一討厭左側的大頭照，有夠煩的，而且還要增加 54KB 的流量。還再想該放什麼來關掉它，放初音好了。
 
 [Flex]: https://github.com/alexandrevicenzi/flex
+[LESS]: http://lesscss.org/
+[gulp]: http://gulpjs.com/
 
 
 ### 字型
@@ -126,11 +130,11 @@ Flex 內建用 Google webfont 來處理英文字體，為了引言還有完整�
 
 但最後還是有所妥協啦（跪）。
 
-首先段落前後還是有留白，這有考慮到兼顧英文排版，因為不知道怎麼在不同語言套不同的版型，再來我在純文字的時候也很習慣段落前後空一行，感覺視覺上這樣比較舒適。現在 `margin` 也是設為 `1em`。
+首先段落前後還是有留白，這有考慮到兼顧英文排版，因為不知道怎麼在不同語言套不同的版型，再來我在純文字的時候也很習慣段落前後空一行，感覺視覺上這樣比較舒適。 <del>`margin` 也是設為 `1em`。</del>（EDIT: 見文末）
 
 段落首行縮排最後也沒有放，主因是文句都蠻短的，有點怪；再來 markdown parser 會把我的全形空白吃掉，難以理解（但 rst 不會），真要加只能用`&#x3000;`硬加。中英交雜的段落中文字會無法對齊，不過就暫時算了，現在中英字重能一樣已經很感動了。
 
-300 的中文字的確有點細，我把字調大了，還特別拿給我爸媽看，確定他們看得到這些字 XD 
+300 的中文字的確有點細，我把字調大了成 18px，還特別拿給我爸媽看，確定他們看得到這些字 XD 
 
 做到這裡其實還蠻滿意了，長得像這樣：
 
@@ -139,7 +143,7 @@ Flex 內建用 Google webfont 來處理英文字體，為了引言還有完整�
   <p class="caption center"><span class="fig">手機上的樣子</span></p>
 </div>
 
-<div class="figure align-center">
+<div class="figure">
   <img src="{attach}pics/blog_desktop.png"/>
   <p class="caption center"><span class="fig">電腦螢幕的樣子</span></p>
 </div>
@@ -150,7 +154,7 @@ Flex 內建用 Google webfont 來處理英文字體，為了引言還有完整�
 
 ### Figure caption
 
-我覺得還蠻常圖的下面會放一些圖說、reference 之類。範例上面就有。在 markdown 不容易達成這效果，因為它的語法沒這麼複雜；rst 本來就有支援這樣的語法：
+圖的下面還蠻常會放一些圖說、reference 之類。範例上面就有。在 markdown 不容易達成這效果，因為它的語法沒這麼複雜；rst 本來就有支援這樣的語法：
 
 ~~~rst
 .. role:: fig
@@ -169,7 +173,7 @@ Flex 內建用 Google webfont 來處理英文字體，為了引言還有完整�
 <div class="figure align-center">
   <img alt="" src="{filename}pics.jpg">
   <p class="caption"><span class="fig">Figure 1:</span> The figure caption</p>
-  <div class="legend">The legend consists of all elements after the caption..</div>
+  <div class="legend">The legend consists of all elements after the caption.</div>
 </div>
 ~~~
 
@@ -178,7 +182,7 @@ Flex 內建用 Google webfont 來處理英文字體，為了引言還有完整�
 
 ### Markdown or rst?
 
-日常的編輯應該還是以 markdown 為主，看看精美的 Macdown 編輯器如此好用。但如果是很複雜的檔案（分析有公式有圖表什麼的）可能就會考慮 rst，rst 缺點就是語法有點複雜，然後我的 vim linter 會一直抱怨它有很多沒看過的 directives。
+日常的編輯應該還是以 markdown 為主，看看精美的 Macdown 編輯器如此好用。但如果是很複雜的檔案（分析有公式有圖表什麼的）可能就會考慮 rst；rst 缺點就是語法有點複雜，而且很多語法仰賴句中空白，使得不適用中文，然後我的 vim linter 會一直抱怨它有很多沒看過的 directives。
 
 不過很高興 Pelican 把兩者整合的很好，兩個都能用就能視情況轉換，但 template 也不用寫兩份。
 
@@ -193,6 +197,31 @@ Flex 內建用 Google webfont 來處理英文字體，為了引言還有完整�
 - Jupyter notebook include：還沒有試直接嵌入 nb 的功能，我想應該也是調整 CSS 那類的工（前端好累好難啊…）
 
 [pelican plugin](https://github.com/getpelican/pelican-plugins) 裡面包含了很多樣的套件，我猜很多遇到的問題，前人都解掉了吧？
+
+
+### EDIT (2015-09-23)
+
+看來看去，又調整了很多東西。
+
+首先，字體大小調小成 16px 又調回 18px。會選擇 16px 是因為我發現在 13" 筆電上閱讀會變得很擠。調回來是因為在大螢幕上看真的太小了，自己都需要放大來看。而且發現本來 13" 上很擠的問題並不是字體，而是一行文字的字數。
+
+一行文字太多會影響到閱讀的效率。PTT 一行最多 39 個中文字，但應該很少文章是打滿的，大約都打個五到八成寬，也就是在 20-32 個中文字。英文的話大約在 12-15 個字。我自己調了很多版本也差不多是這個數字。
+
+所以理想的文章寬度要滿足中、英文的字數。中文字寬度是固定的，所以在決定一行有多少個中文字之後，就要想辦法調整英文字體讓一行英文字數剛好。原本使用的 Source Pro Sans 稍微窄了一點，會讓純英文的頁面看起來有點擠，字重 400 的時候就好多了，但中文就變得不適合內文。最後換成 Lato，也是很普及的字體，不過其實沒寬多少。如果還是覺得很擠就只好換成 Open Sans 了，但我覺得它就有點鬆散。
+
+最後一行最多 33 個中文字、大約 13 個英文字，內文寬 720px，實際一行為 605px。程式碼一行最多只能放 72 個字，短了一點點但還可以接受。發現內文變窄之後，還可以加上右側的 sidenote，像是 [Tufte CSS] 這樣，有時會比 footnote 好用，但可能又會有內容太擠的問題。
+
+最後是在段落前後距離調整，把標題接內文的間距變小了，但段落間的間距調大。學到了一些像 
+
+```css
+p + p {
+  margin-top: 1.5em;
+}
+```
+
+代表相鄰的 p 元素的 CSS 語法，這樣可以避免直接改 p 的 margin 讓 p 與 h*、ul、pre 等間距太寬的狀況。**前端真的太神妙了。**
+
+[Tufte CSS]: http://www.daveliepmann.com/tufte-css/
 
 
 [^1]: 以前部落格的長相：
