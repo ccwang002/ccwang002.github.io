@@ -1,5 +1,7 @@
 ---
 Title: Talks
+Slug: talks
+sortorder: 10
 ---
 
 The followings are talks I given in open source communities.
