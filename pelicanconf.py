@@ -13,6 +13,11 @@ ARTICLE_URL = 'posts/{date:%Y}/{date:%m}/{slug}/'
 ARTICLE_SAVE_AS = 'posts/{date:%Y}/{date:%m}/{slug}/index.html'
 ARTICLE_LANG_URL = 'posts/{date:%Y}/{date:%m}/{slug}/{lang}.html'
 ARTICLE_LANG_SAVE_AS = 'posts/{date:%Y}/{date:%m}/{slug}/{lang}.html'
+PAGE_URL = '{slug}/'
+PAGE_SAVE_AS = '{slug}/index.html'
+PAGE_LANG_URL = '{slug}/{lang}.html'
+PAGE_LANG_SAVE_AS = '{slug}/{lang}.html'
+
 TIMEZONE = 'Asia/Taipei'
 
 DEFAULT_LANG = 'zh-Hant'
