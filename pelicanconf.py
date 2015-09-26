@@ -58,7 +58,7 @@ THEME = "./theme-flex"
 SITETITLE = "Liang2's Blog"
 SITESUBTITLE = "Code / Stat / Bioinfo"
 SITEDESCRIPTION = SITETITLE
-SITELOGO = SITEURL + "/pics/headpic.jpg"
+SITELOGO = "/pics/headpic.jpg"
 MAIN_MENU = True
 MENUITEMS = [
     ('Archives', '/archives.html'),
