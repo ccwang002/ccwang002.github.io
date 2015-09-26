@@ -26,12 +26,12 @@ Tags: zh, png
 
 ### OptiPNG
 
-[OptiPNG] 還是有部份效果，不過他跑不快。
+[OptiPNG] 還是有部份效果，不過他跑不快。
 
 
 ### Zopfli (Zopflipng)
 
-[Zopfli] 是 Google 開發的壓縮演算法，相容於 deflate, gzip, zlib 格式。也因此能用在 PNG 上面。他也是 lossless compression。
+[Zopfli] 是 Google 開發的壓縮演算法，相容於 deflate, gzip, zlib 格式。也因此能用在 PNG 上面。他也是 lossless compression。
 
 > Zopfli Compression Algorithm is a compression library programmed in C to perform very good, but slow, deflate or zlib compression.
 > ([Zopfli Readme](https://github.com/google/zopfli))
@@ -49,7 +49,7 @@ make zopflipng
 zopflipng --lossy_transparent --prefix *.png
 ~~~
 
-速度也蠻慢的，有個 `-q` 選項可以加速。但壓縮效率比 OptiPNG 還好。
+速度也蠻慢的，有個 `-q` 選項可以加速。但壓縮效率比 OptiPNG 還好。
 
 PS 剛好今天早上看到 Google 又出了另一個壓縮演算法 [Brotli]，但這個與 deflate 不相容，應該不能用在 PNG 上面。
 
