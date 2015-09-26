@@ -4,7 +4,7 @@ Slug: ref-management-zotero
 Date: 2015-09-26
 Tags: zotero, zh
 Category: Coding
-Cover: ./pics/zotero.png
+Cover: http://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotero.png
 ---
 
 **TL;DR** Use Zotero to sync references, webpages, and everything.
