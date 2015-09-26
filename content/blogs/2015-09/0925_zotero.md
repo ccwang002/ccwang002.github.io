@@ -129,7 +129,7 @@ Zotero 內建的 PDF attachment 功能不如 BibDesk 這麼完整，因此有 [Z
 
 #### How to sync data storage
 
-如果要進一步讓 data storage 也用 Dropbox 同步的話，參考 <https://www.zotero.org/support/sync>，OSX 上 Zotero Firefox 的資料會存放在
+如果要進一步讓 data storage 也用 Dropbox 同步的話，參考官網關於 [sync 的介紹](https://www.zotero.org/support/sync)，OSX 上 Zotero Firefox 的資料會存放在
 
 ```
 ~/Library/Application Support/Firefox/Profiles/xxxxxxxx.default/zotero
