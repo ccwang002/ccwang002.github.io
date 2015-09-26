@@ -34,9 +34,9 @@ MD_EXTENSIONS = [
 
 # Static path
 STATIC_PATHS = ['pics', 'B233544E.pub.asc', 'CNAME']
-ARTICLE_PATHS = []
 
 # Find blog post dirs based on regular expression
+ARTICLE_PATHS = []
 _CONTENT_DIR = Path('content')
 _BLOG_ROOT = _CONTENT_DIR / 'blogs'
 blog_dirs_by_month = []
@@ -58,7 +58,7 @@ THEME = "./theme-flex"
 SITETITLE = "Liang2's Blog"
 SITESUBTITLE = "Code / Stat / Bioinfo"
 SITEDESCRIPTION = SITETITLE
-SITELOGO = "/pics/headpic.jpg"
+SITELOGO = SITEURL + "/pics/headpic.jpg"
 MAIN_MENU = True
 MENUITEMS = [
     ('Archives', '/archives.html'),
