@@ -98,8 +98,8 @@ pngquant -f --ext=.png --quality=70-85 --skip-if-larger *.png
 
 [TruePNG tutorial]: http://css-ig.net/articles/truepng
 
-[blog_desktop.png]: {filename}pics/blog_desktop.png
-[blog_mobile.png]: {filename}pics/blog_mobile.png
-[justfont_setting.png]: {filename}pics/justfont_setting.png
-[oldsite.png]: {filename}pics/oldsite.png
-[oldsite_full.png]: {filename}pics/oldsite_full.png
+[blog_desktop.png]: ../blog-internals/pics/blog_desktop.png
+[blog_mobile.png]: ../blog-internals/pics/blog_mobile.png
+[justfont_setting.png]: ../blog-internals/pics/justfont_setting.png
+[oldsite.png]: ../blog-internals/pics/oldsite.png
+[oldsite_full.png]: {attach}pics/oldsite_full.png
