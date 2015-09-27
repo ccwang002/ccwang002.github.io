@@ -26,14 +26,14 @@ In many case the sequence is gzip'd, but it is still a piece of cake when combin
 ```bash
 gzcat myseq.fq.gz | sed -n '1~4s/^@/>/p;2~4p' | gzip > myseq.fa.gz
 ```
-But things get complex really fast when one wants to additionally do reverse complement, randomly sample a subset of reads, and many other sequence manipulation. Efficiency matters if those tasks are applied to tens of millions of reads. Even a few nanoseconds of computing difference per read matters at this scale of reads.
+But things get complex really fast when one wants to additionally do reverse complement, randomly sample a subset of reads, and many other types of sequence manipulation. Efficiency matters if those tasks are applied to tens of millions of reads. Even a few nanoseconds longer of computing time difference per read can make a difference at this scale of reads.
 
 
 ### Seqtk
 
 So [seqtk] comes into rescue. It is written in C and MIT licensed. [A quick comparison][fastqa-conversion] shows it is generally faster than other UNIX-based solutions, let alone implementations based on scripting languages.
 
-Seqtk bundle many other operations, but I'll just mention those I frequently use.
+Seqtk bundles many other operations, but I'll just mention those I frequently use.
 
 ```bash
 $seqtk
@@ -99,7 +99,7 @@ But for a detail report on each read position, one should consider `seqtk fqchk`
 $ seqtk fqchk myseq.fq[.gz]
 ```
 
-By default it sets `-q 20`. This quality threshold determines the threshold of counting a base as low or high quality, shown as `%low` and `%high` per read position.
+By default it sets `-q 20`. This quality threshold determines the threshold of counting a base as low or high quality, shown as `%low` and `%high` per read position. In the default case, quality score higher than 20 will be treated as high quality bases.
 
 ```text
 min_len: 10; max_len: 174; avg_len: 28.92; 37 distinct quality values
@@ -113,13 +113,13 @@ ALL 236344886 17.0 22.5 31.3 29.2 0.0 39.9 37.6 0.1  99.9
 # ... (trimmed)
 ```
 
-The column `avgQ` and `errQ` need more explanation. Average quality (`avgQ`) is computed by weighted mean of each base's quality,$$
-    \text{avgQ} = \dfrac{\sum_{q=0}^{93} q \cdot n_q}{\sum_{q = 0}^{93} n_q}
+The following columns, `avgQ` and `errQ`, need more explanation. Average quality (`avgQ`) is computed by weighted mean of each base's quality,$$
+    \text{avgQ} = \dfrac{\sum_{q=0}^{93} q \cdot n_q}{\sum_{q = 0}^{93} n_q},
 $$
 
 where $n_q$ is the number of bases with quality score being $q$. The magic number 93 comes from the quality score of Sanger sequencing[^sanger-qual-score], whose score ranges from 0 to 93.
 
-For `errQ` we need more background knowledge about how quality score is computed. A base with quality score $q$ implies the probability being erroneously called $P_q$, $$
+For `errQ` we need more background knowledge about how quality score is computed. A base with quality score $q$ implies the probability of being erroneously called, $P_q$, is $$
     P_q = 10^{\frac{-q}{10}}, \hspace{1em} q = -10\log_{10}{P_q}.
 $$
 
