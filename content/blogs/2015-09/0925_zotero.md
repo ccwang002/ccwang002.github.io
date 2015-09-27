@@ -2,7 +2,7 @@
 Title: 使用 Zotero 管理文獻書目
 Slug: ref-management-zotero
 Date: 2015-09-26
-Tags: zotero, zh
+Tags: zh, zotero
 Category: Coding
 Cover: http://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotero.png
 ---

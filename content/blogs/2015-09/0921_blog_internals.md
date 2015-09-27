@@ -3,7 +3,7 @@ Title: 設定部落格筆記
 Slug: blog-internals
 Date: 2015-09-21
 Category: Coding
-Tags: zh, pelican, python, blog
+Tags: zh, pelican, blog, python
 ---
 
 Blog 對我來說，最重要的就是書寫的舒適度。
