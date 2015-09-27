@@ -21,12 +21,13 @@ $ sed -n '1~4s/^@/>/p;2~4p'
 
 The assumption of 4 lines per read usually holds for recent NGS sequencing data, so not a big deal.
 
-In many case the sequence is gzip'd, but it is still a piece of cake when combining with pipe editing,
+In many case the sequence is gzip'd. It is still a piece of cake when combining with pipe editing,
 
 ```bash
 gzcat myseq.fq.gz | sed -n '1~4s/^@/>/p;2~4p' | gzip > myseq.fa.gz
 ```
-But things get complex really fast when one wants to additionally do reverse complement, randomly sample a subset of reads, and many other types of sequence manipulation. Efficiency matters if those tasks are applied to tens of millions of reads. Even a few nanoseconds longer of computing time difference per read can make a difference at this scale of reads.
+
+However, things can get complex really fast when one wants to additionally do reverse complement, randomly sample a subset of reads, and many other types of sequence manipulation. Efficiency matters if those tasks are applied to tens of millions of reads. Even a few nanoseconds longer of computing time difference per read can make a difference at this scale of reads.
 
 
 ### Seqtk
