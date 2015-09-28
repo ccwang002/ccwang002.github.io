@@ -136,11 +136,11 @@ Therefore, given $q$ being $0, 1, 2, \ldots$, seqtk has a conversion table `perr
 | **P**  | 0.398107 | 0.316228 | ... |     0.000158 |     0.000126 |  0.000100 |
 
 
-Based on the probability, it computes an expected number of base call errors, num_err, and the empirical probability of having a base call error at this position, errP, $$
+Based on the probability, it computes the expected number of base call errors, num_err, and the empirical probability of having a base call error at this position, errP, $$
     \text{num_err} = \sum_q P_q \cdot n_q, \hspace{1em} \text{errP} = \frac{\text{num_err}}{\sum_q n_q}.
 $$
 
-Thus the `errQ` is the equivalent quality score of errP, $$
+Thus the `errQ` is the equivalent quality score of errP, which better interprets the probability of base call error than `avgQ`, $$
     \text{errQ} = -10\log_{10}{\text{errP}}.
 $$
 
@@ -152,7 +152,7 @@ Though some of the `seqtk fqchk`'s behavior is not documented, it should be stra
 
 ### Summary
 
-[Seqtk] is fast to use for daily routines of FASTA/Q conversion. On top of that it provides many functionality such as read random sampling, quality check, and many I haven't tried or mentioned.
+[Seqtk] is fast to use for daily routines of FASTA/Q conversion. On top of that it provide various functionalities such as read random sampling, quality check, and many I haven't tried or mentioned.
 
 
 [^sanger-qual-score]: See multiple specifications of quality score at [sckit-bio doc][sckit-bio quality score]. The score is [Phred quality score][Phred score wiki]. More other score representations can be found at [FASTQ wiki].
