@@ -1,15 +1,16 @@
 ---
 Title: 用 Flask 與 SQLite 架抽籤網站
-Slug: flask-rand-member
+Slug: flask-draw-member
 Date: 2015-09-28 12:00
-Tags: zh, flask, sqlite, python
+Tags: zh, flask, sqlite, jinja2, python
 Category: Coding
-Status: draft
 ---
 
 為了實驗室的專題生而寫。
 
 目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先來比較簡單的。所以這邊可能講的不是 best practice，但用的是最少（底層）的知識與工具。一開始讓太多套件（像 SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。
+
+**本篇文章非常長，應該沒辦法幾分鐘內讀完。對象是初學者學習簡單網站架設。**
 
 這個專案的目標：因為大家 meeting 的時候都不問問題，在教授的要求要，我們實驗室需要一個抽籤工具。又因為我們實驗室有分成幾個組別，所以抽籤的時候要針對某個組別去抽。
 
@@ -222,7 +223,7 @@ pip install -r requirements.txt
 
 #### SQLite Database
 
-我們先把 SQLite TABLE 設定好，這樣之後在寫程式就只要專心讀寫資料就好了。根據前面建的模型，我們可以轉換成 SQL 語法：
+我們先把 SQLite 每個資料表設定好，這樣之後在寫程式就只要專心讀寫資料就好了。根據前面建的模型，我們可以轉換成 SQL 語法：
 
 ```sql
 -- create_db.sql
@@ -403,18 +404,18 @@ if __name__ == '__main__':
  * Restarting with stat
 ```
 
-再來可以開瀏覽器訪問 <http://localhost:5000>，或者用 command line 來訪問：
+再來可以開瀏覽器訪問 <http://localhost:5000/>，或者用 command line 來訪問：
 
 ```bash
 $ curl 'http://localhost:5000/'
 # <p>Hello World!</p>
 ```
 
-會看到 server 回傳「Hello World!」。太感動了！底下說明一下整個流程跟 code 的關係。
+會看到 server 回傳「Hello World!」。太感動了！底下先說明整個流程與 code 的關係。
 
 `app` 是整個 Flask application 的核心物件，可以看到最後我們會呼叫它的 `.run()` 來產生一個可以動的 web server。`debug=True` 表示如果 server 有錯誤的時候 Flask 會提供我們完整的錯誤訊息，包含錯誤是在哪個 Python function 裡產生的，錯誤時各個變數的值等等。因為這樣會也會讓有心人士知道網站是怎麼運行的，變正式網站（上 production）時會把這個選項關掉。
 
-我們定義了一個 `index` function 並且用 decorator 把這個函式綁定在 `/` 路徑也是首頁上。也就是使用者訪問 `/` 就會跑到這個 function 裡來。
+我們定義了一個 `index` function 並且用 decorator 把這個函式綁定在 `/` 路徑也就是首頁上。使用者訪問 `/` 就會跑到這個 function 裡來。
 
 
 ### Flask 與 SQLite 資料庫讀取
@@ -444,30 +445,6 @@ def get_db():
     return db
 
 
-def reset_db():
-    with open(SQLITE_DB_SCHEMA, 'r') as f:
-        create_db_sql = f.read()
-    db = get_db()
-    with db:
-        db.execute("DROP TABLE IF EXISTS draw_histories")
-        db.execute("DROP TABLE IF EXISTS members")
-        db.executescript(create_db_sql)
-
-    # Read members CSV data
-    with open(MEMBER_CSV_PATH, newline='') as f:
-        csv_reader = csv.DictReader(f)
-        members = [
-            (row['名字'], row['團體'])
-            for row in csv_reader
-        ]
-    # Write members into databse
-    with db:
-        db.executemany(
-            'INSERT INTO members (name, group_name) VALUES (?, ?)',
-            members
-        )
-
-
 @app.teardown_appcontext
 def close_connection(exception):
     db = getattr(g, '_database', None)
@@ -483,10 +460,9 @@ if __name__ == '__main__':
 
 需要了解的部份，第一是 `g` 這個變數裡可以放很多需要傳來傳去的變數，所以就把建立好的資料庫連線放在 `g._database`。平常如果要用這個連線的話，就用 `db = get_db()` 去拿。
 
-第二是 `reset_db()`，它會 DROP 掉舊的 database ，然後再用剛剛介紹的方法再把資料從 CSV 讀進來。
+第二是我們把資料的路徑等等，都寫成變數放在程式碼的最開頭。這是個好習慣，把常數跟程式分開來，管理才方便[^flask-config]
 
 
-第三是我們把資料的路徑等等，都寫成變數放在程式碼的最開頭。這是個好習慣，把常數跟程式分開來，管理才方便[^flask-config]
 
 [^flask-config]: 其實 Flask 相關的設定通常放在 `app.config` 裡面，不過我們的例子沒差。
 
@@ -853,7 +829,7 @@ def history():
 
 這樣就是一個完整的抽籤的網站了。其實架網站的主要知識也差不多是這些，再來就是細節以及知識的加強。
 
-做好的成品我也放在 [Github](https://github.com/ccwang002/draw_member) 上了，裡面的 commit log 記錄了幾個重要的步驟，所以想要看看每一步的結果可以用 `git checkout f39fc1` 回到每個記錄點。
+做好的成品我也放在 [Github](https://github.com/ccwang002/draw_member) 上了，裡面的 commit log 記錄了幾個重要的步驟，所以想要看看每一步的結果可以用 `git checkout` 回到每個記錄點，例如想要看抽籤功能寫完，用上 template 的版本就可以到 `git checkout f39fc1`。
 
 PS: 沒想到會寫這麼長啊……
 
@@ -902,6 +878,51 @@ sqlite> INSERT INTO draw_histories(memberid) VALUES (1000);
 Error: FOREIGN KEY constraint failed
 ```
 
+
+#### 重新讀入資料
+我們先包好一個 function `reset_db`。
+
+```python3
+# draw_members.py
+def reset_db():
+    with open(SQLITE_DB_SCHEMA, 'r') as f:
+        create_db_sql = f.read()
+    db = get_db()
+    # Reset database
+    # Note that CREATE/DROP table are *immediately* committed
+    # even inside a transaction
+    with db:
+        db.execute("DROP TABLE IF EXISTS draw_histories")
+        db.execute("DROP TABLE IF EXISTS members")
+        db.executescript(create_db_sql)
+
+    # Read members CSV data
+    with open(MEMBER_CSV_PATH, newline='') as f:
+        csv_reader = csv.DictReader(f)
+        members = [
+            (row['名字'], row['團體'])
+            for row in csv_reader
+        ]
+
+    # Write members into databse
+    with db:
+        db.executemany(
+            'INSERT INTO members (name, group_name) VALUES (?, ?)',
+            members
+        )
+```
+
+`reset_db()` 會 DROP 掉舊的 database ，然後再用剛剛介紹的方法再把資料從 CSV 讀進來。
+
+所以這個 function 要怎麼使用？
+
+一個是像之前一樣綁定一個路徑 `@app.route('/reset')`；另一個方式我們可以透過 python shell 達到。
+
+```pycon
+>>> from draw_member import app, reset_db
+>>> with app.app_context():
+...     reset_db()
+```
 
 
 [SQLite]: https://www.sqlite.org/ 
