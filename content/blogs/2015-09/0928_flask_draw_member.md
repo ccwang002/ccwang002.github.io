@@ -135,17 +135,17 @@ with open('./members.csv', newline='') as f:
 
 <pre style="font-family: Consolas, 'Courier New', monospace">
     ┌─────────────────────┐
-    │ members             │ 
+    │ members             │
     ├─────────────────────┤
     │ id          INTEGER │ <─┐
-    │ name           TEXT │   │ 
-    │ group_name     TEXT │   │ 
-    └─────────────────────┘   │ 
+    │ name           TEXT │   │
+    │ group_name     TEXT │   │
+    └─────────────────────┘   │
                               │
-    ┌─────────────────────┐   │ 
+    ┌─────────────────────┐   │
     │ draw_histories      │   │ foreign
     ├─────────────────────┤   │ key
-    │ memberid    INTEGER │ ──┘ 
+    │ memberid    INTEGER │ ──┘
     │ time       DATETIME │
     └─────────────────────┘
 </pre>
@@ -159,13 +159,13 @@ Table **draw_histories** 記錄每次抽籤發生的時間 time 還有誰被抽�
 我們選用 [Flask] 架設 server，因為它一開始用相當簡單。資料的部份會讀到 [SQLite] 資料庫。
 
 > *Flask* is a microframework for Python based on Werkzeug, Jinja 2 and good intentions. (Flask official site)
-> 
+>
 > *SQLite* is a software library that implements a self-contained, serverless, zero-configuration, transactional SQL database engine. (SQLite official site)
 
 
 #### Python 環境
 
-使用 [Python 3.5]。理論上 SQLite 就已經裝好了能直接使用。一般在開發 Python 程式的時候會使用虛擬環境，好處虛擬環境安裝的 Python 套件可以獨立管理，不受系統或其他虛擬環境影響。我們用內建的 [venv] 建立一個名稱為 `VENV` 的虛擬環境：
+使用 [Python 3.5]。理論上 SQLite 就已經裝好了能直接使用。一般在開發 Python 程式的時候會使用虛擬環境，好處虛擬環境安裝的 Python 套件可以獨立管理，不受系統或其他虛擬環境影響。我們用內建的 [venv][pymodule-venv] 建立一個名稱為 `VENV` 的虛擬環境：
 
 ```bash
 $ python3.5 -m venv VENV
@@ -268,7 +268,7 @@ id|name|group_name
 
 ```sqlite3
 sqlite> INSERT INTO draw_histories (memberid) VALUES (1), (2);
-sqlite> INSERT INTO draw_histories (memberid, time) 
+sqlite> INSERT INTO draw_histories (memberid, time)
    ...> VALUES (2, datetime('2015-09-25 16:30'));
 ```
 
@@ -289,7 +289,7 @@ memberid|time
 ```sqlite3
 sqlite> SELECT m.id, m.name, m.group_name, d.time AS draw_time
    ...> FROM draw_histories AS d, members as m
-   ...> WHERE m.id == d.memberid 
+   ...> WHERE m.id == d.memberid
    ...> ORDER BY d.time ASC;
 id|name|group_name|draw_time
 2|平沢 唯|K-ON!|2015-09-25 16:30:00
@@ -356,7 +356,7 @@ id|name|group_name|draw_time
 ```pycon
 >>> with db:
 ...     db.executemany(
-...         'INSERT INTO  members (name, group_name) VALUES (?, ?)', 
+...         'INSERT INTO  members (name, group_name) VALUES (?, ?)',
 ...         members
 ...     )
 ```
@@ -375,7 +375,7 @@ id|name|group_name|draw_time
 到了這邊我們資料的部份沒問題了，接下來就要著手處理網站流程本身。
 
 
-[^sqlite3 auto commit]: 參考[官方說明文件](https://docs.python.org/3.5/library/sqlite3.html#using-the-connection-as-a-context-manager)，它是在進入 `with db: ...` code block 時開啟一個 transaction，並在正常離開的時候自動 commit。如果中間遇到沒有處理的 Exception 時，就會自動 roll back。 
+[^sqlite3 auto commit]: 參考[官方說明文件](https://docs.python.org/3.5/library/sqlite3.html#using-the-connection-as-a-context-manager)，它是在進入 `with db: ...` code block 時開啟一個 transaction，並在正常離開的時候自動 commit。如果中間遇到沒有處理的 Exception 時，就會自動 roll back。
 
 
 ### Flask 基本架構
@@ -460,9 +460,7 @@ if __name__ == '__main__':
 
 需要了解的部份，第一是 `g` 這個變數裡可以放很多需要傳來傳去的變數，所以就把建立好的資料庫連線放在 `g._database`。平常如果要用這個連線的話，就用 `db = get_db()` 去拿。
 
-第二是我們把資料的路徑等等，都寫成變數放在程式碼的最開頭。這是個好習慣，把常數跟程式分開來，管理才方便[^flask-config]
-
-
+第二是我們把資料的路徑等等，都寫成變數放在程式碼的最開頭。這是個好習慣，把常數跟程式分開來，管理才方便[^flask-config]。
 
 [^flask-config]: 其實 Flask 相關的設定通常放在 `app.config` 裡面，不過我們的例子沒差。
 
@@ -498,9 +496,9 @@ def index():
     return render_template('index.html')
 ```
 
-馬上來執行看看。
+馬上來執行看看，用一樣的方式。不過之前執行的那個可能沒有結束，記得一個 port 只能有一個服務，所以要不是用舊的（Flask 很聰明，在 `debug=True` 時知道檔案被更新時就會用新的），要不是就關掉再重開一個新的。
 
-這時候打開瀏覽器訪問 <http://localhost:5000> 應該會出現底下的畫面。
+打開瀏覽器訪問 <http://localhost:5000> 應該會出現底下的畫面。
 
 <div class="figure align-center">
   <img src="{attach}pics/flask_helloworld.png"/>
@@ -519,6 +517,8 @@ def index():
 使用者平常在訪問網站時，該人輸入一個網站、點一個超連址，這時候瀏覽器會發送一個 GET request 到對應的 server 以及路徑。瀏覽器（通常）就會回傳一個對應的 HTML 檔案，瀏覽器就會負責把它顯示在畫面上。
 
 但當使用者跟網站有更多互動的時候，常常是要把使用者的資訊送給網站時，像帳號登入、填問卷表單，或者在這邊的選擇某個團體去抽籤，這時候就會透過 POST。
+
+更多的 GET/POST 以及其他的 HTTP request，可以參考[一頁式介紹（中）][HTTP intro zh]或[非常完整的介紹在 MDN（英）][MDN HTTP request]
 
 #### Form
 
@@ -539,11 +539,16 @@ def index():
 <hr><!-- 這是分隔線 -->
 ```
 
-基本上加在 body 裡面就可以。這個 form 包含了一個 label，為了 `group_name` 這個 input。底下有四個 input tags 但實際上只有兩大個。
+基本上加在 body 裡面就可以。這個 form 包含了一個標籤，指定是給名為 `group_name` 的 input。底下接四個 input tags 但實際上只有兩大個。
 
-一個是團體的單選選項，注意到他們的 `name` 都是 `group_name` 但 `value` 不同。後面接著他們顯示的字。另一個是 `type=submit` 的 input，他就是送出的表單的按鈕。
+第一大個是團體的單選選項共三個 input，注意到他們的 `name` 都是 `group_name` 但 `value` 不同，後面接著他們顯示的字。其中「（全）」它多了一個 `checked` 表示預設選擇這個選項。
+
+另一大個是 `type=submit` 的 input，他就是送出的表單的按鈕。
 
 再來注意 form tag 本身。`method="post"` 應該很好理解，表示要送出 POST request；`action="/draw"` 表示這個 POST 要發到 `/draw` 這個路徑。
+
+同樣，form 底下也很多細節，歡迎再去 [MDN][MDN-form] 了解。
+
 
 #### Request (Form / POST) handling in Flask
 
@@ -591,17 +596,17 @@ def draw():
 
 Flask 會把使用者發給 server 的 request 存在 `request` 裡面，其實使用者會傳蠻多資訊的，像該人的語言、用的瀏覽器、時間等等，這些都能在 `request` 找到。而使用者填好的 form 的內容會存在當中 `request.form` 裡，而我們先前定義在 form 中 input name 就會變成這邊的 dict key。
 
-因此會變成 `request.form.get('group_name', 'ALL')`。這相當於 `request.form['group_name']` 但在沒有這個 key 時回傳預設值 `'ALL'`。正常使用是不會發現沒有這個 key 的情況，但網站開發者永遠不要相信使用者會乖乖回傳這些內容。
+因此如果要拿使用者決定的 `group_name` 時，就會寫成 `request.form.get('group_name', 'ALL')`。這相當於 `request.form['group_name']` 但在沒有這個 key 時回傳預設值 `'ALL'`。正常使用並不會找不到這個 key，但網站開發者永遠不要相信使用者會乖乖回傳這些內容。
 
-後面用了個 `random.choice` 這個如同字面上的意思，是個內建的 module。
+拿了團體名稱之後，就用團體名稱去下查詢的 SQL。同理這名稱可能沒有結果，這時就回傳一個 HTTP status code 為 404 的錯誤訊息。一般情況 4XX 都代表使用者給的資料有問題的。
 
-我們總共做了兩個資料庫查詢，第一次把可能的 member id 都傳回來，第二次把抽中的人的名字、團體都拿回來。暫時還沒做寫到歷史的功能，但那個也不難，之後再說。
+拿到了所有成員的 id 後，用了個 `random.choice` 隨機抽一個出來。如同字面上的意思，[random][pymodule-random] 是個 Python 內建的 module。再把這個 id 拿去查名字與團體。
 
-我們先不做 template，把結果稍微處一下就傳回來。
+我們總共做了兩個資料庫查詢，第一次把可能的 member id 都傳回來，第二次把抽中的人的名字、團體都拿回來。暫時還沒做寫到歷史的功能，但那個也不難，之後再說。先不做 template，把結果包在 HTML 最基本的 `<p>` 元素就傳回來。
 
 #### Demo
 
-再重新看一下首頁，可以看到多了一個表單（廢話）。Flask 的 web server 很聰明，不用重新啟動它，會自動看到檔案有更新做 reload。
+重新整理首頁，可以看到多了一個表單（廢話）。Flask 的 web server 很聰明，不用重新啟動它，會自動看到檔案有更新做 reload。可以回去比對一下自己寫在 `index.html` 裡 HTML 在瀏覽器上呈現的對應關係。
 
 <div class="figure align-center">
   <img src="{attach}pics/flask_index_form.png"/>
@@ -617,15 +622,15 @@ Flask 會把使用者發給 server 的 request 存在 `request` 裡面，其實�
 
 預計是抽全部，你也可以回到上一頁，選自己想要的團體。
 
-這樣最重要的功能就完成啦！
+最重要的功能就完成啦！如果自己程式遇到一些狀況的話，可以看[我寫的完整版本](https://github.com/ccwang002/draw_member/blob/169d81650d8ca649c5484c43c05324885e7cb7fb/draw_member.py)。
 
 
 ### More on templates
 
-在之前我們在 `render_template` 其實都是傳一個完整的 HTML 給它，並沒有用到 template 功能。Template 有幾個用處：
+之前我們 `render_template` 其實都是傳一個完整的 HTML 內容給它，並沒有用到 template 功能。Template 有幾個用處：
 
 - 集中重覆用到的片段、結構
-- 讓 HTML 的內容受變數控制
+- 讓一部份 HTML 的內容受變數控制
 
 馬上來改寫一下吧。我們的功能表應該每一頁都要出現，再來我們希望 `/draw` 的頁面也是個完整的 HTML。
 
@@ -672,9 +677,9 @@ Flask 會把使用者發給 server 的 request 存在 `request` 裡面，其實�
 {% endblock content %}
 ```
 
-可以看到最大的差異就是我們的 `index.html` 變簡單了。它就像物件繼承一樣，`{% extends "base.html" %}`，表示從 `base.html` 檔案開始作起，而裡面定義了兩個 block：`title` 以及 `content`。像 index 沒有定義 title，那就會用原本 block 內的值。
+可以看到最大的差異就是我們的 `index.html` 變簡單了。它就像物件繼承一樣，`{% extends "base.html" %}`，表示先把 `base.html` 的內容放進來，而裡面定義了兩個 block：`title` 以及 `content`。Index 有定義 content 的內容，所以就取代掉原本定義在 base 裡空的 content。  Index 並沒有定義 title，那就會用原本 block 內的值，即「成員抽籤」。
 
-再來處理 `/draw` 的部份，我們要引入 template variable 的概念。
+再來處理 `/draw` 的部份，我們除而再利用 `base.html` 之外，還要引入 template variable 的概念。
 
 ```flask
 <!-- templates/draw.html -->
@@ -688,7 +693,7 @@ Flask 會把使用者發給 server 的 request 存在 `request` 裡面，其實�
 {% endblock content %}
 ```
 
-比較特別的是 `{{ name }}` 和 `{{ group }}`。這語法表示他們的值分別受 `name` 和 `group` 這兩個變數決定，變數的值在 `render_template` 時才會決定。要怎麼把變數的值傳到 template 裡呢？
+特別的是 `{{ name }}` 和 `{{ group }}`。這語法表示他們的值分別受 `name` 和 `group` 這兩個變數決定，變數的值在 `render_template` 時才會決定。要怎麼把變數的值傳到 template 裡呢？
 
 ```python3
 @app.route('/draw', methods=['POST'])
@@ -702,9 +707,9 @@ def draw():
     )
 ```
 
-改寫 draw 首先是用 template `templates/draw.html` 把回傳的 HTML 做出來，再來 `render_template` 時把變數的值都放進去。
+改寫好的 draw 使用 template `templates/draw.html`，並在 `render_template` 時把變數的值都放進去。
 
-這時候才重新抽籤可以看到新的 template 的輸出結果，功能表也回現了。
+這時候才重新抽籤可以看到新的 template 的輸出結果，功能表也出現了。
 
 <div class="figure align-center">
   <img src="{attach}pics/flask_new_draw_result.png"/>
@@ -713,7 +718,7 @@ def draw():
 
 ### 歷史記錄
 
-記得要在抽籤的時候把記錄加到 database 裡。因為之前有設好預設用現在的時間當抽籤時間，所以時間的處理完全交給 SQLite。用 SQL 語法 `LIMIT 10` 以及 `ORDER BY` 選擇最近的十筆，同時在查結果時，也同時查詢 **members** table 對應的名字與團體。這個專業術語叫 JOIN。
+記得要在抽籤的時候把記錄加到 database 裡。因為之前有設好 schema 預設用現在時間當抽籤時間，所以時間的處理完全交給 SQLite。用 SQL 語法 `LIMIT 10` 以及 `ORDER BY` 選擇最近的十筆，同時在查結果時，也同時查詢 **members** table 對應的名字與團體。這個專業術語叫 [JOIN][wiki JOIN]。
 
 把這個 view 放在 `/history` 路徑。
 
@@ -783,7 +788,7 @@ for history in recent_histories:
     history[0]
 ```
 
-Flask 用的 Jinja2 template 功能很多，這時候可以去閱讀一下[官網文件][jinja2-tpl-design]看完整的使用方式。
+Flask 用的 Jinja2 template 功能很多，現在各位已經比較理解 server 的運作了，可以去閱讀一下 [Jinja2 官網文件][jinja2-tpl-design]看完整的使用方式。
 
 <div class="figure align-center">
   <img src="{attach}pics/flask_history.png"/>
@@ -818,11 +823,16 @@ def history():
 {% endfor %}
 ```
 
-可以看到 for loop 不再使用 0, 1, 2 去拿每筆歷史各欄位的值，而是用欄位名稱，相當於 `history['name']`。這樣的做法比較好，因為用數字一下就忘了，隨便調整一下 view 的內容順序就不一定是這樣了；單獨讀 template 也能懂每個欄位的意思。 
+可以看到 for loop 不再使用 0, 1, 2 去拿每筆歷史各欄位的值，而是用欄位名稱，相當於 `history['name']`。這樣的做法比較好，因為用數字一下就忘了，隨便調整一下 view 的內容順序就不一定是這樣了；單獨讀 template 也能懂每個欄位的意思。
 
 <div class="figure align-center">
   <img src="{attach}pics/flask_history_zh.png"/>
 </div>
+
+### What's Next
+
+
+
 
 
 ### 總結
@@ -850,7 +860,7 @@ sqlite> PRAGMA table_info(members);
 cid  name         type       notnul  dflt_value                    pk
 ---  -----------  ---------  ------  ----------------------------  --
 0    id           INTEGER    0                                     1
-1    name         TEXT       1                                     0 
+1    name         TEXT       1                                     0
 2    group_name   TEXT       0                                     0
 sqlite> PRAGMA table_info(draw_histories);
 cid  name         type       notnul  dflt_value                    pk
@@ -925,13 +935,23 @@ def reset_db():
 ```
 
 
-[SQLite]: https://www.sqlite.org/ 
+#### Datetime in SQLite and Python
+
+這篇文章太長了，寫到[下一篇去](../datetime-sqlite/#datetime-sqlite)。
+
+[Asia/Taipei]: https://en.wikipedia.org/wiki/Asia/Taipei
+[SQLite]: https://www.sqlite.org/
 [Flask]: http://flask.pocoo.org/
 [Python 3.5]: https://www.python.org/downloads/
-[venv]: https://docs.python.org/3.5/library/venv.html#module-venv
 [SQLite foreign key]: https://www.sqlite.org/foreignkeys.html#fk_enable
-[pymodule-sqlite]: https://docs.python.org/3.5/library/sqlite3.html
 [flask-offical-sqlite3]: http://flask.pocoo.org/docs/0.10/patterns/sqlite3/#using-sqlite-3-with-flask
 [form]: https://developer.mozilla.org/en/docs/Web/HTML/Element/form
 [jinja2-tpl-design]: http://jinja.pocoo.org/docs/dev/templates/
+[HTTP intro zh]: https://archer1609wp.wordpress.com/2014/03/02/httppost%E8%88%87get/
+[MDN HTTP request]: https://developer.mozilla.org/en-US/docs/Web/HTTP
+[MDN-form]: https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms
+[wiki JOIN]: https://en.wikipedia.org/wiki/Join_%28SQL%29
+[pymodule-venv]: https://docs.python.org/3.5/library/venv.html#module-venv
+[pymodule-sqlite]: https://docs.python.org/3.5/library/sqlite3.html
 [pymodule-datetime]: https://docs.python.org/3.5/library/datetime.html#datetime-objects
+[pymodule-random]: https://docs.python.org/3.5/library/random.html#random.choice
