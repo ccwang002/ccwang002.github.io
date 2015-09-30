@@ -226,7 +226,7 @@ True
 
 看了一下 [Python issue 19065][python issue 19065]，之所以沒有解決其實是缺 patch，因為現在的 patch 並不相容 Python 2.x（沒有 datetime.timezone），然後 pysqlite 的維護者並沒有想要支援 timezone 的意思。
 
-不過那只是內建的 default adapter for datetime.datetime object，要自己做也沒問題。參考 issue 裡面提供的解法（在 Github [gist](https://gist.github.com/acdha/6655391) 上）。
+不過那只是內建的 adapter for datetime.datetime object，要自己做也沒問題。參考 issue 裡面提供的解法（在 Github [gist](https://gist.github.com/acdha/6655391) 上）。
 
 
 ```python3

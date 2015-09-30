@@ -332,12 +332,13 @@ id|name|group_name|draw_time
  ('中野 梓', 'K-ON!')]
 ```
 
-接著是新的部份，要先建立 SQLite database 連線，然後再用這個連線去下 SQL 指令。首先要把 table 都建立出來：
+接著是新的部份，要先用 `sqlite3.connect()` 建立 SQLite database 連線，然後再用這個連線去下 SQL 指令。首先要把 table 都建立出來：
 
 ```pycon
 >>> with open('create_db.sql') as f:
 ...     create_db_sql = f.read()
 ...
+>>> db = sqlite3.connect('members.db')
 >>> with db:
 ...     db.executescript(create_db_sql)
 ...
@@ -738,7 +739,7 @@ def draw():
 def history():
     db = get_db()
     recent_histories = db.execute(
-        'SELECT m.name, m.group_name, d.time AS "draw_time [timestamp]"'
+        'SELECT m.name, m.group_name, d.time '
         'FROM draw_histories AS d, members as m '
         'WHERE m.id == d.memberid '
         'ORDER BY d.time DESC '
@@ -802,7 +803,13 @@ Flask 用的 Jinja2 template 功能很多，現在各位已經比較理解 serve
 @app.route('/history')
 def history():
     db = get_db()
-    c = db.execute(...)
+    c = db.execute(
+        'SELECT m.name, m.group_name, d.time AS "draw_time [timestamp]" '
+        'FROM draw_histories AS d, members as m '
+        'WHERE m.id == d.memberid '
+        'ORDER BY d.time DESC '
+        'LIMIT 10'
+    ).fetchall()
     recent_histories = []
     for row in c:
         recent_histories.append({
@@ -831,8 +838,23 @@ def history():
 
 ### What's Next
 
+### Static files and better theme
 
+我們只用了 HTML template。想要讓網站看起來更漂亮，就要寫 CSS 與 Javascript (JS)。有像 Bootstrap、PureCSS、Semantic UI 這類的「framework」，套用之後能在短時間畫出美觀實用的版面。
 
+而 CSS、JS，以及站上大大小的其他檔案都必需要從 server 傳送到用戶端上，這邊就是 static files 的處理。
+
+### More how web works
+
+除了 HTTP GET、POST 之外，還有 HTTPS、session、cookie 等很常見的技術。
+
+### Object Relational Model (ORM)
+
+我們只舉了純寫 SQL 的例子，但當專案變複雜的時候，純 SQL 管理上越來越複雜。ORM 是一種解決的方案。
+
+### Django
+
+當然可以繼續把 Flask 研究下去，它也是個很好的 web framework。不過我們主要的 code base 是 Django。所以希望大家在了解一個 web server (app) 長得像怎樣之後，就可以開始學習 Django。Django 與 Flask 最大的設計不同就是 Django 一開始就提供了很多模組與功能，感覺很「肥」，而 Flask 只提供了必要的功能
 
 
 ### 總結
