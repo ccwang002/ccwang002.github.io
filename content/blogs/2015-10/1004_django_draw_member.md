@@ -3,6 +3,7 @@ Title: 用 Django 與 SQLite 架抽籤網站
 Slug: django-draw-member
 Date: 2015-10-04 14:55
 Tags: zh, django, sqlite, python
+Summary: 把之前用 Flask 架的抽籤網站改用 Django 實作，也藉這個機會比較一下兩個 Framework 設計概念的不同。
 Category: Coding
 ---
 
@@ -567,7 +568,7 @@ In [4]: for m in members:
 
 這邊就要介紹 [Django fixtures](https://docs.djangoproject.com/en/1.8/howto/initial-data/#providing-initial-data-with-fixtures) 了。他能把資料庫的資料存成 JSON、YAML（需要 [PyYAML]）等格式。
 
-一般 fixtures 是被在 `<app>/fixtures/` 目錄底下，記得先把目錄建出來。 
+一般 fixtures 是被在 `<app>/fixtures/` 目錄底下，記得先把目錄建出來。
 
 ```bash
 mkdir draw_member/fixtures
@@ -953,7 +954,7 @@ def draw(request):
             valid_members = Member.objects.filter(group_name=group_name)
     else:
         # Raise 404 if no members are found given the group name
-        raise Http404("No member in group '%s'" % 
+        raise Http404("No member in group '%s'" %
                       form.data.get('group', ''))
     # Lucky draw
     lucky_member = random.choice(valid_members)
@@ -1019,8 +1020,8 @@ def draw():
 
 ```pycon
 >>> list(Member.objects.raw("""
-... SELECT id, name, group_name 
-... FROM draw_member_member 
+... SELECT id, name, group_name
+... FROM draw_member_member
 ... WHERE group_name LIKE 'K-ON%%'
 ... """))
 [<Member: 平沢 唯 of K-ON!>,
@@ -1069,7 +1070,7 @@ draw_member.models.Member_Deferred_group_name_name
 ... """))
 [(8, datetime.datetime(2015, 10, 5, 17, 36, 41, 608078, tzinfo=<UTC>)),
  (11, datetime.datetime(2015, 10, 5, 17, 37, 26, 164830, tzinfo=<UTC>)),
- (11, datetime.datetime(2015, 10, 5, 17, 37, 37, 483697, tzinfo=<UTC>))] 
+ (11, datetime.datetime(2015, 10, 5, 17, 37, 37, 483697, tzinfo=<UTC>))]
 ```
 
 Here you go.
@@ -1102,8 +1103,8 @@ class HistoryQuerySet(models.QuerySet):
 class Member(models.Model):
     # ...
     objects = MemberQuerySet.as_manager()
-    
-    
+
+
 class History(models.Model):
     # ...
     objects = HistoryQuerySet.as_manager()
@@ -1170,4 +1171,4 @@ class DrawForm(forms.Form):
   </table>
 {% endblock content %}
 
-``` 
+```
