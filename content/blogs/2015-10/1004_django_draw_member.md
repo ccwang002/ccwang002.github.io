@@ -266,9 +266,9 @@ $ curl -XGET "localhost:8000"
 <p>Hello World!</p>
 ```
 
-再看一下 `draw_site/urls.py`，可以看到 Django 預設放了個 `/admin` 後面用的是 `include(app.urls)`，表示這一整包只要是 admin/ 開頭的 URL 都交給 admin.site.urls 去處理路徑。這樣方便 app 在不同網站中重覆利用，因為可能放的路徑都不一樣，但一個 app 內在處理路徑上會有一致性。
+再看一下 `draw_site/urls.py`，可以看到 Django 預設放了個 `/admin` 後面用的是 `include(app.urls)`，表示這一整包只要是 admin/ 開頭的 URL 都交給 admin.site.urls 去處理路徑。這樣方便 app 在不同網站中重覆利用，因為可能放的路徑都不一樣，但一個 app 內的 URL 處理會有一致性。
 
-馬上來改寫一下。首先在 app draw_member 底下加一個 `urls.py`。
+馬上來改寫一下。首先在 app **draw_member** 底下加一個 `urls.py`。
 
 ```python3
 # draw_member/urls.py
@@ -322,7 +322,7 @@ urlpatterns = [
     └─────────────────────┘
 </pre>
 
-回想一下我們的 schema 設計。改用 ORM 來思考我們就會有成員（Member）以及抽籤歷史（History）兩大 models。Member 記錄了名字與所屬團體；History 會記錄時間、這筆抽籤是屬於哪個成員的。
+回想一下我們的 schema 設計。改用 ORM 來思考我們就會有成員（Member）以及抽籤歷史（History）兩大 models。**Member** 記錄了名字與所屬團體；**History** 會記錄時間、這筆抽籤是屬於哪個成員的。
 
 在 Django 中，model 定義在 `models.py` 裡面，馬上來寫寫看。
 
@@ -513,7 +513,7 @@ QuerySet 底下就有很多對應到 SQL 指令的查詢，像是拿回所有 ob
 '高坂 穂乃果'
 ```
 
-還記得之前設得 `related_name="draw_histories"`，表示我們能從 Member 反查回去該人相關的歷史，
+還記得之前設得 `related_name="draw_histories"`，表示我們能從 **Member** 反查回去該人相關的歷史，
 
 ```pycon
 >>> m1 = Member.objects.get(pk=1)
@@ -1000,7 +1000,7 @@ def draw():
 - [《為程式人寫的 Django Tutorial 》][tp-django]是個真正從零到一的 30 天學習規劃（雖然我學了好幾個月 T___T），有了這個抽籤程式的概念再去讀一次應該會更清楚整個 Django 的設計。作者：Tzu-ping Chung (@uranusjr)
 - [*Mastering Django: Core*], the successor to [*The Django Book*] last updated in 2009, is the definitive guide to Django targeting the latest Django version 1.8 at the time of writing.
 
-更多的 Django 技能樹選擇請見 TP 的 lesson 30。
+更多的 Django 技能樹選擇請見 TP 的 [lesson 30](https://github.com/uranusjr/django-tutorial-for-programmers/blob/master/30-moving-on.md)。
 
 [*Mastering Django: Core*]: http://masteringdjango.com
 [*The Django Book*]: http://www.djangobook.com/en/2.0/index.html
@@ -1199,7 +1199,7 @@ def draw(request):
   <p class="caption">POST form without CSRF token</p>
 </div>
 
-拿到了一個　403 Forbidden ”CSRF verification failed.”。CSRF (Cross Site Request Forgery) 在 [wiki](https://zh.wikipedia.org/wiki/%E8%B7%A8%E7%AB%99%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0) 有比較完整的介紹，這是一種攻擊手法，在使用者登入網站之後（session 為登入狀態），偽造一個跟網站上一樣的 form 來偽裝使用者的行為。例如購票系統買票，如果沒檢查的話，我可以拿使用者的 session 去網站上隨便買票，網站都會認為是使用者在操作。
+拿到了一個 403 Forbidden "CSRF verification failed."。CSRF (Cross Site Request Forgery) 在 [wiki](https://zh.wikipedia.org/wiki/%E8%B7%A8%E7%AB%99%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0) 有比較完整的介紹，這是一種攻擊手法，在使用者登入網站之後（session 為登入狀態），偽造一個跟網站上一樣的 form 來偽裝使用者的行為。例如購票系統買票，如果沒檢查的話，我可以拿使用者的 session 去網站上隨便買票，網站都會認為是使用者在操作。
 
 因此 [CSRF token][django-CSRF] 用來防範這個偽造，在產生 form 的時候，網站會再產生一個欄位的值，這個欄位的值每次都會改變，這樣就能確定這個 form 是從網站上拿到的。Django 處理 CSRF protection 是透過 [Middleware](https://docs.djangoproject.com/en/1.8/topics/http/middleware/)，一個以前沒有提到的概念，表示他是比較底層的東西。相對而言，也不用改我們的 code，在這個例子就只要把 `{% csrf_token %}` 加到 form 裡面就可以了。
 
