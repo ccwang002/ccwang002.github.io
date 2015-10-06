@@ -18,19 +18,18 @@ Category: Coding
 
 為了轉換但又不要一下子把所有 Django 的功能都放進來，中間過程有很多「不常見的寫法」。想要直接寫 Django best practice 的話，可以參考 TP 大大的[《為程式人寫的 Django Tutorial 》][tp-django]，他的規劃是 30 個單元做一個訂餐系統。
 
-過程中會用到很多 Django API，沒有解釋的話可以到[官網][django]去查使用。官網寫得很詳盡。另外我發現如果能用 debugger 去看 Django 執行的流程會比較好幫助理解，如果有需要可以裝個像 PyCharm 的 IDE。
+過程中會用到很多 Django API，沒有解釋的話可以到[官網][django]去查使用。另外我發現如果能用 debugger 去 trace Django 執行的流程能幫助理解，想要一個精美的 debugger 的話可以裝像 PyCharm 的 IDE。
 
-整體的規劃會漸近把 Django 的功能加進來，依序：
+整體的規劃會漸近把 Django 的功能加進來，依序應該是：
 
 - Django View, Template
 - Django Model, ORM
 - Django Form
 - (Django Admin 沒有用到)
 
-如果是看 [Django doc][django] 首頁的話，也是分這幾個部份，我想這篇文章並不會把所有概念都介紹一遍，而是藉由一步步改寫把 Django 功能帶進來。
+如果看 [Django doc][django] 首頁的話，也是分這幾個部份，雖然這篇文章並不會把所有概念都介紹一遍。
 
-雖然說可以在 Django 寫 raw SQL，但是完全不用 ORM 有點難銜接，所以改寫的時候會跳過用 raw SQL。
-
+另外，在改寫的時候會跳過用 raw SQL，因為完全不用 ORM 有點難銜接其他 Django 部份。有興趣的話在講完 Model 之後可以參考 Details。
 
 [TOC]
 
@@ -40,13 +39,13 @@ Category: Coding
 
 ### Django 初始設定
 
-一樣開一個 Python 虛擬環境（這時候就知道虛擬環境的好處了，能把不同專案的套件隔離）。
+一樣開一個 Python 虛擬環境（這時候就是它的好處了，能把不同專案的套件隔離）。
 
 ```
 pip install django pytz ipython pyyaml
 ```
 
-[pytz] 在[前一篇](../../09/datetime-sqlite)已經介紹過，是處理時區的套件。[IPython] 全名是 Interactive Python，同樣是 Python shell 但提供了很多附加功能，最常用的應該是自動補完。[PyYAML] 用來處理 YAML 物件，算可裝可不裝，不裝之後的例子就用 JSON 即可。
+[pytz] 在[前一篇](../../09/datetime-sqlite)已經介紹過，是處理時區的套件。[IPython] 全名是 Interactive Python，同樣是 Python shell 但提供了很多附加功能，最常用的應該是自動補完。[PyYAML] 用來處理 YAML 物件，可裝可不裝，不裝之後的例子就用 JSON 即可。
 
 
 我們的專案根目錄是 `demo_django_draw_member`。因為 Django 的設定很多，先在這目錄下用 [django-admin] 把基本的架構建起來。我們建了一個名為 `draw_site` 的專案（Project）。
@@ -69,7 +68,7 @@ demo_django_draw_member/
     └── manage.py*
 ```
 
-之後工作的目錄其實是 `demo_django_draw_member/draw_site/`，也就是有 `manage.py` 的那層目錄。介紹一下每個檔案。
+之後工作的目錄其實是 `demo_django_draw_member/draw_site/`，也就是有 `manage.py` 的那層目錄，之後的路徑都是相對於 `demo_django_draw_member/draw_site/`。介紹一下每個檔案。
 
 - `manage.py` 之後就會取代 django-admin 的功能。兩者最大的差別是 manage.py 知道 project 的設定。
 - `draw_site/settings.py` 裡面存著 Django 的各種設定，像 secret key、database、template engine、app 等。
@@ -169,7 +168,7 @@ TIME_ZONE = 'UTC'
 USE_TZ = True
 ```
 
-DATABSES 裡定義了使用的資料庫。預設會使用 `demo_django_draw_member/draw_site/db.sqlite3` 這個 SQLite 資料庫。
+DATABSES 裡定義了使用的資料庫。預設會使用 `db.sqlite3` 這個 SQLite 資料庫。
 
 再來是語言、時區的設定。預設是 UTC 並且使用 timezone，也就是 server 的時間都是用 UTC 記錄的。
 
@@ -267,7 +266,7 @@ $ curl -XGET "localhost:8000"
 <p>Hello World!</p>
 ```
 
-再看一下 `draw_site/urls.py`，可以看到 Django 預設放了個 `/admin` 後面用的是 `include(app.urls)`，表示這一整包只要是 admin/ 開頭的 URL 都交給 admin.site.urls 去處理路徑。這樣方便 app 在不同網享中重覆利用，因為可能放的路徑都不一樣，但一個 app 內在處理路徑上會有一致性。
+再看一下 `draw_site/urls.py`，可以看到 Django 預設放了個 `/admin` 後面用的是 `include(app.urls)`，表示這一整包只要是 admin/ 開頭的 URL 都交給 admin.site.urls 去處理路徑。這樣方便 app 在不同網站中重覆利用，因為可能放的路徑都不一樣，但一個 app 內在處理路徑上會有一致性。
 
 馬上來改寫一下。首先在 app draw_member 底下加一個 `urls.py`。
 
@@ -529,7 +528,7 @@ QuerySet 底下就有很多對應到 SQL 指令的查詢，像是拿回所有 ob
 >>> History.objects.all().delete()
 ```
 
-當然一開始我們可以暴力把 `db.sqlite3` 整個刪掉再重新 `python manage.py migrate` 一次就可以讓 database 對應的 table 都建立好，當然這只適用於 SQLite 而已。或者，正確的「清空資料庫」做法是用 `flush` 指令，
+當然一開始我們可以暴力把 `db.sqlite3` 整個刪掉再重新 `python manage.py migrate` 一次就可以讓 database 對應的 table 都建立好，不過只適用於 SQLite 而已。或者，正確的「清空資料庫」做法是用 `flush` 指令，
 
 ```console
 $ python manage.py flush
@@ -660,9 +659,9 @@ Django 的 template 預設是放在 `<app>/templates/` 底下。不過為了在�
 mkdir -p draw_member/templates/draw_member
 ```
 
-它跟 Flask 用的 Jinja2 templates 乍看下非常類似（Jinja2 模仿 Django template），兩者最大的差別是在 Jinja2 裡能很自由的使用 Python function，不過 Django 靠的是 template tag 以及 filter。不過我們的例子是沒差多少。
+它跟 Flask 用的 Jinja2 templates 乍看下非常類似（Jinja2 模仿 Django template），兩者最大的差別是在 Jinja2 裡能很自由的使用 Python function，不過 Django 靠的是 template tag 以及 filter。我們的例子兩者是沒差多少。
 
-一樣先把 `base.html` 以及 `home.html` 做出來。我們也先把 Form 寫上了，不過暫時先用 GET。
+一樣先把 `base.html` 以及 `home.html` 做出來。我們也先把 Form 寫上了，暫時先用 GET。
 
 ```html+django
 {# draw_member/templates/draw_member/base.html #}
@@ -1091,7 +1090,7 @@ Here you go.
 class MemberQuerySet(models.QuerySet):
 
     def unique_groups(self):
-        return (t[0] for t in self.values_list('group_name').distinct())
+        return self.values_list('group_name', flat=True).distinct()
 
 
 class HistoryQuerySet(models.QuerySet):
@@ -1170,5 +1169,47 @@ class DrawForm(forms.Form):
     </tbody>
   </table>
 {% endblock content %}
-
 ```
+
+
+#### POST form and CSRF
+
+忘記講了，我們的 form 目前是用 `action="get"`，當然可以改回用 POST，也很簡單，就 GET 換成 POST 就好了。
+
+```python3
+# draw_site/views.py
+from django.views.decorators.http import require_POST
+
+@require_POST
+def draw(request):
+    # Retrieve all related members
+    form = DrawForm(request.POST)
+    # ...
+```
+
+```html+django
+{# draw_site/templates/home.html #}
+  <form action="{% url 'draw' %}" method="post">
+```
+
+馬上來試試看。
+
+<div class="figure align-center">
+  <img src="{attach}pics/django_csrf_failed.png"/>
+  <p class="caption">POST form without CSRF token</p>
+</div>
+
+拿到了一個　403 Forbidden ”CSRF verification failed.”。CSRF (Cross Site Request Forgery) 在 [wiki](https://zh.wikipedia.org/wiki/%E8%B7%A8%E7%AB%99%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0) 有比較完整的介紹，這是一種攻擊手法，在使用者登入網站之後（session 為登入狀態），偽造一個跟網站上一樣的 form 來偽裝使用者的行為。例如購票系統買票，如果沒檢查的話，我可以拿使用者的 session 去網站上隨便買票，網站都會認為是使用者在操作。
+
+因此 [CSRF token][django-CSRF] 用來防範這個偽造，在產生 form 的時候，網站會再產生一個欄位的值，這個欄位的值每次都會改變，這樣就能確定這個 form 是從網站上拿到的。Django 處理 CSRF protection 是透過 [Middleware](https://docs.djangoproject.com/en/1.8/topics/http/middleware/)，一個以前沒有提到的概念，表示他是比較底層的東西。相對而言，也不用改我們的 code，在這個例子就只要把 `{% csrf_token %}` 加到 form 裡面就可以了。
+
+```html+django
+{# draw_site/templates/home.html #}
+  <form action="{% url 'draw' %}" method="post">
+    {# ... #}
+    {% csrf_token %}
+    <input type="submit" value="Submit">
+  </form>
+```
+
+[django-CSRF]: https://docs.djangoproject.com/en/1.8/ref/csrf/
