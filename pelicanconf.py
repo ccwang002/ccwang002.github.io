@@ -33,7 +33,7 @@ MD_EXTENSIONS = [
 ]
 
 # Static path
-STATIC_PATHS = ['pics', 'B233544E.pub.asc', 'CNAME']
+STATIC_PATHS = ['pics', 'B233544E.pub.asc', 'CNAME', 'CV.pdf']
 
 # Find blog post dirs based on regular expression
 ARTICLE_PATHS = []
