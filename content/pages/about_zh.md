@@ -5,6 +5,6 @@ Lang: zh
 sortorder: 1
 ---
 
-(You can find the English version [here](./))
+(This page also has an [English version](./))
 
 我是亮亮

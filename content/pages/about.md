@@ -4,23 +4,25 @@ Slug: about-me
 sortorder: 1
 ---
 
+(This page also has a [Chinese version](./zh.html#about-me))
+
 Hi, I'm Liang Bo Wang (王亮博). Most people call me 亮亮 (Liang-liang, or liang<sup>2</sup>).
 
 I'm a master student in Bioinfo, National Taiwan University. My previous interns include Microsoft Research Asia (MSRA) and [Pinkoi]. I live in Taipei, Taiwan.
 
-See the [Chinese version](./zh.html#about-me) of this page.
+My CV is [here](/CV.pdf) (a PDF file).
 
 
 ### Research
-My research topic is network analysis of cancer genetics. You can find more about my research [here][research].
+My research topic is network analysis of cancer genetics. You can find more about my research at its [specific page][research].
 
 
 ### Coding
-I'm active in Taipei Python and R meetups. Also I give talks at times. You can find more information [here][talks].
+I'm active in Taipei Python and R meetups. Also I like to give talks. The full talk list is [here][talks].
 
 I speak fluent Python (especially 3.x) and R. My daily research relies on Python scientific computing stack, such as Numpy, pandas, Jupyter(IPython), matplotlib, and Cython. For statistics, I use R more frequently and communicate between Python and R using rpy2.
 
-During my master training, intern, and my free time, I write some websites based on Python web frameworks, including Django, Flask, and Bottle. But I won't claim I know much about web development. See [my github] for proof.
+During my master training, intern, and my free time, I've written a few websites based on Python web frameworks, including Django, Flask, and Bottle. But I won't claim I know much about web development. See [my github] for proof.
 
 
 ### Contact me
@@ -34,7 +36,7 @@ Contacting me through either Twitter DM or email is fine. If private info includ
 ### How to pronounce my nickname?
 亮亮 is composed of single character, **亮**, repeated two times with same pronunciation, *lia-ng*. Mind the pitch because in Chinese different pitches have different meanings. The pitch is similar to how people say *shoot!*.
 
-[Google translator](https://translate.google.com.tw/?hl=zh-TW#zh-CN/zh-TW/%E4%BA%AE%E4%BA%AE) gives an acceptable pronunciation. However, I'd like to recommend an online dictionary, <a href="https://www.moedict.tw/%E4%BA%AE">moedict (萌典)</a>, for its accurate pronunciation and thorough content.
+[Google translator](https://translate.google.com.tw/?hl=zh-TW#zh-CN/zh-TW/%E4%BA%AE%E4%BA%AE) gives an acceptable pronunciation. However, I'd like to recommend an online dictionary, [moedict (萌典)](https://www.moedict.tw/%E4%BA%AE), for its accurate pronunciation and thorough content.
 
 **亮** means *bright* in Chinese.
 
