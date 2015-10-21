@@ -4,6 +4,7 @@ Date:
 Category: Coding
 Tags: zh
 Slug: talk-proposal-pycontw-2016
+Status: draft
 ---
 
 
