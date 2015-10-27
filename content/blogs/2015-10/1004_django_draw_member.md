@@ -993,6 +993,8 @@ def draw():
 
 ### 總結
 
+做完的成品在 [Github][demo-github] 上，參考 README 就可以設定好環境了。
+
 這樣就把 Django 最基本的 Model, View, Template, Form 幾個大部份體驗一遍了。可以感覺出來 Django 提供的功能比 Flask 多很多，但也代表要花更多的時候學習使用它。其實改寫到最後我們的 code 非常少，可以為了結構化的 code 還比較多。
 
 當然這不代表就學會 Django 了。最後來介紹幾個可以接續學習的 Django 資源：
@@ -1002,6 +1004,7 @@ def draw():
 
 更多的 Django 技能樹選擇請見 TP 的 [lesson 30](https://github.com/uranusjr/django-tutorial-for-programmers/blob/master/30-moving-on.md)。
 
+[demo-github]: https://github.com/ccwang002/draw_member_django
 [*Mastering Django: Core*]: http://masteringdjango.com
 [*The Django Book*]: http://www.djangobook.com/en/2.0/index.html
 
