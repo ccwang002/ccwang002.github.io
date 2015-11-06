@@ -492,6 +492,8 @@ if __name__ == '__main__':
 這只是個單純的首頁，有個標題，還有個功能列，但暫時都沒有功能。我們修改一下 `draw_member.py` 裡定義的 index 讓：
 
 ```python
+from flask import render_template
+
 @app.route('/')
 def index():
     return render_template('index.html')
