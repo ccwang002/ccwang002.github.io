@@ -22,7 +22,7 @@ Category: Coding
 
 [TOC]
 
-[上一篇]: {filename}./1104_django_custom_user.md
+[上一篇]: {filename}../2015-11/1104_django_custom_user.md
 [django-custom-user]: https://github.com/jcugat/django-custom-user
 [django-allauth]:http://www.intenct.nl/projects/django-allauth/
 
