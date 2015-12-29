@@ -1,3 +1,8 @@
+---
+Title: Django site
+Status: Draft
+---
+
 ```
 python manage.py makemigrations --empty demo_site
 ```
