@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from pathlib import Path
 import re
 
+
 AUTHOR = 'Liang2'
 SITENAME = "Liang2's blog"
 SITEURL = ''
@@ -54,6 +55,18 @@ PLUGINS = ['render_math']
 
 # Theme
 THEME = "./theme-flex"
+
+
+def sort_by_len(value, len_key=-1, reversed=False):
+    return sorted(
+        value,
+        key=lambda t: (-len(t[len_key]), *t),
+        reverse=reversed,
+    )
+JINJA_FILTERS = {
+    'sort_by_len': sort_by_len  # required by theme-flex
+}
+
 # Flex Theme setting
 SITETITLE = "Liang2's Blog"
 SITESUBTITLE = "Code / Stat / Bioinfo"
@@ -66,7 +79,11 @@ MENUITEMS = [
     ('Tags', '/tags.html'),
 ]
 COPYRIGHT_YEAR = 2015
-CC_LICENSE = { 'name': 'Creative Commons Attribution', 'version':'4.0', 'slug': 'by' }
+CC_LICENSE = {
+    'name': 'Creative Commons Attribution',
+    'version': '4.0',
+    'slug': 'by'
+}
 OG_LOCALE = 'zh_TW'
 
 
