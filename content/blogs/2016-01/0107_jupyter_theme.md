@@ -46,12 +46,38 @@ Notebook 預設是 `.ipynb` 的檔案。常見的內容像這樣：
   <p class="caption center">Jupyter Notebook Example</p>
 </div>
 
+### Custom Theme on v4.1+
 
-### Custom Theme
+EDIT: 2016-01-11 [Jupyter Notebook 4.1](https://blog.jupyter.org/2016/01/08/notebook-4-1-release/) 已釋出，設定路徑預設都在 `~/.jupyter` 底下。
 
-今天重點是換主題嘛。現在因為歷經 IPython 到 Jupyter 的過程，設定還蠻分散的。以往的設定會在 `~/.ipython`，而到了 Jupyter 之後，相關設定會在 `~/.jupyter`。有時候設定怪怪的話就兩個路徑都檢查一下吧。
+今天重點是換主題嘛。趕快來做吧。
 
-我目前使用的主題來自 [dunovank](https://github.com/dunovank/jupyter-themes)，他有收集了至少深淺兩色，應該足夠使用了。CSS 從別人的基礎上來調整也相對簡單，我自己有[改寫了一點](https://github.com/ccwang002/dotfiles/tree/master/ipy_profile/ipython3)（忘了改什麼)。dunovank 有寫個安裝 theme 的套件，不過不用也沒關係，只要準備好 CSS 就能用。我用 Grade3 這個主題來示範。
+可以透過 `jupyter --config-dir` 或 `jupyter --paths` 找到設定檔應該放的位置。
+
+```console
+$ jupyter --config-dir
+~/.jupyter
+$ jupyter notebook --generate-config  # 建立 Notebook 設定檔
+Writing default config to: ~/.jupyter/jupyter_notebook_config.py
+```
+
+如果只是改主題，不需要更動 Notebook 設定檔。
+
+目前自己使用的主題來自 [dunovank](https://github.com/dunovank/jupyter-themes)，他有收集了至少深淺兩色，應該足夠使用了。CSS 從別人的基礎上來調整也相對簡單，我自己有[改寫了一點](https://github.com/ccwang002/dotfiles/tree/master/ipy_profile/ipython3)（忘了改什麼)。dunovank 有寫個安裝 theme 的套件，不過不用也沒關係，只要準備好 CSS 就能用。我用 Grade3 這個主題來示範。
+
+把 `custom.css` 放到 `~/.jupyter/static/custom.css`。設定的目錄長得如下：
+
+```console
+$ tree ~/.jupyter -F -L 3
+~/.jupyter
+├── custom/
+│   └── custom.css -> /path/to/custom_light.css
+└── jupyter_notebook_config.py
+```
+
+### Custom Theme Before v4.1
+
+現在因為歷經 IPython 到 Jupyter 的過程，設定還蠻分散的。以往的設定會在 `~/.ipython`，而到了 Jupyter 之後，相關設定會在 `~/.jupyter`。有時候設定怪怪的話就兩個路徑都檢查一下吧。
 
 只要把這個 CSS 放到 `~/.ipython/profile_default/custom.css` 再重開 Jupyter Notebook 就可以了[^1]。效果如下：
 
@@ -69,9 +95,7 @@ Notebook 預設是 `.ipynb` 的檔案。常見的內容像這樣：
 個人覺得長時間使用下來，對比度低一點對眼睛比較好。黑底也不錯，不過畫圖常常會自己帶白底，整體感覺就不是很漂亮，可能要連 matplotlib theme 一起改吧 XD
 
 
-
-
-[^1]: 這路徑並不符合 Jupyter 跨 kernel 的設計理念，感覺未來會改路徑。
+[^1]: 這路徑並不符合 Jupyter 跨 kernel 的設計理念，<del>感覺未來會改路徑</del>已經在 4.1+ 版本中完成整合，與 IPython 設定分家了。
 
 [Jupyter Notebook]: http://jupyter.org/
 [IPython]: http://ipython.org/
