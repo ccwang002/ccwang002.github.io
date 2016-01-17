@@ -4,7 +4,7 @@ Slug: plot-seq-depth-gviz
 Date: 2016-01-15 23:50
 Tags: en, r, bioconductor, gviz, NGS
 Category: Bioinfo
-Cover: //blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_gene_symbol.png
+Cover: http://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_gene_symbol.png
 ---
 
 ***TL;DR** Plot exome sequencing depth and coverage with genome annotation using Gviz in R. Then apply detail control on Gviz annotation track displaying.*
