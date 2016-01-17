@@ -110,8 +110,8 @@ SOCIAL = (
     ('linkedin', 'http://tw.linkedin.com/in/liangbowang/'),
 )
 
-SUMMARY_MAX_LENGTH = 16
-DEFAULT_PAGINATION = 5
+SUMMARY_MAX_LENGTH = 24
+DEFAULT_PAGINATION = 10
 
 # Uncomment following line if you want document-relative URLs when developing
 RELATIVE_URLS = True
