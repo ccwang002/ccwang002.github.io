@@ -9,24 +9,24 @@ Cover: http://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_gen
 
 ***TL;DR** Plot exome sequencing depth and coverage with genome annotation using Gviz in R. Then apply detail control on Gviz annotation track displaying.*
 
-This is an extending post from [Genomic Data Processing in Bioconductor], though I haven't finished reading all the reference in that post. If you wished to try the following work yourself, all you need is the basic understanding of how to deal with annotation and genome reference in Bioconductor/R. You should find some time learning it anyway, a truly life saver.
+This is an extending post from [Genomic Data Processing in Bioconductor], though I haven't finished reading all the reference in that post. The background knowledge of this post is basic understanding of how to deal with annotation and genome reference in Bioconductor/R. If you don't deal with genome annotations in R before, you should find some time learning it anyway, a truly life saver.
 
 [TOC]
 
-I got this good chance trying new tricks today when I and other lab members were analyzing our human cancer exome sequencing data. The results were a bunch of BAM files aligned by [BWA-MEM](https://github.com/lh3/bwa) using reference hg19.
+I got the chance trying new tricks today when I and other lab members were analyzing our human cancer exome sequencing data. The results were a bunch of BAM files aligned by [BWA-MEM](https://github.com/lh3/bwa) using reference hg19.
 
-We want to see how was the sequencing depth and the coverage of all exons designed to be sequenced. This can be done in the genome viewer such as [IGV].
+We want to see how was the sequencing depth and the coverage of all exons designed to be sequenced. Roughly, this can be done in the genome viewer such as [IGV].
 
 <div class="figure">
   <img src="{attach}pics/seqdepth_IGV.png"/>
   <p class="caption center">Visualize sequencing depth in IGV</p>
 </div>
 
-IGV is good for daily research, but when it comes to customization, there aren't many options. And if the visualization is for publishing, one may want the figure to be vectorized and, more importantly, *reproducible*.
+IGV is good for daily research, but when it comes to customization, there aren't many options. And if the visualization is aimed for publishing, one might want the figure to be vectorized and, more importantly, *reproducible*.
 
-Therefore, combining from what I learnt in [Genomic Data Processing in Bioconductor], I tried to plot the sequencing depth in R with [Gviz]. I thought learning Gviz will be demanding, since its vignette has 80 pages and the documentation of its functions are [scarily long spells](http://rpackages.ianhowson.com/bioc/Gviz/man/GeneRegionTrack-class.html). But they both turned out to be *really* helpful and informative, especially needed when trying to tune its behavior. Figures produced by Gviz are aesthetically pleasing, and Gviz has many features as well (still trying). I'm glad that I gave it a shot.
+Therefore, combining with what I learnt in [Genomic Data Processing in Bioconductor], I tried to plot the sequencing depth in R with [Gviz]. I thought learning Gviz will be demanding, since its vignette has 80 pages and the function documentation are [scarily long spells](http://rpackages.ianhowson.com/bioc/Gviz/man/GeneRegionTrack-class.html). But both of them turned out to be *really* helpful and informative, especially when trying to tune its behavior. Figures produced by Gviz are aesthetically pleasing, and Gviz has many features as well (still trying). I'm glad that I gave it a shot.
 
-If you want to run the following code yourself, any human BAM alignment files will do. For example, the GEO dataset [GSE48215] contains exome sequencing of breast cancer cell lines.
+If you want to follow the code yourself, any human BAM alignment files will do. For example, the GEO dataset [GSE48215] contains exome sequencing of breast cancer cell lines.
 
 
 [Genomic Data Processing in Bioconductor]: {filename}../2015-12/1229_biocondutor.md
@@ -38,7 +38,7 @@ If you want to run the following code yourself, any human BAM alignment files wi
 
 ## Convert sequencing depth to BedGraph format
 
-After a quick search, Gviz's [DataTrack] accepts BedGraph format. The format can display any numerical value of chromosome ranges, shown as follows,
+After a quick search, Gviz's [DataTrack] accepts BedGraph format. This format can display any numerical value of chromosome ranges, shown as follows,
 
 | chromosome | start  | end    | value |
 |:-----------|--------|--------|------:|
@@ -46,13 +46,13 @@ After a quick search, Gviz's [DataTrack] accepts BedGraph format. The format can
 | chr1       | 10,093 | 10,104 |     5 |
 | ...        | ...    | ...    |   ... |
 
-So we need to convert the alignment result as BedGraph format, which can be done by [BEDTools' genomecov] command. On BEDTools' documentation, it noted that the BAM file should be sorted. 
+So we need to convert the alignment result as BedGraph format, which can be done by [BEDTools' genomecov] command. On BEDTools' documentation, it notes that the BAM file should be sorted. 
 
 ```bash
 bedtools genomecov -bg -ibam myseq.bam > myseq.bedGraph
 ```
 
-The plain text BedGraph can be huge, pipe'd with gzip can reduce file size to around 30% of the original.
+The plain text BedGraph can be huge, pipe'd with gzip will reduce file size to around 30% of the original.
 
 ```bash
 bedtools genomecov -bg -ibam myseq.bam | gzip > myseq.bedGraph.gz
@@ -65,7 +65,7 @@ bedtools genomecov -bg -ibam myseq.bam | gzip > myseq.bedGraph.gz
 
 ## Plot depth in Gviz
 
-R Packages of human genome annotations ([Homo.sapiens]) and [Gviz] itself are required. Also, [data.table] gives an impressed speed at reading text tables so is recommended to use. During the analysis, I happened to know that data.table supports [reading gzip'd file through pipe](https://github.com/Rdatatable/data.table/issues/717), which makes it more awesome.
+R packages of human genome annotations ([Homo.sapiens]) and [Gviz] itself are required. Also, [data.table] gives an impressed speed at reading text tables so is recommended to use. During the analysis, I happened to know that data.table supports [reading gzip'd file through pipe](https://github.com/Rdatatable/data.table/issues/717), which makes it more awesome.
 
 [Homo.sapiens]: http://bioconductor.org/packages/release/data/annotation/html/Homo.sapiens.html
 [data.table]: https://cran.r-project.org/web/packages/data.table/index.html
@@ -110,9 +110,9 @@ So we read the sequencing depth data, create a Gviz `DataTrack` holding the subs
 
 ### Add genome axis
 
-It's weird and lack of information without the genomic location we plot. 
+The figure is a bit weird and lack of information without the genomic location. 
 
-Adding genomic location can be done automatically by Gviz through a new track `GenomeAxisTrack`. Also, we'd like to show which region of chromosome we are at. This can be done by adding another track, `IdeogramTrack` to show the chromosome ideogram. Note that the latter track will download cytoband data from UCSC so the given genome name should be valid.
+Adding genomic location can be done automatically by Gviz through a new track `GenomeAxisTrack`. Also, we'd like to show which region of chromosome we are at. This can be done by adding another track, `IdeogramTrack`, to show the chromosome ideogram. Note that the latter track will download cytoband data from UCSC so the given genome must have a valid name.
 
 ```r
 itrack <- IdeogramTrack(
@@ -136,7 +136,7 @@ Better now :)
 
 Since we are using exome sequencing, the curve of sequencing depth only makes senses when combined with the transcript annotations. 
 
-Gviz has `GeneRegionTrack` to extract annotation from the R annotation packages. Package Homo.sapiens includes the gene annotation package using UCSC knownGene database. Adding this new track and we will have the annotation on our figure.
+Gviz has `GeneRegionTrack` to extract annotation from the R annotation packages. Package Homo.sapiens includes the gene annotation package using UCSC knownGene database. Adding this new track and we will have annotation on our plot.
 
 ```r
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
@@ -159,9 +159,9 @@ plotTracks(
   <img src="{attach}pics/seqdepth_with_annotation.png"/>
 </div>
 
-The plot should as informative as what we can get from the IGV now. In fact, Gviz can plot the alignment result too. It can read the BAM file directly and show a more detailed coverage that matches what IGV can do. I'll leave that part at the end of this post. 
+The plot should now be as informative as what we can get from the IGV. In fact, Gviz can plot the alignment result too. It can read the BAM file directly and show a more detailed coverage that matches what IGV can do. I'll leave that part at the end of this post. 
 
-So far we've shown the sequencing depth of some chromosome region with annotation. While there leaves something to be desired, mostly about the annotation:
+So far we've shown the sequencing depth of some chromosome region with annotation. However, there still leave something to be desired, mostly about the annotation:
 
 - Can we show only the annotation of certain genes?
 - knownGene's identifier is barely meaningless, can we show the gene symbol instead?
@@ -172,14 +172,14 @@ So here comes the second part, annotation fine tuning.
 
 ## Plot fine tune
 
-Say, we only care about gene *BRCA1*. So we need to get its location, or specifically, the genomic range that cover all *BRCA1* isoforms. So I will demonstrate the Gviz's annotation fine tuning through the example.
+Say, we only care about gene *BRCA1*. So we need to get its location, or specifically, the genomic range that cover all *BRCA1* isoforms. In the following example, I will demonstrate the Gviz's annotation fine tuning.
 
 ### Genome annotation query in Bioconductor/R
 
 If you are not familiar with how to query annotations in Bioconductor, it's easier to think by breaking our goal of finding *BRCA1*'s ranges into two steps:
 
 1. Get the transcript IDs
-2. Query the transcript locations by their IDs.
+2. Query the transcript locations by their IDs
 
 Getting transcript IDs given their gene symbol is a `select()` on OrganismDb object,
 
@@ -205,7 +205,7 @@ Look like it has plenty of isoforms!
 
 #### via `transcripts()`
 
-For the transcript location, the easiest way will be querying the txDb via `transcript()` directly,
+For the transcript location, the easiest way will be querying the txDb via `transcript()`,
 
 ```r
 BRCA1_txs <- transcripts(
@@ -245,7 +245,7 @@ st <- min(start(BRCA1_txs)) - 2e4
 en <- max(end(BRCA1_txs)) + 1e3
 ```
 
-Some space are added at both ends so the plot won't tightly fit transcript but leave the room for transcript names at the left. 
+Some space are added at both ends so the plot won't tightly fit all transcripts and leave some room for the transcript names. 
 
 ```rout
 > c(thechr, st, en)
@@ -262,7 +262,7 @@ BRCA1_cds_by_tx <- exonsBy(
 )[BRCA1_txnames]
 ```
 
-The function returns a `GRangesList` object, a list of `GRanges` that each `GRanges` object corresponds to a transcript.
+The function returns a `GRangesList` object, a list of `GRanges` that each `GRanges` object corresponds to a transcript respectively.
 
 ```rout
 > BRCA1_cds_by_tx
@@ -299,7 +299,7 @@ IntegerList of length 20
 ...
 ```
 
-Here we only cares about the widest range, so the hierarchical structure is not necessary. It would be better to flatten the `GRangesList` first,
+Here we only cares about the widest range, so the hierarchical structure is not useful. It would be better to flatten the `GRangesList` first,
 
 ```rout
 > BRCA1_cds_flatten <- unlist(BRCA1_cds_by_tx)
@@ -327,7 +327,7 @@ We have the BRCA1 genomic region, rest of the plotting is the same.
 
 ### Show only the annotations of certain genes
 
-Before we start to create our own annotation subset, we first take a look at what Gviz generates. The `GeneRegionTrack` stores the annotation at slot `range`.
+Before we start to create our own annotation subset, we first take a look at what Gviz generated. The `GeneRegionTrack` track store its annotation data at slot `range`.
 
 ```rout
 > grtrack@range
@@ -349,7 +349,7 @@ GRanges object with 459 ranges and 7 metadata columns:
   seqinfo: 1 sequence from hg19 genome; no seqlengths
 ```
 
-So we filter out unrelated ranges by checking if the value of metadata column `transcript` is one of the *BRCA1*'s transcript IDs,
+So we filter out unrelated ranges by checking if the value of metadata column `transcript` is one of *BRCA1*'s transcript IDs,
 
 ```r
 BRCA_only_range <- grtrack@range[
@@ -358,7 +358,7 @@ BRCA_only_range <- grtrack@range[
 grtrack@range <- BRCA_only_range
 ```
 
-or less hacky by using the new range to construct another `GeneRegionTrack`,
+or by less hacky way that use the new range to construct another `GeneRegionTrack`,
 
 ```r
 grtrack_BRCA_only <- GeneRegionTrack(
@@ -421,7 +421,7 @@ new_symbols <- with(
 [4] "NBR2 (uc002idg.3)" "NBR2 (uc002idh.3)" "NBR1 (uc010czd.3)"
 ```
 
-Like how we extract the *BRCA1*-only annotations, we contrust a new `GeneRegionTrack`.
+Like how we extract *BRCA1*-only annotations, we construct a new `GeneRegionTrack`.
 
 ```r
 grtrack_symbol <- GeneRegionTrack(
@@ -454,7 +454,7 @@ Really glad I've tried it :)
 
 ## Supplementary - Plot BAM files directly
 
-We start by replacing `DataTrack` with `AlignmentsTrack`. Also select a smaller region so the read mapping can be clearly seen.
+We will start by replacing `DataTrack` with `AlignmentsTrack`. Also we select a smaller region this time so the read mapping can be clearly seen.
 
 ```r
 st <- 41.196e6L
@@ -504,7 +504,7 @@ strack <- SequenceTrack(
 )
 ```
 
-We tweak other tracks as well to make sure the figure won't explode by too much information. Gene annotation is contracted down to one line. Also, increase each aligned read's height to fit in individual letters (e.g. ATCG).
+We tweak other tracks as well to make sure the figure won't explode by too much information. Gene annotations are collapsed down to one liner. Also, aligned read's height is increased to fit in individual letters (e.g., ATCG).
 
 ```r
 grtrack_small <- GeneRegionTrack(
