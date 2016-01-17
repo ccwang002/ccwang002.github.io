@@ -1,5 +1,5 @@
 ---
-Title: Plot sequencing depth with Gviz
+Title: Plot Sequencing Depth with Gviz
 Slug: plot-seq-depth-gviz
 Date: 2016-01-15 23:50
 Tags: en, r, bioconductor, gviz, NGS
