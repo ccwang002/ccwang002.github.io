@@ -7,35 +7,9 @@ Category: Coding
 Summary: Numpy 多維度的 indexing 跟 pandas 行為不一樣，需要額外的操作。
 ---
 
-前幾天需要寫 [numpy] 時，突然發現它跟 [pandas] 在 indexing 的行為蠻不一樣的。
+前幾天需要寫 [numpy] 時，突然發現跟 [pandas] 在 indexing 的行為蠻不一樣的。我感覺未來一定會忘記，先筆記起來。
 
-就用時事來舉例吧，把維基百科上[各政黨 2016 年臺灣立法委員提名數][wiki]的表格抓下來：
-
-```python
-import pandas as pd
-import numpy as np
-from urllib.parse import quote_plus
-
-dfs = pd.read_html(
-    'https://zh.wikipedia.org/wiki/%s' 
-    % quote_plus('2016年中華民國立法委員選舉')
-)
-df = next(
-    df for df in dfs 
-    if '立法委員政黨提名名額' in str(df.iloc[0, 0])
-)
-
-# Data cleaning
-df.columns = df.iloc[1, :].values
-df['政黨'] = df['政黨'].str.replace(
-    r'\[(註 |)\d+\]', ''
-)
-df.index = df['政黨']
-df = df.replace('－', 0)
-df = df.iloc[2:-1, 1:-1].astype(np.int)
-```
-
-做完大概長這樣：
+就用時事來舉例吧，把維基百科上[各政黨 2016 年臺灣立法委員提名數][wiki]的表格抓下來。處理原始資料的程式放到文末，做完大概長這樣：
 
 |           |   區域 |   原住民 |   不分區 |
 |:----------|-----:|------:|------:|
@@ -138,6 +112,35 @@ arr[indices]
 ```
 
 整理一下，這只要一段時間沒用就常會忘記。
+
+
+### 維基原始資料處理
+
+Wikipedia 原始資料從[這裡][wiki]取得，這就是展現 pandas 處理能力的時候了。新版本對字串處理提供更多功能，都讓我忘了底下的 numpy 對 unicode 支援其實不怎麼樣 XD
+
+```python
+import pandas as pd
+import numpy as np
+from urllib.parse import quote_plus
+
+dfs = pd.read_html(
+    'https://zh.wikipedia.org/wiki/%s' 
+    % quote_plus('2016年中華民國立法委員選舉')
+)
+df = next(
+    df for df in dfs 
+    if '立法委員政黨提名名額' in str(df.iloc[0, 0])
+)
+
+# Data cleaning
+df.columns = df.iloc[1, :].values
+df['政黨'] = df['政黨'].str.replace(
+    r'\[(註 |)\d+\]', ''
+)
+df.index = df['政黨']
+df = df.replace('－', 0)
+df = df.iloc[2:-1, 1:-1].astype(np.int)
+```
 
 
 [^1]: 在這情況資料會被 copy 傳回來，但如果是 `start:end:step` 的 simple indexing 就只會回傳 view。
