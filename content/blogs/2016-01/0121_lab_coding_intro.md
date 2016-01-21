@@ -4,7 +4,7 @@ Slug: lab-coding-intro
 Date: 2016-01-21 21:00
 Tags: zh, labcoding
 Category: Coding
-Summary: 建立了解當今軟體開發流程及基本技能的背景知識與初步技能樹。
+Summary: 給實驗室新生，了解當今軟體開發流程及基本技能的背景知識與初步技能樹。
 ---
 
 Last Edited: Jan, 2016
@@ -81,7 +81,7 @@ Mac OSX 使用者也有這樣的現象，但因為 OSX 在底層用的是跟 Fre
 如何在 OSX 上開發程式，可以參考[附錄 0][apx0-osx] 的筆記，但內容很主觀，不是每個人都會像我這樣用。
 
 
-## 目錄
+## 文章目錄
 
 寫一寫內容也變得蠻多的，所以把它切成了幾篇文章，請按照數字順序閱讀：
 
@@ -91,6 +91,8 @@ Mac OSX 使用者也有這樣的現象，但因為 OSX 在底層用的是跟 Fre
 - [4 Python][chp4-python]
 - [A0 OSX Development Environment][apx0-osx] 
 - [A1 Python in Bioinformatics][apx1-bioinfo]
+
+或者，用 [labcoding](/tag/labcoding.html) 這個 tag 也可以找到所有的文章。
 
 [chp1-linux]: {filename}0121_lab_coding_linux.md
 [chp2-text-editing]: {filename}0121_lab_coding_text_editing.md
