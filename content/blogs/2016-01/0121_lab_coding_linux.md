@@ -201,4 +201,4 @@ Linux Foundation 所開辦的線上課程，有英文的影片和講義。還請
 [chp1-linux]: {filename}0121_lab_coding_linux.md
 [chp2-text-editing]: {filename}0121_lab_coding_text_editing.md
 [chp3-git]: {filename}0121_lab_coding_version_control.md
-[chp4-python]: {filename}0121_lab_coding_version_python.md
+[chp4-python]: {filename}0121_lab_coding_python.md

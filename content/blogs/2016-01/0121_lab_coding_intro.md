@@ -95,6 +95,6 @@ Mac OSX 使用者也有這樣的現象，但因為 OSX 在底層用的是跟 Fre
 [chp1-linux]: {filename}0121_lab_coding_linux.md
 [chp2-text-editing]: {filename}0121_lab_coding_text_editing.md
 [chp3-git]: {filename}0121_lab_coding_version_control.md
-[chp4-python]: {filename}0121_lab_coding_version_python.md
+[chp4-python]: {filename}0121_lab_coding_python.md
 [apx0-osx]: {filename}0121_lab_coding_a_osx_env.md
 [apx1-bioinfo]: {filename}0121_lab_coding_a_bioinfo_python.md
