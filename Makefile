@@ -56,6 +56,8 @@ help:
 	@echo '   make s3_upload                      upload the web site via S3         '
 	@echo '   make cf_upload                      upload the web site via Cloud Files'
 	@echo '   make github                         upload the web site via gh-pages   '
+	@echo '   make post                           create a new post                  '
+	@echo '   make open                           open the post dir for current month'
 	@echo '                                                                          '
 	@echo 'Set the DEBUG variable to 1 to enable debugging, e.g. make DEBUG=1 html   '
 	@echo 'Set the RELATIVE variable to 1 to enable relative urls                    '
@@ -126,4 +128,13 @@ github: publish
 	ghp-import -n -m "Generate Pelican site" -b $(GITHUB_PAGES_BRANCH) $(OUTPUTDIR)
 	git push origin $(GITHUB_PAGES_BRANCH)
 
-.PHONY: html help clean clean_src regenerate serve serve-global devserver publish ssh_upload rsync_upload dropbox_upload ftp_upload s3_upload cf_upload github
+CURRENT_BLOG_DIR := $(INPUTDIR)/blogs/`date +"%Y-%m"`
+post:
+	[ ! -d $(CURRENT_BLOG_DIR) ] || mkdir -p $(CURRENT_BLOG_DIR)
+	touch $(CURRENT_BLOG_DIR)/new_post.md
+	open $(CURRENT_BLOG_DIR)/new_post.md
+
+open:
+	open $(CURRENT_BLOG_DIR)
+
+.PHONY: html help clean clean_src regenerate serve serve-global devserver publish ssh_upload rsync_upload dropbox_upload ftp_upload s3_upload cf_upload github post
