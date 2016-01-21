@@ -2,7 +2,7 @@
 Title: Customize Django User Model
 Slug: django-custom-user
 Date: 2015-11-04 18:23
-Tags: zh, django
+Tags: zh, django, python
 Category: Coding
 ---
 
