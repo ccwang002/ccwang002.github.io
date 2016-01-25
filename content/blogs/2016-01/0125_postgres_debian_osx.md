@@ -191,7 +191,7 @@ vm_database=>
 ```
 
 
-## psql 指令
+## psql 指令
 
 psql 的指令很多，用 `\?` 可以看到列表。完整的版本可以見[官網 psql meta-commands] 的介紹。底下列幾個常用的：
 
@@ -208,7 +208,7 @@ help        # print a hub message for all kinds of help
 
 
 
-## 刪除使用者、Database
+## 刪除使用者、Database
 
 各有一個指令對應。
 
