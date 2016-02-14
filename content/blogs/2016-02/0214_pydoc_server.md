@@ -189,7 +189,7 @@ $ sudo apt-get install python3.5 python3.5-venv python3.5-dev
 
 nginx 會連到 uWSGI 開的 UNIX socket。先假設這段沒問題了，先把 nginx 設定好。static files 不會經過 uWSGI 所以可以設定好 nginx 之後 pydoc 應該就上線了。
 
-對於這個網站而言，/static 會導到 Django staticfiles；/3/、/3.5/ 會導到 pydoc build HTML 的路徑；其餘路徑再交給 Django 處理。我們將 /3.5/\* 的連結導到 /3/\* 上。
+對於這個網站而言，/static 會導到 Django staticfiles；/3/、/3.5/ 會導到 pydoc build HTML 的路徑；其餘路徑再交給 Django 處理。我們將 /3.5/\* 的連結導到 /3/\* 上。
 
 寫個 nginx 設定檔在 `/etc/nginx/sites-available/pydoc_autobuild.conf`：
 
@@ -290,7 +290,7 @@ sudo less +F /var/log/nginx/error.log
 
 成功了之後，再用 uWSGI 的 Emperor mode，把設定檔丟到一個路徑底下（稱為 vassals），在 Emperor mode 時 uWSGI 會自動把路徑內的所有設定檔都讀進來並執行。
 
-假定這 vassals 路徑是 `/etc/uwsgi/vassals/`。因為有設 uid、gid，跑的時候就不用再設了：
+假定這 vassals 路徑是 `/etc/uwsgi/vassals/`。因為有設 uid、gid，跑的時候就不用再設了：
 
 ```
 sudo uwsgi --emperor /etc/uwsgi/vassals
