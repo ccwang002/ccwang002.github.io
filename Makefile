@@ -128,13 +128,16 @@ github: publish
 	ghp-import -n -m "Generate Pelican site" -b $(GITHUB_PAGES_BRANCH) $(OUTPUTDIR)
 	git push origin $(GITHUB_PAGES_BRANCH)
 
-CURRENT_BLOG_DIR := $(INPUTDIR)/blogs/`date +"%Y-%m"`
-post:
-	[ ! -d $(CURRENT_BLOG_DIR) ] || mkdir -p $(CURRENT_BLOG_DIR)
+CURRENT_BLOG_DIR := $(INPUTDIR)/blogs/$(shell date +"%Y-%m")
+
+current_blog_dir_exists:
+	test -d $(CURRENT_BLOG_DIR) || mkdir -p $(CURRENT_BLOG_DIR)
+
+post: current_blog_dir_exists
 	touch $(CURRENT_BLOG_DIR)/new_post.md
 	open $(CURRENT_BLOG_DIR)/new_post.md
 
-open:
+open: current_blog_dir_exists
 	open $(CURRENT_BLOG_DIR)
 
-.PHONY: html help clean clean_src regenerate serve serve-global devserver publish ssh_upload rsync_upload dropbox_upload ftp_upload s3_upload cf_upload github post
+.PHONY: html help clean clean_src regenerate serve serve-global devserver publish ssh_upload rsync_upload dropbox_upload ftp_upload s3_upload cf_upload github current_blog_dir_exists post open
