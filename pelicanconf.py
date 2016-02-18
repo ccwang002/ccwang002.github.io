@@ -106,7 +106,7 @@ SOCIAL = (
     ('facebook', 'https://www.facebook.com/lbwang.2'),
     ('github', 'https://github.com/ccwang002'),
     ('bitbucket', 'https://bitbucket.org/ccwang002'),
-    ('envelope-o', 'mailto:ccwang002@gmail.com'),
+    ('envelope-o', 'mailto:me+blog@liang2.tw'),
     ('linkedin', 'http://tw.linkedin.com/in/liangbowang/'),
 )
 
