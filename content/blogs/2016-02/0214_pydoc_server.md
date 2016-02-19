@@ -90,7 +90,7 @@ msgstr ""
 
 在 autobuild 時加入專屬連結只要修改 Sphinx doc template 即可。Sphinx 在 build doc 時可以透過 [`-A <name=value>`](http://www.sphinx-doc.org/en/stable/man/sphinx-build.html#options) 增加 Jinja2 template 的變數，就可控制 template render 行為：
 
-```jinja2
+```html+jinja
 {# <cpython-src>/Doc/tools/templates/layout.html #}
 {%- if autobuildi18n %}
 <a href="/_build/update/?source_path={{ pagename }}">Update Translation</a>
