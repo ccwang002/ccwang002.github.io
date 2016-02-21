@@ -1,5 +1,5 @@
 ---
-Title: 設定 Python 說明文件中文翻譯自動更新 Server
+Title: 設定 Python 官方文件中文化自動更新 Server
 Slug: pydoctw-server
 Date: 2016-02-14 21:00
 Tags: zh, pydoctw, python, django, postgresql, deploy, debian, systemd, nginx, uwsgi
@@ -100,7 +100,7 @@ msgstr ""
 - `sphinx-build -A autobuildi18n=1` 時就會包含這個 Jinja2 block，多這個 Update Translation 連結。
 - [`{{ pagename }}`](http://www.sphinx-doc.org/en/stable/templating.html#pagename) 是每頁文件的 rst 路徑。
 
-[^build-link]: 開發時一直都是用 GET，即如文中所說，有個專屬的 link。但發現會有 robot / crawler 打這些路徑，因此最後改成 POST，把 `{{pagename}}` 用 data-\* 即 `<a href="#" data-pagename="{{ pagename }}">...</a>` 的方式存起來，在用 jQuery 綁定 click listener。
+[^build-link]: 開發時一直都是用 GET，即如文中所說，有個專屬的 link。但發現會有 robot / crawler 打這些路徑，因此最後改成 POST，把 `{{ pagename }}` 用 data-\* 即 `<a href="#" data-pagename="{{ pagename }}">...</a>` 的方式存起來，在用 jQuery 綁定 click listener。
 
 #### Autobuild Django server
 
