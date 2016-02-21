@@ -9,7 +9,8 @@ Summary: 設定一個自動更新 Python 說明文件中文翻譯並且 host 中
 
 *TL;DR* 可至 <http://docs.python.org.tw> 看線上自動更新的[中文化的文件][pydoctw-doc]和 [build server][pydoctw-build-server]。
 
-EDIT 2016-02-16: 加上 language code、git sshconfig、swap 的設定；文句潤飾。
+EDIT 2016-02-16: 加上 language code、git sshconfig、swap 的設定；文句潤飾。<br>
+EDIT 2016-02-20: 加上 tmpfiles.d 的設定。
 
 [TOC]
 
@@ -231,7 +232,6 @@ sudo /sbin/swapon /var/swap.1
 
 用 `free -h`、`cat /proc/meminfo` 檢查此時應該有個 1GB swap 了。
 
-
 #### Git repo ssh config
 
 再來是 code 的同步與更新。autobuild server 只要更新 source code，但 cpython-tw source 需要定時 commit 新的翻譯，因此 deploy server 會有修改 git repo 的權限。
@@ -267,6 +267,16 @@ git remote set-url origin git@github-pydoc_autobuild:python-doc-tw/pydoc_autobui
 
 這樣兩個 repo 會透過給定的 ssh key 連線。GitHub 會顯示每個 key 最近使用的時間，檢查時間就能確認設定正確與否（而且改 host 沒設定對應該直接連不上）。
 
+#### tmpfiles.d
+
+之後 nginx 和 uwsgi 溝通用的 socket 打算放在 `/run/django/xxxx.sock` [^/run]。因為只需要非 root 的權限，修改 [tmpfiles.d](https://www.freedesktop.org/software/systemd/man/tmpfiles.d.html) 的設定，讓這個資料夾能在開機時自動建立。增加設定檔 `/etc/tmpfiles.d/pydoc_autobuild.conf`
+
+```text
+d /run/django 0755 pydoc www-data
+```
+
+[^/run]: /var/run = /run，這個路徑是個 tmpfs 所以每次重開機就會清空，目錄要記得重建。
+
 
 ### Django Stack -- nginx + uWSGI
 
@@ -289,7 +299,7 @@ nginx 會接受 incoming HTTP request，需要跟 Django server 聯絡時，就�
 ```nginx
 # Upstream Django setting; the socket nginx connects to
 upstream django {
-    server unix:///var/run/django/pydoc_autobuild.sock;
+    server unix:///run/django/pydoc_autobuild.sock;
 }
 
 server {
@@ -365,7 +375,7 @@ master       = true
 # maximum number of worker processes
 processes    = 4
 # the socket (use the full path to be safe
-socket       = /var/run/django/pydoc_autobuild.sock
+socket       = /run/django/pydoc_autobuild.sock
 # ... with appropriate permissions - may be needed
 chmod-socket = 664
 uid          = pydoc
