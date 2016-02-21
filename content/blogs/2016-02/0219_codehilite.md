@@ -1,5 +1,5 @@
 ---
-Title: Add language name as CSS class of highlighted code blocks in Pelican markdowns
+Title: Add code block language name into CSS classes in Pelican Markdown
 Slug: markdown-codehilite-lang
 Date: 2016-02-19 15:00
 Tags: en, blog, pelican, codehilite, pygment
