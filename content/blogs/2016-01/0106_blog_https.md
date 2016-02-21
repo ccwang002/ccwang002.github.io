@@ -2,7 +2,7 @@
 Title: Blog defaults to HTTPS
 Slug: blog-https
 Date: 2016-01-06
-Tags: zh, blog, pelican
+Tags: zh, blog, pelican, https
 Category: Coding
 ---
 
