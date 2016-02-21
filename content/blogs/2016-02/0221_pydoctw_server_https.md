@@ -18,12 +18,12 @@ Let's Encrypt (LE) 使用 AMCE (Automated Certificate Management Environment) pr
 
 ### 參考資料
 
-我不是網路安全相關的專家，所以設定都是參考網路上的說明整理而成。LE certificate 的設定參考 [*How to Secure Your Web App Using HTTPS With Letsencrypt*] by Rob McLarty 這篇文章。
+我不是網路安全相關的專家，設定都是參考網路上的說明整理而成。LE certificate 的設定參考 [*How to Secure Your Web App Using HTTPS With Letsencrypt*] by Rob McLarty 這篇文章。
 
 
 ### Let's Encrypt Certificate
 
-沒有使用 LE 官方的 client，而是用 [Daniel Roesler] 所寫的 [acme-tiny]。這是一個不到 200 行的 Python script，可以自行檢查它有沒有做任何奇怪的事。
+沒有使用 LE 官方的 client，而是用 [Daniel Roesler] 所寫的 [acme-tiny]。這是一個不到 200 行的 Python script，可以自行檢查它有沒有做任何奇怪的事。[acme-tiny] 的 README 也有個設定教學，應該是大同小異。
 
 基本上都是照著 [*How to Secure Your Web App Using HTTPS With Letsencrypt*] 該篇文章做，不過有調整了以下的東西：
 
@@ -99,7 +99,7 @@ WantedBy=multi-user.target
 
 以這邊寫的時間 `*-1/2-1 16:00:00` 為例，代表每年的 1+2n 月 1 日 16:00 UTC 更新 certificate，即臺灣時間 1、3、5、……月 2 日凌晨更新。
 
-啟用 timer，它需要被 enable 確保開機都能被執行。
+啟用 timer，它需要被 enable 確保重開機時被執行。
 
 ```
 systemctl enable renew_cert.timer
@@ -114,14 +114,14 @@ NEXT                         LEFT                LAST PASSED UNIT             AC
 Tue 2016-03-01 16:00:00 UTC  1 weeks 2 days left n/a  n/a    renew_cert.timer renew_cert.service
 ```
 
-[^calendar]: 除了 `OnCalendar` 還有很多設定 timer 的方式，如 `OnUnitActiveSec`。不過其他的時間算法都會受有沒有開機影響時間的計算。
+[^calendar]: 除了 `OnCalendar` 還有很多設定 timer 的方式，如 `OnUnitActiveSec`。不過其他的時間算法，都會受有沒有開機，影響時間的計算。
 
 [^utc]: Debian Jessie 的 [systemd.time (7)](https://www.freedesktop.org/software/systemd/man/systemd.time.html#Calendar%20Events) Calendar Events 裡並沒有指定時區的方式，所以加上時區會有 parse error。但新版的 systemd 似乎支援時區。總之應該用 `systemctl list-timers` 確定執行的時間。
 
 
 ### nginx HTTP redirect to HTTPS
 
-（這邊設定我比較沒信心，有更好的設定方法歡迎告訴我 > <）
+（這邊設定我沒信心，有更好的設定方法歡迎告訴我 > <）
 
 要解決的問題為，ACME challenge 是透過 HTTP，其餘的連線都轉到 HTTPS。
 
@@ -162,7 +162,9 @@ server {
 
 ### 心得
 
-總結來說，使用 [Let's Encrypt] 不難，但也沒到非常簡單。如果你願意把 root 和 private key 權限給它的話，用 `letsencrypt-auto` 步驟能更少。覺得 [acme-tiny] 指令太複雜的話，原作者也寫了一個 [Get HTTPS for free!] 服務，用網頁的方式協助整個註冊流程。
+總結來說，使用 [Let's Encrypt] 不難，但也沒到非常簡單。
+
+如果你願意把 root 和 private key 權限給它的話，用官方 client 提供的 `letsencrypt-auto` 步驟能更少，用 Apache 它聲稱能全自動設定。覺得 [acme-tiny] 指令太複雜的話，原作者也寫了一個 [Get HTTPS for free!] 服務，用網頁的方式協助整個註冊流程。
 
 要注意目前 public beta 階段，相同 domain 在 7 天只能被簽署 5 次，測試的時候不要太衝動不然就要等一週了。
 
