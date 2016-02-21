@@ -30,7 +30,7 @@ Let's Encrypt (LE) 使用 AMCE (Automated Certificate Management Environment) pr
 1. 建立 letsencrypt 帳號時，禁止使用 password login。<br>
    即： `adduser --disabled-password ...`
 2. 使用 git 管理 [acme-tiny] script。
-3. 改用 systemd 控制 nginx，而不是透過 service。<br>
+3. 改用 systemd 控制 nginx，而不是透過 service。<br>
    即： `systemctl reload nginx`
 4. 沒有用 crontab 而是使用 [systemd Timers](https://wiki.archlinux.org/index.php/Systemd/Timers)。
 5. 重新導引 http 連線至 https。
