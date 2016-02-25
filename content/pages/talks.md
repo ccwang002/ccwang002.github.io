@@ -6,6 +6,13 @@ sortorder: 10
 
 The followings are talks I given in open source communities.
 
+
+### 2016
+
+[**使用 Python 官方說明文件**](https://blog.liang2.tw/2016Talk-Pydoc/) Feb 25, 2016<br>
+Taipei.py Meetup
+
+
 ### 2015
 
 [**Chinese Search**](http://blog.liang2.tw/2015Talk-Chinese-Search) Sep 14, 2015<br>
@@ -22,6 +29,7 @@ MLDM Monday (Taiwan R User Group)
 
 [**IPython Parallel Introduction**](http://blog.liang2.tw/2015Talk-IPython-Parallel/) Apr 27, 2015<br>
 Kaohsiung Python User Group
+
 
 ### 2014
 
@@ -42,6 +50,7 @@ PyCon APAC 2014/TW
 
 [**Statistics in Python with R**](http://blog.liang2.tw/2014-pyR-stat/) May 17, 2014<br>
 PyCon APAC 2014/TW
+
 
 ### 2013
 
