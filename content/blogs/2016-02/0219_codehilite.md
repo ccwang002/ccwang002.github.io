@@ -30,9 +30,7 @@ print('Hello World')
 
 which is very convenient for code copy-pasting.
 
-However, the functionality is currently failed on the official Python doc (given by [`copybutton.js`](https://docs.python.org/3/_static/copybutton.js)) because the jQuery updates break previous API behavior. I've filed [issue 26246](http://bugs.python.org/issue26246) on the Python issue tracker for this problem.
-
-Anyway, you can find a [workable example](http://docs.python.org.tw/3/tutorial/controlflow.html) from Taiwan's doc translation (I'm involved in it so I already fixed it) and its functional [copybutton.js](http://docs.python.org.tw/3/_static/copybutton.js) file.
+<del>However, the functionality is currently failed on the official Python doc (given by [`copybutton.js`](https://docs.python.org/3/_static/copybutton.js)) because the jQuery updates break previous API behavior. I've filed [issue 26246](http://bugs.python.org/issue26246) on the Python issue tracker for this problem.</del> (EDIT 2016-02-27: the patch has been merged.)
 
 [Pelican]: http://docs.getpelican.com/
 [Markdown]: https://pythonhosted.org/Markdown/
