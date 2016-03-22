@@ -9,8 +9,11 @@ The followings are talks I given in open source communities.
 
 ### 2016
 
+[**Django-Q: Django Task Queue**](https://blog.liang2.tw/2016Talk-Django-Q/) Mar 7, 2016<br>
+Taipei.py Web Meetup
+
 [**使用 Python 官方說明文件**](https://blog.liang2.tw/2016Talk-Pydoc/) Feb 25, 2016<br>
-Taipei.py Meetup
+Taipei.py Web Meetup
 
 
 ### 2015
@@ -19,7 +22,7 @@ Taipei.py Meetup
 PyCon China Shangai & Guangzhou 2015, and MLDM Monday (Taiwan R User Group)
 
 [**Aiohttp Usage**](http://blog.liang2.tw/play_aiohttp/) Jul 14, 2015<br>
-Taiwan Python Web Meetup
+Taipei.py Web Meetup
 
 [**HDF5 Use Case**](http://blog.liang2.tw/2015Talk-HDF5-Use-Case/) Jun 7, 2015<br>
 PyCon APAC 2015/TW
