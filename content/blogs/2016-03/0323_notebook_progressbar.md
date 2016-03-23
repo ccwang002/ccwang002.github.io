@@ -66,7 +66,7 @@ display(p)
 (0, 100)
 ```
 
-只要修改 `p.vaule` 前面的進度條的狀態就會自動更新（不用重跑 `display(p)`）：
+只要修改 `p.value` 前面的進度條的狀態就會自動更新（不用重跑 `display(p)`）：
 
 ```python
 p.value = 50
