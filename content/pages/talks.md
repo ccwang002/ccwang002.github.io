@@ -9,6 +9,9 @@ The followings are talks I given in open source communities.
 
 ### 2016
 
+[**Genomics in R**](https://blog.liang2.tw/2016Talk-Genomics-in-R/) May 16, 2016<br>
+MLDM Monday (Taiwan R User Group)
+
 [**Django-Q: Django Task Queue**](https://blog.liang2.tw/2016Talk-Django-Q/) Mar 7, 2016<br>
 Taipei.py Web Meetup
 
