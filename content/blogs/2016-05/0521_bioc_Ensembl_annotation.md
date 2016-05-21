@@ -246,7 +246,180 @@ ensembl <- useMart("ensembl", dataset="hsapiens_gene_ensembl")
 ```
 
 
+### Compatibility with AnnotationDb's interface
 
+The way to query the `ensembl` Mart object is slightly different to how we query a AnnotationDb object. They have different terminology. Luckily, Mart object provides a compatibility layer so we can still call functions such as `select(db, ...)`, `keytypes(db)`, `keys(db)` and `columns(db)`, which we frequently do[^select-compat].
+
+A Mart can have hundreds of keys and columns. So we select a part of them out by `grep()`,
+
+```r
+grep("^refseq", keytypes(ensembl), value = TRUE)
+# [1] "refseq_mrna" "refseq_mrna_predicted" ...
+grep("^ensembl", keytypes(ensembl), value = TRUE)
+# [1] "ensembl_exon_id" "ensembl_gene_id" ...
+grep("hsapiens_paralog_", columns(ensembl), value=TRUE)
+# [1] "hsapiens_paralog_associated_gene_name"
+# [2] "hsapiens_paralog_canonical_transcript_protein"
+# [3] "hsapiens_paralog_chrom_end"
+# ...
+```
+
+We first start by finding the MAPK1's RefSeq transcript IDs and their corresponding Ensembl transcript IDs.
+
+```r
+select(
+    ensembl,
+    keys = c("MAPK1"),
+    keytype = "hgnc_symbol",
+    columns =  c(
+        "refseq_mrna", "ensembl_transcript_id",
+        "hgnc_symbol", "entrezgene",
+        "chromosome_name",
+        "transcript_start", "transcript_end", "strand"
+    )
+)
+#   refseq_mrna ensembl_transcript_id hgnc_symbol entrezgene
+# 1   NM_002745       ENST00000215832       MAPK1       5594
+# 2                   ENST00000491588       MAPK1       5594
+# 3   NM_138957       ENST00000398822       MAPK1       5594
+# 4                   ENST00000544786       MAPK1       5594
+#   chromosome_name transcript_start transcript_end strand
+# 1              22         21754500       21867629     -1
+# 2              22         21763984       21769428     -1
+# 3              22         21769040       21867680     -1
+# 4              22         21769204       21867440     -1
+```
+
+So some of the MAPK1 Ensembl transcripts does not have their identifiers in RefSeq database.
+
+[^select-compat]: Note that the `select(mart, ...)` compatibility does not apply to all existed filters (keys) and attributes (columns) of the given Mart.
+
+Moreover, what's awesome about BioMart is that almost all the information on the Ensembl genome browser can be retreived. For example, getting the paralog and the mouse homolog of MAPK1,
+
+```r
+# Get paralog of MAPK1
+select(
+    ensembl,
+    keys = c("ENSG00000100030"),
+    keytype = "ensembl_gene_id",
+    columns = c(
+        "hsapiens_paralog_associated_gene_name",
+        "hsapiens_paralog_orthology_type",
+        "hsapiens_paralog_ensembl_peptide"
+    )
+)
+#   hsapiens_paralog_associated_gene_name hsapiens_paralog_orthology_type hsapiens_paralog_ensembl_peptide
+# 1                                 MAPK3          within_species_paralog                  ENSP00000263025
+# 2                                 MAPK6          within_species_paralog                  ENSP00000261845
+# 3                                 MAPK4          within_species_paralog                  ENSP00000383234
+# 4                                   NLK          within_species_paralog                  ENSP00000384625
+# 5                                 MAPK7          within_species_paralog                  ENSP00000311005
+
+# Get homolog of MAPK1 in mouse
+select(
+    ensembl,
+    keys = c("ENSG00000100030"),
+    keytype = "ensembl_gene_id",
+    columns = c(
+        "mmusculus_homolog_associated_gene_name",
+        "mmusculus_homolog_orthology_type",
+        "mmusculus_homolog_ensembl_peptide"
+    )
+)
+#   mmusculus_homolog_associated_gene_name mmusculus_homolog_orthology_type mmusculus_homolog_ensembl_peptide
+# 1                                  Mapk1                 ortholog_one2one                ENSMUSP00000065983
+```
+
+
+### biomaRt's original interface
+
+In fact, keys and columns are interpreted as BioMart's **filters** and **attributes** respectively. To find all available filter and attributes,
+
+```r
+filters = listFilters(ensembl)
+attributes = listAttributes(ensembl)
+```
+
+which return a data.frame that contains each entry's name and description.
+
+`select(db, ...)` is converted to `getBM(mart, ...)`. For the same example of finding RefSeq and Ensembl transcript IDs, it can be written as
+
+```r
+getBM(
+    attributes = c(
+        "refseq_mrna", "ensembl_transcript_id",
+        "chromosome_name",
+        "transcript_start", "transcript_end", "strand",
+        "hgnc_symbol", "entrezgene", "ensembl_gene_id"
+    ),
+    filters = "hgnc_symbol",
+    values = c("MAPK1"),
+    mart = ensembl
+)
+```
+
+
+
+## Conversion between genomic coordinate systems
+
+For example, today we'd like to convert a batch of genomic locations of reference hg38 to that of hg19. It is a non-trivial task that can be currently handled by the following tools:
+
+- [CrossMap](http://crossmap.sourceforge.net/) (used by Ensembl)
+- [liftOver](https://genome.ucsc.edu/cgi-bin/hgLiftOver) (used by UCSC)
+
+Frankly I don't have real experience for such conversion (which gives the sense of unease), but anyway I follow [the guide on PH525x series](http://genomicsclass.github.io/book/pages/bioc1_liftOver.html). In Bioconductor, we can use UCSC's Chain file to apply the `liftOver()` method in package `rtracklayer`. To convert from hg38 to hg19, we need the `hg38ToHg19.over.chain` file.
+
+We still use MAPK1 as an example. First extract their genomic ranges respectively,
+```r
+library(TxDb.Hsapiens.UCSC.hg38.knownGene)
+library(TxDb.Hsapiens.UCSC.hg19.knownGene
+tx38 <- TxDb.Hsapiens.UCSC.hg38.knownGene
+tx19 <- TxDb.Hsapiens.UCSC.hg19.knownGene
+MAPK1_hg38 <- genes(tx38, filter=list(gene_id="5594"))
+MAPK1_hg19 <- genes(tx19, filter=list(gene_id="5594"))
+```
+
+Then we convert `MAPK1_hg38` to use the hg19 coordinate system.
+
+```r
+library(rtracklayer)
+ch <- import.chain("./hg38ToHg19.over.chain")
+MAPK1_hg19_lifted <- liftOver(MAPK1_hg38, ch)
+
+MAPK1_hg19
+# GRanges object with 1 range and 1 metadata column:
+#        seqnames               ranges strand |     gene_id
+#           <Rle>            <IRanges>  <Rle> | <character>
+#   5594    chr22 [22113947, 22221970]      - |        5594
+#   -------
+#   seqinfo: 93 sequences (1 circular) from hg19 genome
+
+MAPK1_hg19_lifted
+# GRangesList object of length 1:
+# $5594
+# GRanges object with 2 ranges and 1 metadata column:
+#       seqnames               ranges strand |     gene_id
+#          <Rle>            <IRanges>  <Rle> | <character>
+#   [1]    chr22 [22113947, 22216652]      - |        5594
+#   [2]    chr22 [22216654, 22221970]      - |        5594
+#
+# -------
+# seqinfo: 1 sequence from an unspecified genome; no seqlengths
+```
+
+So the conversion works as expected, though it created a gap in the record. I haven't looked into the results. Maybe a comparison with CrossMap is needed.
+
+
+
+## Summary
+
+We skimmed through OrgDb and TxDb again using the Ensembl references, including how to build the TxDb for Ensembl locally and obtain external annotaions from AnnotationHub.
+
+BioMart is a abundant resources to query across various types of databases and references, which can be used in conversion between different naming systems.
+
+Finally, we know how to convert between different version of the reference. Though the correctness of the conversion requires further examination (not meaning it is wrong), at least the conversion by liftOver works as expected.
+
+Starting here, you should have no trouble dealing with annotations in R anymore. For the next post, I plan to further explore the way to read sequencing analysis results in R.
 
 
 
