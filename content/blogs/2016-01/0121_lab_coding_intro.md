@@ -85,15 +85,17 @@ Mac OSX 使用者也有這樣的現象，但因為 OSX 在底層用的是跟 Fre
 
 寫一寫內容也變得蠻多的，所以把它切成了幾篇文章，請按照數字順序閱讀：
 
-- [1 Linux][chp1-linux]
-- [2 Text Editing (Markdown, Text Editor)][chp2-text-editing]
-- [3 Version Control (Git)][chp3-git]
-- [4 Python][chp4-python]
-- [A0 OSX Development Environment][apx0-osx] 
-- [A1 Python in Bioinformatics][apx1-bioinfo]
+- [Introduction][intro]
+- [Chapter 1 -- Linux][chp1-linux]
+- [Chapter 2 -- Text Editing (Markdown, Text Editor)][chp2-text-editing]
+- [Chapter 3 -- Version Control (Git)][chp3-git]
+- [Chapter 4 -- Python][chp4-python]
+- [Appendix 1 -- OSX Development Environment][apx0-osx]
+- [Appendix 2 -- Python in Bioinformatics][apx1-bioinfo]
 
 或者，用 [labcoding](/tag/labcoding.html) 這個 tag 也可以找到所有的文章。
 
+[intro]: {filename}0121_lab_coding_intro.md
 [chp1-linux]: {filename}0121_lab_coding_linux.md
 [chp2-text-editing]: {filename}0121_lab_coding_text_editing.md
 [chp3-git]: {filename}0121_lab_coding_version_control.md

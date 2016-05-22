@@ -4,18 +4,39 @@ Slug: lab-coding-appendix-bioinfo-python
 Date: 2016-01-21 23:30
 Tags: en, labcoding, python
 Category: Coding
-Summary: A walk through of practices created by Rosalind Team. 
+Summary: A walk through of practices created by Rosalind Team.
 ---
 
-> I want to play a game.
+Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）
 
-We are going to walk through a series of practice created by [Rosalind Team][rosalind]. 
+We are going to walk through a series of practice created by [Rosalind Team][rosalind].
 
 Once you register an account at Rosalind, you can use their judging system to work through all problems. However, in this case you cannot arbitrarily skip easy levels and it sucks. So I'm not going to force you using the system. Luckily, in each problem one set of example data and expected output is given, which can be used for checking our answer.
 
 Note: Their code assumes Python 2 but everything I mention here is Python 3.
 
 [TOC]
+
+> **其他 Coding 初學指南系列文章：**
+>
+> - [Introduction][intro]
+> - [Chapter 1 -- Linux][chp1-linux]
+> - [Chapter 2 -- Text Editing (Markdown, Text Editor)][chp2-text-editing]
+> - [Chapter 3 -- Version Control (Git)][chp3-git]
+> - [Chapter 4 -- Python][chp4-python]
+> - [Appendix 1 -- OSX Development Environment][apx0-osx]
+> - [Appendix 2 -- Python in Bioinformatics][apx1-bioinfo]
+>
+> 或者，用 [labcoding](/tag/labcoding.html) 這個 tag 也可以找到所有的文章。
+
+[intro]: {filename}0121_lab_coding_intro.md
+[chp1-linux]: {filename}0121_lab_coding_linux.md
+[chp2-text-editing]: {filename}0121_lab_coding_text_editing.md
+[chp3-git]: {filename}0121_lab_coding_version_control.md
+[chp4-python]: {filename}0121_lab_coding_python.md
+[apx0-osx]: {filename}0121_lab_coding_a_osx_env.md
+[apx1-bioinfo]: {filename}0121_lab_coding_a_bioinfo_python.md
+
 
 
 ## Python Basics
@@ -37,7 +58,7 @@ Link: <http://rosalind.info/problems/dna/>
 ### Q REVC: The Secondary and Tertiary Structures of DNA
 Link: <http://rosalind.info/problems/revc/>
 
-- Hint: [reversed](https://docs.python.org/3/library/functions.html#reversed) for any sequence object and a dict for nucleotide code mapping 
+- Hint: [reversed](https://docs.python.org/3/library/functions.html#reversed) for any sequence object and a dict for nucleotide code mapping
 - More Hint: done in a list comprehension
 
 [rosalind]: http://rosalind.info/problems/
@@ -86,7 +107,7 @@ class Fasta:
         self.raw_str = raw_str
         # convert string into structured reads.
         self.reads = list(self.parse())
-        
+
     def parse(self):
         """Parse the string and yield read in Read class."""
         # though we have no idea right now, the code structure
@@ -107,7 +128,7 @@ for first_line, second_line in zip(*[iter(raw_lines)]*2):
     yield Read(id=first_line, seq=second_line)
 ~~~
 
-By `zip(*[iter(s)]*n)` magic, we are very close to implement a full parser. You could find a lot of [explanations](http://stackoverflow.com/a/2233247) for this magic. 
+By `zip(*[iter(s)]*n)` magic, we are very close to implement a full parser. You could find a lot of [explanations](http://stackoverflow.com/a/2233247) for this magic.
 
 Read id line percedes with a `>` sign, so we could use something like `first_line[1:]` or `first_line[len('>'):]` for explicity.
 

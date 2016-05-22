@@ -7,6 +7,8 @@ Category: Coding
 Summary: 選擇 Python 作為第一個深入學習的語言有很多好處。他的語法跟英文相似、用互動式的方式來操作，方便以邊試邊學、內建的標準函式庫功能豐富、第三方套件，幾乎能用 Python 完成各種事情。
 ---
 
+Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）
+
 > Python 是一種物件導向、直譯式的電腦程式語言，具有近二十年的發展歷史。它包含了一組功能完備的標準庫，能夠輕鬆完成很多常見的任務。
 >
 > (From [Wikipedia](https://zh.wikipedia.org/wiki/Python))
@@ -18,6 +20,28 @@ Python 能用互動式的方式（read–eval–print loop, REPL）來操作，�
 內建的標準庫（standard library）功能很豐富，在網路、文字處理、檔案處理、甚至 GUI 介面都能用它完成。除此之外，它的第三方套件也很多，在 Linux 上很好安裝，這樣幾乎能用 Python 完成各種事情。
 
 [TOC]
+
+> **其他 Coding 初學指南系列文章：**
+>
+> - [Introduction][intro]
+> - [Chapter 1 -- Linux][chp1-linux]
+> - [Chapter 2 -- Text Editing (Markdown, Text Editor)][chp2-text-editing]
+> - [Chapter 3 -- Version Control (Git)][chp3-git]
+> - [Chapter 4 -- Python][chp4-python]
+> - [Appendix 1 -- OSX Development Environment][apx0-osx]
+> - [Appendix 2 -- Python in Bioinformatics][apx1-bioinfo]
+>
+> 或者，用 [labcoding](/tag/labcoding.html) 這個 tag 也可以找到所有的文章。
+
+[intro]: {filename}0121_lab_coding_intro.md
+[chp1-linux]: {filename}0121_lab_coding_linux.md
+[chp2-text-editing]: {filename}0121_lab_coding_text_editing.md
+[chp3-git]: {filename}0121_lab_coding_version_control.md
+[chp4-python]: {filename}0121_lab_coding_python.md
+[apx0-osx]: {filename}0121_lab_coding_a_osx_env.md
+[apx1-bioinfo]: {filename}0121_lab_coding_a_bioinfo_python.md
+
+
 
 ## 聽說系列
 
@@ -36,7 +60,7 @@ Python 的確執行效率比編譯式的語言差（例：C/C++、Java），但�
 如果用到了最後一步情況還是沒有改善的話，就可以開始把那些部份用其他語言改寫，例如：C。Python 能很容易跟 C 語言的結合。而且常見的 C 語言加速，其實都有 Python 套件能支援了，例如 Numpy，所以大部份的時間，都能在不使用 Python 以外的語言完成高量計算。
 
 > 我在實習時候，也常碰到需要優化的問題。用 Python 我能很輕鬆（一天內）把工作分配到 4 台主機 64 cores 上跑，也許方法不有效率，但比起我花幾天把 Python 改寫成 C/C++，實作更精密有效的算法（還要是 multithread），仔細處理可能的 corner case，平行化之後本來三四天的計算時間我 2 個小時就能收工。
-> 
+>
 > 更重要的是，這個實驗就只跑個兩次。
 
 比起計算時間，開發時間對工程師而言是更加寶貴的。尤其在實驗室，最關心的是這個方法行不行得通，程式跑得慢有很多解決的方式，例如平行化。重點在解決問題，需要用多一點的資源其實不是很重要。
@@ -123,7 +147,7 @@ O'Reilly Head First 系列都是給初學者的書，這本有中文翻譯本，
 
 3. [youtube-dl] 是一個用來下載 Youtube、Crunchyroll 等各大影音串流網站影片的工具。除了用 Linux 的套件管理工具安裝它，它其實是個用 Python 寫成的套件。為了避免跟 Linux 系統環境相衝，請開一個 Python 虛擬環境，並在裡面用 pip 安裝它。
     - Note: youtube-dl 除了單純做下載串流檔之外，還支援轉檔、封裝、後製等影像處理，這需要 libav 或 ffmpeg 任一影像處理套件。在 Debian 系列的 Linux 上 libav 會好裝一點。
-    
+
 4. 用 Python 解決一些實驗室會碰到的 Bioinfo 問題。有個網站 Rosalind 出了一系列的題目，我選了一些讓各位練習，請參考[附錄 1][apx1-bioinfo]。
 
 [pydoc-pip]: https://docs.python.org/3/installing/

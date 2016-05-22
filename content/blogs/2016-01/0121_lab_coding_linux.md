@@ -6,11 +6,25 @@ Tags: zh, labcoding
 Category: Coding
 ---
 
+Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）
+
 學習使用 Linux 是第一個比較大的障礙，因為會在短時間接觸到非常多新的東西。後面的東西多少都與 Linux 相關，而 Linux 難的部份在開始使用 terminal 來操作「整台電腦」，對很習慣使用視窗介面的人會覺得很不直覺。好在近年幾個主流的 Linux Distribution 都有很好的圖形介面（正確稱 Desktop Environment），所以一開始能漸近地適應 terminal 操作。
 
 > 在實驗室 server 上開發，「能在 terminal 裡做事情」是必須的。
 
 [TOC]
+
+> **其他 Coding 初學指南系列文章：**
+>
+> - [Introduction][intro]
+> - [Chapter 1 -- Linux][chp1-linux]
+> - [Chapter 2 -- Text Editing (Markdown, Text Editor)][chp2-text-editing]
+> - [Chapter 3 -- Version Control (Git)][chp3-git]
+> - [Chapter 4 -- Python][chp4-python]
+> - [Appendix 1 -- OSX Development Environment][apx0-osx]
+> - [Appendix 2 -- Python in Bioinformatics][apx1-bioinfo]
+>
+> 或者，用 [labcoding](/tag/labcoding.html) 這個 tag 也可以找到所有的文章。
 
 
 ## Linux、Unix、BSD、*nix
@@ -102,15 +116,15 @@ sudo apt-get install ubuntu-gnome-desktop
 #### 各章節重點整理
 鳥哥的內容退一千步來說都對初學者很有幫助，但為了避免各位花費無謂的時間在「對照古早與現代操作 (google 到的資料)上」，整理個表格讓大家知道每個章節什麼地方需要看。
 
-| 章節           | 章節名                           | 重要的內容                                                                     | 
-|:--------------:|:---------------------------------|--------------------------------------------------------------------------------| 
-| 0              | 計算機概論                       | 沒聽過 CPU、RAM、MB GB 單位就從頭看； 不然就讀資料表示方式(3)、軟體程式運作(4) | 
-| 5              | 首次登入與線上求助 man page      | 文字模式下指令的下達(2)、man page 與 info page(3)、nano(4)                     | 
-| 6              | Linux 的檔案權限與目錄配置       | 全                                                                             | 
-| 7              | Linux 檔案與目錄管理             | 除檔案隱藏與特殊屬性(4)外都重要                                                | 
-| 8              | Linux 磁碟與檔案系統管理         | 檔案系統的簡單操作(2)                                                          | 
-| 9              | 檔案與檔案系統的壓縮與打包       | 壓縮檔案的用途與技術(1)、打包指令(3)                                           | 
-| 10[^*]            | vim 程式編輯器                   | 語系編碼轉換(4.3)                                                              | 
+| 章節           | 章節名                           | 重要的內容                                                                     |
+|:--------------:|:---------------------------------|--------------------------------------------------------------------------------|
+| 0              | 計算機概論                       | 沒聽過 CPU、RAM、MB GB 單位就從頭看； 不然就讀資料表示方式(3)、軟體程式運作(4) |
+| 5              | 首次登入與線上求助 man page      | 文字模式下指令的下達(2)、man page 與 info page(3)、nano(4)                     |
+| 6              | Linux 的檔案權限與目錄配置       | 全                                                                             |
+| 7              | Linux 檔案與目錄管理             | 除檔案隱藏與特殊屬性(4)外都重要                                                |
+| 8              | Linux 磁碟與檔案系統管理         | 檔案系統的簡單操作(2)                                                          |
+| 9              | 檔案與檔案系統的壓縮與打包       | 壓縮檔案的用途與技術(1)、打包指令(3)                                           |
+| 10[^*]            | vim 程式編輯器                   | 語系編碼轉換(4.3)                                                              |
 | 11             | 認識與學習 BASH                  | 全。但可視情況忽略 2.4-2.8、6.4                                                |
 | 12[^†] | 正規表示法與文件格式化處理       | 前言(1)                                                                        |
 | 13             | 學習 Shell Scripts               | 全（等用到再看）                                                               |
@@ -147,8 +161,8 @@ Linux Foundation 所開辦的線上課程，有英文的影片和講義。還請
 | Chp. No | Chp. Name | Highlights |
 |:--------|:----------|:-----------|
 | 1 | GNU/Linux tutorials| Everything except for 1.3 Midnight Commander |
-| 2 | Debian package management | Read 2.2 Basic package management operations | 
-| 10 | Data management | Read 10.1 Sharing, copying, and archiving | 
+| 2 | Debian package management | Read 2.2 Basic package management operations |
+| 10 | Data management | Read 10.1 Sharing, copying, and archiving |
 
 ## 學習目標
 
@@ -168,7 +182,7 @@ Linux Foundation 所開辦的線上課程，有英文的影片和講義。還請
 1. 自己從零開始安裝一次 Linux 系統（可以用 VM）。
 2. 定期使用它一個星期以上（即熟悉 `cd` `ls` 等基礎指令）
 3. 使用 ssh 連線到遠端的 Linux。（要打開 ssh 的 port）
-    - Bonus: 在 ssh 連線時不用打密碼。  
+    - Bonus: 在 ssh 連線時不用打密碼。
     - Bonus hint: 查 `authorized_keys`。會需要建立 ssh user identity keypair，這會在上傳 GitHub 時用到）
 
 4. 安裝一個叫 [htop] 的系統監控軟體。使用它來查看系統資料的使用狀況
@@ -198,7 +212,10 @@ Linux Foundation 所開辦的線上課程，有英文的影片和講義。還請
 [htop]: http://hisham.hm/htop/
 [aria2]: http://aria2.sourceforge.net/
 
+[intro]: {filename}0121_lab_coding_intro.md
 [chp1-linux]: {filename}0121_lab_coding_linux.md
 [chp2-text-editing]: {filename}0121_lab_coding_text_editing.md
 [chp3-git]: {filename}0121_lab_coding_version_control.md
 [chp4-python]: {filename}0121_lab_coding_python.md
+[apx0-osx]: {filename}0121_lab_coding_a_osx_env.md
+[apx1-bioinfo]: {filename}0121_lab_coding_a_bioinfo_python.md

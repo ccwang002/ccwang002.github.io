@@ -7,9 +7,33 @@ Category: Coding
 Summary: 我自己在 OSX 上的主觀開發環境設定
 ---
 
+Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）
+
 以下的設定都蠻主觀的，見人見智。總之我把我的環境分享出來。
 
 [TOC]
+
+> **其他 Coding 初學指南系列文章：**
+>
+> - [Introduction][intro]
+> - [Chapter 1 -- Linux][chp1-linux]
+> - [Chapter 2 -- Text Editing (Markdown, Text Editor)][chp2-text-editing]
+> - [Chapter 3 -- Version Control (Git)][chp3-git]
+> - [Chapter 4 -- Python][chp4-python]
+> - [Appendix 1 -- OSX Development Environment][apx0-osx]
+> - [Appendix 2 -- Python in Bioinformatics][apx1-bioinfo]
+>
+> 或者，用 [labcoding](/tag/labcoding.html) 這個 tag 也可以找到所有的文章。
+
+[intro]: {filename}0121_lab_coding_intro.md
+[chp1-linux]: {filename}0121_lab_coding_linux.md
+[chp2-text-editing]: {filename}0121_lab_coding_text_editing.md
+[chp3-git]: {filename}0121_lab_coding_version_control.md
+[chp4-python]: {filename}0121_lab_coding_python.md
+[apx0-osx]: {filename}0121_lab_coding_a_osx_env.md
+[apx1-bioinfo]: {filename}0121_lab_coding_a_bioinfo_python.md
+
+
 
 ## Terminal
 OSX 系統有內建一個 `Terminals.app` 能像在 Linux 上一樣使用。他其實使用上沒什麼問題，不過想要調顏色，有更多自定功能的話，許多人會安裝 [iTerm2]。

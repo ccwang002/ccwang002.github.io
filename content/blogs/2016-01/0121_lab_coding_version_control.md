@@ -3,9 +3,11 @@ Title: Coding 初學指南－版本控制
 Slug: lab-coding-version-control
 Date: 2016-01-21 22:40
 Tags: zh, labcoding
-Category: Coding 
+Category: Coding
 Summary: 所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code 搞炸掉的時候，還能回到先前有保存的狀態。
 ---
+
+Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）
 
 所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code 搞炸掉的時候，還能回到先前有保存的狀態。
 
@@ -32,6 +34,28 @@ Summary: 所謂的版本控制就跟玩遊戲一樣可以存取「進度點」�
 [TOC]
 
 
+> **其他 Coding 初學指南系列文章：**
+>
+> - [Introduction][intro]
+> - [Chapter 1 -- Linux][chp1-linux]
+> - [Chapter 2 -- Text Editing (Markdown, Text Editor)][chp2-text-editing]
+> - [Chapter 3 -- Version Control (Git)][chp3-git]
+> - [Chapter 4 -- Python][chp4-python]
+> - [Appendix 1 -- OSX Development Environment][apx0-osx]
+> - [Appendix 2 -- Python in Bioinformatics][apx1-bioinfo]
+>
+> 或者，用 [labcoding](/tag/labcoding.html) 這個 tag 也可以找到所有的文章。
+
+[intro]: {filename}0121_lab_coding_intro.md
+[chp1-linux]: {filename}0121_lab_coding_linux.md
+[chp2-text-editing]: {filename}0121_lab_coding_text_editing.md
+[chp3-git]: {filename}0121_lab_coding_version_control.md
+[chp4-python]: {filename}0121_lab_coding_python.md
+[apx0-osx]: {filename}0121_lab_coding_a_osx_env.md
+[apx1-bioinfo]: {filename}0121_lab_coding_a_bioinfo_python.md
+
+
+
 # Git (Version Control)
 
 Git 是一個版本控制的工具。
@@ -45,7 +69,7 @@ Git 會在你的專案（repo）目錄[^註1]底下建一個 `.git` 的資料夾
 [^註1]: 所謂的專案目錄就是下 `git init` 指令的目錄。
 
 Git 雖然最常用來管理程式碼，但它其實可以有效地管理任何純文字的檔案，也可以把 binary  檔案加到 repo 中。
- 
+
 [GitHub]: https://github.com/
 
 （可能需要有一些 git 操作經驗才能了解以下的術語）
@@ -162,8 +186,8 @@ Conflict 的發生，最常見的就是兩個人各自修改了同一個檔案�
    dotfiles 就是用來儲存 `.xxx` 的檔案們，像是 `.bashrc` 、 `.screenrc` 、 `.tmux.conf` 、 `.gitconfig` 等等，一般可能存放在 `~/.xxx` 或 `~/.config/xxx` 之類。用版本控制的好處是，這樣在不同的 server 之間設定可以同步。<br>
    dotvim 是存放 `~/.vim` 的 Vim 設定檔。這些設定檔可以透過 soft link 連結回他們原本應該在的位置。
 
-    **注意！永遠不要把 private key 放入版本控制中！** 
-     
+    **注意！永遠不要把 private key 放入版本控制中！**
+
     - Hint: 搜尋 dotfiles 就會有很多範例（Ex [我的][my-dotfiles]）
 
 3. 建立自己的 Github 帳號，並把 dotfiles / dotvim repo 同步（**push**）到Github。

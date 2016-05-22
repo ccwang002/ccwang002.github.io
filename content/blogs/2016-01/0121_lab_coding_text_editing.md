@@ -7,9 +7,32 @@ Category: Coding
 Summary: 這個章節會帶大家認識一個很簡單的純文字格式 Markdown，方便大家整理筆記。同時希望大家學會一個 terminal based 的文字編輯器，方便往後在 server 環境底下的操作。
 ---
 
+Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）
+
 這個章節會帶大家認識一個很簡單的純文字格式 Markdown，方便大家整理筆記。同時希望大家學會一個 terminal based 的文字編輯器，方便往後在 server 環境底下的操作。
 
 [TOC]
+
+> **其他 Coding 初學指南系列文章：**
+>
+> - [Introduction][intro]
+> - [Chapter 1 -- Linux][chp1-linux]
+> - [Chapter 2 -- Text Editing (Markdown, Text Editor)][chp2-text-editing]
+> - [Chapter 3 -- Version Control (Git)][chp3-git]
+> - [Chapter 4 -- Python][chp4-python]
+> - [Appendix 1 -- OSX Development Environment][apx0-osx]
+> - [Appendix 2 -- Python in Bioinformatics][apx1-bioinfo]
+>
+> 或者，用 [labcoding](/tag/labcoding.html) 這個 tag 也可以找到所有的文章。
+
+[intro]: {filename}0121_lab_coding_intro.md
+[chp1-linux]: {filename}0121_lab_coding_linux.md
+[chp2-text-editing]: {filename}0121_lab_coding_text_editing.md
+[chp3-git]: {filename}0121_lab_coding_version_control.md
+[chp4-python]: {filename}0121_lab_coding_python.md
+[apx0-osx]: {filename}0121_lab_coding_a_osx_env.md
+[apx1-bioinfo]: {filename}0121_lab_coding_a_bioinfo_python.md
+
 
 # Markdown
 
@@ -82,7 +105,7 @@ nano `which cd`       # thanks TP's idea
 ## Vim 相關資源
 
 ### Open Vim
-互動式的線上學習網站，很短，跟著操作完能會 Vim 基本動作、存檔。 
+互動式的線上學習網站，很短，跟著操作完能會 Vim 基本動作、存檔。
 
 - <http://www.openvim.com/>
 
@@ -129,7 +152,7 @@ nano `which cd`       # thanks TP's idea
 
 Vim 在 normal 模式下能用 `/{pattern}` 搜尋文中的字串。除了直接把想要查的字串寫在 pattern 裡以外，還可以設計規則找出符合 pattern 但不一樣的結果。這樣的規則稱之為正規表示式（Regular Expression, or regex）。
 
-> 想做很複雜的字串比對時，都應該考慮是否能使用 regex 
+> 想做很複雜的字串比對時，都應該考慮是否能使用 regex
 
 要做字串比對的地方，工具通常都會提供使用 regex，例如 `grep`、`sed`。Vim 與 Python 也都有提供 regex 的功能。
 
@@ -139,7 +162,7 @@ Vim 在 normal 模式下能用 `/{pattern}` 搜尋文中的字串。除了直接
 
 - BRE (basic regex)
     - Ex. `[:alnum:]`
-- ERE (extended regex) 
+- ERE (extended regex)
     - Ex. `\w`
 
 在 Linux 指令當中通常會因為使用 regex 語法的不同分成多個指令[^註2]。例如 grep 使用 BRE；egrep 使用 ERE。
