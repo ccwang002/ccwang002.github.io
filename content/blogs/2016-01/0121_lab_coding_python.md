@@ -164,8 +164,8 @@ Python 的官網除了查語言特性之外，還能用來學習怎麼使用 std
 ## 學習目標
 
 1. 打開自己 Linux 裡的 Python3，跟著學習用的參考資料動手操作。用 REPL 以及運行腳本兩種方法來執行 Python 程式。
-2. 學習使用 pip 和 pyvenv (virtualenv) 來管理 Python 套件與環境。
-    - Hint: Python 官網是你的好夥伴。你可以在[這裡][pydoc-pip]和[這裡][pydoc-pyvenv]找到兩者的教學。
+2. 學習使用 pip 和 venv (virtualenv) 來管理 Python 套件與環境。
+    - Hint: Python 官網是你的好夥伴。你可以在[這裡 (pip)][pydoc-pip] 和[這裡 (venv)][pydoc-venv] 找到兩者的教學。
 
 3. [youtube-dl] 是一個用來下載 Youtube、Crunchyroll 等各大影音串流網站影片的工具。除了用 Linux 的套件管理工具安裝它，它其實是個用 Python 寫成的套件。為了避免跟 Linux 系統環境相衝，請開一個 Python 虛擬環境，並在裡面用 pip 安裝它。
     - Note: youtube-dl 除了單純做下載串流檔之外，還支援轉檔、封裝、後製等影像處理，這需要 libav 或 ffmpeg 任一影像處理套件。在 Debian 系列的 Linux 上 libav 會好裝一點。
@@ -176,6 +176,6 @@ Python 的官網除了查語言特性之外，還能用來學習怎麼使用 std
 EDIT 2016-05-22: 把 [ptt 發文](https://www.ptt.cc/bbs/Python/M.1463750830.A.DA8.html) 的內容更新上來，增加一些新書和中文翻譯；調整推薦的順序。
 
 [pydoc-pip]: https://docs.python.org/3/installing/
-[pydoc-pyvenv]: https://docs.python.org/3/using/scripts.html#scripts-pyvenv
+[pydoc-venv]: https://docs.python.org/3/library/venv.html?highlight=venv
 [youtube-dl]: http://rg3.github.io/youtube-dl/
 [apx1-bioinfo]: #file-a1_python_bioinfo-md
