@@ -7,7 +7,7 @@ Category: Coding
 Summary: 選擇 Python 作為第一個深入學習的語言有很多好處。他的語法跟英文相似、用互動式的方式來操作，方便以邊試邊學、內建的標準函式庫功能豐富、第三方套件，幾乎能用 Python 完成各種事情。
 ---
 
-Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）
+Last Edited: May, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）
 
 > Python 是一種物件導向、直譯式的電腦程式語言，具有近二十年的發展歷史。它包含了一組功能完備的標準庫，能夠輕鬆完成很多常見的任務。
 >
@@ -82,58 +82,80 @@ Python 的確執行效率比編譯式的語言差（例：C/C++、Java），但�
 
 連同前幾章，如果你要在自己電腦上設定 Python 開發環境，可以參考 [Djang Girls Taipei Tutorial](http://djangogirlstaipei.herokuapp.com/tutorials/)。另外，[Python Taiwan Wiki](http://wiki.python.org.tw/Python/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%94%A8%E5%B0%B1%E4%B8%8A%E6%89%8B) 有更完整的 Python 學習資源列表。
 
+O'Reilly（歐萊禮）的書，官方線上商店常有 50% 折扣，PDF/ePub/Mobi 格式都有, 買一次就能輕鬆在電腦、kindle、eReader 上閱讀，能接受英文的話，十分推薦跟官方購買。中文版就以天瓏書局為主。它也有賣英文紙本，逛實體店很舒服
+
+
 ### Introducing Python（精通 Python）
 
-O'Reilly Python 系列的書都寫得很好。這本是比較新出的，好處是它針對初學者，而且比較薄能在短時間看完。建議閱讀 Chp1 到 Chp7 ，以及 Chp8 File Input/Output 部份。
+O'Reilly Python 系列的書都寫得很好。這本是比較新出的，好處是它針對初學者，比較薄，能在短時間看完，文字很流暢。想要快速掌握基礎的語法的話，建議閱讀 Chp1 到 Chp7，以及 Chp8 File I/O 部份。
 
-可以在 O'Reilly 的線上商店買電子版拿到 PDF 與 Kindle 版本。
+"Introducing Python", Bill Lubanovic. *O'Reilly*, 2014.11
 
 - [英文書](http://shop.oreilly.com/product/0636920028659.do)
 - [中文實體書](http://www.tenlong.com.tw/items/9863477311?item_id=1007464)
+
 
 ### Python 程式設計入門
 
 2015 四月由[葉難](http://yehnan.blogspot.tw/2015/03/python_30.html)出的中文書，針對初學者，並有列出 Python 2.7、3.3、3.4 不同版本間的差異。
 
+《Python 程式設計入門》，葉難。博碩 2015.04
+
 - [中文實體書](http://www.tenlong.com.tw/items/9864340050)
 
-### 精通 Python 3 程式設計 2ed
-
-另一本 Python 中文入門書，比深入淺出難一點但比較像常規的教科書。
-
-- [中文實體書](http://www.tenlong.com.tw/items/9862760702)
 
 ### Python 官網
 
-Python 的官網一方面是用來查語言特性之外，還能用來學習怎麼使用 stdlib。除外還有一個簡潔的 Tutorial，可以供初學者參考，適合有學過其他語言的人。
+Python 的官網除了查語言特性之外，還能用來學習怎麼使用 stdlib。Python 標準函式庫功能包山包海，在你想要做什麼之前，都應該到官網查看看是不是內建 module 就已經提供功能了。除外，還有一個簡潔的 tutorial，供初學者參考，適合有學過其他語言的人。我認為這份寫得非常好，苦於沒有中文，以前經驗不太容易推廣，但值得看
 
-> Keep this under your pillow.
+"Python Tutorial", Official Python Documentation, Python Devs.
 
 - [連結](https://docs.python.org/3/)
-- [簡中翻譯](http://www.pythondoc.com/)
-- 繁中翻譯[請拭目以待](https://github.com/python-doc-tw/python-doc-tw) :)
+- [簡中翻譯](http://www.pythondoc.com/pythontutorial3/index.html)
+- [繁中翻譯](https://docs.python.org.tw/3/tutorial/index.html)（進行中）
 
-### Learning Python 5ed
 
-雖然名稱看起來很像是 Python 的入門書，但它的篇幅已經來到 1200 頁，實在無法推薦給初學者。但它把 Python 語言特性說的很清楚，同時考慮到 Python 2 和 3 版本。
+### Programming in Python 3（精通 Python 3 程式設計）
+
+另一本 Python 中文入門書，比《深入淺出》難一點但比較像常規的教科書。
+
+"Programming in Python 3" 2nd, Mark Summerfield. *Addison-Wesley*, 2009.11
+
+- [英文書](http://goo.gl/y1xf9u) (source: InformIT)
+- [中文實體書](http://www.tenlong.com.tw/items/9862760702)
+
+
+### Learning Python
+
+雖然名稱看起來很像是 Python 的入門書，但它的篇幅已經來到 1600 頁，實在無法推薦給初學者。它在一本書內把 Python 幾乎所有語言特性都說清楚，同時考慮到 Python 2 和 3 版本。當你想要了解，例如 MRO 的順序、何謂 unbounded, bound method，這本書詳細的程度不會讓你失望，只怕你沒空讀。
 
 我當初看的是這一本 3ed 中文版（現已絕版），那時還沒有考慮 Python 3。
 
 - [英文書](http://shop.oreilly.com/product/0636920028154.do)
 
-### Python Cookbook 3ed（Python 的錦囊妙計 3ed）
-這本不是入門書但很適合深入了解 Python，並讓自己的程式碼寫得更 **Pythonic**。裡面介紹了很多寫法慣例 idioms，同時也有中文版。非常值得在未來比較懂 Python 時買來看。
+
+### Python Cookbook（Python 的錦囊妙計）
+這本不是入門書但很適合深入了解 Python，並讓自己的程式碼寫得更 Pythonic。裡面介紹了很多寫法慣例 idioms，同時也有中文版。非常值得在未來比較懂 Python 時買來看。作者之一 David Beazley 是 PyCon TW 2013 的 Keynote。他平常就是專門教 Python 的講師，他在 PyCon 講過的「所有 talk 與 tutorial」，如 [concurrency](http://www.dabeaz.com/coroutines/), [packaging](http://www.dabeaz.com/modulepackage/index.html), [async io](https://www.youtube.com/watch?v=MCs5OvhV9S4) 等等都值得一看。
+
+"Python Cookbook" 3ed, David Beazley and Brian K. Jones. *O'Reilly*, 2013.05
 
 - [英文書](http://shop.oreilly.com/product/0636920027072.do)
 - [中文實體書](http://www.tenlong.com.tw/items/9863470686)
 
-### 深入淺出 Python
-O'Reilly Head First 系列都是給初學者的書，這本有中文翻譯本，內容圖文並茂活潑。不過不是每個人都喜歡這種嘻嘻哈哈的介紹方式。
 
-- [中文實體書](http://www.tenlong.com.tw/items/9862763485)
+### Fluent Python（流暢的 Python）
+
+當它是詳細、擴充版的 "Python Cookbook"，實際上書中也常常引用 David 的話。講述更多 Python 初介紹時不會深談的語言特性。如：MRO, Mixin, decorator, closure, metaprogramming每章最後的 Future Reading 與 Soapbox 旁徵博引，除了更細節的參考資料，還有當初 Python 為何如此設計等考量與討論的歷史、發展、與各語言比較。非常適合做為邁向 Python core developer 的參考書。
+
+"Fluent Python", Luciano Ramalho. *O'Reilly*, 2015.07
+
+- [英文書](http://shop.oreilly.com/product/0636920032519.do)
+- [中文實體書](http://www.tenlong.com.tw/items/986347911X)
+
 
 ### MOOCs
-很多人都有試過的線上課程，可能有中文字幕。缺點教的是 Python 2.7。而且我試了幾堂的經驗，並不是教授 idiomatic Python，也就是裡面教的寫法不一定是 Python 使用者平常使用並推薦的語法。
+
+關於 MOOCs 我有看過 Codecademy Python Track 以及 Coursera "An Introduction to Interactive Programming in Python" 這兩門課。我覺得最大的缺點就是講 Python 2.7，Python 3.x 的好用功能與差異都沒提；再來講課的 code 範例並不是使用 idiomatic Python syntax，在初學就沒養成好習慣與慣用語法有點可惜。
 
 - Codecademy Python Track <http://www.codecademy.com/en/tracks/python>
 - Coursera: An Introduction to Interactive Programming in Python <https://www.coursera.org/course/interactivepython>
@@ -149,6 +171,9 @@ O'Reilly Head First 系列都是給初學者的書，這本有中文翻譯本，
     - Note: youtube-dl 除了單純做下載串流檔之外，還支援轉檔、封裝、後製等影像處理，這需要 libav 或 ffmpeg 任一影像處理套件。在 Debian 系列的 Linux 上 libav 會好裝一點。
 
 4. 用 Python 解決一些實驗室會碰到的 Bioinfo 問題。有個網站 Rosalind 出了一系列的題目，我選了一些讓各位練習，請參考[附錄 1][apx1-bioinfo]。
+
+
+EDIT 2016-05-22: 把 [ptt 發文](https://www.ptt.cc/bbs/Python/M.1463750830.A.DA8.html) 的內容更新上來，增加一些新書和中文翻譯；調整推薦的順序。
 
 [pydoc-pip]: https://docs.python.org/3/installing/
 [pydoc-pyvenv]: https://docs.python.org/3/using/scripts.html#scripts-pyvenv
