@@ -1,5 +1,5 @@
 ---
-Title: 使用 uWSGI, nginx, and systemd 部署 Django
+Title: 使用 uWSGI、nginx、systemd 部署 Django
 Slug: django-deploy-uwsgi-nginx-systemd
 Date: 2016-05-19
 Tags: zh, python, django, postgresql, deploy, debian, systemd, nginx, uwsgi
