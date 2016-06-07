@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
+  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/font-awesome.min.css">
+  <!-- Justfont webfont -->
+  <!-- Local development -->
+  <!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+  <!-- Proudction version v4.9.4 -->
+  <script src="https://blog.liang2.tw/theme/js/justfont_v4.9.4.js" type="text/javascript" charset="utf-8"></script>
+  <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Liang2" />
+<meta name="description" content="沒幾天前剛部署一次 Django，記錄在《使用 uWSGI、nginx、systemd 部署 Django》。今天又部署了另一個專案。部署的設定跟上次一樣： nginx -- unix socket -- uWSGI -- Django 一樣寫一個 PROJ.service 的 systemd unit 來管理網站的啟動 (uWSGI ..." />
+<meta name="keywords" content="zh, python, django, postgresql, deploy, debian, systemd, nginx, uwsgi, conda">
+<meta property="og:site_name" content="Liang2's blog"/>
+<meta property="og:title" content="使用 conda env 部署 Django"/>
+<meta property="og:description" content="沒幾天前剛部署一次 Django，記錄在《使用 uWSGI、nginx、systemd 部署 Django》。今天又部署了另一個專案。部署的設定跟上次一樣： nginx -- unix socket -- uWSGI -- Django 一樣寫一個 PROJ.service 的 systemd unit 來管理網站的啟動 (uWSGI ..."/>
+<meta property="og:locale" content="zh_TW"/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2016/05/django-deploy-conda/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-05-24 00:00:00+08:00"/>
+<meta property="article:modified_time" content="2016-05-24 00:00:00+08:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
+<meta property="article:section" content="Coding"/>
+<meta property="article:tag" content="zh"/>
+<meta property="article:tag" content="python"/>
+<meta property="article:tag" content="django"/>
+<meta property="article:tag" content="postgresql"/>
+<meta property="article:tag" content="deploy"/>
+<meta property="article:tag" content="debian"/>
+<meta property="article:tag" content="systemd"/>
+<meta property="article:tag" content="nginx"/>
+<meta property="article:tag" content="uwsgi"/>
+<meta property="article:tag" content="conda"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="使用 conda env 部署 Django">
+<meta name="twitter:description" content="沒幾天前剛部署一次 Django，記錄在《使用 uWSGI、nginx、systemd 部署 Django》。今天又部署了另一個專案。部署的設定跟上次一樣： nginx -- unix socket -- uWSGI -- Django 一樣寫一個 PROJ.service 的 systemd unit 來管理網站的啟動 (uWSGI ...">
+  <title>使用 conda env 部署 Django &ndash; Liang2's blog</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://blog.liang2.tw">
+        <img src="https://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
+      </a>
+      <h1><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+      <p>Code / Stat / Bioinfo</p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
+          <li><a href="https://blog.liang2.tw/talks/#talks">Talks</a></li>
+          <li><a href="https://blog.liang2.tw/research/#research">Research</a></li>
+          <li><a href="https://blog.liang2.tw/projects/#projects">Projects</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
+        <li><a class="sc-envelope-o" href="mailto:me+blog@liang2.tw" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
+        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://blog.liang2.tw">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+      <a href="https://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="django-deploy-conda">使用 conda env 部署&nbsp;Django</h1>
+    <p>Posted on May 24, 2016
+      in <a href="https://blog.liang2.tw/category/coding.html">Coding</a>
+    </p>
+  </header>
+  <div>
+    <p>沒幾天前剛部署一次 Django，記錄在<a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/">《使用 uWSGI、nginx、systemd 部署 Django》</a>。今天又部署了另一個專案。部署的設定跟上次一樣：</p>
+<div class="highlight"><pre><span></span>nginx -- unix socket -- uWSGI -- Django
+</pre></div>
+
+
+<p>一樣寫一個 <code>PROJ.service</code> 的 systemd unit 來管理網站的啟動 (uWSGI)。之後提到 <code>PROJ</code> 時就換成自己的專案名稱；<code>USER</code> 就換成執行網站的帳號。</p>
+<div class="toc">
+<ul>
+<li><a href="#conda">conda</a></li>
+<li><a href="#uwsgi-path">uWSGI 和 $<span class="caps">PATH</span></a></li>
+<li><a href="#sysmted-unit">在 sysmted unit&nbsp;使用環境變數</a></li>
+<li><a href="#_1">結論</a></li>
+</ul>
+</div>
+<h3 id="conda">conda</h3>
+<p><a href="http://conda.pydata.org/">conda</a> 是一個 Python 套件的管理系統，他的好處是，遇到要使用外部 library 時，會這些套件相依的 library 都一併安裝管理，也可以管理不同 Python 版本。可以想像是加強版的 pip + venv。conda 跟 pip&nbsp;是相容的。</p>
+<p>這個 Django 專案就用到很多像 numpy、pandas 的套件。為了維護方便，我考慮用 conda 來安裝。我使用的是 <a href="http://conda.pydata.org/miniconda.html">miniconda3</a>，預設會安裝在 <code>~/miniconda3</code> 底下，虛擬環境會出現在 <code>~/miniconda3/envs/</code>。</p>
+<div class="highlight"><pre><span></span>$ conda create -n VENV <span class="nv">python</span><span class="o">=</span>3.5 numpy pandas django
+$ <span class="nb">source</span> activate VENV
+<span class="o">(</span>VENV<span class="o">)</span> $ pip install uwsgi
+</pre></div>
+
+
+<p>uWSGI 沒有在 conda 裡面，所以就用 pip 裝。從<a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/">上次的文章</a>知道系統並不用安裝。</p>
+<h3 id="uwsgi-path">uWSGI 和 $<span class="caps">PATH</span></h3>
+<p>理論上，之後就照著上次操作就好，但在 uWSGI&nbsp;就碰到問題：</p>
+<div class="highlight"><pre><span></span><span class="go">$ sudo /home/USER/miniconda3/envs/VENV/bin/uwsgi --ini PROJ.ini</span>
+<span class="go">[uWSGI] getting INI configuration from PROJ.ini</span>
+<span class="go">*** Starting uWSGI 2.0.13.1 (64bit) on [Wed May 25 08:04:23 2016] ***</span>
+<span class="go">compiled with version: 5.3.1 20160413 on 25 May 2016 01:35:28</span>
+<span class="go">os: Linux-4.4.0-22-generic #40-Ubuntu SMP Thu May 12 22:03:46 UTC 2016</span>
+<span class="go">nodename: s66</span>
+<span class="go">machine: x86_64</span>
+<span class="go">clock source: unix</span>
+<span class="go">detected number of CPU cores: 24</span>
+<span class="go">current working directory: /etc/uwsgi/vassals</span>
+<span class="go">detected binary path: /home/USER/miniconda3/envs/VENV/bin/uwsgi</span>
+<span class="go">……</span>
+<span class="go">chdir() to /path/to/PROJ/</span>
+<span class="go">your processes number limit is 514650</span>
+<span class="go">your memory page size is 4096 bytes</span>
+<span class="go">detected max file descriptor number: 1024</span>
+<span class="go">lock engine: pthread robust mutexes</span>
+<span class="go">thunder lock: disabled (you can enable it with --thunder-lock)</span>
+<span class="go">uwsgi socket 0 bound to UNIX address /run/PROJ/django.sock fd 3</span>
+<span class="go">Python version: 3.5.1 |Continuum Analytics, Inc.| (default, Dec  7 2015, 11:16:01)  [GCC 4.4.7 20120313 (Red Hat 4.4.7-1)]</span>
+<span class="go">Set PythonHome to /home/USER/miniconda3/envs/VENV</span>
+<span class="go">Failed to import the site module</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;/usr/lib/python3.5/site.py&quot;</span>, line <span class="m">580</span>, in <span class="n">&lt;module&gt;</span>
+    <span class="n">main</span><span class="p">()</span>
+<span class="gr">  …… </span>
+<span class="gr">  File &quot;/usr/lib/python3.5/_sysconfigdata.py&quot;, line 6, in &lt;module&gt;</span>
+<span class="gr">    from _sysconfigdata_m import *</span>
+<span class="gr">ImportError</span>: <span class="n">No module named &#39;_sysconfigdata_m&#39;</span>
+</pre></div>
+
+
+<p>但因為步驟實在太簡單，想不出來哪裡有錯，查網路也沒什麼相關的結果。在這邊卡了很久。</p>
+<p>結果後來才發現，Traceback 那邊 uWSGi 跑去讀到 <code>/usr/lib/python3.5/site.py</code>，這表示一定有環境設錯才讓它找到這個不是我們要的 python 環境，理論上應該是找到 <code>/home/USER/miniconda3/envs/VENV/lib/python3.5/site.py</code> 才對。</p>
+<p>經過一陣嘗試，發現只要修改 <code>$PATH</code> 環境變數就能運作了。</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> sudo -i
+<span class="gp">#</span> <span class="nb">echo</span> <span class="nv">$PATH</span>
+<span class="go">/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin</span>
+<span class="gp">#</span> <span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/home/USER/miniconda3/envs/VENV/bin:<span class="nv">$PATH</span>
+<span class="gp">#</span> /home/USER/miniconda3/envs/VENV/bin/uwsgi --ini PROJ.ini
+</pre></div>
+
+
+<h3 id="sysmted-unit">在 sysmted unit&nbsp;使用環境變數</h3>
+<p>根據 <a href="https://www.freedesktop.org/software/systemd/man/systemd.exec.html#%24PATH">systemd.exec(5)</a> 關於 <code>$PATH</code> 環境變數的使用：</p>
+<blockquote>
+<p>Colon-separated list of directories to use when launching executables. Systemd uses a fixed value of&nbsp;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin. </p>
+</blockquote>
+<p>預設只有以上提到的路徑，如果要修改環境變數的話，就透過 <a href="https://www.freedesktop.org/software/systemd/man/systemd.exec.html#Environment="><code>Environment=</code></a>，因此多加了一行在 systemd unit&nbsp;裡。其餘的設定都是相同的。</p>
+<div class="highlight"><pre><span></span><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">PROJ Django server by uWSGI</span>
+<span class="na">After</span><span class="o">=</span><span class="s">syslog.target</span>
+
+<span class="k">[Service]</span>
+<span class="na">Environment</span><span class="o">=</span><span class="s">&quot;PATH=/home/USER/miniconda3/envs/VENV/bin:$PATH&quot;</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/home/USER/miniconda3/envs/VENV/bin/uwsgi --ini /etc/uwsgi/vassals/PROJ.ini</span>
+<span class="na">Restart</span><span class="o">=</span><span class="s">always</span>
+<span class="na">KillSignal</span><span class="o">=</span><span class="s">SIGQUIT</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">notify</span>
+<span class="na">StandardError</span><span class="o">=</span><span class="s">syslog</span>
+<span class="na">NotifyAccess</span><span class="o">=</span><span class="s">all</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</pre></div>
+
+
+<h3 id="_1">結論</h3>
+<p>如果要改用 conda 管理套件的話，只要在 systemd unit 那邊多加一行修改 $<span class="caps">PATH</span>，加入虛擬環境放執行檔的路徑，其餘的設定都與一般 Python 虛擬環境相同。這樣就搞定了。但這個問題花了我 1&nbsp;個多小時……</p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://blog.liang2.tw/tag/zh.html">zh</a>
+      <a href="https://blog.liang2.tw/tag/python.html">python</a>
+      <a href="https://blog.liang2.tw/tag/django.html">django</a>
+      <a href="https://blog.liang2.tw/tag/postgresql.html">postgresql</a>
+      <a href="https://blog.liang2.tw/tag/deploy.html">deploy</a>
+      <a href="https://blog.liang2.tw/tag/debian.html">debian</a>
+      <a href="https://blog.liang2.tw/tag/systemd.html">systemd</a>
+      <a href="https://blog.liang2.tw/tag/nginx.html">nginx</a>
+      <a href="https://blog.liang2.tw/tag/uwsgi.html">uwsgi</a>
+      <a href="https://blog.liang2.tw/tag/conda.html">conda</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'liang2';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "使用 conda env 部署&nbsp;Django",
+  "headline": "使用 conda env 部署&nbsp;Django",
+  "datePublished": "2016-05-24 00:00:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Liang2",
+    "url": "https://blog.liang2.tw/author/liang2.html"
+  },
+  "image": "https://blog.liang2.tw/pics/headpic.jpg",
+  "url": "https://blog.liang2.tw/posts/2016/05/django-deploy-conda/",
+  "description": "沒幾天前剛部署一次 Django，記錄在《使用 uWSGI、nginx、systemd 部署 Django》。今天又部署了另一個專案。部署的設定跟上次一樣： nginx -- unix socket -- uWSGI -- Django 一樣寫一個 PROJ.service 的 systemd unit 來管理網站的啟動 (uWSGI ..."
+}
+</script></body>
+</html>

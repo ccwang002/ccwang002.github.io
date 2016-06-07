@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
+  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/font-awesome.min.css">
+  <!-- Justfont webfont -->
+  <!-- Local development -->
+  <!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+  <!-- Proudction version v4.9.4 -->
+  <script src="https://blog.liang2.tw/theme/js/justfont_v4.9.4.js" type="text/javascript" charset="utf-8"></script>
+  <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Liang2" />
+<meta name="description" content="設定一個自動更新 Python 說明文件中文翻譯並且 host 中文化網頁版文件的 server。使用 Django 作 web server、Django-Q 做為 task queue，deploy stack 用 nginx、uWSGI，host 於 Amazon EC2 (Debian Jessie)，資料庫用 PostgreSQL，並用 systemd 管理相關的 process。" />
+<meta name="keywords" content="zh, pydoctw, python, django, postgresql, deploy, debian, systemd, nginx, uwsgi">
+<meta property="og:site_name" content="Liang2's blog"/>
+<meta property="og:title" content="設定 Python 官方文件中文化自動更新 Server"/>
+<meta property="og:description" content="設定一個自動更新 Python 說明文件中文翻譯並且 host 中文化網頁版文件的 server。使用 Django 作 web server、Django-Q 做為 task queue，deploy stack 用 nginx、uWSGI，host 於 Amazon EC2 (Debian Jessie)，資料庫用 PostgreSQL，並用 systemd 管理相關的 process。"/>
+<meta property="og:locale" content="zh_TW"/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-02-14 21:00:00+08:00"/>
+<meta property="article:modified_time" content="2016-02-14 21:00:00+08:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
+<meta property="article:section" content="Coding"/>
+<meta property="article:tag" content="zh"/>
+<meta property="article:tag" content="pydoctw"/>
+<meta property="article:tag" content="python"/>
+<meta property="article:tag" content="django"/>
+<meta property="article:tag" content="postgresql"/>
+<meta property="article:tag" content="deploy"/>
+<meta property="article:tag" content="debian"/>
+<meta property="article:tag" content="systemd"/>
+<meta property="article:tag" content="nginx"/>
+<meta property="article:tag" content="uwsgi"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="設定 Python 官方文件中文化自動更新 Server">
+<meta name="twitter:description" content="設定一個自動更新 Python 說明文件中文翻譯並且 host 中文化網頁版文件的 server。使用 Django 作 web server、Django-Q 做為 task queue，deploy stack 用 nginx、uWSGI，host 於 Amazon EC2 (Debian Jessie)，資料庫用 PostgreSQL，並用 systemd 管理相關的 process。">
+  <title>設定 Python 官方文件中文化自動更新 Server &ndash; Liang2's blog</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://blog.liang2.tw">
+        <img src="https://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
+      </a>
+      <h1><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+      <p>Code / Stat / Bioinfo</p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
+          <li><a href="https://blog.liang2.tw/talks/#talks">Talks</a></li>
+          <li><a href="https://blog.liang2.tw/research/#research">Research</a></li>
+          <li><a href="https://blog.liang2.tw/projects/#projects">Projects</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
+        <li><a class="sc-envelope-o" href="mailto:me+blog@liang2.tw" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
+        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://blog.liang2.tw">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+      <a href="https://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="pydoctw-server">設定 Python 官方文件中文化自動更新&nbsp;Server</h1>
+    <p>Posted on Feb 14, 2016
+      in <a href="https://blog.liang2.tw/category/coding.html">Coding</a>
+    </p>
+  </header>
+  <div>
+    <p><em><span class="caps">TL</span>;<span class="caps">DR</span></em> 可至 <a href="http://docs.python.org.tw">http://docs.python.org.tw</a> 看線上自動更新的<a href="http://docs.python.org.tw/3/">中文化的文件</a>和 <a href="http://docs.python.org.tw/_build/">build server</a>。</p>
+<p><span class="caps">EDIT</span> 2016-02-16: 加上 language code、git sshconfig、swap 的設定；文句潤飾。<br>
+<span class="caps">EDIT</span> 2016-02-20: 加上 tmpfiles.d&nbsp;的設定。</p>
+<div class="toc">
+<ul>
+<li><a href="#python">Python 說明文件中文翻譯計畫</a><ul>
+<li><a href="#sphinx">Sphinx&nbsp;文件多國語言架構</a></li>
+<li><a href="#transifex-po">Transifex 線上服務讓多人共同翻譯 po&nbsp;檔</a></li>
+<li><a href="#_1">翻譯體驗改善</a></li>
+</ul>
+</li>
+<li><a href="#pydoc-autobuild-server">PyDoc Autobuild Server</a><ul>
+<li><a href="#_2">實作</a><ul>
+<li><a href="#sphinx_1">Sphinx&nbsp;文件</a></li>
+<li><a href="#autobuild-django-server">Autobuild Django&nbsp;server</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#autobuild-server">Autobuild server 部署</a><ul>
+<li><a href="#_3">作業系統</a><ul>
+<li><a href="#python-35-and-apt-pinning">Python 3.5 and <span class="caps">APT</span>-pinning</a></li>
+<li><a href="#postgresql">資料庫&nbsp;PostgreSQL</a></li>
+<li><a href="#swap">Swap</a></li>
+<li><a href="#git-repo-ssh-config">Git repo ssh&nbsp;config</a></li>
+<li><a href="#tmpfilesd">tmpfiles.d</a></li>
+</ul>
+</li>
+<li><a href="#django-stack-nginx-uwsgi">Django Stack &ndash; nginx + uWSGI</a><ul>
+<li><a href="#nginx">nginx&nbsp;設定</a></li>
+<li><a href="#uwsgi">uWSGI&nbsp;設定</a></li>
+</ul>
+</li>
+<li><a href="#systemd-services">Systemd&nbsp;services</a></li>
+</ul>
+</li>
+<li><a href="#_4">總結</a></li>
+</ul>
+</div>
+<h2 id="python">Python&nbsp;說明文件中文翻譯計畫</h2>
+<p>最近一段時間都在準備 <a href="https://github.com/python-doc-tw/python-doc-tw">Python 說明文件中文翻譯計畫</a>。翻譯本身雖然還沒很積極地進行，但經過<a href="http://www.meetup.com/Taipei-py/events/226558484/">前</a><a href="http://www.meetup.com/Taipei-py/events/227001232/">幾次</a> Taipei.py Projects On 的 sprint 活動，已經有蠻多人加入翻譯的行列。大家都有各自翻譯的主題，像我自己是從 <a href="http://docs.python.org.tw/3/tutorial/index.html">Tutorial</a>&nbsp;的部份開始翻譯。</p>
+<h3 id="sphinx">Sphinx&nbsp;文件多國語言架構</h3>
+<p>先簡介一下 <a href="https://docs.python.org/3/">CPython Documentation</a>（下稱 pydoc）的架構和翻譯方式。pydoc 是標準的 <a href="http://www.sphinx-doc.org/en/stable/">Sphinx</a> 文件，因此翻譯使用 Sphinx 自帶的 <a href="http://www.sphinx-doc.org/en/stable/intl.html">internationalization</a> (i18n or intl)&nbsp;功能把文件的內容轉換到別的語言上。</p>
+<p>如同 Django 等專案，i18n 都是透過 gettext，Sphinx 會按照 rst 檔案輸出同檔名的 po 檔。rst 檔案中的每個文字段落會對應到 po 檔一個 entry，不相干的程式碼範例等段落會被跳過。輸出的 po 檔放在對應的路徑例如 <code>locale/&lt;lang&gt;/LC_MESSAGES/xxx.po</code>。</p>
+<p><a href="https://en.wikipedia.org/wiki/Gettext">po 檔的格式</a>很簡單，跳過有的沒的&nbsp;header，實質內容長這樣：</p>
+<div class="highlight"><pre><span></span><span class="kd">#: ../../tutorial/appetite.rst:50</span>
+<span class="nv">msgid</span> <span class="s">&quot;&quot;</span>
+<span class="s">&quot;Python enables programs to be written compactly and readably.  Programs &quot;</span>
+<span class="s">&quot;written in Python are typically much shorter than equivalent C,  C++, or &quot;</span>
+<span class="s">&quot;Java programs, for several reasons:&quot;</span>
+<span class="nv">msgstr</span> <span class="s">&quot;&quot;</span>
+<span class="s">&quot;Python 讓程式寫得精簡並易讀。用 Python 實作的程式長度往往遠比用 &quot;</span>
+<span class="s">&quot;C、C++、Java 實作的短。這有以下幾個原因：&quot;</span>
+</pre></div>
+
+
+<p>實際上 Sphinx 會先輸出一份乾淨的 po 檔範本（稱為 pot 檔）到 <code>locale/pot/</code>，基本上就是只有原文的 po 檔。每增加一個新語言就會從 pot 檔製作一份 po 檔到各自的 <code>locale/&lt;lang&gt;/</code> 目錄下，翻譯時就修改那份 po&nbsp;檔就可以。</p>
+<p>翻譯完成後，首先 Sphinx 會先呼叫 gettext 把 po 檔編譯成 mo 檔加速搜尋翻譯字串速度。輸出翻譯後的文件只要設定不同語言，Sphinx 就會去找該語言的 mo 檔，並把原文字串換成 mo&nbsp;檔裡的內容，就可以看到中文的文件。</p>
+<h3 id="transifex-po">Transifex 線上服務讓多人共同翻譯 po&nbsp;檔</h3>
+<p>整個 Sphinx 文件翻譯流程就這樣，所以翻譯只要編輯中文 (lang code: zh-Hant<sup id="fnref:zh-Hant"><a class="footnote-ref" href="#fn:zh-Hant" rel="footnote">1</a></sup>) 的 po 檔就好了。不過要直接寫 po 檔格式門檻還是太高，於是就有像 <a href="https://www.transifex.com/">Transifex</a> 這樣的網站。上傳 po/pot 檔就能線上修改翻譯，然後再把翻完的結果用 po 檔格式下載下來。我認為這是現在參加以 gettext-based <span class="caps">PO</span> 檔翻譯門檻最低的方式，至少日本也是這麼做。於是想要參考 pydoc 翻譯的人，只要登入 Transifex&nbsp;就可以開始編輯。</p>
+<p>用 Transifex 還有額外的好處。例如他有 <span class="caps">POS</span> tagging 可以標注專有名詞，定義統一的譯名，這些譯名會整理在 glossary terms 裡，翻譯時出現這些詞就會自動提示。類似的原文文句也會放在 suggestion 裡，讓翻譯完的用語文法也能一致。此外也有修改歷史、防呆提示（如該有的格式沒在譯文出現）、加註解 (comment)、評論 (issue)&nbsp;等功能。</p>
+<h3 id="_1">翻譯體驗改善</h3>
+<p>這段時間翻譯的用詞、流程等規範都有個雛型了，相關的內容都可以在<a href="https://github.com/python-doc-tw/python-doc-tw/wiki">專案的 wiki</a>&nbsp;裡找到。所以開始想要怎麼讓大家更好參與翻譯和看到翻譯的結果。</p>
+<p>我發現參加翻譯本身已經不困難，大家沒什麼疑問。維護整體的用詞、翻譯討論用 Transifex issue 和 comment&nbsp;效果不錯。整體上能保持極度分散式的工作形式。</p>
+<p>平常遇到最多問題是出現 rst 格式錯誤、缺少必要的空白、前後文加上程式碼範例之後不通順、譯文曲解或誤會原文的意思。這些問題，我覺得只要自己讀過翻完的 pydoc 該頁、看一下輸出的 log&nbsp;就能明白，也不需要我多作解釋。</p>
+<p>再來，看不到自己翻譯的成果<strong>很沒有成就感</strong>，過一段時間我怕會失去動力。</p>
+<p>於是變成需要一份保持更新的翻譯成果。當然自己輸出 doc 的方法都有寫在 <a href="https://github.com/python-doc-tw/python-doc-tw/wiki/How-to-build-the-doc-locally">wiki</a>&nbsp;裡，但步驟很多，說簡單也沒多簡單，而且有錯或有問題可能都要來找我，就失去分散式分工的特性了。</p>
+<p><strong>不如做個 autobuild&nbsp;server。</strong></p>
+<p>於是有了這想法。但實在是個大坑，一直只能用想的。在過年的時候總算找到時間把 prototype&nbsp;做出來了，其實蠻有成就感的。</p>
+<h2 id="pydoc-autobuild-server">PyDoc Autobuild&nbsp;Server</h2>
+<p>簡單整理幾個需求：</p>
+<ul>
+<li>PyDoc 結果網址對應本家 <a href="https://docs.python.org/">https://docs.python.org/</a>。例如 /3/ 就是 Python 3.x 版最新的，而現在 /3.5/ 就會自動轉址到 /3/<sup id="fnref:pydoc-url"><a class="footnote-ref" href="#fn:pydoc-url" rel="footnote">2</a></sup>。</li>
+<li>每一頁都有個更新翻譯連結，點一下就會從 Transifex&nbsp;上抓新的翻譯，並更新輸出。</li>
+<li>更新每頁翻譯的指令輸出都要保留，方便檢查 rst&nbsp;語法等錯誤。</li>
+<li>更新翻譯要有個 queue，才可以多人合作時不炸掉 autobuild&nbsp;server。</li>
+<li>每日更新全部的文件，並且把更新加到 CPython-tw 的 git repo&nbsp;中。更新的過程一樣要有記錄。</li>
+<li>上述的所有功能都能在本機輕鬆地設定。</li>
+</ul>
+<h3 id="_2">實作</h3>
+<p>目標就是完成上述的需求。pydoc 基本上就是個 static site，交給 nginx 設好路徑 host static files 就可以。Pydoc Sphinx 用 <a href="http://jinja.pocoo.org/docs/dev/">Jinja2</a> 作 <span class="caps">HTML</span> template，所以只要多加一些變數就能控制頁面的輸出，在 autobuild server 上時就可以加上額外的連結。而 Autobuild server 本身是個 task queue，其實功能很簡單，但為了維護方便，並考慮到 local、production 環境都要能動的話，選擇 <a href="https://www.djangoproject.com/">Django</a> 為基礎。真的給 Django 管理的就顯示 task queue、task result、接受 rebuild doc request 這幾個&nbsp;view。</p>
+<h4 id="sphinx_1">Sphinx&nbsp;文件</h4>
+<p>在 Sphinx 文件部份不想搞太複雜，就在每一頁加上一個自己的專屬連結，打這個網址就會加入一個更新該頁面的 task 到 autobuild server<sup id="fnref:build-link"><a class="footnote-ref" href="#fn:build-link" rel="footnote">3</a></sup>。</p>
+<p>在 autobuild 時加入專屬連結只要修改 Sphinx doc template 即可。Sphinx 在 build doc 時可以透過 <a href="http://www.sphinx-doc.org/en/stable/man/sphinx-build.html#options"><code>-A &lt;name=value&gt;</code></a> 增加 Jinja2 template 的變數，就可控制 template render&nbsp;行為：</p>
+<div class="highlight"><pre><span></span><span class="c">{# &lt;cpython-src&gt;/Doc/tools/templates/layout.html #}</span>
+<span class="cp">{%</span>- <span class="k">if</span> <span class="nv">autobuildi18n</span> <span class="cp">%}</span>
+<span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/_build/update/?source_path=</span><span class="cp">{{</span> <span class="nv">pagename</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="p">&gt;</span>Update Translation<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+<span class="cp">{%</span>- <span class="k">endif</span> <span class="cp">%}</span>
+</pre></div>
+
+
+<ul>
+<li><code>sphinx-build -A autobuildi18n=1</code> 時就會包含這個 Jinja2 block，多這個 Update Translation&nbsp;連結。</li>
+<li><a href="http://www.sphinx-doc.org/en/stable/templating.html#pagename"><code>{{ pagename }}</code></a> 是每頁文件的 rst&nbsp;路徑。</li>
+</ul>
+<h4 id="autobuild-django-server">Autobuild Django&nbsp;server</h4>
+<p>Django server 目標就是接受 task request 和顯示 task result。一個標準的 task queue&nbsp;就有這些功能。</p>
+<p>Django 上的 task queue 選擇很多，從 <a href="https://www.djangopackages.com/">Django Packages</a> 上的 <a href="https://www.djangopackages.com/grids/g/workers-queues-tasks/">Workers, Queues, and Tasks</a> 相關的套件可以看到有幾個有在更新而且 up&nbsp;數多的：</p>
+<ul>
+<li><a href="http://celery.github.io/django-celery/">django-celery</a></li>
+<li><a href="http://huey.readthedocs.org/en/latest/">huey</a></li>
+<li><a href="https://github.com/ui/django-rq">django-<span class="caps">RQ</span></a></li>
+<li><a href="http://policystat.github.io/jobtastic/">jobtastic</a></li>
+<li><a href="https://django-q.readthedocs.org/">django-Q</a></li>
+</ul>
+<p>扣掉不支援 Python 3 的套件<sup id="fnref:python3"><a class="footnote-ref" href="#fn:python3" rel="footnote">4</a></sup>後，就剩 django-celery、django-<span class="caps">RQ</span>、django-Q 可以選。這裡面最紅也最老牌的是 django-celery ，它與 <a href="http://www.celeryproject.org/">Celery</a> 整合，功能完整且穩定，我用過也覺得十分不錯，缺點是功能太多有點複雜，加上不同 message queue 時會有很多設定要調整，需要一段時間上手。一般 Celery 常見的搭配使用 <a href="https://www.rabbitmq.com/">Rabbit-<span class="caps">MQ</span></a> 和 <a href="http://redis.io/">Redis</a>，的確在 task 很多時有必要，但我們這個 build doc 一天可能才十幾次，在不隔離 build doc 環境的情況同時間的 worker 只能有一個，不會有效能上的問題。因此我傾向只要使用與 Django 同一個 database 就好，不要再有額外非 Python 的 dependency，讓 local&nbsp;開發簡單一點。</p>
+<p>最後選擇 <a href="https://django-q.readthedocs.org/">django-Q</a>。雖然很新但作者維護得很勤，worker 可以只用 Python 內建的 multiprocessing 完成。功能簡單卻完整，包含 monitor，跟 django-admin 整合，還可以排程。所以要啟動 django-Q 的&nbsp;cluster，只要多一個 </p>
+<div class="highlight"><pre><span></span>python manage.py qcluster
+</pre></div>
+
+
+<p>即可，十分方便。</p>
+<p>怎麼使用 django-Q 就不在這篇 blog 討論範圍內了。我想我應該會投稿 PyCon <span class="caps">TW</span> 或 Taipei.py，到時候再整理成另一篇。Django-Q&nbsp;的說明文件寫得很清楚，讀一讀應該就會了。</p>
+<h2 id="autobuild-server">Autobuild server&nbsp;部署</h2>
+<p>（這篇文的重點其實是部署，誰曉得背景介紹可以這麼長）</p>
+<p>部署 (deploy)&nbsp;方法百百種，有好有壞。但至少要會一種嘛，所以這邊就用其中一種：</p>
+<blockquote>
+<p>nginx &lt;-&gt; uwsgi &lt;-&gt;&nbsp;Django</p>
+</blockquote>
+<p>也算很流行的組合。更完整地來說，整個處理 request&nbsp;的流程經過：</p>
+<blockquote>
+<p>web client &lt;-&gt; nginx web server &lt;-&gt; socket &lt;-&gt; uwsgi &lt;-&gt; Django&nbsp;server</p>
+</blockquote>
+<p>基本的設定與教學來自 <a href="http://uwsgi-docs.readthedocs.org/en/latest/index.html">uWSGI</a> 官網的 <a href="http://uwsgi-docs.readthedocs.org/en/latest/tutorials/Django_and_nginx.html"><em>Setting up Django and your web server with uWSGI and nginx</em></a> 一文，搭配 <a href="http://uwsgi-docs.readthedocs.org/en/latest/Systemd.html"><em>uWGSI and Systemd</em></a> 與 <a href="https://www.freedesktop.org/wiki/Software/systemd/">systemd</a>&nbsp;整合。</p>
+<p>這也是目前 Pydoc production&nbsp;的設定，記錄一下方便未來的維護。</p>
+<h3 id="_3">作業系統</h3>
+<p>作業系統用 Debian Jessie，架設於 Amazon <span class="caps">EC2</span> 上，使用 t2.nano<sup id="fnref:ec2-nano"><a class="footnote-ref" href="#fn:ec2-nano" rel="footnote">5</a></sup>。</p>
+<p>Python web deploy 都會把套件裝在虛擬環境中，避免不同專案間互衝或與系統衝突。在 Debian 上可以用 <code>apt buid-dep python3-&lt;pkg&gt;</code> 把 Python <pkg> 套件所需的 header 或 library&nbsp;安裝好，十分簡單。</p>
+<h4 id="python-35-and-apt-pinning">Python 3.5 and <span class="caps">APT</span>-pinning</h4>
+<p>我的 code 裡用到了 <a href="https://docs.python.org/3/library/subprocess.html#subprocess.run"><code>subprocess.run</code></a>，這是 Python 3.5+ 才有的 <span class="caps">API</span>。但 Jessie 只有 Python 3.4，但我覺得很好用一點都不想改寫成相容舊版的&nbsp;code。</p>
+<p>因此需要安裝 Debian testing channel 上最新的 Python 3.5。這樣其實有安全上的疑慮，因為只有 stable channel 才有 security support，但自己編譯的問題更大，所以像 <a href="https://github.com/yyuu/pyenv">pyenv</a> 這種多 Python&nbsp;版本的工具不在考慮內。</p>
+<p>於是用 <a href="https://wiki.debian.org/AptPreferences">Apt-Pinning</a> 只讓 Python 3.5 相關的套件安裝 testing 的版本。首先把 testing channel 加到 <code>/etc/apt/source.list</code></p>
+<div class="highlight"><pre><span></span><span class="k">deb</span> <span class="s">http://cloudfront.debian.net/debian</span> <span class="kp">testing</span> <span class="kp">main</span>
+<span class="k">deb-src</span> <span class="s">http://cloudfront.debian.net/debian</span> <span class="kp">testing</span> <span class="kp">main</span>
+<span class="k">deb</span> <span class="s">http://security.debian.org/</span> <span class="kp">testing/updates</span> <span class="kp">main</span>
+<span class="k">deb-src</span> <span class="s">http://security.debian.org/</span> <span class="kp">testing/updates</span> <span class="kp">main</span>
+</pre></div>
+
+
+<p>然後修改 <code>/etc/apt/preferences</code> 確定我們不會不小心裝到 testing 相關的套件，並把 Python 3.5 相關的套件設定權限 &gt;= 990&nbsp;讓它們能被自動安裝。</p>
+<div class="highlight"><pre><span></span># Specify * rules first so later package-specfic rules can override them
+Package: *
+Pin: release a=testing
+Pin-Priority: -10
+
+Package: python3.5* libpython3.5*
+Pin: release a=testing
+Pin-Priority: 990
+</pre></div>
+
+
+<p>可以用 <code>sudo apt-cache policy &lt;pkg-name&gt;</code> 檢查目前的規則會裝到哪個版本。</p>
+<div class="highlight"><pre><span></span>$ sudo apt-get update 
+$ sudo apt-get install python3.5 python3.5-venv python3.5-dev
+</pre></div>
+
+
+<p>這樣只有 Python 3.5 相關的套件才會裝到&nbsp;testing。</p>
+<h4 id="postgresql">資料庫&nbsp;PostgreSQL</h4>
+<p>資料庫用 PostgreSQL 9.4。參照之前 blog<a href="https://blog.liang2.tw/posts/2016/01/postgresql-install/">《安裝 PostgreSQL 9 於 Debian Jessie / <span class="caps">OSX</span>》</a>一文設定。</p>
+<h4 id="swap">Swap</h4>
+<p>其實是上線不久才注意到 <span class="caps">EC2</span> 預設沒有 swap 空間。我很窮所以 production server 的 <span class="caps">RAM</span> 只有 512 <span class="caps">MB</span>，觀察一下有時候 build doc <span class="caps">RAM</span> 就全滿了，所以還是加個 swap&nbsp;安心一點。</p>
+<p>因為 Amazon <span class="caps">EBS</span> <span class="caps">SSD</span> I/O 數不會另外收錢（應該吧？），就建 swap file&nbsp;在主硬碟裡。</p>
+<p>Swap 設定的教學很多，這邊就參考 <a href="https://wiki.archlinux.org/index.php/swap">Arch Wiki</a> 上的做法，我選擇放在 <code>/var/swap.1</code>。大小設定為 <span class="caps">RAM</span> 的 2 倍，即 <span class="caps">1GB</span>。</p>
+<p>首先把這個檔案建出來，權限改為&nbsp;600。</p>
+<div class="highlight"><pre><span></span>sudo /bin/dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/var/swap.1 <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span>1024
+<span class="c1"># or faster with fallocate</span>
+sudo fallocate -l 1G /var/swap.1
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>sudo chmod <span class="m">600</span> /var/swap.1
+</pre></div>
+
+
+<p>再來把這個檔案改成 swap&nbsp;格式並啟用它，</p>
+<div class="highlight"><pre><span></span>sudo /sbin/mkswap /var/swap.1
+sudo /sbin/swapon /var/swap.1
+</pre></div>
+
+
+<p>修改 fstab 讓每次開機都有這個 swap&nbsp;設定，</p>
+<div class="highlight"><pre><span></span># /etc/fstab
+/var/swap.1 none swap defaults 0 0
+</pre></div>
+
+
+<p>用 <code>free -h</code>、<code>cat /proc/meminfo</code> 檢查此時應該有個 <span class="caps">1GB</span> swap&nbsp;了。</p>
+<h4 id="git-repo-ssh-config">Git repo ssh&nbsp;config</h4>
+<p>再來是 code 的同步與更新。autobuild server 只要更新 source code，但 cpython-tw source 需要定時 commit 新的翻譯，因此 deploy server 會有修改 git repo&nbsp;的權限。</p>
+<p>不應該使用自己的 <span class="caps">SSH</span> key，deploy server 上應該有專屬的 deploy key，其中 cpython-tw 的 deploy key 有寫入權限（即可以&nbsp;commit）。</p>
+<p>查了一下，要讓不同 git repo 使用不同的 <span class="caps">SSH</span> key 也不複雜。以這邊的例子，先修改 <code>~/.ssh/config</code> 加入兩個新的 host，使用不同的 <span class="caps">SSH</span>&nbsp;key：</p>
+<div class="highlight"><pre><span></span>Host github-pydoc_autobuild
+  HostName github.com
+  User git
+  IdentityFile /home/pydoc/.ssh/id_rsa.pydoc_autobuild
+
+Host github-cpython_tw
+  HostName github.com
+  User git
+  IdentityFile /home/pydoc/.ssh/id_rsa.cpython_tw
+</pre></div>
+
+
+<p>建立對應的 <span class="caps">SSH</span>&nbsp;keypair，</p>
+<div class="highlight"><pre><span></span>ssh-keygen -t rsa -f ~/.ssh/id_rsa.pydoc_autobuild
+ssh-keygen -t rsa -f ~/.ssh/id_rsa.cpython_tw
+</pre></div>
+
+
+<p>把兩個 repo 的 <span class="caps">URL</span> host&nbsp;換掉，</p>
+<div class="highlight"><pre><span></span>git remote set-url origin git@github-pydoc_autobuild:python-doc-tw/pydoc_autobuild.git
+</pre></div>
+
+
+<p>這樣兩個 repo 會透過給定的 ssh key 連線。GitHub 會顯示每個 key 最近使用的時間，檢查時間就能確認設定正確與否（而且改 host&nbsp;沒設定對應該直接連不上）。</p>
+<h4 id="tmpfilesd">tmpfiles.d</h4>
+<p>之後 nginx 和 uwsgi 溝通用的 socket 打算放在 <code>/run/django/xxxx.sock</code> <sup id="fnref:/run"><a class="footnote-ref" href="#fn:/run" rel="footnote">6</a></sup>。因為只需要非 root 的權限，修改 <a href="https://www.freedesktop.org/software/systemd/man/tmpfiles.d.html">tmpfiles.d</a> 的設定，讓這個資料夾能在開機時自動建立。增加設定檔 <code>/etc/tmpfiles.d/pydoc_autobuild.conf</code></p>
+<div class="highlight"><pre><span></span>d /run/django 0755 pydoc www-data
+</pre></div>
+
+
+<h3 id="django-stack-nginx-uwsgi">Django Stack &ndash; nginx +&nbsp;uWSGI</h3>
+<p>在本地開發都用 <code>python manage.py runserver</code> 啟動 Django。但上線時內建的 runserver 就無法同時間服務太多人。因此需要像 nginx、uWSGI&nbsp;等工具來協助。</p>
+<p>參照 uWSGI <a href="http://uwsgi-docs.readthedocs.org/en/latest/tutorials/Django_and_nginx.html"><em>Setting up Django and your web server with uWSGI and nginx</em></a> 一文以及 <span class="caps">TP</span> 寫的 《為程式人寫的 Django Tutorial》系列文中 <a href="https://github.com/uranusjr/django-tutorial-for-programmers/blob/master/25-deploy-to-ubuntu-server.md"><em>Day 27 - Deploy to Ubuntu server</em></a>&nbsp;關於部署的文章。</p>
+<p>Autobuild server 有特別為 production 寫一份設定檔，切換時只要設定成 <code>settings.production</code> 即可。在 Django 設定部份，建議把所有路徑都設成絕對路徑（包含執行檔）。不然後續在設定 systemd 要調整很多環境變數，systemd 也不會帶入使用者的 <span class="caps">PATH</span>&nbsp;變數，不用絕對路徑其實蠻麻煩的也容易錯。</p>
+<h4 id="nginx">nginx&nbsp;設定</h4>
+<p>nginx 會接受 incoming <span class="caps">HTTP</span> request，需要跟 Django server 聯絡時，就會會連到 uWSGI 開的 <span class="caps">UNIX</span>&nbsp;socket。</p>
+<p>我們先假設 uWSGI 這段沒問題，首先設定 nginx 本身。由於 static files 在 nginx 就直接導到對應的檔案，不會經過 uWSGI ，所以設定好 nginx 之後 pydoc&nbsp;文件本身就上線了。用這個來測試設定的正確性。</p>
+<p>對本網站而言，/static 導到 Django staticfiles；/3/、/3.5/ 導到 pydoc build <span class="caps">HTML</span> 的路徑；其餘路徑再交給 Django 處理。其中，/3.5/* 的連結將重新導向到 /3/*&nbsp;上。</p>
+<p>整理上述的需求，寫個 nginx 設定檔在 <code>/etc/nginx/sites-available/pydoc_autobuild.conf</code>：</p>
+<div class="highlight"><pre><span></span><span class="c1"># Upstream Django setting; the socket nginx connects to</span>
+<span class="k">upstream</span> <span class="s">django</span> <span class="p">{</span>
+    <span class="kn">server</span> <span class="s">unix:///run/django/pydoc_autobuild.sock</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span>      <span class="mi">80</span><span class="p">;</span>
+    <span class="kn">listen</span>      <span class="mi">443</span> <span class="s">default</span> <span class="s">ssl</span><span class="p">;</span>
+
+    <span class="kn">server_name</span> <span class="s">docs.python.org.tw</span>
+                <span class="mi">52</span><span class="s">.69.170.26</span>
+                <span class="p">;</span>
+    <span class="kn">charset</span>     <span class="s">utf-8</span><span class="p">;</span>
+
+    <span class="kn">client_max_body_size</span> <span class="s">10M</span><span class="p">;</span>  <span class="c1"># max upload size</span>
+    <span class="kn">keepalive_timeout</span> <span class="mi">15</span><span class="p">;</span>
+
+    <span class="kn">location</span> <span class="s">/static</span> <span class="p">{</span>
+        <span class="kn">alias</span> <span class="s">/path/to/code/pydoc_autobuild/assets</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kn">location</span> <span class="s">/3</span> <span class="p">{</span>
+        <span class="kn">alias</span> <span class="s">/path/to/code/cpython-tw/Doc/build/html</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kn">location</span> <span class="p">~</span> <span class="sr">/3\.5/(.*)</span> <span class="p">{</span>
+        <span class="kn">return</span> <span class="mi">302</span> <span class="s">/3/</span><span class="nv">$1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Finally, send all non-media requests to the Django server.</span>
+    <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+        <span class="kn">uwsgi_pass</span>  <span class="s">django</span><span class="p">;</span>
+        <span class="kn">include</span>     <span class="s">/etc/nginx/uwsgi_params</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>再把檔案 soft link 到 <code>/etc/nginx/sites-enabled/</code>，更新 nginx&nbsp;設定：</p>
+<div class="highlight"><pre><span></span><span class="nb">cd</span> /etc/nginx/sites-available/
+sudo ln -s pydoc_autobuild.conf ../sites-enabled/
+sudo systemctl reload nginx
+</pre></div>
+
+
+<p>確定 pydoc 上線就可以專心處理 uWSGI&nbsp;了。</p>
+<h4 id="uwsgi">uWSGI&nbsp;設定</h4>
+<p>uWSGI 在 <span class="caps">VENV</span> 外也要裝，我覺得還是用 pip 比較簡單，雖然這樣就要自己注意 uWSGI&nbsp;的版本更新了：</p>
+<div class="highlight"><pre><span></span>sudo python3.5 -m pip install uwsgi
+</pre></div>
+
+
+<p>把 uWSGI 設定存成 <code>pydoc_autobuild_uwsgi.ini</code> 並且在測試時，都使用：</p>
+<div class="highlight"><pre><span></span>sudo uwsgi --ini pydoc_autobuild_uwsgi.ini
+</pre></div>
+
+
+<p>模擬實際上的執行方式，這樣之後改用 systemd&nbsp;執行才不會又丟一堆權限的問題。設定檔的內容：</p>
+<div class="highlight"><pre><span></span><span class="k">[uwsgi]</span>
+<span class="na">chdir</span>        <span class="o">=</span> <span class="s">/path/to/code/pydoc_autobuild</span>
+<span class="c1"># Django&#39;s wsgi file</span>
+<span class="na">module</span>       <span class="o">=</span> <span class="s">pydoc_autobuild.wsgi:application</span>
+<span class="na">env</span>          <span class="o">=</span> <span class="s">DJANGO_SETTINGS_MODULE=pydoc_autobuild.settings.production</span>
+<span class="c1"># the virtualenv (full path)</span>
+<span class="na">home</span>         <span class="o">=</span> <span class="s">/path/to/VENV</span>
+
+<span class="c1"># process-related settings</span>
+<span class="c1"># master</span>
+<span class="na">master</span>       <span class="o">=</span> <span class="s">true</span>
+<span class="c1"># maximum number of worker processes</span>
+<span class="na">processes</span>    <span class="o">=</span> <span class="s">4</span>
+<span class="c1"># the socket (use the full path to be safe</span>
+<span class="na">socket</span>       <span class="o">=</span> <span class="s">/run/django/pydoc_autobuild.sock</span>
+<span class="c1"># ... with appropriate permissions - may be needed</span>
+<span class="na">chmod-socket</span> <span class="o">=</span> <span class="s">664</span>
+<span class="na">uid</span>          <span class="o">=</span> <span class="s">pydoc</span>
+<span class="na">gid</span>          <span class="o">=</span> <span class="s">www-data</span>
+<span class="c1"># clear environment on exit</span>
+<span class="na">vacuum</span>       <span class="o">=</span> <span class="s">true</span>
+</pre></div>
+
+
+<p>權限上的設定可能要花點時間處理一下，nginx 使用 www-data/www-data 的身份執行，socket 要確定 nginx 能讀寫，但我的 code 放在 pydoc 使用者路徑下，用 www-data 可能會有權限的問題。建議把 uid、gid&nbsp;都設定好。</p>
+<p>過程中，搭配 nginx 的錯誤訊息比較好&nbsp;debug：</p>
+<div class="highlight"><pre><span></span>sudo less +F /var/log/nginx/error.log
+</pre></div>
+
+
+<p>成功後，再用 uWSGI 的 Emperor mode，把設定檔丟到一個路徑底下（該路徑稱為 vassals）。uWSGI 在 Emperor mode 時會自動把 vassals&nbsp;路徑內所有設定檔都讀進來並執行。</p>
+<p>這裡 vassals 路徑使用 <code>/etc/uwsgi/vassals/</code>。因為有設&nbsp;uid、gid，跑的時候就不用再設了：</p>
+<div class="highlight"><pre><span></span>sudo uwsgi --emperor /etc/uwsgi/vassals
+</pre></div>
+
+
+<p>這樣應該 Django 相關的 view 都沒問題了。接下來，要把啟動 uWSGI&nbsp;的步驟交給系統來管理。</p>
+<h3 id="systemd-services">Systemd&nbsp;services</h3>
+<p>Autobuild server 包含兩個部份：Django Server 與 Django-Q cluster。所以寫成 systemd service&nbsp;時會有兩個服務。</p>
+<p>Debian system service 放在 <code>/etc/systemd/system/</code> 底下，因此建立 <code>uwsgi.service</code> 和 <code>qcluster.service</code> 分別管理 uWSGI Emperor mode 和 Django-Q&nbsp;cluster。</p>
+<p><code>uwsgi.service</code> 參考 uWSGI 官網 <a href="http://uwsgi-docs.readthedocs.org/en/latest/Systemd.html"><em>Django and Systemd</em></a>&nbsp;一文的設定：</p>
+<div class="highlight"><pre><span></span><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">uWSGI Emperor</span>
+<span class="na">After</span><span class="o">=</span><span class="s">syslog.target</span>
+
+<span class="k">[Service]</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/local/bin/uwsgi --emperor /etc/uwsgi/vassals</span>
+<span class="na">RuntimeDirectory</span><span class="o">=</span><span class="s">uwsgi</span>
+<span class="na">Restart</span><span class="o">=</span><span class="s">always</span>
+<span class="na">KillSignal</span><span class="o">=</span><span class="s">SIGQUIT</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">notify</span>
+<span class="na">StandardError</span><span class="o">=</span><span class="s">syslog</span>
+<span class="na">NotifyAccess</span><span class="o">=</span><span class="s">all</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</pre></div>
+
+
+<p><code>qcluster.service</code> 算是自己硬寫模擬 <code>python manage.py qcluster</code> 行為。因此環境變數都要設定好（當然用絕對路徑就沒問題了，我只是覺得這樣 build log 內的執行檔路徑都很長會很醜&nbsp;xd）</p>
+<div class="highlight"><pre><span></span><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Django-Q Cluster for site pydoc_autobuild</span>
+<span class="na">After</span><span class="o">=</span><span class="s">syslog.target</span>
+<span class="na">Wants</span><span class="o">=</span><span class="s">uwsgi.service</span>
+
+<span class="k">[Service]</span>
+<span class="na">User</span><span class="o">=</span><span class="s">pydoc</span>
+<span class="na">Group</span><span class="o">=</span><span class="s">www-data</span>
+<span class="na">Environment</span><span class="o">=</span><span class="s">VIRTUAL_ENV=/path/to/VENV</span>
+<span class="na">Environment</span><span class="o">=</span><span class="s">PATH=/path/to/VENV/bin:$PATH</span>
+<span class="na">Environment</span><span class="o">=</span><span class="s">DJANGO_SETTINGS_MODULE=pydoc_autobuild.settings.production</span>
+<span class="na">WorkingDirectory</span><span class="o">=</span><span class="s">/path/to/code/pydoc_autobuild</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/path/to/VENV/bin/python manage.py qcluster</span>
+<span class="na">Restart</span><span class="o">=</span><span class="s">always</span>
+<span class="na">KillSignal</span><span class="o">=</span><span class="s">SIGQUIT</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">simple</span>
+<span class="na">NotifyAccess</span><span class="o">=</span><span class="s">none</span>
+<span class="na">StandardError</span><span class="o">=</span><span class="s">syslog</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</pre></div>
+
+
+<p>這樣的設定檔應該不是 systemd 的慣例，我還在想是不是應該要改寫到 user service&nbsp;去（但我不會）。</p>
+<p>加入到 systemd 之後管理就很簡單，啟動這兩個&nbsp;service：</p>
+<div class="highlight"><pre><span></span>sudo systemctl enable uwsgi
+sudo systemctl enable qcluster
+</pre></div>
+
+
+<p>查看他們的狀態：</p>
+<div class="highlight"><pre><span></span>sudo systemctl status uwsgi
+sudo systemctl status qcluster
+</pre></div>
+
+
+<p>查看它們的 log 也變得很簡單，因為有把它們的 stderr 抓起來。systemd 好處是 rotation 等等都會幫你注意，看 log&nbsp;的功能也很多。</p>
+<p>例如要查最近一小時 uWSGI 的連線記錄，並在有新連線時持續更新&nbsp;log：</p>
+<div class="highlight"><pre><span></span>sudo journalctl -xef -u uwsgi --since &#39;1 hour ago&#39;
+</pre></div>
+
+
+<h2 id="_4">總結</h2>
+<p>介紹了 <a href="https://github.com/python-doc-tw/python-doc-tw">Python 說明文件翻譯計畫</a>，線上文件autobuild server 基於 Django 與 Django-Q 的架構，以及在 Debian 上結合 nginx、uWSGI、systemd&nbsp;的部署設定。</p>
+<p>查資料時覺得文章還不多，只有幾篇像 <a href="https://luxagraf.net/src/how-set-django-uwsgi-systemd-debian-8"><em>How to Set Up Django with Nginx, uWSGI <span class="amp">&amp;</span> systemd on Debian/Ubuntu</em></a> 的文章，剩下要自己組裝還是要花一點時間。同時也把部署 pydoc server&nbsp;的設定都記在這，將來要重建也比較簡單。</p>
+<p>關於說明文件翻譯，應該會再花篇文章好好寫整個計畫本身。</p>
+<p>（是說如果有人能從頭看到尾的話，給個回饋吧 &gt;&nbsp;&lt;）</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:zh-Hant">
+<p>八卦是，臺灣繁體中文的 language code (or locale identifier) 究竟是 zh_TW、zh-Hant、zh-Hant-<span class="caps">TW</span>、zh-Hant_TW、zh_Hant 還是 zh_Hant_TW？這問題本身就可以寫一篇了。<br><br>查國際規範 <a href="http://www.ietf.org/rfc/bcp/bcp47.txt"><span class="caps">BCP</span> 47</a> 的話，只有 <a href="http://www.iana.org/assignments/lang-tags/zh-Hant">zh-Hant</a> 和 <a href="http://www.iana.org/assignments/lang-tags/zh-Hant-TW">zh-Hant-<span class="caps">TW</span></a>，更多關於標準的說明與定義可以參考 <a href="https://www.w3.org/International/articles/bcp47/"><em>Understanding the New Language Tags</em>, <span class="caps">W3C</span></a> 一文。<br><br>不過現狀是很奇妙的。參考 <span class="caps">OSX</span> 定義 <a href="https://developer.apple.com/library/ios/documentation/MacOSX/Conceptual/BPInternational/LanguageandLocaleIDs/LanguageandLocaleIDs.html"><em>Language and Locale IDs</em></a> 的話應該是 zh_TW、zh-Hant 或 zh-Hant_TW。而在 Debain 中，所有支援的 locale 寫在 <code>/usr/share/i18n/SUPPORTED</code>，裡面只有 zh_TW，不過 Debian 只用 <code>language[_country][.charset]</code> 所以不會有定義中為 script 的 Hant，雖然在 locale 中使用底線與 <a href="http://www.ietf.org/rfc/bcp/bcp47.txt"><span class="caps">BCP</span> 47</a> 的定義不同。Sphinx 透過 <a href="http://babel.pocoo.org/">Babel</a> 處理 locale，但它不允許 locale 中有 <code>-</code>，因此只能考慮 zh_Hant 或 zh_Hant_TW。更有趣的是，locale 應該是 case-insensitive 所以大小寫是不重要的 <span class="caps">XD</span>&#160;<a class="footnote-backref" href="#fnref:zh-Hant" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:pydoc-url">
+<p>其實在 <a href="https://docs.python.org/">https://docs.python.org/</a> 上面 <a href="https://docs.python.org/3/">/3/</a> 和 <a href="https://docs.python.org/3.5/">/3.5/</a> 是不同份文件，即使是同個版本號它們更新的時間不相同。蠻意外會是這樣的情況。不過我們不用搞這麼複雜，只要轉址就好。&#160;<a class="footnote-backref" href="#fnref:pydoc-url" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:build-link">
+<p>開發時一直都是用 <span class="caps">GET</span>，即如文中所說，有個專屬的 link。但發現會有 robot / crawler 打這些路徑，因此最後改成 <span class="caps">POST</span>，把 <code>{{ pagename }}</code> 用 data-* 即 <code>&lt;a href="#" data-pagename="{{ pagename }}"&gt;...&lt;/a&gt;</code> 的方式存起來，在用 jQuery 綁定 click listener。&#160;<a class="footnote-backref" href="#fnref:build-link" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:python3">
+<p>看 <a href="https://github.com/coleifer/huey">huey</a> 和 <a href="https://github.com/PolicyStat/jobtastic">jobtastic</a> master branch 上有 py3k 的 commit 但感覺是最近的事，有待觀察。&#160;<a class="footnote-backref" href="#fnref:python3" rev="footnote" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:ec2-nano">
+<p>吐嘈一下，t2.nano vCPU 真的時快時慢，有時 build doc 幾分鐘就搞定了，有時要幾十分鐘，有一天超慢，然後又被 web crawler 抓到，讓 task queue timeout 陷入了 timeout、restart、timeout 的無限地獄……&#160;<a class="footnote-backref" href="#fnref:ec2-nano" rev="footnote" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:/run">
+<p>/var/run = /run，這個路徑是個 tmpfs 所以每次重開機就會清空，目錄要記得重建。&#160;<a class="footnote-backref" href="#fnref:/run" rev="footnote" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://blog.liang2.tw/tag/zh.html">zh</a>
+      <a href="https://blog.liang2.tw/tag/pydoctw.html">pydoctw</a>
+      <a href="https://blog.liang2.tw/tag/python.html">python</a>
+      <a href="https://blog.liang2.tw/tag/django.html">django</a>
+      <a href="https://blog.liang2.tw/tag/postgresql.html">postgresql</a>
+      <a href="https://blog.liang2.tw/tag/deploy.html">deploy</a>
+      <a href="https://blog.liang2.tw/tag/debian.html">debian</a>
+      <a href="https://blog.liang2.tw/tag/systemd.html">systemd</a>
+      <a href="https://blog.liang2.tw/tag/nginx.html">nginx</a>
+      <a href="https://blog.liang2.tw/tag/uwsgi.html">uwsgi</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'liang2';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "設定 Python 官方文件中文化自動更新&nbsp;Server",
+  "headline": "設定 Python 官方文件中文化自動更新&nbsp;Server",
+  "datePublished": "2016-02-14 21:00:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Liang2",
+    "url": "https://blog.liang2.tw/author/liang2.html"
+  },
+  "image": "https://blog.liang2.tw/pics/headpic.jpg",
+  "url": "https://blog.liang2.tw/posts/2016/02/pydoctw-server/",
+  "description": "設定一個自動更新 Python 說明文件中文翻譯並且 host 中文化網頁版文件的 server。使用 Django 作 web server、Django-Q 做為 task queue，deploy stack 用 nginx、uWSGI，host 於 Amazon EC2 (Debian Jessie)，資料庫用 PostgreSQL，並用 systemd 管理相關的 process。"
+}
+</script></body>
+</html>

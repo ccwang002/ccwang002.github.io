@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
+  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/font-awesome.min.css">
+  <!-- Justfont webfont -->
+  <!-- Local development -->
+  <!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+  <!-- Proudction version v4.9.4 -->
+  <script src="https://blog.liang2.tw/theme/js/justfont_v4.9.4.js" type="text/javascript" charset="utf-8"></script>
+  <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Liang2" />
+<meta name="description" content="相信很多人都已經在使用 Jupyter (IPython) Notebook 跑分析。隨著分析的資料越跑越多，有時候刷下去就是幾十分鐘甚至數小時。此時沒有個進度條還蠻無聊的，而且能讓自己感覺很有進度，何樂不為呢？ 例如我去年介紹 aiohttp 時就有用到 notebook 和 console 底下的進度條 (progress bar)。不過，這幾個月 Jupyter ..." />
+<meta name="keywords" content="zh, jupyter, notebook">
+<meta property="og:site_name" content="Liang2's blog"/>
+<meta property="og:title" content="Jupyter Notebook Progress Bar"/>
+<meta property="og:description" content="相信很多人都已經在使用 Jupyter (IPython) Notebook 跑分析。隨著分析的資料越跑越多，有時候刷下去就是幾十分鐘甚至數小時。此時沒有個進度條還蠻無聊的，而且能讓自己感覺很有進度，何樂不為呢？ 例如我去年介紹 aiohttp 時就有用到 notebook 和 console 底下的進度條 (progress bar)。不過，這幾個月 Jupyter ..."/>
+<meta property="og:locale" content="zh_TW"/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-03-23 02:00:00+08:00"/>
+<meta property="article:modified_time" content="2016-03-23 02:00:00+08:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
+<meta property="article:section" content="Coding"/>
+<meta property="article:tag" content="zh"/>
+<meta property="article:tag" content="jupyter"/>
+<meta property="article:tag" content="notebook"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Jupyter Notebook Progress Bar">
+<meta name="twitter:description" content="相信很多人都已經在使用 Jupyter (IPython) Notebook 跑分析。隨著分析的資料越跑越多，有時候刷下去就是幾十分鐘甚至數小時。此時沒有個進度條還蠻無聊的，而且能讓自己感覺很有進度，何樂不為呢？ 例如我去年介紹 aiohttp 時就有用到 notebook 和 console 底下的進度條 (progress bar)。不過，這幾個月 Jupyter ...">
+<meta property="og:image" content="//blog.liang2.tw/posts/2016/01/notebook-progress-bar/pics/progressbar_demo.webm">
+<meta name="twitter:image" content="//blog.liang2.tw/posts/2016/01/notebook-progress-bar/pics/progressbar_demo.webm">
+  <title>Jupyter Notebook Progress Bar &ndash; Liang2's blog</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://blog.liang2.tw">
+        <img src="https://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
+      </a>
+      <h1><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+      <p>Code / Stat / Bioinfo</p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
+          <li><a href="https://blog.liang2.tw/talks/#talks">Talks</a></li>
+          <li><a href="https://blog.liang2.tw/research/#research">Research</a></li>
+          <li><a href="https://blog.liang2.tw/projects/#projects">Projects</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
+        <li><a class="sc-envelope-o" href="mailto:me+blog@liang2.tw" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
+        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://blog.liang2.tw">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+      <a href="https://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="notebook-progress-bar">Jupyter Notebook Progress&nbsp;Bar</h1>
+    <p>Posted on Mar 23, 2016
+      in <a href="https://blog.liang2.tw/category/coding.html">Coding</a>
+    </p>
+  </header>
+  <div>
+    <p>相信很多人都已經在使用 <a href="https://jupyter.org/">Jupyter (IPython) Notebook</a> 跑分析。隨著分析的資料越跑越多，有時候刷下去就是幾十分鐘甚至數小時。此時沒有個進度條還蠻無聊的，而且能讓自己感覺<strong>很有進度</strong>，何樂不為呢？</p>
+<p>例如我<a href="https://blog.liang2.tw/play_aiohttp/?full#asyncio-progressbar-cover">去年介紹 aiohttp</a> 時就有用到 notebook 和 console 底下的進度條 (progress bar)。不過，這幾個月 Jupyter Notebook 4+ 架構上的調整，可能 code 都不能用了。剛好昨天的 Taipei.py&nbsp;有人提到這事，就來整理一下吧。</p>
+<div class="toc">
+<ul>
+<li><a href="#ipywidgets">IPywidgets 介紹</a><ul>
+<li><a href="#_1">安裝</a></li>
+</ul>
+</li>
+<li><a href="#_2">使用進度條</a></li>
+<li><a href="#progress-bar-example-in-action">Progress bar example in&nbsp;action</a></li>
+<li><a href="#misc">Misc. 螢幕截圖</a><ul>
+<li><a href="#ffmpeg">FFmpeg&nbsp;轉檔</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h3 id="ipywidgets">IPywidgets&nbsp;介紹</h3>
+<p>Notebook 進度條使用 <a href="https://github.com/ipython/ipywidgets">ipywidgets</a> 中的元件實作。這件元件規範了 notebook client &lt;-&gt; server 間雙向的溝通，並且能把相關的 <span class="caps">CSS</span> / <span class="caps">JS</span> 包裝在一起。在 ipywidgets 範例的 <a href="http://nbviewer.jupyter.org/github/ipython/ipywidgets/blob/master/examples/Widget%20Basics.ipynb"><em>Widgets Basics</em></a>&nbsp;中就有提到可能的用途：</p>
+<blockquote>
+<p>You can use widgets to <strong>build interactive GUIs</strong> for your notebooks. <br> 
+You can also use widgets to <strong>synchronize stateful and stateless information</strong> between Python and&nbsp;JavaScript.</p>
+</blockquote>
+<p>所以除了像進度條這樣單向的從 python code 傳訊息到 notebook (<span class="caps">HTML</span>) front-end 之外，也可以做一些介面把 front-end 的值傳回 python&nbsp;code。</p>
+<p>……只是要用個進度條而已，哪來這麼多背景知識。更多介紹可以參考 <a href="http://nbviewer.jupyter.org/github/ipython/ipywidgets/blob/master/examples/Index.ipynb">ipywidgets 官方範例</a>。</p>
+<h4 id="_1">安裝</h4>
+<p>使用 Python 3.5 示範。安裝除了 notebook 本身外，還要額外裝上 ipywidgets&nbsp;這套件。</p>
+<div class="highlight"><pre><span></span>pip install notebook ipywidgets
+</pre></div>
+
+
+<p>再用 <code>jupyter notebook</code> 即可啟用&nbsp;notebook。</p>
+<h3 id="_2">使用進度條</h3>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">IntProgress</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
+</pre></div>
+
+
+<p><code>IntProgress</code> 就是進度條，<code>display</code> 則是 IPython 顯示各種 Python 物件的函數，在這邊用它才能把 widget 以 <span class="caps">HTML</span> 顯示並與 python code&nbsp;聯動。</p>
+<p>建立一個進度條的方式很簡單。建立 <code>IntProgress</code> widget&nbsp;object，然後顯示它：</p>
+<div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">IntProgress</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="figure">
+  <img src="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_default.png">
+</div>
+
+<p>預設是進度條有 100 個單位，初始值為 0。進度條的值與最大值的狀態分別存在 <code>.value</code>、<code>.max</code> 屬性裡：</p>
+<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">max</span>
+<span class="go">(0, 100)</span>
+</pre></div>
+
+
+<p>只要修改 <code>p.value</code> 前面的進度條的狀態就會自動更新（不用重跑 <code>display(p)</code>）：</p>
+<div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">50</span>
+</pre></div>
+
+
+<div class="figure">
+  <img src="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_50.png">
+</div>
+
+<div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">100</span>
+</pre></div>
+
+
+<div class="figure">
+  <img src="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_100.png">
+</div>
+
+<p>當然，最大值調整也會即時更新。此外，還可以透過 <code>.description</code> 給進度條一個&nbsp;label。重新做一個完整的例子：</p>
+<div class="highlight"><pre><span></span><span class="n">p2</span> <span class="o">=</span> <span class="n">IntProgress</span><span class="p">(</span><span class="nb">max</span><span class="o">=</span><span class="mi">56</span><span class="p">)</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="mi">10</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;Running&#39;</span>
+<span class="n">display</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="figure">
+  <img src="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_full.png">
+</div>
+
+<p>完整的 code&nbsp;就這樣，用起來非常方便。</p>
+<h3 id="progress-bar-example-in-action">Progress bar example in&nbsp;action</h3>
+<p>模擬一下真實情況，我們通常有一堆待做的 task，在這邊叫 <code>todo_tasks</code> 好了。</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="n">todo_tasks</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;task </span><span class="si">%02d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">)]</span>
+</pre></div>
+
+
+<p>只是個字串，但用 <code>time.sleep(sec)</code> 來模擬有在做事。</p>
+<p>搭配進度條的時候，把實際動態做成底下的動畫。</p>
+<div class="highlight"><pre><span></span><span class="c1"># Initialize a progess bar</span>
+<span class="n">progress</span> <span class="o">=</span> <span class="n">IntProgress</span><span class="p">()</span>
+<span class="n">progress</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">todo_tasks</span><span class="p">)</span>
+<span class="n">progress</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;(Init)&#39;</span>
+<span class="n">display</span><span class="p">(</span><span class="n">progress</span><span class="p">)</span>
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+
+<span class="c1"># Simulating task execution</span>
+<span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">todo_tasks</span><span class="p">:</span>
+    <span class="n">progress</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+    <span class="n">progress</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">task</span>
+<span class="n">progress</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;(Done)&#39;</span>
+</pre></div>
+
+
+<div class="figure">
+  <video loop auto autoplay>
+    <source src="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_demo.webm" type="video/webm">
+    <source src="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_demo.mp4" type="video/mp4">
+    Your browser doesn&#8217;t support <span class="caps">HTML5</span> video in WebM with <span class="caps">VP8</span> or <span class="caps">MP4</span> with H.264. You can still download the <a href="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_demo.mp4">screencast</a> and view it locally.
+  </video>
+  <p class="caption center">Progressbar in&nbsp;action</p>
+</div>
+
+<p>非常方便吧！</p>
+<h3 id="misc">Misc.&nbsp;螢幕截圖</h3>
+<p>寫這篇文章花最多的時間是在截圖跟做動畫 <span class="caps">XD</span></p>
+<p>瀏覽器的截圖，現在 Firefox (45) 已經可以只選擇截某個 <span class="caps">DOM</span>，十分方便。</p>
+<p>在最後動態的錄製花了不少時間。一開始想說是不是要用 <span class="caps">GIF</span>，但<a href="http://blog.imgur.com/2014/10/09/introducing-gifv/">都 2016 年了還用什麼 <span class="caps">GIF</span> 啊！</a>，雖然螢幕可以試著改 <span class="caps">GIF</span> palette 讓畫面不會很醜體積又小，但覺得用個 H.264 / <span class="caps">VP9</span>&nbsp;簡單多了。</p>
+<p>使用 QuickTime Screen Capture，開始錄的時候能只選擇螢幕一部份區域。以我 13&rdquo; retina 螢幕為例，會得到 1636x736 H.264 .mov 檔。但我覺得解析度不用這麼高，所以最後輸出成 480p (1148x480)&nbsp;就好，順便裁了一點白邊。</p>
+<p>透過 <span class="caps">HTML5</span> <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video"><code>&lt;video&gt;</code></a> 能把 <span class="caps">MP4</span> / WebM&nbsp;當成動畫來使用：</p>
+<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">video</span> <span class="na">loop</span> <span class="na">autoplay</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">source</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;vid.webm&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;video/webm&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">source</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;vid.mp4&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;video/mp4&quot;</span><span class="p">&gt;</span>
+    Your browser doesn&#39;t support HTML5 video in WebM with VP8
+    or MP4 with H.264. You can still download the 
+    <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;vid.mp4&quot;</span><span class="p">&gt;</span>screencast<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span> and view it locally.
+<span class="p">&lt;/</span><span class="nt">vide</span><span class="p">&gt;</span>
+</pre></div>
+
+
+<p>各家 web browser 的支援度可參考 caniuse.com：<a href="http://caniuse.com/#feat=webm">WebM</a>、<a href="http://caniuse.com/#feat=mpeg4"><span class="caps">MP4</span></a></p>
+<h4 id="ffmpeg">FFmpeg&nbsp;轉檔</h4>
+<p>筆記而已，沒有認真調參數讓輸出檔案最小。<span class="caps">VP9</span> 的部份參考 <a href="https://trac.ffmpeg.org/wiki/Encode/VP9">FFmepg</a><sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup>。</p>
+<div class="highlight"><pre><span></span><span class="c1"># H.264 MP4</span>
+ffmpeg -i Untitled.mov <span class="se">\</span>
+    -vcodec h264 <span class="se">\</span>
+    -strict -2 -crf <span class="m">22</span> -preset slow -r <span class="m">24</span> <span class="se">\</span>
+    -vf <span class="s2">&quot;crop=iw:ih-52:0:10, scale=-1:480&quot;</span> <span class="se">\</span>
+    out.mp4
+
+<span class="c1"># VP9 WebM</span>
+ffmpeg -i Untitled.mov <span class="se">\</span>
+    -vcodec libvpx-vp9 <span class="se">\</span>
+    -b:v 150K -r <span class="m">24</span> <span class="se">\</span>
+    -vf <span class="s2">&quot;crop=iw:ih-52:0:10, scale=-1:480&quot;</span> <span class="se">\</span>
+    out.webm
+</pre></div>
+
+
+<p>4s 的檔案最後大約 <span class="caps">60KB</span>，相當不錯。我很多 <span class="caps">PNG</span>&nbsp;截圖都大多了。</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> du -sh ./* <span class="p">|</span> gsort -rh
+<span class="go">744K    ./Untitled.mov</span>
+<span class="go"> 60K    ./out.mp4</span>
+<span class="go"> 52K    ./out.webm</span>
+</pre></div>
+
+
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>需要額外安裝 libvpx，例如：<code>brew install ffmepg --with-libvpx</code>&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://blog.liang2.tw/tag/zh.html">zh</a>
+      <a href="https://blog.liang2.tw/tag/jupyter.html">jupyter</a>
+      <a href="https://blog.liang2.tw/tag/notebook.html">notebook</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'liang2';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "Jupyter Notebook Progress&nbsp;Bar",
+  "headline": "Jupyter Notebook Progress&nbsp;Bar",
+  "datePublished": "2016-03-23 02:00:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Liang2",
+    "url": "https://blog.liang2.tw/author/liang2.html"
+  },
+  "image": "//blog.liang2.tw/posts/2016/01/notebook-progress-bar/pics/progressbar_demo.webm",
+  "url": "https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/",
+  "description": "相信很多人都已經在使用 Jupyter (IPython) Notebook 跑分析。隨著分析的資料越跑越多，有時候刷下去就是幾十分鐘甚至數小時。此時沒有個進度條還蠻無聊的，而且能讓自己感覺很有進度，何樂不為呢？ 例如我去年介紹 aiohttp 時就有用到 notebook 和 console 底下的進度條 (progress bar)。不過，這幾個月 Jupyter ..."
+}
+</script></body>
+</html>

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
+  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/font-awesome.min.css">
+  <!-- Justfont webfont -->
+  <!-- Local development -->
+  <!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+  <!-- Proudction version v4.9.4 -->
+  <script src="https://blog.liang2.tw/theme/js/justfont_v4.9.4.js" type="text/javascript" charset="utf-8"></script>
+  <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Liang2" />
+<meta name="description" content="Using fundamental R/Biocondcutor packages (e.g. AnnotationHub, ensembldb and biomaRt) to query Ensembl genomic references or annotations." />
+<meta name="keywords" content="en, r, bioconductor">
+<meta property="og:site_name" content="Liang2's blog"/>
+<meta property="og:title" content="Ensembl Genomic Reference in Bioconductor"/>
+<meta property="og:description" content="Using fundamental R/Biocondcutor packages (e.g. AnnotationHub, ensembldb and biomaRt) to query Ensembl genomic references or annotations."/>
+<meta property="og:locale" content="zh_TW"/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-05-21 18:00:00+08:00"/>
+<meta property="article:modified_time" content="2016-05-21 18:00:00+08:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
+<meta property="article:section" content="Bioinfo"/>
+<meta property="article:tag" content="en"/>
+<meta property="article:tag" content="r"/>
+<meta property="article:tag" content="bioconductor"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Ensembl Genomic Reference in Bioconductor">
+<meta name="twitter:description" content="Using fundamental R/Biocondcutor packages (e.g. AnnotationHub, ensembldb and biomaRt) to query Ensembl genomic references or annotations.">
+  <title>Ensembl Genomic Reference in Bioconductor &ndash; Liang2's blog</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://blog.liang2.tw">
+        <img src="https://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
+      </a>
+      <h1><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+      <p>Code / Stat / Bioinfo</p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
+          <li><a href="https://blog.liang2.tw/talks/#talks">Talks</a></li>
+          <li><a href="https://blog.liang2.tw/research/#research">Research</a></li>
+          <li><a href="https://blog.liang2.tw/projects/#projects">Projects</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
+        <li><a class="sc-envelope-o" href="mailto:me+blog@liang2.tw" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
+        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://blog.liang2.tw">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+      <a href="https://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="biocondutor-ensembl-reference">Ensembl Genomic Reference in&nbsp;Bioconductor</h1>
+    <p>Posted on May 21, 2016
+      in <a href="https://blog.liang2.tw/category/bioinfo.html">Bioinfo</a>
+    </p>
+  </header>
+  <div>
+    <p><em><strong><span class="caps">TL</span>;<span class="caps">DR</span></strong> I gave a talk <a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/">Genomics in R</a> about querying genomic annotations and references in R/Bioconductor. In this post, we re-visit all the operations in my talk using Ensembl references instead of <span class="caps">UCSC</span>/<span class="caps">NCBI</span>&nbsp;ones.</em></p>
+<p>This post is part of the &ldquo;<a href="https://blog.liang2.tw/posts/2015/12/biocondutor-genomic-data/">Genomic Data Processing in Bioconductor</a>&rdquo; series. In that post, I mentioned several topics critical for genomic data analysis in&nbsp;Bioconductor:</p>
+<ul>
+<li>Annotation and genome reference (OrgDb, TxDb, OrganismDb,&nbsp;BSgenome)</li>
+<li>Experiment data storage&nbsp;(ExpressionSets)</li>
+<li>Operations on genome&nbsp;(GenomicRanges)</li>
+<li>Genomic data visualization (Gviz,&nbsp;ggbio)</li>
+</ul>
+<p>Few days ago in a local R community meetup, I gave a talk <a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/"><em>Genomics in R</em></a> covering the &ldquo;Annotation and genome reference&rdquo; part and a quick glance through &ldquo;Operations on genome&rdquo;, which should be sufficient for daily usage such as searching annotations in the subset of some genomic ranges. You can find the <a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/">slides</a>, the <a href="https://www.youtube.com/watch?v=ZR4GYQ487j8">meetup screencast</a> (in Chinese) and the <a href="https://github.com/ccwang002/2016Talk-Genomics-in-R">accompanied source code</a> online. I don&rsquo;t think a write-up is needed for the talk. But if anyone is interested, feel free to drop your reply below.&nbsp;:)</p>
+<h3 id="fundamental-bioconductor-packages">Fundamental Bioconductor&nbsp;packages</h3>
+<p>Some Bioconductor packages are the building blocks for genomic data analysis. I put a table here containing all the classes covered in rest of the post. If you are not familiar with these classes and their methods, go through the <a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/">talk slides</a> first, or at least follow the <a href="https://bioconductor.org/help/workflows/annotation/annotation/">annotation workflow</a> on&nbsp;Bioconductor.</p>
+<table>
+<thead>
+<tr>
+<th align="left">R Class</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>OrgDb</code></td>
+<td align="left">Gene-based information for Homo sapiens; useful for mapping between gene IDs, Names, Symbols, <span class="caps">GO</span> and <span class="caps">KEGG</span> identifiers, etc.</td>
+</tr>
+<tr>
+<td align="left"><code>TxDb</code></td>
+<td align="left">Transcriptome ranges for the known gene track of Homo sapiens, e.g., introns, exons, <span class="caps">UTR</span> regions.</td>
+</tr>
+<tr>
+<td align="left"><code>OrganismDb</code></td>
+<td align="left">Collection of multiple annotations for a common organism and genome build.</td>
+</tr>
+<tr>
+<td align="left"><code>BSgenome</code></td>
+<td align="left">Full genome sequence for Homo sapiens.</td>
+</tr>
+<tr>
+<td align="left"><code>AnnotationHub</code></td>
+<td align="left">Provides a convenient interface to annotations from many different sources; objects are returned as fully parsed Bioconductor data objects or as the name of a file on disk.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ensembl-genome-browser-and-its-ecosystem">Ensembl genome browser and its&nbsp;ecosystem</h3>
+<p>In Bioconductor, most annotations are built against <span class="caps">NCBI</span> and <span class="caps">UCSC</span> naming systems, which are also used in my talk. However, there is another naming system maintained by <a href="http://www.ensembl.org/index.html">Ensembl</a>, whose IDs are very recognizable with suffix &ldquo;<span class="caps">ENSG</span>&rdquo; and &ldquo;<span class="caps">ENST</span>&rdquo; for gene and transcript&nbsp;respectively.</p>
+<p>I particularly enjoy the Ensembl genome browser. The information is well organized and structured. For example, take a look at the description page of <a href="http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000100030">gene <span class="caps">MAPK1</span></a>,</p>
+<div class="figure">
+  <img src="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/pics/gene_MAPK1_ensembl_browser.png">
+  <p class="caption center">Gene information page of <span class="caps">MAP1</span> on Ensembl Genome Browser release 84 (<a href="http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000100030">link</a>)</p>
+</div>
+
+<p>The <a href="http://www.ensembl.org/Homo_sapiens/Gene/Compara_Tree?db=core;g=ENSG00000100030">gene tree</a> tab shows its homologs and paralogs. The <a href="http://www.ensembl.org/Homo_sapiens/Gene/Variation_Gene/Table?db=core;g=ENSG00000100030">variant table</a> tab shows various kinds of SNPs within <span class="caps">MAPK1</span>&rsquo;s transcript region. SNPs are annotated with their sources, different levels of supporting evidence, and <span class="caps">SIFT</span>/PolyPhen prediction on protein function change. Finally, there is a <a href="http://www.ensembl.org/Homo_sapiens/Gene/Matches?db=core;g=ENSG00000100030">external references</a> tab which links the Ensembl IDs with <a href="https://www.ncbi.nlm.nih.gov/CCDS/CcdsBrowse.cgi"><span class="caps">NCBI</span> <span class="caps">CCDS</span></a> and <a href="http://www.ncbi.nlm.nih.gov/refseq/"><span class="caps">NCBI</span> RefSeq</a> IDs. There are many ways to explore different aspects of this gene, and it seems everything at multiple biological levels is simply&nbsp;connected. </p>
+<p>I always think of the Ensembl ecosystem as a decent learning portal, so it is a pity if one cannot easily use its information in R/Bioconductor. After a quick research, I found using Ensembl annotations are quite straightforward even though the required files does not ship with Bioconductor. Also, there were some topics I failed to mention in the talk, such as AnnotationHub and genomic coordinate system conversion (e.g., from hg19 to hg38). I am going to cover these topics in the&nbsp;talk.</p>
+<div class="toc">
+<ul>
+<li><a href="#fundamental-bioconductor-packages">Fundamental Bioconductor&nbsp;packages</a></li>
+<li><a href="#ensembl-genome-browser-and-its-ecosystem">Ensembl genome browser and its&nbsp;ecosystem</a></li>
+<li><a href="#orgdb">OrgDb</a></li>
+<li><a href="#txdb">TxDb</a></li>
+<li><a href="#bsgenome-and-annotationhub">BSgenome and&nbsp;AnnotationHub</a></li>
+<li><a href="#biomart">biomaRt</a><ul>
+<li><a href="#compatibility-with-annotationdbs-interface">Compatibility with AnnotationDb&rsquo;s&nbsp;interface</a></li>
+<li><a href="#biomarts-original-interface">biomaRt&rsquo;s original&nbsp;interface</a></li>
+</ul>
+</li>
+<li><a href="#conversion-between-genomic-coordinate-systems">Conversion between genomic coordinate&nbsp;systems</a></li>
+<li><a href="#summary">Summary</a></li>
+</ul>
+</div>
+<h2 id="orgdb">OrgDb</h2>
+<p>The same OrgDb object for human (<code>org.Hs.eg.db</code>) can be used. It relates different gene IDs, including Entrez and Ensembl gene <span class="caps">ID</span>. From its metadata, human&rsquo;s OrgDb gets updated frequently. Most of its data source were fetched during this March. So one should be able to use it for both hg19 and hg38 human&nbsp;reference.</p>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>org.Hs.eg.db<span class="p">)</span>
+human <span class="o">&lt;-</span> org.Hs.eg.db
+
+mapk_gene_family_info <span class="o">&lt;-</span> select<span class="p">(</span>
+    human<span class="p">,</span>
+    keys <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;MAPK1&quot;</span><span class="p">,</span> <span class="s">&quot;MAPK3&quot;</span><span class="p">,</span> <span class="s">&quot;MAPK6&quot;</span><span class="p">),</span>
+    keytype <span class="o">=</span> <span class="s">&quot;SYMBOL&quot;</span><span class="p">,</span>
+    columns <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;ENTREZID&quot;</span><span class="p">,</span> <span class="s">&quot;ENSEMBL&quot;</span><span class="p">,</span> <span class="s">&quot;GENENAME&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+mapk_gene_family_info
+</pre></div>
+
+
+<table>
+<thead>
+<tr>
+<th align="left"><span class="caps">SYMBOL</span></th>
+<th align="left"><span class="caps">ENTREZID</span></th>
+<th align="left"><span class="caps">ENSEMBL</span></th>
+<th align="left"><span class="caps">GENENAME</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><span class="caps">MAPK1</span></td>
+<td align="left">5594</td>
+<td align="left"><span class="caps">ENSG00000100030</span></td>
+<td align="left">mitogen-activated protein kinase 1</td>
+</tr>
+<tr>
+<td align="left"><span class="caps">MAPK3</span></td>
+<td align="left">5595</td>
+<td align="left"><span class="caps">ENSG00000102882</span></td>
+<td align="left">mitogen-activated protein kinase 3</td>
+</tr>
+<tr>
+<td align="left"><span class="caps">MAPK6</span></td>
+<td align="left">5597</td>
+<td align="left"><span class="caps">ENSG00000069956</span></td>
+<td align="left">mitogen-activated protein kinase 6</td>
+</tr>
+</tbody>
+</table>
+<p>Here comes a small pitfall for Ensembl annotation. We cannot sufficiently map Ensembl&rsquo;s gene <span class="caps">ID</span> to its transcript <span class="caps">ID</span>,</p>
+<div class="highlight"><pre><span></span>select<span class="p">(</span>
+    human<span class="p">,</span>
+    keys <span class="o">=</span> mapk_gene_family_info<span class="o">$</span>ENSEMBL<span class="p">[[</span><span class="m">1</span><span class="p">]],</span>
+    keytype <span class="o">=</span> <span class="s">&quot;ENSEMBL&quot;</span><span class="p">,</span>
+    columns <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;ENSEMBLTRANS&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="c1"># &#39;select()&#39; returned 1:1 mapping between keys and columns</span>
+<span class="c1">#           ENSEMBL ENSEMBLTRANS</span>
+<span class="c1"># 1 ENSG00000100030         &lt;NA&gt;</span>
+</pre></div>
+
+
+<p>We got <em>no</em> Ensembl transcript <span class="caps">ID</span> for <span class="caps">MAPK1</span>, which is impossible. Therefore, to find the real Ensembl transcript IDs, we need to find other&nbsp;references.</p>
+<h2 id="txdb">TxDb</h2>
+<p>There is no pre-built Ensembl TxDb object available on Bioconductor. But with the help of <a href="http://bioconductor.org/packages/release/bioc/html/ensembldb.html">ensembldb</a>, we can easily build the TxDb&nbsp;ourselves.</p>
+<p>Following the instructions in ensembldb&rsquo;s <a href="http://bioconductor.org/packages/release/bioc/vignettes/ensembldb/inst/doc/ensembldb.html">vignette file</a>, we can build the TxDb object from the Ensembl latest release, which is release 84 (Mar, 2016) at the time of writing. Ensembl releases all human transcript records as <span class="caps">GTF</span> file, which can be found here <a href="ftp://ftp.ensembl.org/pub/release-84/gtf/homo_sapiens/Homo_sapiens.GRCh38.84.gtf.gz">ftp://ftp.ensembl.org/pub/release-84/gtf/homo_sapiens/Homo_sapiens.GRCh38.84.gtf.gz</a>.</p>
+<p>After processing <span class="caps">GTF</span> file via <code>ensDbFromGtf()</code>, the generated data for creating the TxDb object will be stored in a SQLite3 database file <code>Homo_sapiens.GRCh38.84.sqlite</code> at the R working directory. Building TxDB is just one command away, <code>EnsDb()</code>. Putting two commands together, the script for building Ensembl TxDb is listed below. To prevent from rebuilding the TxDb every time the script is executed, we first check if the sqlite file&nbsp;exists,</p>
+<div class="highlight"><pre><span></span><span class="c1"># xxx_DB in the vignette is just a string to the SQLite db file path</span>
+ens84_txdb_pth <span class="o">&lt;-</span> <span class="s">&#39;./Homo_sapiens.GRCh38.84.sqlite&#39;</span>
+<span class="kr">if</span> <span class="p">(</span><span class="o">!</span><span class="kp">file.exists</span><span class="p">(</span>ens84_human_txdb_pth<span class="p">))</span> <span class="p">{</span>
+    ens84_txdb_pth <span class="o">&lt;-</span> ensDbFromGtf<span class="p">(</span>gtf<span class="o">=</span><span class="s">&quot;Homo_sapiens.GRCh38.84.gtf.gz&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+txdb_ens84 <span class="o">&lt;-</span> EnsDb<span class="p">(</span>ens84txdb_pth<span class="p">)</span>
+txdb_ens84  <span class="c1"># Preview the metadata</span>
+</pre></div>
+
+
+<p>The filtering syntax for finding desired genes or transcripts is different to the built-in TxDb&nbsp;object,</p>
+<div class="highlight"><pre><span></span>transcripts<span class="p">(</span>
+    txdb_ens84<span class="p">,</span>
+    filter<span class="o">=</span>GeneidFilter<span class="p">(</span>mapk_gene_family_info<span class="o">$</span>ENSEMBL<span class="p">[[</span><span class="m">1</span><span class="p">]])</span>
+<span class="p">)</span>
+<span class="c1"># GRanges object with 4 ranges and 5 metadata columns:</span>
+<span class="c1">#                   seqnames               ranges strand |           tx_id           tx_biotype</span>
+<span class="c1">#                      &lt;Rle&gt;            &lt;IRanges&gt;  &lt;Rle&gt; |     &lt;character&gt;          &lt;character&gt;</span>
+<span class="c1">#   ENST00000215832       22 [21754500, 21867629]      - | ENST00000215832       protein_coding</span>
+<span class="c1">#   ENST00000491588       22 [21763984, 21769428]      - | ENST00000491588 processed_transcript</span>
+<span class="c1">#   ENST00000398822       22 [21769040, 21867680]      - | ENST00000398822       protein_coding</span>
+<span class="c1">#   ENST00000544786       22 [21769204, 21867440]      - | ENST00000544786       protein_coding</span>
+<span class="c1">#                   tx_cds_seq_start tx_cds_seq_end         gene_id</span>
+<span class="c1">#                          &lt;numeric&gt;      &lt;numeric&gt;     &lt;character&gt;</span>
+<span class="c1">#   ENST00000215832         21769204       21867440 ENSG00000100030</span>
+<span class="c1">#   ENST00000491588             &lt;NA&gt;           &lt;NA&gt; ENSG00000100030</span>
+<span class="c1">#   ENST00000398822         21769204       21867440 ENSG00000100030</span>
+<span class="c1">#   ENST00000544786         21769204       21867440 ENSG00000100030</span>
+<span class="c1">#   -------</span>
+<span class="c1">#   seqinfo: 1 sequence from GRCh38 genome</span>
+</pre></div>
+
+
+<p>So filtering is done by passing special filter functions to <code>filter=</code>. Likewise, there are <code>TxidFilter</code>, <code>TxbiotypeFilter</code>, and <code>GRangesFilter</code> for filtering on the respective&nbsp;columns.</p>
+<div class="highlight"><pre><span></span>tx_gr <span class="o">&lt;-</span> transcripts<span class="p">(</span>
+    txdb_ens84<span class="p">,</span>
+    filter<span class="o">=</span>TxidFilter<span class="p">(</span><span class="s">&quot;ENST00000215832&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+tr_gr
+<span class="c1"># GRanges object with 1 range and 5 metadata columns:</span>
+<span class="c1">#                   seqnames               ranges strand |           tx_id     tx_biotype tx_cds_seq_start tx_cds_seq_end         gene_id</span>
+<span class="c1">#                      &lt;Rle&gt;            &lt;IRanges&gt;  &lt;Rle&gt; |     &lt;character&gt;    &lt;character&gt;        &lt;numeric&gt;      &lt;numeric&gt;     &lt;character&gt;</span>
+<span class="c1">#   ENST00000215832       22 [21754500, 21867629]      - | ENST00000215832 protein_coding         21769204       21867440 ENSG00000100030</span>
+<span class="c1">#   -------</span>
+<span class="c1">#   seqinfo: 1 sequence from GRCh38 genome</span>
+</pre></div>
+
+
+<p>Check the result with the online Ensembl genome browser. Note that Ensembl release 84 use&nbsp;hg38.</p>
+<h2 id="bsgenome-and-annotationhub">BSgenome and&nbsp;AnnotationHub</h2>
+<p>We can load the sequence from <code>BSgenome.Hsapiens.UCSC.hg38</code>, however, we can obtain the genome (chromosome) sequence of Ensembl using <a href="https://bioconductor.org/packages/release/bioc/html/AnnotationHub.html">AnnotationHub</a>. References of non-model organisms can be found on AnnotationHub, many of which are extracted from Ensembl. But they can be downloaded as Bioconductor objects directly so it should be easier to&nbsp;use.</p>
+<p>First we create a AnnotationHub instance, it cached the metadata all available annotations locally for us to&nbsp;query.</p>
+<div class="highlight"><pre><span></span>ah <span class="o">&lt;-</span> AnnotationHub<span class="p">()</span>
+query<span class="p">(</span>ah<span class="p">,</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;Homo sapiens&quot;</span><span class="p">,</span> <span class="s">&quot;release-84&quot;</span><span class="p">))</span>
+<span class="c1"># AnnotationHub with 5 records</span>
+<span class="c1"># # snapshotDate(): 2016-05-12</span>
+<span class="c1"># # $dataprovider: Ensembl</span>
+<span class="c1"># # $species: Homo sapiens</span>
+<span class="c1"># # $rdataclass: TwoBitFile</span>
+<span class="c1"># # additional mcols(): taxonomyid, genome, description, tags, sourceurl, sourcetype</span>
+<span class="c1"># # retrieve records with, e.g., &#39;object[[&quot;AH50558&quot;]]&#39;</span>
+<span class="c1">#</span>
+<span class="c1">#             title</span>
+<span class="c1">#   AH50558 | Homo_sapiens.GRCh38.cdna.all.2bit</span>
+<span class="c1">#   AH50559 | Homo_sapiens.GRCh38.dna.primary_assembly.2bit</span>
+<span class="c1">#   AH50560 | Homo_sapiens.GRCh38.dna_rm.primary_assembly.2bit</span>
+<span class="c1">#   AH50561 | Homo_sapiens.GRCh38.dna_sm.primary_assembly.2bit</span>
+<span class="c1">#   AH50562 | Homo_sapiens.GRCh38.ncrna.2bit</span>
+</pre></div>
+
+
+<p>From the search results, human hg38 genome sequences are available as <a href="https://genome.ucsc.edu/goldenpath/help/twoBit.html">TwoBit</a> format. But having multiple results is confusing at first. After checking the Ensembl&rsquo;s <a href="ftp://ftp.ensembl.org/pub/release-84/fasta/homo_sapiens/dna/README">gnome <span class="caps">DNA</span> assembly readme</a>, what we should use here is the full <span class="caps">DNA</span> assembly without any masking (or you can decide it based on your&nbsp;application).</p>
+<div class="highlight"><pre><span></span><span class="c1"># There are a plenty of query hits. Description of different file suffix:</span>
+<span class="c1"># GRCh38.dna.*.2bit     genome sequence</span>
+<span class="c1"># GRCh38.dna_rm.*.2bit  hard-masked genome sequence (masked regions are replaced with N&#39;s)</span>
+<span class="c1"># GRCh38.dna_sm.*.2bit  soft-masked genome sequence (.............. are lower cased)</span>
+ens84_human_dna <span class="o">&lt;-</span> ah<span class="p">[[</span><span class="s">&quot;AH50559&quot;</span><span class="p">]]</span>
+</pre></div>
+
+
+<p>Then we can use it to obtain the <span class="caps">DNA</span> sequence of desired genomic range (in <code>GRagnes</code>).</p>
+<div class="highlight"><pre><span></span>getSeq<span class="p">(</span>ens84_human_dna<span class="p">,</span> tx_gr<span class="p">)</span>
+
+<span class="c1">#   A DNAStringSet instance of length 1</span>
+<span class="c1">#      width seq                              names</span>
+<span class="c1"># [1] 113130 TTTATAGAGAAAA...CTCGGACCGATTGCCT ENST00000215832</span>
+</pre></div>
+
+
+<h2 id="biomart">biomaRt</h2>
+<p><a href="http://www.ensembl.org/biomart/martview">BioMart</a> are a collections of database that can be accessed by the same <span class="caps">API</span>, including Ensembl, Uniprot and HapMap. <a href="https://bioconductor.org/packages/release/bioc/html/biomaRt.html">biomaRt</a> provides an R interface to these database resources. We will use BioMart for <span class="caps">ID</span> conversion between Ensembl and RefSeq. Its <a href="https://bioconductor.org/packages/release/bioc/vignettes/biomaRt/inst/doc/biomaRt.pdf">vignette</a> contains solutions to common scenarios so should be a good starting point to get familiar with&nbsp;it.</p>
+<p>You could first explore which Marts are currently available by <code>listMarts()</code>,</p>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>biomaRt<span class="p">)</span>
+listMarts<span class="p">()</span>
+<span class="c1">#                biomart               version</span>
+<span class="c1"># 1 ENSEMBL_MART_ENSEMBL      Ensembl Genes 84</span>
+<span class="c1"># 2     ENSEMBL_MART_SNP  Ensembl Variation 84</span>
+<span class="c1"># 3 ENSEMBL_MART_FUNCGEN Ensembl Regulation 84</span>
+<span class="c1"># 4    ENSEMBL_MART_VEGA               Vega 64</span>
+</pre></div>
+
+
+<p>Here we will use Ensembl&rsquo;s biomart. Each mart contains multiple datasets, usually separated by different organisms. In our case, human&rsquo;s dataset is <code>hsapiens_gene_ensembl</code>. For other organisms, you can find their dataset by <code>listDatasets(ensembl)</code>. </p>
+<div class="highlight"><pre><span></span>ensembl <span class="o">&lt;-</span> useMart<span class="p">(</span><span class="s">&quot;ensembl&quot;</span><span class="p">)</span>
+ensembl <span class="o">&lt;-</span> useDataset<span class="p">(</span><span class="s">&quot;hsapiens_gene_ensembl&quot;</span><span class="p">,</span> mart<span class="o">=</span>ensembl<span class="p">)</span>
+<span class="c1"># or equivalently</span>
+ensembl <span class="o">&lt;-</span> useMart<span class="p">(</span><span class="s">&quot;ensembl&quot;</span><span class="p">,</span> dataset<span class="o">=</span><span class="s">&quot;hsapiens_gene_ensembl&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<h3 id="compatibility-with-annotationdbs-interface">Compatibility with AnnotationDb&rsquo;s&nbsp;interface</h3>
+<p>The way to query the <code>ensembl</code> Mart object is slightly different to how we query a AnnotationDb object. The major difference is the terminology. Luckily, Mart object provides a compatibility layer so we can still call functions such as <code>select(db, ...)</code>, <code>keytypes(db)</code>, <code>keys(db)</code> and <code>columns(db)</code>, which we frequently do<sup id="fnref:select-compat"><a class="footnote-ref" href="#fn:select-compat" rel="footnote">1</a></sup> when using <span class="caps">NCBI</span>/<span class="caps">UCSC</span>&nbsp;references.</p>
+<p>A Mart can have hundreds of keys and columns. So we select a part of them out by <code>grep()</code>,</p>
+<div class="highlight"><pre><span></span><span class="kp">grep</span><span class="p">(</span><span class="s">&quot;^refseq&quot;</span><span class="p">,</span> keytypes<span class="p">(</span>ensembl<span class="p">),</span> value <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+<span class="c1"># [1] &quot;refseq_mrna&quot; &quot;refseq_mrna_predicted&quot; ...</span>
+<span class="kp">grep</span><span class="p">(</span><span class="s">&quot;^ensembl&quot;</span><span class="p">,</span> keytypes<span class="p">(</span>ensembl<span class="p">),</span> value <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+<span class="c1"># [1] &quot;ensembl_exon_id&quot; &quot;ensembl_gene_id&quot; ...</span>
+<span class="kp">grep</span><span class="p">(</span><span class="s">&quot;hsapiens_paralog_&quot;</span><span class="p">,</span> columns<span class="p">(</span>ensembl<span class="p">),</span> value<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="c1"># [1] &quot;hsapiens_paralog_associated_gene_name&quot;</span>
+<span class="c1"># [2] &quot;hsapiens_paralog_canonical_transcript_protein&quot;</span>
+<span class="c1"># [3] &quot;hsapiens_paralog_chrom_end&quot;</span>
+<span class="c1"># ...</span>
+</pre></div>
+
+
+<p>We start by finding the <span class="caps">MAPK1</span>&rsquo;s RefSeq transcript IDs and their corresponding Ensembl transcript IDs, which is something we cannot do by our locally built Ensembl TxDb nor the human&nbsp;OrgDb.</p>
+<div class="highlight"><pre><span></span>select<span class="p">(</span>
+    ensembl<span class="p">,</span>
+    keys <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;MAPK1&quot;</span><span class="p">),</span>
+    keytype <span class="o">=</span> <span class="s">&quot;hgnc_symbol&quot;</span><span class="p">,</span>
+    columns <span class="o">=</span>  <span class="kt">c</span><span class="p">(</span>
+        <span class="s">&quot;refseq_mrna&quot;</span><span class="p">,</span> <span class="s">&quot;ensembl_transcript_id&quot;</span><span class="p">,</span>
+        <span class="s">&quot;hgnc_symbol&quot;</span><span class="p">,</span> <span class="s">&quot;entrezgene&quot;</span><span class="p">,</span>
+        <span class="s">&quot;chromosome_name&quot;</span><span class="p">,</span>
+        <span class="s">&quot;transcript_start&quot;</span><span class="p">,</span> <span class="s">&quot;transcript_end&quot;</span><span class="p">,</span> <span class="s">&quot;strand&quot;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="c1">#   refseq_mrna ensembl_transcript_id hgnc_symbol entrezgene</span>
+<span class="c1"># 1   NM_002745       ENST00000215832       MAPK1       5594</span>
+<span class="c1"># 2                   ENST00000491588       MAPK1       5594</span>
+<span class="c1"># 3   NM_138957       ENST00000398822       MAPK1       5594</span>
+<span class="c1"># 4                   ENST00000544786       MAPK1       5594</span>
+<span class="c1">#   chromosome_name transcript_start transcript_end strand</span>
+<span class="c1"># 1              22         21754500       21867629     -1</span>
+<span class="c1"># 2              22         21763984       21769428     -1</span>
+<span class="c1"># 3              22         21769040       21867680     -1</span>
+<span class="c1"># 4              22         21769204       21867440     -1</span>
+</pre></div>
+
+
+<p>So some of the <span class="caps">MAPK1</span> Ensembl transcripts does not have RefSeq identifiers. This is common to see since RefSeq is more conservative about including new transcripts. Anyway, we can now translate our analysis result between a wider range of naming&nbsp;systems.</p>
+<p>Moreover, what&rsquo;s awesome about BioMart is that almost all the information on the Ensembl genome browser can be retreived by BioMart. For example, getting the paralog and the mouse homolog of <span class="caps">MAPK1</span>,</p>
+<div class="highlight"><pre><span></span><span class="c1"># Get paralog of MAPK1</span>
+select<span class="p">(</span>
+    ensembl<span class="p">,</span>
+    keys <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;ENSG00000100030&quot;</span><span class="p">),</span>
+    keytype <span class="o">=</span> <span class="s">&quot;ensembl_gene_id&quot;</span><span class="p">,</span>
+    columns <span class="o">=</span> <span class="kt">c</span><span class="p">(</span>
+        <span class="s">&quot;hsapiens_paralog_associated_gene_name&quot;</span><span class="p">,</span>
+        <span class="s">&quot;hsapiens_paralog_orthology_type&quot;</span><span class="p">,</span>
+        <span class="s">&quot;hsapiens_paralog_ensembl_peptide&quot;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="c1">#   hsapiens_paralog_associated_gene_name hsapiens_paralog_orthology_type hsapiens_paralog_ensembl_peptide</span>
+<span class="c1"># 1                                 MAPK3          within_species_paralog                  ENSP00000263025</span>
+<span class="c1"># 2                                 MAPK6          within_species_paralog                  ENSP00000261845</span>
+<span class="c1"># 3                                 MAPK4          within_species_paralog                  ENSP00000383234</span>
+<span class="c1"># 4                                   NLK          within_species_paralog                  ENSP00000384625</span>
+<span class="c1"># 5                                 MAPK7          within_species_paralog                  ENSP00000311005</span>
+
+<span class="c1"># Get homolog of MAPK1 in mouse</span>
+select<span class="p">(</span>
+    ensembl<span class="p">,</span>
+    keys <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;ENSG00000100030&quot;</span><span class="p">),</span>
+    keytype <span class="o">=</span> <span class="s">&quot;ensembl_gene_id&quot;</span><span class="p">,</span>
+    columns <span class="o">=</span> <span class="kt">c</span><span class="p">(</span>
+        <span class="s">&quot;mmusculus_homolog_associated_gene_name&quot;</span><span class="p">,</span>
+        <span class="s">&quot;mmusculus_homolog_orthology_type&quot;</span><span class="p">,</span>
+        <span class="s">&quot;mmusculus_homolog_ensembl_peptide&quot;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="c1">#   mmusculus_homolog_associated_gene_name mmusculus_homolog_orthology_type mmusculus_homolog_ensembl_peptide</span>
+<span class="c1"># 1                                  Mapk1                 ortholog_one2one                ENSMUSP00000065983</span>
+</pre></div>
+
+
+<h3 id="biomarts-original-interface">biomaRt&rsquo;s original&nbsp;interface</h3>
+<p>The <code>select()</code> function we use is not the original biomaRt&rsquo;s interface. In fact, keys and columns are interpreted as BioMart&rsquo;s <strong>filters</strong> and <strong>attributes</strong> respectively. To find all available filters and&nbsp;attributes,</p>
+<div class="highlight"><pre><span></span>filters <span class="o">=</span> listFilters<span class="p">(</span>ensembl<span class="p">)</span>
+attributes <span class="o">=</span> listAttributes<span class="p">(</span>ensembl<span class="p">)</span>
+</pre></div>
+
+
+<p>each of the command return a data.frame that contains each filter&rsquo;s or attribute&rsquo;s name and&nbsp;description.</p>
+<p>Behind the scene, arguments of <code>select(db, ...)</code> is converted to <code>getBM(mart, ...)</code>. For the same example of finding RefSeq and Ensembl transcript IDs, it can be re-written&nbsp;as</p>
+<div class="highlight"><pre><span></span>getBM<span class="p">(</span>
+    attributes <span class="o">=</span> <span class="kt">c</span><span class="p">(</span>
+        <span class="s">&quot;refseq_mrna&quot;</span><span class="p">,</span> <span class="s">&quot;ensembl_transcript_id&quot;</span><span class="p">,</span>
+        <span class="s">&quot;chromosome_name&quot;</span><span class="p">,</span>
+        <span class="s">&quot;transcript_start&quot;</span><span class="p">,</span> <span class="s">&quot;transcript_end&quot;</span><span class="p">,</span> <span class="s">&quot;strand&quot;</span><span class="p">,</span>
+        <span class="s">&quot;hgnc_symbol&quot;</span><span class="p">,</span> <span class="s">&quot;entrezgene&quot;</span><span class="p">,</span> <span class="s">&quot;ensembl_gene_id&quot;</span>
+    <span class="p">),</span>
+    filters <span class="o">=</span> <span class="s">&quot;hgnc_symbol&quot;</span><span class="p">,</span>
+    values <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;MAPK1&quot;</span><span class="p">),</span>
+    mart <span class="o">=</span> ensembl
+<span class="p">)</span>
+</pre></div>
+
+
+<h2 id="conversion-between-genomic-coordinate-systems">Conversion between genomic coordinate&nbsp;systems</h2>
+<p>Somethings we need to convert between different verions of the reference. For example, today we&rsquo;d like to convert a batch of genomic locations of reference hg38 to that of hg19, so we can compare our new research with previous studies. It is a non-trivial task that can be currently handled by the following&nbsp;tools:</p>
+<ul>
+<li><a href="http://crossmap.sourceforge.net/">CrossMap</a> (used by&nbsp;Ensembl)</li>
+<li><a href="https://genome.ucsc.edu/cgi-bin/hgLiftOver">liftOver</a> (used by <span class="caps">UCSC</span>)</li>
+</ul>
+<p>Frankly I don&rsquo;t have experience for such conversion in real study (the converted result still gives the sense of unease), but anyway here I follow <a href="http://genomicsclass.github.io/book/pages/bioc1_liftOver.html">the guide on PH525x series</a>. In Bioconductor, we can use <span class="caps">UCSC</span>&rsquo;s Chain file to apply the <code>liftOver()</code> method provided by package <code>rtracklayer</code>. To convert regions from hg38 to hg19, we need the <code>hg38ToHg19.over.chain</code> file, which can be found at <a href="ftp://hgdownload.cse.ucsc.edu/goldenPath/hg38/liftOver/">ftp://hgdownload.cse.ucsc.edu/goldenPath/hg38/liftOver/</a>.</p>
+<p>We still use <span class="caps">MAPK1</span> as an example of conversion. First extract <span class="caps">MAPK1</span>&rsquo;s genomic ranges in hg38 and hg19&nbsp;respectively,</p>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>TxDb.Hsapiens.UCSC.hg38.knownGene<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>TxDb.Hsapiens.UCSC.hg19.knownGene
+tx38 <span class="o">&lt;-</span> TxDb.Hsapiens.UCSC.hg38.knownGene
+tx19 <span class="o">&lt;-</span> TxDb.Hsapiens.UCSC.hg19.knownGene
+MAPK1_hg38 <span class="o">&lt;-</span> genes<span class="p">(</span>tx38<span class="p">,</span> filter<span class="o">=</span><span class="kt">list</span><span class="p">(</span>gene_id<span class="o">=</span><span class="s">&quot;5594&quot;</span><span class="p">))</span>
+MAPK1_hg19 <span class="o">&lt;-</span> genes<span class="p">(</span>tx19<span class="p">,</span> filter<span class="o">=</span><span class="kt">list</span><span class="p">(</span>gene_id<span class="o">=</span><span class="s">&quot;5594&quot;</span><span class="p">))</span>
+</pre></div>
+
+
+<p>Then we convert <code>MAPK1_hg38</code> to use the hg19 coordinate&nbsp;system.</p>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>rtracklayer<span class="p">)</span>
+ch <span class="o">&lt;-</span> import.chain<span class="p">(</span><span class="s">&quot;./hg38ToHg19.over.chain&quot;</span><span class="p">)</span>
+MAPK1_hg19_lifted <span class="o">&lt;-</span> liftOver<span class="p">(</span>MAPK1_hg38<span class="p">,</span> ch<span class="p">)</span>
+
+MAPK1_hg19
+<span class="c1"># GRanges object with 1 range and 1 metadata column:</span>
+<span class="c1">#        seqnames               ranges strand |     gene_id</span>
+<span class="c1">#           &lt;Rle&gt;            &lt;IRanges&gt;  &lt;Rle&gt; | &lt;character&gt;</span>
+<span class="c1">#   5594    chr22 [22113947, 22221970]      - |        5594</span>
+<span class="c1">#   -------</span>
+<span class="c1">#   seqinfo: 93 sequences (1 circular) from hg19 genome</span>
+
+MAPK1_hg19_lifted
+<span class="c1"># GRangesList object of length 1:</span>
+<span class="c1"># $5594</span>
+<span class="c1"># GRanges object with 2 ranges and 1 metadata column:</span>
+<span class="c1">#       seqnames               ranges strand |     gene_id</span>
+<span class="c1">#          &lt;Rle&gt;            &lt;IRanges&gt;  &lt;Rle&gt; | &lt;character&gt;</span>
+<span class="c1">#   [1]    chr22 [22113947, 22216652]      - |        5594</span>
+<span class="c1">#   [2]    chr22 [22216654, 22221970]      - |        5594</span>
+<span class="c1">#</span>
+<span class="c1"># -------</span>
+<span class="c1"># seqinfo: 1 sequence from an unspecified genome; no seqlengths</span>
+</pre></div>
+
+
+<p>So the conversion worked as expected, though it created a gap in the range (missing a base at 22216653). I haven&rsquo;t looked into the results. To ensure the correctness of the conversion, maybe a comparison with CrossMap is&nbsp;needed.</p>
+<h2 id="summary">Summary</h2>
+<p>We skimmed through OrgDb and TxDb again using the Ensembl references, including how to build the TxDb for Ensembl locally and obtain external annotations from&nbsp;AnnotationHub.</p>
+<p>BioMart is an abundant resource to query across various types of databases and references, which can be used in conversion between different naming&nbsp;systems.</p>
+<p>Finally, we know how to convert between different version of the reference. Though the correctness of the conversion requires further examination (not meaning it is wrong), at least the conversion by liftOver works as&nbsp;expected.</p>
+<p>Starting here, you should have no trouble dealing with annotations in R anymore. For the next post, I plan to further explore the way to read sequencing analysis results in&nbsp;R.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:select-compat">
+<p>Note that the <code>select(mart, ...)</code> compatibility does not apply to all existed filters (keys) and attributes (columns) of the given Mart.&#160;<a class="footnote-backref" href="#fnref:select-compat" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://blog.liang2.tw/tag/en.html">en</a>
+      <a href="https://blog.liang2.tw/tag/r.html">r</a>
+      <a href="https://blog.liang2.tw/tag/bioconductor.html">bioconductor</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'liang2';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "Ensembl Genomic Reference in&nbsp;Bioconductor",
+  "headline": "Ensembl Genomic Reference in&nbsp;Bioconductor",
+  "datePublished": "2016-05-21 18:00:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Liang2",
+    "url": "https://blog.liang2.tw/author/liang2.html"
+  },
+  "image": "https://blog.liang2.tw/pics/headpic.jpg",
+  "url": "https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/",
+  "description": "Using fundamental R/Biocondcutor packages (e.g. AnnotationHub, ensembldb and biomaRt) to query Ensembl genomic references or annotations."
+}
+</script></body>
+</html>

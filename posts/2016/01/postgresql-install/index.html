@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
+  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/font-awesome.min.css">
+  <!-- Justfont webfont -->
+  <!-- Local development -->
+  <!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+  <!-- Proudction version v4.9.4 -->
+  <script src="https://blog.liang2.tw/theme/js/justfont_v4.9.4.js" type="text/javascript" charset="utf-8"></script>
+  <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Liang2" />
+<meta name="description" content="平常用最多的是 SQLite，但 PostgreSQL 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。 用 Debian Jessie (Debian 8.3) 與 OSX Homebrew 舉例。不過 OSX 大概也不會沒事把 PostgreSQL 開著，主要是著重在 Debian ..." />
+<meta name="keywords" content="zh, postgresql, debian, osx">
+<meta property="og:site_name" content="Liang2's blog"/>
+<meta property="og:title" content="安裝 PostgreSQL 9 於 Debian Jessie / OSX"/>
+<meta property="og:description" content="平常用最多的是 SQLite，但 PostgreSQL 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。 用 Debian Jessie (Debian 8.3) 與 OSX Homebrew 舉例。不過 OSX 大概也不會沒事把 PostgreSQL 開著，主要是著重在 Debian ..."/>
+<meta property="og:locale" content="zh_TW"/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2016/01/postgresql-install/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-01-25 17:00:00+08:00"/>
+<meta property="article:modified_time" content="2016-01-25 17:00:00+08:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
+<meta property="article:section" content="Coding"/>
+<meta property="article:tag" content="zh"/>
+<meta property="article:tag" content="postgresql"/>
+<meta property="article:tag" content="debian"/>
+<meta property="article:tag" content="osx"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="安裝 PostgreSQL 9 於 Debian Jessie / OSX">
+<meta name="twitter:description" content="平常用最多的是 SQLite，但 PostgreSQL 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。 用 Debian Jessie (Debian 8.3) 與 OSX Homebrew 舉例。不過 OSX 大概也不會沒事把 PostgreSQL 開著，主要是著重在 Debian ...">
+  <title>安裝 PostgreSQL 9 於 Debian Jessie / OSX &ndash; Liang2's blog</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://blog.liang2.tw">
+        <img src="https://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
+      </a>
+      <h1><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+      <p>Code / Stat / Bioinfo</p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
+          <li><a href="https://blog.liang2.tw/talks/#talks">Talks</a></li>
+          <li><a href="https://blog.liang2.tw/research/#research">Research</a></li>
+          <li><a href="https://blog.liang2.tw/projects/#projects">Projects</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
+        <li><a class="sc-envelope-o" href="mailto:me+blog@liang2.tw" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
+        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://blog.liang2.tw">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+      <a href="https://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="postgresql-install">安裝 PostgreSQL 9 於 Debian Jessie / <span class="caps">OSX</span></h1>
+    <p>Posted on Jan 25, 2016
+      in <a href="https://blog.liang2.tw/category/coding.html">Coding</a>
+    </p>
+  </header>
+  <div>
+    <p>平常用最多的是 <a href="https://www.sqlite.org/">SQLite</a>，但 <a href="http://www.postgresql.org/">PostgreSQL</a>&nbsp;有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。</p>
+<p>用 <a href="https://www.debian.org/releases/stable/">Debian Jessie</a> (Debian 8.3) 與 <span class="caps">OSX</span> <a href="http://brew.sh/">Homebrew</a> 舉例。不過 <span class="caps">OSX</span> 大概也不會沒事把 PostgreSQL 開著，主要是著重在 Debian 的環境設定上。目前 PostgreSQL 出到 9.5 但 Debian stable 是&nbsp;9.4。基本設定應該完全沒差別。</p>
+<div class="toc">
+<ul>
+<li><a href="#postgresql">安裝 PostgreSQL</a><ul>
+<li><a href="#osx">安裝在 <span class="caps">OSX</span></a></li>
+<li><a href="#debian-jessie">安裝在 Debian&nbsp;Jessie</a></li>
+</ul>
+</li>
+<li><a href="#database">初始個人的 Database</a><ul>
+<li><a href="#postgresql_1">建立同使用者名稱的 PostgreSQL&nbsp;帳號</a></li>
+<li><a href="#database_1">建立與帳號同名稱的&nbsp;database</a></li>
+<li><a href="#psql">用使用者帳號連接&nbsp;psql</a></li>
+</ul>
+</li>
+<li><a href="#psql_1">psql&nbsp;指令</a></li>
+<li><a href="#database_2">刪除使用者、Database</a></li>
+<li><a href="#_1">進階主題</a><ul>
+<li><a href="#psql_2">透過 psql&nbsp;創建使用者帳號、資料庫</a></li>
+<li><a href="#postgresql-logging">PostgreSQL Logging</a><ul>
+<li><a href="#logging-postgresql">Logging 讓 PostgreSQL&nbsp;自己管</a></li>
+<li><a href="#logging-systemd">Logging 透過&nbsp;Systemd</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#reference">Reference</a></li>
+</ul>
+</div>
+<h2 id="postgresql">安裝&nbsp;PostgreSQL</h2>
+<h3 id="osx">安裝在 <span class="caps">OSX</span></h3>
+<div class="highlight"><pre><span></span><span class="go">brew install postgresql</span>
+</pre></div>
+
+
+<p>要用的時候手動把 PostgreSQL server&nbsp;打開，</p>
+<div class="highlight"><pre><span></span><span class="go">postgres -D /usr/local/var/postgres</span>
+</pre></div>
+
+
+<p>PostgreSQL 的設定參考 Debian&nbsp;的版本。</p>
+<h3 id="debian-jessie">安裝在 Debian&nbsp;Jessie</h3>
+<div class="highlight"><pre><span></span><span class="gp">$</span> sudo apt-get install postgresql-9.4
+</pre></div>
+
+
+<p>現在系統服務都由 <a href="http://freedesktop.org/wiki/Software/systemd/">Systemd</a> 管理了，檢查 PostgreSQL 有沒有跑起來透過 <code>systemctl</code> 這指令就可以。</p>
+<div class="highlight"><pre><span></span><span class="gp">#</span> systemctl status postgresql.service
+<span class="go">● postgresql.service - PostgreSQL RDBMS</span>
+<span class="go">   Loaded: loaded (/lib/systemd/system/postgresql.service; enabled)</span>
+<span class="go">   Active: inactive (dead) since Mon 2016-01-25 17:26:08 CST; 4s ago</span>
+<span class="go">  Process: 913 ExecStart=/bin/true (code=exited, status=0/SUCCESS)</span>
+<span class="go"> Main PID: 913 (code=exited, status=0/SUCCESS)</span>
+</pre></div>
+
+
+<p>不過這 service 看不太到什麼運行的資訊，其實是個 dummy service，它會 trigger 可能很多個 PostgreSQL database cluster 什麼的。預設只有一個 <code>main</code> 的&nbsp;cluster。</p>
+<div class="highlight"><pre><span></span><span class="gp">#</span> systemctl status postgresql@9.4-main.service
+<span class="go">● postgresql@9.4-main.service - PostgreSQL Cluster 9.4-main</span>
+<span class="go">   Loaded: loaded (/lib/systemd/system/postgresql@.service; disabled)</span>
+<span class="go">   Active: active (running) since Mon 2016-01-25 17:26:30 CST; 4min 7s ago</span>
+<span class="go">  Process: 9641 ExecStop=/usr/bin/pg_ctlcluster -m fast %i stop (code=exited, status=0/SUCCESS)</span>
+<span class="go">  Process: 9717 ExecStart=postgresql@%i %i start (code=exited, status=0/SUCCESS)</span>
+<span class="go"> Main PID: 9723 (postgres)</span>
+<span class="go">   CGroup: /system.slice/system-postgresql.slice/postgresql@9.4-main.service</span>
+<span class="go">           ├─9723 /usr/lib/postgresql/9.4/bin/postgres -D /var/lib/postgresql/9.4/main -c config_file=/etc/postgr...</span>
+<span class="go">           ├─9725 postgres: checkpointer process</span>
+<span class="go">           ├─9726 postgres: writer process</span>
+<span class="go">           ├─9727 postgres: wal writer process</span>
+<span class="go">           ├─9728 postgres: autovacuum launcher process</span>
+<span class="go">           └─9729 postgres: stats collector process</span>
+</pre></div>
+
+
+<h2 id="database">初始個人的&nbsp;Database</h2>
+<p>在 <span class="caps">OSX</span> 上用 homebrew 安裝 PostgreSQL 的使用者會有 superuser 的權限，反正是本地開發也沒差，建 database&nbsp;等設定都比較簡單。</p>
+<p>在 Debian 上的話，有這 superuser 權限的使用者為 <code>postgres</code>。所以預設使用者（這邊以 <code>vm</code> 為例）會無法連線。</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> psql
+<span class="go">psql: FATAL:  role &quot;vm&quot; does not exist</span>
+</pre></div>
+
+
+<p>切到 root 再切到 postgres 身份就能用 <code>psql</code> （PostgreSQL 的 <span class="caps">REPL</span> shell）連到 database。用 <code>\q</code> 就可以退出&nbsp;psql。</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> sudo -u postgres psql
+<span class="go">[sudo] password for vm:</span>
+<span class="go">psql (9.4.5)</span>
+<span class="go">Type &quot;help&quot; for help.</span>
+
+<span class="go">postgres=# \q</span>
+<span class="gp">$</span>
+</pre></div>
+
+
+<p>但用 postgres 這 superuser&nbsp;去連資料庫不是很安全，一開始養成好習慣應該用個人帳號。所以接下來要完成：</p>
+<ol>
+<li>建立同使用者名稱的 PostgreSQL&nbsp;帳號</li>
+<li>建立與帳號同名稱的&nbsp;database</li>
+</ol>
+<h3 id="postgresql_1">建立同使用者名稱的 PostgreSQL&nbsp;帳號</h3>
+<p>在 Debian 上可以用 <code>$USER</code> 來抓到現在登入者的帳號，即使用 sudo 切換身份這環境變數的值不會變。（讀 <a href="https://help.ubuntu.com/community/PostgreSQL">Ubuntu wiki</a>&nbsp;看到的技巧）</p>
+<p>擔心的話就直接在有 <code>$USER</code> 的地方打出帳號即可。先確認一下，</p>
+<div class="highlight"><pre><span></span><span class="gp">vm@vm-debian:~$ echo $</span>USER
+<span class="go">vm</span>
+<span class="gp">vm@vm-debian:~$</span> sudo -u postgres <span class="nb">echo</span> <span class="nv">$USER</span>
+<span class="go">vm</span>
+</pre></div>
+
+
+<p>建立使用者是透過 <code>createuser</code> 這指令。這是使用者帳號就不給太多權限。</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> sudo -u postgres createuser --interactive <span class="nv">$USER</span>
+<span class="go">Shall the new role be a superuser? (y/n) n</span>
+<span class="go">Shall the new role be allowed to create databases? (y/n) n</span>
+<span class="go">Shall the new role be allowed to create more new roles? (y/n) n</span>
+</pre></div>
+
+
+<p>這時候透過 <code>psql</code> 看就會多一個使用者。</p>
+<div class="highlight"><pre><span></span><span class="c1">-- Run with command `sudo -u postgres psql`</span>
+<span class="gp">postgres=#</span> <span class="kp">\du</span>
+                             <span class="n">List</span> <span class="k">of</span> <span class="n">roles</span>
+ <span class="k">Role</span> <span class="k">name</span> <span class="o">|</span>                   <span class="n">Attributes</span>                   <span class="o">|</span> <span class="n">Member</span> <span class="k">of</span>
+<span class="c1">-----------+------------------------------------------------+-----------</span>
+ <span class="n">postgres</span>  <span class="o">|</span> <span class="n">Superuser</span><span class="p">,</span> <span class="k">Create</span> <span class="k">role</span><span class="p">,</span> <span class="k">Create</span> <span class="n">DB</span><span class="p">,</span> <span class="n">Replication</span> <span class="o">|</span> <span class="p">{}</span>
+ <span class="n">vm</span>        <span class="o">|</span>                                                <span class="o">|</span> <span class="p">{}</span>
+</pre></div>
+
+
+<h3 id="database_1">建立與帳號同名稱的&nbsp;database</h3>
+<p>透過 <code>createdb</code> 這指令。把與帳號同名 database 的 owner&nbsp;設定成該帳號。</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> sudo -u postgres createdb --owner<span class="o">=</span><span class="nv">$USER</span> <span class="nv">$USER</span>
+</pre></div>
+
+
+<p>要多建別的 database 給這帳號也沒問題，例如名為 <code>vm_database</code> 的&nbsp;database，</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> sudo -u postgres createdb --owner<span class="o">=</span><span class="nv">$USER</span> vm_database
+</pre></div>
+
+
+<h3 id="psql">用使用者帳號連接&nbsp;psql</h3>
+<p>這時候打 <code>psql</code> 就沒問題了。</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> psql
+<span class="go">psql (9.4.5)</span>
+<span class="go">Type &quot;help&quot; for help.</span>
+
+<span class="go">vm=&gt; \conninfo</span>
+<span class="go">You are connected to database &quot;vm&quot; as user &quot;vm&quot; via socket in &quot;/var/run/postgresql&quot; at port &quot;5432&quot;.</span>
+</pre></div>
+
+
+<p>Prompt 從 <code>#=</code> 變成 <code>=&gt;</code> 表示現在連線的使用者不是 superuser。透過 psql 的指令 <code>\l</code> 或 <code>\l+</code> 可以看現在所有的&nbsp;database：</p>
+<div class="highlight"><pre><span></span><span class="gp">vm=&gt;</span> <span class="kp">\l</span>
+<span class="go">                                   List of databases</span>
+<span class="go">    Name     |  Owner   | Encoding |   Collate   |    Ctype    |   Access privileges</span>
+<span class="go">-------------+----------+----------+-------------+-------------+-----------------------</span>
+<span class="go"> postgres    | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 |</span>
+<span class="go"> template0   | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +</span>
+<span class="go">             |          |          |             |             | postgres=CTc/postgres</span>
+<span class="go"> template1   | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +</span>
+<span class="go">             |          |          |             |             | postgres=CTc/postgres</span>
+<span class="go"> vm          | vm       | UTF8     | en_US.UTF-8 | en_US.UTF-8 |</span>
+<span class="go"> vm_database | vm       | UTF8     | en_US.UTF-8 | en_US.UTF-8 |</span>
+<span class="go">(5 rows)</span>
+</pre></div>
+
+
+<p>連另一個 database <code>vm_database</code> 也很簡單，</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> psql -d vm_database
+<span class="go">psql (9.4.5)</span>
+<span class="go">Type &quot;help&quot; for help.</span>
+
+<span class="go">vm_database=&gt;</span>
+</pre></div>
+
+
+<h2 id="psql_1">psql&nbsp;指令</h2>
+<p>psql 的指令很多，用 <code>\?</code> 可以看到列表。完整的版本可以見<a href="http://www.postgresql.org/docs/9.4/static/app-psql.html#APP-PSQL-META-COMMANDS">官網 psql meta-commands</a>&nbsp;的介紹。底下列幾個常用的：</p>
+<div class="highlight"><pre><span></span>\l          # list all database
+\d          # list tables in current database
+\du         # list roles
+\conninfo   # show current SQL connection
+\q          # quit
+help        # print a hub message for all kinds of help
+</pre></div>
+
+
+<h2 id="database_2">刪除使用者、Database</h2>
+<p>各有一個指令對應。</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> dropuser &lt;usr&gt;
+<span class="gp">$</span> dropdb &lt;db&gt;
+</pre></div>
+
+
+<h2 id="_1">進階主題</h2>
+<h3 id="psql_2">透過 psql&nbsp;創建使用者帳號、資料庫</h3>
+<p>Ref: <a href="http://www.cyberciti.biz/faq/howto-add-postgresql-user-account/">http://www.cyberciti.biz/faq/howto-add-postgresql-user-account/</a></p>
+<div class="highlight"><pre><span></span><span class="c1">-- Run with command `sudo -u postgres psql -d template1`</span>
+<span class="gp">template1=#</span> <span class="k">CREATE</span> <span class="k">USER</span> <span class="o">&lt;</span><span class="n">usr</span><span class="o">&gt;</span> <span class="k">WITH</span> <span class="k">PASSWORD</span> <span class="s1">&#39;&lt;pwd&gt;&#39;</span><span class="p">;</span>
+<span class="gp">template1=#</span> <span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="o">&lt;</span><span class="n">db</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="gp">template1=#</span> <span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span> <span class="k">DATABASE</span> <span class="o">&lt;</span><span class="n">db</span><span class="o">&gt;</span> <span class="k">TO</span> <span class="o">&lt;</span><span class="n">usr</span><span class="o">&gt;</span><span class="p">;</span>
+</pre></div>
+
+
+<h3 id="postgresql-logging">PostgreSQL&nbsp;Logging</h3>
+<p>設定在 <code>/etc/postgresql/9.4/main/postgresql.conf</code> 裡。不同管理 log 的方式就要選擇不同的 <code>log_destination</code>。</p>
+<ol>
+<li>PostgreSQL 自己管：<code>stderr</code>,&nbsp;&hellip;</li>
+<li>透過 <a href="http://freedesktop.org/wiki/Software/systemd/">Systemd</a>：<code>syslog</code></li>
+</ol>
+<p>不過我沒深入研究就是，看那個 conf 裡很多設定可以調整。設定修改後要 restart PostgreSQL&nbsp;cluster，</p>
+<div class="highlight"><pre><span></span>sudo systemctl restart postgresql.service
+</pre></div>
+
+
+<h4 id="logging-postgresql">Logging 讓 PostgreSQL&nbsp;自己管</h4>
+<div class="highlight"><pre><span></span><span class="c1"># At /etc/postgresql/9.4/main/postgresql.conf</span>
+<span class="na">log_destination</span> <span class="o">=</span> <span class="s">&#39;stderr&#39; </span>
+<span class="na">logging_collector</span> <span class="o">=</span> <span class="s">on                              </span>
+</pre></div>
+
+
+<p>Log files 預設寫在 <code>/var/lib/postgresql/9.4/main/pg_log/</code>。</p>
+<h4 id="logging-systemd">Logging 透過&nbsp;Systemd</h4>
+<p>我覺得 systemd 的優點之一就是能把 log 都集中管理，只要照它的規則，就能用一樣的方法管理 logging&nbsp;是蠻方便的。</p>
+<div class="highlight"><pre><span></span><span class="c1"># At /etc/postgresql/9.4/main/postgresql.conf</span>
+<span class="na">log_destination</span> <span class="o">=</span> <span class="s">&#39;syslog&#39;  </span>
+<span class="na">logging_collector</span> <span class="o">=</span> <span class="s">off   # on 也只會說被導向到 syslog 了                             </span>
+</pre></div>
+
+
+<p>這時候重啟服務，再看 <code>systemctl status</code> 就能看到最近的 log&nbsp;了。</p>
+<div class="highlight"><pre><span></span><span class="gp">#</span> systemctl status postgresql@9.4-main
+<span class="go">● postgresql@9.4-main.service - PostgreSQL Cluster 9.4-main</span>
+<span class="go">   Loaded: loaded (/lib/systemd/system/postgresql@.service; disabled)</span>
+<span class="go">   Active: active (running) since Mon 2016-01-25 17:52:02 CST; 1min 13s ago</span>
+<span class="go">  Process: 14632 ExecStop=/usr/bin/pg_ctlcluster -m fast %i stop (code=exited, status=0/SUCCESS)</span>
+<span class="go">  Process: 14641 ExecStart=postgresql@%i %i start (code=exited, status=0/SUCCESS)</span>
+<span class="go"> Main PID: 14648 (postgres)</span>
+<span class="go">   CGroup: /system.slice/system-postgresql.slice/postgresql@9.4-main.service</span>
+<span class="go">           ├─14648 /usr/lib/postgresql/9.4/bin/postgres -D /var/lib/postgresql/9.4/main -c config_file=/etc/postg...</span>
+<span class="go">           ├─14650 postgres: checkpointer process</span>
+<span class="go">           ├─14651 postgres: writer process</span>
+<span class="go">           ├─14652 postgres: wal writer process</span>
+<span class="go">           ├─14653 postgres: autovacuum launcher process</span>
+<span class="go">           └─14654 postgres: stats collector process</span>
+
+<span class="go">Jan 25 17:52:00 vm-debian postgres[14648]: [1-1] 2016-01-25 17:52:00 CST [14648-1] LOG:  ending log output to stderr</span>
+<span class="go">Jan 25 17:52:00 vm-debian postgres[14648]: [1-2] 2016-01-25 17:52:00 CST [14648-2] HINT:  Future log output ...log&quot;.</span>
+<span class="go">Jan 25 17:52:00 vm-debian postgres[14649]: [2-1] 2016-01-25 17:52:00 CST [14649-1] LOG:  database system was...9 CST</span>
+<span class="go">Jan 25 17:52:00 vm-debian postgres[14649]: [3-1] 2016-01-25 17:52:00 CST [14649-2] LOG:  MultiXact member wr...abled</span>
+<span class="go">Jan 25 17:52:00 vm-debian postgres[14648]: [2-1] 2016-01-25 17:52:00 CST [14648-3] LOG:  database system is ...tions</span>
+<span class="go">Jan 25 17:52:00 vm-debian postgres[14653]: [2-1] 2016-01-25 17:52:00 CST [14653-1] LOG:  autovacuum launcher started</span>
+<span class="go">Jan 25 17:52:00 vm-debian postgres[14658]: [3-1] 2016-01-25 17:52:00 CST [14658-1] [unknown]@[unknown] LOG: ...acket</span>
+<span class="go">Jan 25 17:52:38 vm-debian postgres[14793]: [3-1] 2016-01-25 17:52:38 CST [14793-1] root@root FATAL:  role &quot;r...exist</span>
+<span class="go">Hint: Some lines were ellipsized, use -l to show in full.</span>
+</pre></div>
+
+
+<p>或用 systemd 標準看 log 的方式 <code>journalctl</code></p>
+<div class="highlight"><pre><span></span><span class="gp">#</span> journalctl -u postgresql@9.4-main 
+<span class="go">-- Logs begin at Mon 2016-01-25 16:46:25 CST, end at Mon 2016-01-25 19:22:07 CST. --</span>
+<span class="go">Jan 25 17:47:06 vm-debian postgres[13699]: [1-1] 2016-01-25 17:47:06 CST [13699-1] LOG:  redirecting log output to logging collector process</span>
+<span class="go">Jan 25 17:47:06 vm-debian postgres[13699]: [1-2] 2016-01-25 17:47:06 CST [13699-2] HINT:  Future log output will appear in directory &quot;pg_log&quot;.</span>
+<span class="go">Jan 25 17:47:06 vm-debian postgres[13699]: [2-1] 2016-01-25 17:47:06 CST [13699-3] LOG:  ending log output to stderr</span>
+<span class="go">Jan 25 17:47:06 vm-debian postgres[13699]: [2-2] 2016-01-25 17:47:06 CST [13699-4] HINT:  Future log output will go to log destination &quot;syslog&quot;.</span>
+<span class="go">Jan 25 17:47:06 vm-debian postgres[13701]: [3-1] 2016-01-25 17:47:06 CST [13701-1] LOG:  database system was shut down at 2016-01-25 17:47:05 CST</span>
+<span class="go">Jan 25 17:47:06 vm-debian postgres[13701]: [4-1] 2016-01-25 17:47:06 CST [13701-2] LOG:  MultiXact member wraparound protections are now enabled</span>
+<span class="go">Jan 25 17:47:06 vm-debian postgres[13699]: [3-1] 2016-01-25 17:47:06 CST [13699-5] LOG:  database system is ready to accept connections</span>
+<span class="go">Jan 25 17:47:06 vm-debian postgres[13705]: [3-1] 2016-01-25 17:47:06 CST [13705-1] LOG:  autovacuum launcher started</span>
+<span class="go">Jan 25 17:47:07 vm-debian postgres[13710]: [4-1] 2016-01-25 17:47:07 CST [13710-1] [unknown]@[unknown] LOG:  incomplete startup packet</span>
+<span class="go">Jan 25 17:49:30 vm-debian postgres[14170]: [4-1] 2016-01-25 17:49:30 CST [14170-1] root@root FATAL:  role &quot;root&quot; does not exist</span>
+<span class="go">...</span>
+</pre></div>
+
+
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-9-4-on-debian-8">How to Install and Use PostgreSQL 9.4 on Debian 8</a> by Digital&nbsp;Ocean</li>
+<li><a href="https://wiki.archlinux.org/index.php/PostgreSQL">PostgreSQL</a> on Arch&nbsp;Wiki</li>
+<li><a href="https://wiki.debian.org/PostgreSql">PostgreSQL</a> on Debian&nbsp;wiki</li>
+<li><a href="https://help.ubuntu.com/community/PostgreSQL">PostgreSQL</a> on Ubuntu&nbsp;wiki</li>
+</ul>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://blog.liang2.tw/tag/zh.html">zh</a>
+      <a href="https://blog.liang2.tw/tag/postgresql.html">postgresql</a>
+      <a href="https://blog.liang2.tw/tag/debian.html">debian</a>
+      <a href="https://blog.liang2.tw/tag/osx.html">osx</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'liang2';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "安裝 PostgreSQL 9 於 Debian Jessie / <span class="caps">OSX</span>",
+  "headline": "安裝 PostgreSQL 9 於 Debian Jessie / <span class="caps">OSX</span>",
+  "datePublished": "2016-01-25 17:00:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Liang2",
+    "url": "https://blog.liang2.tw/author/liang2.html"
+  },
+  "image": "https://blog.liang2.tw/pics/headpic.jpg",
+  "url": "https://blog.liang2.tw/posts/2016/01/postgresql-install/",
+  "description": "平常用最多的是 SQLite，但 PostgreSQL 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。 用 Debian Jessie (Debian 8.3) 與 OSX Homebrew 舉例。不過 OSX 大概也不會沒事把 PostgreSQL 開著，主要是著重在 Debian ..."
+}
+</script></body>
+</html>

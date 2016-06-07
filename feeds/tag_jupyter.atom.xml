@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang2's blog</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_jupyter.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2016-03-23T02:00:00+08:00</updated><entry><title>Jupyter Notebook Progress Bar</title><link href="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/" rel="alternate"></link><published>2016-03-23T02:00:00+08:00</published><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-03-23:posts/2016/03/notebook-progress-bar/</id><summary type="html">&lt;p&gt;相信很多人都已經在使用 &lt;a href="https://jupyter.org/"&gt;Jupyter (IPython) Notebook&lt;/a&gt; 跑分析。隨著分析的資料越跑越多，有時候刷下去就是幾十分鐘甚至數小時。此時沒有個進度條還蠻無聊的，而且能讓自己感覺&lt;strong&gt;很有進度&lt;/strong&gt;，何樂不為呢？&lt;/p&gt;
+&lt;p&gt;例如我&lt;a href="https://blog.liang2.tw/play_aiohttp/?full#asyncio-progressbar-cover"&gt;去年介紹 aiohttp&lt;/a&gt; 時就有用到 notebook 和 console 底下的進度條 (progress bar)。不過，這幾個月 Jupyter Notebook 4+ 架構上的調整，可能 code 都不能用了。剛好昨天的 Taipei.py&amp;nbsp;有人提到這事，就來整理一下吧。&lt;/p&gt;
+&lt;div class="toc"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#ipywidgets"&gt;IPywidgets 介紹&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#_1"&gt;安裝&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="#_2"&gt;使用進度條&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#progress-bar-example-in-action"&gt;Progress bar example in&amp;nbsp;action&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#misc"&gt;Misc. 螢幕截圖&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#ffmpeg"&gt;FFmpeg&amp;nbsp;轉檔&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;h3 id="ipywidgets"&gt;IPywidgets&amp;nbsp;介紹&lt;/h3&gt;
+&lt;p&gt;Notebook 進度條使用 &lt;a href="https://github.com/ipython/ipywidgets"&gt;ipywidgets&lt;/a&gt; 中的元件實作。這件元件規範了 notebook client &amp;lt;-&amp;gt; server 間雙向的溝通，並且能把相關的 &lt;span class="caps"&gt;CSS&lt;/span&gt; / &lt;span class="caps"&gt;JS&lt;/span&gt; 包裝在一起。在 ipywidgets 範例的 &lt;a href="http://nbviewer.jupyter.org/github/ipython/ipywidgets/blob/master/examples/Widget%20Basics.ipynb"&gt;&lt;em&gt;Widgets Basics&lt;/em&gt;&lt;/a&gt;&amp;nbsp;中就有提到可能的用途：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;You can use widgets to &lt;strong&gt;build interactive GUIs&lt;/strong&gt; for your notebooks. &lt;br&gt; 
+You can also use widgets to &lt;strong&gt;synchronize stateful and stateless information&lt;/strong&gt; between Python and&amp;nbsp;JavaScript.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;所以除了像進度條這樣單向的從 python code 傳訊息到 notebook (&lt;span class="caps"&gt;HTML&lt;/span&gt;) front-end 之外，也可以做一些介面把 front-end 的值傳回 python&amp;nbsp;code。&lt;/p&gt;
+&lt;p&gt;……只是要用個進度條而已，哪來這麼多背景知識。更多介紹可以參考 &lt;a href="http://nbviewer.jupyter.org/github/ipython/ipywidgets/blob/master/examples/Index.ipynb"&gt;ipywidgets 官方範例&lt;/a&gt;。&lt;/p&gt;
+&lt;h4 id="_1"&gt;安裝&lt;/h4&gt;
+&lt;p&gt;使用 Python 3.5 示範。安裝除了 notebook 本身外，還要額外裝上 ipywidgets&amp;nbsp;這套件。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install notebook ipywidgets
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;再用 &lt;code&gt;jupyter notebook&lt;/code&gt; 即可啟用&amp;nbsp;notebook。&lt;/p&gt;
+&lt;h3 id="_2"&gt;使用進度條&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;ipywidgets&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;IntProgress&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;IPython.display&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;display&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;IntProgress&lt;/code&gt; 就是進度條，&lt;code&gt;display&lt;/code&gt; 則是 IPython 顯示各種 Python 物件的函數，在這邊用它才能把 widget 以 &lt;span class="caps"&gt;HTML&lt;/span&gt; 顯示並與 python code&amp;nbsp;聯動。&lt;/p&gt;
+&lt;p&gt;建立一個進度條的方式很簡單。建立 &lt;code&gt;IntProgress&lt;/code&gt; widget&amp;nbsp;object，然後顯示它：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;IntProgress&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;display&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="figure"&gt;
+  &lt;img src="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_default.png"&gt;
+&lt;/div&gt;
+
+&lt;p&gt;預設是進度條有 100 個單位，初始值為 0。進度條的值與最大值的狀態分別存在 &lt;code&gt;.value&lt;/code&gt;、&lt;code&gt;.max&lt;/code&gt; 屬性裡：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;max&lt;/span&gt;
+&lt;span class="go"&gt;(0, 100)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;只要修改 &lt;code&gt;p.value&lt;/code&gt; 前面的進度條的狀態就會自動更新（不用重跑 &lt;code&gt;display(p)&lt;/code&gt;）：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;50&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="figure"&gt;
+  &lt;img src="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_50.png"&gt;
+&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="figure"&gt;
+  &lt;img src="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_100.png"&gt;
+&lt;/div&gt;
+
+&lt;p&gt;當然，最大值調整也會即時更新。此外，還可以透過 &lt;code&gt;.description&lt;/code&gt; 給進度條一個&amp;nbsp;label。重新做一個完整的例子：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;p2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;IntProgress&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;max&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;56&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;p2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;
+&lt;span class="n"&gt;p2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;description&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Running&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;display&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="figure"&gt;
+  &lt;img src="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_full.png"&gt;
+&lt;/div&gt;
+
+&lt;p&gt;完整的 code&amp;nbsp;就這樣，用起來非常方便。&lt;/p&gt;
+&lt;h3 id="progress-bar-example-in-action"&gt;Progress bar example in&amp;nbsp;action&lt;/h3&gt;
+&lt;p&gt;模擬一下真實情況，我們通常有一堆待做的 task，在這邊叫 &lt;code&gt;todo_tasks&lt;/code&gt; 好了。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;time&lt;/span&gt;
+&lt;span class="n"&gt;todo_tasks&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;task &lt;/span&gt;&lt;span class="si"&gt;%02d&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;只是個字串，但用 &lt;code&gt;time.sleep(sec)&lt;/code&gt; 來模擬有在做事。&lt;/p&gt;
+&lt;p&gt;搭配進度條的時候，把實際動態做成底下的動畫。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Initialize a progess bar&lt;/span&gt;
+&lt;span class="n"&gt;progress&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;IntProgress&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;progress&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;max&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;todo_tasks&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;progress&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;description&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;(Init)&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;display&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;progress&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sleep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;0.25&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Simulating task execution&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;todo_tasks&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;progress&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+    &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sleep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;0.05&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;progress&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;description&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;task&lt;/span&gt;
+&lt;span class="n"&gt;progress&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;description&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;(Done)&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="figure"&gt;
+  &lt;video loop auto autoplay&gt;
+    &lt;source src="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_demo.webm" type="video/webm"&gt;
+    &lt;source src="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_demo.mp4" type="video/mp4"&gt;
+    Your browser doesn&amp;#8217;t support &lt;span class="caps"&gt;HTML5&lt;/span&gt; video in WebM with &lt;span class="caps"&gt;VP8&lt;/span&gt; or &lt;span class="caps"&gt;MP4&lt;/span&gt; with H.264. You can still download the &lt;a href="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_demo.mp4"&gt;screencast&lt;/a&gt; and view it locally.
+  &lt;/video&gt;
+  &lt;p class="caption center"&gt;Progressbar in&amp;nbsp;action&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;非常方便吧！&lt;/p&gt;
+&lt;h3 id="misc"&gt;Misc.&amp;nbsp;螢幕截圖&lt;/h3&gt;
+&lt;p&gt;寫這篇文章花最多的時間是在截圖跟做動畫 &lt;span class="caps"&gt;XD&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;瀏覽器的截圖，現在 Firefox (45) 已經可以只選擇截某個 &lt;span class="caps"&gt;DOM&lt;/span&gt;，十分方便。&lt;/p&gt;
+&lt;p&gt;在最後動態的錄製花了不少時間。一開始想說是不是要用 &lt;span class="caps"&gt;GIF&lt;/span&gt;，但&lt;a href="http://blog.imgur.com/2014/10/09/introducing-gifv/"&gt;都 2016 年了還用什麼 &lt;span class="caps"&gt;GIF&lt;/span&gt; 啊！&lt;/a&gt;，雖然螢幕可以試著改 &lt;span class="caps"&gt;GIF&lt;/span&gt; palette 讓畫面不會很醜體積又小，但覺得用個 H.264 / &lt;span class="caps"&gt;VP9&lt;/span&gt;&amp;nbsp;簡單多了。&lt;/p&gt;
+&lt;p&gt;使用 QuickTime Screen Capture，開始錄的時候能只選擇螢幕一部份區域。以我 13&amp;rdquo; retina 螢幕為例，會得到 1636x736 H.264 .mov 檔。但我覺得解析度不用這麼高，所以最後輸出成 480p (1148x480)&amp;nbsp;就好，順便裁了一點白邊。&lt;/p&gt;
+&lt;p&gt;透過 &lt;span class="caps"&gt;HTML5&lt;/span&gt; &lt;a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video"&gt;&lt;code&gt;&amp;lt;video&amp;gt;&lt;/code&gt;&lt;/a&gt; 能把 &lt;span class="caps"&gt;MP4&lt;/span&gt; / WebM&amp;nbsp;當成動畫來使用：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;video&lt;/span&gt; &lt;span class="na"&gt;loop&lt;/span&gt; &lt;span class="na"&gt;autoplay&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;source&lt;/span&gt; &lt;span class="na"&gt;src&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;vid.webm&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;video/webm&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;source&lt;/span&gt; &lt;span class="na"&gt;src&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;vid.mp4&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;video/mp4&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+    Your browser doesn&amp;#39;t support HTML5 video in WebM with VP8
+    or MP4 with H.264. You can still download the 
+    &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;a&lt;/span&gt; &lt;span class="na"&gt;href&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;vid.mp4&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;screencast&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;a&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; and view it locally.
+&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;vide&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;各家 web browser 的支援度可參考 caniuse.com：&lt;a href="http://caniuse.com/#feat=webm"&gt;WebM&lt;/a&gt;、&lt;a href="http://caniuse.com/#feat=mpeg4"&gt;&lt;span class="caps"&gt;MP4&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id="ffmpeg"&gt;FFmpeg&amp;nbsp;轉檔&lt;/h4&gt;
+&lt;p&gt;筆記而已，沒有認真調參數讓輸出檔案最小。&lt;span class="caps"&gt;VP9&lt;/span&gt; 的部份參考 &lt;a href="https://trac.ffmpeg.org/wiki/Encode/VP9"&gt;FFmepg&lt;/a&gt;&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# H.264 MP4&lt;/span&gt;
+ffmpeg -i Untitled.mov &lt;span class="se"&gt;\&lt;/span&gt;
+    -vcodec h264 &lt;span class="se"&gt;\&lt;/span&gt;
+    -strict -2 -crf &lt;span class="m"&gt;22&lt;/span&gt; -preset slow -r &lt;span class="m"&gt;24&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+    -vf &lt;span class="s2"&gt;&amp;quot;crop=iw:ih-52:0:10, scale=-1:480&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+    out.mp4
+
+&lt;span class="c1"&gt;# VP9 WebM&lt;/span&gt;
+ffmpeg -i Untitled.mov &lt;span class="se"&gt;\&lt;/span&gt;
+    -vcodec libvpx-vp9 &lt;span class="se"&gt;\&lt;/span&gt;
+    -b:v 150K -r &lt;span class="m"&gt;24&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+    -vf &lt;span class="s2"&gt;&amp;quot;crop=iw:ih-52:0:10, scale=-1:480&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+    out.webm
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;4s 的檔案最後大約 &lt;span class="caps"&gt;60KB&lt;/span&gt;，相當不錯。我很多 &lt;span class="caps"&gt;PNG&lt;/span&gt;&amp;nbsp;截圖都大多了。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; du -sh ./* &lt;span class="p"&gt;|&lt;/span&gt; gsort -rh
+&lt;span class="go"&gt;744K    ./Untitled.mov&lt;/span&gt;
+&lt;span class="go"&gt; 60K    ./out.mp4&lt;/span&gt;
+&lt;span class="go"&gt; 52K    ./out.webm&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="footnote"&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id="fn:1"&gt;
+&lt;p&gt;需要額外安裝 libvpx，例如：&lt;code&gt;brew install ffmepg --with-libvpx&lt;/code&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</summary><category term="zh"></category><category term="jupyter"></category><category term="notebook"></category></entry><entry><title>Jupyter Notebook Theme</title><link href="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/" rel="alternate"></link><published>2016-01-07T00:00:00+08:00</published><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-07:posts/2016/01/jupyter-notebook-theme/</id><summary type="html">&lt;p&gt;&lt;a href="http://jupyter.org/"&gt;Jupyter Notebook&lt;/a&gt;，也就是以前的 IPython Notebook，應該是許多人在用 Python&amp;nbsp;做資料分析時記錄實驗步驗與結果的工具。&lt;/p&gt;
+&lt;p&gt;現在 &lt;a href="http://ipython.org/"&gt;IPython&lt;/a&gt; (v4.0+) 已經回歸到 Interactive Python Shell 的本質，變成只是擴充內建 Python &lt;span class="caps"&gt;REPL&lt;/span&gt; 的套件，相依的模組也清掉了。原本的 IPyton Notebook 主要是提供一個像 &lt;a href="https://reference.wolfram.com/language/tutorial/UsingANotebookInterface.html"&gt;Mathematica Notebook&lt;/a&gt; 的環境，功能很多就不多提。它可以用 web 或者 &lt;span class="caps"&gt;QT&lt;/span&gt;&amp;nbsp;介面來跑。&lt;/p&gt;
+&lt;p&gt;後來又開始整合很多語言，變成像 Julia / R / Lua 等語言都可以利用這樣的 Notebook 架構，於是 &lt;a href="http://jupyter.org/"&gt;Jupyter&lt;/a&gt; 就因此誕生，變成原本的 IPython 只是其中一個可能的語言 kernel。Notebook 本身可以是 R 語言或者 Julia&amp;nbsp;語言。&lt;/p&gt;
+&lt;div class="toc"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#jupyter-notebook"&gt;Jupyter&amp;nbsp;Notebook&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#custom-theme-on-v41"&gt;Custom Theme on&amp;nbsp;v4.1+&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#custom-theme-before-v41"&gt;Custom Theme Before&amp;nbsp;v4.1&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;h3 id="jupyter-notebook"&gt;Jupyter&amp;nbsp;Notebook&lt;/h3&gt;
+&lt;p&gt;用 Python&amp;nbsp;裝十分簡單，&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; pip install jupyter
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Jupyter 預設走 web 介面，會跑一個 tornado server 預設在 &lt;a href="http://localhost:8888"&gt;http://localhost:8888&lt;/a&gt;&amp;nbsp;上。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; jupyter notebook
+&lt;span class="go"&gt;[I 23:50:58.449 NotebookApp] Serving notebooks from local directory: /Users/liang&lt;/span&gt;
+&lt;span class="go"&gt;[I 23:50:58.449 NotebookApp] 0 active kernels&lt;/span&gt;
+&lt;span class="go"&gt;[I 23:50:58.450 NotebookApp] The IPython Notebook is running at: http://localhost:8888/&lt;/span&gt;
+&lt;span class="go"&gt;[I 23:50:58.450 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;有裝 browser&amp;nbsp;的話就會自動開一個視窗。&lt;/p&gt;
+&lt;div class="figure"&gt;
+  &lt;img src="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/pics/jupyter_default_frontpage.png"/&gt;
+  &lt;p class="caption center"&gt;Jupyter Notebook&amp;nbsp;Hub&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Notebook 預設是 &lt;code&gt;.ipynb&lt;/code&gt; 的檔案。常見的內容像這樣：&lt;/p&gt;
+&lt;div class="figure"&gt;
+  &lt;img src="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/pics/jupyter_default_notebook.png"/&gt;
+  &lt;p class="caption center"&gt;Jupyter Notebook&amp;nbsp;Example&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h3 id="custom-theme-on-v41"&gt;Custom Theme on&amp;nbsp;v4.1+&lt;/h3&gt;
+&lt;p&gt;&lt;span class="caps"&gt;EDIT&lt;/span&gt;: 2016-01-11 &lt;a href="https://blog.jupyter.org/2016/01/08/notebook-4-1-release/"&gt;Jupyter Notebook 4.1&lt;/a&gt; 已釋出，設定路徑預設都在 &lt;code&gt;~/.jupyter&lt;/code&gt; 底下。&lt;/p&gt;
+&lt;p&gt;今天重點是換主題嘛。趕快來做吧。&lt;/p&gt;
+&lt;p&gt;可以透過 &lt;code&gt;jupyter --config-dir&lt;/code&gt; 或 &lt;code&gt;jupyter --paths&lt;/code&gt; 找到設定檔應該放的位置。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; jupyter --config-dir
+&lt;span class="go"&gt;~/.jupyter&lt;/span&gt;
+&lt;span class="gp"&gt;$&lt;/span&gt; jupyter notebook --generate-config  &lt;span class="c1"&gt;# 建立 Notebook 設定檔&lt;/span&gt;
+&lt;span class="go"&gt;Writing default config to: ~/.jupyter/jupyter_notebook_config.py&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果只是改主題，不需要更動 Notebook&amp;nbsp;設定檔。&lt;/p&gt;
+&lt;p&gt;目前自己使用的主題來自 &lt;a href="https://github.com/dunovank/jupyter-themes"&gt;dunovank&lt;/a&gt;，他有收集了至少深淺兩色，應該足夠使用了。&lt;span class="caps"&gt;CSS&lt;/span&gt; 從別人的基礎上來調整也相對簡單，我自己有&lt;a href="https://github.com/ccwang002/dotfiles/tree/master/ipy_profile/ipython3"&gt;改寫了一點&lt;/a&gt;（忘了改什麼)。dunovank 有寫個安裝 theme 的套件，不過不用也沒關係，只要準備好 &lt;span class="caps"&gt;CSS&lt;/span&gt; 就能用。我用 Grade3&amp;nbsp;這個主題來示範。&lt;/p&gt;
+&lt;p&gt;把 &lt;code&gt;custom.css&lt;/code&gt; 放到 &lt;code&gt;~/.jupyter/static/custom.css&lt;/code&gt;。設定的目錄長得如下：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; tree ~/.jupyter -F -L 3
+&lt;span class="go"&gt;~/.jupyter&lt;/span&gt;
+&lt;span class="go"&gt;├── custom/&lt;/span&gt;
+&lt;span class="go"&gt;│   └── custom.css -&amp;gt; /path/to/custom_light.css&lt;/span&gt;
+&lt;span class="go"&gt;└── jupyter_notebook_config.py&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3 id="custom-theme-before-v41"&gt;Custom Theme Before&amp;nbsp;v4.1&lt;/h3&gt;
+&lt;p&gt;現在因為歷經 IPython 到 Jupyter 的過程，設定還蠻分散的。以往的設定會在 &lt;code&gt;~/.ipython&lt;/code&gt;，而到了 Jupyter 之後，相關設定會在 &lt;code&gt;~/.jupyter&lt;/code&gt;。有時候設定怪怪的話就兩個路徑都檢查一下吧。&lt;/p&gt;
+&lt;p&gt;只要把這個 &lt;span class="caps"&gt;CSS&lt;/span&gt; 放到 &lt;code&gt;~/.ipython/profile_default/custom.css&lt;/code&gt; 再重開 Jupyter Notebook 就可以了&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;。效果如下：&lt;/p&gt;
+&lt;div class="figure"&gt;
+  &lt;img src="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/pics/jupyter_grade3_frontpage.png"/&gt;
+  &lt;img src="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/pics/jupyter_grade3_notebook1.png"/&gt;
+  &lt;p class="caption center"&gt;Jupyter Notebook Theme Grade3&amp;nbsp;Demo&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="figure"&gt;
+  &lt;img src="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/pics/jupyter_grade3_notebook2.png"/&gt;
+  &lt;p class="caption center"&gt;把 Toolbar 全部 toggle&amp;nbsp;起來，以及表格的樣子。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;個人覺得長時間使用下來，對比度低一點對眼睛比較好。黑底也不錯，不過畫圖常常會自己帶白底，整體感覺就不是很漂亮，可能要連 matplotlib theme 一起改吧 &lt;span class="caps"&gt;XD&lt;/span&gt;&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id="fn:1"&gt;
+&lt;p&gt;這路徑並不符合 Jupyter 跨 kernel 的設計理念，&lt;del&gt;感覺未來會改路徑&lt;/del&gt;已經在 4.1+ 版本中完成整合，與 IPython 設定分家了。&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</summary><category term="zh"></category><category term="jupyter"></category><category term="notebook"></category></entry></feed>

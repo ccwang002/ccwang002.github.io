@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
+  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/font-awesome.min.css">
+  <!-- Justfont webfont -->
+  <!-- Local development -->
+  <!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+  <!-- Proudction version v4.9.4 -->
+  <script src="https://blog.liang2.tw/theme/js/justfont_v4.9.4.js" type="text/javascript" charset="utf-8"></script>
+  <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Liang2" />
+<meta name="description" content="給實驗室新生，了解當今軟體開發流程及基本技能的背景知識與初步技能樹。" />
+<meta name="keywords" content="zh, labcoding">
+<meta property="og:site_name" content="Liang2's blog"/>
+<meta property="og:title" content="Coding 初學指南－總章"/>
+<meta property="og:description" content="給實驗室新生，了解當今軟體開發流程及基本技能的背景知識與初步技能樹。"/>
+<meta property="og:locale" content="zh_TW"/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2016/01/lab-coding-intro/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-01-21 21:00:00+08:00"/>
+<meta property="article:modified_time" content="2016-01-21 21:00:00+08:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
+<meta property="article:section" content="Coding"/>
+<meta property="article:tag" content="zh"/>
+<meta property="article:tag" content="labcoding"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Coding 初學指南－總章">
+<meta name="twitter:description" content="給實驗室新生，了解當今軟體開發流程及基本技能的背景知識與初步技能樹。">
+  <title>Coding 初學指南－總章 &ndash; Liang2's blog</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://blog.liang2.tw">
+        <img src="https://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
+      </a>
+      <h1><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+      <p>Code / Stat / Bioinfo</p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
+          <li><a href="https://blog.liang2.tw/talks/#talks">Talks</a></li>
+          <li><a href="https://blog.liang2.tw/research/#research">Research</a></li>
+          <li><a href="https://blog.liang2.tw/projects/#projects">Projects</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
+        <li><a class="sc-envelope-o" href="mailto:me+blog@liang2.tw" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
+        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://blog.liang2.tw">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+      <a href="https://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="lab-coding-intro">Coding&nbsp;初學指南－總章</h1>
+    <p>Posted on Jan 21, 2016
+      in <a href="https://blog.liang2.tw/category/coding.html">Coding</a>
+    </p>
+  </header>
+  <div>
+    <p>Last Edited: Jan,&nbsp;2016</p>
+<p>（如果內容有誤，你可以留言，或用任何管道告訴我）</p>
+<p>雖然實驗室不是正規寫程式的地方，多數的人也沒把寫程式當成一回事。不過隨著要分析的資料、樣本數越來越多，多到自己電腦跑不動，server 也要跑很久的時候，就會顯示出程式的重要性。另一方面，現在的研究講求 <em>reproducibility</em>，如果要讓自己的分析在一年之後也能重現，或者讓世界上其他的研究者也能重現的話，需要基本的程式技巧。</p>
+<p>這一系列的文章，目標讓實驗室的新生，不論是不是 <span class="caps">CS</span>&nbsp;背景，都能了解當今軟體開發流程及基本技能。軟體開發需要一些背景知識，才能與開發者正常交流。這些背景知識包括：</p>
+<ul>
+<li>熟悉在 server 上工作（或 Linux&nbsp;的使用）</li>
+<li>一個很多人用的軟體工具長什麼樣</li>
+<li>如何把自己的程式與別人分享</li>
+<li>多人共同開發</li>
+<li>其他人都怎麼樣寫程式</li>
+</ul>
+<p>這些內容在學校課程的訓練中較少，尤其是電機背景的話在寫程式又更為隨性，但這對一個長期的軟體專案是必需的。希望大家能養成這些習慣。</p>
+<p>這些主題需要熟練到什麼程度，見人見智，深入下去每一個都夠花幾個月的時間鑽研，但以一個實驗室專題、或要完成的軟體專案來說都不實際，至少老闆一點都不在意。所以個人覺得，最低標準就是在遇到該課題不懂的地方時，「能知道怎麼下關鍵字查」且「查完的結果能看得懂」。</p>
+<p>系列文原本放在 <a href="https://gist.github.com/ccwang002/368025d3c541ed983892">Github Gist</a> 上，但現在有自己的 blog&nbsp;了，就整理到這邊順便更新。</p>
+<div class="toc">
+<ul>
+<li><a href="#_1">學習方式</a><ul>
+<li><a href="#_2">問：為什麼不帶大家手把手教學？</a></li>
+</ul>
+</li>
+<li><a href="#_3">熟練來自生活中的實踐</a></li>
+<li><a href="#windows">給 Windows&nbsp;使用者</a></li>
+<li><a href="#osx">給 <span class="caps">OSX</span>&nbsp;使用者</a></li>
+<li><a href="#_4">文章目錄</a></li>
+</ul>
+</div>
+<h3 id="_1">學習方式</h3>
+<p>每一篇都會是一個主題，主題底下會列出一些資源。主題的最後有學習目標，方便讓你評估自己學到什麼程度。學習目標會給一個明確的任務，我盡量讓它能跟（宅宅的）日常生活結合。通常只要完成前一、二個目標就行了，這也不是功課所以不用給我看。但如果你不介意給我看的話，我會分享我主觀的建議。大部份的任務是沒有唯一的正確答案，只要能解決問題都是好方法。</p>
+<p>總之，這些資源不用全看，任務不用全做，大家自己斟酌要花多少時間在不同的主題上。</p>
+<blockquote>
+<p>挑你喜歡的東西盡量鑽，沒有 fu&nbsp;的就隨便看看會了就好</p>
+</blockquote>
+<p>我會盡量按照難易度排列，中英文的資源都放。</p>
+<h4 id="_2">問：為什麼不帶大家手把手教學？</h4>
+<p>簡單地說沒空。認真地說，大家的學習速度跟底子都不一樣，同步學只是浪費各位的時間。</p>
+<p>我大概沒有辦法一個一個項目帶大家練習，底下的很多連結只是提供一個學習的窗口，真正要學下去，都是要花一定時間的。所以也不要抱著「只要讀完這些文章就會了○○○」這樣的想法。</p>
+<blockquote>
+<p>白話的來說，這些背景知識就像遊戲的技能樹，基礎技能要先點好才能點進階技能。要把基礎技能點滿了再練等也可能，但不必要一直練等，大家未必喜歡，現實中也不許你練等不解任務。</p>
+</blockquote>
+<p>一開始可能碰到小問題就要查，或者要連續查很多個網頁被導向四、五次才能稍微解答自己的疑問。這個現象是非常正常的，如果大家能撐過初期這段比較挫折的時期，日後要自學軟體基本上就沒問題了。</p>
+<h3 id="_3">熟練來自生活中的實踐</h3>
+<p>要很快地學好程式，我推薦練習把程式應用在生活中。例如用文字命令列來下載檔案；把自己筆電變成 linux&nbsp;桌面系統，練習自己編譯軟體、解決各式安裝的狀況。讓自己的電腦成為一個自己能接受的軟體開發環境，並經常的使用它，就能降低對寫程式的陌生與不知所措感。</p>
+<p>上面的方法可能稍難一些，負擔比較小的可以開始做「思考練習」。思考練習包含去想生活中的大小事該怎麼寫程式來控制。例如我該怎麼設計一個電梯系統？臉書怎麼呈現大家的動態？只要大概想一想就好了，想不出來也不會怎樣，也不用特別查資料。過一段時間對程式的 sense&nbsp;也會提昇。</p>
+<p>如果需要更硬派的學習方式，不妨把自己電腦安裝的軟體的源始碼都拿出來看一下，加入幾個自己平常用的軟體的專案來修改它，讓它更少問題更多功能（一般叫 contribute）。也可以把實驗室有用到的工具的原始碼拿出來看一下，例如&nbsp;sratoolkit、cutadapt，看看自己能不能讀懂別人的程式碼。</p>
+<h3 id="windows">給 Windows&nbsp;使用者</h3>
+<blockquote>
+<p>建議大家想辦法裝個 Linux（或用 Mac）。如果不想取代掉自己的 Windows 環境話，可以安裝 VirtualBox 裝個虛擬的 Linux，或者在 Amazon 等 <span class="caps">VPS</span>&nbsp;架一台虛擬主機。</p>
+</blockquote>
+<p>Windows 因為對圖形介面（<span class="caps">GUI</span>）設計的很好，也不容易讓使用者用命令列模式（terminal, console)。雖然 Windows 上有像 command prompt、Powershell 之類的環境，但都很難用它來操控整個系統。而且它打從骨子就跟 Linux 不一樣，所以相關的指令不好在網上的教學文章中找到，而多數 Windows 的開發者也不喜歡用&nbsp;terminal。</p>
+<p>另一方面，大家對 Visual Studio 的印象都是要收錢的<sup id="fnref:註1"><a class="footnote-ref" href="#fn:註1" rel="footnote">1</a></sup>，這是 Windows 上最完整最好用的開發環境，不想付費的情況下可能就會覺得「寫程式充滿障礙」，更何況 <span class="caps">VS</span> 也是圖形化的編輯器，也會不了解背後運作的方式。市面的開源軟體多半在 *nix 上開發，對 Windows&nbsp;支援度差也加深這個障礙（「想要自己裝但都一堆限制又很容易失敗」）</p>
+<p>不用 terminal 的壞處是很難想像自己系統中的軟體為什麼能運作。感覺要寫個有 <span class="caps">GUI</span>&nbsp;的程式都要很厲害，跟自己學過的寫程式都不一樣。但實質上是沒有太多區別的，只是要完成一個能安裝在系統中的視窗軟體，需要的步驟多很多，一般簡單的專案都不會到那個階段。</p>
+<h3 id="osx">給 <span class="caps">OSX</span>&nbsp;使用者</h3>
+<p>Mac <span class="caps">OSX</span> 使用者也有這樣的現象，但因為 <span class="caps">OSX</span> 在底層用的是跟 FreeBSD 很相似，而 FreeBSD 跟 Linux 相似，所以它的 terminal 環境是很完整的。現在軟體開發者很多人用 <span class="caps">OSX</span>，因此網路上 Linux、<span class="caps">OSX</span>&nbsp;資源都很多，兩者的經驗常能自然地移植。</p>
+<p>如何在 <span class="caps">OSX</span> 上開發程式，可以參考<a href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-osx-env/">附錄 0</a>&nbsp;的筆記，但內容很主觀，不是每個人都會像我這樣用。</p>
+<h2 id="_4">文章目錄</h2>
+<p>寫一寫內容也變得蠻多的，所以把它切成了幾篇文章，請按照數字順序閱讀：</p>
+<ul>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-intro/">Introduction</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-linux/">Chapter 1 &ndash;&nbsp;Linux</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/">Chapter 2 &ndash; Text Editing (Markdown, Text&nbsp;Editor)</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/">Chapter 3 &ndash; Version Control&nbsp;(Git)</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-python/">Chapter 4 &ndash;&nbsp;Python</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-osx-env/">Appendix 1 &ndash; <span class="caps">OSX</span> Development&nbsp;Environment</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-bioinfo-python/">Appendix 2 &ndash; Python in&nbsp;Bioinformatics</a></li>
+</ul>
+<p>或者，用 <a href="/tag/labcoding.html">labcoding</a> 這個 tag&nbsp;也可以找到所有的文章。</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:註1">
+<p>Visual Studio 自 2013 後有 <a href="https://www.visualstudio.com/en-us/news/vs2013-community-vs.aspx">Community</a> 版本，免費但內容與 Professional 版本大致無異，所以未來要有 C/C++ 32/64bit Compiler 會更容易。但多數的開源軟體還沒跟進，所以很多還在用舊的 <span class="caps">VS</span> 版本（就要付費），這個現象還會持續一陣。學校都有買。&#160;<a class="footnote-backref" href="#fnref:註1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://blog.liang2.tw/tag/zh.html">zh</a>
+      <a href="https://blog.liang2.tw/tag/labcoding.html">labcoding</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'liang2';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "Coding&nbsp;初學指南－總章",
+  "headline": "Coding&nbsp;初學指南－總章",
+  "datePublished": "2016-01-21 21:00:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Liang2",
+    "url": "https://blog.liang2.tw/author/liang2.html"
+  },
+  "image": "https://blog.liang2.tw/pics/headpic.jpg",
+  "url": "https://blog.liang2.tw/posts/2016/01/lab-coding-intro/",
+  "description": "給實驗室新生，了解當今軟體開發流程及基本技能的背景知識與初步技能樹。"
+}
+</script></body>
+</html>

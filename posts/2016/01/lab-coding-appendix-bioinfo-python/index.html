@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
+  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/font-awesome.min.css">
+  <!-- Justfont webfont -->
+  <!-- Local development -->
+  <!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+  <!-- Proudction version v4.9.4 -->
+  <script src="https://blog.liang2.tw/theme/js/justfont_v4.9.4.js" type="text/javascript" charset="utf-8"></script>
+  <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Liang2" />
+<meta name="description" content="A walk through of practices created by Rosalind Team." />
+<meta name="keywords" content="en, labcoding, python">
+<meta property="og:site_name" content="Liang2's blog"/>
+<meta property="og:title" content="Coding 初學指南附錄 - Bioinfo Practices using Python"/>
+<meta property="og:description" content="A walk through of practices created by Rosalind Team."/>
+<meta property="og:locale" content="zh_TW"/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-bioinfo-python/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-01-21 23:30:00+08:00"/>
+<meta property="article:modified_time" content="2016-01-21 23:30:00+08:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
+<meta property="article:section" content="Coding"/>
+<meta property="article:tag" content="en"/>
+<meta property="article:tag" content="labcoding"/>
+<meta property="article:tag" content="python"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Coding 初學指南附錄 - Bioinfo Practices using Python">
+<meta name="twitter:description" content="A walk through of practices created by Rosalind Team.">
+  <title>Coding 初學指南附錄 - Bioinfo Practices using Python &ndash; Liang2's blog</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://blog.liang2.tw">
+        <img src="https://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
+      </a>
+      <h1><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+      <p>Code / Stat / Bioinfo</p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
+          <li><a href="https://blog.liang2.tw/talks/#talks">Talks</a></li>
+          <li><a href="https://blog.liang2.tw/research/#research">Research</a></li>
+          <li><a href="https://blog.liang2.tw/projects/#projects">Projects</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
+        <li><a class="sc-envelope-o" href="mailto:me+blog@liang2.tw" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
+        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://blog.liang2.tw">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+      <a href="https://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="lab-coding-appendix-bioinfo-python">Coding 初學指南附錄 - Bioinfo Practices using&nbsp;Python</h1>
+    <p>Posted on Jan 21, 2016
+      in <a href="https://blog.liang2.tw/category/coding.html">Coding</a>
+    </p>
+  </header>
+  <div>
+    <p>Last Edited: Jan, 2016&nbsp;（如果內容有誤，你可以留言，或用任何管道告訴我）</p>
+<p>We are going to walk through a series of practice created by <a href="http://rosalind.info/problems/">Rosalind Team</a>.</p>
+<p>Once you register an account at Rosalind, you can use their judging system to work through all problems. However, in this case you cannot arbitrarily skip easy levels and it sucks. So I&rsquo;m not going to force you using the system. Luckily, in each problem one set of example data and expected output is given, which can be used for checking our&nbsp;answer.</p>
+<p>Note: Their code assumes Python 2 but everything I mention here is Python&nbsp;3.</p>
+<div class="toc">
+<ul>
+<li><a href="#python-basics">Python&nbsp;Basics</a></li>
+<li><a href="#bininfo-first-try">Bininfo First Try</a><ul>
+<li><a href="#q-dna-counting-dna-nucleotides">Q <span class="caps">DNA</span>: Counting <span class="caps">DNA</span>&nbsp;Nucleotides</a></li>
+<li><a href="#q-revc-the-secondary-and-tertiary-structures-of-dna">Q <span class="caps">REVC</span>: The Secondary and Tertiary Structures of <span class="caps">DNA</span></a></li>
+<li><a href="#q-gc-computing-gc-content">Q: <span class="caps">GC</span>: Computing <span class="caps">GC</span> Content</a><ul>
+<li><a href="#workthrough">Workthrough</a></li>
+</ul>
+</li>
+<li><a href="#q-next">Q:&nbsp;(next?)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<blockquote>
+<p><strong>其他 Coding&nbsp;初學指南系列文章：</strong></p>
+<ul>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-intro/">Introduction</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-linux/">Chapter 1 &ndash;&nbsp;Linux</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/">Chapter 2 &ndash; Text Editing (Markdown, Text&nbsp;Editor)</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/">Chapter 3 &ndash; Version Control&nbsp;(Git)</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-python/">Chapter 4 &ndash;&nbsp;Python</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-osx-env/">Appendix 1 &ndash; <span class="caps">OSX</span> Development&nbsp;Environment</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-bioinfo-python/">Appendix 2 &ndash; Python in&nbsp;Bioinformatics</a></li>
+</ul>
+<p>或者，用 <a href="/tag/labcoding.html">labcoding</a> 這個 tag&nbsp;也可以找到所有的文章。</p>
+</blockquote>
+<h2 id="python-basics">Python&nbsp;Basics</h2>
+<p>Do their <a href="http://rosalind.info/problems/list-view/?location=python-village">Python Village</a> problem sets. If any topic you don&rsquo;t know, go read your Python&nbsp;reference.</p>
+<p>Should be very&nbsp;trivial.</p>
+<h2 id="bininfo-first-try">Bininfo First&nbsp;Try</h2>
+<h3 id="q-dna-counting-dna-nucleotides">Q <span class="caps">DNA</span>: Counting <span class="caps">DNA</span>&nbsp;Nucleotides</h3>
+<p>Link: <a href="http://rosalind.info/problems/dna/">http://rosalind.info/problems/dna/</a></p>
+<ul>
+<li>Hint: use <a href="https://docs.python.org/3/library/collections.html#collections.Counter">collections.Counter</a> provided by Python&rsquo;s&nbsp;stdlib</li>
+<li>More Hint: use <code>' '.join</code> and list comprehension to output the&nbsp;answer</li>
+</ul>
+<h3 id="q-revc-the-secondary-and-tertiary-structures-of-dna">Q <span class="caps">REVC</span>: The Secondary and Tertiary Structures of <span class="caps">DNA</span></h3>
+<p>Link: <a href="http://rosalind.info/problems/revc/">http://rosalind.info/problems/revc/</a></p>
+<ul>
+<li>Hint: <a href="https://docs.python.org/3/library/functions.html#reversed">reversed</a> for any sequence object and a dict for nucleotide code&nbsp;mapping</li>
+<li>More Hint: done in a list&nbsp;comprehension</li>
+</ul>
+<h3 id="q-gc-computing-gc-content">Q: <span class="caps">GC</span>: Computing <span class="caps">GC</span>&nbsp;Content</h3>
+<p>Link: <a href="http://rosalind.info/problems/gc/">http://rosalind.info/problems/gc/</a></p>
+<p>This is the first complicated problem that some abstraction should help you come up the solution. Try write some re-usable code blocks, for example, function calls and class&nbsp;definitions.</p>
+<p>Don&rsquo;t worry about the computation&nbsp;complexity</p>
+<h4 id="workthrough">Workthrough</h4>
+<p><em>You should implement by yourself before looking my solution. Also I didn&rsquo;t see their official solution so my solution can differ a lot from&nbsp;theirs.</em></p>
+<p>Intuitively, we need to implement a <span class="caps">FASTA</span> file parser. <span class="caps">FASTA</span> contains a series of sequence reads with unique <span class="caps">ID</span>. From a object-oriented viewpoint, we create classes <code>Read</code> for reads and <code>Fasta</code> for fasta&nbsp;files.</p>
+<p><code>Read</code> is easy to design and&nbsp;understand,</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Read</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">seq</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seq</span> <span class="o">=</span> <span class="n">seq</span>
+</pre></div>
+
+
+<p>Since we need to compute their <span class="caps">GC</span> content, add a method for <code>Read</code>.</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Read</span><span class="p">:</span>
+    <span class="c1"># ... skipped</span>
+    <span class="k">def</span> <span class="nf">gc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the GC content (in %) of the read.&quot;&quot;&quot;</span>
+        <span class="c1"># put the logic here (think of problem Q DNA)</span>
+        <span class="n">gc_percent</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gc_percent</span>
+</pre></div>
+
+
+<p>Then we have to implement the <span class="caps">FASTA</span> parser, which reads all read entries and converts them through <code>Read</code>. In real world we are dealing with <code>myfasta.fa</code>-like files, but here the input is&nbsp;string.</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Fasta</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse a FASTA formated string.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raw_str</span> <span class="o">=</span> <span class="n">raw_str</span>
+        <span class="c1"># convert string into structured reads.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reads</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse the string and yield read in Read class.&quot;&quot;&quot;</span>
+        <span class="c1"># though we have no idea right now, the code structure</span>
+        <span class="c1"># should be something like the following.</span>
+        <span class="n">raw_lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_str</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">raw_lines</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">Read</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Here I use <code>yield Read(...)</code>, which may be unfamiliar for Python beginners. It turns <code>parse(self)</code> function as a generator. Generator makes you focus on the incoming data. Once data is parsed and converted, the result is immediated thrown out by <code>yield</code>. We don&rsquo;t care about how to collect all the results. In our case, we catch all the results into a list by <code>list(...)</code>.</p>
+<p>So how should we read <span class="caps">FASTA</span> file? A simple rule in this case is that every read consists by two continuous row. Also, the first row will always be the first read&nbsp;id.</p>
+<p>All we need is read two lines at the same time. Here <a href="https://docs.python.org/3/library/functions.html#zip">a Pythonic idiom</a> is introduced. The following code read two non-overlapping&nbsp;lines,</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">first_line</span><span class="p">,</span> <span class="n">second_line</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="nb">iter</span><span class="p">(</span><span class="n">raw_lines</span><span class="p">)]</span><span class="o">*</span><span class="mi">2</span><span class="p">):</span>
+    <span class="k">yield</span> <span class="n">Read</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">first_line</span><span class="p">,</span> <span class="n">seq</span><span class="o">=</span><span class="n">second_line</span><span class="p">)</span>
+</pre></div>
+
+
+<p>By <code>zip(*[iter(s)]*n)</code> magic, we are very close to implement a full parser. You could find a lot of <a href="http://stackoverflow.com/a/2233247">explanations</a> for this&nbsp;magic.</p>
+<p>Read id line percedes with a <code>&gt;</code> sign, so we could use something like <code>first_line[1:]</code> or <code>first_line[len('&gt;'):]</code> for&nbsp;explicity.</p>
+<p>Then sorting the <span class="caps">GC</span>% of reads in a <span class="caps">FASTA</span> file is&nbsp;easy.</p>
+<div class="highlight"><pre><span></span><span class="n">fasta</span> <span class="o">=</span> <span class="n">Fasta</span><span class="p">(</span><span class="s1">&#39;...&#39;</span><span class="p">)</span>
+<span class="n">sorted_reads</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">fasta</span><span class="o">.</span><span class="n">reads</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">gc</span><span class="p">())</span>  <span class="c1"># note 1</span>
+<span class="n">top_gc_read</span> <span class="o">=</span> <span class="n">sorted_reads</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># note 2</span>
+<span class="k">print</span><span class="p">(</span>
+    <span class="s1">&#39;&gt;{0:s}</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="s1">&#39;{1:.6f}&#39;</span>  <span class="c1"># note 3, 4</span>
+    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">top_gc_read</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">top_gc_read</span><span class="o">.</span><span class="n">gc</span><span class="p">())</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<p>The code above completes the following&nbsp;steps:</p>
+<ol>
+<li><code>sorted(list, key=key_func)</code> sorts the list based on the return value of key_func applied to each&nbsp;element.</li>
+<li>or <code>top_gc_read = sorted(..., reversed=True)[0]</code></li>
+<li>two string with no operands in between will be joint automatically. In this case it is exactly <code>&gt;{0:s}\n{1:.6f}</code>. This is useful to tidy a super long&nbsp;string.</li>
+<li><code>'...'.format()</code> fills the string with given values. See <a href="https://docs.python.org/3/library/string.html#formatspec">doc</a>.</li>
+</ol>
+<p>In real case <span class="caps">FASTA</span> can span across multiple lines, also likely the file we parse is broken. How could we modify this parser to handle these&nbsp;situations?</p>
+<h3 id="q-next">Q:&nbsp;(next?)</h3>
+<p>I&rsquo;m super tired now so I&rsquo;ll leave the rest for you. Try those problems within yellow correct ratio&nbsp;range.</p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://blog.liang2.tw/tag/en.html">en</a>
+      <a href="https://blog.liang2.tw/tag/labcoding.html">labcoding</a>
+      <a href="https://blog.liang2.tw/tag/python.html">python</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'liang2';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "Coding 初學指南附錄 - Bioinfo Practices using&nbsp;Python",
+  "headline": "Coding 初學指南附錄 - Bioinfo Practices using&nbsp;Python",
+  "datePublished": "2016-01-21 23:30:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Liang2",
+    "url": "https://blog.liang2.tw/author/liang2.html"
+  },
+  "image": "https://blog.liang2.tw/pics/headpic.jpg",
+  "url": "https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-bioinfo-python/",
+  "description": "A walk through of practices created by Rosalind Team."
+}
+</script></body>
+</html>

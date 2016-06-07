@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
+  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/font-awesome.min.css">
+  <!-- Justfont webfont -->
+  <!-- Local development -->
+  <!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+  <!-- Proudction version v4.9.4 -->
+  <script src="https://blog.liang2.tw/theme/js/justfont_v4.9.4.js" type="text/javascript" charset="utf-8"></script>
+  <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Liang2" />
+<meta name="description" content="我自己在 OSX 上的主觀開發環境設定" />
+<meta name="keywords" content="zh, labcoding">
+<meta property="og:site_name" content="Liang2's blog"/>
+<meta property="og:title" content="Coding 初學指南附錄 - OSX 開發環境"/>
+<meta property="og:description" content="我自己在 OSX 上的主觀開發環境設定"/>
+<meta property="og:locale" content="zh_TW"/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-osx-env/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-01-21 23:00:00+08:00"/>
+<meta property="article:modified_time" content="2016-01-21 23:00:00+08:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
+<meta property="article:section" content="Coding"/>
+<meta property="article:tag" content="zh"/>
+<meta property="article:tag" content="labcoding"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Coding 初學指南附錄 - OSX 開發環境">
+<meta name="twitter:description" content="我自己在 OSX 上的主觀開發環境設定">
+  <title>Coding 初學指南附錄 - OSX 開發環境 &ndash; Liang2's blog</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://blog.liang2.tw">
+        <img src="https://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
+      </a>
+      <h1><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+      <p>Code / Stat / Bioinfo</p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
+          <li><a href="https://blog.liang2.tw/talks/#talks">Talks</a></li>
+          <li><a href="https://blog.liang2.tw/research/#research">Research</a></li>
+          <li><a href="https://blog.liang2.tw/projects/#projects">Projects</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
+        <li><a class="sc-envelope-o" href="mailto:me+blog@liang2.tw" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
+        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://blog.liang2.tw">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+      <a href="https://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="lab-coding-appendix-osx-env">Coding 初學指南附錄 - <span class="caps">OSX</span>&nbsp;開發環境</h1>
+    <p>Posted on Jan 21, 2016
+      in <a href="https://blog.liang2.tw/category/coding.html">Coding</a>
+    </p>
+  </header>
+  <div>
+    <p>Last Edited: Jan, 2016&nbsp;（如果內容有誤，你可以留言，或用任何管道告訴我）</p>
+<p>以下的設定都蠻主觀的，見人見智。總之我把我的環境分享出來。</p>
+<div class="toc">
+<ul>
+<li><a href="#terminal">Terminal</a></li>
+<li><a href="#homebrew-git-and-python">Homebrew, Git and&nbsp;Python</a></li>
+<li><a href="#text-editors">Text&nbsp;Editors</a></li>
+<li><a href="#terminal-multiplexers">Terminal&nbsp;Multiplexers</a></li>
+<li><a href="#git-gui">Git <span class="caps">GUI</span></a></li>
+<li><a href="#documentation-searcher">Documentation&nbsp;Searcher</a></li>
+<li><a href="#misc">Misc.</a></li>
+</ul>
+</div>
+<blockquote>
+<p><strong>其他 Coding&nbsp;初學指南系列文章：</strong></p>
+<ul>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-intro/">Introduction</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-linux/">Chapter 1 &ndash;&nbsp;Linux</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/">Chapter 2 &ndash; Text Editing (Markdown, Text&nbsp;Editor)</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/">Chapter 3 &ndash; Version Control&nbsp;(Git)</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-python/">Chapter 4 &ndash;&nbsp;Python</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-osx-env/">Appendix 1 &ndash; <span class="caps">OSX</span> Development&nbsp;Environment</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-bioinfo-python/">Appendix 2 &ndash; Python in&nbsp;Bioinformatics</a></li>
+</ul>
+<p>或者，用 <a href="/tag/labcoding.html">labcoding</a> 這個 tag&nbsp;也可以找到所有的文章。</p>
+</blockquote>
+<h2 id="terminal">Terminal</h2>
+<p><span class="caps">OSX</span> 系統有內建一個 <code>Terminals.app</code> 能像在 Linux 上一樣使用。他其實使用上沒什麼問題，不過想要調顏色，有更多自定功能的話，許多人會安裝 <a href="http://iterm2.com/">iTerm2</a>。</p>
+<h2 id="homebrew-git-and-python">Homebrew, Git and&nbsp;Python</h2>
+<p><span class="caps">OSX</span> 上官方沒有一個管理套件的工具，所以社群自行開發了一個叫做 Homebrew。你可以按照<a href="http://djangogirlstaipei.herokuapp.com/tutorials/installation/">這篇教學</a>安裝&nbsp;Homebrew。</p>
+<p>裝好了之後你可以以下指令去看它該怎麼操作</p>
+<div class="highlight"><pre><span></span>$ brew --help
+$ man brew    <span class="c1"># for full documentation</span>
+</pre></div>
+
+
+<p><span class="caps">OSX</span> 雖然內建有 git 與 python，但我們可以用 homebrew&nbsp;安裝比較標準（新）的版本，</p>
+<div class="highlight"><pre><span></span>$ brew install git python3
+</pre></div>
+
+
+<p>如果 homebrew 有問題可以用 <code>brew doctor</code> 來檢測。把錯誤訊息問 google&nbsp;通常就能找到解決方式。</p>
+<h2 id="text-editors">Text&nbsp;Editors</h2>
+<p>我最常用的是 Vim。<span class="caps">OSX</span> 有內建，但也可以用 homebrew&nbsp;安裝。</p>
+<p>除了 console based 的 Vim，<span class="caps">OSX</span> 上也有像 gVim 的 MacVim。一樣能用 homebrew&nbsp;安裝。</p>
+<div class="highlight"><pre><span></span>$ brew info macvim  <span class="c1"># 看 MacVim 在安裝有什麼選項可以調整</span>
+$ brew install macvim --override-system-vim --custom-icons
+$ brew linkapps macvim
+</pre></div>
+
+
+<p>使用 Macvim 的時候除了 vim 之外，也可以呼叫 <code>mvim</code> 打開&nbsp;MacVim。</p>
+<h2 id="terminal-multiplexers">Terminal&nbsp;Multiplexers</h2>
+<p>你有可能有聽過 screen 或者 tmux。前者在 osx 上有內建但版本很舊，在顯示顏色上會有問題，因此可以透過 homebrew 再安裝新的。但因為 screen 跟系統提供的重覆到了，所以預設不在 homebrew 的 repo 中，要先新增 repo&nbsp;清單：</p>
+<div class="highlight"><pre><span></span>brew tap homebrew/dupes
+brew install screen tmux
+</pre></div>
+
+
+<h2 id="git-gui">Git <span class="caps">GUI</span></h2>
+<p>初學 Git 可能會不熟那些指令、常常不知道自己在 git log 哪個位置。這時候有個圖形化的工具會更方便了解。Git 有內建一個&nbsp;gitk，但比較陽春。</p>
+<p>在 <span class="caps">OSX</span> 上可以考慮用 <a href="http://www.sourcetreeapp.com/">SourceTree</a>。</p>
+<h2 id="documentation-searcher">Documentation&nbsp;Searcher</h2>
+<p>要一直查 Python 官網有時候還蠻麻煩的，未來學了 <span class="caps">HTML</span> <span class="caps">CSS</span> 等等不同語言或各種 Python 套件，要查個東西會很費時。所以有人開發了一個離線的 documentation 查詢器叫做 <a href="http://kapeli.com/dash">Dash</a>。他要錢但有免費版，似乎是會一直跳提示訊息。</p>
+<h2 id="misc">Misc.</h2>
+<ul>
+<li><a href="http://www.alfredapp.com/">Alfred App</a>：一個延伸版的 Spotlight，查應用程式很快速，同時也可以跟 Dash 整合讓查 doc&nbsp;更方便。</li>
+<li><a href="http://macdown.uranusjr.com/">Macdown</a>：<span class="caps">OSX</span> 上的 markdown&nbsp;編輯器。</li>
+</ul>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://blog.liang2.tw/tag/zh.html">zh</a>
+      <a href="https://blog.liang2.tw/tag/labcoding.html">labcoding</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'liang2';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "Coding 初學指南附錄 - <span class="caps">OSX</span>&nbsp;開發環境",
+  "headline": "Coding 初學指南附錄 - <span class="caps">OSX</span>&nbsp;開發環境",
+  "datePublished": "2016-01-21 23:00:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Liang2",
+    "url": "https://blog.liang2.tw/author/liang2.html"
+  },
+  "image": "https://blog.liang2.tw/pics/headpic.jpg",
+  "url": "https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-osx-env/",
+  "description": "我自己在 OSX 上的主觀開發環境設定"
+}
+</script></body>
+</html>

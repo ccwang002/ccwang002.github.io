@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
+  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/font-awesome.min.css">
+  <!-- Justfont webfont -->
+  <!-- Local development -->
+  <!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+  <!-- Proudction version v4.9.4 -->
+  <script src="https://blog.liang2.tw/theme/js/justfont_v4.9.4.js" type="text/javascript" charset="utf-8"></script>
+  <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Liang2" />
+<meta name="description" content="Jupyter Notebook，也就是以前的 IPython Notebook，應該是許多人在用 Python 做資料分析時記錄實驗步驗與結果的工具。 現在 IPython (v4.0+) 已經回歸到 Interactive Python Shell 的本質，變成只是擴充內建 Python REPL 的套件，相依的模組也清掉了。原本的 IPyton ..." />
+<meta name="keywords" content="zh, jupyter, notebook">
+<meta property="og:site_name" content="Liang2's blog"/>
+<meta property="og:title" content="Jupyter Notebook Theme"/>
+<meta property="og:description" content="Jupyter Notebook，也就是以前的 IPython Notebook，應該是許多人在用 Python 做資料分析時記錄實驗步驗與結果的工具。 現在 IPython (v4.0+) 已經回歸到 Interactive Python Shell 的本質，變成只是擴充內建 Python REPL 的套件，相依的模組也清掉了。原本的 IPyton ..."/>
+<meta property="og:locale" content="zh_TW"/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-01-07 00:00:00+08:00"/>
+<meta property="article:modified_time" content="2016-01-07 00:00:00+08:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
+<meta property="article:section" content="Coding"/>
+<meta property="article:tag" content="zh"/>
+<meta property="article:tag" content="jupyter"/>
+<meta property="article:tag" content="notebook"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Jupyter Notebook Theme">
+<meta name="twitter:description" content="Jupyter Notebook，也就是以前的 IPython Notebook，應該是許多人在用 Python 做資料分析時記錄實驗步驗與結果的工具。 現在 IPython (v4.0+) 已經回歸到 Interactive Python Shell 的本質，變成只是擴充內建 Python REPL 的套件，相依的模組也清掉了。原本的 IPyton ...">
+  <title>Jupyter Notebook Theme &ndash; Liang2's blog</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://blog.liang2.tw">
+        <img src="https://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
+      </a>
+      <h1><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+      <p>Code / Stat / Bioinfo</p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
+          <li><a href="https://blog.liang2.tw/talks/#talks">Talks</a></li>
+          <li><a href="https://blog.liang2.tw/research/#research">Research</a></li>
+          <li><a href="https://blog.liang2.tw/projects/#projects">Projects</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
+        <li><a class="sc-envelope-o" href="mailto:me+blog@liang2.tw" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
+        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://blog.liang2.tw">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+      <a href="https://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="jupyter-notebook-theme">Jupyter Notebook&nbsp;Theme</h1>
+    <p>Posted on Jan 07, 2016
+      in <a href="https://blog.liang2.tw/category/coding.html">Coding</a>
+    </p>
+  </header>
+  <div>
+    <p><a href="http://jupyter.org/">Jupyter Notebook</a>，也就是以前的 IPython Notebook，應該是許多人在用 Python&nbsp;做資料分析時記錄實驗步驗與結果的工具。</p>
+<p>現在 <a href="http://ipython.org/">IPython</a> (v4.0+) 已經回歸到 Interactive Python Shell 的本質，變成只是擴充內建 Python <span class="caps">REPL</span> 的套件，相依的模組也清掉了。原本的 IPyton Notebook 主要是提供一個像 <a href="https://reference.wolfram.com/language/tutorial/UsingANotebookInterface.html">Mathematica Notebook</a> 的環境，功能很多就不多提。它可以用 web 或者 <span class="caps">QT</span>&nbsp;介面來跑。</p>
+<p>後來又開始整合很多語言，變成像 Julia / R / Lua 等語言都可以利用這樣的 Notebook 架構，於是 <a href="http://jupyter.org/">Jupyter</a> 就因此誕生，變成原本的 IPython 只是其中一個可能的語言 kernel。Notebook 本身可以是 R 語言或者 Julia&nbsp;語言。</p>
+<div class="toc">
+<ul>
+<li><a href="#jupyter-notebook">Jupyter&nbsp;Notebook</a></li>
+<li><a href="#custom-theme-on-v41">Custom Theme on&nbsp;v4.1+</a></li>
+<li><a href="#custom-theme-before-v41">Custom Theme Before&nbsp;v4.1</a></li>
+</ul>
+</div>
+<h3 id="jupyter-notebook">Jupyter&nbsp;Notebook</h3>
+<p>用 Python&nbsp;裝十分簡單，</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> pip install jupyter
+</pre></div>
+
+
+<p>Jupyter 預設走 web 介面，會跑一個 tornado server 預設在 <a href="http://localhost:8888">http://localhost:8888</a>&nbsp;上。</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> jupyter notebook
+<span class="go">[I 23:50:58.449 NotebookApp] Serving notebooks from local directory: /Users/liang</span>
+<span class="go">[I 23:50:58.449 NotebookApp] 0 active kernels</span>
+<span class="go">[I 23:50:58.450 NotebookApp] The IPython Notebook is running at: http://localhost:8888/</span>
+<span class="go">[I 23:50:58.450 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).</span>
+</pre></div>
+
+
+<p>有裝 browser&nbsp;的話就會自動開一個視窗。</p>
+<div class="figure">
+  <img src="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/pics/jupyter_default_frontpage.png"/>
+  <p class="caption center">Jupyter Notebook&nbsp;Hub</p>
+</div>
+
+<p>Notebook 預設是 <code>.ipynb</code> 的檔案。常見的內容像這樣：</p>
+<div class="figure">
+  <img src="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/pics/jupyter_default_notebook.png"/>
+  <p class="caption center">Jupyter Notebook&nbsp;Example</p>
+</div>
+
+<h3 id="custom-theme-on-v41">Custom Theme on&nbsp;v4.1+</h3>
+<p><span class="caps">EDIT</span>: 2016-01-11 <a href="https://blog.jupyter.org/2016/01/08/notebook-4-1-release/">Jupyter Notebook 4.1</a> 已釋出，設定路徑預設都在 <code>~/.jupyter</code> 底下。</p>
+<p>今天重點是換主題嘛。趕快來做吧。</p>
+<p>可以透過 <code>jupyter --config-dir</code> 或 <code>jupyter --paths</code> 找到設定檔應該放的位置。</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> jupyter --config-dir
+<span class="go">~/.jupyter</span>
+<span class="gp">$</span> jupyter notebook --generate-config  <span class="c1"># 建立 Notebook 設定檔</span>
+<span class="go">Writing default config to: ~/.jupyter/jupyter_notebook_config.py</span>
+</pre></div>
+
+
+<p>如果只是改主題，不需要更動 Notebook&nbsp;設定檔。</p>
+<p>目前自己使用的主題來自 <a href="https://github.com/dunovank/jupyter-themes">dunovank</a>，他有收集了至少深淺兩色，應該足夠使用了。<span class="caps">CSS</span> 從別人的基礎上來調整也相對簡單，我自己有<a href="https://github.com/ccwang002/dotfiles/tree/master/ipy_profile/ipython3">改寫了一點</a>（忘了改什麼)。dunovank 有寫個安裝 theme 的套件，不過不用也沒關係，只要準備好 <span class="caps">CSS</span> 就能用。我用 Grade3&nbsp;這個主題來示範。</p>
+<p>把 <code>custom.css</code> 放到 <code>~/.jupyter/static/custom.css</code>。設定的目錄長得如下：</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> tree ~/.jupyter -F -L 3
+<span class="go">~/.jupyter</span>
+<span class="go">├── custom/</span>
+<span class="go">│   └── custom.css -&gt; /path/to/custom_light.css</span>
+<span class="go">└── jupyter_notebook_config.py</span>
+</pre></div>
+
+
+<h3 id="custom-theme-before-v41">Custom Theme Before&nbsp;v4.1</h3>
+<p>現在因為歷經 IPython 到 Jupyter 的過程，設定還蠻分散的。以往的設定會在 <code>~/.ipython</code>，而到了 Jupyter 之後，相關設定會在 <code>~/.jupyter</code>。有時候設定怪怪的話就兩個路徑都檢查一下吧。</p>
+<p>只要把這個 <span class="caps">CSS</span> 放到 <code>~/.ipython/profile_default/custom.css</code> 再重開 Jupyter Notebook 就可以了<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup>。效果如下：</p>
+<div class="figure">
+  <img src="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/pics/jupyter_grade3_frontpage.png"/>
+  <img src="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/pics/jupyter_grade3_notebook1.png"/>
+  <p class="caption center">Jupyter Notebook Theme Grade3&nbsp;Demo</p>
+</div>
+
+<div class="figure">
+  <img src="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/pics/jupyter_grade3_notebook2.png"/>
+  <p class="caption center">把 Toolbar 全部 toggle&nbsp;起來，以及表格的樣子。</p>
+</div>
+
+<p>個人覺得長時間使用下來，對比度低一點對眼睛比較好。黑底也不錯，不過畫圖常常會自己帶白底，整體感覺就不是很漂亮，可能要連 matplotlib theme 一起改吧 <span class="caps">XD</span></p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>這路徑並不符合 Jupyter 跨 kernel 的設計理念，<del>感覺未來會改路徑</del>已經在 4.1+ 版本中完成整合，與 IPython 設定分家了。&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://blog.liang2.tw/tag/zh.html">zh</a>
+      <a href="https://blog.liang2.tw/tag/jupyter.html">jupyter</a>
+      <a href="https://blog.liang2.tw/tag/notebook.html">notebook</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'liang2';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "Jupyter Notebook&nbsp;Theme",
+  "headline": "Jupyter Notebook&nbsp;Theme",
+  "datePublished": "2016-01-07 00:00:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Liang2",
+    "url": "https://blog.liang2.tw/author/liang2.html"
+  },
+  "image": "https://blog.liang2.tw/pics/headpic.jpg",
+  "url": "https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/",
+  "description": "Jupyter Notebook，也就是以前的 IPython Notebook，應該是許多人在用 Python 做資料分析時記錄實驗步驗與結果的工具。 現在 IPython (v4.0+) 已經回歸到 Interactive Python Shell 的本質，變成只是擴充內建 Python REPL 的套件，相依的模組也清掉了。原本的 IPyton ..."
+}
+</script></body>
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
+  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/font-awesome.min.css">
+  <!-- Justfont webfont -->
+  <!-- Local development -->
+  <!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+  <!-- Proudction version v4.9.4 -->
+  <script src="https://blog.liang2.tw/theme/js/justfont_v4.9.4.js" type="text/javascript" charset="utf-8"></script>
+  <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Liang2" />
+<meta name="description" content="Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我） 學習使用 Linux 是第一個比較大的障礙，因為會在短時間接觸到非常多新的東西。後面的東西多少都與 Linux 相關，而 Linux 難的部份在開始使用 terminal 來操作「整台電腦」，對很習慣使用視窗介面的人會覺得很不直覺。好在近年幾個主流的 Linux Distribution ..." />
+<meta name="keywords" content="zh, labcoding">
+<meta property="og:site_name" content="Liang2's blog"/>
+<meta property="og:title" content="Coding 初學指南－Linux"/>
+<meta property="og:description" content="Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我） 學習使用 Linux 是第一個比較大的障礙，因為會在短時間接觸到非常多新的東西。後面的東西多少都與 Linux 相關，而 Linux 難的部份在開始使用 terminal 來操作「整台電腦」，對很習慣使用視窗介面的人會覺得很不直覺。好在近年幾個主流的 Linux Distribution ..."/>
+<meta property="og:locale" content="zh_TW"/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2016/01/lab-coding-linux/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-01-21 21:30:00+08:00"/>
+<meta property="article:modified_time" content="2016-01-21 21:30:00+08:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
+<meta property="article:section" content="Coding"/>
+<meta property="article:tag" content="zh"/>
+<meta property="article:tag" content="labcoding"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Coding 初學指南－Linux">
+<meta name="twitter:description" content="Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我） 學習使用 Linux 是第一個比較大的障礙，因為會在短時間接觸到非常多新的東西。後面的東西多少都與 Linux 相關，而 Linux 難的部份在開始使用 terminal 來操作「整台電腦」，對很習慣使用視窗介面的人會覺得很不直覺。好在近年幾個主流的 Linux Distribution ...">
+  <title>Coding 初學指南－Linux &ndash; Liang2's blog</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://blog.liang2.tw">
+        <img src="https://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
+      </a>
+      <h1><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+      <p>Code / Stat / Bioinfo</p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
+          <li><a href="https://blog.liang2.tw/talks/#talks">Talks</a></li>
+          <li><a href="https://blog.liang2.tw/research/#research">Research</a></li>
+          <li><a href="https://blog.liang2.tw/projects/#projects">Projects</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
+        <li><a class="sc-envelope-o" href="mailto:me+blog@liang2.tw" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
+        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://blog.liang2.tw">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+      <a href="https://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="lab-coding-linux">Coding&nbsp;初學指南－Linux</h1>
+    <p>Posted on Jan 21, 2016
+      in <a href="https://blog.liang2.tw/category/coding.html">Coding</a>
+    </p>
+  </header>
+  <div>
+    <p>Last Edited: Jan, 2016&nbsp;（如果內容有誤，你可以留言，或用任何管道告訴我）</p>
+<p>學習使用 Linux 是第一個比較大的障礙，因為會在短時間接觸到非常多新的東西。後面的東西多少都與 Linux 相關，而 Linux 難的部份在開始使用 terminal 來操作「整台電腦」，對很習慣使用視窗介面的人會覺得很不直覺。好在近年幾個主流的 Linux Distribution 都有很好的圖形介面（正確稱 Desktop Environment），所以一開始能漸近地適應 terminal&nbsp;操作。</p>
+<blockquote>
+<p>在實驗室 server 上開發，「能在 terminal&nbsp;裡做事情」是必須的。</p>
+</blockquote>
+<div class="toc">
+<ul>
+<li><a href="#linuxunixbsdnix">Linux、Unix、<span class="caps">BSD</span>、*nix</a></li>
+<li><a href="#distro">Distro 簡介</a><ul>
+<li><a href="#redhat-centos-fedora">Redhat / CentOS /&nbsp;Fedora</a></li>
+<li><a href="#debian-ubuntu">Debian /&nbsp;Ubuntu</a></li>
+<li><a href="#archlinux">ArchLinux</a></li>
+</ul>
+</li>
+<li><a href="#gnomekdexfcelxde">桌面環境 <span class="caps">GNOME</span>、<span class="caps">KDE</span>、<span class="caps">XFCE</span>、<span class="caps">LXDE</span></a></li>
+<li><a href="#_1">相關資源</a><ul>
+<li><a href="#_2">鳥哥的私房菜</a><ul>
+<li><a href="#_3">各章節重點整理</a></li>
+</ul>
+</li>
+<li><a href="#introduction-to-linux-on-edx-course">Introduction to Linux on edX&nbsp;course</a></li>
+<li><a href="#debian-user-manual">Debian User Manual</a><ul>
+<li><a href="#chapter-highlights">Chapter&nbsp;Highlights</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_4">學習目標</a></li>
+</ul>
+</div>
+<blockquote>
+<p><strong>其他 Coding&nbsp;初學指南系列文章：</strong></p>
+<ul>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-intro/">Introduction</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-linux/">Chapter 1 &ndash;&nbsp;Linux</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/">Chapter 2 &ndash; Text Editing (Markdown, Text&nbsp;Editor)</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/">Chapter 3 &ndash; Version Control&nbsp;(Git)</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-python/">Chapter 4 &ndash;&nbsp;Python</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-osx-env/">Appendix 1 &ndash; <span class="caps">OSX</span> Development&nbsp;Environment</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-bioinfo-python/">Appendix 2 &ndash; Python in&nbsp;Bioinformatics</a></li>
+</ul>
+<p>或者，用 <a href="/tag/labcoding.html">labcoding</a> 這個 tag&nbsp;也可以找到所有的文章。</p>
+</blockquote>
+<h2 id="linuxunixbsdnix">Linux、Unix、<span class="caps">BSD</span>、*nix</h2>
+<p>Linux 和 Unix 是不同的，但對初學者來說他們的分別不容易查覺，兩者的終端指令很相似，也因此有了 *nix 的通稱。Linux 介紹書多半會把他們的歷史好好的說一遍<sup id="fnref:註2"><a class="footnote-ref" href="#fn:註2" rel="footnote">1</a></sup>，有興趣聽軟體發展故事的就多留意這部份。</p>
+<p>不完整地主要分成：</p>
+<ul>
+<li>Redhat, CentOS,&nbsp;Fedora</li>
+<li>Debian, Ubuntu, Linux&nbsp;Mint</li>
+<li>ArchLinux</li>
+<li>openSUSE</li>
+<li>FreeBSD,&nbsp;OpenBSD</li>
+</ul>
+<p>這些 distributions (distros)。其實 Linux、<span class="caps">BSD</span> (or Unix) 的系統非常多<sup id="fnref:註3"><a class="footnote-ref" href="#fn:註3" rel="footnote">2</a></sup>，但對初入 Linux 的使用者，應該要找比較熱門的 distro&nbsp;使用，才好找資料。</p>
+<p>上面條列的方式是有意義的，我把類似的 distro 放在同一排，只要學了其中一個，同排的其他都很好上手。其中前兩排是兩大家族反映兩種生態。我們實驗室的大 server 用的是 CentOS；但近年來我自己的電腦已經漸漸換到 Debian&nbsp;上。</p>
+<h2 id="distro">Distro&nbsp;簡介</h2>
+<p>以下是我不負責任的主觀介紹。從介紹篇幅就知道我是個傾向 Debian&nbsp;的人。</p>
+<h4 id="redhat-centos-fedora">Redhat / CentOS /&nbsp;Fedora</h4>
+<p>Redhat 是商用的版本，開源社群維護的對應版本是 CentOS。它以保守穩定著名，但相對來說新的東西在上面就要自己安裝，這對實驗室都用較新的工具來說是個減分的地方。他套件用 <code>yum xxx</code> 來操作。Fedora&nbsp;上的東西會新一點但我們實驗室沒人用，所以不建議。</p>
+<h4 id="debian-ubuntu">Debian /&nbsp;Ubuntu</h4>
+<p>Debian 是另一個大家族的頭，雖然是頭但一直保持穩定開發，在說明文件、<a href="https://wiki.debian.org/">wiki</a> 上都有不錯的品質。本身有所謂的 stable、testing、unstable 並分別對應三個版本號碼與名稱。以 2016.01 為例，stable 是 jessie(8)、testing 是 stretch(9)。unstable 永遠對應到 sid。如字面上的意思代表當中套件（軟體）的新舊程度。stable 上的工具也因此會比較舊不適合實驗室使用，但 testing 還蠻適合的，我個人很推。套件用 <code>apt-get xxx</code> 來操作。</p>
+<p>Debian 家族中的 Ubuntu 非常火紅，網路上教學非常多，背後也有公司加持。基本上 Debian 的優點都會傳到 Ubuntu 上。Ubuntu 雖然套件包等等都從 Debian&nbsp;移植，但他有自己的版本號碼，每半年發佈一個版本。</p>
+<h4 id="archlinux">ArchLinux</h4>
+<p>再來的有興趣自己看，但我要額外介紹一個 ArchLinux。這是一個很自幹的系統，一點都不適合新手與懶人。但他有一個寫得很仔細完整的 <a href="https://wiki.archlinux.org/">wiki 站</a>。想要學新的套件、不會設定的話，去問 google 的時候請優先看他們的&nbsp;wiki。</p>
+<blockquote>
+<p>查資料的時候，除了 StackOverflow 、Ubuntu 論壇之外，請多看品質優良的 <a href="https://wiki.archlinux.org/">Arch Linux</a> 和 <a href="https://wiki.debian.org/">Debian</a> 的&nbsp;wiki。</p>
+</blockquote>
+<p>寫了這麼多，沒有給一個明確的選擇，多數人還是很難決定。所以如果你是初學者，我會建議安裝 Ubuntu，在此時請選擇 <a href="http://releases.ubuntu.com/15.10/">15.10</a> or <a href="http://releases.ubuntu.com/14.04/">14.04 <span class="caps">LTS</span></a> Desktop&nbsp;版本，因為他網路上的資源最豐富。</p>
+<p>但我不是很喜歡 Ubuntu，所以等你有能力自己查詢 Linux 相關操作時，建議再看看別的 distro （例如我推薦的 <a href="https://www.debian.org/releases/testing/">Debian testing channel</a>）</p>
+<h2 id="gnomekdexfcelxde">桌面環境 <span class="caps">GNOME</span>、<span class="caps">KDE</span>、<span class="caps">XFCE</span>、<span class="caps">LXDE</span></h2>
+<p>圖形化介面（<span class="caps">GUI</span>），除了使用者的應用程式外，還需要系統輔助、管理等核心套件。一系列的 <span class="caps">GUI</span>&nbsp;套件就稱之為桌面環境。</p>
+<p>Windows、<span class="caps">OSX</span> 在安裝系統時都會自動安裝， 即桌面環境只有一種選擇。但在 Linux 上，<span class="caps">GUI</span> 的安裝是選擇性的，系統能在只有單純的 terminal 介面便能完整使用（例如選擇安裝 Ubuntu Server 時），不少 server&nbsp;為了效能、安全性的考量都不會裝桌面環境。</p>
+<p>對 Linux 來說桌面環境是能之後再選擇安裝上去的，而且還有「不同口味」可以選擇，使用者也可以自由的移除它們（但很有可能會炸掉），常見就有 <span class="caps">GNOME</span>、<span class="caps">KDE</span>、<span class="caps">XFCE</span>、<span class="caps">LXDE</span><sup id="fnref:註4"><a class="footnote-ref" href="#fn:註4" rel="footnote">3</a></sup> 幾種系統能使用。例如選擇安裝 Ubuntu Server 後，想要再加上 <span class="caps">GNOME</span>&nbsp;列圖形化介面時，</p>
+<div class="highlight"><pre><span></span>sudo apt-get install ubuntu-gnome-desktop
+</pre></div>
+
+
+<p>這邊不會去細講這些實作方式的不同。簡單而言，<span class="caps">GNOME</span> 最流行。<span class="caps">XFCE</span> 使用的系統資源較少，在實驗室上的 server 常會裝這個。在 Ubuntu 上，預設是用 Unity，它是從 <span class="caps">GNOME</span>&nbsp;沿伸出來的。</p>
+<p>第一次安裝時，就使用預設的模式吧。裝好之後要換到不同的桌面環境時，需要對套件管理系統（例&nbsp;apt、yum）、調整系統設定有足夠了解。</p>
+<h2 id="_1">相關資源</h2>
+<p>認真地說，我有點不知道 Linux&nbsp;從很初學到完整學習的資源在哪裡。如果你們在學的過程中，有碰到更適合的請再告訴我（例如：留言）</p>
+<h3 id="_2">鳥哥的私房菜</h3>
+<ul>
+<li><a href="http://linux.vbird.org/linux_basic/">鳥哥官網（基礎學習篇）</a></li>
+<li><a href="http://www.tenlong.com.tw/items/9861818510?item_id=53725">實體書連結</a></li>
+</ul>
+<p>在台灣學 Linux 大概都會先推薦鳥哥，這應該是最多人用的完整中文資源了。如果願意啃完他，對 Linux&nbsp;絕對會有足夠的認識。我大學的時候也是看這本入門的。</p>
+<p>不適合的地方是鳥哥介紹 Redhat 系的操作，很多設定在 Ubuntu 上不需要或者是用別的方式去管理。例如，在 CentOS 上可能都用文字檔來修改設定，但在 Ubuntu 上可以用 <code>dpkg-reconfigure</code> 指令來更動。他示範的 <span class="caps">OS</span> 為 CentOS 5.x，現在 CentOS 已經 7.x&nbsp;版了，許多設定也過時了，新的工具不會介紹到。</p>
+<p>例如現在安裝 Linux 時，在磁區分割上都有很好的預設值，初學者可以不用再學調整 swap 等設定。同時系統也都提供使用 <span class="caps">LVM</span> (Logical Volume Manager) <sup id="fnref:註5"><a class="footnote-ref" href="#fn:註5" rel="footnote">4</a></sup> 管理磁區，這些磁區 (<span class="caps">LV</span>) 日後能動態調整。換句話說，第五章（含）的內容都與現在使用 Linux 的方式不同，如果只是順著鳥哥書的順序一章一章看下來，會沒辦法對照自己系統操作，因為近期的 Linux&nbsp;安裝只要很順的下一步就能完成了。</p>
+<h4 id="_3">各章節重點整理</h4>
+<p>鳥哥的內容退一千步來說都對初學者很有幫助，但為了避免各位花費無謂的時間在「對照古早與現代操作 (google&nbsp;到的資料)上」，整理個表格讓大家知道每個章節什麼地方需要看。</p>
+<table>
+<thead>
+<tr>
+<th align="center">章節</th>
+<th align="left">章節名</th>
+<th>重要的內容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">0</td>
+<td align="left">計算機概論</td>
+<td>沒聽過 <span class="caps">CPU</span>、<span class="caps">RAM</span>、<span class="caps">MB</span> <span class="caps">GB</span> 單位就從頭看； 不然就讀資料表示方式(3)、軟體程式運作(4)</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="left">首次登入與線上求助 man page</td>
+<td>文字模式下指令的下達(2)、man page 與 info page(3)、nano(4)</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="left">Linux 的檔案權限與目錄配置</td>
+<td>全</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="left">Linux 檔案與目錄管理</td>
+<td>除檔案隱藏與特殊屬性(4)外都重要</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="left">Linux 磁碟與檔案系統管理</td>
+<td>檔案系統的簡單操作(2)</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="left">檔案與檔案系統的壓縮與打包</td>
+<td>壓縮檔案的用途與技術(1)、打包指令(3)</td>
+</tr>
+<tr>
+<td align="center">10<sup id="fnref:*"><a class="footnote-ref" href="#fn:*" rel="footnote">5</a></sup></td>
+<td align="left">vim 程式編輯器</td>
+<td>語系編碼轉換(4.3)</td>
+</tr>
+<tr>
+<td align="center">11</td>
+<td align="left">認識與學習 <span class="caps">BASH</span></td>
+<td>全。但可視情況忽略 2.4-2.8、6.4</td>
+</tr>
+<tr>
+<td align="center">12<sup id="fnref:†"><a class="footnote-ref" href="#fn:†" rel="footnote">6</a></sup></td>
+<td align="left">正規表示法與文件格式化處理</td>
+<td>前言(1)</td>
+</tr>
+<tr>
+<td align="center">13</td>
+<td align="left">學習 Shell Scripts</td>
+<td>全（等用到再看）</td>
+</tr>
+<tr>
+<td align="center">22</td>
+<td align="left">軟體安裝：原始碼與 Tarball</td>
+<td>全（了解流程、懂有這些關鍵字就好）</td>
+</tr>
+<tr>
+<td align="center">23</td>
+<td align="left">軟體安裝： <span class="caps">RPM</span>, <span class="caps">SRPM</span> 與 <span class="caps">YUM</span> 功能</td>
+<td>Ubuntu 用的是 <span class="caps">APT</span><sup id="fnref:‡"><a class="footnote-ref" href="#fn:‡" rel="footnote">7</a></sup></td>
+</tr>
+</tbody>
+</table>
+<h3 id="introduction-to-linux-on-edx-course">Introduction to Linux on edX&nbsp;course</h3>
+<ul>
+<li><a href="https://www.edx.org/course/introduction-linux-linuxfoundationx-lfs101x-2">課程連結</a></li>
+</ul>
+<p>Linux Foundation 所開辦的線上課程，有英文的影片和講義。還請到了 Linux Kernel 的作者 Linus Torvalds&nbsp;來拍介紹片。這是真的從非常基礎開始講，我有稍微看過，但我怕難度不夠，需要再搭配其他的資源來使用。好處是初期的學習比讀鳥哥前幾章來的快非常多（鳥哥前幾章為計算機概論）。</p>
+<h3 id="debian-user-manual">Debian User&nbsp;Manual</h3>
+<p>英文的 Debian 系統使用者手冊，裡面包含了常見問題排解、各種硬體上的安裝指南、參考手冊。想要好好學習現代 Debian (Linux)&nbsp;的使用方式的話，可以參考這些資源，它們還有再維護。</p>
+<p>缺點是這手冊太長了，如果有碰到什麼特別想了深入了解的，建議可以看這個。</p>
+<ul>
+<li><a href="https://www.debian.org/doc/user-manuals">https://www.debian.org/doc/user-manuals</a></li>
+<li><a href="https://www.debian.org/doc/manuals/debian-reference/index.en.html">Debain Reference</a> (online <span class="caps">HTML</span>)</li>
+</ul>
+<h4 id="chapter-highlights">Chapter&nbsp;Highlights</h4>
+<table>
+<thead>
+<tr>
+<th align="left">Chp. No</th>
+<th align="left">Chp. Name</th>
+<th align="left">Highlights</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">1</td>
+<td align="left"><span class="caps">GNU</span>/Linux tutorials</td>
+<td align="left">Everything except for 1.3 Midnight Commander</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">Debian package management</td>
+<td align="left">Read 2.2 Basic package management operations</td>
+</tr>
+<tr>
+<td align="left">10</td>
+<td align="left">Data management</td>
+<td align="left">Read 10.1 Sharing, copying, and archiving</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_4">學習目標</h2>
+<p>因為這邊指的 Linux 算是一個蠻廣的內容，一開始學的時候很容易迷失方向。所以我額外列了幾個很重要的觀念，你應該能在學習 Linux&nbsp;的初期接觸到他們：</p>
+<ul>
+<li>了解 <code>$PATH</code> 與程式執行位置的關係<ul>
+<li>為什麼打 <code>ls</code> 可以找到這隻名為 <code>ls</code> 的程式</li>
+</ul>
+</li>
+<li>知道 stdin、stdout、stderr；pipeline&nbsp;的使用</li>
+<li>知道環境變數是什麼，怎麼修改</li>
+<li>了解檔案、目錄、相對路徑；權限設定</li>
+<li>使用 <code>&lt;cmd&gt; -h</code> <code>&lt;cmd&gt; --help</code> <code>man &lt;cmd&gt;</code> 來查看指令的功能、可下的參數<ul>
+<li>&lt;cmd> = 任何在 linux&nbsp;下的指令</li>
+</ul>
+</li>
+</ul>
+<p>如果你花了一個禮拜的時間，但上述的內容連聽都沒聽過（或沒什麼使用到），那很可能你學習 Linux&nbsp;的方式跟我想得很不一樣，請先寫個信告訴我。上面這些觀念的學習也是漸近式的，過了一個禮拜只有聽過但不是很了解，這是很正常的現象。</p>
+<ol>
+<li>自己從零開始安裝一次 Linux 系統（可以用 <span class="caps">VM</span>）。</li>
+<li>定期使用它一個星期以上（即熟悉 <code>cd</code> <code>ls</code> 等基礎指令）</li>
+<li>
+<p>使用 ssh 連線到遠端的 Linux。（要打開 ssh 的&nbsp;port）</p>
+<ul>
+<li>Bonus: 在 ssh&nbsp;連線時不用打密碼。</li>
+<li>Bonus hint: 查 <code>authorized_keys</code>。會需要建立 ssh user identity keypair，這會在上傳 GitHub&nbsp;時用到）</li>
+</ul>
+</li>
+<li>
+<p>安裝一個叫 <a href="http://hisham.hm/htop/">htop</a>&nbsp;的系統監控軟體。使用它來查看系統資料的使用狀況</p>
+<ul>
+<li>Bonus:<ul>
+<li>調整欄位的排版</li>
+<li>開啟 Tree&nbsp;Veiw</li>
+<li>選擇顯示單一使用者運行的程序（太舊的 htop&nbsp;可能沒這功能）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>安裝一個叫 <a href="http://aria2.sourceforge.net/">aria2</a> 的續傳軟體，他可以多線程下載 <span class="caps">HTTP</span>(S)、<span class="caps">FTP</span>、甚至 <span class="caps">BT</span>。今天想要下載 Debian Jessie netinst 的映像檔，使用 2&nbsp;個線程同時下載。</p>
+<ul>
+<li>Hint: 查 <code>aria2c</code> 的 man&nbsp;page。</li>
+</ul>
+</li>
+<li>
+<p>學會查看系統硬碟的使用量；查看當前目錄內所有檔案的大小（絕對不是 <code>ls -l</code>）</p>
+<ul>
+<li>Hint: <code>df</code> 和 <code>du</code></li>
+</ul>
+</li>
+<li>
+<p>scp 是個透過 ssh 傳送一或多個檔案的指令，試著用它把自己電腦的檔案（們）傳到 server&nbsp;上。</p>
+<ul>
+<li>Bonus:<ul>
+<li>在路徑中搭配特殊字元 <code>*?</code> 傳多個檔案</li>
+<li>有一個更精密的傳檔工具叫&nbsp;rsync，試著改用它來傳檔。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>使用 <span class="caps">GUI</span> 的遠端介面。這相關的技術有很多：<span class="caps">VNC</span>、<span class="caps">RDP</span> 最常見。<span class="caps">RDP</span> 在 windows 連接上比較順暢；<span class="caps">VNC</span> 在畫面傳輸比較沒效率，這會對 server 造成不小的負擔，也很容易 lag。有一個新的通訊協定叫 <span class="caps">NX</span>，它對畫面壓縮使用即便網速很慢依然能使用圖形介紹。<br>
+   試著用實作 <span class="caps">NX</span> 協定的軟體 X2go 做遠端桌面連線到&nbsp;server。</p>
+<ul>
+<li>Hint: 你需要在 server 與 client 端（通常是自己的電腦）都裝上 X2go 的軟體，並會使用到 <span class="caps">SSH</span>&nbsp;的連線設定。</li>
+</ul>
+</li>
+<li>
+<p>只用 Linux&nbsp;生存一個星期以上（包含中文輸入、上網等等）</p>
+</li>
+</ol>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:註2">
+<p>Linux distros 源流 <a href="http://en.wikipedia.org/wiki/Linux_distribution">http://en.wikipedia.org/wiki/Linux_distribution</a>&#160;<a class="footnote-backref" href="#fnref:註2" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:註3">
+<p><a href="http://distrowatch.com/">Distro Watch</a> 是一個介紹各種 Linux、<span class="caps">BSD</span> 系統的地方，可以來這邊看各個 distro 的介紹。&#160;<a class="footnote-backref" href="#fnref:註3" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:註4">
+<p><span class="caps">LXDE</span> 原作者是 PCMan 喔，也有相當多的台灣人在維護它。&#160;<a class="footnote-backref" href="#fnref:註4" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:註5">
+<p><span class="caps">LVM</span> 不懂沒關係，有興趣可以參考<a href="http://linux.vbird.org/linux_basic/0420quota.php#lvm">鳥哥十五章</a>、<a href="https://wiki.archlinux.org/index.php/LVM">Arch Wiki</a> 介紹&#160;<a class="footnote-backref" href="#fnref:註5" rev="footnote" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:*">
+<p>學 vim 有別的資源，詳見 <a href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/">2 Text Editing</a>。<br>&#160;<a class="footnote-backref" href="#fnref:*" rev="footnote" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:†">
+<p>正規表示（regex）很重要，但初學 Linux 時會覺得很複雜可以跳過。 <a href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/">2 Text Editing</a> 會再接觸到一次 vim 的 regex、<a href="https://blog.liang2.tw/posts/2016/01/lab-coding-python/">4 Python</a> 也會學到 Python 的 regex，可以等到時候再回來學 <code>sed</code>、<code>egrep</code> 等指令。<br>&#160;<a class="footnote-backref" href="#fnref:†" rev="footnote" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+<li id="fn:‡">
+<p><span class="caps">APT</span> 的使用教學可以參考 <a href="https://help.ubuntu.com/community/AptGet/Howto">Ubuntu 官網</a>、<a href="http://blog.longwin.com.tw/2005/05/use_apt/">網路上大大的筆記</a>。&#160;<a class="footnote-backref" href="#fnref:‡" rev="footnote" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://blog.liang2.tw/tag/zh.html">zh</a>
+      <a href="https://blog.liang2.tw/tag/labcoding.html">labcoding</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'liang2';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "Coding&nbsp;初學指南－Linux",
+  "headline": "Coding&nbsp;初學指南－Linux",
+  "datePublished": "2016-01-21 21:30:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Liang2",
+    "url": "https://blog.liang2.tw/author/liang2.html"
+  },
+  "image": "https://blog.liang2.tw/pics/headpic.jpg",
+  "url": "https://blog.liang2.tw/posts/2016/01/lab-coding-linux/",
+  "description": "Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我） 學習使用 Linux 是第一個比較大的障礙，因為會在短時間接觸到非常多新的東西。後面的東西多少都與 Linux 相關，而 Linux 難的部份在開始使用 terminal 來操作「整台電腦」，對很習慣使用視窗介面的人會覺得很不直覺。好在近年幾個主流的 Linux Distribution ..."
+}
+</script></body>
+</html>
