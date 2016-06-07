@@ -4,10 +4,13 @@ Slug: talks
 sortorder: 10
 ---
 
-The followings are talks I given in open source communities.
+The followings are talks I gave in the open source communities.
 
 
 ### 2016
+
+[**多語系 Sphinx 與 Python 官方文件中文化**](https://blog.liang2.tw/2016Talk-PyDoc-TW/) Jun 3, 2016<br>
+PyCon Taiwan 2016
 
 [**Genomics in R**](https://blog.liang2.tw/2016Talk-Genomics-in-R/) May 16, 2016<br>
 MLDM Monday (Taiwan R User Group)
