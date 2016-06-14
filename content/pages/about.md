@@ -8,7 +8,7 @@ sortorder: 1
 
 Hi, I'm Liang Bo Wang (王亮博). Most people call me 亮亮 (Liang-liang, or liang<sup>2</sup>).
 
-I'm a master student in Bioinfo, National Taiwan University. My previous interns include Microsoft Research Asia (MSRA) and [Pinkoi]. I live in Taipei, Taiwan.
+I'm studying Bioinformatics for my master's degree in National Taiwan University. I'll become a graduate student in Washington University in St. Louis by 2016 Fall. My previous interns include Microsoft Research Asia (MSRA) and [Pinkoi]. I live in Taipei, Taiwan.
 
 My CV is [here](/CV.pdf) (a PDF file).
 
