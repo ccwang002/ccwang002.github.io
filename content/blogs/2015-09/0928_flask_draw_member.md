@@ -8,15 +8,13 @@ Category: Coding
 
 為了實驗室的專題生而寫。
 
-目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先來比較簡單的。所以這邊可能講的不是 best practice，但用的是最少（底層）的知識與工具。一開始讓太多套件（像 SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。
+目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先操作比較簡單的才好上手。所以這邊講的並不是 best practice，但使用最少（底層）的知識與工具。如果一開始讓太多套件（像 SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。
 
 **本篇文章非常長，應該沒辦法幾分鐘內讀完。對象是初學者學習簡單網站架設。**
 
-這個專案的目標：因為大家 meeting 的時候都不問問題，在教授的要求要，我們實驗室需要一個抽籤工具。又因為我們實驗室有分成幾個組別，所以抽籤的時候要針對某個組別去抽。
+這個專案的目標：因為大家 meeting 的時候都不問問題，教授需要一個抽籤點人問問題的工具。我們實驗室有分成幾個組別，所以抽籤的時候也要能針對單個組別抽。
 
-在這邊用 [LoveLive!] 還有 [K-ON!] 的成員來當例子。
-
-**先聲明我兩個動畫都沒有看過，如果有什麼名字打錯請告訴我，絕對不是故意的。**
+以下使用 [LoveLive!] 還有 [K-ON!] 的成員來當例子。**先聲明我兩個動畫都沒有看過，如果有什麼名字打錯請告訴我，絕對不是故意的。**（2016-06-14 更新：我把兩個動畫都看完了！）
 
 [TOC]
 
@@ -30,7 +28,7 @@ Category: Coding
 
 原始資料用 CSV 格式來儲存，有「名字」以及「團體」兩個欄位。不過考慮到可能會把檔案匯出，在原始檔案多加一個「最近被抽到的日期」欄位，希望最近被抽到的會比其他人再被抽到的機會低一點。
 
-這個檔案叫做 `members.csv`。一開始沒有人被抽到，所以最後一欄都先設成空的[^1]，第一行是每一欄欄位的名稱。
+這個 CSV 檔案命名為 `members.csv`。一開始沒有人被抽到，所以最後一欄都先設成空的[^1]，第一行是每一欄欄位的名稱。如果從資料庫匯出，這欄位就會有值。
 
 ```csv
 "名字","團體","最近被抽到的日期"
@@ -61,7 +59,7 @@ with open('./members.csv', newline='') as f:
         print(row)
 ```
 
-可以把這段程式碼直接打在 Python shell 裡或者存成一個檔案用 python 執行它，結果都會是：
+可以把這段程式碼直接打在 Python REPL 裡或者存成一個檔案後再用 Python 執行它，結果都會是：
 
 ```python
 {'名字': '高坂 穂乃果', '團體': "μ's"}
@@ -80,7 +78,7 @@ with open('./members.csv', newline='') as f:
 {'名字': '中野 梓', '團體': 'K-ON!'}
 ```
 
-如果在 `print(row)` 這邊整理一下資料，改成：
+如果不要直接 `print(row)` ，而是稍微整理一下資料再輸出，改成：
 
 ```python
 import csv
@@ -92,7 +90,6 @@ with open('./members.csv', newline='') as f:
 ```
 
 則輸出結果會是：
-
 
 ```text
 高坂 穂乃果 of μ's
@@ -171,7 +168,7 @@ Table **draw_histories** 記錄每次抽籤發生的時間 time 還有誰被抽�
 $ python3.5 -m venv VENV
 ```
 
-這時候目錄底下就會多一個 `VENV` 資料夾，裡面是個完整的 python 執行結構，就好像裝了個 python 在這個路徑。先暫時不管它怎麼做到虛擬隔離，知道怎麼用就好。使用跟離開分別是：
+這時候目錄底下就會多一個 `VENV` 資料夾，裡面是個完整的 Python 執行結構，就好像在這個路徑安裝 Python 一樣。先暫時不管它怎麼做到虛擬隔離，知道怎麼用就好。使用跟離開分別是：
 
 ```bash
 $ source VENV/bin/activate
@@ -272,7 +269,7 @@ sqlite> INSERT INTO draw_histories (memberid, time)
    ...> VALUES (2, datetime('2015-09-25 16:30'));
 ```
 
-所以第一次 INSERT 指令抽了果果以及小唯各一次。第二次 INSERT 再抽了一次小唯，這次還有額外指定時間為的 9 月 25 號下午 4 點半。關於 SQLite 裡 `datetime` 的更多使用方式可以參考[官網 documentation](https://sqlite.org/lang_datefunc.html)，我們的例子只要這樣就足夠了。
+所以第一次 INSERT 指令抽了果果以及小唯各一次。第二次 INSERT 再抽了一次小唯，這次還有額外指定時間為的 9 月 25 號下午 4 點半。關於 SQLite 裡 `datetime` 的更多使用方式可以參考[官網說明文件](https://sqlite.org/lang_datefunc.html)，我們的例子只要這樣就足夠了。
 
 ```sqlite3
 sqlite> SELECT * FROM draw_histories;
@@ -373,7 +370,7 @@ id|name|group_name|draw_time
 (3, '南 ことり', "μ's")
 ```
 
-到了這邊我們資料的部份沒問題了，接下來就要著手處理網站流程本身。
+到了這邊我們資料的部份沒問題了，接下來就要處理網站流程本身。
 
 
 [^sqlite3 auto commit]: 參考[官方說明文件](https://docs.python.org/3.5/library/sqlite3.html#using-the-connection-as-a-context-manager)，它是在進入 `with db: ...` code block 時開啟一個 transaction，並在正常離開的時候自動 commit。如果中間遇到沒有處理的 Exception 時，就會自動 roll back。
@@ -381,7 +378,7 @@ id|name|group_name|draw_time
 
 ### Flask 基本架構
 
-Flask 的 web server 可以把所有功能都寫在一個檔案，在這邊就以 `draw_member.py` 為例子。
+[Flask] 的 web server 可以把所有功能都寫在一個檔案，在這邊就以 `draw_member.py` 為例子。
 
 ```python3
 from flask import Flask
@@ -521,11 +518,11 @@ def index():
 
 但當使用者跟網站有更多互動的時候，常常是要把使用者的資訊送給網站時，像帳號登入、填問卷表單，或者在這邊的選擇某個團體去抽籤，這時候就會透過 POST。
 
-更多的 GET/POST 以及其他的 HTTP request，可以參考[一頁式介紹（中）][HTTP intro zh]或[非常完整的介紹在 MDN（英）][MDN HTTP request]
+更多的 GET/POST 以及其他的 HTTP request，可以參考[一頁式介紹（中）][HTTP intro zh]或[非常完整的介紹在 Mozilla Developer Network (MDN)（英）][MDN HTTP request]
 
 #### Form
 
-最常見的 POST 就是搭配[表單（form）][form]使用。像登入要填帳號密碼、問卷問題與回答，就很常用 form 實作。Form 裡面有很多種 input，代表使用者能填的欄位，類型可能是單選、複選、單行、多行、密文等。
+最常見的 POST 就是搭配[表單 (form)][form] 使用。像登入要填帳號密碼、問卷問題與回答，就很常用 form 實作。Form 裡面有很多種 input，代表使用者能填的欄位，類型可能是單選、複選、單行、多行、密文等。
 
 我們就先看一下 form 實際的長相吧。改寫 `templates/index.html`，加上一個抽籤選團體的 form。
 
@@ -799,9 +796,11 @@ Flask 用的 Jinja2 template 功能很多，現在各位已經比較理解 serve
 
 #### 時間處理用 datetime
 
-如果有注意到的話，我們用的時間從 SQLite 回傳回來其實是字串。想要改寫時間格式怎麼辦？這時候就要用上內建 module [datetime][pymodule-datetime]。同時我們也順便把本來用 `fetchall()` 的結果，改成用 dict 表示每一筆歷史。
+如果有注意到的話，我們用的時間從 SQLite 回傳回來其實是字串。想要改寫時間格式怎麼辦？這時候就要用上內建 module [datetime][pymodule-datetime] 裡提供的 `datetime` 物件。同時我們也順便把本來用 `fetchall()` 的結果，改成用 dict 表示每一筆歷史。
 
 ```python3
+from datetime import datetime
+
 @app.route('/history')
 def history():
     db = get_db()
@@ -962,6 +961,8 @@ def reset_db():
 #### Datetime in SQLite and Python
 
 這篇文章太長了，寫到[下一篇去](../datetime-sqlite/#datetime-sqlite)。
+
+2016-06-14 更新：增加使用 `datetime.datetime` 的說明避免跟 module 名稱混淆 (credit: 馬國薰)
 
 [Asia/Taipei]: https://en.wikipedia.org/wiki/Asia/Taipei
 [SQLite]: https://www.sqlite.org/
