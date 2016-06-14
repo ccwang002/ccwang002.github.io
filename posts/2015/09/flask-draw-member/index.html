@@ -17,11 +17,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="" />
 <meta name="author" content="Liang2" />
-<meta name="description" content="為了實驗室的專題生而寫。 目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先來比較簡單的。所以這邊可能講的不是 best practice，但用的是最少（底層）的知識與工具。一開始讓太多套件（像 SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。 本篇文章非常長，應該沒辦法幾分鐘內讀完。對象是初學者學習簡單網站架設。 這個專案的目標：因為大家 ..." />
+<meta name="description" content="為了實驗室的專題生而寫。 目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先操作比較簡單的才好上手。所以這邊講的並不是 best practice，但使用最少（底層）的知識與工具。如果一開始讓太多套件（像 SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。 本篇文章非常長，應該沒辦法幾分鐘內讀完。對象是初學者學習簡單網站架設。 這個專案的目標：因為大家 ..." />
 <meta name="keywords" content="zh, flask, sqlite, jinja2, python">
 <meta property="og:site_name" content="Liang2's blog"/>
 <meta property="og:title" content="用 Flask 與 SQLite 架抽籤網站"/>
-<meta property="og:description" content="為了實驗室的專題生而寫。 目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先來比較簡單的。所以這邊可能講的不是 best practice，但用的是最少（底層）的知識與工具。一開始讓太多套件（像 SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。 本篇文章非常長，應該沒辦法幾分鐘內讀完。對象是初學者學習簡單網站架設。 這個專案的目標：因為大家 ..."/>
+<meta property="og:description" content="為了實驗室的專題生而寫。 目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先操作比較簡單的才好上手。所以這邊講的並不是 best practice，但使用最少（底層）的知識與工具。如果一開始讓太多套件（像 SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。 本篇文章非常長，應該沒辦法幾分鐘內讀完。對象是初學者學習簡單網站架設。 這個專案的目標：因為大家 ..."/>
 <meta property="og:locale" content="zh_TW"/>
 <meta property="og:url" content="https://blog.liang2.tw/posts/2015/09/flask-draw-member/"/>
 <meta property="og:type" content="article"/>
@@ -37,7 +37,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@ccwang002">
 <meta name="twitter:title" content="用 Flask 與 SQLite 架抽籤網站">
-<meta name="twitter:description" content="為了實驗室的專題生而寫。 目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先來比較簡單的。所以這邊可能講的不是 best practice，但用的是最少（底層）的知識與工具。一開始讓太多套件（像 SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。 本篇文章非常長，應該沒辦法幾分鐘內讀完。對象是初學者學習簡單網站架設。 這個專案的目標：因為大家 ...">
+<meta name="twitter:description" content="為了實驗室的專題生而寫。 目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先操作比較簡單的才好上手。所以這邊講的並不是 best practice，但使用最少（底層）的知識與工具。如果一開始讓太多套件（像 SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。 本篇文章非常長，應該沒辦法幾分鐘內讀完。對象是初學者學習簡單網站架設。 這個專案的目標：因為大家 ...">
   <title>用 Flask 與 SQLite 架抽籤網站 &ndash; Liang2's blog</title>
 </head>
 <body>
@@ -84,11 +84,10 @@
   </header>
   <div>
     <p>為了實驗室的專題生而寫。</p>
-<p>目標其實是 Django + Django <span class="caps">ORM</span> + PostgreSQL，不過一次接觸太多會有反效果，先來比較簡單的。所以這邊可能講的不是 best practice，但用的是最少（底層）的知識與工具。一開始讓太多套件（像&nbsp;SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。</p>
+<p>目標其實是 Django + Django <span class="caps">ORM</span> + PostgreSQL，不過一次接觸太多會有反效果，先操作比較簡單的才好上手。所以這邊講的並不是 best practice，但使用最少（底層）的知識與工具。如果一開始讓太多套件（像&nbsp;SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。</p>
 <p><strong>本篇文章非常長，應該沒辦法幾分鐘內讀完。對象是初學者學習簡單網站架設。</strong></p>
-<p>這個專案的目標：因為大家 meeting&nbsp;的時候都不問問題，在教授的要求要，我們實驗室需要一個抽籤工具。又因為我們實驗室有分成幾個組別，所以抽籤的時候要針對某個組別去抽。</p>
-<p>在這邊用 <a href="https://zh.wikipedia.org/wiki/LoveLive!">LoveLive!</a> 還有 <a href="https://zh.wikipedia.org/wiki/K-ON！輕音部">K-<span class="caps">ON</span>!</a>&nbsp;的成員來當例子。</p>
-<p><strong>先聲明我兩個動畫都沒有看過，如果有什麼名字打錯請告訴我，絕對不是故意的。</strong></p>
+<p>這個專案的目標：因為大家 meeting&nbsp;的時候都不問問題，教授需要一個抽籤點人問問題的工具。我們實驗室有分成幾個組別，所以抽籤的時候也要能針對單個組別抽。</p>
+<p>以下使用 <a href="https://zh.wikipedia.org/wiki/LoveLive!">LoveLive!</a> 還有 <a href="https://zh.wikipedia.org/wiki/K-ON！輕音部">K-<span class="caps">ON</span>!</a> 的成員來當例子。<strong>先聲明我兩個動畫都沒有看過，如果有什麼名字打錯請告訴我，絕對不是故意的。</strong>（2016-06-14&nbsp;更新：我把兩個動畫都看完了！）</p>
 <div class="toc">
 <ul>
 <li><a href="#_1">資料設計</a></li>
@@ -133,7 +132,7 @@
 <h3 id="_1">資料設計</h3>
 <p>我們先假設所有檔案都放在同個資料夾裡，估且叫 <code>draw_member</code>。之後沒有額外說明的話，都是在這個目錄下操作。</p>
 <p>原始資料用 <span class="caps">CSV</span>&nbsp;格式來儲存，有「名字」以及「團體」兩個欄位。不過考慮到可能會把檔案匯出，在原始檔案多加一個「最近被抽到的日期」欄位，希望最近被抽到的會比其他人再被抽到的機會低一點。</p>
-<p>這個檔案叫做 <code>members.csv</code>。一開始沒有人被抽到，所以最後一欄都先設成空的<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup>，第一行是每一欄欄位的名稱。</p>
+<p>這個 <span class="caps">CSV</span> 檔案命名為 <code>members.csv</code>。一開始沒有人被抽到，所以最後一欄都先設成空的<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup>，第一行是每一欄欄位的名稱。如果從資料庫匯出，這欄位就會有值。</p>
 <div class="highlight"><pre><span></span>&quot;名字&quot;,&quot;團體&quot;,&quot;最近被抽到的日期&quot;
 &quot;高坂 穂乃果&quot;,&quot;μ&#39;s&quot;,&quot;&quot;
 &quot;絢瀬 絵里&quot;,&quot;μ&#39;s&quot;,&quot;&quot;
@@ -162,7 +161,7 @@
 </pre></div>
 
 
-<p>可以把這段程式碼直接打在 Python shell 裡或者存成一個檔案用 python&nbsp;執行它，結果都會是：</p>
+<p>可以把這段程式碼直接打在 Python <span class="caps">REPL</span> 裡或者存成一個檔案後再用 Python&nbsp;執行它，結果都會是：</p>
 <div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;名字&#39;</span><span class="p">:</span> <span class="s1">&#39;高坂 穂乃果&#39;</span><span class="p">,</span> <span class="s1">&#39;團體&#39;</span><span class="p">:</span> <span class="s2">&quot;μ&#39;s&quot;</span><span class="p">}</span>
 <span class="p">{</span><span class="s1">&#39;名字&#39;</span><span class="p">:</span> <span class="s1">&#39;絢瀬 絵里&#39;</span><span class="p">,</span> <span class="s1">&#39;團體&#39;</span><span class="p">:</span> <span class="s2">&quot;μ&#39;s&quot;</span><span class="p">}</span>
 <span class="p">{</span><span class="s1">&#39;名字&#39;</span><span class="p">:</span> <span class="s1">&#39;南 ことり&#39;</span><span class="p">,</span> <span class="s1">&#39;團體&#39;</span><span class="p">:</span> <span class="s2">&quot;μ&#39;s&quot;</span><span class="p">}</span>
@@ -180,7 +179,7 @@
 </pre></div>
 
 
-<p>如果在 <code>print(row)</code> 這邊整理一下資料，改成：</p>
+<p>如果不要直接 <code>print(row)</code> ，而是稍微整理一下資料再輸出，改成：</p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">csv</span>
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./members.csv&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -253,7 +252,7 @@
 </pre></div>
 
 
-<p>這時候目錄底下就會多一個 <code>VENV</code> 資料夾，裡面是個完整的 python 執行結構，就好像裝了個 python&nbsp;在這個路徑。先暫時不管它怎麼做到虛擬隔離，知道怎麼用就好。使用跟離開分別是：</p>
+<p>這時候目錄底下就會多一個 <code>VENV</code> 資料夾，裡面是個完整的 Python 執行結構，就好像在這個路徑安裝 Python&nbsp;一樣。先暫時不管它怎麼做到虛擬隔離，知道怎麼用就好。使用跟離開分別是：</p>
 <div class="highlight"><pre><span></span>$ <span class="nb">source</span> VENV/bin/activate
 <span class="o">(</span>VENV<span class="o">)</span> $ which python
 <span class="c1"># /path/to/draw_member/VENV/bin/python</span>
@@ -341,7 +340,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </pre></div>
 
 
-<p>所以第一次 <span class="caps">INSERT</span> 指令抽了果果以及小唯各一次。第二次 <span class="caps">INSERT</span> 再抽了一次小唯，這次還有額外指定時間為的 9 月 25 號下午 4 點半。關於 SQLite 裡 <code>datetime</code> 的更多使用方式可以參考<a href="https://sqlite.org/lang_datefunc.html">官網 documentation</a>，我們的例子只要這樣就足夠了。</p>
+<p>所以第一次 <span class="caps">INSERT</span> 指令抽了果果以及小唯各一次。第二次 <span class="caps">INSERT</span> 再抽了一次小唯，這次還有額外指定時間為的 9 月 25 號下午 4 點半。關於 SQLite 裡 <code>datetime</code> 的更多使用方式可以參考<a href="https://sqlite.org/lang_datefunc.html">官網說明文件</a>，我們的例子只要這樣就足夠了。</p>
 <div class="highlight"><pre><span></span><span class="gp">sqlite&gt; </span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">draw_histories</span><span class="p">;</span>
 <span class="go">memberid|time</span>
 <span class="go">1|2015-09-28 16:55:03</span>
@@ -431,9 +430,9 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </pre></div>
 
 
-<p>到了這邊我們資料的部份沒問題了，接下來就要著手處理網站流程本身。</p>
+<p>到了這邊我們資料的部份沒問題了，接下來就要處理網站流程本身。</p>
 <h3 id="flask">Flask&nbsp;基本架構</h3>
-<p>Flask 的 web server 可以把所有功能都寫在一個檔案，在這邊就以 <code>draw_member.py</code> 為例子。</p>
+<p><a href="http://flask.pocoo.org/">Flask</a> 的 web server 可以把所有功能都寫在一個檔案，在這邊就以 <code>draw_member.py</code> 為例子。</p>
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">Flask</span>
 <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
@@ -547,9 +546,9 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 <h4 id="get-vs-post"><span class="caps">GET</span> vs <span class="caps">POST</span></h4>
 <p>使用者平常在訪問網站時，該人輸入一個網站、點一個超連址，這時候瀏覽器會發送一個 <span class="caps">GET</span> request 到對應的 server 以及路徑。瀏覽器（通常）就會回傳一個對應的 <span class="caps">HTML</span>&nbsp;檔案，瀏覽器就會負責把它顯示在畫面上。</p>
 <p>但當使用者跟網站有更多互動的時候，常常是要把使用者的資訊送給網站時，像帳號登入、填問卷表單，或者在這邊的選擇某個團體去抽籤，這時候就會透過 <span class="caps">POST</span>。</p>
-<p>更多的 <span class="caps">GET</span>/<span class="caps">POST</span> 以及其他的 <span class="caps">HTTP</span> request，可以參考<a href="https://archer1609wp.wordpress.com/2014/03/02/httppost%E8%88%87get/">一頁式介紹（中）</a>或<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP">非常完整的介紹在 <span class="caps">MDN</span>（英）</a></p>
+<p>更多的 <span class="caps">GET</span>/<span class="caps">POST</span> 以及其他的 <span class="caps">HTTP</span> request，可以參考<a href="https://archer1609wp.wordpress.com/2014/03/02/httppost%E8%88%87get/">一頁式介紹（中）</a>或<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP">非常完整的介紹在 Mozilla Developer Network (<span class="caps">MDN</span>)（英）</a></p>
 <h4 id="form">Form</h4>
-<p>最常見的 <span class="caps">POST</span> 就是搭配<a href="https://developer.mozilla.org/en/docs/Web/HTML/Element/form">表單（form）</a>使用。像登入要填帳號密碼、問卷問題與回答，就很常用 form 實作。Form 裡面有很多種&nbsp;input，代表使用者能填的欄位，類型可能是單選、複選、單行、多行、密文等。</p>
+<p>最常見的 <span class="caps">POST</span> 就是搭配<a href="https://developer.mozilla.org/en/docs/Web/HTML/Element/form">表單 (form)</a> 使用。像登入要填帳號密碼、問卷問題與回答，就很常用 form 實作。Form 裡面有很多種&nbsp;input，代表使用者能填的欄位，類型可能是單選、複選、單行、多行、密文等。</p>
 <p>我們就先看一下 form 實際的長相吧。改寫 <code>templates/index.html</code>，加上一個抽籤選團體的&nbsp;form。</p>
 <div class="highlight"><pre><span></span><span class="nt">&lt;h1&gt;</span>來抽出快樂的夥伴吧！<span class="nt">&lt;/h1&gt;</span><span class="c">&lt;!-- 本來有的 --&gt;</span>
 <span class="nt">&lt;p&gt;</span>選擇要被抽的團體<span class="nt">&lt;/p&gt;</span>
@@ -784,8 +783,10 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </div>
 
 <h4 id="datetime">時間處理用&nbsp;datetime</h4>
-<p>如果有注意到的話，我們用的時間從 SQLite 回傳回來其實是字串。想要改寫時間格式怎麼辦？這時候就要用上內建 module <a href="https://docs.python.org/3.5/library/datetime.html#datetime-objects">datetime</a>。同時我們也順便把本來用 <code>fetchall()</code> 的結果，改成用 dict&nbsp;表示每一筆歷史。</p>
-<div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/history&#39;</span><span class="p">)</span>
+<p>如果有注意到的話，我們用的時間從 SQLite 回傳回來其實是字串。想要改寫時間格式怎麼辦？這時候就要用上內建 module <a href="https://docs.python.org/3.5/library/datetime.html#datetime-objects">datetime</a> 裡提供的 <code>datetime</code> 物件。同時我們也順便把本來用 <code>fetchall()</code> 的結果，改成用 dict&nbsp;表示每一筆歷史。</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/history&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">history</span><span class="p">():</span>
     <span class="n">db</span> <span class="o">=</span> <span class="n">get_db</span><span class="p">()</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
@@ -915,6 +916,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 
 <h4 id="datetime-in-sqlite-and-python">Datetime in SQLite and&nbsp;Python</h4>
 <p>這篇文章太長了，寫到<a href="../datetime-sqlite/#datetime-sqlite">下一篇去</a>。</p>
+<p>2016-06-14 更新：增加使用 <code>datetime.datetime</code> 的說明避免跟 module 名稱混淆 (credit:&nbsp;馬國薰)</p>
 <div class="footnote">
 <hr />
 <ol>
@@ -983,7 +985,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
   },
   "image": "https://blog.liang2.tw/pics/headpic.jpg",
   "url": "https://blog.liang2.tw/posts/2015/09/flask-draw-member/",
-  "description": "為了實驗室的專題生而寫。 目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先來比較簡單的。所以這邊可能講的不是 best practice，但用的是最少（底層）的知識與工具。一開始讓太多套件（像 SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。 本篇文章非常長，應該沒辦法幾分鐘內讀完。對象是初學者學習簡單網站架設。 這個專案的目標：因為大家 ..."
+  "description": "為了實驗室的專題生而寫。 目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先操作比較簡單的才好上手。所以這邊講的並不是 best practice，但使用最少（底層）的知識與工具。如果一開始讓太多套件（像 SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。 本篇文章非常長，應該沒辦法幾分鐘內讀完。對象是初學者學習簡單網站架設。 這個專案的目標：因為大家 ..."
 }
 </script></body>
 </html>
