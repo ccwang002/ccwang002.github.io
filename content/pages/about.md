@@ -8,17 +8,13 @@ sortorder: 1
 
 Hi, I'm Liang Bo Wang (王亮博). Most people call me 亮亮 (Liang-liang, or liang<sup>2</sup>).
 
-I'm studying Bioinformatics for my master's degree in National Taiwan University. I'll become a graduate student in Washington University in St. Louis by 2016 Fall. My previous interns include Microsoft Research Asia (MSRA) and [Pinkoi]. I live in Taipei, Taiwan.
+I'm a Bioinformatics Ph.D student in Washington University in St. Louis. My previous interns include Microsoft Research Asia (MSRA) and [Pinkoi]. I grew up in Taipei, Taiwan.
 
 My CV is [here](/CV.pdf) (a PDF file).
 
 
-### Research
-My research topic is network analysis of cancer genetics. You can find more about my research at its [specific page][research].
-
-
-### Coding
-I'm active in Taipei Python and R meetups. Also I like to give talks. The full talk list is [here][talks].
+### Programming (communities)
+Before studying in St. Louis, I was active in Taipei Python and R meetups and enjoyed giving talks. The full talk list is [here][talks].
 
 I speak fluent Python (especially 3.x) and R. My daily research relies on Python scientific computing stack, such as Numpy, pandas, Jupyter(IPython), matplotlib, and Cython. For statistics, I use R more frequently and communicate between Python and R using rpy2.
 
@@ -50,6 +46,5 @@ I'll assume you've already known how to say my nickname, because my full name, �
 
 
 [Pinkoi]: http://www.pinkoi.com/
-[research]: /research/#research
 [talks]: /talks/#talks
 [my github]: https://github.com/ccwang002
