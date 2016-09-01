@@ -657,6 +657,11 @@ h1.blog-title a:hover {
     padding-top: 2.5rem;
 }
 
+/* Give post-header some top padding */
+.post-template article:not(:first-child) .post-header {
+    padding-top: 40px;
+}
+
 /* Keep images centred and within the bounds of the post-width */
 .post-content img {
     display: block;
@@ -921,10 +926,6 @@ div.figure p.caption {
         padding-bottom: 1rem;
     }
 
-    .post-template .post-header {
-        padding: 40px 0;
-    }
-
     h1 {
         font-size: 4.8rem;
         text-indent: -2px;
@@ -998,8 +999,8 @@ div.figure p.caption {
         margin-bottom: 0;
     }
 
-    .post-template .post-header {
-        padding: 30px 0;
+    .post-template article:not(:first-child) .post-header {
+        padding-top: 60px;
     }
 
     .post-template .site-footer {
