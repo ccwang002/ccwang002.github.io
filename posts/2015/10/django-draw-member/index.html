@@ -1,141 +1,103 @@
 <!DOCTYPE html>
-<html lang="zh-hant">
+<html lang="zh-Hant">
 <head>
-  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
-  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css">
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.min.css">
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/font-awesome.min.css">
-  <!-- Justfont webfont -->
-  <!-- Local development -->
-  <!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
-  <!-- Proudction version v4.9.4 -->
-  <script src="https://blog.liang2.tw/theme/js/justfont_v4.9.4.js" type="text/javascript" charset="utf-8"></script>
-  <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+            <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+        <link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
 
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="" />
-<meta name="author" content="Liang2" />
-<meta name="description" content="把之前用 Flask 架的抽籤網站改用 Django 實作，也藉這個機會比較一下兩個 Framework 設計概念的不同。" />
-<meta name="keywords" content="zh, django, sqlite, python">
-<meta property="og:site_name" content="Liang2's blog"/>
-<meta property="og:title" content="用 Django 與 SQLite 架抽籤網站"/>
-<meta property="og:description" content="把之前用 Flask 架的抽籤網站改用 Django 實作，也藉這個機會比較一下兩個 Framework 設計概念的不同。"/>
-<meta property="og:locale" content="zh_TW"/>
-<meta property="og:url" content="https://blog.liang2.tw/posts/2015/10/django-draw-member/"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2015-10-04 14:55:00+08:00"/>
-<meta property="article:modified_time" content="2015-10-04 14:55:00+08:00"/>
-<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
-<meta property="article:section" content="Coding"/>
-<meta property="article:tag" content="zh"/>
-<meta property="article:tag" content="django"/>
-<meta property="article:tag" content="sqlite"/>
-<meta property="article:tag" content="python"/>
-<meta name="twitter:card" content="summary">
-<meta name="twitter:site" content="@ccwang002">
-<meta name="twitter:title" content="用 Django 與 SQLite 架抽籤網站">
-<meta name="twitter:description" content="把之前用 Flask 架的抽籤網站改用 Django 實作，也藉這個機會比較一下兩個 Framework 設計概念的不同。">
-  <title>用 Django 與 SQLite 架抽籤網站 &ndash; Liang2's blog</title>
+		<link href="https://blog.liang2.tw/theme/css/haunter.css?0f9ace0e" rel="stylesheet" />
+
+		<title>用 Django 與 SQLite 架抽籤網站</title>
+		<!-- Justfont webfont -->
+		<!-- Local development -->
+		<!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+		<!-- Proudction version -->
+		<script src="https://blog.liang2.tw/theme/js/justfont.js" type="text/javascript" charset="utf-8"></script>
 </head>
-<body>
-  <aside>
-    <div>
-      <a href="https://blog.liang2.tw">
-        <img src="https://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
-      </a>
-      <h1><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
-      <p>Code / Stat / Bioinfo</p>
-      <nav>
-        <ul class="list">
-          <li><a href="https://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
-          <li><a href="https://blog.liang2.tw/talks/#talks">Talks</a></li>
-        </ul>
-      </nav>
-      <ul class="social">
-        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
-        <li><a class="sc-envelope-o" href="mailto:me+blog@liang2.tw" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
-        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-      </ul>
-    </div>
-  </aside>
-  <main>
-    <nav>
-      <a href="https://blog.liang2.tw">Home</a>
-      <a href="/archives.html">Archives</a>
-      <a href="/categories.html">Categories</a>
-      <a href="/tags.html">Tags</a>
-      <a href="https://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
-    </nav>
 
-<article>
-  <header>
-    <h1 id="django-draw-member">用 Django 與 SQLite&nbsp;架抽籤網站</h1>
-    <p>Posted on Oct 04, 2015
-      in <a href="https://blog.liang2.tw/category/coding.html">Coding</a>
-    </p>
-  </header>
-  <div>
-    <h4 id="_1">前情提要</h4>
+<body class="post-template">
+    <header class="site-head">
+			<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+				<h2 class="blog-description">
+					<a href="https://blog.liang2.tw/about-me/">About</a> |
+					<a href="https://blog.liang2.tw/talks/">Talks</a> |
+					<a href="https://blog.liang2.tw/archives.html">Archives</a>
+				</h2>
+    </header>
+    <main id="content" class="content" role="main">
+<article class="post">
+    <span class="post-meta">
+        <time datetime="Oct 04, 2015">Oct 04, 2015</time>
+        in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2015/10/django-draw-member/" rel="bookmark" title="Permalink to 用 Django 與 SQLite 架抽籤網站">用 Django 與 SQLite 架抽籤網站</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/zh/">zh</a>
+                <a href="https://blog.liang2.tw/tag/django/">django</a>
+                <a href="https://blog.liang2.tw/tag/sqlite/">sqlite</a>
+                <a href="https://blog.liang2.tw/tag/python/">python</a>
+    </span>
+    <section class="post-content"><h4 id="_1">前情提要</h4>
 <p>我把 LoveLive! 兩季看完了！μ&rsquo;s 在第一季的成長充滿感動啊。<strong>\真姫最高/</strong></p>
 <p>……呃好啦，之前講了<a href="../../09/flask-draw-member">用 Flask 去架一個抽籤網站</a>。不過我們最終的目標是用 Django 嘛，所以接下來就要改寫。也藉這個機會比較一下兩個 Framework 設計概念的不同（<del>例如 Django 一開始寫有多冗</del>、<del>Flask 寫到最後有多冗</del>）。</p>
-<h3 id="from-flask-to-django">From Flask to&nbsp;Django</h3>
-<p>為了轉換但又不要一下子把所有 Django 的功能都放進來，中間過程有很多「不常見的寫法」。想要直接寫 Django best practice 的話，可以參考 <span class="caps">TP</span> 大大的<a href="https://github.com/uranusjr/django-tutorial-for-programmers">《為程式人寫的 Django Tutorial 》</a>，他的規劃是 30&nbsp;個單元做一個訂餐系統。</p>
-<p>過程中會用到很多 Django <span class="caps">API</span>，沒有解釋的話可以到<a href="https://docs.djangoproject.com/en/1.8/">官網</a>去查使用。另外我發現如果能用 debugger 去 trace Django 執行的流程能幫助理解，想要一個精美的 debugger 的話可以裝像 PyCharm 的 <span class="caps">IDE</span>。</p>
-<p>整體的規劃會漸近把 Django&nbsp;的功能加進來，依序應該是：</p>
+<h3 id="from-flask-to-django">From Flask to Django</h3>
+<p>為了轉換但又不要一下子把所有 Django 的功能都放進來，中間過程有很多「不常見的寫法」。想要直接寫 Django best practice 的話，可以參考 TP 大大的<a href="https://github.com/uranusjr/django-tutorial-for-programmers">《為程式人寫的 Django Tutorial 》</a>，他的規劃是 30 個單元做一個訂餐系統。</p>
+<p>過程中會用到很多 Django API，沒有解釋的話可以到<a href="https://docs.djangoproject.com/en/1.8/">官網</a>去查使用。另外我發現如果能用 debugger 去 trace Django 執行的流程能幫助理解，想要一個精美的 debugger 的話可以裝像 PyCharm 的 IDE。</p>
+<p>整體的規劃會漸近把 Django 的功能加進來，依序應該是：</p>
 <ul>
-<li>Django View,&nbsp;Template</li>
-<li>Django Model, <span class="caps">ORM</span></li>
-<li>Django&nbsp;Form</li>
-<li>(Django Admin&nbsp;沒有用到)</li>
+<li>Django View, Template</li>
+<li>Django Model, ORM</li>
+<li>Django Form</li>
+<li>(Django Admin 沒有用到)</li>
 </ul>
-<p>如果看 <a href="https://docs.djangoproject.com/en/1.8/">Django doc</a>&nbsp;首頁的話，也是分這幾個部份，雖然這篇文章並不會把所有概念都介紹一遍。</p>
-<p>另外，在改寫的時候會跳過用 raw <span class="caps">SQL</span>，因為完全不用 <span class="caps">ORM</span> 有點難銜接其他 Django 部份。有興趣的話在講完 Model 之後可以參考&nbsp;Details。</p>
+<p>如果看 <a href="https://docs.djangoproject.com/en/1.8/">Django doc</a> 首頁的話，也是分這幾個部份，雖然這篇文章並不會把所有概念都介紹一遍。</p>
+<p>另外，在改寫的時候會跳過用 raw SQL，因為完全不用 ORM 有點難銜接其他 Django 部份。有興趣的話在講完 Model 之後可以參考 Details。</p>
 <div class="toc">
 <ul>
 <li><a href="#_1">前情提要</a></li>
-<li><a href="#from-flask-to-django">From Flask to&nbsp;Django</a></li>
+<li><a href="#from-flask-to-django">From Flask to Django</a></li>
 <li><a href="#django">Django 初始設定</a><ul>
-<li><a href="#django-server">Django&nbsp;server</a></li>
-<li><a href="#django-app">第一個 Django&nbsp;app</a></li>
-<li><a href="#django-settings">Django&nbsp;settings</a></li>
-<li><a href="#database-migration">Database&nbsp;Migration</a></li>
+<li><a href="#django-server">Django server</a></li>
+<li><a href="#django-app">第一個 Django app</a></li>
+<li><a href="#django-settings">Django settings</a></li>
+<li><a href="#database-migration">Database Migration</a></li>
 </ul>
 </li>
-<li><a href="#url-dispatcher"><span class="caps">URL</span>&nbsp;dispatcher</a></li>
-<li><a href="#django-model-and-orm">Django Model and <span class="caps">ORM</span></a><ul>
-<li><a href="#migration-the-tracker-of-model-changes">Migration the tracker of model&nbsp;changes</a></li>
-<li><a href="#orm-queries-in-shell"><span class="caps">ORM</span> queries in&nbsp;shell</a></li>
-<li><a href="#data-in-orm-and-fixtures">Data in <span class="caps">ORM</span> and&nbsp;fixtures</a></li>
+<li><a href="#url-dispatcher">URL dispatcher</a></li>
+<li><a href="#django-model-and-orm">Django Model and ORM</a><ul>
+<li><a href="#migration-the-tracker-of-model-changes">Migration the tracker of model changes</a></li>
+<li><a href="#orm-queries-in-shell">ORM queries in shell</a></li>
+<li><a href="#data-in-orm-and-fixtures">Data in ORM and fixtures</a></li>
 </ul>
 </li>
-<li><a href="#django-template">Django&nbsp;Template</a></li>
-<li><a href="#more-on-djangos-model-template-and-view-mtv">More on Django&rsquo;s model, template and view (<span class="caps">MTV</span>)</a></li>
+<li><a href="#django-template">Django Template</a></li>
+<li><a href="#more-on-djangos-model-template-and-view-mtv">More on Django&rsquo;s model, template and view (MTV)</a></li>
 <li><a href="#django-form">Django Form</a><ul>
-<li><a href="#more-django-form-in-view">More Django form in&nbsp;view</a></li>
+<li><a href="#more-django-form-in-view">More Django form in view</a></li>
 </ul>
 </li>
 <li><a href="#_2">總結</a></li>
 <li><a href="#details">Details</a><ul>
-<li><a href="#raw-sql">Raw <span class="caps">SQL</span></a></li>
-<li><a href="#better-queryset">Better&nbsp;QuerySet</a></li>
+<li><a href="#raw-sql">Raw SQL</a></li>
+<li><a href="#better-queryset">Better QuerySet</a></li>
 <li><a href="#timezone">Timezone</a></li>
-<li><a href="#post-form-and-csrf"><span class="caps">POST</span> form and <span class="caps">CSRF</span></a></li>
+<li><a href="#post-form-and-csrf">POST form and CSRF</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<h3 id="django">Django&nbsp;初始設定</h3>
-<p>一樣開一個 Python&nbsp;虛擬環境（這時候就是它的好處了，能把不同專案的套件隔離）。</p>
+<h3 id="django">Django 初始設定</h3>
+<p>一樣開一個 Python 虛擬環境（這時候就是它的好處了，能把不同專案的套件隔離）。</p>
 <div class="highlight"><pre><span></span>pip install django pytz ipython pyyaml
 </pre></div>
 
 
-<p><a href="http://pythonhosted.org/pytz/">pytz</a> 在<a href="../../09/datetime-sqlite">前一篇</a>已經介紹過，是處理時區的套件。<a href="http://ipython.org/">IPython</a> 全名是 Interactive Python，同樣是 Python shell 但提供了很多附加功能，最常用的應該是自動補完。<a href="http://pyyaml.org/">PyYAML</a> 用來處理 <span class="caps">YAML</span> 物件，可裝可不裝，不裝之後的例子就用 <span class="caps">JSON</span>&nbsp;即可。</p>
+<p><a href="http://pythonhosted.org/pytz/">pytz</a> 在<a href="../../09/datetime-sqlite">前一篇</a>已經介紹過，是處理時區的套件。<a href="http://ipython.org/">IPython</a> 全名是 Interactive Python，同樣是 Python shell 但提供了很多附加功能，最常用的應該是自動補完。<a href="http://pyyaml.org/">PyYAML</a> 用來處理 YAML 物件，可裝可不裝，不裝之後的例子就用 JSON 即可。</p>
 <p>我們的專案根目錄是 <code>demo_django_draw_member</code>。因為 Django 的設定很多，先在這目錄下用 <a href="https://docs.djangoproject.com/en/1.8/ref/contrib/admin/">django-admin</a> 把基本的架構建起來。我們建了一個名為 <code>draw_site</code> 的專案（Project）。</p>
 <div class="highlight"><pre><span></span><span class="o">(</span>VENV<span class="o">)</span> $ django-admin startproject draw_site
 </pre></div>
@@ -155,14 +117,14 @@
 
 <p>之後工作的目錄其實是 <code>demo_django_draw_member/draw_site/</code>，也就是有 <code>manage.py</code> 的那層目錄，之後的路徑都是相對於 <code>demo_django_draw_member/draw_site/</code>。介紹一下每個檔案。</p>
 <ul>
-<li><code>manage.py</code> 之後就會取代 django-admin 的功能。兩者最大的差別是 manage.py 知道 project&nbsp;的設定。</li>
-<li><code>draw_site/settings.py</code> 裡面存著 Django 的各種設定，像 secret key、database、template engine、app&nbsp;等。</li>
-<li><code>draw_site/urls.py</code> 裡面存著 <span class="caps">URL</span> dispatching 設定，即哪個路徑要用哪個 function&nbsp;去處理。</li>
-<li><code>draw_site/wsgi.py</code> <a href="http://wsgi.org/"><span class="caps">WSGI</span></a> 是規範 Python web server 的標準，通常不會動這個檔案就不細提。Flask、Django 都是相容 <span class="caps">WSGI</span>&nbsp;的實作。</li>
+<li><code>manage.py</code> 之後就會取代 django-admin 的功能。兩者最大的差別是 manage.py 知道 project 的設定。</li>
+<li><code>draw_site/settings.py</code> 裡面存著 Django 的各種設定，像 secret key、database、template engine、app 等。</li>
+<li><code>draw_site/urls.py</code> 裡面存著 URL dispatching 設定，即哪個路徑要用哪個 function 去處理。</li>
+<li><code>draw_site/wsgi.py</code> <a href="http://wsgi.org/">WSGI</a> 是規範 Python web server 的標準，通常不會動這個檔案就不細提。Flask、Django 都是相容 WSGI 的實作。</li>
 </ul>
-<p>一個 Django 由一個 project 和很多個 apps 所組成。每個 app 就專注在網站的某個功能上，各自包著各自需要的 database schema、template、view&nbsp;logics。這樣的好處是同樣的功能就不用重寫，同時在很大的網站時這樣的結構有助於管理運作的邏輯。</p>
-<h4 id="django-server">Django&nbsp;server</h4>
-<p>先把 Django&nbsp;跑起來看看吧。</p>
+<p>一個 Django 由一個 project 和很多個 apps 所組成。每個 app 就專注在網站的某個功能上，各自包著各自需要的 database schema、template、view logics。這樣的好處是同樣的功能就不用重寫，同時在很大的網站時這樣的結構有助於管理運作的邏輯。</p>
+<h4 id="django-server">Django server</h4>
+<p>先把 Django 跑起來看看吧。</p>
 <div class="highlight"><pre><span></span><span class="gp">$</span> python manage.py runserver
 <span class="go">...</span>
 <span class="go">Django version 1.8.5, using settings &#39;draw_site.settings&#39;</span>
@@ -172,11 +134,11 @@
 
 <div class="figure align-center">
   <img src="https://blog.liang2.tw/posts/2015/10/django-draw-member/pics/django_initial.png"/>
-  <p class="caption">Django Hello&nbsp;World</p>
+  <p class="caption">Django Hello World</p>
 </div>
 
-<p>這是 Django 內建在什麼 <span class="caps">URL</span> 都沒設定時的歡迎畫面。看到這個至少表示基本的 settings 正常。Django 跟 Flask 一樣，內建的 server 會在 source code 有改變的時候&nbsp;reload，所以一直開著跑也可以。</p>
-<h4 id="django-app">第一個 Django&nbsp;app</h4>
+<p>這是 Django 內建在什麼 URL 都沒設定時的歡迎畫面。看到這個至少表示基本的 settings 正常。Django 跟 Flask 一樣，內建的 server 會在 source code 有改變的時候 reload，所以一直開著跑也可以。</p>
+<h4 id="django-app">第一個 Django app</h4>
 <p>我們的網站只會用到一個 app，把它建出來取名為 <code>draw_member</code>。</p>
 <div class="highlight"><pre><span></span>python manage.py startapp draw_member
 </pre></div>
@@ -197,7 +159,7 @@
 </pre></div>
 
 
-<p>可以看到 app 與 project&nbsp;的架構是不一樣的。</p>
+<p>可以看到 app 與 project 的架構是不一樣的。</p>
 <p>要把這個新的 app 加到 project 裡，修改 <code>draw_site/settings.py</code>。</p>
 <div class="highlight"><pre><span></span><span class="c1"># draw_site/settings.py</span>
 
@@ -213,9 +175,9 @@
 </pre></div>
 
 
-<p>預設其實裝了很多&nbsp;app。暫時不理他們是什麼。</p>
-<h4 id="django-settings">Django&nbsp;settings</h4>
-<p>先簡單介紹一下 <code>draw_site/settings.py</code>。除了剛剛用到&nbsp;INSTALLED_APPS，講幾個跟這邊比較有關的參數。</p>
+<p>預設其實裝了很多 app。暫時不理他們是什麼。</p>
+<h4 id="django-settings">Django settings</h4>
+<p>先簡單介紹一下 <code>draw_site/settings.py</code>。除了剛剛用到 INSTALLED_APPS，講幾個跟這邊比較有關的參數。</p>
 <div class="highlight"><pre><span></span><span class="c1"># Database</span>
 <span class="c1"># https://docs.djangoproject.com/en/1.8/ref/settings/#databases</span>
 
@@ -235,13 +197,13 @@
 </pre></div>
 
 
-<p><span class="caps">DATABSES</span> 裡定義了使用的資料庫。預設會使用 <code>db.sqlite3</code> 這個 SQLite&nbsp;資料庫。</p>
-<p>再來是語言、時區的設定。預設是 <span class="caps">UTC</span> 並且使用 timezone，也就是 server 的時間都是用 <span class="caps">UTC</span>&nbsp;記錄的。</p>
-<h4 id="database-migration">Database&nbsp;Migration</h4>
+<p>DATABSES 裡定義了使用的資料庫。預設會使用 <code>db.sqlite3</code> 這個 SQLite 資料庫。</p>
+<p>再來是語言、時區的設定。預設是 UTC 並且使用 timezone，也就是 server 的時間都是用 UTC 記錄的。</p>
+<h4 id="database-migration">Database Migration</h4>
 <p>在什麼 code 都還沒寫之前，介紹一個 database 觀念：<a href="https://docs.djangoproject.com/en/1.8/topics/migrations/">migration</a>。</p>
-<p>在之前的例子可以知道，我們會先設計一個資料庫該存什麼東西，整個網站流程會怎麼用這些資料，這些形成 table schema。但是隨著時間，可能網站有新的功能，很難說完全不去更動&nbsp;schema。</p>
-<p>更動 schema 不是件簡單的事，如果是上 production 的網站，資料庫會有運作以來累積的資料，總不能 schema 改了這些資料就丟掉吧？而且在網站開發的時候，在不同版本的（或不同人開發的）code 就可能有不同的 schema。要怎麼確保 code 與 database 的狀態就要靠&nbsp;migration。</p>
-<p>……一開始就這麼複雜？好啦我們的例子沒有用到 migration 大多數的功能，只有用它 initiate database。內建的 app 都有自己的 database schema，可以用它把資料庫的 table&nbsp;建出來。</p>
+<p>在之前的例子可以知道，我們會先設計一個資料庫該存什麼東西，整個網站流程會怎麼用這些資料，這些形成 table schema。但是隨著時間，可能網站有新的功能，很難說完全不去更動 schema。</p>
+<p>更動 schema 不是件簡單的事，如果是上 production 的網站，資料庫會有運作以來累積的資料，總不能 schema 改了這些資料就丟掉吧？而且在網站開發的時候，在不同版本的（或不同人開發的）code 就可能有不同的 schema。要怎麼確保 code 與 database 的狀態就要靠 migration。</p>
+<p>……一開始就這麼複雜？好啦我們的例子沒有用到 migration 大多數的功能，只有用它 initiate database。內建的 app 都有自己的 database schema，可以用它把資料庫的 table 建出來。</p>
 <div class="highlight"><pre><span></span><span class="gp">$</span> python manage.py migrate
 <span class="go">Operations to perform:</span>
 <span class="go">  Synchronize unmigrated apps: messages, staticfiles</span>
@@ -266,16 +228,16 @@
 
 
 <p>migration 就會一步步把 database 調整到符合現在 code 的狀態，這些調整就會記錄在 <code>&lt;app&gt;/migrations/</code> 底下，等等就會看到了。</p>
-<h3 id="url-dispatcher"><span class="caps">URL</span>&nbsp;dispatcher</h3>
-<p>我們接下來要改首頁，把 Django 預設的 <code>/</code> 首頁換成 Hello&nbsp;World。</p>
-<p>Flask <span class="caps">URL</span> routing 是直接用 decorator 寫在 view function&nbsp;上面。幫大家回顧一下：</p>
+<h3 id="url-dispatcher">URL dispatcher</h3>
+<p>我們接下來要改首頁，把 Django 預設的 <code>/</code> 首頁換成 Hello World。</p>
+<p>Flask URL routing 是直接用 decorator 寫在 view function 上面。幫大家回顧一下：</p>
 <div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
     <span class="k">return</span> <span class="s2">&quot;&lt;p&gt;Hello World!&lt;/p&gt;&quot;</span>
 </pre></div>
 
 
-<p>Django 的 view 和 <span class="caps">URL</span> 是分開的，首先是&nbsp;view：</p>
+<p>Django 的 view 和 URL 是分開的，首先是 view：</p>
 <div class="highlight"><pre><span></span><span class="c1"># draw_member/views.py</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="k">import</span> <span class="n">render</span>  <span class="c1"># 先暫時留著</span>
 <span class="kn">from</span> <span class="nn">django.http</span> <span class="k">import</span> <span class="n">HttpResponse</span>
@@ -285,8 +247,8 @@
 </pre></div>
 
 
-<p>結構上大同小異（也因為有 <a href="http://wsgi.org/"><span class="caps">WSGI</span></a>&nbsp;規範的關係啦）。</p>
-<p>再來是 <span class="caps">URL</span> 設定。我們先把 <span class="caps">URL</span> 加在 project 設定。這邊可能覺得設定有點分散比較怪，等一下再把它放到 app&nbsp;裡面。</p>
+<p>結構上大同小異（也因為有 <a href="http://wsgi.org/">WSGI</a> 規範的關係啦）。</p>
+<p>再來是 URL 設定。我們先把 URL 加在 project 設定。這邊可能覺得設定有點分散比較怪，等一下再把它放到 app 裡面。</p>
 <div class="highlight"><pre><span></span><span class="c1"># draw_site/urls.py</span>
 <span class="sd">&quot;&quot;&quot;draw_site URL Configuration</span>
 
@@ -305,14 +267,14 @@
 </pre></div>
 
 
-<p>概念也很簡單，把要的 view function 從 app import 進來（所以 app 目錄是個 Python module，底下會 <code>__init__.py</code>），給一個 regex 表示的路徑，後面放上處理 function 以及一個 optional 的名字，這個名字就代表了這個 <span class="caps">URL</span>&nbsp;路徑，之後可以反查。</p>
+<p>概念也很簡單，把要的 view function 從 app import 進來（所以 app 目錄是個 Python module，底下會 <code>__init__.py</code>），給一個 regex 表示的路徑，後面放上處理 function 以及一個 optional 的名字，這個名字就代表了這個 URL 路徑，之後可以反查。</p>
 <p>測一下確認設定都是正確的。</p>
 <div class="highlight"><pre><span></span><span class="gp">$</span> curl -XGET <span class="s2">&quot;localhost:8000&quot;</span>
 <span class="go">&lt;p&gt;Hello World!&lt;/p&gt;</span>
 </pre></div>
 
 
-<p>再看一下 <code>draw_site/urls.py</code>，可以看到 Django 預設放了個 <code>/admin</code> 後面用的是 <code>include(app.urls)</code>，表示這一整包只要是 admin/ 開頭的 <span class="caps">URL</span> 都交給 admin.site.urls 去處理路徑。這樣方便 app 在不同網站中重覆利用，因為可能放的路徑都不一樣，但一個 app 內的 <span class="caps">URL</span>&nbsp;處理會有一致性。</p>
+<p>再看一下 <code>draw_site/urls.py</code>，可以看到 Django 預設放了個 <code>/admin</code> 後面用的是 <code>include(app.urls)</code>，表示這一整包只要是 admin/ 開頭的 URL 都交給 admin.site.urls 去處理路徑。這樣方便 app 在不同網站中重覆利用，因為可能放的路徑都不一樣，但一個 app 內的 URL 處理會有一致性。</p>
 <p>馬上來改寫一下。首先在 app <strong>draw_member</strong> 底下加一個 <code>urls.py</code>。</p>
 <div class="highlight"><pre><span></span><span class="c1"># draw_member/urls.py</span>
 <span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="k">import</span> <span class="n">include</span><span class="p">,</span> <span class="n">url</span>
@@ -324,8 +286,8 @@
 </pre></div>
 
 
-<p>基本上格式就是照抄原本就有的。因為放在同個 app 裡面了，import view 時就可以用 explicit relative import（這不是 relative import&nbsp;喔）</p>
-<p>原本的 urls.py 就改成把 <span class="caps">URL</span> 的處理「dispatch」給這個&nbsp;app，改成底下這樣。</p>
+<p>基本上格式就是照抄原本就有的。因為放在同個 app 裡面了，import view 時就可以用 explicit relative import（這不是 relative import 喔）</p>
+<p>原本的 urls.py 就改成把 URL 的處理「dispatch」給這個 app，改成底下這樣。</p>
 <div class="highlight"><pre><span></span><span class="c1"># draw_site/urls.py</span>
 <span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">include</span><span class="p">,</span> <span class="n">url</span>
 <span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
@@ -338,10 +300,10 @@
 </pre></div>
 
 
-<p><code>r'^'</code> 代表從根目錄就交給這個 app 去管理，也因為這樣比較專一的路徑要放前面，像是 /admin。用字串表示在執行的時候才 import 這個 module，不想也可以拿掉字串把 app import&nbsp;進來。</p>
-<p>以上就是最基本的 <a href="https://docs.djangoproject.com/en/1.8/topics/http/urls/"><span class="caps">URL</span> dispatching</a>。</p>
-<h3 id="django-model-and-orm">Django Model and <span class="caps">ORM</span></h3>
-<p>接著處理資料庫的問題。當然可以在 Django 裡面寫 raw <span class="caps">SQL</span>，但這邊提供另一個想法：Object-relational Mapping (<span class="caps">ORM</span>)。<span class="caps">ORM</span> 把資料用物件導向的方式整理，把 <span class="caps">SQL</span>、table、database 的細節交給 <span class="caps">ORM</span> engine&nbsp;去翻譯。這可以在找到非常多介紹，直接跳到實作。</p>
+<p><code>r'^'</code> 代表從根目錄就交給這個 app 去管理，也因為這樣比較專一的路徑要放前面，像是 /admin。用字串表示在執行的時候才 import 這個 module，不想也可以拿掉字串把 app import 進來。</p>
+<p>以上就是最基本的 <a href="https://docs.djangoproject.com/en/1.8/topics/http/urls/">URL dispatching</a>。</p>
+<h3 id="django-model-and-orm">Django Model and ORM</h3>
+<p>接著處理資料庫的問題。當然可以在 Django 裡面寫 raw SQL，但這邊提供另一個想法：Object-relational Mapping (ORM)。ORM 把資料用物件導向的方式整理，把 SQL、table、database 的細節交給 ORM engine 去翻譯。這可以在找到非常多介紹，直接跳到實作。</p>
 <pre style="font-family: Consolas, 'Courier New', monospace">
     ┌─────────────────────┐
     │ members             │
@@ -359,7 +321,7 @@
     └─────────────────────┘
 </pre>
 
-<p>回想一下我們的 schema 設計。改用 <span class="caps">ORM</span> 來思考我們就會有成員（Member）以及抽籤歷史（History）兩大 models。<strong>Member</strong> 記錄了名字與所屬團體；<strong>History</strong>&nbsp;會記錄時間、這筆抽籤是屬於哪個成員的。</p>
+<p>回想一下我們的 schema 設計。改用 ORM 來思考我們就會有成員（Member）以及抽籤歷史（History）兩大 models。<strong>Member</strong> 記錄了名字與所屬團體；<strong>History</strong> 會記錄時間、這筆抽籤是屬於哪個成員的。</p>
 <p>在 Django 中，model 定義在 <code>models.py</code> 裡面，馬上來寫寫看。</p>
 <div class="highlight"><pre><span></span><span class="c1"># draw_members/models.py</span>
 <span class="kn">from</span> <span class="nn">django.db</span> <span class="k">import</span> <span class="n">models</span>
@@ -385,11 +347,11 @@
 
 
 <p>一個 class 裡的屬性就對應到一個欄位（Field），欄位會有他的型別以及資料庫實作上的限制（例如字串有上限，當然也可以不設）。Field type 可以參考<a href="https://docs.djangoproject.com/en/1.8/ref/models/fields/#field-types">官網</a>。</p>
-<p><strong>Member</strong> 底下都是字串所以是 <code>CharField</code>。 <strong>History</strong> 稍微複雜一點，時間的記錄 date 用 <code>DateTimeField</code>，這樣欄位拿回來就會轉換成 Python datetime object；另一個 member 用的是 <code>ForeignKey</code>，也就是 relationship field，來表示這筆抽籤屬於拿個成員。後面的 <code>related_name</code> 提供了反查功能，也就是能從一個 member 去查他所有的&nbsp;histories。</p>
-<p>同時先寫好兩個 class 底下的 <code>__str__</code>，這樣等下在 Python shell&nbsp;操作時容易辨認每個物件的內容。</p>
-<h4 id="migration-the-tracker-of-model-changes">Migration the tracker of model&nbsp;changes</h4>
+<p><strong>Member</strong> 底下都是字串所以是 <code>CharField</code>。 <strong>History</strong> 稍微複雜一點，時間的記錄 date 用 <code>DateTimeField</code>，這樣欄位拿回來就會轉換成 Python datetime object；另一個 member 用的是 <code>ForeignKey</code>，也就是 relationship field，來表示這筆抽籤屬於拿個成員。後面的 <code>related_name</code> 提供了反查功能，也就是能從一個 member 去查他所有的 histories。</p>
+<p>同時先寫好兩個 class 底下的 <code>__str__</code>，這樣等下在 Python shell 操作時容易辨認每個物件的內容。</p>
+<h4 id="migration-the-tracker-of-model-changes">Migration the tracker of model changes</h4>
 <p>多說無用，馬上來試一試。</p>
-<p>……等等，想到 migration 了嗎？每次更動 database model 都要跑 migration，確保 code&nbsp;與資料庫狀態一致。</p>
+<p>……等等，想到 migration 了嗎？每次更動 database model 都要跑 migration，確保 code 與資料庫狀態一致。</p>
 <div class="highlight"><pre><span></span><span class="gp">$</span> python manage.py makemigrations draw_member
 <span class="go">python manage.py makemigrations draw_member</span>
 <span class="go">Migrations for &#39;draw_member&#39;:</span>
@@ -400,7 +362,7 @@
 </pre></div>
 
 
-<p>可以看到 Django 很聰明的知道我們多定義了兩個 models，裡面有些對應到資料庫的欄位型態。這些資訊會寫在 migration file&nbsp;裡面，</p>
+<p>可以看到 Django 很聰明的知道我們多定義了兩個 models，裡面有些對應到資料庫的欄位型態。這些資訊會寫在 migration file 裡面，</p>
 <div class="highlight"><pre><span></span><span class="c1"># draw_member/migrations/0001_initial.py</span>
 <span class="k">class</span> <span class="nc">Migration</span><span class="p">(</span><span class="n">migrations</span><span class="o">.</span><span class="n">Migration</span><span class="p">):</span>
 
@@ -432,8 +394,8 @@
 </pre></div>
 
 
-<p>注意到 Django <span class="caps">ORM</span> 自動幫我們加了 <code>id</code> 這個 primary key，等等就會用到。Migration 裡面的細節等對 Django&nbsp;更熟了之後就能慢慢了解了。</p>
-<p>有了新的 migration&nbsp;就要同步資料庫的狀態，</p>
+<p>注意到 Django ORM 自動幫我們加了 <code>id</code> 這個 primary key，等等就會用到。Migration 裡面的細節等對 Django 更熟了之後就能慢慢了解了。</p>
+<p>有了新的 migration 就要同步資料庫的狀態，</p>
 <div class="highlight"><pre><span></span><span class="gp">$</span> python manage.py migrate
 <span class="go">...</span>
 <span class="go">Running migrations:</span>
@@ -442,14 +404,14 @@
 </pre></div>
 
 
-<h4 id="orm-queries-in-shell"><span class="caps">ORM</span> queries in&nbsp;shell</h4>
-<p>接下來我們操作一下 <span class="caps">ORM</span>。</p>
+<h4 id="orm-queries-in-shell">ORM queries in shell</h4>
+<p>接下來我們操作一下 ORM。</p>
 <div class="highlight"><pre><span></span>$ python manage.py shell
 </pre></div>
 
 
 <p>就會打開一個 Python shell。如果裝了 IPython 就會打開 IPython shell。
-這個與一般的有什麼差別呢？他會帶有 Django project 的設定。如果是從一般的 shell&nbsp;可以先跑以下的指令來達到相同的效果。</p>
+這個與一般的有什麼差別呢？他會帶有 Django project 的設定。如果是從一般的 shell 可以先跑以下的指令來達到相同的效果。</p>
 <div class="highlight"><pre><span></span><span class="go">$ DJANGO_SETTINGS_MODULE=&quot;draw_site.settings&quot; python</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">django</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">django</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
@@ -468,7 +430,7 @@
 </pre></div>
 
 
-<p>使用上就把資料當作物件來操作，如同 <span class="caps">ORM</span> 字面的意思。注意只有在 <code>.save()</code> 才真正被存到資料裡。拿沒有存的 object 來操作 database 就會出現&nbsp;exception。</p>
+<p>使用上就把資料當作物件來操作，如同 ORM 字面的意思。注意只有在 <code>.save()</code> 才真正被存到資料裡。拿沒有存的 object 來操作 database 就會出現 exception。</p>
 <div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">h_failed</span> <span class="o">=</span> <span class="n">History</span><span class="p">(</span><span class="n">member</span><span class="o">=</span><span class="n">Member</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;FF&#39;</span><span class="p">,</span> <span class="n">group_name</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h_failed</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 <span class="gt">Traceback (most recent call last):</span>
@@ -477,7 +439,7 @@
 </pre></div>
 
 
-<p>覺得麻煩的話，用 <code>Model.objects.create()</code> 就可以一步搞定。正確的存好之後，現在資料庫已經有資料了。我們可以先在 SQLite&nbsp;裡確認。</p>
+<p>覺得麻煩的話，用 <code>Model.objects.create()</code> 就可以一步搞定。正確的存好之後，現在資料庫已經有資料了。我們可以先在 SQLite 裡確認。</p>
 <div class="highlight"><pre><span></span><span class="go">-- sqlite3 db.sqlite3</span>
 <span class="gp">sqlite&gt; </span><span class="p">.</span><span class="n">header</span> <span class="k">on</span>
 <span class="gp">sqlite&gt; </span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">draw_member_member</span><span class="p">;</span>
@@ -490,8 +452,8 @@
 </pre></div>
 
 
-<p>透過像剛剛 object 的操作，我們也能建出如同手寫 <span class="caps">SQL</span> 一樣的資料庫，當然像 <code>id</code>、<code>member_id</code> 這些欄位是 <span class="caps">ORM</span> engine&nbsp;自動幫我們做出來的，這些可以自訂，不過預設的行為不難理解。</p>
-<p>要怎麼從 <span class="caps">ORM</span> 像剛剛下 <span class="caps">SQL</span>&nbsp;一樣撈資料呢？</p>
+<p>透過像剛剛 object 的操作，我們也能建出如同手寫 SQL 一樣的資料庫，當然像 <code>id</code>、<code>member_id</code> 這些欄位是 ORM engine 自動幫我們做出來的，這些可以自訂，不過預設的行為不難理解。</p>
+<p>要怎麼從 ORM 像剛剛下 SQL 一樣撈資料呢？</p>
 <div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">draw_member.models</span> <span class="kn">import</span> <span class="n">Member</span><span class="p">,</span> <span class="n">History</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 <span class="go">[&lt;Member: 高坂 穂乃果 of μ&#39;s&gt;, &lt;Member: 平沢 唯 of K-ON!&gt;]</span>
@@ -500,8 +462,8 @@
 </pre></div>
 
 
-<p>資料透過 <code>Model.objects</code> 這個 Manager 去查詢，細節就去看 Django 關於 <a href="https://docs.djangoproject.com/en/1.8/topics/db/queries">Making queries</a> 的內容吧。查詢資料庫就會回傳 <a href="https://docs.djangoproject.com/en/1.8/ref/models/querysets/#django.db.models.query.QuerySet">QuerySet</a>，這並不會真的去「查」資料庫，但先把指令存著等真的要用到值時才去計算，也就是 lazy&nbsp;evaluation。</p>
-<p>QuerySet 底下就有很多對應到 <span class="caps">SQL</span> 指令的查詢，像是拿回所有 objects 的 <code>QuerySet.all()</code>，前面已經用過了。或者篩選的 <code>QuerySet.filter()</code>，</p>
+<p>資料透過 <code>Model.objects</code> 這個 Manager 去查詢，細節就去看 Django 關於 <a href="https://docs.djangoproject.com/en/1.8/topics/db/queries">Making queries</a> 的內容吧。查詢資料庫就會回傳 <a href="https://docs.djangoproject.com/en/1.8/ref/models/querysets/#django.db.models.query.QuerySet">QuerySet</a>，這並不會真的去「查」資料庫，但先把指令存著等真的要用到值時才去計算，也就是 lazy evaluation。</p>
+<p>QuerySet 底下就有很多對應到 SQL 指令的查詢，像是拿回所有 objects 的 <code>QuerySet.all()</code>，前面已經用過了。或者篩選的 <code>QuerySet.filter()</code>，</p>
 <div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">group_name</span><span class="o">=</span><span class="s1">&#39;K-ON!&#39;</span><span class="p">)</span>
 <span class="go">[&lt;Member: 平沢 唯 of K-ON!&gt;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">group_name__contains</span><span class="o">=</span><span class="s1">&#39;!&#39;</span><span class="p">)</span>
@@ -509,14 +471,14 @@
 </pre></div>
 
 
-<p>其中 <code>&lt;field&gt;__contains</code> 就是 Django <span class="caps">ORM</span> 為了實做像 <span class="caps">SQL</span> <code>LIKE</code> 指令的對應欄位。</p>
-<p>先講幾個有關的，首先每個 Model 都有個 primary key <code>pk</code>，預設指到 <code>Model.id</code> 這個欄位上，另用 <code>QuerySet.get()</code> 可以拿到單一物件，這時候萬用的 pk&nbsp;就派上用場了。</p>
+<p>其中 <code>&lt;field&gt;__contains</code> 就是 Django ORM 為了實做像 SQL <code>LIKE</code> 指令的對應欄位。</p>
+<p>先講幾個有關的，首先每個 Model 都有個 primary key <code>pk</code>，預設指到 <code>Model.id</code> 這個欄位上，另用 <code>QuerySet.get()</code> 可以拿到單一物件，這時候萬用的 pk 就派上用場了。</p>
 <div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="go">&lt;Member: 高坂 穂乃果 of μ&#39;s&gt;</span>
 </pre></div>
 
 
-<p>查 relation&nbsp;也很簡單，</p>
+<p>查 relation 也很簡單，</p>
 <div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">h1</span> <span class="o">=</span> <span class="n">History</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h1</span><span class="o">.</span><span class="n">member</span>
 <span class="go">&lt;Member: 高坂 穂乃果 of μ&#39;s&gt;</span>
@@ -525,7 +487,7 @@
 </pre></div>
 
 
-<p>還記得之前設得 <code>related_name="draw_histories"</code>，表示我們能從 <strong>Member</strong>&nbsp;反查回去該人相關的歷史，</p>
+<p>還記得之前設得 <code>related_name="draw_histories"</code>，表示我們能從 <strong>Member</strong> 反查回去該人相關的歷史，</p>
 <div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m1</span> <span class="o">=</span> <span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m1</span><span class="o">.</span><span class="n">draw_histories</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 <span class="go">[&lt;History: 高坂 穂乃果 at 2015-10-05 15:17:32.061384+00:00&gt;]</span>
@@ -551,7 +513,7 @@
 </pre></div>
 
 
-<h4 id="data-in-orm-and-fixtures">Data in <span class="caps">ORM</span> and&nbsp;fixtures</h4>
+<h4 id="data-in-orm-and-fixtures">Data in ORM and fixtures</h4>
 <p>我們把 <code>members.csv</code> 的資料填到資料庫吧。這邊就不用細說了。</p>
 <div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">csv</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;../../draw_member/members.csv&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -567,9 +529,9 @@
 </pre></div>
 
 
-<p>可以自己檢查一下是不是 14&nbsp;個人都寫到資料庫了。</p>
+<p>可以自己檢查一下是不是 14 個人都寫到資料庫了。</p>
 <p>不過現在有個問題是，之後可能會常常把資料庫砍掉重練，或者要把這些（或很多來源）的資料讀到資料庫，每次都重新讀寫也是可以，但有沒有別的做法能把資料先存起來？</p>
-<p>這邊就要介紹 <a href="https://docs.djangoproject.com/en/1.8/howto/initial-data/#providing-initial-data-with-fixtures">Django fixtures</a> 了。他能把資料庫的資料存成 <span class="caps">JSON</span>、<span class="caps">YAML</span>（需要 <a href="http://pyyaml.org/">PyYAML</a>）等格式。</p>
+<p>這邊就要介紹 <a href="https://docs.djangoproject.com/en/1.8/howto/initial-data/#providing-initial-data-with-fixtures">Django fixtures</a> 了。他能把資料庫的資料存成 JSON、YAML（需要 <a href="http://pyyaml.org/">PyYAML</a>）等格式。</p>
 <p>一般 fixtures 是被在 <code>&lt;app&gt;/fixtures/</code> 目錄底下，記得先把目錄建出來。</p>
 <div class="highlight"><pre><span></span>mkdir draw_member/fixtures
 </pre></div>
@@ -595,7 +557,7 @@
 </pre></div>
 
 
-<p>用 <span class="caps">JSON</span> 輸出也可以，改成 <code>--format=json</code> 就可以了</p>
+<p>用 JSON 輸出也可以，改成 <code>--format=json</code> 就可以了</p>
 <div class="highlight"><pre><span></span><span class="p">[</span>
 <span class="p">{</span>
   <span class="nt">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;draw_member.member&quot;</span><span class="p">,</span>
@@ -614,8 +576,8 @@
 </pre></div>
 
 
-<p>這樣資料的存取就介紹得差不多了。更多的細節可以參考<a href="https://docs.djangoproject.com/en/1.8/#the-model-layer">官網 model layer</a>&nbsp;的說明。</p>
-<h3 id="django-template">Django&nbsp;Template</h3>
+<p>這樣資料的存取就介紹得差不多了。更多的細節可以參考<a href="https://docs.djangoproject.com/en/1.8/#the-model-layer">官網 model layer</a> 的說明。</p>
+<h3 id="django-template">Django Template</h3>
 <p>在進行下去之前，先確認我們的目錄結構是一樣的。</p>
 <div class="highlight"><pre><span></span>demo_django_draw_member/
 └── draw_site/
@@ -642,13 +604,13 @@
 </pre></div>
 
 
-<p>Django 的 template 預設是放在 <code>&lt;app&gt;/templates/</code> 底下。不過為了在跨 app 時不要衝到名字，我們會多包一層 app&nbsp;為名的資料夾。</p>
+<p>Django 的 template 預設是放在 <code>&lt;app&gt;/templates/</code> 底下。不過為了在跨 app 時不要衝到名字，我們會多包一層 app 為名的資料夾。</p>
 <div class="highlight"><pre><span></span>mkdir -p draw_member/templates/draw_member
 </pre></div>
 
 
-<p>它跟 Flask 用的 Jinja2 templates 乍看下非常類似（Jinja2 模仿 Django template），兩者最大的差別是在 Jinja2 裡能很自由的使用 Python function，不過 Django 靠的是 template tag 以及&nbsp;filter。我們的例子兩者是沒差多少。</p>
-<p>一樣先把 <code>base.html</code> 以及 <code>home.html</code> 做出來。我們也先把 Form 寫上了，暫時先用 <span class="caps">GET</span>。</p>
+<p>它跟 Flask 用的 Jinja2 templates 乍看下非常類似（Jinja2 模仿 Django template），兩者最大的差別是在 Jinja2 裡能很自由的使用 Python function，不過 Django 靠的是 template tag 以及 filter。我們的例子兩者是沒差多少。</p>
+<p>一樣先把 <code>base.html</code> 以及 <code>home.html</code> 做出來。我們也先把 Form 寫上了，暫時先用 GET。</p>
 <div class="highlight"><pre><span></span><span class="c">{# draw_member/templates/draw_member/base.html #}</span>
 <span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;en&quot;</span><span class="p">&gt;</span>
@@ -687,8 +649,8 @@
 </pre></div>
 
 
-<p>整體的概念應該很好理解。<code>{% url 'xxxx' %}</code> 就是 <span class="caps">URL</span> resolver，還記得在 <code>urls.py</code> 的設定時有給個 <code>name</code> 參數嗎，這邊就會根據那個名字回傳正確的網址。</p>
-<p>順便更新一下 <span class="caps">URL</span> 把這些 view 先加好，不然等下 runserver&nbsp;會說找不到這些網址。</p>
+<p>整體的概念應該很好理解。<code>{% url 'xxxx' %}</code> 就是 URL resolver，還記得在 <code>urls.py</code> 的設定時有給個 <code>name</code> 參數嗎，這邊就會根據那個名字回傳正確的網址。</p>
+<p>順便更新一下 URL 把這些 view 先加好，不然等下 runserver 會說找不到這些網址。</p>
 <div class="highlight"><pre><span></span><span class="c1"># draw_members/urls.py</span>
 <span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="k">import</span> <span class="n">include</span><span class="p">,</span> <span class="n">url</span>
 <span class="kn">from</span> <span class="nn">.views</span> <span class="k">import</span> <span class="n">home</span><span class="p">,</span> <span class="n">draw</span><span class="p">,</span> <span class="n">history</span>
@@ -727,13 +689,13 @@
 
 <div class="figure align-center">
   <img src="https://blog.liang2.tw/posts/2015/10/django-draw-member/pics/django_home.png"/>
-  <p class="caption">加上 template&nbsp;的首頁</p>
+  <p class="caption">加上 template 的首頁</p>
 </div>
 
-<p>Template 更多的說明可以參考<a href="https://docs.djangoproject.com/en/1.8/#the-template-layer">官網 template layer</a>&nbsp;的說明。</p>
-<h3 id="more-on-djangos-model-template-and-view-mtv">More on Django&rsquo;s model, template and view (<span class="caps">MTV</span>)</h3>
+<p>Template 更多的說明可以參考<a href="https://docs.djangoproject.com/en/1.8/#the-template-layer">官網 template layer</a> 的說明。</p>
+<h3 id="more-on-djangos-model-template-and-view-mtv">More on Django&rsquo;s model, template and view (MTV)</h3>
 <p>我們把最重要的抽籤功能實作出來吧。</p>
-<p>這邊需要理解的就是，Django 會把傳到 <span class="caps">GET</span> / <span class="caps">POST</span> 的參數以 dict 存在 <code>request.GET</code> / <code>request.POST</code> 裡面，<code>@require_GET</code> 限制只能使用 <span class="caps">GET</span>&nbsp;去溝通。</p>
+<p>這邊需要理解的就是，Django 會把傳到 GET / POST 的參數以 dict 存在 <code>request.GET</code> / <code>request.POST</code> 裡面，<code>@require_GET</code> 限制只能使用 GET 去溝通。</p>
 <p>其他的邏輯都是照抄以前的。</p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="k">import</span> <span class="n">render</span>
@@ -765,15 +727,15 @@
 </pre></div>
 
 
-<p>用 <span class="caps">ORM</span> 寫起來比 raw <span class="caps">SQL</span> 乾淨多了，不過一開始要把對應的 function 都記起來就是。
-馬上測試一下，一樣偷懶先不去寫&nbsp;template。</p>
+<p>用 ORM 寫起來比 raw SQL 乾淨多了，不過一開始要把對應的 function 都記起來就是。
+馬上測試一下，一樣偷懶先不去寫 template。</p>
 <div class="highlight"><pre><span></span><span class="gp">$</span> curl -XGET <span class="s2">&quot;localhost:8000/draw/?group=ALL&quot;</span>
 <span class="go">&lt;p&gt;小泉 花陽（團體：μ&#39;s）&lt;/p&gt;</span>
 </pre></div>
 
 
-<p>如果是從首頁去點的，觀察一下網址的變化。例如：<code>http://localhost:8000/draw/?group_name=K-ON!</code>，可以看到 form 的選項直接寫在網址列。這是使用 <span class="caps">POST</span> 與 <span class="caps">GET</span>&nbsp;最大的不同。</p>
-<p>再來把歷史記錄的部份也寫一下，也把 template&nbsp;都補上。</p>
+<p>如果是從首頁去點的，觀察一下網址的變化。例如：<code>http://localhost:8000/draw/?group_name=K-ON!</code>，可以看到 form 的選項直接寫在網址列。這是使用 POST 與 GET 最大的不同。</p>
+<p>再來把歷史記錄的部份也寫一下，也把 template 都補上。</p>
 <div class="highlight"><pre><span></span><span class="c">{# draw_member/templates/history.html #}</span>
 <span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;draw_member/base.html&#39;</span> <span class="cp">%}</span>
 
@@ -803,7 +765,7 @@
 </pre></div>
 
 
-<p>history.html 與本來 Flask 不一樣的地方，在用上了 <code>date:"r"</code> 的 filter，傳的參數接在 <code>:</code> 之後。也更新對應 view&nbsp;的動作，</p>
+<p>history.html 與本來 Flask 不一樣的地方，在用上了 <code>date:"r"</code> 的 filter，傳的參數接在 <code>:</code> 之後。也更新對應 view 的動作，</p>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">history</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="n">recent_draws</span> <span class="o">=</span> <span class="n">History</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-time&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;draw_member/history.html&#39;</span><span class="p">,</span> <span class="p">{</span>
@@ -816,7 +778,7 @@
   <img src="https://blog.liang2.tw/posts/2015/10/django-draw-member/pics/django_history.png"/>
 </div>
 
-<p>可以看到預設用的是 <span class="caps">UTC</span> 時區，時區的轉換細節放到文末吧。我們可以在 view&nbsp;裡更改要呈現的時區，</p>
+<p>可以看到預設用的是 UTC 時區，時區的轉換細節放到文末吧。我們可以在 view 裡更改要呈現的時區，</p>
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.utils.timezone</span> <span class="k">import</span> <span class="n">activate</span>
 
 <span class="k">def</span> <span class="nf">history</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -829,10 +791,10 @@
   <img src="https://blog.liang2.tw/posts/2015/10/django-draw-member/pics/django_history_tz.png"/>
 </div>
 
-<p>這樣基本功能就搞定啦！細節一樣參考<a href="https://docs.djangoproject.com/en/1.8/#the-view-layer">官網 view layer</a>&nbsp;的說明。</p>
-<h3 id="django-form">Django&nbsp;Form</h3>
-<p>直接把 form 寫在 template 裡面也是可以，有時候 form 可能跟 model 息息相關，而且 form input 多了之後每個欄位都要自己讀寫也太不直覺。想要驗証使用者的 input&nbsp;的話就更複雜了。</p>
-<p>於是就有了 Django&nbsp;Form。馬上來看用起來是怎麼樣。</p>
+<p>這樣基本功能就搞定啦！細節一樣參考<a href="https://docs.djangoproject.com/en/1.8/#the-view-layer">官網 view layer</a> 的說明。</p>
+<h3 id="django-form">Django Form</h3>
+<p>直接把 form 寫在 template 裡面也是可以，有時候 form 可能跟 model 息息相關，而且 form input 多了之後每個欄位都要自己讀寫也太不直覺。想要驗証使用者的 input 的話就更複雜了。</p>
+<p>於是就有了 Django Form。馬上來看用起來是怎麼樣。</p>
 <div class="highlight"><pre><span></span><span class="c1"># draw_member/forms.py</span>
 <span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
 
@@ -852,8 +814,8 @@
 </pre></div>
 
 
-<p>建了一個新的 form class，像 Model 一樣，裡面規定了每個欄位的屬性。我們這邊只有一個 <code>group</code> 是個單選的 ChoiceField，<code>choices</code> 是個 list of two-item&nbsp;tuples，第一個是內部的值，第二個是顯示的字。其他的都是細節的調整。</p>
-<p>把這個 form 用到 view 裡面。新建一個 form object <code>form</code>，然後把這個變數 <code>form</code> 傳進 template&nbsp;裡面。</p>
+<p>建了一個新的 form class，像 Model 一樣，裡面規定了每個欄位的屬性。我們這邊只有一個 <code>group</code> 是個單選的 ChoiceField，<code>choices</code> 是個 list of two-item tuples，第一個是內部的值，第二個是顯示的字。其他的都是細節的調整。</p>
+<p>把這個 form 用到 view 裡面。新建一個 form object <code>form</code>，然後把這個變數 <code>form</code> 傳進 template 裡面。</p>
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.forms</span> <span class="k">import</span> <span class="n">DrawForm</span>
 
 <span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -864,7 +826,7 @@
 </pre></div>
 
 
-<p>再來修改 template，就不用自己寫 form 的內容了，改成 <code>{{ form }}</code> Django&nbsp;就會自動產生。</p>
+<p>再來修改 template，就不用自己寫 form 的內容了，改成 <code>{{ form }}</code> Django 就會自動產生。</p>
 <div class="highlight"><pre><span></span><span class="c">{# draw_member/home.html #}</span>
 <span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;draw_member/base.html&#39;</span> <span class="cp">%}</span>
 
@@ -883,7 +845,7 @@
   <img src="https://blog.liang2.tw/posts/2015/10/django-draw-member/pics/django_form.png"/>
 </div>
 
-<p>不過這個長得跟我們原本的 form 不一樣嘛。好在 Django form 是很彈性的，form 在被 render 成 <span class="caps">HTML</span> 時可以提供細節的調整，大家可以參考<a href="https://docs.djangoproject.com/en/1.8/topics/forms/#form-rendering-options">官網 Form rendering options</a>&nbsp;調整。我直接給調好的結果吧。</p>
+<p>不過這個長得跟我們原本的 form 不一樣嘛。好在 Django form 是很彈性的，form 在被 render 成 HTML 時可以提供細節的調整，大家可以參考<a href="https://docs.djangoproject.com/en/1.8/topics/forms/#form-rendering-options">官網 Form rendering options</a> 調整。我直接給調好的結果吧。</p>
 <div class="highlight"><pre><span></span>  <span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="s1">&#39;draw&#39;</span> <span class="cp">%}</span><span class="s">&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;get&quot;</span><span class="p">&gt;</span>
     <span class="cp">{{</span> <span class="nv">form.group.label_tag</span> <span class="cp">}}</span>
     <span class="cp">{%</span> <span class="k">for</span> <span class="nv">radio</span> <span class="k">in</span> <span class="nv">form.group</span> <span class="cp">%}</span>
@@ -894,8 +856,8 @@
 </pre></div>
 
 
-<p>用結果去對照每個 <code>{{ ... }}</code> 部件對應的 <span class="caps">HTML</span>&nbsp;元素吧。</p>
-<h4 id="more-django-form-in-view">More Django form in&nbsp;view</h4>
+<p>用結果去對照每個 <code>{{ ... }}</code> 部件對應的 HTML 元素吧。</p>
+<h4 id="more-django-form-in-view">More Django form in view</h4>
 <p>Form 的功能可不只這樣，可以在創建 DrawForm 時直接把 <code>request.GET</code> 傳入。</p>
 <div class="highlight"><pre><span></span><span class="c1"># draw_member/views.py</span>
 <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -918,7 +880,7 @@
 
 
 <p>用 <code>form.is_valid()</code> 可以驗証每個欄位的資料是不是正確的。</p>
-<p>我們也順便把 /draw 加上 template&nbsp;吧。</p>
+<p>我們也順便把 /draw 加上 template 吧。</p>
 <div class="highlight"><pre><span></span><span class="c">{# draw_member/draw.html #}</span>
 <span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;draw_member/base.html&#39;</span> <span class="cp">%}</span>
 
@@ -942,19 +904,19 @@
 
 <p>更多 Forms 的介紹一樣參考<a href="https://docs.djangoproject.com/en/1.8/#forms">官網</a>。</p>
 <h3 id="_2">總結</h3>
-<p>做完的成品在 <a href="https://github.com/ccwang002/draw_member_django">Github</a> 上，參考 <span class="caps">README</span>&nbsp;就可以設定好環境了。</p>
-<p>這樣就把 Django 最基本的 Model, View, Template, Form 幾個大部份體驗一遍了。可以感覺出來 Django 提供的功能比 Flask 多很多，但也代表要花更多的時候學習使用它。其實改寫到最後我們的 code 非常少，可以為了結構化的 code&nbsp;還比較多。</p>
-<p>當然這不代表就學會 Django 了。最後來介紹幾個可以接續學習的 Django&nbsp;資源：</p>
+<p>做完的成品在 <a href="https://github.com/ccwang002/draw_member_django">Github</a> 上，參考 README 就可以設定好環境了。</p>
+<p>這樣就把 Django 最基本的 Model, View, Template, Form 幾個大部份體驗一遍了。可以感覺出來 Django 提供的功能比 Flask 多很多，但也代表要花更多的時候學習使用它。其實改寫到最後我們的 code 非常少，可以為了結構化的 code 還比較多。</p>
+<p>當然這不代表就學會 Django 了。最後來介紹幾個可以接續學習的 Django 資源：</p>
 <ul>
-<li><a href="https://github.com/uranusjr/django-tutorial-for-programmers">《為程式人寫的 Django Tutorial 》</a>是個真正從零到一的 30 天學習規劃（雖然我學了好幾個月 T___T），有了這個抽籤程式的概念再去讀一次應該會更清楚整個 Django 的設計。作者：Tzu-ping Chung&nbsp;(@uranusjr)</li>
-<li><a href="http://masteringdjango.com"><em>Mastering Django: Core</em></a>, the successor to <a href="http://www.djangobook.com/en/2.0/index.html"><em>The Django Book</em></a> last updated in 2009, is the definitive guide to Django targeting the latest Django version 1.8 at the time of&nbsp;writing.</li>
+<li><a href="https://github.com/uranusjr/django-tutorial-for-programmers">《為程式人寫的 Django Tutorial 》</a>是個真正從零到一的 30 天學習規劃（雖然我學了好幾個月 T___T），有了這個抽籤程式的概念再去讀一次應該會更清楚整個 Django 的設計。作者：Tzu-ping Chung (@uranusjr)</li>
+<li><a href="http://masteringdjango.com"><em>Mastering Django: Core</em></a>, the successor to <a href="http://www.djangobook.com/en/2.0/index.html"><em>The Django Book</em></a> last updated in 2009, is the definitive guide to Django targeting the latest Django version 1.8 at the time of writing.</li>
 </ul>
-<p>更多的 Django 技能樹選擇請見 <span class="caps">TP</span> 的 <a href="https://github.com/uranusjr/django-tutorial-for-programmers/blob/master/30-moving-on.md">lesson 30</a>。</p>
+<p>更多的 Django 技能樹選擇請見 TP 的 <a href="https://github.com/uranusjr/django-tutorial-for-programmers/blob/master/30-moving-on.md">lesson 30</a>。</p>
 <h3 id="details">Details</h3>
-<p>跟 Flask&nbsp;一樣，底下記錄一些細節或改善等等為了避免篇幅過長（已經太長了）而移至此的段落。</p>
-<h4 id="raw-sql">Raw <span class="caps">SQL</span></h4>
-<p>在介紹 Django Model 的時候直接用了 <span class="caps">ORM</span>，但實際上 Django 是可以寫 raw <span class="caps">SQL</span> 了，而且還有「聰明版」的 raw <span class="caps">SQL</span> 能夠拿回對應的 model&nbsp;object。馬上來看怎麼回事。</p>
-<p>先來看聰明版的 raw <span class="caps">SQL</span>，使用 <code>Model.objects.raw</code> 拿回所有團體是 K-<span class="caps">ON</span>&nbsp;類的成員。</p>
+<p>跟 Flask 一樣，底下記錄一些細節或改善等等為了避免篇幅過長（已經太長了）而移至此的段落。</p>
+<h4 id="raw-sql">Raw SQL</h4>
+<p>在介紹 Django Model 的時候直接用了 ORM，但實際上 Django 是可以寫 raw SQL 了，而且還有「聰明版」的 raw SQL 能夠拿回對應的 model object。馬上來看怎麼回事。</p>
+<p>先來看聰明版的 raw SQL，使用 <code>Model.objects.raw</code> 拿回所有團體是 K-ON 類的成員。</p>
 <div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="gp">... </span><span class="s2">SELECT id, name, group_name</span>
 <span class="gp">... </span><span class="s2">FROM draw_member_member</span>
@@ -968,14 +930,14 @@
 </pre></div>
 
 
-<p>會回傳一個 RawQuerySet，裡面其實也是 Member objects，這是靠 Django 去認對應的 primary key，也就是說在 raw() <span class="caps">SQL</span> query 裡一定要放 primary key。注意那個 <code>%</code> 需要被 escape 因為 raw() 的 <span class="caps">SQL</span> query 是能放參數的（就像 Python 內建 str&nbsp;%-formatting）。</p>
+<p>會回傳一個 RawQuerySet，裡面其實也是 Member objects，這是靠 Django 去認對應的 primary key，也就是說在 raw() SQL query 裡一定要放 primary key。注意那個 <code>%</code> 需要被 escape 因為 raw() 的 SQL query 是能放參數的（就像 Python 內建 str %-formatting）。</p>
 <p>不過我們怎麼知道 Member 是存在哪個 table 呢？預設是 <code>&lt;app&gt;_&lt;model&gt;</code>，但資訊在 meta options 裡的 <code>db_table</code>，也能被覆寫。</p>
 <div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Member</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">db_table</span>
 <span class="go">&#39;draw_member_member&#39;</span>
 </pre></div>
 
 
-<p>因為 Member 裡面有像 name、group_name 等欄位，在下 query 的時候不一定都會寫在 <span class="caps">SELECT</span> 裡面把拿值回來，那麼這些欄位就是 deferred 狀態，只有在真的拿值時才會去跟 database&nbsp;要。一般使用不會有感覺兩者的差異。</p>
+<p>因為 Member 裡面有像 name、group_name 等欄位，在下 query 的時候不一定都會寫在 SELECT 裡面把拿值回來，那麼這些欄位就是 deferred 狀態，只有在真的拿值時才會去跟 database 要。一般使用不會有感覺兩者的差異。</p>
 <div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="s2">&quot;SELECT id FROM draw_member_member&quot;</span>
 <span class="gp">... </span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
@@ -986,7 +948,7 @@
 </pre></div>
 
 
-<p>但我就是不想用 <span class="caps">ORM</span>，速度慢，也沒辦法寫複雜的 query（戰）。這就回歸到最傳統的 database connection, cursor 這些概念，就像沒有 SQLAlchemy 的&nbsp;Flask。</p>
+<p>但我就是不想用 ORM，速度慢，也沒辦法寫複雜的 query（戰）。這就回歸到最傳統的 database connection, cursor 這些概念，就像沒有 SQLAlchemy 的 Flask。</p>
 <div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">connection</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
@@ -1006,12 +968,12 @@
 </pre></div>
 
 
-<p>Here you&nbsp;go.</p>
-<h4 id="better-queryset">Better&nbsp;QuerySet</h4>
-<p>看過了 raw <span class="caps">SQL</span> 之後，我們來想想 <span class="caps">ORM</span> 的改善吧。雖然說每次要查詢的時候像寫 <span class="caps">SQL</span> 一樣把 query 組合出來也可以，但用 <span class="caps">ORM</span> 的好處應該是能把這些實作細節跟「包裝起來」。例如最近 n 次抽籤記錄、所有成員的團體名稱（目前是寫死在 DrawForm&nbsp;裡面）。</p>
+<p>Here you go.</p>
+<h4 id="better-queryset">Better QuerySet</h4>
+<p>看過了 raw SQL 之後，我們來想想 ORM 的改善吧。雖然說每次要查詢的時候像寫 SQL 一樣把 query 組合出來也可以，但用 ORM 的好處應該是能把這些實作細節跟「包裝起來」。例如最近 n 次抽籤記錄、所有成員的團體名稱（目前是寫死在 DrawForm 裡面）。</p>
 <p>這時候就可以把常用的 query 變成一個 method，例如最近 10 次抽籤記錄就只要用 <code>History.objects.recent(10)</code> 就可以了。</p>
-<p>這其實有很多做法，像是寫一個 classmethod、Override default Manager、Override default QuerySet。哪個方法比較好呢？在 <a href="http://stackoverflow.com/a/2213341">StackOverflow</a>、<a href="https://groups.google.com/forum/#!topic/django-users/0WSdnWFTuUg">mail list</a> 都有討論。基本上都能達到相同的效果，但後兩者的做法是比較偏好的，因為 Manager(or QuerySet for Django 1.7+) 負責處理 model 對應到的 database table 等級的操作，但 classmethod 應該是處理已經從 table row 中拿出的一個 model object 相關的操作。如果把同樣性質的 code 放在一起，就應該使用&nbsp;Manager(QuerySet)。</p>
-<p>而且 <span class="caps">TP</span> 也在 Gitter 上開示了，就是這樣（結案）。來改寫&nbsp;model。</p>
+<p>這其實有很多做法，像是寫一個 classmethod、Override default Manager、Override default QuerySet。哪個方法比較好呢？在 <a href="http://stackoverflow.com/a/2213341">StackOverflow</a>、<a href="https://groups.google.com/forum/#!topic/django-users/0WSdnWFTuUg">mail list</a> 都有討論。基本上都能達到相同的效果，但後兩者的做法是比較偏好的，因為 Manager(or QuerySet for Django 1.7+) 負責處理 model 對應到的 database table 等級的操作，但 classmethod 應該是處理已經從 table row 中拿出的一個 model object 相關的操作。如果把同樣性質的 code 放在一起，就應該使用 Manager(QuerySet)。</p>
+<p>而且 TP 也在 Gitter 上開示了，就是這樣（結案）。來改寫 model。</p>
 <div class="highlight"><pre><span></span><span class="c1"># draw_member/models.py</span>
 <span class="k">class</span> <span class="nc">MemberQuerySet</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">QuerySet</span><span class="p">):</span>
 
@@ -1037,7 +999,7 @@
 
 
 <p>在 Member 我們定義了一個 <code>unique_groups</code> 拿回所有團體的名稱；在 History 定義了 <code>recent</code> 拿出按時間排序最前面 n 個。新定義的 <code>QuerySet.as_manager()</code> 就取代掉本來的 <code>Model.objects</code>。</p>
-<p>接著來改寫 view 把之前寫的 query&nbsp;換掉。</p>
+<p>接著來改寫 view 把之前寫的 query 換掉。</p>
 <div class="highlight"><pre><span></span><span class="c1">#draw_member/views.py</span>
 <span class="k">def</span> <span class="nf">history</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="c1"># ...</span>
@@ -1046,7 +1008,7 @@
 </pre></div>
 
 
-<p>這樣就簡潔一點。再來順便把 form&nbsp;改得比較彈性，不要把團體名寫死。</p>
+<p>這樣就簡潔一點。再來順便把 form 改得比較彈性，不要把團體名寫死。</p>
 <div class="highlight"><pre><span></span><span class="c1">#draw_member/forms.py</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="k">import</span> <span class="n">Member</span>
 
@@ -1069,9 +1031,9 @@
 
 
 <h4 id="timezone">Timezone</h4>
-<p>感覺最近一直在寫<a href="../../09/datetime-sqlite/">時區相關的東西</a>啊。基本上 server 記錄的時間都用 <span class="caps">UTC</span>&nbsp;問題就少很多，但最後還是要呈現一個使用者用的時區。</p>
-<p>但問題是 <span class="caps">HTTP</span> header 裡面並沒有這樣的資訊，所以一來用 geoip 去猜，二來用寫個 javascript 在使用者載入的時候去判斷時區，總之是個要另外記錄的東西。細節<a href="https://docs.djangoproject.com/en/1.8/topics/i18n/timezones/#selecting-the-current-time-zone">官網上也有說明</a>。</p>
-<p>在文中是使用 <code>activate('Aisa/Taipei')</code> 把時區改成 <span class="caps">UTC</span>+8。這邊介紹另一個方式，是寫在 template&nbsp;裡面的。</p>
+<p>感覺最近一直在寫<a href="../../09/datetime-sqlite/">時區相關的東西</a>啊。基本上 server 記錄的時間都用 UTC 問題就少很多，但最後還是要呈現一個使用者用的時區。</p>
+<p>但問題是 HTTP header 裡面並沒有這樣的資訊，所以一來用 geoip 去猜，二來用寫個 javascript 在使用者載入的時候去判斷時區，總之是個要另外記錄的東西。細節<a href="https://docs.djangoproject.com/en/1.8/topics/i18n/timezones/#selecting-the-current-time-zone">官網上也有說明</a>。</p>
+<p>在文中是使用 <code>activate('Aisa/Taipei')</code> 把時區改成 UTC+8。這邊介紹另一個方式，是寫在 template 裡面的。</p>
 <div class="highlight"><pre><span></span><span class="c">{# draw_member/templates/draw_member/history.html #}</span>
 <span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span>
   <span class="cp">{%</span> <span class="k">load</span> <span class="nv">tz</span> <span class="cp">%}</span>
@@ -1090,8 +1052,8 @@
 </pre></div>
 
 
-<h4 id="post-form-and-csrf"><span class="caps">POST</span> form and <span class="caps">CSRF</span></h4>
-<p>忘記講了，我們的 form 目前是用 <code>action="get"</code>，當然可以改回用 <span class="caps">POST</span>，也很簡單，就 <span class="caps">GET</span> 換成 <span class="caps">POST</span>&nbsp;就好了。</p>
+<h4 id="post-form-and-csrf">POST form and CSRF</h4>
+<p>忘記講了，我們的 form 目前是用 <code>action="get"</code>，當然可以改回用 POST，也很簡單，就 GET 換成 POST 就好了。</p>
 <div class="highlight"><pre><span></span><span class="c1"># draw_site/views.py</span>
 <span class="kn">from</span> <span class="nn">django.views.decorators.http</span> <span class="k">import</span> <span class="n">require_POST</span>
 
@@ -1111,72 +1073,73 @@
 <p>馬上來試試看。</p>
 <div class="figure align-center">
   <img src="https://blog.liang2.tw/posts/2015/10/django-draw-member/pics/django_csrf_failed.png"/>
-  <p class="caption"><span class="caps">POST</span> form without <span class="caps">CSRF</span>&nbsp;token</p>
+  <p class="caption">POST form without CSRF token</p>
 </div>
 
-<p>拿到了一個 403 Forbidden &ldquo;<span class="caps">CSRF</span> verification failed.&rdquo;。<span class="caps">CSRF</span> (Cross Site Request Forgery) 在 <a href="https://zh.wikipedia.org/wiki/%E8%B7%A8%E7%AB%99%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0">wiki</a> 有比較完整的介紹，這是一種攻擊手法，在使用者登入網站之後（session 為登入狀態），偽造一個跟網站上一樣的 form 來偽裝使用者的行為。例如購票系統買票，如果沒檢查的話，我可以拿使用者的 session&nbsp;去網站上隨便買票，網站都會認為是使用者在操作。</p>
-<p>因此 <a href="https://docs.djangoproject.com/en/1.8/ref/csrf/"><span class="caps">CSRF</span> token</a> 用來防範這個偽造，在產生 form 的時候，網站會再產生一個欄位的值，這個欄位的值每次都會改變，這樣就能確定這個 form 是從網站上拿到的。Django 處理 <span class="caps">CSRF</span> protection 是透過 <a href="https://docs.djangoproject.com/en/1.8/topics/http/middleware/">Middleware</a>，一個以前沒有提到的概念，表示他是比較底層的東西。相對而言，也不用改我們的 code，在這個例子就只要把 <code>{% csrf_token %}</code> 加到 form&nbsp;裡面就可以了。</p>
+<p>拿到了一個 403 Forbidden &ldquo;CSRF verification failed.&rdquo;。CSRF (Cross Site Request Forgery) 在 <a href="https://zh.wikipedia.org/wiki/%E8%B7%A8%E7%AB%99%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0">wiki</a> 有比較完整的介紹，這是一種攻擊手法，在使用者登入網站之後（session 為登入狀態），偽造一個跟網站上一樣的 form 來偽裝使用者的行為。例如購票系統買票，如果沒檢查的話，我可以拿使用者的 session 去網站上隨便買票，網站都會認為是使用者在操作。</p>
+<p>因此 <a href="https://docs.djangoproject.com/en/1.8/ref/csrf/">CSRF token</a> 用來防範這個偽造，在產生 form 的時候，網站會再產生一個欄位的值，這個欄位的值每次都會改變，這樣就能確定這個 form 是從網站上拿到的。Django 處理 CSRF protection 是透過 <a href="https://docs.djangoproject.com/en/1.8/topics/http/middleware/">Middleware</a>，一個以前沒有提到的概念，表示他是比較底層的東西。相對而言，也不用改我們的 code，在這個例子就只要把 <code>{% csrf_token %}</code> 加到 form 裡面就可以了。</p>
 <div class="highlight"><pre><span></span><span class="c">{# draw_site/templates/home.html #}</span>
   <span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="s1">&#39;draw&#39;</span> <span class="cp">%}</span><span class="s">&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">&gt;</span>
     <span class="c">{# ... #}</span>
     <span class="cp">{%</span> <span class="k">csrf_token</span> <span class="cp">%}</span>
     <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Submit&quot;</span><span class="p">&gt;</span>
   <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
-</pre></div>
-  </div>
-  <div class="tag-cloud">
-    <p>
-      <a href="https://blog.liang2.tw/tag/zh.html">zh</a>
-      <a href="https://blog.liang2.tw/tag/django.html">django</a>
-      <a href="https://blog.liang2.tw/tag/sqlite.html">sqlite</a>
-      <a href="https://blog.liang2.tw/tag/python.html">python</a>
-    </p>
-  </div>
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'liang2';
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-</article>
-
+</pre></div></section>
+    <footer class="post-footer">
+<section class="share">
+    <h2>Share</h2>
+    <a class="icon-twitter" href="https://twitter.com/share?text=用 Django 與 SQLite 架抽籤網站&amp;url=https://blog.liang2.tw/posts/2015/10/django-draw-member/"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u=https://blog.liang2.tw/posts/2015/10/django-draw-member/"
+        onclick="window.open(this.href, 'facebook-share', 'width=580,height=296'); return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.liang2.tw/posts/2015/10/django-draw-member/"
+        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2015/10/django-draw-member/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2015/10/django-draw-member/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
     <footer>
-<p>
-  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
-</p>
-<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
-  <a rel="license"
-     href="http://creativecommons.org/licenses/by/4.0/"
-     target="_blank">
-    <img alt="Creative Commons License"
-         title="Creative Commons License"
-         style="border-width:0"
-         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
-         width="80"
-         height="15"/>
-  </a>
-</p>    </footer>
-  </main>
-<script type="application/ld+json">
-{
-  "@context": "http://schema.org",
-  "@type": "BlogPosting",
-  "name": "用 Django 與 SQLite&nbsp;架抽籤網站",
-  "headline": "用 Django 與 SQLite&nbsp;架抽籤網站",
-  "datePublished": "2015-10-04 14:55:00+08:00",
-  "dateModified": "",
-  "author": {
-    "@type": "Person",
-    "name": "Liang2",
-    "url": "https://blog.liang2.tw/author/liang2.html"
-  },
-  "image": "https://blog.liang2.tw/pics/headpic.jpg",
-  "url": "https://blog.liang2.tw/posts/2015/10/django-draw-member/",
-  "description": "把之前用 Flask 架的抽籤網站改用 Django 實作，也藉這個機會比較一下兩個 Framework 設計概念的不同。"
-}
-</script></body>
+</article>
+    </main>
+    <footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags/">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">Built using <a href="http://getpelican.com/">Pelican</a>. Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.</section>
+		</div>
+    </footer>
+</body>
 </html>

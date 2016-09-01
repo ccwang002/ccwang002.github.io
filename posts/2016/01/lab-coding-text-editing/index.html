@@ -1,90 +1,52 @@
 <!DOCTYPE html>
-<html lang="zh-hant">
+<html lang="zh-Hant">
 <head>
-  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
-  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css">
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.min.css">
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/font-awesome.min.css">
-  <!-- Justfont webfont -->
-  <!-- Local development -->
-  <!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
-  <!-- Proudction version v4.9.4 -->
-  <script src="https://blog.liang2.tw/theme/js/justfont_v4.9.4.js" type="text/javascript" charset="utf-8"></script>
-  <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+            <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+        <link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
 
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="" />
-<meta name="author" content="Liang2" />
-<meta name="description" content="這個章節會帶大家認識一個很簡單的純文字格式 Markdown，方便大家整理筆記。同時希望大家學會一個 terminal based 的文字編輯器，方便往後在 server 環境底下的操作。" />
-<meta name="keywords" content="zh, labcoding">
-<meta property="og:site_name" content="Liang2's blog"/>
-<meta property="og:title" content="Coding 初學指南－文字編輯"/>
-<meta property="og:description" content="這個章節會帶大家認識一個很簡單的純文字格式 Markdown，方便大家整理筆記。同時希望大家學會一個 terminal based 的文字編輯器，方便往後在 server 環境底下的操作。"/>
-<meta property="og:locale" content="zh_TW"/>
-<meta property="og:url" content="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2016-01-21 22:30:00+08:00"/>
-<meta property="article:modified_time" content="2016-01-21 22:30:00+08:00"/>
-<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
-<meta property="article:section" content="Coding"/>
-<meta property="article:tag" content="zh"/>
-<meta property="article:tag" content="labcoding"/>
-<meta name="twitter:card" content="summary">
-<meta name="twitter:site" content="@ccwang002">
-<meta name="twitter:title" content="Coding 初學指南－文字編輯">
-<meta name="twitter:description" content="這個章節會帶大家認識一個很簡單的純文字格式 Markdown，方便大家整理筆記。同時希望大家學會一個 terminal based 的文字編輯器，方便往後在 server 環境底下的操作。">
-  <title>Coding 初學指南－文字編輯 &ndash; Liang2's blog</title>
+		<link href="https://blog.liang2.tw/theme/css/haunter.css?0f9ace0e" rel="stylesheet" />
+
+		<title>Coding 初學指南－文字編輯</title>
+		<!-- Justfont webfont -->
+		<!-- Local development -->
+		<!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+		<!-- Proudction version -->
+		<script src="https://blog.liang2.tw/theme/js/justfont.js" type="text/javascript" charset="utf-8"></script>
 </head>
-<body>
-  <aside>
-    <div>
-      <a href="https://blog.liang2.tw">
-        <img src="https://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
-      </a>
-      <h1><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
-      <p>Code / Stat / Bioinfo</p>
-      <nav>
-        <ul class="list">
-          <li><a href="https://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
-          <li><a href="https://blog.liang2.tw/talks/#talks">Talks</a></li>
-        </ul>
-      </nav>
-      <ul class="social">
-        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
-        <li><a class="sc-envelope-o" href="mailto:me+blog@liang2.tw" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
-        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-      </ul>
-    </div>
-  </aside>
-  <main>
-    <nav>
-      <a href="https://blog.liang2.tw">Home</a>
-      <a href="/archives.html">Archives</a>
-      <a href="/categories.html">Categories</a>
-      <a href="/tags.html">Tags</a>
-      <a href="https://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
-    </nav>
 
-<article>
-  <header>
-    <h1 id="lab-coding-text-editing">Coding&nbsp;初學指南－文字編輯</h1>
-    <p>Posted on Jan 21, 2016
-      in <a href="https://blog.liang2.tw/category/coding.html">Coding</a>
-    </p>
-  </header>
-  <div>
-    <p>Last Edited: Jan, 2016&nbsp;（如果內容有誤，你可以留言，或用任何管道告訴我）</p>
-<p>這個章節會帶大家認識一個很簡單的純文字格式 Markdown，方便大家整理筆記。同時希望大家學會一個 terminal based 的文字編輯器，方便往後在 server&nbsp;環境底下的操作。</p>
+<body class="post-template">
+    <header class="site-head">
+			<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+				<h2 class="blog-description">
+					<a href="https://blog.liang2.tw/about-me/">About</a> |
+					<a href="https://blog.liang2.tw/talks/">Talks</a> |
+					<a href="https://blog.liang2.tw/archives.html">Archives</a>
+				</h2>
+    </header>
+    <main id="content" class="content" role="main">
+<article class="post">
+    <span class="post-meta">
+        <time datetime="Jan 21, 2016">Jan 21, 2016</time>
+        in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/" rel="bookmark" title="Permalink to Coding 初學指南－文字編輯">Coding 初學指南－文字編輯</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/zh/">zh</a>
+                <a href="https://blog.liang2.tw/tag/labcoding/">labcoding</a>
+    </span>
+    <section class="post-content"><p>Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）</p>
+<p>這個章節會帶大家認識一個很簡單的純文字格式 Markdown，方便大家整理筆記。同時希望大家學會一個 terminal based 的文字編輯器，方便往後在 server 環境底下的操作。</p>
 <div class="toc">
 <ul>
 <li><a href="#markdown">Markdown</a><ul>
 <li><a href="#_1">相關資源</a><ul>
-<li><a href="#markdown_1">Markdown&nbsp;語法</a></li>
+<li><a href="#markdown_1">Markdown 語法</a></li>
 </ul>
 </li>
 <li><a href="#_2">學習目標</a></li>
@@ -95,20 +57,20 @@
 <li><a href="#emacs">Emacs</a></li>
 <li><a href="#vim">Vim</a></li>
 <li><a href="#vim_1">Vim 相關資源</a><ul>
-<li><a href="#open-vim">Open&nbsp;Vim</a></li>
-<li><a href="#vim-ptt">學習 Vim 的心法與攻略&nbsp;(ptt)</a></li>
-<li><a href="#vim-adventure">Vim&nbsp;adventure</a></li>
-<li><a href="#vim_2">Vim&nbsp;本身的使用手冊</a></li>
+<li><a href="#open-vim">Open Vim</a></li>
+<li><a href="#vim-ptt">學習 Vim 的心法與攻略 (ptt)</a></li>
+<li><a href="#vim-adventure">Vim adventure</a></li>
+<li><a href="#vim_2">Vim 本身的使用手冊</a></li>
 </ul>
 </li>
 <li><a href="#_3">學習目標</a></li>
 </ul>
 </li>
 <li><a href="#regex">正規表示式 Regex</a><ul>
-<li><a href="#regex_1">Regex&nbsp;語法派別</a></li>
+<li><a href="#regex_1">Regex 語法派別</a></li>
 <li><a href="#_4">相關資源</a><ul>
-<li><a href="#regex-one">Regex&nbsp;One</a></li>
-<li><a href="#regex-101">Regex&nbsp;101</a></li>
+<li><a href="#regex-one">Regex One</a></li>
+<li><a href="#regex-101">Regex 101</a></li>
 </ul>
 </li>
 </ul>
@@ -116,44 +78,44 @@
 </ul>
 </div>
 <blockquote>
-<p><strong>其他 Coding&nbsp;初學指南系列文章：</strong></p>
+<p><strong>其他 Coding 初學指南系列文章：</strong></p>
 <ul>
 <li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-intro/">Introduction</a></li>
-<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-linux/">Chapter 1 &ndash;&nbsp;Linux</a></li>
-<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/">Chapter 2 &ndash; Text Editing (Markdown, Text&nbsp;Editor)</a></li>
-<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/">Chapter 3 &ndash; Version Control&nbsp;(Git)</a></li>
-<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-python/">Chapter 4 &ndash;&nbsp;Python</a></li>
-<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-osx-env/">Appendix 1 &ndash; <span class="caps">OSX</span> Development&nbsp;Environment</a></li>
-<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-bioinfo-python/">Appendix 2 &ndash; Python in&nbsp;Bioinformatics</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-linux/">Chapter 1 &ndash; Linux</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/">Chapter 2 &ndash; Text Editing (Markdown, Text Editor)</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/">Chapter 3 &ndash; Version Control (Git)</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-python/">Chapter 4 &ndash; Python</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-osx-env/">Appendix 1 &ndash; OSX Development Environment</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-bioinfo-python/">Appendix 2 &ndash; Python in Bioinformatics</a></li>
 </ul>
-<p>或者，用 <a href="/tag/labcoding.html">labcoding</a> 這個 tag&nbsp;也可以找到所有的文章。</p>
+<p>或者，用 <a href="/tag/labcoding.html">labcoding</a> 這個 tag 也可以找到所有的文章。</p>
 </blockquote>
 <h1 id="markdown">Markdown</h1>
 <p>這是一個簡便的語法，它的概念是在純文字的檔案中用一些簡單的標記，就能做出大小標題、粗斜體、超連結、表格、程式碼上色等語法。</p>
-<p>如果大家了解網頁的格式 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML"><span class="caps">HTML</span></a> 的話，那 markdown 的語法能直接對應到 <span class="caps">HTML</span> 的語法，所以這個格式在網路的世界十分流行。它的副檔名為 <code>.md</code>，近代程式的 <span class="caps">REAME</span> 許多都用 markdown 寫成（例：<code>README.md</code>）</p>
+<p>如果大家了解網頁的格式 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML">HTML</a> 的話，那 markdown 的語法能直接對應到 HTML 的語法，所以這個格式在網路的世界十分流行。它的副檔名為 <code>.md</code>，近代程式的 REAME 許多都用 markdown 寫成（例：<code>README.md</code>）</p>
 <h2 id="_1">相關資源</h2>
-<h3 id="markdown_1">Markdown&nbsp;語法</h3>
+<h3 id="markdown_1">Markdown 語法</h3>
 <ul>
 <li><a href="http://markdown.tw/">http://markdown.tw/</a></li>
 </ul>
 <h2 id="_2">學習目標</h2>
 <ol>
 <li>這一系列的筆記就是用 markdown 寫成，你可以在<a href="https://github.com/ccwang002/ccwang002.github.io/tree/src/content/blogs/2016-01">這裡</a>找到它的原始檔。</li>
-<li>試著把 Linux 學習過的指令，或者自己常用的組合指令用 markdown&nbsp;記錄。</li>
+<li>試著把 Linux 學習過的指令，或者自己常用的組合指令用 markdown 記錄。</li>
 </ol>
-<h1 id="text-editor">Text&nbsp;Editor</h1>
-<p>在 Linux 的世界很多都是純文字檔案，再加上一些規定的語法成為新的格式。前面的 markdown&nbsp;就是個例子。甚至許多可以執行的程式都只是個腳本檔，能用一般的編輯器（editor）打開就能讀懂。你可以試試</p>
+<h1 id="text-editor">Text Editor</h1>
+<p>在 Linux 的世界很多都是純文字檔案，再加上一些規定的語法成為新的格式。前面的 markdown 就是個例子。甚至許多可以執行的程式都只是個腳本檔，能用一般的編輯器（editor）打開就能讀懂。你可以試試</p>
 <div class="highlight"><pre><span></span><span class="c1"># cd is a shell script</span>
 nano <span class="sb">`</span>which <span class="nb">cd</span><span class="sb">`</span>       <span class="c1"># thanks TP&#39;s idea</span>
 </pre></div>
 
 
-<p>常見的 editor 有：nano、vi、vim、emacs。到底什麼是最好用的文字編輯器，這是一場永無止盡的戰爭，近年來又有 Notepad++(<span class="caps">GUI</span>)、Sublime Text (<span class="caps">GUI</span>)、Neovim 的加入，這話題將不會有結論。對初學者而言，至少學會一個 editor&nbsp;是必要的。</p>
+<p>常見的 editor 有：nano、vi、vim、emacs。到底什麼是最好用的文字編輯器，這是一場永無止盡的戰爭，近年來又有 Notepad++(GUI)、Sublime Text (GUI)、Neovim 的加入，這話題將不會有結論。對初學者而言，至少學會一個 editor 是必要的。</p>
 <blockquote>
 <p>雖然一開始都說是介紹文字編輯器，但後來會開始學程式設計，所以最後大家在討論的都是「程式碼的編輯器」。</p>
 </blockquote>
-<p>當在編輯一些設定檔、程式碼時，為了避免打錯關鍵字但難以查覺，多數人會把程式碼的關鍵字上色。按照程式碼不同的屬性、功能上色之後，多數人發現能更好的理解程式的結構，因此 editor 大多帶有語法上色（syntax&nbsp;highlighting）。</p>
-<p>除了語法上色，這些 editor 都有自己的設定檔規範，可以讓使用者自行修改 editor 的行為。把自己常見的編輯器改得合乎自己習慣，是長期生活在 terminal&nbsp;世界的第一步，大家可以參考（抄）別人的範本開始。</p>
+<p>當在編輯一些設定檔、程式碼時，為了避免打錯關鍵字但難以查覺，多數人會把程式碼的關鍵字上色。按照程式碼不同的屬性、功能上色之後，多數人發現能更好的理解程式的結構，因此 editor 大多帶有語法上色（syntax highlighting）。</p>
+<p>除了語法上色，這些 editor 都有自己的設定檔規範，可以讓使用者自行修改 editor 的行為。把自己常見的編輯器改得合乎自己習慣，是長期生活在 terminal 世界的第一步，大家可以參考（抄）別人的範本開始。</p>
 <blockquote>
 <p>讓自己的編輯器有家的感覺。</p>
 </blockquote>
@@ -164,86 +126,86 @@ nano <span class="sb">`</span>which <span class="nb">cd</span><span class="sb">`
 <h2 id="emacs">Emacs</h2>
 <p>抱歉，我不會。但它是一個很好的編輯器。（誠徵大大補全）</p>
 <h2 id="vim">Vim</h2>
-<p>一個老字號但維持穩定開發的編輯器。他有個特色是編輯器的模式，有些模式能編輯文字，有些不行，但能做選取、搜尋等動作。還有特有的指令合成方式（像連續技、buff&nbsp;這樣）</p>
-<p>初學者通常會難以習慣，初期不熟模式、指令記不住的話會很難操作。所以建議一開始先記住最基本的指令，隨時掌握自己在的模式，日後再慢慢加深對 vim&nbsp;的了解。</p>
+<p>一個老字號但維持穩定開發的編輯器。他有個特色是編輯器的模式，有些模式能編輯文字，有些不行，但能做選取、搜尋等動作。還有特有的指令合成方式（像連續技、buff 這樣）</p>
+<p>初學者通常會難以習慣，初期不熟模式、指令記不住的話會很難操作。所以建議一開始先記住最基本的指令，隨時掌握自己在的模式，日後再慢慢加深對 vim 的了解。</p>
 <p>如果真的很沒概念，鳥哥也有寫介紹。</p>
-<h2 id="vim_1">Vim&nbsp;相關資源</h2>
-<h3 id="open-vim">Open&nbsp;Vim</h3>
-<p>互動式的線上學習網站，很短，跟著操作完能會 Vim&nbsp;基本動作、存檔。</p>
+<h2 id="vim_1">Vim 相關資源</h2>
+<h3 id="open-vim">Open Vim</h3>
+<p>互動式的線上學習網站，很短，跟著操作完能會 Vim 基本動作、存檔。</p>
 <ul>
 <li><a href="http://www.openvim.com/">http://www.openvim.com/</a></li>
 </ul>
-<h3 id="vim-ptt">學習 Vim 的心法與攻略&nbsp;(ptt)</h3>
-<p>了解最常用的 normal 與 insert 模式及最基本的指令。這篇的內容理解之後，就能用 vim&nbsp;處理文字編輯了。</p>
+<h3 id="vim-ptt">學習 Vim 的心法與攻略 (ptt)</h3>
+<p>了解最常用的 normal 與 insert 模式及最基本的指令。這篇的內容理解之後，就能用 vim 處理文字編輯了。</p>
 <ul>
 <li><a href="https://www.ptt.cc/bbs/Editor/M.1264056747.A.885.html">https://www.ptt.cc/bbs/Editor/M.1264056747.A.885.html</a></li>
 </ul>
-<h3 id="vim-adventure">Vim&nbsp;adventure</h3>
-<p>如果很難學習 <code>hjkl</code>、<code>wb</code> 移動的話，這是個要用 vim&nbsp;指令控制的小遊戲。</p>
+<h3 id="vim-adventure">Vim adventure</h3>
+<p>如果很難學習 <code>hjkl</code>、<code>wb</code> 移動的話，這是個要用 vim 指令控制的小遊戲。</p>
 <ul>
 <li><a href="http://vim-adventures.com/">http://vim-adventures.com/</a></li>
 </ul>
-<h3 id="vim_2">Vim&nbsp;本身的使用手冊</h3>
+<h3 id="vim_2">Vim 本身的使用手冊</h3>
 <p>可以使用 <code>vimtutor</code> 指令，或者在 vim normal 模式時鍵入 <code>:help</code></p>
 <h2 id="_3">學習目標</h2>
 <ol>
 <li>
 <p>能在 terminal 中編修一個文字檔名為 <code>foo.txt</code></p>
 <ul>
-<li>Hint: try&nbsp;nano</li>
+<li>Hint: try nano</li>
 <li><code>nano foo.txt</code></li>
 </ul>
 </li>
 <li>
-<p>搭配 root&nbsp;權限修改系統的設定檔（你在鳥哥可能有經驗了）</p>
+<p>搭配 root 權限修改系統的設定檔（你在鳥哥可能有經驗了）</p>
 <ul>
-<li>Hint: try&nbsp;sudo</li>
+<li>Hint: try sudo</li>
 </ul>
 </li>
 <li>
-<p>能在 console 中編寫程式碼。用 1.&nbsp;的方案也可，但建議再試試看另外一個</p>
+<p>能在 console 中編寫程式碼。用 1. 的方案也可，但建議再試試看另外一個</p>
 <ul>
-<li>Hint: try vi, vim or&nbsp;emacs</li>
+<li>Hint: try vi, vim or emacs</li>
 </ul>
 </li>
 <li>
-<p>修改 editor&nbsp;設定讓它更符合自己的習慣。</p>
+<p>修改 editor 設定讓它更符合自己的習慣。</p>
 <ul>
 <li>Hint: for vim, try editing <code>~/.vimrc</code>; for emacs, try editing <code>~/.emacs</code></li>
 </ul>
 </li>
 <li>
-<p>用 terminal editor 使用 markdown&nbsp;格式記錄這些練習的筆記與答案。</p>
+<p>用 terminal editor 使用 markdown 格式記錄這些練習的筆記與答案。</p>
 </li>
 </ol>
-<h1 id="regex">正規表示式&nbsp;Regex</h1>
-<p>Vim 在 normal 模式下能用 <code>/{pattern}</code> 搜尋文中的字串。除了直接把想要查的字串寫在 pattern 裡以外，還可以設計規則找出符合 pattern 但不一樣的結果。這樣的規則稱之為正規表示式（Regular Expression, or&nbsp;regex）。</p>
+<h1 id="regex">正規表示式 Regex</h1>
+<p>Vim 在 normal 模式下能用 <code>/{pattern}</code> 搜尋文中的字串。除了直接把想要查的字串寫在 pattern 裡以外，還可以設計規則找出符合 pattern 但不一樣的結果。這樣的規則稱之為正規表示式（Regular Expression, or regex）。</p>
 <blockquote>
-<p>想做很複雜的字串比對時，都應該考慮是否能使用&nbsp;regex</p>
+<p>想做很複雜的字串比對時，都應該考慮是否能使用 regex</p>
 </blockquote>
-<p>要做字串比對的地方，工具通常都會提供使用 regex，例如 <code>grep</code>、<code>sed</code>。Vim 與 Python 也都有提供 regex&nbsp;的功能。</p>
-<h3 id="regex_1">Regex&nbsp;語法派別</h3>
-<p>既然 regex 是一套字串比對的規則，就有規範它的語法。主要的 regex&nbsp;語法有兩大類：</p>
+<p>要做字串比對的地方，工具通常都會提供使用 regex，例如 <code>grep</code>、<code>sed</code>。Vim 與 Python 也都有提供 regex 的功能。</p>
+<h3 id="regex_1">Regex 語法派別</h3>
+<p>既然 regex 是一套字串比對的規則，就有規範它的語法。主要的 regex 語法有兩大類：</p>
 <ul>
-<li><span class="caps">BRE</span> (basic regex)<ul>
+<li>BRE (basic regex)<ul>
 <li>Ex. <code>[:alnum:]</code></li>
 </ul>
 </li>
-<li><span class="caps">ERE</span> (extended regex)<ul>
+<li>ERE (extended regex)<ul>
 <li>Ex. <code>\w</code></li>
 </ul>
 </li>
 </ul>
-<p>在 Linux 指令當中通常會因為使用 regex 語法的不同分成多個指令<sup id="fnref:註2"><a class="footnote-ref" href="#fn:註2" rel="footnote">2</a></sup>。例如 grep 使用 <span class="caps">BRE</span>；egrep 使用 <span class="caps">ERE</span>。</p>
+<p>在 Linux 指令當中通常會因為使用 regex 語法的不同分成多個指令<sup id="fnref:註2"><a class="footnote-ref" href="#fn:註2" rel="footnote">2</a></sup>。例如 grep 使用 BRE；egrep 使用 ERE。</p>
 <p>與文字編輯相關的工具，像 Vim、Python、Perl<sup id="fnref:註3"><a class="footnote-ref" href="#fn:註3" rel="footnote">3</a></sup> 也有他們各自寫 regex 的方式，但多少都與前兩大類相似，使用時都應該先查一下他們的語法。Vim 可以用 <code>:help regex</code> 查看。</p>
 <h2 id="_4">相關資源</h2>
-<h3 id="regex-one">Regex&nbsp;One</h3>
-<p>主要是介紹 pcre 的語法，每一個 example 多介紹一個新的語法。接著還有個 practical examples&nbsp;練習整理不同的語法。</p>
+<h3 id="regex-one">Regex One</h3>
+<p>主要是介紹 pcre 的語法，每一個 example 多介紹一個新的語法。接著還有個 practical examples 練習整理不同的語法。</p>
 <ul>
 <li><a href="http://regexone.com/">http://regexone.com/</a></li>
 </ul>
-<h3 id="regex-101">Regex&nbsp;101</h3>
-<p>regex 很容易寫到自己都看不懂，這是一個幫助了解自己或別人寫好的 regex pattern&nbsp;的網站。</p>
+<h3 id="regex-101">Regex 101</h3>
+<p>regex 很容易寫到自己都看不懂，這是一個幫助了解自己或別人寫好的 regex pattern 的網站。</p>
 <ul>
 <li><a href="https://regex101.com/">https://regex101.com/</a></li>
 </ul>
@@ -260,59 +222,62 @@ nano <span class="sb">`</span>which <span class="nb">cd</span><span class="sb">`
 <p>Perl 的 regex 語法又稱為 <strong>pcre</strong> style，常被其他工具使用。例如：php&#160;<a class="footnote-backref" href="#fnref:註3" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
 </ol>
-</div>
-  </div>
-  <div class="tag-cloud">
-    <p>
-      <a href="https://blog.liang2.tw/tag/zh.html">zh</a>
-      <a href="https://blog.liang2.tw/tag/labcoding.html">labcoding</a>
-    </p>
-  </div>
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'liang2';
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-</article>
-
+</div></section>
+    <footer class="post-footer">
+<section class="share">
+    <h2>Share</h2>
+    <a class="icon-twitter" href="https://twitter.com/share?text=Coding 初學指南－文字編輯&amp;url=https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u=https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/"
+        onclick="window.open(this.href, 'facebook-share', 'width=580,height=296'); return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/"
+        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2016/01/lab-coding-text-editing/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
     <footer>
-<p>
-  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
-</p>
-<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
-  <a rel="license"
-     href="http://creativecommons.org/licenses/by/4.0/"
-     target="_blank">
-    <img alt="Creative Commons License"
-         title="Creative Commons License"
-         style="border-width:0"
-         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
-         width="80"
-         height="15"/>
-  </a>
-</p>    </footer>
-  </main>
-<script type="application/ld+json">
-{
-  "@context": "http://schema.org",
-  "@type": "BlogPosting",
-  "name": "Coding&nbsp;初學指南－文字編輯",
-  "headline": "Coding&nbsp;初學指南－文字編輯",
-  "datePublished": "2016-01-21 22:30:00+08:00",
-  "dateModified": "",
-  "author": {
-    "@type": "Person",
-    "name": "Liang2",
-    "url": "https://blog.liang2.tw/author/liang2.html"
-  },
-  "image": "https://blog.liang2.tw/pics/headpic.jpg",
-  "url": "https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/",
-  "description": "這個章節會帶大家認識一個很簡單的純文字格式 Markdown，方便大家整理筆記。同時希望大家學會一個 terminal based 的文字編輯器，方便往後在 server 環境底下的操作。"
-}
-</script></body>
+</article>
+    </main>
+    <footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags/">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">Built using <a href="http://getpelican.com/">Pelican</a>. Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.</section>
+		</div>
+    </footer>
+</body>
 </html>

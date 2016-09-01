@@ -1,123 +1,85 @@
 <!DOCTYPE html>
-<html lang="zh-hant">
+<html lang="zh-Hant">
 <head>
-  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
-  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css">
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.min.css">
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/font-awesome.min.css">
-  <!-- Justfont webfont -->
-  <!-- Local development -->
-  <!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
-  <!-- Proudction version v4.9.4 -->
-  <script src="https://blog.liang2.tw/theme/js/justfont_v4.9.4.js" type="text/javascript" charset="utf-8"></script>
-  <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+            <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+        <link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
 
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="" />
-<meta name="author" content="Liang2" />
-<meta name="description" content="整理了 server 從 HTTP 到 HTTPS 相關設定的調整。" />
-<meta name="keywords" content="zh, pydoctw, https, letsencrypt">
-<meta property="og:site_name" content="Liang2's blog"/>
-<meta property="og:title" content="Python 官方文件中文化 Server HTTPS 使用 Let’s Encrypt"/>
-<meta property="og:description" content="整理了 server 從 HTTP 到 HTTPS 相關設定的調整。"/>
-<meta property="og:locale" content="zh_TW"/>
-<meta property="og:url" content="https://blog.liang2.tw/posts/2016/02/pydoctw-https/"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2016-02-21 14:00:00+08:00"/>
-<meta property="article:modified_time" content="2016-02-21 14:00:00+08:00"/>
-<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
-<meta property="article:section" content="Coding"/>
-<meta property="article:tag" content="zh"/>
-<meta property="article:tag" content="pydoctw"/>
-<meta property="article:tag" content="https"/>
-<meta property="article:tag" content="letsencrypt"/>
-<meta name="twitter:card" content="summary">
-<meta name="twitter:site" content="@ccwang002">
-<meta name="twitter:title" content="Python 官方文件中文化 Server HTTPS 使用 Let’s Encrypt">
-<meta name="twitter:description" content="整理了 server 從 HTTP 到 HTTPS 相關設定的調整。">
-  <title>Python 官方文件中文化 Server HTTPS 使用 Let’s Encrypt &ndash; Liang2's blog</title>
+		<link href="https://blog.liang2.tw/theme/css/haunter.css?0f9ace0e" rel="stylesheet" />
+
+		<title>Python 官方文件中文化 Server HTTPS 使用 Let's Encrypt</title>
+		<!-- Justfont webfont -->
+		<!-- Local development -->
+		<!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+		<!-- Proudction version -->
+		<script src="https://blog.liang2.tw/theme/js/justfont.js" type="text/javascript" charset="utf-8"></script>
 </head>
-<body>
-  <aside>
-    <div>
-      <a href="https://blog.liang2.tw">
-        <img src="https://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
-      </a>
-      <h1><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
-      <p>Code / Stat / Bioinfo</p>
-      <nav>
-        <ul class="list">
-          <li><a href="https://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
-          <li><a href="https://blog.liang2.tw/talks/#talks">Talks</a></li>
-        </ul>
-      </nav>
-      <ul class="social">
-        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
-        <li><a class="sc-envelope-o" href="mailto:me+blog@liang2.tw" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
-        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-      </ul>
-    </div>
-  </aside>
-  <main>
-    <nav>
-      <a href="https://blog.liang2.tw">Home</a>
-      <a href="/archives.html">Archives</a>
-      <a href="/categories.html">Categories</a>
-      <a href="/tags.html">Tags</a>
-      <a href="https://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
-    </nav>
 
-<article>
-  <header>
-    <h1 id="pydoctw-https">Python 官方文件中文化 Server <span class="caps">HTTPS</span> 使用 Let&#8217;s&nbsp;Encrypt</h1>
-    <p>Posted on Feb 21, 2016
-      in <a href="https://blog.liang2.tw/category/coding.html">Coding</a>
-    </p>
-  </header>
-  <div>
-    <p>現在可以透過 <a href="https://docs.python.org.tw">https://docs.python.org.tw</a> 訪問 Python&nbsp;官方文件中文化網站。</p>
-<p>Server 本身的設定可以參考<a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/">之前的文章</a>。加入 <span class="caps">HTTPS</span> 就要設定相關的憑証，我選擇 <a href="https://letsencrypt.org/">Let&rsquo;s Encrypt</a>&nbsp;做為憑証的簽署者。</p>
-<p>Let&rsquo;s Encrypt (<span class="caps">LE</span>) 使用 <span class="caps">AMCE</span> (Automated Certificate Management Environment) protocol 去驗証你是否擁有你欲簽証的 domain。官網上有<a href="https://letsencrypt.org/howitworks/technology/">圖文說明</a>，簡單來說，<span class="caps">LE</span> 會要求你的 server 在特定的 path 加入特定的檔案，如果你做得到，就代表你擁有這個 domain。這樣的簽証第一次要在 <span class="caps">LE</span> server 上註冊，之後最長每 90&nbsp;天認証一次。</p>
+<body class="post-template">
+    <header class="site-head">
+			<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+				<h2 class="blog-description">
+					<a href="https://blog.liang2.tw/about-me/">About</a> |
+					<a href="https://blog.liang2.tw/talks/">Talks</a> |
+					<a href="https://blog.liang2.tw/archives.html">Archives</a>
+				</h2>
+    </header>
+    <main id="content" class="content" role="main">
+<article class="post">
+    <span class="post-meta">
+        <time datetime="Feb 21, 2016">Feb 21, 2016</time>
+        in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2016/02/pydoctw-https/" rel="bookmark" title="Permalink to Python 官方文件中文化 Server HTTPS 使用 Let's Encrypt">Python 官方文件中文化 Server HTTPS 使用 Let's Encrypt</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/zh/">zh</a>
+                <a href="https://blog.liang2.tw/tag/pydoctw/">pydoctw</a>
+                <a href="https://blog.liang2.tw/tag/https/">https</a>
+                <a href="https://blog.liang2.tw/tag/letsencrypt/">letsencrypt</a>
+    </span>
+    <section class="post-content"><p>現在可以透過 <a href="https://docs.python.org.tw">https://docs.python.org.tw</a> 訪問 Python 官方文件中文化網站。</p>
+<p>Server 本身的設定可以參考<a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/">之前的文章</a>。加入 HTTPS 就要設定相關的憑証，我選擇 <a href="https://letsencrypt.org/">Let&rsquo;s Encrypt</a> 做為憑証的簽署者。</p>
+<p>Let&rsquo;s Encrypt (LE) 使用 AMCE (Automated Certificate Management Environment) protocol 去驗証你是否擁有你欲簽証的 domain。官網上有<a href="https://letsencrypt.org/howitworks/technology/">圖文說明</a>，簡單來說，LE 會要求你的 server 在特定的 path 加入特定的檔案，如果你做得到，就代表你擁有這個 domain。這樣的簽証第一次要在 LE server 上註冊，之後最長每 90 天認証一次。</p>
 <div class="toc">
 <ul>
 <li><a href="#_1">參考資料</a></li>
-<li><a href="#lets-encrypt-certificate">Let&rsquo;s Encrypt&nbsp;Certificate</a></li>
+<li><a href="#lets-encrypt-certificate">Let&rsquo;s Encrypt Certificate</a></li>
 <li><a href="#systemd-timer-certificate">設定 systemd timer 定時更新 certificate</a><ul>
-<li><a href="#systemd-service">Systemd&nbsp;service</a></li>
-<li><a href="#systemd-timer">Systemd&nbsp;Timer</a></li>
+<li><a href="#systemd-service">Systemd service</a></li>
+<li><a href="#systemd-timer">Systemd Timer</a></li>
 </ul>
 </li>
-<li><a href="#nginx-http-redirect-to-https">nginx <span class="caps">HTTP</span> redirect to <span class="caps">HTTPS</span></a></li>
-<li><a href="#https">測試 <span class="caps">HTTPS</span>&nbsp;設定</a></li>
+<li><a href="#nginx-http-redirect-to-https">nginx HTTP redirect to HTTPS</a></li>
+<li><a href="#https">測試 HTTPS 設定</a></li>
 <li><a href="#_2">心得</a></li>
 <li><a href="#misc">Misc.</a></li>
 </ul>
 </div>
 <h3 id="_1">參考資料</h3>
-<p>我不是網路安全相關的專家，設定都是參考網路上的說明整理而成。<span class="caps">LE</span> certificate 的設定參考 <a href="https://robmclarty.com/blog/how-to-secure-your-web-app-using-https-with-letsencrypt"><em>How to Secure Your Web App Using <span class="caps">HTTPS</span> With Letsencrypt</em></a> by Rob McLarty&nbsp;這篇文章。</p>
-<h3 id="lets-encrypt-certificate">Let&rsquo;s Encrypt&nbsp;Certificate</h3>
-<p>沒有使用 <span class="caps">LE</span> 官方的 client，而是用 <a href="https://daylightpirates.org/">Daniel Roesler</a> 所寫的 <a href="https://github.com/diafygi/acme-tiny/">acme-tiny</a>。這是一個不到 200 行的 Python script，可以自行檢查它有沒有做任何奇怪的事。<a href="https://github.com/diafygi/acme-tiny/">acme-tiny</a> 的 <span class="caps">README</span>&nbsp;也有個設定教學，應該是大同小異。</p>
-<p>基本上都是照著 <a href="https://robmclarty.com/blog/how-to-secure-your-web-app-using-https-with-letsencrypt"><em>How to Secure Your Web App Using <span class="caps">HTTPS</span> With Letsencrypt</em></a>&nbsp;該篇文章做，不過有調整了以下的東西：</p>
+<p>我不是網路安全相關的專家，設定都是參考網路上的說明整理而成。LE certificate 的設定參考 <a href="https://robmclarty.com/blog/how-to-secure-your-web-app-using-https-with-letsencrypt"><em>How to Secure Your Web App Using HTTPS With Letsencrypt</em></a> by Rob McLarty 這篇文章。</p>
+<h3 id="lets-encrypt-certificate">Let&rsquo;s Encrypt Certificate</h3>
+<p>沒有使用 LE 官方的 client，而是用 <a href="https://daylightpirates.org/">Daniel Roesler</a> 所寫的 <a href="https://github.com/diafygi/acme-tiny/">acme-tiny</a>。這是一個不到 200 行的 Python script，可以自行檢查它有沒有做任何奇怪的事。<a href="https://github.com/diafygi/acme-tiny/">acme-tiny</a> 的 README 也有個設定教學，應該是大同小異。</p>
+<p>基本上都是照著 <a href="https://robmclarty.com/blog/how-to-secure-your-web-app-using-https-with-letsencrypt"><em>How to Secure Your Web App Using HTTPS With Letsencrypt</em></a> 該篇文章做，不過有調整了以下的東西：</p>
 <ol>
 <li>建立 letsencrypt 帳號時，禁止使用 password login。<br>
    即： <code>adduser --disabled-password ...</code></li>
-<li>使用 git 管理 <a href="https://github.com/diafygi/acme-tiny/">acme-tiny</a>&nbsp;script。</li>
+<li>使用 git 管理 <a href="https://github.com/diafygi/acme-tiny/">acme-tiny</a> script。</li>
 <li>改用 systemd 控制 nginx，而不是透過 service。<br>
    即： <code>systemctl reload nginx</code></li>
 <li>沒有用 crontab 而是使用 <a href="https://wiki.archlinux.org/index.php/Systemd/Timers">systemd Timers</a>。</li>
-<li>重新導引 http 連線至&nbsp;https。</li>
+<li>重新導引 http 連線至 https。</li>
 </ol>
-<p>第 4、5&nbsp;點設定比較多，整理到後面。</p>
-<h3 id="systemd-timer-certificate">設定 systemd timer 定時更新&nbsp;certificate</h3>
-<p>這邊參考 <a href="http://www.certdepot.net/rhel7-use-systemd-timers/"><em><span class="caps">RHEL7</span>: How to use Systemd timers.</em></a>&nbsp;一文。</p>
-<p>Systemd Timer 概念如同 crontab，但差別是使用 timer 即與 systemd 整合。<code>&lt;unit&gt;.timer</code> 可以定期執行 <code>&lt;unit&gt;.service</code>，所以 <unit> 執行的結果與狀態都能顯示在 systemd 中，也帶入了 journald 有的 logging&nbsp;功能。</p>
-<p>更新 certificate 的指令寫在 <code>/etc/letsencrypt/renew_cert.sh</code>。Shell script&nbsp;的內容與參考文章一樣。</p>
-<h4 id="systemd-service">Systemd&nbsp;service</h4>
+<p>第 4、5 點設定比較多，整理到後面。</p>
+<h3 id="systemd-timer-certificate">設定 systemd timer 定時更新 certificate</h3>
+<p>這邊參考 <a href="http://www.certdepot.net/rhel7-use-systemd-timers/"><em>RHEL7: How to use Systemd timers.</em></a> 一文。</p>
+<p>Systemd Timer 概念如同 crontab，但差別是使用 timer 即與 systemd 整合。<code>&lt;unit&gt;.timer</code> 可以定期執行 <code>&lt;unit&gt;.service</code>，所以 <unit> 執行的結果與狀態都能顯示在 systemd 中，也帶入了 journald 有的 logging 功能。</p>
+<p>更新 certificate 的指令寫在 <code>/etc/letsencrypt/renew_cert.sh</code>。Shell script 的內容與參考文章一樣。</p>
+<h4 id="systemd-service">Systemd service</h4>
 <p>首先建立一個 renew_cert，以 Debian 為例放在 <code>/etc/systemd/system/renew_cert.service</code>，</p>
 <div class="highlight"><pre><span></span><span class="k">[Unit]</span>
 <span class="na">Description</span><span class="o">=</span><span class="s">Renew Let&#39;s Encrypt cert</span>
@@ -135,18 +97,18 @@
 </pre></div>
 
 
-<p>要手動更新 certificate 的時候執行這個 service&nbsp;即可，</p>
+<p>要手動更新 certificate 的時候執行這個 service 即可，</p>
 <div class="highlight"><pre><span></span>systemctl start renew_cert
 </pre></div>
 
 
-<p>我們不需要 enable&nbsp;它，不然每次開機都會執行一次。看結果或記錄，</p>
+<p>我們不需要 enable 它，不然每次開機都會執行一次。看結果或記錄，</p>
 <div class="highlight"><pre><span></span>systemctl status renew_cert
 journalctl -e -u renew_cert
 </pre></div>
 
 
-<h4 id="systemd-timer">Systemd&nbsp;Timer</h4>
+<h4 id="systemd-timer">Systemd Timer</h4>
 <p>建立一個 <code>/etc/systemd/system/renew_cert.timer</code></p>
 <div class="highlight"><pre><span></span><span class="k">[Unit]</span>
 <span class="na">Description</span><span class="o">=</span><span class="s">Update Let&#39;s Encrypt certificate every two months</span>
@@ -160,9 +122,9 @@ journalctl -e -u renew_cert
 </pre></div>
 
 
-<p>重點只有 <code>[Timer]</code> 這 directive。<code>Unit=</code> 表示要啟動的 service。<code>OnCalendar=</code><sup id="fnref:calendar"><a class="footnote-ref" href="#fn:calendar" rel="footnote">1</a></sup> 則是設定這 timer 根據指定的時間點 (<span class="caps">UTC</span> 時間<sup id="fnref:utc"><a class="footnote-ref" href="#fn:utc" rel="footnote">2</a></sup>)&nbsp;啟動。</p>
-<p>以這邊寫的時間 <code>*-1/2-1 16:00:00</code> 為例，代表每年的 1+2n 月 1 日 16:00 <span class="caps">UTC</span> 更新 certificate，即臺灣時間 1、3、5、……月 2&nbsp;日凌晨更新。</p>
-<p>啟用 timer，它需要被 enable&nbsp;確保重開機時被執行。</p>
+<p>重點只有 <code>[Timer]</code> 這 directive。<code>Unit=</code> 表示要啟動的 service。<code>OnCalendar=</code><sup id="fnref:calendar"><a class="footnote-ref" href="#fn:calendar" rel="footnote">1</a></sup> 則是設定這 timer 根據指定的時間點 (UTC 時間<sup id="fnref:utc"><a class="footnote-ref" href="#fn:utc" rel="footnote">2</a></sup>) 啟動。</p>
+<p>以這邊寫的時間 <code>*-1/2-1 16:00:00</code> 為例，代表每年的 1+2n 月 1 日 16:00 UTC 更新 certificate，即臺灣時間 1、3、5、……月 2 日凌晨更新。</p>
+<p>啟用 timer，它需要被 enable 確保重開機時被執行。</p>
 <div class="highlight"><pre><span></span>systemctl enable renew_cert.timer
 systemctl start renew_cert.timer
 </pre></div>
@@ -175,10 +137,10 @@ systemctl start renew_cert.timer
 </pre></div>
 
 
-<h3 id="nginx-http-redirect-to-https">nginx <span class="caps">HTTP</span> redirect to <span class="caps">HTTPS</span></h3>
-<p>（這邊設定我沒信心，有更好的設定方法歡迎告訴我 &gt;&nbsp;&lt;）</p>
-<p>要解決的問題為，<span class="caps">ACME</span> challenge 是透過 <span class="caps">HTTP</span>，其餘的連線都轉到 <span class="caps">HTTPS</span>。</p>
-<p>在 nginx 中把主要的設定檔中拿掉 <code>listen 80;</code> 與 <span class="caps">ACM</span> challenge 的部份。把它們移成新的 server&nbsp;block： </p>
+<h3 id="nginx-http-redirect-to-https">nginx HTTP redirect to HTTPS</h3>
+<p>（這邊設定我沒信心，有更好的設定方法歡迎告訴我 &gt; &lt;）</p>
+<p>要解決的問題為，ACME challenge 是透過 HTTP，其餘的連線都轉到 HTTPS。</p>
+<p>在 nginx 中把主要的設定檔中拿掉 <code>listen 80;</code> 與 ACM challenge 的部份。把它們移成新的 server block： </p>
 <div class="highlight"><pre><span></span><span class="k">server</span> <span class="p">{</span>
     <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
     <span class="kn">server_name</span> <span class="s">docs.python.org.tw</span><span class="p">;</span>
@@ -196,8 +158,8 @@ systemctl start renew_cert.timer
 </pre></div>
 
 
-<h3 id="https">測試 <span class="caps">HTTPS</span>&nbsp;設定</h3>
-<p>用了 <a href="https://securityheaders.io/">securityheaders.io</a> 和 <a href="https://www.ssllabs.com/index.html"><span class="caps">SSL</span> Labs</a>&nbsp;測試了一下，應該還可以：</p>
+<h3 id="https">測試 HTTPS 設定</h3>
+<p>用了 <a href="https://securityheaders.io/">securityheaders.io</a> 和 <a href="https://www.ssllabs.com/index.html">SSL Labs</a> 測試了一下，應該還可以：</p>
 <div class="figure">
   <img src="https://blog.liang2.tw/posts/2016/02/pydoctw-https/pics/pydoctw_securityheaders_report.png"/>
   <p class="caption center">Report from securityheaders.io (<a href="https://securityheaders.io/?q=https%3A%2F%2Fdocs.python.org.tw%2F3%2F">Live Report</a>)</p>
@@ -205,15 +167,15 @@ systemctl start renew_cert.timer
 
 <div class="figure">
   <img src="https://blog.liang2.tw/posts/2016/02/pydoctw-https/pics/pydoctw_ssllabs_report.png"/>
-  <p class="caption center">Report from <span class="caps">SSL</span> Labs (<a href="https://www.ssllabs.com/ssltest/analyze.html?d=docs.python.org.tw">Live Report</a>)</p>
+  <p class="caption center">Report from SSL Labs (<a href="https://www.ssllabs.com/ssltest/analyze.html?d=docs.python.org.tw">Live Report</a>)</p>
 </div>
 
 <h3 id="_2">心得</h3>
-<p>總結來說，使用 <a href="https://letsencrypt.org/">Let&rsquo;s Encrypt</a>&nbsp;不難，但也沒到非常簡單。</p>
-<p>如果你願意把 root 和 private key 權限給它的話，用官方 client 提供的 <code>letsencrypt-auto</code> 步驟能更少，用 Apache 它聲稱能全自動設定。覺得 <a href="https://github.com/diafygi/acme-tiny/">acme-tiny</a> 指令太複雜的話，原作者也寫了一個 <a href="https://gethttpsforfree.com/">Get <span class="caps">HTTPS</span> for free!</a>&nbsp;服務，用網頁的方式協助整個註冊流程。</p>
-<p>要注意目前 public beta 階段，相同 domain 在 7 天只能被簽署 5&nbsp;次，測試的時候不要太衝動不然就要等一週了。</p>
+<p>總結來說，使用 <a href="https://letsencrypt.org/">Let&rsquo;s Encrypt</a> 不難，但也沒到非常簡單。</p>
+<p>如果你願意把 root 和 private key 權限給它的話，用官方 client 提供的 <code>letsencrypt-auto</code> 步驟能更少，用 Apache 它聲稱能全自動設定。覺得 <a href="https://github.com/diafygi/acme-tiny/">acme-tiny</a> 指令太複雜的話，原作者也寫了一個 <a href="https://gethttpsforfree.com/">Get HTTPS for free!</a> 服務，用網頁的方式協助整個註冊流程。</p>
+<p>要注意目前 public beta 階段，相同 domain 在 7 天只能被簽署 5 次，測試的時候不要太衝動不然就要等一週了。</p>
 <h3 id="misc">Misc.</h3>
-<p>建立 <span class="caps">CSR</span> (Certificate Signing Request) 檔時，可以加入自己的 email 地址，不然預設是 <code>webmaster@&lt;domain&gt;</code>：</p>
+<p>建立 CSR (Certificate Signing Request) 檔時，可以加入自己的 email 地址，不然預設是 <code>webmaster@&lt;domain&gt;</code>：</p>
 <div class="highlight"><pre><span></span>openssl req -new -sha256 <span class="se">\</span>
     -key /etc/letsencrypt/private/domain.key <span class="se">\</span>
     -subj <span class="s2">&quot;/CN=docs.python.org.tw/emailAddress=me+pydoctw@liang2.tw&quot;</span> <span class="se">\</span>
@@ -231,61 +193,62 @@ systemctl start renew_cert.timer
 <p>Debian Jessie 的 <a href="https://www.freedesktop.org/software/systemd/man/systemd.time.html#Calendar%20Events">systemd.time (7)</a> Calendar Events 裡並沒有指定時區的方式，所以加上時區會有 parse error。但新版的 systemd 似乎支援時區。總之應該用 <code>systemctl list-timers</code> 確定執行的時間。&#160;<a class="footnote-backref" href="#fnref:utc" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 </ol>
-</div>
-  </div>
-  <div class="tag-cloud">
-    <p>
-      <a href="https://blog.liang2.tw/tag/zh.html">zh</a>
-      <a href="https://blog.liang2.tw/tag/pydoctw.html">pydoctw</a>
-      <a href="https://blog.liang2.tw/tag/https.html">https</a>
-      <a href="https://blog.liang2.tw/tag/letsencrypt.html">letsencrypt</a>
-    </p>
-  </div>
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'liang2';
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-</article>
-
+</div></section>
+    <footer class="post-footer">
+<section class="share">
+    <h2>Share</h2>
+    <a class="icon-twitter" href="https://twitter.com/share?text=Python 官方文件中文化 Server HTTPS 使用 Let's Encrypt&amp;url=https://blog.liang2.tw/posts/2016/02/pydoctw-https/"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u=https://blog.liang2.tw/posts/2016/02/pydoctw-https/"
+        onclick="window.open(this.href, 'facebook-share', 'width=580,height=296'); return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.liang2.tw/posts/2016/02/pydoctw-https/"
+        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2016/02/pydoctw-https/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2016/02/pydoctw-https/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
     <footer>
-<p>
-  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
-</p>
-<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
-  <a rel="license"
-     href="http://creativecommons.org/licenses/by/4.0/"
-     target="_blank">
-    <img alt="Creative Commons License"
-         title="Creative Commons License"
-         style="border-width:0"
-         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
-         width="80"
-         height="15"/>
-  </a>
-</p>    </footer>
-  </main>
-<script type="application/ld+json">
-{
-  "@context": "http://schema.org",
-  "@type": "BlogPosting",
-  "name": "Python 官方文件中文化 Server <span class="caps">HTTPS</span> 使用 Let&#8217;s&nbsp;Encrypt",
-  "headline": "Python 官方文件中文化 Server <span class="caps">HTTPS</span> 使用 Let&#8217;s&nbsp;Encrypt",
-  "datePublished": "2016-02-21 14:00:00+08:00",
-  "dateModified": "",
-  "author": {
-    "@type": "Person",
-    "name": "Liang2",
-    "url": "https://blog.liang2.tw/author/liang2.html"
-  },
-  "image": "https://blog.liang2.tw/pics/headpic.jpg",
-  "url": "https://blog.liang2.tw/posts/2016/02/pydoctw-https/",
-  "description": "整理了 server 從 HTTP 到 HTTPS 相關設定的調整。"
-}
-</script></body>
+</article>
+    </main>
+    <footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags/">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">Built using <a href="http://getpelican.com/">Pelican</a>. Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.</section>
+		</div>
+    </footer>
+</body>
 </html>

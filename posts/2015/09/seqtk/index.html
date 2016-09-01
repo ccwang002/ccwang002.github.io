@@ -1,86 +1,48 @@
 <!DOCTYPE html>
-<html lang="zh-hant">
+<html lang="en">
 <head>
-  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
-  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css">
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.min.css">
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/font-awesome.min.css">
-  <!-- Justfont webfont -->
-  <!-- Local development -->
-  <!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
-  <!-- Proudction version v4.9.4 -->
-  <script src="https://blog.liang2.tw/theme/js/justfont_v4.9.4.js" type="text/javascript" charset="utf-8"></script>
-  <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+            <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+        <link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
 
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="" />
-<meta name="author" content="Liang2" />
-<meta name="description" content="This post demonstrates the FASTQ to FASTA conversion and sequence quality check using seqtk." />
-<meta name="keywords" content="en, seqtk, NGS">
-<meta property="og:site_name" content="Liang2's blog"/>
-<meta property="og:title" content="FASTA/Q sequence processing toolkit — seqtk"/>
-<meta property="og:description" content="This post demonstrates the FASTQ to FASTA conversion and sequence quality check using seqtk."/>
-<meta property="og:locale" content="zh_TW"/>
-<meta property="og:url" content="https://blog.liang2.tw/posts/2015/09/seqtk/"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2015-09-27 14:11:00+08:00"/>
-<meta property="article:modified_time" content="2015-09-27 14:11:00+08:00"/>
-<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
-<meta property="article:section" content="Bioinfo"/>
-<meta property="article:tag" content="en"/>
-<meta property="article:tag" content="seqtk"/>
-<meta property="article:tag" content="NGS"/>
-<meta name="twitter:card" content="summary">
-<meta name="twitter:site" content="@ccwang002">
-<meta name="twitter:title" content="FASTA/Q sequence processing toolkit — seqtk">
-<meta name="twitter:description" content="This post demonstrates the FASTQ to FASTA conversion and sequence quality check using seqtk.">
-  <title>FASTA/Q sequence processing toolkit — seqtk &ndash; Liang2's blog</title>
+		<link href="https://blog.liang2.tw/theme/css/haunter.css?0f9ace0e" rel="stylesheet" />
+
+		<title>FASTA/Q sequence processing toolkit -- seqtk</title>
+		<!-- Justfont webfont -->
+		<!-- Local development -->
+		<!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+		<!-- Proudction version -->
+		<script src="https://blog.liang2.tw/theme/js/justfont.js" type="text/javascript" charset="utf-8"></script>
 </head>
-<body>
-  <aside>
-    <div>
-      <a href="https://blog.liang2.tw">
-        <img src="https://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
-      </a>
-      <h1><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
-      <p>Code / Stat / Bioinfo</p>
-      <nav>
-        <ul class="list">
-          <li><a href="https://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
-          <li><a href="https://blog.liang2.tw/talks/#talks">Talks</a></li>
-        </ul>
-      </nav>
-      <ul class="social">
-        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
-        <li><a class="sc-envelope-o" href="mailto:me+blog@liang2.tw" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
-        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-      </ul>
-    </div>
-  </aside>
-  <main>
-    <nav>
-      <a href="https://blog.liang2.tw">Home</a>
-      <a href="/archives.html">Archives</a>
-      <a href="/categories.html">Categories</a>
-      <a href="/tags.html">Tags</a>
-      <a href="https://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
-    </nav>
 
-<article>
-  <header>
-    <h1 id="seqtk"><span class="caps">FASTA</span>/Q sequence processing toolkit &#8212;&nbsp;seqtk</h1>
-    <p>Posted on Sep 27, 2015
-      in <a href="https://blog.liang2.tw/category/bioinfo.html">Bioinfo</a>
-    </p>
-  </header>
-  <div>
-    <p>This is the first post of the series of my common <span class="caps">NGS</span> processing workflows and&nbsp;notes.</p>
-<p>Some of the most common operation in sequence processing is <span class="caps">FASTQ</span> → <span class="caps">FASTA</span> conversion. Tons of conversion scripts using either sed or awk can be found by search. For&nbsp;example,</p>
+<body class="post-template">
+    <header class="site-head">
+			<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+				<h2 class="blog-description">
+					<a href="https://blog.liang2.tw/about-me/">About</a> |
+					<a href="https://blog.liang2.tw/talks/">Talks</a> |
+					<a href="https://blog.liang2.tw/archives.html">Archives</a>
+				</h2>
+    </header>
+    <main id="content" class="content" role="main">
+<article class="post">
+    <span class="post-meta">
+        <time datetime="Sep 27, 2015">Sep 27, 2015</time>
+        in <a href="https://blog.liang2.tw/category/bioinfo/">Bioinfo</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2015/09/seqtk/" rel="bookmark" title="Permalink to FASTA/Q sequence processing toolkit -- seqtk">FASTA/Q sequence processing toolkit -- seqtk</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/en/">en</a>
+                <a href="https://blog.liang2.tw/tag/seqtk/">seqtk</a>
+                <a href="https://blog.liang2.tw/tag/ngs/">NGS</a>
+    </span>
+    <section class="post-content"><p>This is the first post of the series of my common NGS processing workflows and notes.</p>
+<p>Some of the most common operation in sequence processing is FASTQ → FASTA conversion. Tons of conversion scripts using either sed or awk can be found by search. For example,</p>
 <div class="highlight"><pre><span></span><span class="c1"># FASTQ to FASTA</span>
 <span class="c1"># Assume every read record takes exactly 4 line</span>
 <span class="c1"># Ref: http://stackoverflow.com/a/10359425</span>
@@ -88,16 +50,16 @@ $ sed -n <span class="s1">&#39;1~4s/^@/&gt;/p;2~4p&#39;</span>
 </pre></div>
 
 
-<p>The assumption of 4 lines per read usually holds for recent <span class="caps">NGS</span> sequencing data, so not a big&nbsp;deal.</p>
-<p>In many case the sequence is gzip&rsquo;d. It is still a piece of cake when combining with pipe&nbsp;editing,</p>
+<p>The assumption of 4 lines per read usually holds for recent NGS sequencing data, so not a big deal.</p>
+<p>In many case the sequence is gzip&rsquo;d. It is still a piece of cake when combining with pipe editing,</p>
 <div class="highlight"><pre><span></span>gzcat myseq.fq.gz <span class="p">|</span> sed -n <span class="s1">&#39;1~4s/^@/&gt;/p;2~4p&#39;</span> <span class="p">|</span> gzip &gt; myseq.fa.gz
 </pre></div>
 
 
-<p>However, things can get complex really fast when one wants to additionally do reverse complement, randomly sample a subset of reads, and many other types of sequence manipulation. Efficiency matters if those tasks are applied to tens of millions of reads. Even a few nanoseconds longer of computing time difference per read can make a difference at this scale of&nbsp;reads.</p>
+<p>However, things can get complex really fast when one wants to additionally do reverse complement, randomly sample a subset of reads, and many other types of sequence manipulation. Efficiency matters if those tasks are applied to tens of millions of reads. Even a few nanoseconds longer of computing time difference per read can make a difference at this scale of reads.</p>
 <h3 id="seqtk">Seqtk</h3>
-<p>So <a href="https://github.com/lh3/seqtk">seqtk</a> comes into rescue. It is written in C and <span class="caps">MIT</span> licensed. <a href="https://www.biostars.org/p/85929/#86082">A quick comparison</a> shows it is generally faster than other <span class="caps">UNIX</span>-based solutions, let alone implementations based on scripting&nbsp;languages.</p>
-<p>Seqtk bundles many other operations, but I&rsquo;ll just mention those I frequently&nbsp;use.</p>
+<p>So <a href="https://github.com/lh3/seqtk">seqtk</a> comes into rescue. It is written in C and MIT licensed. <a href="https://www.biostars.org/p/85929/#86082">A quick comparison</a> shows it is generally faster than other UNIX-based solutions, let alone implementations based on scripting languages.</p>
+<p>Seqtk bundles many other operations, but I&rsquo;ll just mention those I frequently use.</p>
 <div class="highlight"><pre><span></span><span class="nv">$seqtk</span>
 
 Usage:   seqtk &lt;command&gt; &lt;arguments&gt;
@@ -122,19 +84,19 @@ Command: seq       common transformation of FASTA/Q
 </pre></div>
 
 
-<h3 id="fastq-fasta"><span class="caps">FASTQ</span> → <span class="caps">FASTA</span></h3>
-<p>Read (gzip&rsquo;d) <span class="caps">FASTQ</span> and write out as <span class="caps">FASTA</span>,</p>
+<h3 id="fastq-fasta">FASTQ → FASTA</h3>
+<p>Read (gzip&rsquo;d) FASTQ and write out as FASTA,</p>
 <div class="highlight"><pre><span></span>$ seqtk seq -A in.fq<span class="o">[</span>.gz<span class="o">]</span> &gt; out.fa
 </pre></div>
 
 
-<p>To make the output gzip&rsquo;d again, piped with&nbsp;gzip,</p>
+<p>To make the output gzip&rsquo;d again, piped with gzip,</p>
 <div class="highlight"><pre><span></span>$ seqtk seq -A in.fq<span class="o">[</span>.gz<span class="o">]</span> <span class="p">|</span> gzip &gt; out.fa.gz
 </pre></div>
 
 
-<h3 id="reverse-complement">Reverse&nbsp;complement</h3>
-<p>If one wants to debug the R2 reads of pair-end sequencing (second read on forward strand), since they contain reverse complement sequence of the insert <span class="caps">DNA</span>, one needs to reverse complement R2 reads again to debug directly by bare human&nbsp;eyes.</p>
+<h3 id="reverse-complement">Reverse complement</h3>
+<p>If one wants to debug the R2 reads of pair-end sequencing (second read on forward strand), since they contain reverse complement sequence of the insert DNA, one needs to reverse complement R2 reads again to debug directly by bare human eyes.</p>
 <div class="highlight"><pre><span></span>$ seqtk seq -r R2.fq &gt; R2_rc.fq
 
 $ <span class="nb">echo</span> <span class="s1">&#39;&gt; Example R2 seq</span>
@@ -144,14 +106,14 @@ $ <span class="nb">echo</span> <span class="s1">&#39;&gt; Example R2 seq</span>
 </pre></div>
 
 
-<h3 id="quality-check">Quality&nbsp;check</h3>
+<h3 id="quality-check">Quality check</h3>
 <p>To be honest, <a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> is more frequently used for quality check because it generates <a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/good_sequence_short_fastqc.html">reports with beautiful figures</a>.</p>
 <p>But for a detail report on each read position, one should consider <code>seqtk fqchk</code>.</p>
 <div class="highlight"><pre><span></span>$ seqtk fqchk myseq.fq<span class="o">[</span>.gz<span class="o">]</span>
 </pre></div>
 
 
-<p>By default it sets <code>-q 20</code>. This quality threshold determines the threshold of counting a base as low or high quality, shown as <code>%low</code> and <code>%high</code> per read position. In the default case, quality score higher than 20 will be treated as high quality&nbsp;bases.</p>
+<p>By default it sets <code>-q 20</code>. This quality threshold determines the threshold of counting a base as low or high quality, shown as <code>%low</code> and <code>%high</code> per read position. In the default case, quality score higher than 20 will be treated as high quality bases.</p>
 <div class="highlight"><pre><span></span>min_len: 10; max_len: 174; avg_len: 28.92; 37 distinct quality values
 POS #bases    %A   %C   %G   %T   %N  avgQ errQ %low %high
 ALL 236344886 17.0 22.5 31.3 29.2 0.0 39.9 37.6 0.1  99.9
@@ -164,16 +126,16 @@ ALL 236344886 17.0 22.5 31.3 29.2 0.0 39.9 37.6 0.1  99.9
 </pre></div>
 
 
-<p>The following columns, <code>avgQ</code> and <code>errQ</code>, need more explanation. Average quality (<code>avgQ</code>) is computed by weighted mean of each base&rsquo;s&nbsp;quality,</p>
+<p>The following columns, <code>avgQ</code> and <code>errQ</code>, need more explanation. Average quality (<code>avgQ</code>) is computed by weighted mean of each base&rsquo;s quality,</p>
 <div class="math">$$
     \text{avgQ} = \dfrac{\sum_{q=0}^{93} q \cdot n_q}{\sum_{q = 0}^{93} n_q},
 $$</div>
-<p>where <span class="math">\(n_q\)</span> is the number of bases with quality score being <span class="math">\(q\)</span>. The magic number 93 comes from the quality score of Sanger sequencing<sup id="fnref:sanger-qual-score"><a class="footnote-ref" href="#fn:sanger-qual-score" rel="footnote">1</a></sup>, whose score ranges from 0 to&nbsp;93.</p>
-<p>For <code>errQ</code> we need more background knowledge about how quality score is computed. A base with quality score <span class="math">\(q\)</span> implies the probability of being erroneously called, <span class="math">\(P_q\)</span>,&nbsp;is </p>
+<p>where <span class="math">\(n_q\)</span> is the number of bases with quality score being <span class="math">\(q\)</span>. The magic number 93 comes from the quality score of Sanger sequencing<sup id="fnref:sanger-qual-score"><a class="footnote-ref" href="#fn:sanger-qual-score" rel="footnote">1</a></sup>, whose score ranges from 0 to 93.</p>
+<p>For <code>errQ</code> we need more background knowledge about how quality score is computed. A base with quality score <span class="math">\(q\)</span> implies the probability of being erroneously called, <span class="math">\(P_q\)</span>, is </p>
 <div class="math">$$
     P_q = 10^{\frac{-q}{10}}, \hspace{1em} q = -10\log_{10}{P_q}.
 $$</div>
-<p>Therefore, given <span class="math">\(q\)</span> being <span class="math">\(0, 1, 2, \ldots\)</span>, seqtk has a conversion table <code>perr</code> from quality score to&nbsp;probability,</p>
+<p>Therefore, given <span class="math">\(q\)</span> being <span class="math">\(0, 1, 2, \ldots\)</span>, seqtk has a conversion table <code>perr</code> from quality score to probability,</p>
 <table>
 <thead>
 <tr>
@@ -218,7 +180,7 @@ $$</div>
 </tr>
 </tbody>
 </table>
-<p>Based on the probability, it computes the expected number of base call errors, num_err, and the empirical probability of having a base call error at this position,&nbsp;errP, </p>
+<p>Based on the probability, it computes the expected number of base call errors, num_err, and the empirical probability of having a base call error at this position, errP, </p>
 <div class="math">$$
     \text{num_err} = \sum_q P_q \cdot n_q, \hspace{1em} \text{errP} = \frac{\text{num_err}}{\sum_q n_q}.
 $$</div>
@@ -226,15 +188,15 @@ $$</div>
 <div class="math">$$
     \text{errQ} = -10\log_{10}{\text{errP}}.
 $$</div>
-<p>By passing <code>-q 0</code> to <code>seqtk fqchk</code>, one can get the proportion of all distinct quality scores at each position. This information is pretty useful if the sequencing data is all a mess and one needs to figure out the&nbsp;cause.</p>
-<p>Though some of the <code>seqtk fqchk</code><span class="quo">&lsquo;</span>s behavior is not documented, it should be straight forward enough to understand. All in all, the details can always be found in the <a href="https://github.com/lh3/seqtk/blob/4feb6e81444ab6bc44139dd3a125068f81ae4ad8/seqtk.c#L1483">source code</a>.</p>
+<p>By passing <code>-q 0</code> to <code>seqtk fqchk</code>, one can get the proportion of all distinct quality scores at each position. This information is pretty useful if the sequencing data is all a mess and one needs to figure out the cause.</p>
+<p>Though some of the <code>seqtk fqchk</code>&lsquo;s behavior is not documented, it should be straight forward enough to understand. All in all, the details can always be found in the <a href="https://github.com/lh3/seqtk/blob/4feb6e81444ab6bc44139dd3a125068f81ae4ad8/seqtk.c#L1483">source code</a>.</p>
 <h3 id="summary">Summary</h3>
-<p><a href="https://github.com/lh3/seqtk">Seqtk</a> is fast to use for daily routines of <span class="caps">FASTA</span>/Q conversion. On top of that it provide various functionalities such as read random sampling, quality check, and many I haven&rsquo;t tried or&nbsp;mentioned.</p>
+<p><a href="https://github.com/lh3/seqtk">Seqtk</a> is fast to use for daily routines of FASTA/Q conversion. On top of that it provide various functionalities such as read random sampling, quality check, and many I haven&rsquo;t tried or mentioned.</p>
 <div class="footnote">
 <hr />
 <ol>
 <li id="fn:sanger-qual-score">
-<p>See multiple specifications of quality score at <a href="http://scikit-bio.org/docs/latest/generated/skbio.io.format.fastq.html#quality-score-variants">sckit-bio doc</a>. The score is <a href="https://en.wikipedia.org/wiki/Phred_quality_score">Phred quality score</a>. More other score representations can be found at <a href="https://en.wikipedia.org/wiki/FASTQ_format"><span class="caps">FASTQ</span> wiki</a>.&#160;<a class="footnote-backref" href="#fnref:sanger-qual-score" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p>See multiple specifications of quality score at <a href="http://scikit-bio.org/docs/latest/generated/skbio.io.format.fastq.html#quality-score-variants">sckit-bio doc</a>. The score is <a href="https://en.wikipedia.org/wiki/Phred_quality_score">Phred quality score</a>. More other score representations can be found at <a href="https://en.wikipedia.org/wiki/FASTQ_format">FASTQ wiki</a>.&#160;<a class="footnote-backref" href="#fnref:sanger-qual-score" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:2">
 <p>Note that the probability of q less than 4 is fixed with 0.5. A quick computation can see when <span class="math">\(q = 3\)</span>, its actual Phred probability is <span class="math">\(10 ^ {-0.3} = 0.501\)</span>.&#160;<a class="footnote-backref" href="#fnref:2" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
@@ -297,60 +259,62 @@ $$</div>
         "}";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-</script>
-  </div>
-  <div class="tag-cloud">
-    <p>
-      <a href="https://blog.liang2.tw/tag/en.html">en</a>
-      <a href="https://blog.liang2.tw/tag/seqtk.html">seqtk</a>
-      <a href="https://blog.liang2.tw/tag/ngs.html">NGS</a>
-    </p>
-  </div>
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'liang2';
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-</article>
-
+</script></section>
+    <footer class="post-footer">
+<section class="share">
+    <h2>Share</h2>
+    <a class="icon-twitter" href="https://twitter.com/share?text=FASTA/Q sequence processing toolkit -- seqtk&amp;url=https://blog.liang2.tw/posts/2015/09/seqtk/"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u=https://blog.liang2.tw/posts/2015/09/seqtk/"
+        onclick="window.open(this.href, 'facebook-share', 'width=580,height=296'); return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.liang2.tw/posts/2015/09/seqtk/"
+        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2015/09/seqtk/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2015/09/seqtk/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
     <footer>
-<p>
-  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
-</p>
-<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
-  <a rel="license"
-     href="http://creativecommons.org/licenses/by/4.0/"
-     target="_blank">
-    <img alt="Creative Commons License"
-         title="Creative Commons License"
-         style="border-width:0"
-         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
-         width="80"
-         height="15"/>
-  </a>
-</p>    </footer>
-  </main>
-<script type="application/ld+json">
-{
-  "@context": "http://schema.org",
-  "@type": "BlogPosting",
-  "name": "<span class="caps">FASTA</span>/Q sequence processing toolkit &#8212;&nbsp;seqtk",
-  "headline": "<span class="caps">FASTA</span>/Q sequence processing toolkit &#8212;&nbsp;seqtk",
-  "datePublished": "2015-09-27 14:11:00+08:00",
-  "dateModified": "",
-  "author": {
-    "@type": "Person",
-    "name": "Liang2",
-    "url": "https://blog.liang2.tw/author/liang2.html"
-  },
-  "image": "https://blog.liang2.tw/pics/headpic.jpg",
-  "url": "https://blog.liang2.tw/posts/2015/09/seqtk/",
-  "description": "This post demonstrates the FASTQ to FASTA conversion and sequence quality check using seqtk."
-}
-</script></body>
+</article>
+    </main>
+    <footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags/">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">Built using <a href="http://getpelican.com/">Pelican</a>. Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.</section>
+		</div>
+    </footer>
+</body>
 </html>

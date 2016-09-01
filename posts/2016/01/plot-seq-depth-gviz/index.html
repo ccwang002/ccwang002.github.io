@@ -1,128 +1,88 @@
 <!DOCTYPE html>
-<html lang="zh-hant">
+<html lang="en">
 <head>
-  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
-  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css">
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.min.css">
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/font-awesome.min.css">
-  <!-- Justfont webfont -->
-  <!-- Local development -->
-  <!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
-  <!-- Proudction version v4.9.4 -->
-  <script src="https://blog.liang2.tw/theme/js/justfont_v4.9.4.js" type="text/javascript" charset="utf-8"></script>
-  <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+            <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+        <link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
 
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="" />
-<meta name="author" content="Liang2" />
-<meta name="description" content="TL;DR Plot exome sequencing depth and coverage with genome annotation using Gviz in R. Then apply detail control on Gviz annotation track displaying ..." />
-<meta name="keywords" content="en, r, bioconductor, gviz, NGS">
-<meta property="og:site_name" content="Liang2's blog"/>
-<meta property="og:title" content="Plot Sequencing Depth with Gviz"/>
-<meta property="og:description" content="TL;DR Plot exome sequencing depth and coverage with genome annotation using Gviz in R. Then apply detail control on Gviz annotation track displaying ..."/>
-<meta property="og:locale" content="zh_TW"/>
-<meta property="og:url" content="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2016-01-15 23:50:00+08:00"/>
-<meta property="article:modified_time" content="2016-01-15 23:50:00+08:00"/>
-<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
-<meta property="article:section" content="Bioinfo"/>
-<meta property="article:tag" content="en"/>
-<meta property="article:tag" content="r"/>
-<meta property="article:tag" content="bioconductor"/>
-<meta property="article:tag" content="gviz"/>
-<meta property="article:tag" content="NGS"/>
-<meta name="twitter:card" content="summary">
-<meta name="twitter:site" content="@ccwang002">
-<meta name="twitter:title" content="Plot Sequencing Depth with Gviz">
-<meta name="twitter:description" content="TL;DR Plot exome sequencing depth and coverage with genome annotation using Gviz in R. Then apply detail control on Gviz annotation track displaying ...">
-<meta property="og:image" content="http://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_gene_symbol.png">
-<meta name="twitter:image" content="http://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_gene_symbol.png">
-  <title>Plot Sequencing Depth with Gviz &ndash; Liang2's blog</title>
+		<link href="https://blog.liang2.tw/theme/css/haunter.css?0f9ace0e" rel="stylesheet" />
+
+		<title>Plot Sequencing Depth with Gviz</title>
+		<!-- Justfont webfont -->
+		<!-- Local development -->
+		<!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+		<!-- Proudction version -->
+		<script src="https://blog.liang2.tw/theme/js/justfont.js" type="text/javascript" charset="utf-8"></script>
 </head>
-<body>
-  <aside>
-    <div>
-      <a href="https://blog.liang2.tw">
-        <img src="https://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
-      </a>
-      <h1><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
-      <p>Code / Stat / Bioinfo</p>
-      <nav>
-        <ul class="list">
-          <li><a href="https://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
-          <li><a href="https://blog.liang2.tw/talks/#talks">Talks</a></li>
-        </ul>
-      </nav>
-      <ul class="social">
-        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
-        <li><a class="sc-envelope-o" href="mailto:me+blog@liang2.tw" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
-        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-      </ul>
-    </div>
-  </aside>
-  <main>
-    <nav>
-      <a href="https://blog.liang2.tw">Home</a>
-      <a href="/archives.html">Archives</a>
-      <a href="/categories.html">Categories</a>
-      <a href="/tags.html">Tags</a>
-      <a href="https://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
-    </nav>
 
-<article>
-  <header>
-    <h1 id="plot-seq-depth-gviz">Plot Sequencing Depth with&nbsp;Gviz</h1>
-    <p>Posted on Jan 15, 2016
-      in <a href="https://blog.liang2.tw/category/bioinfo.html">Bioinfo</a>
-    </p>
-  </header>
-  <div>
-    <p><em><strong><span class="caps">TL</span>;<span class="caps">DR</span></strong> Plot exome sequencing depth and coverage with genome annotation using Gviz in R. Then apply detail control on Gviz annotation track&nbsp;displaying.</em></p>
-<p>This is an extending post from <a href="https://blog.liang2.tw/posts/2015/12/biocondutor-genomic-data/">Genomic Data Processing in Bioconductor</a>, though I haven&rsquo;t finished reading all the reference in that post. The background knowledge of this post is basic understanding of how to deal with annotation and genome reference in Bioconductor/R. If you don&rsquo;t deal with genome annotations in R before, you should find some time learning it anyway, a truly life&nbsp;saver.</p>
+<body class="post-template">
+    <header class="site-head">
+			<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+				<h2 class="blog-description">
+					<a href="https://blog.liang2.tw/about-me/">About</a> |
+					<a href="https://blog.liang2.tw/talks/">Talks</a> |
+					<a href="https://blog.liang2.tw/archives.html">Archives</a>
+				</h2>
+    </header>
+    <main id="content" class="content" role="main">
+<article class="post">
+    <span class="post-meta">
+        <time datetime="Jan 15, 2016">Jan 15, 2016</time>
+        in <a href="https://blog.liang2.tw/category/bioinfo/">Bioinfo</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/" rel="bookmark" title="Permalink to Plot Sequencing Depth with Gviz">Plot Sequencing Depth with Gviz</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/en/">en</a>
+                <a href="https://blog.liang2.tw/tag/r/">r</a>
+                <a href="https://blog.liang2.tw/tag/bioconductor/">bioconductor</a>
+                <a href="https://blog.liang2.tw/tag/gviz/">gviz</a>
+                <a href="https://blog.liang2.tw/tag/ngs/">NGS</a>
+    </span>
+    <section class="post-content"><p><em><strong>TL;DR</strong> Plot exome sequencing depth and coverage with genome annotation using Gviz in R. Then apply detail control on Gviz annotation track displaying.</em></p>
+<p>This is an extending post from <a href="https://blog.liang2.tw/posts/2015/12/biocondutor-genomic-data/">Genomic Data Processing in Bioconductor</a>, though I haven&rsquo;t finished reading all the reference in that post. The background knowledge of this post is basic understanding of how to deal with annotation and genome reference in Bioconductor/R. If you don&rsquo;t deal with genome annotations in R before, you should find some time learning it anyway, a truly life saver.</p>
 <div class="toc">
 <ul>
-<li><a href="#convert-sequencing-depth-to-bedgraph-format">Convert sequencing depth to BedGraph&nbsp;format</a></li>
+<li><a href="#convert-sequencing-depth-to-bedgraph-format">Convert sequencing depth to BedGraph format</a></li>
 <li><a href="#plot-depth-in-gviz">Plot depth in Gviz</a><ul>
-<li><a href="#first-gviz-track">First Gviz&nbsp;track</a></li>
-<li><a href="#add-genome-axis">Add genome&nbsp;axis</a></li>
-<li><a href="#add-annotation">Add&nbsp;annotation</a></li>
+<li><a href="#first-gviz-track">First Gviz track</a></li>
+<li><a href="#add-genome-axis">Add genome axis</a></li>
+<li><a href="#add-annotation">Add annotation</a></li>
 </ul>
 </li>
 <li><a href="#plot-fine-tune">Plot fine tune</a><ul>
 <li><a href="#genome-annotation-query-in-bioconductorr">Genome annotation query in Bioconductor/R</a><ul>
-<li><a href="#via-transcripts">via&nbsp;transcripts()</a></li>
-<li><a href="#via-exonsby">via&nbsp;exonsBy()</a></li>
+<li><a href="#via-transcripts">via transcripts()</a></li>
+<li><a href="#via-exonsby">via exonsBy()</a></li>
 </ul>
 </li>
-<li><a href="#show-only-the-annotations-of-certain-genes">Show only the annotations of certain&nbsp;genes</a></li>
-<li><a href="#display-gene-symbols-at-annotation-track">Display gene symbols at annotation&nbsp;track</a></li>
+<li><a href="#show-only-the-annotations-of-certain-genes">Show only the annotations of certain genes</a></li>
+<li><a href="#display-gene-symbols-at-annotation-track">Display gene symbols at annotation track</a></li>
 </ul>
 </li>
 <li><a href="#summary">Summary</a></li>
-<li><a href="#supplementary-plot-bam-files-directly">Supplementary - Plot <span class="caps">BAM</span> files directly</a><ul>
-<li><a href="#fancier-alignment-display">Fancier alignment&nbsp;display</a></li>
+<li><a href="#supplementary-plot-bam-files-directly">Supplementary - Plot BAM files directly</a><ul>
+<li><a href="#fancier-alignment-display">Fancier alignment display</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<p>I got the chance trying new tricks today when I and other lab members were analyzing our human cancer exome sequencing data. The results were a bunch of <span class="caps">BAM</span> files aligned by <a href="https://github.com/lh3/bwa"><span class="caps">BWA</span>-<span class="caps">MEM</span></a> using reference&nbsp;hg19.</p>
-<p>We want to see how was the sequencing depth and the coverage of all exons designed to be sequenced. Roughly, this can be done in the genome viewer such as <a href="https://www.broadinstitute.org/igv/"><span class="caps">IGV</span></a>.</p>
+<p>I got the chance trying new tricks today when I and other lab members were analyzing our human cancer exome sequencing data. The results were a bunch of BAM files aligned by <a href="https://github.com/lh3/bwa">BWA-MEM</a> using reference hg19.</p>
+<p>We want to see how was the sequencing depth and the coverage of all exons designed to be sequenced. Roughly, this can be done in the genome viewer such as <a href="https://www.broadinstitute.org/igv/">IGV</a>.</p>
 <div class="figure">
   <img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_IGV.png"/>
-  <p class="caption center">Visualize sequencing depth in <span class="caps">IGV</span></p>
+  <p class="caption center">Visualize sequencing depth in IGV</p>
 </div>
 
-<p><span class="caps">IGV</span> is good for daily research, but when it comes to customization, there aren&rsquo;t many options. And if the visualization is aimed for publishing, one might want the figure to be vectorized and, more importantly, <em>reproducible</em>.</p>
-<p>Therefore, combining with what I learnt in <a href="https://blog.liang2.tw/posts/2015/12/biocondutor-genomic-data/">Genomic Data Processing in Bioconductor</a>, I tried to plot the sequencing depth in R with <a href="https://bioconductor.org/packages/release/bioc/html/Gviz.html">Gviz</a>. I thought learning Gviz will be demanding, since its vignette has 80 pages and the function documentation are <a href="http://rpackages.ianhowson.com/bioc/Gviz/man/GeneRegionTrack-class.html">scarily long spells</a>. But both of them turned out to be <em>really</em> helpful and informative, especially when trying to tune its behavior. Figures produced by Gviz are aesthetically pleasing, and Gviz has many features as well (still trying). I&rsquo;m glad that I gave it a&nbsp;shot.</p>
-<p>If you want to follow the code yourself, any human <span class="caps">BAM</span> alignment files will do. For example, the <span class="caps">GEO</span> dataset <a href="http://dev.3dvcell.org/geo/query/acc.cgi?acc=GSE48215"><span class="caps">GSE48215</span></a> contains exome sequencing of breast cancer cell&nbsp;lines.</p>
-<h2 id="convert-sequencing-depth-to-bedgraph-format">Convert sequencing depth to BedGraph&nbsp;format</h2>
-<p>After a quick search, Gviz&rsquo;s <a href="http://rpackages.ianhowson.com/bioc/Gviz/man/DataTrack-class.html">DataTrack</a> accepts BedGraph format. This format can display any numerical value of chromosome ranges, shown as&nbsp;follows,</p>
+<p>IGV is good for daily research, but when it comes to customization, there aren&rsquo;t many options. And if the visualization is aimed for publishing, one might want the figure to be vectorized and, more importantly, <em>reproducible</em>.</p>
+<p>Therefore, combining with what I learnt in <a href="https://blog.liang2.tw/posts/2015/12/biocondutor-genomic-data/">Genomic Data Processing in Bioconductor</a>, I tried to plot the sequencing depth in R with <a href="https://bioconductor.org/packages/release/bioc/html/Gviz.html">Gviz</a>. I thought learning Gviz will be demanding, since its vignette has 80 pages and the function documentation are <a href="http://rpackages.ianhowson.com/bioc/Gviz/man/GeneRegionTrack-class.html">scarily long spells</a>. But both of them turned out to be <em>really</em> helpful and informative, especially when trying to tune its behavior. Figures produced by Gviz are aesthetically pleasing, and Gviz has many features as well (still trying). I&rsquo;m glad that I gave it a shot.</p>
+<p>If you want to follow the code yourself, any human BAM alignment files will do. For example, the GEO dataset <a href="http://dev.3dvcell.org/geo/query/acc.cgi?acc=GSE48215">GSE48215</a> contains exome sequencing of breast cancer cell lines.</p>
+<h2 id="convert-sequencing-depth-to-bedgraph-format">Convert sequencing depth to BedGraph format</h2>
+<p>After a quick search, Gviz&rsquo;s <a href="http://rpackages.ianhowson.com/bioc/Gviz/man/DataTrack-class.html">DataTrack</a> accepts BedGraph format. This format can display any numerical value of chromosome ranges, shown as follows,</p>
 <table>
 <thead>
 <tr>
@@ -153,20 +113,20 @@
 </tr>
 </tbody>
 </table>
-<p>So we need to convert the alignment result as BedGraph format, which can be done by <a href="http://bedtools.readthedocs.org/en/latest/content/tools/genomecov.html">BEDTools&rsquo; genomecov</a> command. On BEDTools&rsquo; documentation, it notes that the <span class="caps">BAM</span> file should be&nbsp;sorted. </p>
+<p>So we need to convert the alignment result as BedGraph format, which can be done by <a href="http://bedtools.readthedocs.org/en/latest/content/tools/genomecov.html">BEDTools&rsquo; genomecov</a> command. On BEDTools&rsquo; documentation, it notes that the BAM file should be sorted. </p>
 <div class="highlight"><pre><span></span>bedtools genomecov -bg -ibam myseq.bam &gt; myseq.bedGraph
 </pre></div>
 
 
-<p>The plain text BedGraph can be huge, pipe&rsquo;d with gzip will reduce file size to around 30% of the&nbsp;original.</p>
+<p>The plain text BedGraph can be huge, pipe&rsquo;d with gzip will reduce file size to around 30% of the original.</p>
 <div class="highlight"><pre><span></span>bedtools genomecov -bg -ibam myseq.bam <span class="p">|</span> gzip &gt; myseq.bedGraph.gz
 </pre></div>
 
 
-<h2 id="plot-depth-in-gviz">Plot depth in&nbsp;Gviz</h2>
-<p>R packages of human genome annotations (<a href="http://bioconductor.org/packages/release/data/annotation/html/Homo.sapiens.html">Homo.sapiens</a>) and <a href="https://bioconductor.org/packages/release/bioc/html/Gviz.html">Gviz</a> itself are required. Also, <a href="https://cran.r-project.org/web/packages/data.table/index.html">data.table</a> gives an impressed speed at reading text tables so is recommended to use. During the analysis, I happened to know that data.table supports <a href="https://github.com/Rdatatable/data.table/issues/717">reading gzip&rsquo;d file through pipe</a>, which makes it more&nbsp;awesome.</p>
-<h3 id="first-gviz-track">First Gviz&nbsp;track</h3>
-<p>We should first start at reading our sequencing depth as BedGraph format and plot&nbsp;it.</p>
+<h2 id="plot-depth-in-gviz">Plot depth in Gviz</h2>
+<p>R packages of human genome annotations (<a href="http://bioconductor.org/packages/release/data/annotation/html/Homo.sapiens.html">Homo.sapiens</a>) and <a href="https://bioconductor.org/packages/release/bioc/html/Gviz.html">Gviz</a> itself are required. Also, <a href="https://cran.r-project.org/web/packages/data.table/index.html">data.table</a> gives an impressed speed at reading text tables so is recommended to use. During the analysis, I happened to know that data.table supports <a href="https://github.com/Rdatatable/data.table/issues/717">reading gzip&rsquo;d file through pipe</a>, which makes it more awesome.</p>
+<h3 id="first-gviz-track">First Gviz track</h3>
+<p>We should first start at reading our sequencing depth as BedGraph format and plot it.</p>
 <div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>data.table<span class="p">)</span>
 <span class="kn">library</span><span class="p">(</span>Gviz<span class="p">)</span>
 
@@ -194,14 +154,14 @@ plotTracks<span class="p">(</span>
 </pre></div>
 
 
-<p>So we read the sequencing depth data, create a Gviz <code>DataTrack</code> holding the subset of our data on chr17, then plot Gviz tracks by <code>plotTracks</code> (though we only made one here) within a given chromosome region. Here is what we&nbsp;got.</p>
+<p>So we read the sequencing depth data, create a Gviz <code>DataTrack</code> holding the subset of our data on chr17, then plot Gviz tracks by <code>plotTracks</code> (though we only made one here) within a given chromosome region. Here is what we got.</p>
 <div class="figure">
   <img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_one_track.png"/>
 </div>
 
-<h3 id="add-genome-axis">Add genome&nbsp;axis</h3>
-<p>The figure is a bit weird and lack of information without the genomic&nbsp;location. </p>
-<p>Adding genomic location can be done automatically by Gviz through a new track <code>GenomeAxisTrack</code>. Also, we&rsquo;d like to show which region of chromosome we are at. This can be done by adding another track, <code>IdeogramTrack</code>, to show the chromosome ideogram. Note that the latter track will download cytoband data from <span class="caps">UCSC</span> so the given genome must have a valid&nbsp;name.</p>
+<h3 id="add-genome-axis">Add genome axis</h3>
+<p>The figure is a bit weird and lack of information without the genomic location. </p>
+<p>Adding genomic location can be done automatically by Gviz through a new track <code>GenomeAxisTrack</code>. Also, we&rsquo;d like to show which region of chromosome we are at. This can be done by adding another track, <code>IdeogramTrack</code>, to show the chromosome ideogram. Note that the latter track will download cytoband data from UCSC so the given genome must have a valid name.</p>
 <div class="highlight"><pre><span></span>itrack <span class="o">&lt;-</span> IdeogramTrack<span class="p">(</span>
     genome <span class="o">=</span> <span class="s">&quot;hg19&quot;</span><span class="p">,</span> chromosome <span class="o">=</span> thechr
 <span class="p">)</span>
@@ -218,10 +178,10 @@ plotTracks<span class="p">(</span>
   <img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_with_loc.png"/>
 </div>
 
-<p>Better now&nbsp;:)</p>
-<h3 id="add-annotation">Add&nbsp;annotation</h3>
-<p>Since we are using exome sequencing, the curve of sequencing depth only makes senses when combined with the transcript&nbsp;annotations. </p>
-<p>Gviz has <code>GeneRegionTrack</code> to extract annotation from the R annotation packages. Package Homo.sapiens includes the gene annotation package using <span class="caps">UCSC</span> knownGene database. Adding this new track and we will have annotation on our&nbsp;plot.</p>
+<p>Better now :)</p>
+<h3 id="add-annotation">Add annotation</h3>
+<p>Since we are using exome sequencing, the curve of sequencing depth only makes senses when combined with the transcript annotations. </p>
+<p>Gviz has <code>GeneRegionTrack</code> to extract annotation from the R annotation packages. Package Homo.sapiens includes the gene annotation package using UCSC knownGene database. Adding this new track and we will have annotation on our plot.</p>
 <div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>TxDb.Hsapiens.UCSC.hg19.knownGene<span class="p">)</span>
 txdb <span class="o">&lt;-</span> TxDb.Hsapiens.UCSC.hg19.knownGene
 
@@ -243,22 +203,22 @@ plotTracks<span class="p">(</span>
   <img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_with_annotation.png"/>
 </div>
 
-<p>The plot should now be as informative as what we can get from the <span class="caps">IGV</span>. In fact, Gviz can plot the alignment result too. It can read the <span class="caps">BAM</span> file directly and show a more detailed coverage that matches what <span class="caps">IGV</span> can do. I&rsquo;ll leave that part at the end of this&nbsp;post. </p>
-<p>So far we&rsquo;ve shown the sequencing depth of some chromosome region with annotation. However, there still leave something to be desired, mostly about the&nbsp;annotation:</p>
+<p>The plot should now be as informative as what we can get from the IGV. In fact, Gviz can plot the alignment result too. It can read the BAM file directly and show a more detailed coverage that matches what IGV can do. I&rsquo;ll leave that part at the end of this post. </p>
+<p>So far we&rsquo;ve shown the sequencing depth of some chromosome region with annotation. However, there still leave something to be desired, mostly about the annotation:</p>
 <ul>
-<li>Can we show only the annotation of certain&nbsp;genes?</li>
-<li>knownGene&rsquo;s identifier is barely meaningless, can we show the gene symbol&nbsp;instead?</li>
+<li>Can we show only the annotation of certain genes?</li>
+<li>knownGene&rsquo;s identifier is barely meaningless, can we show the gene symbol instead?</li>
 </ul>
-<p>So here comes the second part, annotation fine&nbsp;tuning.</p>
-<h2 id="plot-fine-tune">Plot fine&nbsp;tune</h2>
-<p>Say, we only care about gene <em><span class="caps">BRCA1</span></em>. So we need to get its location, or specifically, the genomic range that cover all <em><span class="caps">BRCA1</span></em> isoforms. In the following example, I will demonstrate the Gviz&rsquo;s annotation fine&nbsp;tuning.</p>
-<h3 id="genome-annotation-query-in-bioconductorr">Genome annotation query in&nbsp;Bioconductor/R</h3>
-<p>If you are not familiar with how to query annotations in Bioconductor, it&rsquo;s easier to think by breaking our goal of finding <em><span class="caps">BRCA1</span></em>&lsquo;s ranges into two&nbsp;steps:</p>
+<p>So here comes the second part, annotation fine tuning.</p>
+<h2 id="plot-fine-tune">Plot fine tune</h2>
+<p>Say, we only care about gene <em>BRCA1</em>. So we need to get its location, or specifically, the genomic range that cover all <em>BRCA1</em> isoforms. In the following example, I will demonstrate the Gviz&rsquo;s annotation fine tuning.</p>
+<h3 id="genome-annotation-query-in-bioconductorr">Genome annotation query in Bioconductor/R</h3>
+<p>If you are not familiar with how to query annotations in Bioconductor, it&rsquo;s easier to think by breaking our goal of finding <em>BRCA1</em>&lsquo;s ranges into two steps:</p>
 <ol>
-<li>Get the transcript&nbsp;IDs</li>
-<li>Query the transcript locations by their&nbsp;IDs</li>
+<li>Get the transcript IDs</li>
+<li>Query the transcript locations by their IDs</li>
 </ol>
-<p>Getting transcript IDs given their gene symbol is a <code>select()</code> on OrganismDb&nbsp;object,</p>
+<p>Getting transcript IDs given their gene symbol is a <code>select()</code> on OrganismDb object,</p>
 <div class="highlight"><pre><span></span><span class="c1"># Get all transcript IDs of gene BRCA1</span>
 BRCA1_txnames <span class="o">&lt;-</span> select<span class="p">(</span>
     Homo.sapiens<span class="p">,</span>
@@ -277,7 +237,7 @@ BRCA1_txnames <span class="o">&lt;-</span> select<span class="p">(</span>
 </pre></div>
 
 
-<p>Look like it has plenty of&nbsp;isoforms!</p>
+<p>Look like it has plenty of isoforms!</p>
 <h4 id="via-transcripts">via <code>transcripts()</code></h4>
 <p>For the transcript location, the easiest way will be querying the txDb via <code>transcript()</code>,</p>
 <div class="highlight"><pre><span></span>BRCA1_txs <span class="o">&lt;-</span> transcripts<span class="p">(</span>
@@ -317,21 +277,21 @@ en <span class="o">&lt;-</span> <span class="kp">max</span><span class="p">(</sp
 </pre></div>
 
 
-<p>Some space are added at both ends so the plot won&rsquo;t tightly fit all transcripts and leave some room for the transcript&nbsp;names. </p>
+<p>Some space are added at both ends so the plot won&rsquo;t tightly fit all transcripts and leave some room for the transcript names. </p>
 <div class="highlight"><pre><span></span><span class="gp">&gt; </span><span class="kt">c</span><span class="p">(</span>thechr<span class="p">,</span> st<span class="p">,</span> en<span class="p">)</span>
 <span class="go">[1] &quot;chr17&quot;    &quot;41176312&quot; &quot;41323420&quot;</span>
 </pre></div>
 
 
 <h4 id="via-exonsby">via <code>exonsBy()</code></h4>
-<p>Another way to obtain the genomic range is getting the exact range of <span class="caps">CDS</span> (e.g. exons and UTRs) for each transcript via <code>exonsBy()</code>. </p>
+<p>Another way to obtain the genomic range is getting the exact range of CDS (e.g. exons and UTRs) for each transcript via <code>exonsBy()</code>. </p>
 <div class="highlight"><pre><span></span>BRCA1_cds_by_tx <span class="o">&lt;-</span> exonsBy<span class="p">(</span>
     Homo.sapiens<span class="p">,</span> by<span class="o">=</span><span class="s">&quot;tx&quot;</span><span class="p">,</span> use.names<span class="o">=</span><span class="kc">TRUE</span>
 <span class="p">)[</span>BRCA1_txnames<span class="p">]</span>
 </pre></div>
 
 
-<p>The function returns a <code>GRangesList</code> object, a list of <code>GRanges</code> that each <code>GRanges</code> object corresponds to a transcript&nbsp;respectively.</p>
+<p>The function returns a <code>GRangesList</code> object, a list of <code>GRanges</code> that each <code>GRanges</code> object corresponds to a transcript respectively.</p>
 <div class="highlight"><pre><span></span><span class="gp">&gt; </span>BRCA1_cds_by_tx
 <span class="go">GRangesList object of length 20:</span>
 <span class="go">$uc010whl.2 </span>
@@ -357,7 +317,7 @@ en <span class="o">&lt;-</span> <span class="kp">max</span><span class="p">(</sp
 </pre></div>
 
 
-<p><code>GRangesList</code> is not merely a R list structure, which can correctly propagate the GRanges-related functions to all the GRanges it&nbsp;contain.</p>
+<p><code>GRangesList</code> is not merely a R list structure, which can correctly propagate the GRanges-related functions to all the GRanges it contain.</p>
 <div class="highlight"><pre><span></span><span class="gp">&gt; </span>start<span class="p">(</span>BRCA1_cds_by_tx<span class="p">)</span>
 <span class="go">IntegerList of length 20</span>
 <span class="go">[[&quot;uc010whl.2&quot;]] 41276034 41267743 41258473 ... 41201138 41199660 41196312</span>
@@ -388,8 +348,8 @@ en <span class="o">&lt;-</span> <span class="kp">max</span><span class="p">(</sp
 </pre></div>
 
 
-<p>We have the <span class="caps">BRCA1</span> genomic region, rest of the plotting is the&nbsp;same.</p>
-<h3 id="show-only-the-annotations-of-certain-genes">Show only the annotations of certain&nbsp;genes</h3>
+<p>We have the BRCA1 genomic region, rest of the plotting is the same.</p>
+<h3 id="show-only-the-annotations-of-certain-genes">Show only the annotations of certain genes</h3>
 <p>Before we start to create our own annotation subset, we first take a look at what Gviz generated. The <code>GeneRegionTrack</code> track store its annotation data at slot <code>range</code>.</p>
 <div class="highlight"><pre><span></span><span class="gp">&gt; </span>grtrack<span class="o">@</span><span class="kp">range</span>
 <span class="go">GRanges object with 459 ranges and 7 metadata columns:</span>
@@ -411,7 +371,7 @@ en <span class="o">&lt;-</span> <span class="kp">max</span><span class="p">(</sp
 </pre></div>
 
 
-<p>So we filter out unrelated ranges by checking if the value of metadata column <code>transcript</code> is one of <em><span class="caps">BRCA1</span></em>&lsquo;s transcript&nbsp;IDs,</p>
+<p>So we filter out unrelated ranges by checking if the value of metadata column <code>transcript</code> is one of <em>BRCA1</em>&lsquo;s transcript IDs,</p>
 <div class="highlight"><pre><span></span>BRCA_only_range <span class="o">&lt;-</span> grtrack<span class="o">@</span><span class="kp">range</span><span class="p">[</span>
     mcols<span class="p">(</span>grtrack<span class="o">@</span><span class="kp">range</span><span class="p">)</span><span class="o">$</span>transcript <span class="o">%in%</span> BRCA1_txnames
 <span class="p">]</span>
@@ -437,9 +397,9 @@ plotTracks<span class="p">(</span>
   <img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_BRCA1_only.png"/>
 </div>
 
-<h3 id="display-gene-symbols-at-annotation-track">Display gene symbols at annotation&nbsp;track</h3>
-<p>It&rsquo;s more obvious now about how Gviz stores the annotation. All we need is to replace the symbol name with whatever we&nbsp;desire.</p>
-<p>First, we extract the metadata of the <code>GeneRegionTrack</code>, and query for their gene symbols. Using either the transcript <span class="caps">ID</span> or Entrez <span class="caps">ID</span> will&nbsp;do. </p>
+<h3 id="display-gene-symbols-at-annotation-track">Display gene symbols at annotation track</h3>
+<p>It&rsquo;s more obvious now about how Gviz stores the annotation. All we need is to replace the symbol name with whatever we desire.</p>
+<p>First, we extract the metadata of the <code>GeneRegionTrack</code>, and query for their gene symbols. Using either the transcript ID or Entrez ID will do. </p>
 <div class="highlight"><pre><span></span>grtrack_range <span class="o">&lt;-</span> grtrack<span class="o">@</span><span class="kp">range</span>
 range_mapping <span class="o">&lt;-</span> select<span class="p">(</span>
     Homo.sapiens<span class="p">,</span>
@@ -461,7 +421,7 @@ range_mapping <span class="o">&lt;-</span> select<span class="p">(</span>
 </pre></div>
 
 
-<p>Then we concatenate the information of transcript <span class="caps">ID</span> and gene symbol using <a href="https://cran.r-project.org/web/packages/stringr/index.html">stringr</a>.</p>
+<p>Then we concatenate the information of transcript ID and gene symbol using <a href="https://cran.r-project.org/web/packages/stringr/index.html">stringr</a>.</p>
 <div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>stringr<span class="p">)</span>
 new_symbols <span class="o">&lt;-</span> <span class="kp">with</span><span class="p">(</span>
     range_mapping<span class="p">,</span>
@@ -476,7 +436,7 @@ new_symbols <span class="o">&lt;-</span> <span class="kp">with</span><span class
 </pre></div>
 
 
-<p>Like how we extract <em><span class="caps">BRCA1</span></em>-only annotations, we construct a new <code>GeneRegionTrack</code>.</p>
+<p>Like how we extract <em>BRCA1</em>-only annotations, we construct a new <code>GeneRegionTrack</code>.</p>
 <div class="highlight"><pre><span></span>grtrack_symbol <span class="o">&lt;-</span> GeneRegionTrack<span class="p">(</span>
     grtrack<span class="o">@</span><span class="kp">range</span><span class="p">,</span>
     chromosome <span class="o">=</span> thechr<span class="p">,</span> start <span class="o">=</span> st<span class="p">,</span> end <span class="o">=</span> en<span class="p">,</span>
@@ -496,10 +456,10 @@ plotTracks<span class="p">(</span>
 </div>
 
 <h2 id="summary">Summary</h2>
-<p>So we&rsquo;ve learnt how to plot using Gviz. You should go explore other data tracks or try to combine sequencing depth of multiple samples. I found the design of Gviz is clean and easy to modify. I think I&rsquo;ll use Gviz whenever genome-related plots are&nbsp;needed. </p>
-<p>Really glad I&rsquo;ve tried it&nbsp;:)</p>
-<h2 id="supplementary-plot-bam-files-directly">Supplementary - Plot <span class="caps">BAM</span> files&nbsp;directly</h2>
-<p>We will start by replacing <code>DataTrack</code> with <code>AlignmentsTrack</code>. Also we select a smaller region this time so the read mapping can be clearly&nbsp;seen.</p>
+<p>So we&rsquo;ve learnt how to plot using Gviz. You should go explore other data tracks or try to combine sequencing depth of multiple samples. I found the design of Gviz is clean and easy to modify. I think I&rsquo;ll use Gviz whenever genome-related plots are needed. </p>
+<p>Really glad I&rsquo;ve tried it :)</p>
+<h2 id="supplementary-plot-bam-files-directly">Supplementary - Plot BAM files directly</h2>
+<p>We will start by replacing <code>DataTrack</code> with <code>AlignmentsTrack</code>. Also we select a smaller region this time so the read mapping can be clearly seen.</p>
 <div class="highlight"><pre><span></span>st <span class="o">&lt;-</span> <span class="m">41.196e6L</span>
 en <span class="o">&lt;-</span> <span class="m">41.202e6L</span>
 gtrack <span class="o">&lt;-</span> GenomeAxisTrack<span class="p">(</span>cex <span class="o">=</span> <span class="m">1</span><span class="p">)</span>  <span class="c1"># set the font size larger</span>
@@ -528,9 +488,9 @@ plotTracks<span class="p">(</span>
   <img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_BAM_coverage_only.png"/>
 </div>
 
-<h3 id="fancier-alignment-display">Fancier alignment&nbsp;display</h3>
-<p>Spend some time reading the documentation, the alignment can be much more&nbsp;fancier. </p>
-<p>For example, when looking at a much smaller genome region, we many want to see the sequence and read mismatches. It could be done by adding a new track <code>SequenceTrack</code> to include the genome&nbsp;sequence,</p>
+<h3 id="fancier-alignment-display">Fancier alignment display</h3>
+<p>Spend some time reading the documentation, the alignment can be much more fancier. </p>
+<p>For example, when looking at a much smaller genome region, we many want to see the sequence and read mismatches. It could be done by adding a new track <code>SequenceTrack</code> to include the genome sequence,</p>
 <div class="highlight"><pre><span></span>small_st <span class="o">&lt;-</span> <span class="m">41267.735e3L</span>
 small_en <span class="o">&lt;-</span> <span class="m">41267.805e3L</span>
 
@@ -543,7 +503,7 @@ strack <span class="o">&lt;-</span> SequenceTrack<span class="p">(</span>
 </pre></div>
 
 
-<p>We tweak other tracks as well to make sure the figure won&rsquo;t explode by too much information. Gene annotations are collapsed down to one liner. Also, aligned read&rsquo;s height is increased to fit in individual letters (e.g., <span class="caps">ATCG</span>).</p>
+<p>We tweak other tracks as well to make sure the figure won&rsquo;t explode by too much information. Gene annotations are collapsed down to one liner. Also, aligned read&rsquo;s height is increased to fit in individual letters (e.g., ATCG).</p>
 <div class="highlight"><pre><span></span>grtrack_small <span class="o">&lt;-</span> GeneRegionTrack<span class="p">(</span>
    grtrack<span class="o">@</span><span class="kp">range</span><span class="p">,</span>
    chromosome <span class="o">=</span> thechr<span class="p">,</span>
@@ -567,62 +527,62 @@ plotTracks<span class="p">(</span>
   <img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_BAM_small_region.png"/>
 </div>
 
-<p>We found a C&gt;T <span class="caps">SNP</span>&nbsp;here!</p>
-  </div>
-  <div class="tag-cloud">
-    <p>
-      <a href="https://blog.liang2.tw/tag/en.html">en</a>
-      <a href="https://blog.liang2.tw/tag/r.html">r</a>
-      <a href="https://blog.liang2.tw/tag/bioconductor.html">bioconductor</a>
-      <a href="https://blog.liang2.tw/tag/gviz.html">gviz</a>
-      <a href="https://blog.liang2.tw/tag/ngs.html">NGS</a>
-    </p>
-  </div>
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'liang2';
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-</article>
-
+<p>We found a C&gt;T SNP here!</p></section>
+    <footer class="post-footer">
+<section class="share">
+    <h2>Share</h2>
+    <a class="icon-twitter" href="https://twitter.com/share?text=Plot Sequencing Depth with Gviz&amp;url=https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u=https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/"
+        onclick="window.open(this.href, 'facebook-share', 'width=580,height=296'); return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/"
+        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2016/01/plot-seq-depth-gviz/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
     <footer>
-<p>
-  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
-</p>
-<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
-  <a rel="license"
-     href="http://creativecommons.org/licenses/by/4.0/"
-     target="_blank">
-    <img alt="Creative Commons License"
-         title="Creative Commons License"
-         style="border-width:0"
-         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
-         width="80"
-         height="15"/>
-  </a>
-</p>    </footer>
-  </main>
-<script type="application/ld+json">
-{
-  "@context": "http://schema.org",
-  "@type": "BlogPosting",
-  "name": "Plot Sequencing Depth with&nbsp;Gviz",
-  "headline": "Plot Sequencing Depth with&nbsp;Gviz",
-  "datePublished": "2016-01-15 23:50:00+08:00",
-  "dateModified": "",
-  "author": {
-    "@type": "Person",
-    "name": "Liang2",
-    "url": "https://blog.liang2.tw/author/liang2.html"
-  },
-  "image": "http://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_gene_symbol.png",
-  "url": "https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/",
-  "description": "TL;DR Plot exome sequencing depth and coverage with genome annotation using Gviz in R. Then apply detail control on Gviz annotation track displaying ..."
-}
-</script></body>
+</article>
+    </main>
+    <footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags/">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">Built using <a href="http://getpelican.com/">Pelican</a>. Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.</section>
+		</div>
+    </footer>
+</body>
 </html>

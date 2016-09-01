@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang2's blog</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_pytz.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2015-09-28T12:00:00+08:00</updated><entry><title>Datetime in SQLite and Python</title><link href="https://blog.liang2.tw/posts/2015/09/datetime-sqlite/" rel="alternate"></link><published>2015-09-28T12:00:00+08:00</published><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2015-09-28:posts/2015/09/datetime-sqlite/</id><summary type="html">&lt;p&gt;要正確處理時間並不容易。承接&lt;a href="../flask-draw-member"&gt;我們先前的例子&lt;/a&gt;，其實是直接把時間轉換出來的字串存在 SQLite&amp;nbsp;裡。這有幾個問題。&lt;/p&gt;
-&lt;p&gt;首先是時區的問題。我們直接把 server 所在時區的時間存到資料庫去，台北的時區為 &lt;a href="https://en.wikipedia.org/wiki/Asia/Taipei"&gt;Asia/Taipei&lt;/a&gt; (&lt;span class="caps"&gt;UTC&lt;/span&gt;+8)。如果今天 server 跑到另一個時區，例如東京 Asia/Tokyo (&lt;span class="caps"&gt;UTC&lt;/span&gt;+9)&amp;nbsp;好了，這時候資料庫裡就包含了兩個時區的時間，但因為是字串是完全看不出差異的。&lt;/p&gt;
-&lt;p&gt;再來用字串存時間也有一些問題。首先是排序，雖然我們的例子是能正確的排序，但如果時間格式換了（像 &lt;code&gt;%H:%M:%S %Y-%m-%d&lt;/code&gt;）那就不一定。再來可以看到後續想處理時間就會比較複雜。不過這一部份是因為 SQLite 沒有專門處理日期時間的資料型態，像 PostgreSQL&amp;nbsp;就能看得懂。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang2's Blog</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_pytz.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2015-09-28T12:00:00-05:00</updated><entry><title>Datetime in SQLite and Python</title><link href="https://blog.liang2.tw/posts/2015/09/datetime-sqlite/" rel="alternate"></link><published>2015-09-28T12:00:00-05:00</published><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2015-09-28:posts/2015/09/datetime-sqlite/</id><summary type="html">&lt;p&gt;要正確處理時間並不容易。承接&lt;a href="../flask-draw-member"&gt;我們先前的例子&lt;/a&gt;，其實是直接把時間轉換出來的字串存在 SQLite 裡。這有幾個問題。&lt;/p&gt;
+&lt;p&gt;首先是時區的問題。我們直接把 server 所在時區的時間存到資料庫去，台北的時區為 &lt;a href="https://en.wikipedia.org/wiki/Asia/Taipei"&gt;Asia/Taipei&lt;/a&gt; (UTC+8)。如果今天 server 跑到另一個時區，例如東京 Asia/Tokyo (UTC+9) 好了，這時候資料庫裡就包含了兩個時區的時間，但因為是字串是完全看不出差異的。&lt;/p&gt;
+&lt;p&gt;再來用字串存時間也有一些問題。首先是排序，雖然我們的例子是能正確的排序，但如果時間格式換了（像 &lt;code&gt;%H:%M:%S %Y-%m-%d&lt;/code&gt;）那就不一定。再來可以看到後續想處理時間就會比較複雜。不過這一部份是因為 SQLite 沒有專門處理日期時間的資料型態，像 PostgreSQL 就能看得懂。&lt;/p&gt;
 &lt;p&gt;所以想要正確處理時間有幾個要點：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;存到資料庫的時間應該要 &lt;span class="caps"&gt;UTC&lt;/span&gt;&amp;nbsp;來表示&lt;/li&gt;
+&lt;li&gt;存到資料庫的時間應該要 UTC 來表示&lt;/li&gt;
 &lt;li&gt;在處理時間時（排序、顯示、處理時區），應該轉成正確的資料格式（例如 &lt;a href="https://docs.python.org/3.5/library/datetime.html#datetime-objects"&gt;datetime&lt;/a&gt;）&lt;/li&gt;
-&lt;li&gt;呈現給使用者時再轉換到該人（或&amp;nbsp;server）所在時區&lt;/li&gt;
+&lt;li&gt;呈現給使用者時再轉換到該人（或 server）所在時區&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;底下是比較正確處理時間的方式。&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="#timezone"&gt;時區（Timezone）&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#datetime-in-sqlite-again"&gt;Datetime in SQLite, again&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#python-3-timezone"&gt;Python 3 內建 timezone&amp;nbsp;支援&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#python-3-timezone"&gt;Python 3 內建 timezone 支援&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a href="#python-sqlite-adapter"&gt;讓 Python 內建 SQLite adapter&amp;nbsp;支援時區&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#python-sqlite-adapter"&gt;讓 Python 內建 SQLite adapter 支援時區&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#_1"&gt;總結&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;h3 id="timezone"&gt;時區（Timezone）&lt;/h3&gt;
-&lt;p&gt;我們都還沒有處理過時區。時區在 Python 內建的 datetime 只是個「概念」，也就是說，使用者可以傳進去不同的時區（存在 &lt;code&gt;datetime.tzinfo&lt;/code&gt; 中），Python 能針對有提供時區的 datetime&amp;nbsp;做正確的判斷。但台北的時區是多少，紐約的時區是多少它不知道。&lt;/p&gt;
-&lt;p&gt;為什麼不處理各地時區這麼重要的概念？因為時間變動的速度很快，加上日光節約時間每年可能都不一樣，Python&amp;nbsp;下一版還沒出時區的資訊已經更新了很多次。&lt;/p&gt;
+&lt;p&gt;我們都還沒有處理過時區。時區在 Python 內建的 datetime 只是個「概念」，也就是說，使用者可以傳進去不同的時區（存在 &lt;code&gt;datetime.tzinfo&lt;/code&gt; 中），Python 能針對有提供時區的 datetime 做正確的判斷。但台北的時區是多少，紐約的時區是多少它不知道。&lt;/p&gt;
+&lt;p&gt;為什麼不處理各地時區這麼重要的概念？因為時間變動的速度很快，加上日光節約時間每年可能都不一樣，Python 下一版還沒出時區的資訊已經更新了很多次。&lt;/p&gt;
 &lt;p&gt;因此在 Python 中實際上時區處理靠得是第三方套件 &lt;a href="http://pythonhosted.org/pytz/"&gt;pytz&lt;/a&gt;。像安裝 Flask 一樣，用 &lt;code&gt;pip install pytz&lt;/code&gt; 就可以了。&lt;/p&gt;
 &lt;p&gt;實際操作看看。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;datetime&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;datetime&lt;/span&gt;
@@ -33,8 +33,8 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;首先，可以看到 datetime 本身提供了 &lt;code&gt;now()&lt;/code&gt; 以及 &lt;code&gt;utcnow()&lt;/code&gt; 兩個 function 來拿到現在的時間。台北是 &lt;span class="caps"&gt;UTC&lt;/span&gt;+8 所以時間比 &lt;span class="caps"&gt;UTC&lt;/span&gt; 時間字面上快 8 小時。注意到兩個回傳的 datetime&amp;nbsp;物件都沒有包含時區的資訊。&lt;/p&gt;
-&lt;p&gt;處理時間原則上都以 &lt;span class="caps"&gt;UTC&lt;/span&gt; 為基準。我們建立一個 &lt;span class="caps"&gt;UTC&lt;/span&gt; 的現在時間存在變數 &lt;code&gt;utcnow&lt;/code&gt;，並且用 pytz 處理時間。Import pytz 進來，並且定義了兩個時區：&lt;span class="caps"&gt;UTC&lt;/span&gt; 以及 &lt;span class="caps"&gt;TPE&lt;/span&gt;（台北時間）。&lt;/p&gt;
+&lt;p&gt;首先，可以看到 datetime 本身提供了 &lt;code&gt;now()&lt;/code&gt; 以及 &lt;code&gt;utcnow()&lt;/code&gt; 兩個 function 來拿到現在的時間。台北是 UTC+8 所以時間比 UTC 時間字面上快 8 小時。注意到兩個回傳的 datetime 物件都沒有包含時區的資訊。&lt;/p&gt;
+&lt;p&gt;處理時間原則上都以 UTC 為基準。我們建立一個 UTC 的現在時間存在變數 &lt;code&gt;utcnow&lt;/code&gt;，並且用 pytz 處理時間。Import pytz 進來，並且定義了兩個時區：UTC 以及 TPE（台北時間）。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pytz&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;utc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pytz&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;utc&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;tpe&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pytz&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;timezone&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Asia/Taipei&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -51,7 +51,7 @@
 
 
 &lt;p&gt;用 pytz 定義的時區處理 datetime 之後就會多了 &lt;code&gt;tzinfo&lt;/code&gt; 的資訊。這時也能正確比較不同時區的時間。&lt;/p&gt;
-&lt;p&gt;如何處理一個任意定義的時間呢？例如 2016&amp;nbsp;年台北元旦好了，&lt;/p&gt;
+&lt;p&gt;如何處理一個任意定義的時間呢？例如 2016 年台北元旦好了，&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;span class="go"&gt;&amp;#39;2016-01-01 00:00:00&amp;#39;&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;tpe_2016_newyear&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;tpe&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;localize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
@@ -63,7 +63,7 @@
 
 
 &lt;p&gt;使用 &lt;code&gt;.localize(&amp;lt;datetime&amp;gt;)&lt;/code&gt; 給予一個初始沒有時區資訊的 &lt;code&gt;datetime&lt;/code&gt; 時區。有了時區之後，要在不同時區間轉換就使用 &lt;code&gt;.normalize(&amp;lt;datetime&amp;gt;)&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;可以再查查當台北 2016&amp;nbsp;元旦時，美國東岸時間是幾點。&lt;/p&gt;
+&lt;p&gt;可以再查查當台北 2016 元旦時，美國東岸時間是幾點。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;est&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pytz&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;timezone&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;US/Eastern&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;est&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;normalize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tpe_2016_newyear&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="go"&gt;datetime.datetime(2015, 12, 31, 11, 0, tzinfo=&amp;lt;DstTzInfo &amp;#39;US/Eastern&amp;#39; EST-1 day, 19:00:00 STD&amp;gt;)&lt;/span&gt;
@@ -71,7 +71,7 @@
 
 
 &lt;p&gt;以後要看球賽轉播、重要發表就不會再搞不清楚時間了。&lt;/p&gt;
-&lt;h3 id="datetime-in-sqlite-again"&gt;Datetime in SQLite,&amp;nbsp;again&lt;/h3&gt;
+&lt;h3 id="datetime-in-sqlite-again"&gt;Datetime in SQLite, again&lt;/h3&gt;
 &lt;p&gt;我們會處理 datetime 與時區了，那麼就來改寫一下本來 SQLite 存時間的方式。其實 Python datetime 支援 SQLite 轉換，同樣從&lt;a href="https://docs.python.org/3.5/library/sqlite3.html#default-adapters-and-converters"&gt;Python module 說明文件&lt;/a&gt;裡面拿出來的。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;datetime&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;datetime&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sqlite3&lt;/span&gt;
@@ -90,7 +90,8 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;資料欄位的設為 &lt;code&gt;timestamp&lt;/code&gt;，並且在連接的時候設定 &lt;code&gt;PARSE_DECLTYPES&lt;/code&gt; 及 &lt;code&gt;PARSE_COLNAMES&lt;/code&gt;，稍後可以看到他們的效果。&amp;nbsp;趕快把時間存進去吧。&lt;/p&gt;
+&lt;p&gt;資料欄位的設為 &lt;code&gt;timestamp&lt;/code&gt;，並且在連接的時候設定 &lt;code&gt;PARSE_DECLTYPES&lt;/code&gt; 及 &lt;code&gt;PARSE_COLNAMES&lt;/code&gt;，稍後可以看到他們的效果。
+趕快把時間存進去吧。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;utcnow&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;utcnow&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;utcnow&lt;/span&gt;
 &lt;span class="go"&gt;datetime.datetime(2015, 9, 29, 12, 48, 16, 671538)&lt;/span&gt;
@@ -115,8 +116,8 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;存了兩個時間，一個是 &lt;span class="caps"&gt;UTC&lt;/span&gt; 的現在時間，另一個是以 &lt;span class="caps"&gt;UTC&lt;/span&gt; 表示的台北 2016 元旦。注意兩個時間都把 &lt;span class="caps"&gt;UTC&lt;/span&gt; 時區去掉了，因為在某些情況底下 SQLite 與 python 的 datetime adapter 會看不懂時區（這是個 &lt;a href="https://bugs.python.org/issue19065"&gt;bug #19065&lt;/a&gt;）。&lt;/p&gt;
-&lt;p&gt;如果用 SQLite 可以看到時間都是以 &lt;span class="caps"&gt;UTC&lt;/span&gt; 呈現。仍可以用它內建的 &lt;code&gt;datetime('&amp;lt;UTC time&amp;gt;', 'localtime')&lt;/code&gt; 把 &lt;span class="caps"&gt;UTC&lt;/span&gt;&amp;nbsp;時間字串轉換成電腦的當地時間。這樣處理是容易與其他應用程式相容的。&lt;/p&gt;
+&lt;p&gt;存了兩個時間，一個是 UTC 的現在時間，另一個是以 UTC 表示的台北 2016 元旦。注意兩個時間都把 UTC 時區去掉了，因為在某些情況底下 SQLite 與 python 的 datetime adapter 會看不懂時區（這是個 &lt;a href="https://bugs.python.org/issue19065"&gt;bug #19065&lt;/a&gt;）。&lt;/p&gt;
+&lt;p&gt;如果用 SQLite 可以看到時間都是以 UTC 呈現。仍可以用它內建的 &lt;code&gt;datetime('&amp;lt;UTC time&amp;gt;', 'localtime')&lt;/code&gt; 把 UTC 時間字串轉換成電腦的當地時間。這樣處理是容易與其他應用程式相容的。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="go"&gt;-- sqlite3 test.db&lt;/span&gt;
 &lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;schema&lt;/span&gt;
 &lt;span class="go"&gt;CREATE TABLE test(dt timestamp);&lt;/span&gt;
@@ -129,7 +130,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;再用 Python 讀回來仍然是 datetime&amp;nbsp;格式：&lt;/p&gt;
+&lt;p&gt;再用 Python 讀回來仍然是 datetime 格式：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;ret_vals&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;execute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;SELECT dt AS &amp;quot;[timestamp]&amp;quot; FROM test&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fetchall&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;ret_vals&lt;/span&gt;
 &lt;span class="go"&gt;[(datetime.datetime(2015, 9, 29, 12, 48, 16, 671538),),&lt;/span&gt;
@@ -140,9 +141,9 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h4 id="python-3-timezone"&gt;Python 3 內建 timezone&amp;nbsp;支援&lt;/h4&gt;
-&lt;p&gt;為了寫這篇 blog 又研究了一下內建的 datetime.timezone。Python 2 沒有這個功能，不過基本的 timedelta&amp;nbsp;有，所以要自己做應該也是做得到…吧？&lt;/p&gt;
-&lt;p&gt;內建的 datetime.timezone 由一個 utcoffset 做建立，基本上就是傳個相對於 &lt;span class="caps"&gt;UTC&lt;/span&gt; 的時間差，以 datetime.timedelta 表示。一樣內建帶有 &lt;span class="caps"&gt;UTC&lt;/span&gt;&amp;nbsp;時區，這邊試著建了台北以及東京的時間。&lt;/p&gt;
+&lt;h4 id="python-3-timezone"&gt;Python 3 內建 timezone 支援&lt;/h4&gt;
+&lt;p&gt;為了寫這篇 blog 又研究了一下內建的 datetime.timezone。Python 2 沒有這個功能，不過基本的 timedelta 有，所以要自己做應該也是做得到…吧？&lt;/p&gt;
+&lt;p&gt;內建的 datetime.timezone 由一個 utcoffset 做建立，基本上就是傳個相對於 UTC 的時間差，以 datetime.timedelta 表示。一樣內建帶有 UTC 時區，這邊試著建了台北以及東京的時間。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;datetime&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;dt&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;tpe_now&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;now&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;tpe_now&lt;/span&gt;
@@ -155,7 +156,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;我人在台北，所以 datetime.datetime.now() 會給我台北時間，再用 timedelta&amp;nbsp;手動算出各時區的時間。&lt;/p&gt;
+&lt;p&gt;我人在台北，所以 datetime.datetime.now() 會給我台北時間，再用 timedelta 手動算出各時區的時間。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;utc_now&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;tpe_now&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;tpe_delta&lt;/span&gt;  &lt;span class="c1"&gt;# manually time shift&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;jpn_now&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;utc_now&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;jpn_delta&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;utc_now&lt;/span&gt;
@@ -165,7 +166,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;直接比較這些算出來的時間，不意外不相等，因為預設的 tzinfo&amp;nbsp;是空的。&lt;/p&gt;
+&lt;p&gt;直接比較這些算出來的時間，不意外不相等，因為預設的 tzinfo 是空的。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;tpe_now&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;replace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tzinfo&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;tpe&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="go"&gt;datetime.datetime(2015, 9, 29, 20, 40, 49, 347568, tzinfo=datetime.timezone(datetime.timedelta(0, 28800)))&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;tpe_now&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;replace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tzinfo&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;tpe&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;utc_now&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;replace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tzinfo&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;utc&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -175,8 +176,8 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;給了各地的時區的 tzinfo 之後，可以看到 datetime&amp;nbsp;在做比較的時候是有考慮時區位移的。&lt;/p&gt;
-&lt;p&gt;接著再來看一下pytz 與內建 datetime.timezone&amp;nbsp;的相容程度。&lt;/p&gt;
+&lt;p&gt;給了各地的時區的 tzinfo 之後，可以看到 datetime 在做比較的時候是有考慮時區位移的。&lt;/p&gt;
+&lt;p&gt;接著再來看一下pytz 與內建 datetime.timezone 的相容程度。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pytz&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;pytz_utc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pytz&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;utc&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;pytz_tpe&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pytz&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;timezone&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Asia/Taipei&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -188,9 +189,9 @@
 
 
 &lt;p&gt;比較跟轉換都沒有問題，可以放心轉換。&lt;/p&gt;
-&lt;h3 id="python-sqlite-adapter"&gt;讓 Python 內建 SQLite adapter&amp;nbsp;支援時區&lt;/h3&gt;
-&lt;p&gt;看了一下 &lt;a href="https://bugs.python.org/issue19065"&gt;Python issue 19065&lt;/a&gt;，之所以沒有解決其實是缺 patch，因為現在的 patch 並不相容 Python 2.x（沒有 datetime.timezone），然後 pysqlite 的維護者並沒有想要支援 timezone&amp;nbsp;的意思。&lt;/p&gt;
-&lt;p&gt;不過那只是內建的 adapter for datetime.datetime object，要自己做也沒問題。參考 issue 裡面提供的解法（在 Github &lt;a href="https://gist.github.com/acdha/6655391"&gt;gist&lt;/a&gt;&amp;nbsp;上）。&lt;/p&gt;
+&lt;h3 id="python-sqlite-adapter"&gt;讓 Python 內建 SQLite adapter 支援時區&lt;/h3&gt;
+&lt;p&gt;看了一下 &lt;a href="https://bugs.python.org/issue19065"&gt;Python issue 19065&lt;/a&gt;，之所以沒有解決其實是缺 patch，因為現在的 patch 並不相容 Python 2.x（沒有 datetime.timezone），然後 pysqlite 的維護者並沒有想要支援 timezone 的意思。&lt;/p&gt;
+&lt;p&gt;不過那只是內建的 adapter for datetime.datetime object，要自己做也沒問題。參考 issue 裡面提供的解法（在 Github &lt;a href="https://gist.github.com/acdha/6655391"&gt;gist&lt;/a&gt; 上）。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# tz_aware_adpater.py&lt;/span&gt;
 &lt;span class="c1"&gt;# Adapt from https://gist.github.com/acdha/6655391&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;datetime&lt;/span&gt;
@@ -246,7 +247,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;存了兩個帶有時區的時間（兩個時間是相同的）。先從 SQLite&amp;nbsp;來讀讀看。&lt;/p&gt;
+&lt;p&gt;存了兩個帶有時區的時間（兩個時間是相同的）。先從 SQLite 來讀讀看。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt; &lt;span class="n"&gt;dt&lt;/span&gt; &lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="go"&gt;2015-09-29 12:48:16.671538&lt;/span&gt;
 &lt;span class="go"&gt;2015-12-31 16:00:00&lt;/span&gt;
@@ -260,8 +261,8 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;時區是直接寫到 SQLite 裡面，沒有的話就當成是 &lt;span class="caps"&gt;UTC&lt;/span&gt;&amp;nbsp;時區。&lt;/p&gt;
-&lt;p&gt;再用 Python 讀回來，測一下修改的&amp;nbsp;adapter。&lt;/p&gt;
+&lt;p&gt;時區是直接寫到 SQLite 裡面，沒有的話就當成是 UTC 時區。&lt;/p&gt;
+&lt;p&gt;再用 Python 讀回來，測一下修改的 adapter。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;dts&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;execute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;SELECT dt FROM test&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fetchall&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;dts&lt;/span&gt;
 &lt;span class="go"&gt;[(datetime.datetime(2015, 9, 29, 12, 48, 16, 671538),),&lt;/span&gt;
@@ -274,7 +275,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;讀回來沒有問題，如果要完整處理所有情況（前面兩個 datetime 是 naive&amp;nbsp;沒有時區）&lt;/p&gt;
+&lt;p&gt;讀回來沒有問題，如果要完整處理所有情況（前面兩個 datetime 是 naive 沒有時區）&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;astimezone&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;utc&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tzinfo&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
 &lt;span class="gp"&gt;... &lt;/span&gt;  &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="n"&gt;utc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;localize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt;
 &lt;span class="gp"&gt;... &lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;t&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;dts&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
@@ -293,6 +294,6 @@
 
 
 &lt;h3 id="_1"&gt;總結&lt;/h3&gt;
-&lt;p&gt;時區真的很煩，尤其是很多地方不一定都完整支援時區，最好的情況還是用 &lt;span class="caps"&gt;UTC&lt;/span&gt;&amp;nbsp;溝通，只有在真的需要時再轉換成當地時間。&lt;/p&gt;
-&lt;p&gt;如果大家對時區很有興趣，不久前 &lt;a href="https://www.python.org/dev/peps/pep-0495/"&gt;&lt;span class="caps"&gt;PEP&lt;/span&gt; 495&lt;/a&gt; 已經被接受，沒有意外應該會出現在 Python 3.6&amp;nbsp;裡面，它處理的是日光節約時間的問題。（感覺在臺灣對日光節約時間完全沒有概念啊）&lt;/p&gt;
+&lt;p&gt;時區真的很煩，尤其是很多地方不一定都完整支援時區，最好的情況還是用 UTC 溝通，只有在真的需要時再轉換成當地時間。&lt;/p&gt;
+&lt;p&gt;如果大家對時區很有興趣，不久前 &lt;a href="https://www.python.org/dev/peps/pep-0495/"&gt;PEP 495&lt;/a&gt; 已經被接受，沒有意外應該會出現在 Python 3.6 裡面，它處理的是日光節約時間的問題。（感覺在臺灣對日光節約時間完全沒有概念啊）&lt;/p&gt;
 &lt;p&gt;不得不說要正確處理時間…很麻煩啊。&lt;/p&gt;</summary><category term="zh"></category><category term="datetime"></category><category term="pytz"></category><category term="sqlite"></category><category term="python"></category></entry></feed>

@@ -1,92 +1,54 @@
 <!DOCTYPE html>
-<html lang="zh-hant">
+<html lang="zh-Hant">
 <head>
-  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
-  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css">
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.min.css">
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/font-awesome.min.css">
-  <!-- Justfont webfont -->
-  <!-- Local development -->
-  <!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
-  <!-- Proudction version v4.9.4 -->
-  <script src="https://blog.liang2.tw/theme/js/justfont_v4.9.4.js" type="text/javascript" charset="utf-8"></script>
-  <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+            <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+        <link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
 
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="" />
-<meta name="author" content="Liang2" />
-<meta name="description" content="Django 帳號的欄位定義在 django.contrib.auth 的 User 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有： 指定 Group 和 Permission 是否為 staff、superuser 帳號開通 ..." />
-<meta name="keywords" content="zh, django, python">
-<meta property="og:site_name" content="Liang2's blog"/>
-<meta property="og:title" content="Customize Django User Model"/>
-<meta property="og:description" content="Django 帳號的欄位定義在 django.contrib.auth 的 User 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有： 指定 Group 和 Permission 是否為 staff、superuser 帳號開通 ..."/>
-<meta property="og:locale" content="zh_TW"/>
-<meta property="og:url" content="https://blog.liang2.tw/posts/2015/11/django-custom-user/"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2015-11-04 18:23:00+08:00"/>
-<meta property="article:modified_time" content="2015-11-04 18:23:00+08:00"/>
-<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
-<meta property="article:section" content="Coding"/>
-<meta property="article:tag" content="zh"/>
-<meta property="article:tag" content="django"/>
-<meta property="article:tag" content="python"/>
-<meta name="twitter:card" content="summary">
-<meta name="twitter:site" content="@ccwang002">
-<meta name="twitter:title" content="Customize Django User Model">
-<meta name="twitter:description" content="Django 帳號的欄位定義在 django.contrib.auth 的 User 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有： 指定 Group 和 Permission 是否為 staff、superuser 帳號開通 ...">
-  <title>Customize Django User Model &ndash; Liang2's blog</title>
+		<link href="https://blog.liang2.tw/theme/css/haunter.css?0f9ace0e" rel="stylesheet" />
+
+		<title>Customize Django User Model</title>
+		<!-- Justfont webfont -->
+		<!-- Local development -->
+		<!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+		<!-- Proudction version -->
+		<script src="https://blog.liang2.tw/theme/js/justfont.js" type="text/javascript" charset="utf-8"></script>
 </head>
-<body>
-  <aside>
-    <div>
-      <a href="https://blog.liang2.tw">
-        <img src="https://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
-      </a>
-      <h1><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
-      <p>Code / Stat / Bioinfo</p>
-      <nav>
-        <ul class="list">
-          <li><a href="https://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
-          <li><a href="https://blog.liang2.tw/talks/#talks">Talks</a></li>
-        </ul>
-      </nav>
-      <ul class="social">
-        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
-        <li><a class="sc-envelope-o" href="mailto:me+blog@liang2.tw" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
-        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-      </ul>
-    </div>
-  </aside>
-  <main>
-    <nav>
-      <a href="https://blog.liang2.tw">Home</a>
-      <a href="/archives.html">Archives</a>
-      <a href="/categories.html">Categories</a>
-      <a href="/tags.html">Tags</a>
-      <a href="https://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
-    </nav>
 
-<article>
-  <header>
-    <h1 id="django-custom-user">Customize Django User&nbsp;Model</h1>
-    <p>Posted on Nov 04, 2015
-      in <a href="https://blog.liang2.tw/category/coding.html">Coding</a>
-    </p>
-  </header>
-  <div>
-    <p>Django 帳號的欄位定義在 <code>django.contrib.auth</code> 的 <a href="https://docs.djangoproject.com/en/1.8/ref/contrib/auth/#fields">User</a>&nbsp;中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有：</p>
+<body class="post-template">
+    <header class="site-head">
+			<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+				<h2 class="blog-description">
+					<a href="https://blog.liang2.tw/about-me/">About</a> |
+					<a href="https://blog.liang2.tw/talks/">Talks</a> |
+					<a href="https://blog.liang2.tw/archives.html">Archives</a>
+				</h2>
+    </header>
+    <main id="content" class="content" role="main">
+<article class="post">
+    <span class="post-meta">
+        <time datetime="Nov 04, 2015">Nov 04, 2015</time>
+        in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2015/11/django-custom-user/" rel="bookmark" title="Permalink to Customize Django User Model">Customize Django User Model</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/zh/">zh</a>
+                <a href="https://blog.liang2.tw/tag/django/">django</a>
+                <a href="https://blog.liang2.tw/tag/python/">python</a>
+    </span>
+    <section class="post-content"><p>Django 帳號的欄位定義在 <code>django.contrib.auth</code> 的 <a href="https://docs.djangoproject.com/en/1.8/ref/contrib/auth/#fields">User</a> 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有：</p>
 <ul>
-<li>指定 Group 和&nbsp;Permission</li>
-<li>是否為&nbsp;staff、superuser</li>
+<li>指定 Group 和 Permission</li>
+<li>是否為 staff、superuser</li>
 <li>帳號開通、最後一次登入時間</li>
 </ul>
 <p>內建的帳號功能應該很實用，安全性也很好。所以一般來說都不會去改它。</p>
-<p>如果只是想要幫 User 加個 profile，例如生日、來自哪個星球等欄位，也不需要改寫 User。參考官網 <a href="https://docs.djangoproject.com/en/1.8/topics/auth/customizing/#extending-the-existing-user-model">Extending the existing User model</a>，只需要建一個 one-to-one relationship 指到 User&nbsp;就好了：</p>
+<p>如果只是想要幫 User 加個 profile，例如生日、來自哪個星球等欄位，也不需要改寫 User。參考官網 <a href="https://docs.djangoproject.com/en/1.8/topics/auth/customizing/#extending-the-existing-user-model">Extending the existing User model</a>，只需要建一個 one-to-one relationship 指到 User 就好了：</p>
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
 
 <span class="k">class</span> <span class="nc">UserProfile</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
@@ -96,65 +58,67 @@
 </pre></div>
 
 
-<p>但 Django 預設用 username 來登入，如果要改用 email&nbsp;登入要怎麼做？</p>
-<h3 id="email">改用 Email&nbsp;做帳號登入</h3>
+<p>但 Django 預設用 username 來登入，如果要改用 email 登入要怎麼做？</p>
+<h3 id="email">改用 Email 做帳號登入</h3>
 <p>因為 User 是個很重要的 model，所以改寫時要注意相容性的問題。其實官網也有教學 <a href="https://docs.djangoproject.com/en/1.8/topics/auth/customizing/#specifying-a-custom-user-model">Specifying a custom User model</a>，不過這教學比前面長很多。</p>
 <p>網路上已經有人 @jcugat 做了一個套件 <a href="https://github.com/jcugat/django-custom-user">django-custom-user</a>，他實作了 <code>EmailUser</code> 即用 email 作為帳號登入。已經把所有苦工都做好了，所以如果想要再加上自己的欄位等等，可以繼承他的 <code>AbstractEmailUser</code>。</p>
-<p>其實如果看完自定 User 之後，寫好 User Model 不難，比較複雜的是像創建、修改 User 以及 admin 的設定。除了讀這個套件的 source code 之後，<a href="http://stackoverflow.com/questions/15012235">這串 Stack Overflow 討論</a>也提到了不同的實作方式。Django 這部份的 source code&nbsp;蠻好讀的，也可以看一下。</p>
-<p>因為之後要做 Email 認証，應該會用 <a href="https://github.com/pennersr/django-allauth">django-allauth</a> 做。感覺很久沒發文了，應該要把文章拆短才對 <span class="caps">XD</span></p>
-  </div>
-  <div class="tag-cloud">
-    <p>
-      <a href="https://blog.liang2.tw/tag/zh.html">zh</a>
-      <a href="https://blog.liang2.tw/tag/django.html">django</a>
-      <a href="https://blog.liang2.tw/tag/python.html">python</a>
-    </p>
-  </div>
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'liang2';
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-</article>
-
+<p>其實如果看完自定 User 之後，寫好 User Model 不難，比較複雜的是像創建、修改 User 以及 admin 的設定。除了讀這個套件的 source code 之後，<a href="http://stackoverflow.com/questions/15012235">這串 Stack Overflow 討論</a>也提到了不同的實作方式。Django 這部份的 source code 蠻好讀的，也可以看一下。</p>
+<p>因為之後要做 Email 認証，應該會用 <a href="https://github.com/pennersr/django-allauth">django-allauth</a> 做。感覺很久沒發文了，應該要把文章拆短才對 XD</p></section>
+    <footer class="post-footer">
+<section class="share">
+    <h2>Share</h2>
+    <a class="icon-twitter" href="https://twitter.com/share?text=Customize Django User Model&amp;url=https://blog.liang2.tw/posts/2015/11/django-custom-user/"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u=https://blog.liang2.tw/posts/2015/11/django-custom-user/"
+        onclick="window.open(this.href, 'facebook-share', 'width=580,height=296'); return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.liang2.tw/posts/2015/11/django-custom-user/"
+        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2015/11/django-custom-user/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2015/11/django-custom-user/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
     <footer>
-<p>
-  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
-</p>
-<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
-  <a rel="license"
-     href="http://creativecommons.org/licenses/by/4.0/"
-     target="_blank">
-    <img alt="Creative Commons License"
-         title="Creative Commons License"
-         style="border-width:0"
-         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
-         width="80"
-         height="15"/>
-  </a>
-</p>    </footer>
-  </main>
-<script type="application/ld+json">
-{
-  "@context": "http://schema.org",
-  "@type": "BlogPosting",
-  "name": "Customize Django User&nbsp;Model",
-  "headline": "Customize Django User&nbsp;Model",
-  "datePublished": "2015-11-04 18:23:00+08:00",
-  "dateModified": "",
-  "author": {
-    "@type": "Person",
-    "name": "Liang2",
-    "url": "https://blog.liang2.tw/author/liang2.html"
-  },
-  "image": "https://blog.liang2.tw/pics/headpic.jpg",
-  "url": "https://blog.liang2.tw/posts/2015/11/django-custom-user/",
-  "description": "Django 帳號的欄位定義在 django.contrib.auth 的 User 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有： 指定 Group 和 Permission 是否為 staff、superuser 帳號開通 ..."
-}
-</script></body>
+</article>
+    </main>
+    <footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags/">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">Built using <a href="http://getpelican.com/">Pelican</a>. Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.</section>
+		</div>
+    </footer>
+</body>
 </html>

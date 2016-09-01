@@ -1,112 +1,74 @@
 <!DOCTYPE html>
-<html lang="zh-hant">
+<html lang="zh-Hant">
 <head>
-  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
-  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css">
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.min.css">
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/font-awesome.min.css">
-  <!-- Justfont webfont -->
-  <!-- Local development -->
-  <!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
-  <!-- Proudction version v4.9.4 -->
-  <script src="https://blog.liang2.tw/theme/js/justfont_v4.9.4.js" type="text/javascript" charset="utf-8"></script>
-  <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+            <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+        <link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
 
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="" />
-<meta name="author" content="Liang2" />
-<meta name="description" content="Blog 對我來說，最重要的就是書寫的舒適度。 一開始在設定 github CNAME 的時候就訂為 blog.liang2.tw，但一直以來都只是個一頁式的自我介紹1，用 SemanticUI 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。 整理了一下有幾個目標： 只考慮用 static site 因為不想維護 server，而且 ..." />
-<meta name="keywords" content="zh, pelican, blog, python">
-<meta property="og:site_name" content="Liang2's blog"/>
-<meta property="og:title" content="設定部落格筆記"/>
-<meta property="og:description" content="Blog 對我來說，最重要的就是書寫的舒適度。 一開始在設定 github CNAME 的時候就訂為 blog.liang2.tw，但一直以來都只是個一頁式的自我介紹1，用 SemanticUI 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。 整理了一下有幾個目標： 只考慮用 static site 因為不想維護 server，而且 ..."/>
-<meta property="og:locale" content="zh_TW"/>
-<meta property="og:url" content="https://blog.liang2.tw/posts/2015/09/blog-internals/"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2015-09-21 00:00:00+08:00"/>
-<meta property="article:modified_time" content="2015-09-21 00:00:00+08:00"/>
-<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
-<meta property="article:section" content="Coding"/>
-<meta property="article:tag" content="zh"/>
-<meta property="article:tag" content="pelican"/>
-<meta property="article:tag" content="blog"/>
-<meta property="article:tag" content="python"/>
-<meta name="twitter:card" content="summary">
-<meta name="twitter:site" content="@ccwang002">
-<meta name="twitter:title" content="設定部落格筆記">
-<meta name="twitter:description" content="Blog 對我來說，最重要的就是書寫的舒適度。 一開始在設定 github CNAME 的時候就訂為 blog.liang2.tw，但一直以來都只是個一頁式的自我介紹1，用 SemanticUI 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。 整理了一下有幾個目標： 只考慮用 static site 因為不想維護 server，而且 ...">
-  <title>設定部落格筆記 &ndash; Liang2's blog</title>
+		<link href="https://blog.liang2.tw/theme/css/haunter.css?0f9ace0e" rel="stylesheet" />
+
+		<title>設定部落格筆記</title>
+		<!-- Justfont webfont -->
+		<!-- Local development -->
+		<!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+		<!-- Proudction version -->
+		<script src="https://blog.liang2.tw/theme/js/justfont.js" type="text/javascript" charset="utf-8"></script>
 </head>
-<body>
-  <aside>
-    <div>
-      <a href="https://blog.liang2.tw">
-        <img src="https://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
-      </a>
-      <h1><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
-      <p>Code / Stat / Bioinfo</p>
-      <nav>
-        <ul class="list">
-          <li><a href="https://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
-          <li><a href="https://blog.liang2.tw/talks/#talks">Talks</a></li>
-        </ul>
-      </nav>
-      <ul class="social">
-        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
-        <li><a class="sc-envelope-o" href="mailto:me+blog@liang2.tw" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
-        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-      </ul>
-    </div>
-  </aside>
-  <main>
-    <nav>
-      <a href="https://blog.liang2.tw">Home</a>
-      <a href="/archives.html">Archives</a>
-      <a href="/categories.html">Categories</a>
-      <a href="/tags.html">Tags</a>
-      <a href="https://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
-    </nav>
 
-<article>
-  <header>
-    <h1 id="blog-internals">設定部落格筆記</h1>
-    <p>Posted on Sep 21, 2015
-      in <a href="https://blog.liang2.tw/category/coding.html">Coding</a>
-    </p>
-  </header>
-  <div>
-    <p>Blog&nbsp;對我來說，最重要的就是書寫的舒適度。</p>
-<p>一開始在設定 github <span class="caps">CNAME</span> 的時候就訂為 <code>blog.liang2.tw</code>，但一直以來都只是個一頁式的自我介紹<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup>，用 <a href="http://semantic-ui.com/">SemanticUI</a>&nbsp;手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。</p>
+<body class="post-template">
+    <header class="site-head">
+			<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+				<h2 class="blog-description">
+					<a href="https://blog.liang2.tw/about-me/">About</a> |
+					<a href="https://blog.liang2.tw/talks/">Talks</a> |
+					<a href="https://blog.liang2.tw/archives.html">Archives</a>
+				</h2>
+    </header>
+    <main id="content" class="content" role="main">
+<article class="post">
+    <span class="post-meta">
+        <time datetime="Sep 21, 2015">Sep 21, 2015</time>
+        in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2015/09/blog-internals/" rel="bookmark" title="Permalink to 設定部落格筆記">設定部落格筆記</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/zh/">zh</a>
+                <a href="https://blog.liang2.tw/tag/pelican/">pelican</a>
+                <a href="https://blog.liang2.tw/tag/blog/">blog</a>
+                <a href="https://blog.liang2.tw/tag/python/">python</a>
+    </span>
+    <section class="post-content"><p>Blog 對我來說，最重要的就是書寫的舒適度。</p>
+<p>一開始在設定 github CNAME 的時候就訂為 <code>blog.liang2.tw</code>，但一直以來都只是個一頁式的自我介紹<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup>，用 <a href="http://semantic-ui.com/">SemanticUI</a> 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。</p>
 <p>整理了一下有幾個目標：</p>
 <ul>
-<li>只考慮用 static site 因為不想維護 server，而且 blog&nbsp;也沒什要炫的，現在光用前端就可以做到很多互動功能</li>
-<li>最好 site generator 是用 Python&nbsp;實作，這樣想要調整它的功能時，比較懂怎麼改 </li>
-<li>能支援 markdown 和 reStructuredText&nbsp;最好</li>
+<li>只考慮用 static site 因為不想維護 server，而且 blog 也沒什要炫的，現在光用前端就可以做到很多互動功能</li>
+<li>最好 site generator 是用 Python 實作，這樣想要調整它的功能時，比較懂怎麼改 </li>
+<li>能支援 markdown 和 reStructuredText 最好</li>
 </ul>
-<p>篩完之後選項也沒幾個：<a href="http://docs.getpelican.com/">Pelican</a>、<a href="http://sphinx-doc.org/">Sphinx</a>，但 Sphinx 可能對 blog 開發的功能比較少，最多人用的大概就&nbsp;Pelican，所以就決定用它了。</p>
+<p>篩完之後選項也沒幾個：<a href="http://docs.getpelican.com/">Pelican</a>、<a href="http://sphinx-doc.org/">Sphinx</a>，但 Sphinx 可能對 blog 開發的功能比較少，最多人用的大概就 Pelican，所以就決定用它了。</p>
 <p>整理起來也做了不少調整，就列點吧：</p>
 <div class="toc">
 <ul>
-<li><a href="#pelican">Pelican&nbsp;簡介</a></li>
-<li><a href="#all-is-about-the-theme">All is about the&nbsp;theme</a></li>
+<li><a href="#pelican">Pelican 簡介</a></li>
+<li><a href="#all-is-about-the-theme">All is about the theme</a></li>
 <li><a href="#_1">字型</a><ul>
-<li><a href="#webfont">中文&nbsp;webfont</a></li>
+<li><a href="#webfont">中文 webfont</a></li>
 <li><a href="#_2">中文排版</a></li>
 </ul>
 </li>
-<li><a href="#figure-caption">Figure&nbsp;caption</a></li>
-<li><a href="#markdown-or-rst">Markdown or&nbsp;rst?</a></li>
-<li><a href="#to-do">To&nbsp;do</a></li>
-<li><a href="#edit-2015-09-22"><span class="caps">EDIT</span>&nbsp;(2015-09-22)</a></li>
-<li><a href="#edit-2015-09-23"><span class="caps">EDIT</span>&nbsp;(2015-09-23)</a></li>
+<li><a href="#figure-caption">Figure caption</a></li>
+<li><a href="#markdown-or-rst">Markdown or rst?</a></li>
+<li><a href="#to-do">To do</a></li>
+<li><a href="#edit-2015-09-22">EDIT (2015-09-22)</a></li>
+<li><a href="#edit-2015-09-23">EDIT (2015-09-23)</a></li>
 </ul>
 </div>
-<h3 id="pelican">Pelican&nbsp;簡介</h3>
+<h3 id="pelican">Pelican 簡介</h3>
 <p><a href="http://docs.getpelican.com/">Pelican</a> 結論來說不難理解，而且要自訂 blog theme 也不會很複雜。首先跟 Sphinx 一樣，用內建的 <code>pelican-quickstart</code> 預設值就能架好一個可以動的。目錄大概長這樣</p>
 <div class="highlight"><pre><span></span>my_blog/
 ├── content/
@@ -122,13 +84,13 @@
 </pre></div>
 
 
-<p>Blog source 都放在 content 底下，設定檔分成 local 用的 <code>pelicanconf.py</code> 以及 deploy 用的 <code>publishconf.py</code>。並且提供了像 Fabric、Make、shell script 等自動化腳本把 source 用 theme template render&nbsp;成一個靜態網站，</p>
+<p>Blog source 都放在 content 底下，設定檔分成 local 用的 <code>pelicanconf.py</code> 以及 deploy 用的 <code>publishconf.py</code>。並且提供了像 Fabric、Make、shell script 等自動化腳本把 source 用 theme template render 成一個靜態網站，</p>
 <div class="highlight"><pre><span></span>make html
 </pre></div>
 
 
-<p>預設會輸出到 <code>output/</code>，到時候 deploy 就把這個資料夾的內容丟到 server&nbsp;上。</p>
-<p>每篇文章可以用 markdown 或者 reStructuredText(rst)&nbsp;來寫，概念上像這樣：</p>
+<p>預設會輸出到 <code>output/</code>，到時候 deploy 就把這個資料夾的內容丟到 server 上。</p>
+<p>每篇文章可以用 markdown 或者 reStructuredText(rst) 來寫，概念上像這樣：</p>
 <div class="highlight"><pre><span></span>---
 Title: Hello World
 Date: 2016-01-16 18:00
@@ -157,32 +119,32 @@ Hello World_
 </pre></div>
 
 
-<p>這樣已經設定好了標題、分類、標籤、發布日期還有 slug（有點像文章的 <span class="caps">ID</span>）算很完整了。最低要求至少有標題。</p>
-<p>最後調整了一下 static file 的路徑。我把文章按年月分開，每個子資料夾裡有當月的圖、檔案等等。<span class="caps">URL</span> 也是以年月為單位。其實最理想的應該是有個 hash 之類的東西 <code>/posts/2015/09/abcd/</code> 等同於 <code>/posts/2015/09/abcd-my-post/</code> 比較好分享。找了一下好像沒這功能，不過沒有它影響也不嚴重，暫且不理。</p>
-<h3 id="all-is-about-the-theme">All is about the&nbsp;theme</h3>
-<p>一開始最花時間就是找個好主題了。內建的主題實用性不差，但初次看結構太複雜，再來我喜歡更簡潔的版面，也希望有寫好 responsive&nbsp;layout。</p>
+<p>這樣已經設定好了標題、分類、標籤、發布日期還有 slug（有點像文章的 ID）算很完整了。最低要求至少有標題。</p>
+<p>最後調整了一下 static file 的路徑。我把文章按年月分開，每個子資料夾裡有當月的圖、檔案等等。URL 也是以年月為單位。其實最理想的應該是有個 hash 之類的東西 <code>/posts/2015/09/abcd/</code> 等同於 <code>/posts/2015/09/abcd-my-post/</code> 比較好分享。找了一下好像沒這功能，不過沒有它影響也不嚴重，暫且不理。</p>
+<h3 id="all-is-about-the-theme">All is about the theme</h3>
+<p>一開始最花時間就是找個好主題了。內建的主題實用性不差，但初次看結構太複雜，再來我喜歡更簡潔的版面，也希望有寫好 responsive layout。</p>
 <p>Pelican 大部份的主題都集中在 <a href="http://pelicanthemes.com/">http://pelicanthemes.com/</a>，有縮圖很好挑選，而且 theme 跟內容是分開的，換 theme 只是改 config 裡 <code>THEME</code> 這變數而已，不喜歡就換。選了一陣子挑到 <a href="https://github.com/alexandrevicenzi/flex">Flex</a>，他不是我最喜歡的版型，我比較喜歡單欄式置中，但意外只有少數主題滿足上述條件。</p>
-<p>Theme template 用 Jinja2，一開始只要調整 <code>base</code>、<code>index</code>、<code>article</code>、<code>page</code> 這幾頁跟 blog 最相關的就能改變主要的外觀。好在兩欄式的網頁 code 讀起來也很舒適。看了一下只要把 responsive 調整一下，讓手機內文寬度夠、很大的螢幕不要滿版整體看起來就差不多。大致上 theme&nbsp;就這樣定下來了。</p>
-<p>細部的 <span class="caps">CSS</span> 修正，Flex 有用 <a href="http://lesscss.org/"><span class="caps">LESS</span></a> 和 <a href="http://gulpjs.com/">gulp</a> 處理前端的設定。<span class="caps">LESS</span> 變數跟 nesting rules 不會讓 <span class="caps">CSS</span> 變得很髒；每次改完跑個 gulp 就有新的 <code>style.min.css</code> 很方便。</p>
-<p>唯一討厭左側的大頭照，有夠煩的，而且還要增加 <span class="caps">54KB</span>&nbsp;的流量。還再想該放什麼來關掉它，放初音好了。</p>
+<p>Theme template 用 Jinja2，一開始只要調整 <code>base</code>、<code>index</code>、<code>article</code>、<code>page</code> 這幾頁跟 blog 最相關的就能改變主要的外觀。好在兩欄式的網頁 code 讀起來也很舒適。看了一下只要把 responsive 調整一下，讓手機內文寬度夠、很大的螢幕不要滿版整體看起來就差不多。大致上 theme 就這樣定下來了。</p>
+<p>細部的 CSS 修正，Flex 有用 <a href="http://lesscss.org/">LESS</a> 和 <a href="http://gulpjs.com/">gulp</a> 處理前端的設定。LESS 變數跟 nesting rules 不會讓 CSS 變得很髒；每次改完跑個 gulp 就有新的 <code>style.min.css</code> 很方便。</p>
+<p>唯一討厭左側的大頭照，有夠煩的，而且還要增加 54KB 的流量。還再想該放什麼來關掉它，放初音好了。</p>
 <h3 id="_1">字型</h3>
-<p>因為自用 <span class="caps">OSX</span>，有時候都會忘了在 Windows&nbsp;上的字體有多悲哀。</p>
-<p>Flex 內建用 Google webfont 來處理英文字體，為了引言還有完整性多加了一組 serif 字體 <a href="https://www.google.com/fonts/specimen/Crimson+Text">Crimson Text</a>。我喜歡這種 Garamond 類的古典襯線字。剛剛發現它是<a href="https://github.com/skosch/Crimson">開源的 (<span class="caps">SIL</span> 1.1)</a>，nice。（大陸網友表示：……）</p>
-<h4 id="webfont">中文&nbsp;webfont</h4>
-<p>麻煩的就是中文字型。直接放棄系統內建，但最後有把 Noto Sans <span class="caps">CJK</span> 和 Source Hans Sans 加進來當備用。一直都有想嘗試 <a href="http://justfont.com">justfont</a> 推出的 webfont 功能。它運作時會嵌入一個 javascript，看這頁網頁用到哪些中文字，才去要這些中文字的字型來加速載入。使用上就跟 Google webfont 一樣，官網教學考慮了很多使用情況，其實沒做什麼設定就好了，我以為要調很多東西才看得到效果，最後只改了 <code>font-family</code> 就完工。他的設定也能保留原本英文字的字型。</p>
+<p>因為自用 OSX，有時候都會忘了在 Windows 上的字體有多悲哀。</p>
+<p>Flex 內建用 Google webfont 來處理英文字體，為了引言還有完整性多加了一組 serif 字體 <a href="https://www.google.com/fonts/specimen/Crimson+Text">Crimson Text</a>。我喜歡這種 Garamond 類的古典襯線字。剛剛發現它是<a href="https://github.com/skosch/Crimson">開源的 (SIL 1.1)</a>，nice。（大陸網友表示：……）</p>
+<h4 id="webfont">中文 webfont</h4>
+<p>麻煩的就是中文字型。直接放棄系統內建，但最後有把 Noto Sans CJK 和 Source Hans Sans 加進來當備用。一直都有想嘗試 <a href="http://justfont.com">justfont</a> 推出的 webfont 功能。它運作時會嵌入一個 javascript，看這頁網頁用到哪些中文字，才去要這些中文字的字型來加速載入。使用上就跟 Google webfont 一樣，官網教學考慮了很多使用情況，其實沒做什麼設定就好了，我以為要調很多東西才看得到效果，最後只改了 <code>font-family</code> 就完工。他的設定也能保留原本英文字的字型。</p>
 <div class="figure align-center">
   <img src="https://blog.liang2.tw/posts/2015/09/blog-internals/pics/justfont_setting.png"/>
-  <p class="caption center"><span class="fig">Justfont&nbsp;設定</span></p>
+  <p class="caption center"><span class="fig">Justfont 設定</span></p>
 </div>
 
-<p>免費的試用沒問題之後就刷下去了。說真的免費只能綁兩個字型，設定好內文以及內文粗體 quota 就用完了，現在 100,000 page views/year 大約 <span class="caps">NTD</span> 350/year 也不貴。既然付費了當然要試試信黑體，電腦版的到現在還買不起啊。設了兩個字重，一樣加了一套楷體當引言用。楷體也選了比較秀氣的 cwTeX&nbsp;楷。</p>
-<p>也許未來會試試看仿宋體，但我有點擔心螢幕顯示的效果（用 Retina 表示解析度無感），而且 justfont&nbsp;提供的（仿）宋體也沒有比信黑體更喜歡，這實驗暫且擱置。</p>
+<p>免費的試用沒問題之後就刷下去了。說真的免費只能綁兩個字型，設定好內文以及內文粗體 quota 就用完了，現在 100,000 page views/year 大約 NTD 350/year 也不貴。既然付費了當然要試試信黑體，電腦版的到現在還買不起啊。設了兩個字重，一樣加了一套楷體當引言用。楷體也選了比較秀氣的 cwTeX 楷。</p>
+<p>也許未來會試試看仿宋體，但我有點擔心螢幕顯示的效果（用 Retina 表示解析度無感），而且 justfont 提供的（仿）宋體也沒有比信黑體更喜歡，這實驗暫且擱置。</p>
 <h4 id="_2">中文排版</h4>
-<p>受到 <span class="caps">COSCUP</span> 2015 Bobby Tung 給的演講<a href="http://www.slideshare.net/bobby3302/w3c-51661297">《中文排版需求以及我在W3C看到的事情》</a>所感召，覺得如果自己不一開始好好做網頁中文排版，之後肯定更懶得改。</p>
+<p>受到 COSCUP 2015 Bobby Tung 給的演講<a href="http://www.slideshare.net/bobby3302/w3c-51661297">《中文排版需求以及我在W3C看到的事情》</a>所感召，覺得如果自己不一開始好好做網頁中文排版，之後肯定更懶得改。</p>
 <p>但最後還是有所妥協啦（跪）。</p>
-<p>首先段落前後還是有留白，這主要是兼顧英文排版，因為不知道怎麼在不同語言套不同的版型，英文段落是前後留大間距。再來我在純文字的時候也很習慣段落前後空一行，感覺視覺上這樣比較舒適（也許是行高不夠……）。 <del><code>margin</code> 也是設為 <code>1em</code>。</del>（<span class="caps">EDIT</span>:&nbsp;見文末）</p>
+<p>首先段落前後還是有留白，這主要是兼顧英文排版，因為不知道怎麼在不同語言套不同的版型，英文段落是前後留大間距。再來我在純文字的時候也很習慣段落前後空一行，感覺視覺上這樣比較舒適（也許是行高不夠……）。 <del><code>margin</code> 也是設為 <code>1em</code>。</del>（EDIT: 見文末）</p>
 <p>段落首行縮排最後也沒有放，主因是文句都蠻短的，有點怪；再來 markdown parser 會把我的全形空白吃掉，難以理解（但 rst 不會），真要加只能用<code>&amp;#x3000;</code>硬加。中英交雜的段落中文字會無法對齊，不過就暫時算了，現在中英文的字重能一樣已經很感動了。</p>
-<p>300 的中文字的確有點細，我把字調大了成 18px，還特別拿給我爸媽看，確定他們看得到這些字 <span class="caps">XD</span> </p>
+<p>300 的中文字的確有點細，我把字調大了成 18px，還特別拿給我爸媽看，確定他們看得到這些字 XD </p>
 <p>做到這裡其實還蠻滿意了，長得像這樣：</p>
 <div class="figure align-center" style="width: 250px">
   <img src="https://blog.liang2.tw/posts/2015/09/blog-internals/pics/blog_mobile.png"/>
@@ -194,8 +156,8 @@ Hello World_
   <p class="caption center"><span class="fig">電腦螢幕的樣子</span></p>
 </div>
 
-<h3 id="figure-caption">Figure&nbsp;caption</h3>
-<p>圖的下面還蠻常會放一些圖說、reference 之類。範例上面就有。在 markdown 不容易達成這效果，因為它的語法沒這麼複雜；但 rst&nbsp;本來就有支援這樣的語法：</p>
+<h3 id="figure-caption">Figure caption</h3>
+<p>圖的下面還蠻常會放一些圖說、reference 之類。範例上面就有。在 markdown 不容易達成這效果，因為它的語法沒這麼複雜；但 rst 本來就有支援這樣的語法：</p>
 <div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">role</span><span class="p">::</span> fig
 
 <span class="p">..</span> <span class="ow">figure</span><span class="p">::</span> {filename}pics.jpg
@@ -216,26 +178,26 @@ Hello World_
 </pre></div>
 
 
-<p>在 markdown 基本上就手打上面那一串 <span class="caps">HTML</span>，其實也還好，只是醜了一點。真的寫得很煩時再想寫 plugin&nbsp;來做這件事。</p>
-<h3 id="markdown-or-rst">Markdown or&nbsp;rst?</h3>
-<p>日常的編輯應該還是以 markdown 為主，看看精美的 <a href="http://macdown.uranusjr.com/">Macdown</a> 編輯器如此好用。但如果是很複雜的檔案（分析有公式有圖表什麼的）可能就會考慮 rst；rst 缺點就是語法有點複雜，而且很多語法仰賴句中空白，使得不適用中文，然後我的 vim linter 會一直抱怨它有很多沒看過的&nbsp;directives。</p>
-<p>不過很高興 Pelican 把兩者整合的很好，兩個都能用就能視情況轉換，但 template&nbsp;也不用寫兩份。</p>
-<h3 id="to-do">To&nbsp;do</h3>
-<p>這之外還加上了 LaTeX MathJax、Smartypants 等小細節，不過整體來說 blog&nbsp;客製化就完成了。也許未來用到什麼再加吧。</p>
+<p>在 markdown 基本上就手打上面那一串 HTML，其實也還好，只是醜了一點。真的寫得很煩時再想寫 plugin 來做這件事。</p>
+<h3 id="markdown-or-rst">Markdown or rst?</h3>
+<p>日常的編輯應該還是以 markdown 為主，看看精美的 <a href="http://macdown.uranusjr.com/">Macdown</a> 編輯器如此好用。但如果是很複雜的檔案（分析有公式有圖表什麼的）可能就會考慮 rst；rst 缺點就是語法有點複雜，而且很多語法仰賴句中空白，使得不適用中文，然後我的 vim linter 會一直抱怨它有很多沒看過的 directives。</p>
+<p>不過很高興 Pelican 把兩者整合的很好，兩個都能用就能視情況轉換，但 template 也不用寫兩份。</p>
+<h3 id="to-do">To do</h3>
+<p>這之外還加上了 LaTeX MathJax、Smartypants 等小細節，不過整體來說 blog 客製化就完成了。也許未來用到什麼再加吧。</p>
 <p>目前想到的一些問題：</p>
 <ul>
 <li>標題字重：本來是跟內文同字重，但感覺長文會抓不到段落，先改成粗體，希望短文不要因為這樣變得很混亂。</li>
-<li>Jupyter notebook include：還沒有試直接嵌入 nb 的功能，我想應該也是調整 <span class="caps">CSS</span>&nbsp;那類的工（前端好累好難啊…）</li>
+<li>Jupyter notebook include：還沒有試直接嵌入 nb 的功能，我想應該也是調整 CSS 那類的工（前端好累好難啊…）</li>
 </ul>
-<p><a href="(https://github.com/getpelican/pelican-plugins)">Pelican plugin</a> 裡面包含了很多樣的套件，我猜很多遇到的問題，前人都解掉了吧？……吧&nbsp;xdd</p>
-<h3 id="edit-2015-09-22"><span class="caps">EDIT</span>&nbsp;(2015-09-22)</h3>
+<p><a href="(https://github.com/getpelican/pelican-plugins)">Pelican plugin</a> 裡面包含了很多樣的套件，我猜很多遇到的問題，前人都解掉了吧？……吧 xdd</p>
+<h3 id="edit-2015-09-22">EDIT (2015-09-22)</h3>
 <p>看來看去，又調整了很多東西。</p>
-<p>首先，字體大小調小成 16px 又調回 18px。會選擇 16px 是因為我發現在 13&#34; 筆電上閱讀會變得很擠。調回來是因為在大螢幕上看真的太小了，自己都需要放大來看。而且發現本來 13&#34;&nbsp;上很擠的問題並不是字體，而是一行文字的字數。</p>
-<p>一行文字太多會影響到閱讀的效率。<span class="caps">PTT</span> 一行最多 39 個中文字，但應該很少文章是打滿的，大約都打個五到八成寬，也就是在 20-32 個中文字。英文的話大約在 12-15&nbsp;個字。我自己調了很多版本也差不多是這個數字。</p>
-<p>所以理想的文章寬度要滿足中、英文的字數。中文字寬度是固定的，所以在決定一行有多少個中文字之後，就要想辦法調整英文字體讓一行英文字數剛好。原本使用的 Source Pro Sans 稍微窄了一點，會讓純英文的頁面看起來有點擠，字重 400 的時候就好多了，但中文就變得不適合內文。最後換成 Lato，也是很普及的字體，不過其實沒寬多少。如果還是覺得很擠就只好換成 Open Sans&nbsp;了，但我覺得它就有點鬆散。</p>
-<p>最後內文寬 738px (41em) 或 828px (46em)，實際一行最大為 612px (34em)。一行最多 34 個中文字、大約 14 個英文字（80 個字元）；程式碼一行最多只能放 74&nbsp;個字元，短了一點點但還可以接受。</p>
-<p>意外的小發現，在內文變窄之後，還可以加上右側的 sidenote，像是 <a href="http://www.daveliepmann.com/tufte-css/">Tufte <span class="caps">CSS</span></a> 這樣，有時會比 footnote&nbsp;好用，但可能又變回內容太擠的狀態。</p>
-<p>最後是在段落前後距離調整，把標題接內文的間距變小了，但段落間的間距調大。學到了一些以前不會的 <span class="caps">CSS</span>&nbsp;語法，像</p>
+<p>首先，字體大小調小成 16px 又調回 18px。會選擇 16px 是因為我發現在 13&#34; 筆電上閱讀會變得很擠。調回來是因為在大螢幕上看真的太小了，自己都需要放大來看。而且發現本來 13&#34; 上很擠的問題並不是字體，而是一行文字的字數。</p>
+<p>一行文字太多會影響到閱讀的效率。PTT 一行最多 39 個中文字，但應該很少文章是打滿的，大約都打個五到八成寬，也就是在 20-32 個中文字。英文的話大約在 12-15 個字。我自己調了很多版本也差不多是這個數字。</p>
+<p>所以理想的文章寬度要滿足中、英文的字數。中文字寬度是固定的，所以在決定一行有多少個中文字之後，就要想辦法調整英文字體讓一行英文字數剛好。原本使用的 Source Pro Sans 稍微窄了一點，會讓純英文的頁面看起來有點擠，字重 400 的時候就好多了，但中文就變得不適合內文。最後換成 Lato，也是很普及的字體，不過其實沒寬多少。如果還是覺得很擠就只好換成 Open Sans 了，但我覺得它就有點鬆散。</p>
+<p>最後內文寬 738px (41em) 或 828px (46em)，實際一行最大為 612px (34em)。一行最多 34 個中文字、大約 14 個英文字（80 個字元）；程式碼一行最多只能放 74 個字元，短了一點點但還可以接受。</p>
+<p>意外的小發現，在內文變窄之後，還可以加上右側的 sidenote，像是 <a href="http://www.daveliepmann.com/tufte-css/">Tufte CSS</a> 這樣，有時會比 footnote 好用，但可能又變回內容太擠的狀態。</p>
+<p>最後是在段落前後距離調整，把標題接內文的間距變小了，但段落間的間距調大。學到了一些以前不會的 CSS 語法，像</p>
 <div class="highlight"><pre><span></span><span class="nt">p</span> <span class="o">+</span> <span class="nt">p</span> <span class="p">{</span>
   <span class="nb">margin-top</span><span class="o">:</span> <span class="m">1.5em</span><span class="p">;</span>
 <span class="p">}</span>
@@ -243,12 +205,12 @@ Hello World_
 
 
 <p>代表選取相鄰的 p 元素，這樣可以避免直接改 p 的 margin 讓 p 與 h*、ul、pre 等間距太寬的狀況。<strong>前端真的太神妙了。</strong></p>
-<h3 id="edit-2015-09-23"><span class="caps">EDIT</span>&nbsp;(2015-09-23)</h3>
-<p>另外 smartypants 有時候有點煩，像是表達 13&nbsp;吋時</p>
-<p class="center"><span style="font-size: 4em; line-height: 1em;">13&#8221; vs&nbsp;13&#34;</span></p>
+<h3 id="edit-2015-09-23">EDIT (2015-09-23)</h3>
+<p>另外 smartypants 有時候有點煩，像是表達 13 吋時</p>
+<p class="center"><span style="font-size: 4em; line-height: 1em;">13" vs 13&#34;</span></p>
 
-<p>不把 <code>"</code>（<span class="caps">QUOTATION</span> <span class="caps">MARK</span> <code>\u0022</code>）直接寫成 <code>&amp;#34;</code> 就會被轉換成左邊那樣 <code>”</code>（<span class="caps">RIGHT</span> <span class="caps">DOUBLE</span> <span class="caps">QUOTATION</span> <span class="caps">MARK</span> <code>\u201D</code>）。</p>
-<p>也把表格的格式加上，仿造 bootstrap 表格 overflow 時會變成 block&nbsp;可以滑動著看。</p>
+<p>不把 <code>"</code>（QUOTATION MARK <code>\u0022</code>）直接寫成 <code>&amp;#34;</code> 就會被轉換成左邊那樣 <code>”</code>（RIGHT DOUBLE QUOTATION MARK <code>\u201D</code>）。</p>
+<p>也把表格的格式加上，仿造 bootstrap 表格 overflow 時會變成 block 可以滑動著看。</p>
 <div class="footnote">
 <hr />
 <ol>
@@ -259,61 +221,62 @@ Hello World_
 </div>&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
-</div>
-  </div>
-  <div class="tag-cloud">
-    <p>
-      <a href="https://blog.liang2.tw/tag/zh.html">zh</a>
-      <a href="https://blog.liang2.tw/tag/pelican.html">pelican</a>
-      <a href="https://blog.liang2.tw/tag/blog.html">blog</a>
-      <a href="https://blog.liang2.tw/tag/python.html">python</a>
-    </p>
-  </div>
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'liang2';
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-</article>
-
+</div></section>
+    <footer class="post-footer">
+<section class="share">
+    <h2>Share</h2>
+    <a class="icon-twitter" href="https://twitter.com/share?text=設定部落格筆記&amp;url=https://blog.liang2.tw/posts/2015/09/blog-internals/"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u=https://blog.liang2.tw/posts/2015/09/blog-internals/"
+        onclick="window.open(this.href, 'facebook-share', 'width=580,height=296'); return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.liang2.tw/posts/2015/09/blog-internals/"
+        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2015/09/blog-internals/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2015/09/blog-internals/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
     <footer>
-<p>
-  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
-</p>
-<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
-  <a rel="license"
-     href="http://creativecommons.org/licenses/by/4.0/"
-     target="_blank">
-    <img alt="Creative Commons License"
-         title="Creative Commons License"
-         style="border-width:0"
-         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
-         width="80"
-         height="15"/>
-  </a>
-</p>    </footer>
-  </main>
-<script type="application/ld+json">
-{
-  "@context": "http://schema.org",
-  "@type": "BlogPosting",
-  "name": "設定部落格筆記",
-  "headline": "設定部落格筆記",
-  "datePublished": "2015-09-21 00:00:00+08:00",
-  "dateModified": "",
-  "author": {
-    "@type": "Person",
-    "name": "Liang2",
-    "url": "https://blog.liang2.tw/author/liang2.html"
-  },
-  "image": "https://blog.liang2.tw/pics/headpic.jpg",
-  "url": "https://blog.liang2.tw/posts/2015/09/blog-internals/",
-  "description": "Blog 對我來說，最重要的就是書寫的舒適度。 一開始在設定 github CNAME 的時候就訂為 blog.liang2.tw，但一直以來都只是個一頁式的自我介紹1，用 SemanticUI 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。 整理了一下有幾個目標： 只考慮用 static site 因為不想維護 server，而且 ..."
-}
-</script></body>
+</article>
+    </main>
+    <footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags/">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">Built using <a href="http://getpelican.com/">Pelican</a>. Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.</section>
+		</div>
+    </footer>
+</body>
 </html>

@@ -1,85 +1,47 @@
 <!DOCTYPE html>
-<html lang="zh-hant">
+<html lang="zh-Hant">
 <head>
-  <link href='//fonts.googleapis.com/css?family=Lato:300,700,300italic' rel='stylesheet' type='text/css'>
-  <link href=//fonts.googleapis.com/css?family=Crimson+Text:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css">
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.min.css">
-  <link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/font-awesome.min.css">
-  <!-- Justfont webfont -->
-  <!-- Local development -->
-  <!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
-  <!-- Proudction version v4.9.4 -->
-  <script src="https://blog.liang2.tw/theme/js/justfont_v4.9.4.js" type="text/javascript" charset="utf-8"></script>
-  <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's blog Atom">
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+            <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+        <link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
 
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="" />
-<meta name="author" content="Liang2" />
-<meta name="description" content="所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code 搞炸掉的時候，還能回到先前有保存的狀態。" />
-<meta name="keywords" content="zh, labcoding">
-<meta property="og:site_name" content="Liang2's blog"/>
-<meta property="og:title" content="Coding 初學指南－版本控制"/>
-<meta property="og:description" content="所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code 搞炸掉的時候，還能回到先前有保存的狀態。"/>
-<meta property="og:locale" content="zh_TW"/>
-<meta property="og:url" content="https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2016-01-21 22:40:00+08:00"/>
-<meta property="article:modified_time" content="2016-01-21 22:40:00+08:00"/>
-<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
-<meta property="article:section" content="Coding"/>
-<meta property="article:tag" content="zh"/>
-<meta property="article:tag" content="labcoding"/>
-<meta name="twitter:card" content="summary">
-<meta name="twitter:site" content="@ccwang002">
-<meta name="twitter:title" content="Coding 初學指南－版本控制">
-<meta name="twitter:description" content="所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code 搞炸掉的時候，還能回到先前有保存的狀態。">
-  <title>Coding 初學指南－版本控制 &ndash; Liang2's blog</title>
+		<link href="https://blog.liang2.tw/theme/css/haunter.css?0f9ace0e" rel="stylesheet" />
+
+		<title>Coding 初學指南－版本控制</title>
+		<!-- Justfont webfont -->
+		<!-- Local development -->
+		<!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+		<!-- Proudction version -->
+		<script src="https://blog.liang2.tw/theme/js/justfont.js" type="text/javascript" charset="utf-8"></script>
 </head>
-<body>
-  <aside>
-    <div>
-      <a href="https://blog.liang2.tw">
-        <img src="https://blog.liang2.tw/pics/headpic.jpg" alt="Liang2's Blog" title="Liang2's Blog">
-      </a>
-      <h1><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
-      <p>Code / Stat / Bioinfo</p>
-      <nav>
-        <ul class="list">
-          <li><a href="https://blog.liang2.tw/about-me/#about-me">About&nbsp;me</a></li>
-          <li><a href="https://blog.liang2.tw/talks/#talks">Talks</a></li>
-        </ul>
-      </nav>
-      <ul class="social">
-        <li><a class="sc-twitter" href="https://twitter.com/ccwang002" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-facebook" href="https://www.facebook.com/lbwang.2" target="_blank"><i class="fa fa-facebook"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/ccwang002" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-bitbucket" href="https://bitbucket.org/ccwang002" target="_blank"><i class="fa fa-bitbucket"></i></a></li>
-        <li><a class="sc-envelope-o" href="mailto:me+blog@liang2.tw" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
-        <li><a class="sc-linkedin" href="http://tw.linkedin.com/in/liangbowang/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-      </ul>
-    </div>
-  </aside>
-  <main>
-    <nav>
-      <a href="https://blog.liang2.tw">Home</a>
-      <a href="/archives.html">Archives</a>
-      <a href="/categories.html">Categories</a>
-      <a href="/tags.html">Tags</a>
-      <a href="https://blog.liang2.tw/feeds/all.atom.xml">Atom</a>
-    </nav>
 
-<article>
-  <header>
-    <h1 id="lab-coding-version-control">Coding&nbsp;初學指南－版本控制</h1>
-    <p>Posted on Jan 21, 2016
-      in <a href="https://blog.liang2.tw/category/coding.html">Coding</a>
-    </p>
-  </header>
-  <div>
-    <p>Last Edited: Jan, 2016&nbsp;（如果內容有誤，你可以留言，或用任何管道告訴我）</p>
-<p>所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code&nbsp;搞炸掉的時候，還能回到先前有保存的狀態。</p>
+<body class="post-template">
+    <header class="site-head">
+			<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+				<h2 class="blog-description">
+					<a href="https://blog.liang2.tw/about-me/">About</a> |
+					<a href="https://blog.liang2.tw/talks/">Talks</a> |
+					<a href="https://blog.liang2.tw/archives.html">Archives</a>
+				</h2>
+    </header>
+    <main id="content" class="content" role="main">
+<article class="post">
+    <span class="post-meta">
+        <time datetime="Jan 21, 2016">Jan 21, 2016</time>
+        in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/" rel="bookmark" title="Permalink to Coding 初學指南－版本控制">Coding 初學指南－版本控制</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/zh/">zh</a>
+                <a href="https://blog.liang2.tw/tag/labcoding/">labcoding</a>
+    </span>
+    <section class="post-content"><p>Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）</p>
+<p>所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code 搞炸掉的時候，還能回到先前有保存的狀態。</p>
 <blockquote>
 <h3 id="_1">為什麼使用版本控制？</h3>
 <p>在軟體開發的過程中，程式碼每天不斷地產出，過程中會發生以下情況：</p>
@@ -87,7 +49,7 @@
 <li>檔案被別人或自己覆蓋，甚至遺失</li>
 <li>想復原前幾天寫的版本</li>
 <li>想知道跟昨天寫的差在哪裡？</li>
-<li>是誰改了這段程式碼，為什麼&nbsp;？</li>
+<li>是誰改了這段程式碼，為什麼 ？</li>
 <li>軟體發行，需要分成維護版跟開發版</li>
 </ul>
 <p>因此，我們希望有一種機制，能夠幫助我們：</p>
@@ -99,26 +61,26 @@
 </ul>
 <p>(From: <a href="http://dylandy.github.io/Easy-Git-Tutorial/">Git 教學研究站</a>)</p>
 </blockquote>
-<p>能做到版本控制的工具有很多，但目前主流就是&nbsp;Git。</p>
+<p>能做到版本控制的工具有很多，但目前主流就是 Git。</p>
 <div class="toc">
 <ul>
 <li><a href="#_1">為什麼使用版本控制？</a></li>
 <li><a href="#git-version-control">Git (Version Control)</a><ul>
 <li><a href="#_2">操作建議</a><ul>
-<li><a href="#commit-style">Commit&nbsp;Style</a></li>
+<li><a href="#commit-style">Commit Style</a></li>
 </ul>
 </li>
 <li><a href="#_3">常見問題</a><ul>
 <li><a href="#conflict">Conflict</a></li>
-<li><a href="#push-fail">Push&nbsp;fail</a></li>
+<li><a href="#push-fail">Push fail</a></li>
 </ul>
 </li>
 <li><a href="#_4">相關資源</a><ul>
-<li><a href="#code-school-try-git">Code School - Try&nbsp;Git</a></li>
-<li><a href="#git">Git&nbsp;教學研究站</a></li>
-<li><a href="#code-school-git-real">Code School - Git&nbsp;Real</a></li>
-<li><a href="#learn-git-branching">Learn Git&nbsp;Branching</a></li>
-<li><a href="#git-tutorial-by-atlassian">Git Tutorial by&nbsp;Atlassian</a></li>
+<li><a href="#code-school-try-git">Code School - Try Git</a></li>
+<li><a href="#git">Git 教學研究站</a></li>
+<li><a href="#code-school-git-real">Code School - Git Real</a></li>
+<li><a href="#learn-git-branching">Learn Git Branching</a></li>
+<li><a href="#git-tutorial-by-atlassian">Git Tutorial by Atlassian</a></li>
 </ul>
 </li>
 <li><a href="#_5">學習目標</a></li>
@@ -127,37 +89,37 @@
 </ul>
 </div>
 <blockquote>
-<p><strong>其他 Coding&nbsp;初學指南系列文章：</strong></p>
+<p><strong>其他 Coding 初學指南系列文章：</strong></p>
 <ul>
 <li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-intro/">Introduction</a></li>
-<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-linux/">Chapter 1 &ndash;&nbsp;Linux</a></li>
-<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/">Chapter 2 &ndash; Text Editing (Markdown, Text&nbsp;Editor)</a></li>
-<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/">Chapter 3 &ndash; Version Control&nbsp;(Git)</a></li>
-<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-python/">Chapter 4 &ndash;&nbsp;Python</a></li>
-<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-osx-env/">Appendix 1 &ndash; <span class="caps">OSX</span> Development&nbsp;Environment</a></li>
-<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-bioinfo-python/">Appendix 2 &ndash; Python in&nbsp;Bioinformatics</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-linux/">Chapter 1 &ndash; Linux</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/">Chapter 2 &ndash; Text Editing (Markdown, Text Editor)</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/">Chapter 3 &ndash; Version Control (Git)</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-python/">Chapter 4 &ndash; Python</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-osx-env/">Appendix 1 &ndash; OSX Development Environment</a></li>
+<li><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-bioinfo-python/">Appendix 2 &ndash; Python in Bioinformatics</a></li>
 </ul>
-<p>或者，用 <a href="/tag/labcoding.html">labcoding</a> 這個 tag&nbsp;也可以找到所有的文章。</p>
+<p>或者，用 <a href="/tag/labcoding.html">labcoding</a> 這個 tag 也可以找到所有的文章。</p>
 </blockquote>
-<h1 id="git-version-control">Git (Version&nbsp;Control)</h1>
-<p>Git&nbsp;是一個版本控制的工具。</p>
+<h1 id="git-version-control">Git (Version Control)</h1>
+<p>Git 是一個版本控制的工具。</p>
 <p>Git 會在你的專案（repo）目錄<sup id="fnref:註1"><a class="footnote-ref" href="#fn:註1" rel="footnote">1</a></sup>底下建一個 <code>.git</code> 的資料夾來管理這些「進度點」，而不會去動專案其他路徑裡的東西。</p>
-<p>這些進度點可以傳到 server 上，別人下載下來的時候就可以除了得到現在的 code&nbsp;以外，還能看到過去開發的記錄；而別人上傳了他的更新進度點之後，你抓下來就可以得到他更改的進度。這個就是「同步」的概念，多人之間能彼此共享、更新彼此開發的成果。</p>
-<p>能夠處理 Git 同步操作的伺服器就叫做 git server。<a href="https://github.com/">Github</a> 就是一間公司提供免費的 git server 讓大家同步公開的 Git 專案。很多 Linux 的工具都使用 git 來讓大家合作開發，也有不少工具已經把 git server 轉到了 Github 上面。所以非常多人在用，因此建議大家不妨申請一個 GitHub&nbsp;帳號。</p>
-<p>Git 雖然最常用來管理程式碼，但它其實可以有效地管理任何純文字的檔案，也可以把 binary  檔案加到 repo&nbsp;中。</p>
-<p>（可能需要有一些 git&nbsp;操作經驗才能了解以下的術語）</p>
+<p>這些進度點可以傳到 server 上，別人下載下來的時候就可以除了得到現在的 code 以外，還能看到過去開發的記錄；而別人上傳了他的更新進度點之後，你抓下來就可以得到他更改的進度。這個就是「同步」的概念，多人之間能彼此共享、更新彼此開發的成果。</p>
+<p>能夠處理 Git 同步操作的伺服器就叫做 git server。<a href="https://github.com/">Github</a> 就是一間公司提供免費的 git server 讓大家同步公開的 Git 專案。很多 Linux 的工具都使用 git 來讓大家合作開發，也有不少工具已經把 git server 轉到了 Github 上面。所以非常多人在用，因此建議大家不妨申請一個 GitHub 帳號。</p>
+<p>Git 雖然最常用來管理程式碼，但它其實可以有效地管理任何純文字的檔案，也可以把 binary  檔案加到 repo 中。</p>
+<p>（可能需要有一些 git 操作經驗才能了解以下的術語）</p>
 <h2 id="_2">操作建議</h2>
 <blockquote>
 <p>建立多而小的進度點</p>
 </blockquote>
-<p>每完成一系列的更動，就趕快 add 和&nbsp;commit。一開始會煩，但這是好習慣。</p>
-<p>日後更了解 git 操作的時候，會學到一些進階的指令（如 <code>git rebase -i</code>）就能把多個 commit 合成為一個。但要拆開一個大的 commit&nbsp;會比較複雜。</p>
-<h3 id="commit-style">Commit&nbsp;Style</h3>
-<p>常見的 commit message&nbsp;大概會是一行文。如果這個更動需要說明，那就建議按照下面的格式：</p>
+<p>每完成一系列的更動，就趕快 add 和 commit。一開始會煩，但這是好習慣。</p>
+<p>日後更了解 git 操作的時候，會學到一些進階的指令（如 <code>git rebase -i</code>）就能把多個 commit 合成為一個。但要拆開一個大的 commit 會比較複雜。</p>
+<h3 id="commit-style">Commit Style</h3>
+<p>常見的 commit message 大概會是一行文。如果這個更動需要說明，那就建議按照下面的格式：</p>
 <ul>
-<li>第一行少於 50&nbsp;個字元</li>
+<li>第一行少於 50 個字元</li>
 <li>第二行留空</li>
-<li>第三行以後格式隨意，但單行不超過 75&nbsp;個字元</li>
+<li>第三行以後格式隨意，但單行不超過 75 個字元</li>
 <li>善用條列式說明</li>
 </ul>
 <p>以下是範例（From <a href="http://git-scm.com/book/ch5-2.html">Git Book</a>）：</p>
@@ -184,39 +146,39 @@ Further paragraphs come after blank lines.
 <p>ps 你可以找到很多有趣的 commit message。例如：<a href="http://www.commitlogsfromlastnight.com/">抱怨</a>。</p>
 <h2 id="_3">常見問題</h2>
 <h4 id="conflict">Conflict</h4>
-<p>當單機只有在一個 branch 上開發的時候，很難有 conflict 的問題。但碰到多人共同開發，或把多條 branch merge 在一起時就會有&nbsp;conflict。</p>
-<p>Conflict 的發生，最常見的就是兩個人各自修改了同一個檔案相近位置的內容。這使得 git&nbsp;在把兩個人的更動融合在一起的時候，會不知道到底要用誰的更動，這時候就無法自動處理了。</p>
-<p>可以搜尋「resolve git&nbsp;conflict」找到相關的解決辦法。</p>
-<h4 id="push-fail">Push&nbsp;fail</h4>
-<p>這通常發在 server 上的進度點比自己本機的還要新，所以必須先把 server 上的更新同步下來。如果都是同一個 branch 的話，你可以試著用 <code>git pull --rebase</code> 去避免額外的&nbsp;merge。</p>
+<p>當單機只有在一個 branch 上開發的時候，很難有 conflict 的問題。但碰到多人共同開發，或把多條 branch merge 在一起時就會有 conflict。</p>
+<p>Conflict 的發生，最常見的就是兩個人各自修改了同一個檔案相近位置的內容。這使得 git 在把兩個人的更動融合在一起的時候，會不知道到底要用誰的更動，這時候就無法自動處理了。</p>
+<p>可以搜尋「resolve git conflict」找到相關的解決辦法。</p>
+<h4 id="push-fail">Push fail</h4>
+<p>這通常發在 server 上的進度點比自己本機的還要新，所以必須先把 server 上的更新同步下來。如果都是同一個 branch 的話，你可以試著用 <code>git pull --rebase</code> 去避免額外的 merge。</p>
 <h2 id="_4">相關資源</h2>
-<h3 id="code-school-try-git">Code School - Try&nbsp;Git</h3>
-<p>互動式練習，能懂最基本的 Git 指令操作，日常操作也主要是這些指令。並且會帶你建立一個 GitHub&nbsp;帳號。</p>
+<h3 id="code-school-try-git">Code School - Try Git</h3>
+<p>互動式練習，能懂最基本的 Git 指令操作，日常操作也主要是這些指令。並且會帶你建立一個 GitHub 帳號。</p>
 <ul>
 <li><a href="https://try.github.io">https://try.github.io</a></li>
 </ul>
-<h3 id="git">Git&nbsp;教學研究站</h3>
-<p>中文的介紹，他的互動式練習就是上面 Try Git&nbsp;的中文化版本。</p>
+<h3 id="git">Git 教學研究站</h3>
+<p>中文的介紹，他的互動式練習就是上面 Try Git 的中文化版本。</p>
 <ul>
 <li><a href="http://dylandy.github.io/Easy-Git-Tutorial/index.html">http://dylandy.github.io/Easy-Git-Tutorial/index.html</a></li>
 </ul>
-<h3 id="code-school-git-real">Code School - Git&nbsp;Real</h3>
-<p>更完整的互動式練習，如果全部的關卡都做完的話，大部份需要用 git&nbsp;的狀況都練習過了。</p>
+<h3 id="code-school-git-real">Code School - Git Real</h3>
+<p>更完整的互動式練習，如果全部的關卡都做完的話，大部份需要用 git 的狀況都練習過了。</p>
 <ul>
 <li><a href="http://gitreal.codeschool.com">http://gitreal.codeschool.com</a></li>
 </ul>
-<h3 id="learn-git-branching">Learn Git&nbsp;Branching</h3>
-<p>顧名思義，是個練習操作 git branch 的線上學習網站。不過前幾個關卡在介紹 commit 相關的操作，可以試一試。真要練習可以先完成 Main 以下&nbsp;levels：</p>
+<h3 id="learn-git-branching">Learn Git Branching</h3>
+<p>顧名思義，是個練習操作 git branch 的線上學習網站。不過前幾個關卡在介紹 commit 相關的操作，可以試一試。真要練習可以先完成 Main 以下 levels：</p>
 <ul>
-<li>Introduction&nbsp;Sequence</li>
-<li>Ramping&nbsp;Up</li>
-<li>Moving Work&nbsp;Around</li>
+<li>Introduction Sequence</li>
+<li>Ramping Up</li>
+<li>Moving Work Around</li>
 </ul>
-<p>其他稍難一點，視情況跳過。但如果想學 git&nbsp;比較複雜的指令可以回來看它。</p>
+<p>其他稍難一點，視情況跳過。但如果想學 git 比較複雜的指令可以回來看它。</p>
 <ul>
 <li><a href="http://pcottle.github.io/learnGitBranching/">http://pcottle.github.io/learnGitBranching/</a></li>
 </ul>
-<h3 id="git-tutorial-by-atlassian">Git Tutorial by&nbsp;Atlassian</h3>
+<h3 id="git-tutorial-by-atlassian">Git Tutorial by Atlassian</h3>
 <p>蠻完整的教學，但可能稍難一點。</p>
 <ul>
 <li><a href="https://www.atlassian.com/git/tutorials">https://www.atlassian.com/git/tutorials</a></li>
@@ -224,7 +186,7 @@ Further paragraphs come after blank lines.
 <h2 id="_5">學習目標</h2>
 <ol>
 <li>
-<p>用 Git 管理這些練習的筆記（呈接在 Text Editors&nbsp;的練習）</p>
+<p>用 Git 管理這些練習的筆記（呈接在 Text Editors 的練習）</p>
 <ul>
 <li>可以試著對它做一些 git 指令操作：<ul>
 <li><code>git status</code></li>
@@ -236,8 +198,8 @@ Further paragraphs come after blank lines.
 <li>
 <p>建立 dotfiles 和 dotvim 來管理你的環境設定檔。<br>
    dotfiles 就是用來儲存 <code>.xxx</code> 的檔案們，像是 <code>.bashrc</code> 、 <code>.screenrc</code> 、 <code>.tmux.conf</code> 、 <code>.gitconfig</code> 等等，一般可能存放在 <code>~/.xxx</code> 或 <code>~/.config/xxx</code> 之類。用版本控制的好處是，這樣在不同的 server 之間設定可以同步。<br>
-   dotvim 是存放 <code>~/.vim</code> 的 Vim 設定檔。這些設定檔可以透過 soft link&nbsp;連結回他們原本應該在的位置。</p>
-<p><strong>注意！永遠不要把 private key&nbsp;放入版本控制中！</strong></p>
+   dotvim 是存放 <code>~/.vim</code> 的 Vim 設定檔。這些設定檔可以透過 soft link 連結回他們原本應該在的位置。</p>
+<p><strong>注意！永遠不要把 private key 放入版本控制中！</strong></p>
 <ul>
 <li>Hint: 搜尋 dotfiles 就會有很多範例（Ex <a href="https://github.com/ccwang002/dotfiles">我的</a>）</li>
 </ul>
@@ -256,59 +218,62 @@ Further paragraphs come after blank lines.
 <p>所謂的專案目錄就是下 <code>git init</code> 指令的目錄。&#160;<a class="footnote-backref" href="#fnref:註1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
-</div>
-  </div>
-  <div class="tag-cloud">
-    <p>
-      <a href="https://blog.liang2.tw/tag/zh.html">zh</a>
-      <a href="https://blog.liang2.tw/tag/labcoding.html">labcoding</a>
-    </p>
-  </div>
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'liang2';
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-</article>
-
+</div></section>
+    <footer class="post-footer">
+<section class="share">
+    <h2>Share</h2>
+    <a class="icon-twitter" href="https://twitter.com/share?text=Coding 初學指南－版本控制&amp;url=https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u=https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/"
+        onclick="window.open(this.href, 'facebook-share', 'width=580,height=296'); return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/"
+        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2016/01/lab-coding-version-control/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
     <footer>
-<p>
-  &copy; Liang2 2015 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
-</p>
-<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - based on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
-  <a rel="license"
-     href="http://creativecommons.org/licenses/by/4.0/"
-     target="_blank">
-    <img alt="Creative Commons License"
-         title="Creative Commons License"
-         style="border-width:0"
-         src="https://i.creativecommons.org/l/by/4.0/80x15.png"
-         width="80"
-         height="15"/>
-  </a>
-</p>    </footer>
-  </main>
-<script type="application/ld+json">
-{
-  "@context": "http://schema.org",
-  "@type": "BlogPosting",
-  "name": "Coding&nbsp;初學指南－版本控制",
-  "headline": "Coding&nbsp;初學指南－版本控制",
-  "datePublished": "2016-01-21 22:40:00+08:00",
-  "dateModified": "",
-  "author": {
-    "@type": "Person",
-    "name": "Liang2",
-    "url": "https://blog.liang2.tw/author/liang2.html"
-  },
-  "image": "https://blog.liang2.tw/pics/headpic.jpg",
-  "url": "https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/",
-  "description": "所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code 搞炸掉的時候，還能回到先前有保存的狀態。"
-}
-</script></body>
+</article>
+    </main>
+    <footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags/">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">Built using <a href="http://getpelican.com/">Pelican</a>. Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.</section>
+		</div>
+    </footer>
+</body>
 </html>

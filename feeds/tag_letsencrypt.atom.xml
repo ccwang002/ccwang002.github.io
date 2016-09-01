@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang2's blog</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_letsencrypt.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2016-02-21T14:00:00+08:00</updated><entry><title>Python 官方文件中文化 Server HTTPS 使用 Let’s Encrypt</title><link href="https://blog.liang2.tw/posts/2016/02/pydoctw-https/" rel="alternate"></link><published>2016-02-21T14:00:00+08:00</published><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-02-21:posts/2016/02/pydoctw-https/</id><summary type="html">&lt;p&gt;現在可以透過 &lt;a href="https://docs.python.org.tw"&gt;https://docs.python.org.tw&lt;/a&gt; 訪問 Python&amp;nbsp;官方文件中文化網站。&lt;/p&gt;
-&lt;p&gt;Server 本身的設定可以參考&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;之前的文章&lt;/a&gt;。加入 &lt;span class="caps"&gt;HTTPS&lt;/span&gt; 就要設定相關的憑証，我選擇 &lt;a href="https://letsencrypt.org/"&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt;&amp;nbsp;做為憑証的簽署者。&lt;/p&gt;
-&lt;p&gt;Let&amp;rsquo;s Encrypt (&lt;span class="caps"&gt;LE&lt;/span&gt;) 使用 &lt;span class="caps"&gt;AMCE&lt;/span&gt; (Automated Certificate Management Environment) protocol 去驗証你是否擁有你欲簽証的 domain。官網上有&lt;a href="https://letsencrypt.org/howitworks/technology/"&gt;圖文說明&lt;/a&gt;，簡單來說，&lt;span class="caps"&gt;LE&lt;/span&gt; 會要求你的 server 在特定的 path 加入特定的檔案，如果你做得到，就代表你擁有這個 domain。這樣的簽証第一次要在 &lt;span class="caps"&gt;LE&lt;/span&gt; server 上註冊，之後最長每 90&amp;nbsp;天認証一次。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang2's Blog</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_letsencrypt.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2016-02-21T14:00:00-06:00</updated><entry><title>Python 官方文件中文化 Server HTTPS 使用 Let's Encrypt</title><link href="https://blog.liang2.tw/posts/2016/02/pydoctw-https/" rel="alternate"></link><published>2016-02-21T14:00:00-06:00</published><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-02-21:posts/2016/02/pydoctw-https/</id><summary type="html">&lt;p&gt;現在可以透過 &lt;a href="https://docs.python.org.tw"&gt;https://docs.python.org.tw&lt;/a&gt; 訪問 Python 官方文件中文化網站。&lt;/p&gt;
+&lt;p&gt;Server 本身的設定可以參考&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;之前的文章&lt;/a&gt;。加入 HTTPS 就要設定相關的憑証，我選擇 &lt;a href="https://letsencrypt.org/"&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt; 做為憑証的簽署者。&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s Encrypt (LE) 使用 AMCE (Automated Certificate Management Environment) protocol 去驗証你是否擁有你欲簽証的 domain。官網上有&lt;a href="https://letsencrypt.org/howitworks/technology/"&gt;圖文說明&lt;/a&gt;，簡單來說，LE 會要求你的 server 在特定的 path 加入特定的檔案，如果你做得到，就代表你擁有這個 domain。這樣的簽証第一次要在 LE server 上註冊，之後最長每 90 天認証一次。&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="#_1"&gt;參考資料&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#lets-encrypt-certificate"&gt;Let&amp;rsquo;s Encrypt&amp;nbsp;Certificate&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#lets-encrypt-certificate"&gt;Let&amp;rsquo;s Encrypt Certificate&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#systemd-timer-certificate"&gt;設定 systemd timer 定時更新 certificate&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#systemd-service"&gt;Systemd&amp;nbsp;service&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#systemd-timer"&gt;Systemd&amp;nbsp;Timer&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#systemd-service"&gt;Systemd service&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#systemd-timer"&gt;Systemd Timer&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a href="#nginx-http-redirect-to-https"&gt;nginx &lt;span class="caps"&gt;HTTP&lt;/span&gt; redirect to &lt;span class="caps"&gt;HTTPS&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#https"&gt;測試 &lt;span class="caps"&gt;HTTPS&lt;/span&gt;&amp;nbsp;設定&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#nginx-http-redirect-to-https"&gt;nginx HTTP redirect to HTTPS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#https"&gt;測試 HTTPS 設定&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#_2"&gt;心得&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#misc"&gt;Misc.&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;h3 id="_1"&gt;參考資料&lt;/h3&gt;
-&lt;p&gt;我不是網路安全相關的專家，設定都是參考網路上的說明整理而成。&lt;span class="caps"&gt;LE&lt;/span&gt; certificate 的設定參考 &lt;a href="https://robmclarty.com/blog/how-to-secure-your-web-app-using-https-with-letsencrypt"&gt;&lt;em&gt;How to Secure Your Web App Using &lt;span class="caps"&gt;HTTPS&lt;/span&gt; With Letsencrypt&lt;/em&gt;&lt;/a&gt; by Rob McLarty&amp;nbsp;這篇文章。&lt;/p&gt;
-&lt;h3 id="lets-encrypt-certificate"&gt;Let&amp;rsquo;s Encrypt&amp;nbsp;Certificate&lt;/h3&gt;
-&lt;p&gt;沒有使用 &lt;span class="caps"&gt;LE&lt;/span&gt; 官方的 client，而是用 &lt;a href="https://daylightpirates.org/"&gt;Daniel Roesler&lt;/a&gt; 所寫的 &lt;a href="https://github.com/diafygi/acme-tiny/"&gt;acme-tiny&lt;/a&gt;。這是一個不到 200 行的 Python script，可以自行檢查它有沒有做任何奇怪的事。&lt;a href="https://github.com/diafygi/acme-tiny/"&gt;acme-tiny&lt;/a&gt; 的 &lt;span class="caps"&gt;README&lt;/span&gt;&amp;nbsp;也有個設定教學，應該是大同小異。&lt;/p&gt;
-&lt;p&gt;基本上都是照著 &lt;a href="https://robmclarty.com/blog/how-to-secure-your-web-app-using-https-with-letsencrypt"&gt;&lt;em&gt;How to Secure Your Web App Using &lt;span class="caps"&gt;HTTPS&lt;/span&gt; With Letsencrypt&lt;/em&gt;&lt;/a&gt;&amp;nbsp;該篇文章做，不過有調整了以下的東西：&lt;/p&gt;
+&lt;p&gt;我不是網路安全相關的專家，設定都是參考網路上的說明整理而成。LE certificate 的設定參考 &lt;a href="https://robmclarty.com/blog/how-to-secure-your-web-app-using-https-with-letsencrypt"&gt;&lt;em&gt;How to Secure Your Web App Using HTTPS With Letsencrypt&lt;/em&gt;&lt;/a&gt; by Rob McLarty 這篇文章。&lt;/p&gt;
+&lt;h3 id="lets-encrypt-certificate"&gt;Let&amp;rsquo;s Encrypt Certificate&lt;/h3&gt;
+&lt;p&gt;沒有使用 LE 官方的 client，而是用 &lt;a href="https://daylightpirates.org/"&gt;Daniel Roesler&lt;/a&gt; 所寫的 &lt;a href="https://github.com/diafygi/acme-tiny/"&gt;acme-tiny&lt;/a&gt;。這是一個不到 200 行的 Python script，可以自行檢查它有沒有做任何奇怪的事。&lt;a href="https://github.com/diafygi/acme-tiny/"&gt;acme-tiny&lt;/a&gt; 的 README 也有個設定教學，應該是大同小異。&lt;/p&gt;
+&lt;p&gt;基本上都是照著 &lt;a href="https://robmclarty.com/blog/how-to-secure-your-web-app-using-https-with-letsencrypt"&gt;&lt;em&gt;How to Secure Your Web App Using HTTPS With Letsencrypt&lt;/em&gt;&lt;/a&gt; 該篇文章做，不過有調整了以下的東西：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;建立 letsencrypt 帳號時，禁止使用 password login。&lt;br&gt;
    即： &lt;code&gt;adduser --disabled-password ...&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;使用 git 管理 &lt;a href="https://github.com/diafygi/acme-tiny/"&gt;acme-tiny&lt;/a&gt;&amp;nbsp;script。&lt;/li&gt;
+&lt;li&gt;使用 git 管理 &lt;a href="https://github.com/diafygi/acme-tiny/"&gt;acme-tiny&lt;/a&gt; script。&lt;/li&gt;
 &lt;li&gt;改用 systemd 控制 nginx，而不是透過 service。&lt;br&gt;
    即： &lt;code&gt;systemctl reload nginx&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;沒有用 crontab 而是使用 &lt;a href="https://wiki.archlinux.org/index.php/Systemd/Timers"&gt;systemd Timers&lt;/a&gt;。&lt;/li&gt;
-&lt;li&gt;重新導引 http 連線至&amp;nbsp;https。&lt;/li&gt;
+&lt;li&gt;重新導引 http 連線至 https。&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;第 4、5&amp;nbsp;點設定比較多，整理到後面。&lt;/p&gt;
-&lt;h3 id="systemd-timer-certificate"&gt;設定 systemd timer 定時更新&amp;nbsp;certificate&lt;/h3&gt;
-&lt;p&gt;這邊參考 &lt;a href="http://www.certdepot.net/rhel7-use-systemd-timers/"&gt;&lt;em&gt;&lt;span class="caps"&gt;RHEL7&lt;/span&gt;: How to use Systemd timers.&lt;/em&gt;&lt;/a&gt;&amp;nbsp;一文。&lt;/p&gt;
-&lt;p&gt;Systemd Timer 概念如同 crontab，但差別是使用 timer 即與 systemd 整合。&lt;code&gt;&amp;lt;unit&amp;gt;.timer&lt;/code&gt; 可以定期執行 &lt;code&gt;&amp;lt;unit&amp;gt;.service&lt;/code&gt;，所以 &lt;unit&gt; 執行的結果與狀態都能顯示在 systemd 中，也帶入了 journald 有的 logging&amp;nbsp;功能。&lt;/p&gt;
-&lt;p&gt;更新 certificate 的指令寫在 &lt;code&gt;/etc/letsencrypt/renew_cert.sh&lt;/code&gt;。Shell script&amp;nbsp;的內容與參考文章一樣。&lt;/p&gt;
-&lt;h4 id="systemd-service"&gt;Systemd&amp;nbsp;service&lt;/h4&gt;
+&lt;p&gt;第 4、5 點設定比較多，整理到後面。&lt;/p&gt;
+&lt;h3 id="systemd-timer-certificate"&gt;設定 systemd timer 定時更新 certificate&lt;/h3&gt;
+&lt;p&gt;這邊參考 &lt;a href="http://www.certdepot.net/rhel7-use-systemd-timers/"&gt;&lt;em&gt;RHEL7: How to use Systemd timers.&lt;/em&gt;&lt;/a&gt; 一文。&lt;/p&gt;
+&lt;p&gt;Systemd Timer 概念如同 crontab，但差別是使用 timer 即與 systemd 整合。&lt;code&gt;&amp;lt;unit&amp;gt;.timer&lt;/code&gt; 可以定期執行 &lt;code&gt;&amp;lt;unit&amp;gt;.service&lt;/code&gt;，所以 &lt;unit&gt; 執行的結果與狀態都能顯示在 systemd 中，也帶入了 journald 有的 logging 功能。&lt;/p&gt;
+&lt;p&gt;更新 certificate 的指令寫在 &lt;code&gt;/etc/letsencrypt/renew_cert.sh&lt;/code&gt;。Shell script 的內容與參考文章一樣。&lt;/p&gt;
+&lt;h4 id="systemd-service"&gt;Systemd service&lt;/h4&gt;
 &lt;p&gt;首先建立一個 renew_cert，以 Debian 為例放在 &lt;code&gt;/etc/systemd/system/renew_cert.service&lt;/code&gt;，&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
 &lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;Renew Let&amp;#39;s Encrypt cert&lt;/span&gt;
@@ -54,18 +54,18 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;要手動更新 certificate 的時候執行這個 service&amp;nbsp;即可，&lt;/p&gt;
+&lt;p&gt;要手動更新 certificate 的時候執行這個 service 即可，&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;systemctl start renew_cert
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;我們不需要 enable&amp;nbsp;它，不然每次開機都會執行一次。看結果或記錄，&lt;/p&gt;
+&lt;p&gt;我們不需要 enable 它，不然每次開機都會執行一次。看結果或記錄，&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;systemctl status renew_cert
 journalctl -e -u renew_cert
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h4 id="systemd-timer"&gt;Systemd&amp;nbsp;Timer&lt;/h4&gt;
+&lt;h4 id="systemd-timer"&gt;Systemd Timer&lt;/h4&gt;
 &lt;p&gt;建立一個 &lt;code&gt;/etc/systemd/system/renew_cert.timer&lt;/code&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
 &lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;Update Let&amp;#39;s Encrypt certificate every two months&lt;/span&gt;
@@ -79,9 +79,9 @@ journalctl -e -u renew_cert
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;重點只有 &lt;code&gt;[Timer]&lt;/code&gt; 這 directive。&lt;code&gt;Unit=&lt;/code&gt; 表示要啟動的 service。&lt;code&gt;OnCalendar=&lt;/code&gt;&lt;sup id="fnref:calendar"&gt;&lt;a class="footnote-ref" href="#fn:calendar" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt; 則是設定這 timer 根據指定的時間點 (&lt;span class="caps"&gt;UTC&lt;/span&gt; 時間&lt;sup id="fnref:utc"&gt;&lt;a class="footnote-ref" href="#fn:utc" rel="footnote"&gt;2&lt;/a&gt;&lt;/sup&gt;)&amp;nbsp;啟動。&lt;/p&gt;
-&lt;p&gt;以這邊寫的時間 &lt;code&gt;*-1/2-1 16:00:00&lt;/code&gt; 為例，代表每年的 1+2n 月 1 日 16:00 &lt;span class="caps"&gt;UTC&lt;/span&gt; 更新 certificate，即臺灣時間 1、3、5、……月 2&amp;nbsp;日凌晨更新。&lt;/p&gt;
-&lt;p&gt;啟用 timer，它需要被 enable&amp;nbsp;確保重開機時被執行。&lt;/p&gt;
+&lt;p&gt;重點只有 &lt;code&gt;[Timer]&lt;/code&gt; 這 directive。&lt;code&gt;Unit=&lt;/code&gt; 表示要啟動的 service。&lt;code&gt;OnCalendar=&lt;/code&gt;&lt;sup id="fnref:calendar"&gt;&lt;a class="footnote-ref" href="#fn:calendar" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt; 則是設定這 timer 根據指定的時間點 (UTC 時間&lt;sup id="fnref:utc"&gt;&lt;a class="footnote-ref" href="#fn:utc" rel="footnote"&gt;2&lt;/a&gt;&lt;/sup&gt;) 啟動。&lt;/p&gt;
+&lt;p&gt;以這邊寫的時間 &lt;code&gt;*-1/2-1 16:00:00&lt;/code&gt; 為例，代表每年的 1+2n 月 1 日 16:00 UTC 更新 certificate，即臺灣時間 1、3、5、……月 2 日凌晨更新。&lt;/p&gt;
+&lt;p&gt;啟用 timer，它需要被 enable 確保重開機時被執行。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;systemctl enable renew_cert.timer
 systemctl start renew_cert.timer
 &lt;/pre&gt;&lt;/div&gt;
@@ -94,10 +94,10 @@ systemctl start renew_cert.timer
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3 id="nginx-http-redirect-to-https"&gt;nginx &lt;span class="caps"&gt;HTTP&lt;/span&gt; redirect to &lt;span class="caps"&gt;HTTPS&lt;/span&gt;&lt;/h3&gt;
-&lt;p&gt;（這邊設定我沒信心，有更好的設定方法歡迎告訴我 &amp;gt;&amp;nbsp;&amp;lt;）&lt;/p&gt;
-&lt;p&gt;要解決的問題為，&lt;span class="caps"&gt;ACME&lt;/span&gt; challenge 是透過 &lt;span class="caps"&gt;HTTP&lt;/span&gt;，其餘的連線都轉到 &lt;span class="caps"&gt;HTTPS&lt;/span&gt;。&lt;/p&gt;
-&lt;p&gt;在 nginx 中把主要的設定檔中拿掉 &lt;code&gt;listen 80;&lt;/code&gt; 與 &lt;span class="caps"&gt;ACM&lt;/span&gt; challenge 的部份。把它們移成新的 server&amp;nbsp;block： &lt;/p&gt;
+&lt;h3 id="nginx-http-redirect-to-https"&gt;nginx HTTP redirect to HTTPS&lt;/h3&gt;
+&lt;p&gt;（這邊設定我沒信心，有更好的設定方法歡迎告訴我 &amp;gt; &amp;lt;）&lt;/p&gt;
+&lt;p&gt;要解決的問題為，ACME challenge 是透過 HTTP，其餘的連線都轉到 HTTPS。&lt;/p&gt;
+&lt;p&gt;在 nginx 中把主要的設定檔中拿掉 &lt;code&gt;listen 80;&lt;/code&gt; 與 ACM challenge 的部份。把它們移成新的 server block： &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;server&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="kn"&gt;listen&lt;/span&gt; &lt;span class="mi"&gt;80&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="kn"&gt;server_name&lt;/span&gt; &lt;span class="s"&gt;docs.python.org.tw&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
@@ -115,8 +115,8 @@ systemctl start renew_cert.timer
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3 id="https"&gt;測試 &lt;span class="caps"&gt;HTTPS&lt;/span&gt;&amp;nbsp;設定&lt;/h3&gt;
-&lt;p&gt;用了 &lt;a href="https://securityheaders.io/"&gt;securityheaders.io&lt;/a&gt; 和 &lt;a href="https://www.ssllabs.com/index.html"&gt;&lt;span class="caps"&gt;SSL&lt;/span&gt; Labs&lt;/a&gt;&amp;nbsp;測試了一下，應該還可以：&lt;/p&gt;
+&lt;h3 id="https"&gt;測試 HTTPS 設定&lt;/h3&gt;
+&lt;p&gt;用了 &lt;a href="https://securityheaders.io/"&gt;securityheaders.io&lt;/a&gt; 和 &lt;a href="https://www.ssllabs.com/index.html"&gt;SSL Labs&lt;/a&gt; 測試了一下，應該還可以：&lt;/p&gt;
 &lt;div class="figure"&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/02/pydoctw-https/pics/pydoctw_securityheaders_report.png"/&gt;
   &lt;p class="caption center"&gt;Report from securityheaders.io (&lt;a href="https://securityheaders.io/?q=https%3A%2F%2Fdocs.python.org.tw%2F3%2F"&gt;Live Report&lt;/a&gt;)&lt;/p&gt;
@@ -124,15 +124,15 @@ systemctl start renew_cert.timer
 
 &lt;div class="figure"&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/02/pydoctw-https/pics/pydoctw_ssllabs_report.png"/&gt;
-  &lt;p class="caption center"&gt;Report from &lt;span class="caps"&gt;SSL&lt;/span&gt; Labs (&lt;a href="https://www.ssllabs.com/ssltest/analyze.html?d=docs.python.org.tw"&gt;Live Report&lt;/a&gt;)&lt;/p&gt;
+  &lt;p class="caption center"&gt;Report from SSL Labs (&lt;a href="https://www.ssllabs.com/ssltest/analyze.html?d=docs.python.org.tw"&gt;Live Report&lt;/a&gt;)&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;h3 id="_2"&gt;心得&lt;/h3&gt;
-&lt;p&gt;總結來說，使用 &lt;a href="https://letsencrypt.org/"&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt;&amp;nbsp;不難，但也沒到非常簡單。&lt;/p&gt;
-&lt;p&gt;如果你願意把 root 和 private key 權限給它的話，用官方 client 提供的 &lt;code&gt;letsencrypt-auto&lt;/code&gt; 步驟能更少，用 Apache 它聲稱能全自動設定。覺得 &lt;a href="https://github.com/diafygi/acme-tiny/"&gt;acme-tiny&lt;/a&gt; 指令太複雜的話，原作者也寫了一個 &lt;a href="https://gethttpsforfree.com/"&gt;Get &lt;span class="caps"&gt;HTTPS&lt;/span&gt; for free!&lt;/a&gt;&amp;nbsp;服務，用網頁的方式協助整個註冊流程。&lt;/p&gt;
-&lt;p&gt;要注意目前 public beta 階段，相同 domain 在 7 天只能被簽署 5&amp;nbsp;次，測試的時候不要太衝動不然就要等一週了。&lt;/p&gt;
+&lt;p&gt;總結來說，使用 &lt;a href="https://letsencrypt.org/"&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt; 不難，但也沒到非常簡單。&lt;/p&gt;
+&lt;p&gt;如果你願意把 root 和 private key 權限給它的話，用官方 client 提供的 &lt;code&gt;letsencrypt-auto&lt;/code&gt; 步驟能更少，用 Apache 它聲稱能全自動設定。覺得 &lt;a href="https://github.com/diafygi/acme-tiny/"&gt;acme-tiny&lt;/a&gt; 指令太複雜的話，原作者也寫了一個 &lt;a href="https://gethttpsforfree.com/"&gt;Get HTTPS for free!&lt;/a&gt; 服務，用網頁的方式協助整個註冊流程。&lt;/p&gt;
+&lt;p&gt;要注意目前 public beta 階段，相同 domain 在 7 天只能被簽署 5 次，測試的時候不要太衝動不然就要等一週了。&lt;/p&gt;
 &lt;h3 id="misc"&gt;Misc.&lt;/h3&gt;
-&lt;p&gt;建立 &lt;span class="caps"&gt;CSR&lt;/span&gt; (Certificate Signing Request) 檔時，可以加入自己的 email 地址，不然預設是 &lt;code&gt;webmaster@&amp;lt;domain&amp;gt;&lt;/code&gt;：&lt;/p&gt;
+&lt;p&gt;建立 CSR (Certificate Signing Request) 檔時，可以加入自己的 email 地址，不然預設是 &lt;code&gt;webmaster@&amp;lt;domain&amp;gt;&lt;/code&gt;：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openssl req -new -sha256 &lt;span class="se"&gt;\&lt;/span&gt;
     -key /etc/letsencrypt/private/domain.key &lt;span class="se"&gt;\&lt;/span&gt;
     -subj &lt;span class="s2"&gt;&amp;quot;/CN=docs.python.org.tw/emailAddress=me+pydoctw@liang2.tw&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;

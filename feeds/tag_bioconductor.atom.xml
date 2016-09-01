@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang2's blog</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_bioconductor.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2016-05-21T18:00:00+08:00</updated><entry><title>Ensembl Genomic Reference in Bioconductor</title><link href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/" rel="alternate"></link><published>2016-05-21T18:00:00+08:00</published><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-05-21:posts/2016/05/biocondutor-ensembl-reference/</id><summary type="html">&lt;p&gt;&lt;em&gt;&lt;strong&gt;&lt;span class="caps"&gt;TL&lt;/span&gt;;&lt;span class="caps"&gt;DR&lt;/span&gt;&lt;/strong&gt; I gave a talk &lt;a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/"&gt;Genomics in R&lt;/a&gt; about querying genomic annotations and references in R/Bioconductor. In this post, we re-visit all the operations in my talk using Ensembl references instead of &lt;span class="caps"&gt;UCSC&lt;/span&gt;/&lt;span class="caps"&gt;NCBI&lt;/span&gt;&amp;nbsp;ones.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;This post is part of the &amp;ldquo;&lt;a href="https://blog.liang2.tw/posts/2015/12/biocondutor-genomic-data/"&gt;Genomic Data Processing in Bioconductor&lt;/a&gt;&amp;rdquo; series. In that post, I mentioned several topics critical for genomic data analysis in&amp;nbsp;Bioconductor:&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang2's Blog</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_bioconductor.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2016-05-21T18:00:00-05:00</updated><entry><title>Ensembl Genomic Reference in Bioconductor</title><link href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/" rel="alternate"></link><published>2016-05-21T18:00:00-05:00</published><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-05-21:posts/2016/05/biocondutor-ensembl-reference/</id><summary type="html">&lt;p&gt;&lt;em&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; I gave a talk &lt;a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/"&gt;Genomics in R&lt;/a&gt; about querying genomic annotations and references in R/Bioconductor. In this post, we re-visit all the operations in my talk using Ensembl references instead of UCSC/NCBI ones.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;This post is part of the &amp;ldquo;&lt;a href="https://blog.liang2.tw/posts/2015/12/biocondutor-genomic-data/"&gt;Genomic Data Processing in Bioconductor&lt;/a&gt;&amp;rdquo; series. In that post, I mentioned several topics critical for genomic data analysis in Bioconductor:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Annotation and genome reference (OrgDb, TxDb, OrganismDb,&amp;nbsp;BSgenome)&lt;/li&gt;
-&lt;li&gt;Experiment data storage&amp;nbsp;(ExpressionSets)&lt;/li&gt;
-&lt;li&gt;Operations on genome&amp;nbsp;(GenomicRanges)&lt;/li&gt;
-&lt;li&gt;Genomic data visualization (Gviz,&amp;nbsp;ggbio)&lt;/li&gt;
+&lt;li&gt;Annotation and genome reference (OrgDb, TxDb, OrganismDb, BSgenome)&lt;/li&gt;
+&lt;li&gt;Experiment data storage (ExpressionSets)&lt;/li&gt;
+&lt;li&gt;Operations on genome (GenomicRanges)&lt;/li&gt;
+&lt;li&gt;Genomic data visualization (Gviz, ggbio)&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Few days ago in a local R community meetup, I gave a talk &lt;a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/"&gt;&lt;em&gt;Genomics in R&lt;/em&gt;&lt;/a&gt; covering the &amp;ldquo;Annotation and genome reference&amp;rdquo; part and a quick glance through &amp;ldquo;Operations on genome&amp;rdquo;, which should be sufficient for daily usage such as searching annotations in the subset of some genomic ranges. You can find the &lt;a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/"&gt;slides&lt;/a&gt;, the &lt;a href="https://www.youtube.com/watch?v=ZR4GYQ487j8"&gt;meetup screencast&lt;/a&gt; (in Chinese) and the &lt;a href="https://github.com/ccwang002/2016Talk-Genomics-in-R"&gt;accompanied source code&lt;/a&gt; online. I don&amp;rsquo;t think a write-up is needed for the talk. But if anyone is interested, feel free to drop your reply below.&amp;nbsp;:)&lt;/p&gt;
-&lt;h3 id="fundamental-bioconductor-packages"&gt;Fundamental Bioconductor&amp;nbsp;packages&lt;/h3&gt;
-&lt;p&gt;Some Bioconductor packages are the building blocks for genomic data analysis. I put a table here containing all the classes covered in rest of the post. If you are not familiar with these classes and their methods, go through the &lt;a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/"&gt;talk slides&lt;/a&gt; first, or at least follow the &lt;a href="https://bioconductor.org/help/workflows/annotation/annotation/"&gt;annotation workflow&lt;/a&gt; on&amp;nbsp;Bioconductor.&lt;/p&gt;
+&lt;p&gt;Few days ago in a local R community meetup, I gave a talk &lt;a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/"&gt;&lt;em&gt;Genomics in R&lt;/em&gt;&lt;/a&gt; covering the &amp;ldquo;Annotation and genome reference&amp;rdquo; part and a quick glance through &amp;ldquo;Operations on genome&amp;rdquo;, which should be sufficient for daily usage such as searching annotations in the subset of some genomic ranges. You can find the &lt;a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/"&gt;slides&lt;/a&gt;, the &lt;a href="https://www.youtube.com/watch?v=ZR4GYQ487j8"&gt;meetup screencast&lt;/a&gt; (in Chinese) and the &lt;a href="https://github.com/ccwang002/2016Talk-Genomics-in-R"&gt;accompanied source code&lt;/a&gt; online. I don&amp;rsquo;t think a write-up is needed for the talk. But if anyone is interested, feel free to drop your reply below. :)&lt;/p&gt;
+&lt;h3 id="fundamental-bioconductor-packages"&gt;Fundamental Bioconductor packages&lt;/h3&gt;
+&lt;p&gt;Some Bioconductor packages are the building blocks for genomic data analysis. I put a table here containing all the classes covered in rest of the post. If you are not familiar with these classes and their methods, go through the &lt;a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/"&gt;talk slides&lt;/a&gt; first, or at least follow the &lt;a href="https://bioconductor.org/help/workflows/annotation/annotation/"&gt;annotation workflow&lt;/a&gt; on Bioconductor.&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -20,11 +20,11 @@
 &lt;tbody&gt;
 &lt;tr&gt;
 &lt;td align="left"&gt;&lt;code&gt;OrgDb&lt;/code&gt;&lt;/td&gt;
-&lt;td align="left"&gt;Gene-based information for Homo sapiens; useful for mapping between gene IDs, Names, Symbols, &lt;span class="caps"&gt;GO&lt;/span&gt; and &lt;span class="caps"&gt;KEGG&lt;/span&gt; identifiers, etc.&lt;/td&gt;
+&lt;td align="left"&gt;Gene-based information for Homo sapiens; useful for mapping between gene IDs, Names, Symbols, GO and KEGG identifiers, etc.&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td align="left"&gt;&lt;code&gt;TxDb&lt;/code&gt;&lt;/td&gt;
-&lt;td align="left"&gt;Transcriptome ranges for the known gene track of Homo sapiens, e.g., introns, exons, &lt;span class="caps"&gt;UTR&lt;/span&gt; regions.&lt;/td&gt;
+&lt;td align="left"&gt;Transcriptome ranges for the known gene track of Homo sapiens, e.g., introns, exons, UTR regions.&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td align="left"&gt;&lt;code&gt;OrganismDb&lt;/code&gt;&lt;/td&gt;
@@ -40,34 +40,34 @@
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h3 id="ensembl-genome-browser-and-its-ecosystem"&gt;Ensembl genome browser and its&amp;nbsp;ecosystem&lt;/h3&gt;
-&lt;p&gt;In Bioconductor, most annotations are built against &lt;span class="caps"&gt;NCBI&lt;/span&gt; and &lt;span class="caps"&gt;UCSC&lt;/span&gt; naming systems, which are also used in my talk. However, there is another naming system maintained by &lt;a href="http://www.ensembl.org/index.html"&gt;Ensembl&lt;/a&gt;, whose IDs are very recognizable with suffix &amp;ldquo;&lt;span class="caps"&gt;ENSG&lt;/span&gt;&amp;rdquo; and &amp;ldquo;&lt;span class="caps"&gt;ENST&lt;/span&gt;&amp;rdquo; for gene and transcript&amp;nbsp;respectively.&lt;/p&gt;
-&lt;p&gt;I particularly enjoy the Ensembl genome browser. The information is well organized and structured. For example, take a look at the description page of &lt;a href="http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000100030"&gt;gene &lt;span class="caps"&gt;MAPK1&lt;/span&gt;&lt;/a&gt;,&lt;/p&gt;
+&lt;h3 id="ensembl-genome-browser-and-its-ecosystem"&gt;Ensembl genome browser and its ecosystem&lt;/h3&gt;
+&lt;p&gt;In Bioconductor, most annotations are built against NCBI and UCSC naming systems, which are also used in my talk. However, there is another naming system maintained by &lt;a href="http://www.ensembl.org/index.html"&gt;Ensembl&lt;/a&gt;, whose IDs are very recognizable with suffix &amp;ldquo;ENSG&amp;rdquo; and &amp;ldquo;ENST&amp;rdquo; for gene and transcript respectively.&lt;/p&gt;
+&lt;p&gt;I particularly enjoy the Ensembl genome browser. The information is well organized and structured. For example, take a look at the description page of &lt;a href="http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000100030"&gt;gene MAPK1&lt;/a&gt;,&lt;/p&gt;
 &lt;div class="figure"&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/pics/gene_MAPK1_ensembl_browser.png"&gt;
-  &lt;p class="caption center"&gt;Gene information page of &lt;span class="caps"&gt;MAP1&lt;/span&gt; on Ensembl Genome Browser release 84 (&lt;a href="http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000100030"&gt;link&lt;/a&gt;)&lt;/p&gt;
+  &lt;p class="caption center"&gt;Gene information page of MAP1 on Ensembl Genome Browser release 84 (&lt;a href="http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000100030"&gt;link&lt;/a&gt;)&lt;/p&gt;
 &lt;/div&gt;
 
-&lt;p&gt;The &lt;a href="http://www.ensembl.org/Homo_sapiens/Gene/Compara_Tree?db=core;g=ENSG00000100030"&gt;gene tree&lt;/a&gt; tab shows its homologs and paralogs. The &lt;a href="http://www.ensembl.org/Homo_sapiens/Gene/Variation_Gene/Table?db=core;g=ENSG00000100030"&gt;variant table&lt;/a&gt; tab shows various kinds of SNPs within &lt;span class="caps"&gt;MAPK1&lt;/span&gt;&amp;rsquo;s transcript region. SNPs are annotated with their sources, different levels of supporting evidence, and &lt;span class="caps"&gt;SIFT&lt;/span&gt;/PolyPhen prediction on protein function change. Finally, there is a &lt;a href="http://www.ensembl.org/Homo_sapiens/Gene/Matches?db=core;g=ENSG00000100030"&gt;external references&lt;/a&gt; tab which links the Ensembl IDs with &lt;a href="https://www.ncbi.nlm.nih.gov/CCDS/CcdsBrowse.cgi"&gt;&lt;span class="caps"&gt;NCBI&lt;/span&gt; &lt;span class="caps"&gt;CCDS&lt;/span&gt;&lt;/a&gt; and &lt;a href="http://www.ncbi.nlm.nih.gov/refseq/"&gt;&lt;span class="caps"&gt;NCBI&lt;/span&gt; RefSeq&lt;/a&gt; IDs. There are many ways to explore different aspects of this gene, and it seems everything at multiple biological levels is simply&amp;nbsp;connected. &lt;/p&gt;
-&lt;p&gt;I always think of the Ensembl ecosystem as a decent learning portal, so it is a pity if one cannot easily use its information in R/Bioconductor. After a quick research, I found using Ensembl annotations are quite straightforward even though the required files does not ship with Bioconductor. Also, there were some topics I failed to mention in the talk, such as AnnotationHub and genomic coordinate system conversion (e.g., from hg19 to hg38). I am going to cover these topics in the&amp;nbsp;talk.&lt;/p&gt;
+&lt;p&gt;The &lt;a href="http://www.ensembl.org/Homo_sapiens/Gene/Compara_Tree?db=core;g=ENSG00000100030"&gt;gene tree&lt;/a&gt; tab shows its homologs and paralogs. The &lt;a href="http://www.ensembl.org/Homo_sapiens/Gene/Variation_Gene/Table?db=core;g=ENSG00000100030"&gt;variant table&lt;/a&gt; tab shows various kinds of SNPs within MAPK1&amp;rsquo;s transcript region. SNPs are annotated with their sources, different levels of supporting evidence, and SIFT/PolyPhen prediction on protein function change. Finally, there is a &lt;a href="http://www.ensembl.org/Homo_sapiens/Gene/Matches?db=core;g=ENSG00000100030"&gt;external references&lt;/a&gt; tab which links the Ensembl IDs with &lt;a href="https://www.ncbi.nlm.nih.gov/CCDS/CcdsBrowse.cgi"&gt;NCBI CCDS&lt;/a&gt; and &lt;a href="http://www.ncbi.nlm.nih.gov/refseq/"&gt;NCBI RefSeq&lt;/a&gt; IDs. There are many ways to explore different aspects of this gene, and it seems everything at multiple biological levels is simply connected. &lt;/p&gt;
+&lt;p&gt;I always think of the Ensembl ecosystem as a decent learning portal, so it is a pity if one cannot easily use its information in R/Bioconductor. After a quick research, I found using Ensembl annotations are quite straightforward even though the required files does not ship with Bioconductor. Also, there were some topics I failed to mention in the talk, such as AnnotationHub and genomic coordinate system conversion (e.g., from hg19 to hg38). I am going to cover these topics in the talk.&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="#fundamental-bioconductor-packages"&gt;Fundamental Bioconductor&amp;nbsp;packages&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#ensembl-genome-browser-and-its-ecosystem"&gt;Ensembl genome browser and its&amp;nbsp;ecosystem&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#fundamental-bioconductor-packages"&gt;Fundamental Bioconductor packages&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#ensembl-genome-browser-and-its-ecosystem"&gt;Ensembl genome browser and its ecosystem&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#orgdb"&gt;OrgDb&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#txdb"&gt;TxDb&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#bsgenome-and-annotationhub"&gt;BSgenome and&amp;nbsp;AnnotationHub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#bsgenome-and-annotationhub"&gt;BSgenome and AnnotationHub&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#biomart"&gt;biomaRt&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#compatibility-with-annotationdbs-interface"&gt;Compatibility with AnnotationDb&amp;rsquo;s&amp;nbsp;interface&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#biomarts-original-interface"&gt;biomaRt&amp;rsquo;s original&amp;nbsp;interface&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#compatibility-with-annotationdbs-interface"&gt;Compatibility with AnnotationDb&amp;rsquo;s interface&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#biomarts-original-interface"&gt;biomaRt&amp;rsquo;s original interface&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a href="#conversion-between-genomic-coordinate-systems"&gt;Conversion between genomic coordinate&amp;nbsp;systems&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#conversion-between-genomic-coordinate-systems"&gt;Conversion between genomic coordinate systems&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#summary"&gt;Summary&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;h2 id="orgdb"&gt;OrgDb&lt;/h2&gt;
-&lt;p&gt;The same OrgDb object for human (&lt;code&gt;org.Hs.eg.db&lt;/code&gt;) can be used. It relates different gene IDs, including Entrez and Ensembl gene &lt;span class="caps"&gt;ID&lt;/span&gt;. From its metadata, human&amp;rsquo;s OrgDb gets updated frequently. Most of its data source were fetched during this March. So one should be able to use it for both hg19 and hg38 human&amp;nbsp;reference.&lt;/p&gt;
+&lt;p&gt;The same OrgDb object for human (&lt;code&gt;org.Hs.eg.db&lt;/code&gt;) can be used. It relates different gene IDs, including Entrez and Ensembl gene ID. From its metadata, human&amp;rsquo;s OrgDb gets updated frequently. Most of its data source were fetched during this March. So one should be able to use it for both hg19 and hg38 human reference.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;org.Hs.eg.db&lt;span class="p"&gt;)&lt;/span&gt;
 human &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; org.Hs.eg.db
 
@@ -84,34 +84,34 @@ mapk_gene_family_info
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
-&lt;th align="left"&gt;&lt;span class="caps"&gt;SYMBOL&lt;/span&gt;&lt;/th&gt;
-&lt;th align="left"&gt;&lt;span class="caps"&gt;ENTREZID&lt;/span&gt;&lt;/th&gt;
-&lt;th align="left"&gt;&lt;span class="caps"&gt;ENSEMBL&lt;/span&gt;&lt;/th&gt;
-&lt;th align="left"&gt;&lt;span class="caps"&gt;GENENAME&lt;/span&gt;&lt;/th&gt;
+&lt;th align="left"&gt;SYMBOL&lt;/th&gt;
+&lt;th align="left"&gt;ENTREZID&lt;/th&gt;
+&lt;th align="left"&gt;ENSEMBL&lt;/th&gt;
+&lt;th align="left"&gt;GENENAME&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td align="left"&gt;&lt;span class="caps"&gt;MAPK1&lt;/span&gt;&lt;/td&gt;
+&lt;td align="left"&gt;MAPK1&lt;/td&gt;
 &lt;td align="left"&gt;5594&lt;/td&gt;
-&lt;td align="left"&gt;&lt;span class="caps"&gt;ENSG00000100030&lt;/span&gt;&lt;/td&gt;
+&lt;td align="left"&gt;ENSG00000100030&lt;/td&gt;
 &lt;td align="left"&gt;mitogen-activated protein kinase 1&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align="left"&gt;&lt;span class="caps"&gt;MAPK3&lt;/span&gt;&lt;/td&gt;
+&lt;td align="left"&gt;MAPK3&lt;/td&gt;
 &lt;td align="left"&gt;5595&lt;/td&gt;
-&lt;td align="left"&gt;&lt;span class="caps"&gt;ENSG00000102882&lt;/span&gt;&lt;/td&gt;
+&lt;td align="left"&gt;ENSG00000102882&lt;/td&gt;
 &lt;td align="left"&gt;mitogen-activated protein kinase 3&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align="left"&gt;&lt;span class="caps"&gt;MAPK6&lt;/span&gt;&lt;/td&gt;
+&lt;td align="left"&gt;MAPK6&lt;/td&gt;
 &lt;td align="left"&gt;5597&lt;/td&gt;
-&lt;td align="left"&gt;&lt;span class="caps"&gt;ENSG00000069956&lt;/span&gt;&lt;/td&gt;
+&lt;td align="left"&gt;ENSG00000069956&lt;/td&gt;
 &lt;td align="left"&gt;mitogen-activated protein kinase 6&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;Here comes a small pitfall for Ensembl annotation. We cannot sufficiently map Ensembl&amp;rsquo;s gene &lt;span class="caps"&gt;ID&lt;/span&gt; to its transcript &lt;span class="caps"&gt;ID&lt;/span&gt;,&lt;/p&gt;
+&lt;p&gt;Here comes a small pitfall for Ensembl annotation. We cannot sufficiently map Ensembl&amp;rsquo;s gene ID to its transcript ID,&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;select&lt;span class="p"&gt;(&lt;/span&gt;
     human&lt;span class="p"&gt;,&lt;/span&gt;
     keys &lt;span class="o"&gt;=&lt;/span&gt; mapk_gene_family_info&lt;span class="o"&gt;$&lt;/span&gt;ENSEMBL&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]],&lt;/span&gt;
@@ -124,11 +124,11 @@ mapk_gene_family_info
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;We got &lt;em&gt;no&lt;/em&gt; Ensembl transcript &lt;span class="caps"&gt;ID&lt;/span&gt; for &lt;span class="caps"&gt;MAPK1&lt;/span&gt;, which is impossible. Therefore, to find the real Ensembl transcript IDs, we need to find other&amp;nbsp;references.&lt;/p&gt;
+&lt;p&gt;We got &lt;em&gt;no&lt;/em&gt; Ensembl transcript ID for MAPK1, which is impossible. Therefore, to find the real Ensembl transcript IDs, we need to find other references.&lt;/p&gt;
 &lt;h2 id="txdb"&gt;TxDb&lt;/h2&gt;
-&lt;p&gt;There is no pre-built Ensembl TxDb object available on Bioconductor. But with the help of &lt;a href="http://bioconductor.org/packages/release/bioc/html/ensembldb.html"&gt;ensembldb&lt;/a&gt;, we can easily build the TxDb&amp;nbsp;ourselves.&lt;/p&gt;
-&lt;p&gt;Following the instructions in ensembldb&amp;rsquo;s &lt;a href="http://bioconductor.org/packages/release/bioc/vignettes/ensembldb/inst/doc/ensembldb.html"&gt;vignette file&lt;/a&gt;, we can build the TxDb object from the Ensembl latest release, which is release 84 (Mar, 2016) at the time of writing. Ensembl releases all human transcript records as &lt;span class="caps"&gt;GTF&lt;/span&gt; file, which can be found here &lt;a href="ftp://ftp.ensembl.org/pub/release-84/gtf/homo_sapiens/Homo_sapiens.GRCh38.84.gtf.gz"&gt;ftp://ftp.ensembl.org/pub/release-84/gtf/homo_sapiens/Homo_sapiens.GRCh38.84.gtf.gz&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;After processing &lt;span class="caps"&gt;GTF&lt;/span&gt; file via &lt;code&gt;ensDbFromGtf()&lt;/code&gt;, the generated data for creating the TxDb object will be stored in a SQLite3 database file &lt;code&gt;Homo_sapiens.GRCh38.84.sqlite&lt;/code&gt; at the R working directory. Building TxDB is just one command away, &lt;code&gt;EnsDb()&lt;/code&gt;. Putting two commands together, the script for building Ensembl TxDb is listed below. To prevent from rebuilding the TxDb every time the script is executed, we first check if the sqlite file&amp;nbsp;exists,&lt;/p&gt;
+&lt;p&gt;There is no pre-built Ensembl TxDb object available on Bioconductor. But with the help of &lt;a href="http://bioconductor.org/packages/release/bioc/html/ensembldb.html"&gt;ensembldb&lt;/a&gt;, we can easily build the TxDb ourselves.&lt;/p&gt;
+&lt;p&gt;Following the instructions in ensembldb&amp;rsquo;s &lt;a href="http://bioconductor.org/packages/release/bioc/vignettes/ensembldb/inst/doc/ensembldb.html"&gt;vignette file&lt;/a&gt;, we can build the TxDb object from the Ensembl latest release, which is release 84 (Mar, 2016) at the time of writing. Ensembl releases all human transcript records as GTF file, which can be found here &lt;a href="ftp://ftp.ensembl.org/pub/release-84/gtf/homo_sapiens/Homo_sapiens.GRCh38.84.gtf.gz"&gt;ftp://ftp.ensembl.org/pub/release-84/gtf/homo_sapiens/Homo_sapiens.GRCh38.84.gtf.gz&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;After processing GTF file via &lt;code&gt;ensDbFromGtf()&lt;/code&gt;, the generated data for creating the TxDb object will be stored in a SQLite3 database file &lt;code&gt;Homo_sapiens.GRCh38.84.sqlite&lt;/code&gt; at the R working directory. Building TxDB is just one command away, &lt;code&gt;EnsDb()&lt;/code&gt;. Putting two commands together, the script for building Ensembl TxDb is listed below. To prevent from rebuilding the TxDb every time the script is executed, we first check if the sqlite file exists,&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# xxx_DB in the vignette is just a string to the SQLite db file path&lt;/span&gt;
 ens84_txdb_pth &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;./Homo_sapiens.GRCh38.84.sqlite&amp;#39;&lt;/span&gt;
 &lt;span class="kr"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="kp"&gt;file.exists&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ens84_human_txdb_pth&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
@@ -139,7 +139,7 @@ txdb_ens84  &lt;span class="c1"&gt;# Preview the metadata&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;The filtering syntax for finding desired genes or transcripts is different to the built-in TxDb&amp;nbsp;object,&lt;/p&gt;
+&lt;p&gt;The filtering syntax for finding desired genes or transcripts is different to the built-in TxDb object,&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;transcripts&lt;span class="p"&gt;(&lt;/span&gt;
     txdb_ens84&lt;span class="p"&gt;,&lt;/span&gt;
     filter&lt;span class="o"&gt;=&lt;/span&gt;GeneidFilter&lt;span class="p"&gt;(&lt;/span&gt;mapk_gene_family_info&lt;span class="o"&gt;$&lt;/span&gt;ENSEMBL&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]])&lt;/span&gt;
@@ -162,7 +162,7 @@ txdb_ens84  &lt;span class="c1"&gt;# Preview the metadata&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;So filtering is done by passing special filter functions to &lt;code&gt;filter=&lt;/code&gt;. Likewise, there are &lt;code&gt;TxidFilter&lt;/code&gt;, &lt;code&gt;TxbiotypeFilter&lt;/code&gt;, and &lt;code&gt;GRangesFilter&lt;/code&gt; for filtering on the respective&amp;nbsp;columns.&lt;/p&gt;
+&lt;p&gt;So filtering is done by passing special filter functions to &lt;code&gt;filter=&lt;/code&gt;. Likewise, there are &lt;code&gt;TxidFilter&lt;/code&gt;, &lt;code&gt;TxbiotypeFilter&lt;/code&gt;, and &lt;code&gt;GRangesFilter&lt;/code&gt; for filtering on the respective columns.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;tx_gr &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; transcripts&lt;span class="p"&gt;(&lt;/span&gt;
     txdb_ens84&lt;span class="p"&gt;,&lt;/span&gt;
     filter&lt;span class="o"&gt;=&lt;/span&gt;TxidFilter&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ENST00000215832&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -177,10 +177,10 @@ tr_gr
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Check the result with the online Ensembl genome browser. Note that Ensembl release 84 use&amp;nbsp;hg38.&lt;/p&gt;
-&lt;h2 id="bsgenome-and-annotationhub"&gt;BSgenome and&amp;nbsp;AnnotationHub&lt;/h2&gt;
-&lt;p&gt;We can load the sequence from &lt;code&gt;BSgenome.Hsapiens.UCSC.hg38&lt;/code&gt;, however, we can obtain the genome (chromosome) sequence of Ensembl using &lt;a href="https://bioconductor.org/packages/release/bioc/html/AnnotationHub.html"&gt;AnnotationHub&lt;/a&gt;. References of non-model organisms can be found on AnnotationHub, many of which are extracted from Ensembl. But they can be downloaded as Bioconductor objects directly so it should be easier to&amp;nbsp;use.&lt;/p&gt;
-&lt;p&gt;First we create a AnnotationHub instance, it cached the metadata all available annotations locally for us to&amp;nbsp;query.&lt;/p&gt;
+&lt;p&gt;Check the result with the online Ensembl genome browser. Note that Ensembl release 84 use hg38.&lt;/p&gt;
+&lt;h2 id="bsgenome-and-annotationhub"&gt;BSgenome and AnnotationHub&lt;/h2&gt;
+&lt;p&gt;We can load the sequence from &lt;code&gt;BSgenome.Hsapiens.UCSC.hg38&lt;/code&gt;, however, we can obtain the genome (chromosome) sequence of Ensembl using &lt;a href="https://bioconductor.org/packages/release/bioc/html/AnnotationHub.html"&gt;AnnotationHub&lt;/a&gt;. References of non-model organisms can be found on AnnotationHub, many of which are extracted from Ensembl. But they can be downloaded as Bioconductor objects directly so it should be easier to use.&lt;/p&gt;
+&lt;p&gt;First we create a AnnotationHub instance, it cached the metadata all available annotations locally for us to query.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ah &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; AnnotationHub&lt;span class="p"&gt;()&lt;/span&gt;
 query&lt;span class="p"&gt;(&lt;/span&gt;ah&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Homo sapiens&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;release-84&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;span class="c1"&gt;# AnnotationHub with 5 records&lt;/span&gt;
@@ -200,7 +200,7 @@ query&lt;span class="p"&gt;(&lt;/span&gt;ah&lt;span class="p"&gt;,&lt;/span&gt; 
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;From the search results, human hg38 genome sequences are available as &lt;a href="https://genome.ucsc.edu/goldenpath/help/twoBit.html"&gt;TwoBit&lt;/a&gt; format. But having multiple results is confusing at first. After checking the Ensembl&amp;rsquo;s &lt;a href="ftp://ftp.ensembl.org/pub/release-84/fasta/homo_sapiens/dna/README"&gt;gnome &lt;span class="caps"&gt;DNA&lt;/span&gt; assembly readme&lt;/a&gt;, what we should use here is the full &lt;span class="caps"&gt;DNA&lt;/span&gt; assembly without any masking (or you can decide it based on your&amp;nbsp;application).&lt;/p&gt;
+&lt;p&gt;From the search results, human hg38 genome sequences are available as &lt;a href="https://genome.ucsc.edu/goldenpath/help/twoBit.html"&gt;TwoBit&lt;/a&gt; format. But having multiple results is confusing at first. After checking the Ensembl&amp;rsquo;s &lt;a href="ftp://ftp.ensembl.org/pub/release-84/fasta/homo_sapiens/dna/README"&gt;gnome DNA assembly readme&lt;/a&gt;, what we should use here is the full DNA assembly without any masking (or you can decide it based on your application).&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# There are a plenty of query hits. Description of different file suffix:&lt;/span&gt;
 &lt;span class="c1"&gt;# GRCh38.dna.*.2bit     genome sequence&lt;/span&gt;
 &lt;span class="c1"&gt;# GRCh38.dna_rm.*.2bit  hard-masked genome sequence (masked regions are replaced with N&amp;#39;s)&lt;/span&gt;
@@ -209,7 +209,7 @@ ens84_human_dna &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; ah&lt;span class="p
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Then we can use it to obtain the &lt;span class="caps"&gt;DNA&lt;/span&gt; sequence of desired genomic range (in &lt;code&gt;GRagnes&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;Then we can use it to obtain the DNA sequence of desired genomic range (in &lt;code&gt;GRagnes&lt;/code&gt;).&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;getSeq&lt;span class="p"&gt;(&lt;/span&gt;ens84_human_dna&lt;span class="p"&gt;,&lt;/span&gt; tx_gr&lt;span class="p"&gt;)&lt;/span&gt;
 
 &lt;span class="c1"&gt;#   A DNAStringSet instance of length 1&lt;/span&gt;
@@ -219,7 +219,7 @@ ens84_human_dna &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; ah&lt;span class="p
 
 
 &lt;h2 id="biomart"&gt;biomaRt&lt;/h2&gt;
-&lt;p&gt;&lt;a href="http://www.ensembl.org/biomart/martview"&gt;BioMart&lt;/a&gt; are a collections of database that can be accessed by the same &lt;span class="caps"&gt;API&lt;/span&gt;, including Ensembl, Uniprot and HapMap. &lt;a href="https://bioconductor.org/packages/release/bioc/html/biomaRt.html"&gt;biomaRt&lt;/a&gt; provides an R interface to these database resources. We will use BioMart for &lt;span class="caps"&gt;ID&lt;/span&gt; conversion between Ensembl and RefSeq. Its &lt;a href="https://bioconductor.org/packages/release/bioc/vignettes/biomaRt/inst/doc/biomaRt.pdf"&gt;vignette&lt;/a&gt; contains solutions to common scenarios so should be a good starting point to get familiar with&amp;nbsp;it.&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.ensembl.org/biomart/martview"&gt;BioMart&lt;/a&gt; are a collections of database that can be accessed by the same API, including Ensembl, Uniprot and HapMap. &lt;a href="https://bioconductor.org/packages/release/bioc/html/biomaRt.html"&gt;biomaRt&lt;/a&gt; provides an R interface to these database resources. We will use BioMart for ID conversion between Ensembl and RefSeq. Its &lt;a href="https://bioconductor.org/packages/release/bioc/vignettes/biomaRt/inst/doc/biomaRt.pdf"&gt;vignette&lt;/a&gt; contains solutions to common scenarios so should be a good starting point to get familiar with it.&lt;/p&gt;
 &lt;p&gt;You could first explore which Marts are currently available by &lt;code&gt;listMarts()&lt;/code&gt;,&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;biomaRt&lt;span class="p"&gt;)&lt;/span&gt;
 listMarts&lt;span class="p"&gt;()&lt;/span&gt;
@@ -239,8 +239,8 @@ ensembl &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; useMart&lt;span class="p"&g
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3 id="compatibility-with-annotationdbs-interface"&gt;Compatibility with AnnotationDb&amp;rsquo;s&amp;nbsp;interface&lt;/h3&gt;
-&lt;p&gt;The way to query the &lt;code&gt;ensembl&lt;/code&gt; Mart object is slightly different to how we query a AnnotationDb object. The major difference is the terminology. Luckily, Mart object provides a compatibility layer so we can still call functions such as &lt;code&gt;select(db, ...)&lt;/code&gt;, &lt;code&gt;keytypes(db)&lt;/code&gt;, &lt;code&gt;keys(db)&lt;/code&gt; and &lt;code&gt;columns(db)&lt;/code&gt;, which we frequently do&lt;sup id="fnref:select-compat"&gt;&lt;a class="footnote-ref" href="#fn:select-compat" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt; when using &lt;span class="caps"&gt;NCBI&lt;/span&gt;/&lt;span class="caps"&gt;UCSC&lt;/span&gt;&amp;nbsp;references.&lt;/p&gt;
+&lt;h3 id="compatibility-with-annotationdbs-interface"&gt;Compatibility with AnnotationDb&amp;rsquo;s interface&lt;/h3&gt;
+&lt;p&gt;The way to query the &lt;code&gt;ensembl&lt;/code&gt; Mart object is slightly different to how we query a AnnotationDb object. The major difference is the terminology. Luckily, Mart object provides a compatibility layer so we can still call functions such as &lt;code&gt;select(db, ...)&lt;/code&gt;, &lt;code&gt;keytypes(db)&lt;/code&gt;, &lt;code&gt;keys(db)&lt;/code&gt; and &lt;code&gt;columns(db)&lt;/code&gt;, which we frequently do&lt;sup id="fnref:select-compat"&gt;&lt;a class="footnote-ref" href="#fn:select-compat" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt; when using NCBI/UCSC references.&lt;/p&gt;
 &lt;p&gt;A Mart can have hundreds of keys and columns. So we select a part of them out by &lt;code&gt;grep()&lt;/code&gt;,&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;grep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;^refseq&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; keytypes&lt;span class="p"&gt;(&lt;/span&gt;ensembl&lt;span class="p"&gt;),&lt;/span&gt; value &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="c1"&gt;# [1] &amp;quot;refseq_mrna&amp;quot; &amp;quot;refseq_mrna_predicted&amp;quot; ...&lt;/span&gt;
@@ -254,7 +254,7 @@ ensembl &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; useMart&lt;span class="p"&g
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;We start by finding the &lt;span class="caps"&gt;MAPK1&lt;/span&gt;&amp;rsquo;s RefSeq transcript IDs and their corresponding Ensembl transcript IDs, which is something we cannot do by our locally built Ensembl TxDb nor the human&amp;nbsp;OrgDb.&lt;/p&gt;
+&lt;p&gt;We start by finding the MAPK1&amp;rsquo;s RefSeq transcript IDs and their corresponding Ensembl transcript IDs, which is something we cannot do by our locally built Ensembl TxDb nor the human OrgDb.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;select&lt;span class="p"&gt;(&lt;/span&gt;
     ensembl&lt;span class="p"&gt;,&lt;/span&gt;
     keys &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;MAPK1&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
@@ -279,8 +279,8 @@ ensembl &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; useMart&lt;span class="p"&g
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;So some of the &lt;span class="caps"&gt;MAPK1&lt;/span&gt; Ensembl transcripts does not have RefSeq identifiers. This is common to see since RefSeq is more conservative about including new transcripts. Anyway, we can now translate our analysis result between a wider range of naming&amp;nbsp;systems.&lt;/p&gt;
-&lt;p&gt;Moreover, what&amp;rsquo;s awesome about BioMart is that almost all the information on the Ensembl genome browser can be retreived by BioMart. For example, getting the paralog and the mouse homolog of &lt;span class="caps"&gt;MAPK1&lt;/span&gt;,&lt;/p&gt;
+&lt;p&gt;So some of the MAPK1 Ensembl transcripts does not have RefSeq identifiers. This is common to see since RefSeq is more conservative about including new transcripts. Anyway, we can now translate our analysis result between a wider range of naming systems.&lt;/p&gt;
+&lt;p&gt;Moreover, what&amp;rsquo;s awesome about BioMart is that almost all the information on the Ensembl genome browser can be retreived by BioMart. For example, getting the paralog and the mouse homolog of MAPK1,&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Get paralog of MAPK1&lt;/span&gt;
 select&lt;span class="p"&gt;(&lt;/span&gt;
     ensembl&lt;span class="p"&gt;,&lt;/span&gt;
@@ -315,15 +315,15 @@ select&lt;span class="p"&gt;(&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3 id="biomarts-original-interface"&gt;biomaRt&amp;rsquo;s original&amp;nbsp;interface&lt;/h3&gt;
-&lt;p&gt;The &lt;code&gt;select()&lt;/code&gt; function we use is not the original biomaRt&amp;rsquo;s interface. In fact, keys and columns are interpreted as BioMart&amp;rsquo;s &lt;strong&gt;filters&lt;/strong&gt; and &lt;strong&gt;attributes&lt;/strong&gt; respectively. To find all available filters and&amp;nbsp;attributes,&lt;/p&gt;
+&lt;h3 id="biomarts-original-interface"&gt;biomaRt&amp;rsquo;s original interface&lt;/h3&gt;
+&lt;p&gt;The &lt;code&gt;select()&lt;/code&gt; function we use is not the original biomaRt&amp;rsquo;s interface. In fact, keys and columns are interpreted as BioMart&amp;rsquo;s &lt;strong&gt;filters&lt;/strong&gt; and &lt;strong&gt;attributes&lt;/strong&gt; respectively. To find all available filters and attributes,&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;filters &lt;span class="o"&gt;=&lt;/span&gt; listFilters&lt;span class="p"&gt;(&lt;/span&gt;ensembl&lt;span class="p"&gt;)&lt;/span&gt;
 attributes &lt;span class="o"&gt;=&lt;/span&gt; listAttributes&lt;span class="p"&gt;(&lt;/span&gt;ensembl&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;each of the command return a data.frame that contains each filter&amp;rsquo;s or attribute&amp;rsquo;s name and&amp;nbsp;description.&lt;/p&gt;
-&lt;p&gt;Behind the scene, arguments of &lt;code&gt;select(db, ...)&lt;/code&gt; is converted to &lt;code&gt;getBM(mart, ...)&lt;/code&gt;. For the same example of finding RefSeq and Ensembl transcript IDs, it can be re-written&amp;nbsp;as&lt;/p&gt;
+&lt;p&gt;each of the command return a data.frame that contains each filter&amp;rsquo;s or attribute&amp;rsquo;s name and description.&lt;/p&gt;
+&lt;p&gt;Behind the scene, arguments of &lt;code&gt;select(db, ...)&lt;/code&gt; is converted to &lt;code&gt;getBM(mart, ...)&lt;/code&gt;. For the same example of finding RefSeq and Ensembl transcript IDs, it can be re-written as&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;getBM&lt;span class="p"&gt;(&lt;/span&gt;
     attributes &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
         &lt;span class="s"&gt;&amp;quot;refseq_mrna&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;ensembl_transcript_id&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -338,14 +338,14 @@ attributes &lt;span class="o"&gt;=&lt;/span&gt; listAttributes&lt;span class="p"
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h2 id="conversion-between-genomic-coordinate-systems"&gt;Conversion between genomic coordinate&amp;nbsp;systems&lt;/h2&gt;
-&lt;p&gt;Somethings we need to convert between different verions of the reference. For example, today we&amp;rsquo;d like to convert a batch of genomic locations of reference hg38 to that of hg19, so we can compare our new research with previous studies. It is a non-trivial task that can be currently handled by the following&amp;nbsp;tools:&lt;/p&gt;
+&lt;h2 id="conversion-between-genomic-coordinate-systems"&gt;Conversion between genomic coordinate systems&lt;/h2&gt;
+&lt;p&gt;Somethings we need to convert between different verions of the reference. For example, today we&amp;rsquo;d like to convert a batch of genomic locations of reference hg38 to that of hg19, so we can compare our new research with previous studies. It is a non-trivial task that can be currently handled by the following tools:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="http://crossmap.sourceforge.net/"&gt;CrossMap&lt;/a&gt; (used by&amp;nbsp;Ensembl)&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://genome.ucsc.edu/cgi-bin/hgLiftOver"&gt;liftOver&lt;/a&gt; (used by &lt;span class="caps"&gt;UCSC&lt;/span&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://crossmap.sourceforge.net/"&gt;CrossMap&lt;/a&gt; (used by Ensembl)&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://genome.ucsc.edu/cgi-bin/hgLiftOver"&gt;liftOver&lt;/a&gt; (used by UCSC)&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Frankly I don&amp;rsquo;t have experience for such conversion in real study (the converted result still gives the sense of unease), but anyway here I follow &lt;a href="http://genomicsclass.github.io/book/pages/bioc1_liftOver.html"&gt;the guide on PH525x series&lt;/a&gt;. In Bioconductor, we can use &lt;span class="caps"&gt;UCSC&lt;/span&gt;&amp;rsquo;s Chain file to apply the &lt;code&gt;liftOver()&lt;/code&gt; method provided by package &lt;code&gt;rtracklayer&lt;/code&gt;. To convert regions from hg38 to hg19, we need the &lt;code&gt;hg38ToHg19.over.chain&lt;/code&gt; file, which can be found at &lt;a href="ftp://hgdownload.cse.ucsc.edu/goldenPath/hg38/liftOver/"&gt;ftp://hgdownload.cse.ucsc.edu/goldenPath/hg38/liftOver/&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;We still use &lt;span class="caps"&gt;MAPK1&lt;/span&gt; as an example of conversion. First extract &lt;span class="caps"&gt;MAPK1&lt;/span&gt;&amp;rsquo;s genomic ranges in hg38 and hg19&amp;nbsp;respectively,&lt;/p&gt;
+&lt;p&gt;Frankly I don&amp;rsquo;t have experience for such conversion in real study (the converted result still gives the sense of unease), but anyway here I follow &lt;a href="http://genomicsclass.github.io/book/pages/bioc1_liftOver.html"&gt;the guide on PH525x series&lt;/a&gt;. In Bioconductor, we can use UCSC&amp;rsquo;s Chain file to apply the &lt;code&gt;liftOver()&lt;/code&gt; method provided by package &lt;code&gt;rtracklayer&lt;/code&gt;. To convert regions from hg38 to hg19, we need the &lt;code&gt;hg38ToHg19.over.chain&lt;/code&gt; file, which can be found at &lt;a href="ftp://hgdownload.cse.ucsc.edu/goldenPath/hg38/liftOver/"&gt;ftp://hgdownload.cse.ucsc.edu/goldenPath/hg38/liftOver/&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;We still use MAPK1 as an example of conversion. First extract MAPK1&amp;rsquo;s genomic ranges in hg38 and hg19 respectively,&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;TxDb.Hsapiens.UCSC.hg38.knownGene&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;TxDb.Hsapiens.UCSC.hg19.knownGene
 tx38 &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; TxDb.Hsapiens.UCSC.hg38.knownGene
@@ -355,7 +355,7 @@ MAPK1_hg19 &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; genes&lt;span class="p"&
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Then we convert &lt;code&gt;MAPK1_hg38&lt;/code&gt; to use the hg19 coordinate&amp;nbsp;system.&lt;/p&gt;
+&lt;p&gt;Then we convert &lt;code&gt;MAPK1_hg38&lt;/code&gt; to use the hg19 coordinate system.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;rtracklayer&lt;span class="p"&gt;)&lt;/span&gt;
 ch &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; import.chain&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;./hg38ToHg19.over.chain&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 MAPK1_hg19_lifted &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; liftOver&lt;span class="p"&gt;(&lt;/span&gt;MAPK1_hg38&lt;span class="p"&gt;,&lt;/span&gt; ch&lt;span class="p"&gt;)&lt;/span&gt;
@@ -382,12 +382,12 @@ MAPK1_hg19_lifted
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;So the conversion worked as expected, though it created a gap in the range (missing a base at 22216653). I haven&amp;rsquo;t looked into the results. To ensure the correctness of the conversion, maybe a comparison with CrossMap is&amp;nbsp;needed.&lt;/p&gt;
+&lt;p&gt;So the conversion worked as expected, though it created a gap in the range (missing a base at 22216653). I haven&amp;rsquo;t looked into the results. To ensure the correctness of the conversion, maybe a comparison with CrossMap is needed.&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
-&lt;p&gt;We skimmed through OrgDb and TxDb again using the Ensembl references, including how to build the TxDb for Ensembl locally and obtain external annotations from&amp;nbsp;AnnotationHub.&lt;/p&gt;
-&lt;p&gt;BioMart is an abundant resource to query across various types of databases and references, which can be used in conversion between different naming&amp;nbsp;systems.&lt;/p&gt;
-&lt;p&gt;Finally, we know how to convert between different version of the reference. Though the correctness of the conversion requires further examination (not meaning it is wrong), at least the conversion by liftOver works as&amp;nbsp;expected.&lt;/p&gt;
-&lt;p&gt;Starting here, you should have no trouble dealing with annotations in R anymore. For the next post, I plan to further explore the way to read sequencing analysis results in&amp;nbsp;R.&lt;/p&gt;
+&lt;p&gt;We skimmed through OrgDb and TxDb again using the Ensembl references, including how to build the TxDb for Ensembl locally and obtain external annotations from AnnotationHub.&lt;/p&gt;
+&lt;p&gt;BioMart is an abundant resource to query across various types of databases and references, which can be used in conversion between different naming systems.&lt;/p&gt;
+&lt;p&gt;Finally, we know how to convert between different version of the reference. Though the correctness of the conversion requires further examination (not meaning it is wrong), at least the conversion by liftOver works as expected.&lt;/p&gt;
+&lt;p&gt;Starting here, you should have no trouble dealing with annotations in R anymore. For the next post, I plan to further explore the way to read sequencing analysis results in R.&lt;/p&gt;
 &lt;div class="footnote"&gt;
 &lt;hr /&gt;
 &lt;ol&gt;
@@ -395,46 +395,46 @@ MAPK1_hg19_lifted
 &lt;p&gt;Note that the &lt;code&gt;select(mart, ...)&lt;/code&gt; compatibility does not apply to all existed filters (keys) and attributes (columns) of the given Mart.&amp;#160;&lt;a class="footnote-backref" href="#fnref:select-compat" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</summary><category term="en"></category><category term="r"></category><category term="bioconductor"></category></entry><entry><title>Plot Sequencing Depth with Gviz</title><link href="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/" rel="alternate"></link><published>2016-01-15T23:50:00+08:00</published><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-15:posts/2016/01/plot-seq-depth-gviz/</id><summary type="html">&lt;p&gt;&lt;em&gt;&lt;strong&gt;&lt;span class="caps"&gt;TL&lt;/span&gt;;&lt;span class="caps"&gt;DR&lt;/span&gt;&lt;/strong&gt; Plot exome sequencing depth and coverage with genome annotation using Gviz in R. Then apply detail control on Gviz annotation track&amp;nbsp;displaying.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;This is an extending post from &lt;a href="https://blog.liang2.tw/posts/2015/12/biocondutor-genomic-data/"&gt;Genomic Data Processing in Bioconductor&lt;/a&gt;, though I haven&amp;rsquo;t finished reading all the reference in that post. The background knowledge of this post is basic understanding of how to deal with annotation and genome reference in Bioconductor/R. If you don&amp;rsquo;t deal with genome annotations in R before, you should find some time learning it anyway, a truly life&amp;nbsp;saver.&lt;/p&gt;
+&lt;/div&gt;</summary><category term="en"></category><category term="r"></category><category term="bioconductor"></category></entry><entry><title>Plot Sequencing Depth with Gviz</title><link href="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/" rel="alternate"></link><published>2016-01-15T23:50:00-06:00</published><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-15:posts/2016/01/plot-seq-depth-gviz/</id><summary type="html">&lt;p&gt;&lt;em&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; Plot exome sequencing depth and coverage with genome annotation using Gviz in R. Then apply detail control on Gviz annotation track displaying.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;This is an extending post from &lt;a href="https://blog.liang2.tw/posts/2015/12/biocondutor-genomic-data/"&gt;Genomic Data Processing in Bioconductor&lt;/a&gt;, though I haven&amp;rsquo;t finished reading all the reference in that post. The background knowledge of this post is basic understanding of how to deal with annotation and genome reference in Bioconductor/R. If you don&amp;rsquo;t deal with genome annotations in R before, you should find some time learning it anyway, a truly life saver.&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="#convert-sequencing-depth-to-bedgraph-format"&gt;Convert sequencing depth to BedGraph&amp;nbsp;format&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#convert-sequencing-depth-to-bedgraph-format"&gt;Convert sequencing depth to BedGraph format&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#plot-depth-in-gviz"&gt;Plot depth in Gviz&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#first-gviz-track"&gt;First Gviz&amp;nbsp;track&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#add-genome-axis"&gt;Add genome&amp;nbsp;axis&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#add-annotation"&gt;Add&amp;nbsp;annotation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#first-gviz-track"&gt;First Gviz track&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#add-genome-axis"&gt;Add genome axis&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#add-annotation"&gt;Add annotation&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;a href="#plot-fine-tune"&gt;Plot fine tune&lt;/a&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="#genome-annotation-query-in-bioconductorr"&gt;Genome annotation query in Bioconductor/R&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#via-transcripts"&gt;via&amp;nbsp;transcripts()&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#via-exonsby"&gt;via&amp;nbsp;exonsBy()&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#via-transcripts"&gt;via transcripts()&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#via-exonsby"&gt;via exonsBy()&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a href="#show-only-the-annotations-of-certain-genes"&gt;Show only the annotations of certain&amp;nbsp;genes&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#display-gene-symbols-at-annotation-track"&gt;Display gene symbols at annotation&amp;nbsp;track&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#show-only-the-annotations-of-certain-genes"&gt;Show only the annotations of certain genes&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#display-gene-symbols-at-annotation-track"&gt;Display gene symbols at annotation track&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;a href="#summary"&gt;Summary&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#supplementary-plot-bam-files-directly"&gt;Supplementary - Plot &lt;span class="caps"&gt;BAM&lt;/span&gt; files directly&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#fancier-alignment-display"&gt;Fancier alignment&amp;nbsp;display&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#supplementary-plot-bam-files-directly"&gt;Supplementary - Plot BAM files directly&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#fancier-alignment-display"&gt;Fancier alignment display&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;p&gt;I got the chance trying new tricks today when I and other lab members were analyzing our human cancer exome sequencing data. The results were a bunch of &lt;span class="caps"&gt;BAM&lt;/span&gt; files aligned by &lt;a href="https://github.com/lh3/bwa"&gt;&lt;span class="caps"&gt;BWA&lt;/span&gt;-&lt;span class="caps"&gt;MEM&lt;/span&gt;&lt;/a&gt; using reference&amp;nbsp;hg19.&lt;/p&gt;
-&lt;p&gt;We want to see how was the sequencing depth and the coverage of all exons designed to be sequenced. Roughly, this can be done in the genome viewer such as &lt;a href="https://www.broadinstitute.org/igv/"&gt;&lt;span class="caps"&gt;IGV&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I got the chance trying new tricks today when I and other lab members were analyzing our human cancer exome sequencing data. The results were a bunch of BAM files aligned by &lt;a href="https://github.com/lh3/bwa"&gt;BWA-MEM&lt;/a&gt; using reference hg19.&lt;/p&gt;
+&lt;p&gt;We want to see how was the sequencing depth and the coverage of all exons designed to be sequenced. Roughly, this can be done in the genome viewer such as &lt;a href="https://www.broadinstitute.org/igv/"&gt;IGV&lt;/a&gt;.&lt;/p&gt;
 &lt;div class="figure"&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_IGV.png"/&gt;
-  &lt;p class="caption center"&gt;Visualize sequencing depth in &lt;span class="caps"&gt;IGV&lt;/span&gt;&lt;/p&gt;
+  &lt;p class="caption center"&gt;Visualize sequencing depth in IGV&lt;/p&gt;
 &lt;/div&gt;
 
-&lt;p&gt;&lt;span class="caps"&gt;IGV&lt;/span&gt; is good for daily research, but when it comes to customization, there aren&amp;rsquo;t many options. And if the visualization is aimed for publishing, one might want the figure to be vectorized and, more importantly, &lt;em&gt;reproducible&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;Therefore, combining with what I learnt in &lt;a href="https://blog.liang2.tw/posts/2015/12/biocondutor-genomic-data/"&gt;Genomic Data Processing in Bioconductor&lt;/a&gt;, I tried to plot the sequencing depth in R with &lt;a href="https://bioconductor.org/packages/release/bioc/html/Gviz.html"&gt;Gviz&lt;/a&gt;. I thought learning Gviz will be demanding, since its vignette has 80 pages and the function documentation are &lt;a href="http://rpackages.ianhowson.com/bioc/Gviz/man/GeneRegionTrack-class.html"&gt;scarily long spells&lt;/a&gt;. But both of them turned out to be &lt;em&gt;really&lt;/em&gt; helpful and informative, especially when trying to tune its behavior. Figures produced by Gviz are aesthetically pleasing, and Gviz has many features as well (still trying). I&amp;rsquo;m glad that I gave it a&amp;nbsp;shot.&lt;/p&gt;
-&lt;p&gt;If you want to follow the code yourself, any human &lt;span class="caps"&gt;BAM&lt;/span&gt; alignment files will do. For example, the &lt;span class="caps"&gt;GEO&lt;/span&gt; dataset &lt;a href="http://dev.3dvcell.org/geo/query/acc.cgi?acc=GSE48215"&gt;&lt;span class="caps"&gt;GSE48215&lt;/span&gt;&lt;/a&gt; contains exome sequencing of breast cancer cell&amp;nbsp;lines.&lt;/p&gt;
-&lt;h2 id="convert-sequencing-depth-to-bedgraph-format"&gt;Convert sequencing depth to BedGraph&amp;nbsp;format&lt;/h2&gt;
-&lt;p&gt;After a quick search, Gviz&amp;rsquo;s &lt;a href="http://rpackages.ianhowson.com/bioc/Gviz/man/DataTrack-class.html"&gt;DataTrack&lt;/a&gt; accepts BedGraph format. This format can display any numerical value of chromosome ranges, shown as&amp;nbsp;follows,&lt;/p&gt;
+&lt;p&gt;IGV is good for daily research, but when it comes to customization, there aren&amp;rsquo;t many options. And if the visualization is aimed for publishing, one might want the figure to be vectorized and, more importantly, &lt;em&gt;reproducible&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Therefore, combining with what I learnt in &lt;a href="https://blog.liang2.tw/posts/2015/12/biocondutor-genomic-data/"&gt;Genomic Data Processing in Bioconductor&lt;/a&gt;, I tried to plot the sequencing depth in R with &lt;a href="https://bioconductor.org/packages/release/bioc/html/Gviz.html"&gt;Gviz&lt;/a&gt;. I thought learning Gviz will be demanding, since its vignette has 80 pages and the function documentation are &lt;a href="http://rpackages.ianhowson.com/bioc/Gviz/man/GeneRegionTrack-class.html"&gt;scarily long spells&lt;/a&gt;. But both of them turned out to be &lt;em&gt;really&lt;/em&gt; helpful and informative, especially when trying to tune its behavior. Figures produced by Gviz are aesthetically pleasing, and Gviz has many features as well (still trying). I&amp;rsquo;m glad that I gave it a shot.&lt;/p&gt;
+&lt;p&gt;If you want to follow the code yourself, any human BAM alignment files will do. For example, the GEO dataset &lt;a href="http://dev.3dvcell.org/geo/query/acc.cgi?acc=GSE48215"&gt;GSE48215&lt;/a&gt; contains exome sequencing of breast cancer cell lines.&lt;/p&gt;
+&lt;h2 id="convert-sequencing-depth-to-bedgraph-format"&gt;Convert sequencing depth to BedGraph format&lt;/h2&gt;
+&lt;p&gt;After a quick search, Gviz&amp;rsquo;s &lt;a href="http://rpackages.ianhowson.com/bioc/Gviz/man/DataTrack-class.html"&gt;DataTrack&lt;/a&gt; accepts BedGraph format. This format can display any numerical value of chromosome ranges, shown as follows,&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -465,20 +465,20 @@ MAPK1_hg19_lifted
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;So we need to convert the alignment result as BedGraph format, which can be done by &lt;a href="http://bedtools.readthedocs.org/en/latest/content/tools/genomecov.html"&gt;BEDTools&amp;rsquo; genomecov&lt;/a&gt; command. On BEDTools&amp;rsquo; documentation, it notes that the &lt;span class="caps"&gt;BAM&lt;/span&gt; file should be&amp;nbsp;sorted. &lt;/p&gt;
+&lt;p&gt;So we need to convert the alignment result as BedGraph format, which can be done by &lt;a href="http://bedtools.readthedocs.org/en/latest/content/tools/genomecov.html"&gt;BEDTools&amp;rsquo; genomecov&lt;/a&gt; command. On BEDTools&amp;rsquo; documentation, it notes that the BAM file should be sorted. &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bedtools genomecov -bg -ibam myseq.bam &amp;gt; myseq.bedGraph
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;The plain text BedGraph can be huge, pipe&amp;rsquo;d with gzip will reduce file size to around 30% of the&amp;nbsp;original.&lt;/p&gt;
+&lt;p&gt;The plain text BedGraph can be huge, pipe&amp;rsquo;d with gzip will reduce file size to around 30% of the original.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bedtools genomecov -bg -ibam myseq.bam &lt;span class="p"&gt;|&lt;/span&gt; gzip &amp;gt; myseq.bedGraph.gz
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h2 id="plot-depth-in-gviz"&gt;Plot depth in&amp;nbsp;Gviz&lt;/h2&gt;
-&lt;p&gt;R packages of human genome annotations (&lt;a href="http://bioconductor.org/packages/release/data/annotation/html/Homo.sapiens.html"&gt;Homo.sapiens&lt;/a&gt;) and &lt;a href="https://bioconductor.org/packages/release/bioc/html/Gviz.html"&gt;Gviz&lt;/a&gt; itself are required. Also, &lt;a href="https://cran.r-project.org/web/packages/data.table/index.html"&gt;data.table&lt;/a&gt; gives an impressed speed at reading text tables so is recommended to use. During the analysis, I happened to know that data.table supports &lt;a href="https://github.com/Rdatatable/data.table/issues/717"&gt;reading gzip&amp;rsquo;d file through pipe&lt;/a&gt;, which makes it more&amp;nbsp;awesome.&lt;/p&gt;
-&lt;h3 id="first-gviz-track"&gt;First Gviz&amp;nbsp;track&lt;/h3&gt;
-&lt;p&gt;We should first start at reading our sequencing depth as BedGraph format and plot&amp;nbsp;it.&lt;/p&gt;
+&lt;h2 id="plot-depth-in-gviz"&gt;Plot depth in Gviz&lt;/h2&gt;
+&lt;p&gt;R packages of human genome annotations (&lt;a href="http://bioconductor.org/packages/release/data/annotation/html/Homo.sapiens.html"&gt;Homo.sapiens&lt;/a&gt;) and &lt;a href="https://bioconductor.org/packages/release/bioc/html/Gviz.html"&gt;Gviz&lt;/a&gt; itself are required. Also, &lt;a href="https://cran.r-project.org/web/packages/data.table/index.html"&gt;data.table&lt;/a&gt; gives an impressed speed at reading text tables so is recommended to use. During the analysis, I happened to know that data.table supports &lt;a href="https://github.com/Rdatatable/data.table/issues/717"&gt;reading gzip&amp;rsquo;d file through pipe&lt;/a&gt;, which makes it more awesome.&lt;/p&gt;
+&lt;h3 id="first-gviz-track"&gt;First Gviz track&lt;/h3&gt;
+&lt;p&gt;We should first start at reading our sequencing depth as BedGraph format and plot it.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;data.table&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Gviz&lt;span class="p"&gt;)&lt;/span&gt;
 
@@ -506,14 +506,14 @@ plotTracks&lt;span class="p"&gt;(&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;So we read the sequencing depth data, create a Gviz &lt;code&gt;DataTrack&lt;/code&gt; holding the subset of our data on chr17, then plot Gviz tracks by &lt;code&gt;plotTracks&lt;/code&gt; (though we only made one here) within a given chromosome region. Here is what we&amp;nbsp;got.&lt;/p&gt;
+&lt;p&gt;So we read the sequencing depth data, create a Gviz &lt;code&gt;DataTrack&lt;/code&gt; holding the subset of our data on chr17, then plot Gviz tracks by &lt;code&gt;plotTracks&lt;/code&gt; (though we only made one here) within a given chromosome region. Here is what we got.&lt;/p&gt;
 &lt;div class="figure"&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_one_track.png"/&gt;
 &lt;/div&gt;
 
-&lt;h3 id="add-genome-axis"&gt;Add genome&amp;nbsp;axis&lt;/h3&gt;
-&lt;p&gt;The figure is a bit weird and lack of information without the genomic&amp;nbsp;location. &lt;/p&gt;
-&lt;p&gt;Adding genomic location can be done automatically by Gviz through a new track &lt;code&gt;GenomeAxisTrack&lt;/code&gt;. Also, we&amp;rsquo;d like to show which region of chromosome we are at. This can be done by adding another track, &lt;code&gt;IdeogramTrack&lt;/code&gt;, to show the chromosome ideogram. Note that the latter track will download cytoband data from &lt;span class="caps"&gt;UCSC&lt;/span&gt; so the given genome must have a valid&amp;nbsp;name.&lt;/p&gt;
+&lt;h3 id="add-genome-axis"&gt;Add genome axis&lt;/h3&gt;
+&lt;p&gt;The figure is a bit weird and lack of information without the genomic location. &lt;/p&gt;
+&lt;p&gt;Adding genomic location can be done automatically by Gviz through a new track &lt;code&gt;GenomeAxisTrack&lt;/code&gt;. Also, we&amp;rsquo;d like to show which region of chromosome we are at. This can be done by adding another track, &lt;code&gt;IdeogramTrack&lt;/code&gt;, to show the chromosome ideogram. Note that the latter track will download cytoband data from UCSC so the given genome must have a valid name.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;itrack &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; IdeogramTrack&lt;span class="p"&gt;(&lt;/span&gt;
     genome &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;hg19&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; chromosome &lt;span class="o"&gt;=&lt;/span&gt; thechr
 &lt;span class="p"&gt;)&lt;/span&gt;
@@ -530,10 +530,10 @@ plotTracks&lt;span class="p"&gt;(&lt;/span&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_with_loc.png"/&gt;
 &lt;/div&gt;
 
-&lt;p&gt;Better now&amp;nbsp;:)&lt;/p&gt;
-&lt;h3 id="add-annotation"&gt;Add&amp;nbsp;annotation&lt;/h3&gt;
-&lt;p&gt;Since we are using exome sequencing, the curve of sequencing depth only makes senses when combined with the transcript&amp;nbsp;annotations. &lt;/p&gt;
-&lt;p&gt;Gviz has &lt;code&gt;GeneRegionTrack&lt;/code&gt; to extract annotation from the R annotation packages. Package Homo.sapiens includes the gene annotation package using &lt;span class="caps"&gt;UCSC&lt;/span&gt; knownGene database. Adding this new track and we will have annotation on our&amp;nbsp;plot.&lt;/p&gt;
+&lt;p&gt;Better now :)&lt;/p&gt;
+&lt;h3 id="add-annotation"&gt;Add annotation&lt;/h3&gt;
+&lt;p&gt;Since we are using exome sequencing, the curve of sequencing depth only makes senses when combined with the transcript annotations. &lt;/p&gt;
+&lt;p&gt;Gviz has &lt;code&gt;GeneRegionTrack&lt;/code&gt; to extract annotation from the R annotation packages. Package Homo.sapiens includes the gene annotation package using UCSC knownGene database. Adding this new track and we will have annotation on our plot.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;TxDb.Hsapiens.UCSC.hg19.knownGene&lt;span class="p"&gt;)&lt;/span&gt;
 txdb &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; TxDb.Hsapiens.UCSC.hg19.knownGene
 
@@ -555,22 +555,22 @@ plotTracks&lt;span class="p"&gt;(&lt;/span&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_with_annotation.png"/&gt;
 &lt;/div&gt;
 
-&lt;p&gt;The plot should now be as informative as what we can get from the &lt;span class="caps"&gt;IGV&lt;/span&gt;. In fact, Gviz can plot the alignment result too. It can read the &lt;span class="caps"&gt;BAM&lt;/span&gt; file directly and show a more detailed coverage that matches what &lt;span class="caps"&gt;IGV&lt;/span&gt; can do. I&amp;rsquo;ll leave that part at the end of this&amp;nbsp;post. &lt;/p&gt;
-&lt;p&gt;So far we&amp;rsquo;ve shown the sequencing depth of some chromosome region with annotation. However, there still leave something to be desired, mostly about the&amp;nbsp;annotation:&lt;/p&gt;
+&lt;p&gt;The plot should now be as informative as what we can get from the IGV. In fact, Gviz can plot the alignment result too. It can read the BAM file directly and show a more detailed coverage that matches what IGV can do. I&amp;rsquo;ll leave that part at the end of this post. &lt;/p&gt;
+&lt;p&gt;So far we&amp;rsquo;ve shown the sequencing depth of some chromosome region with annotation. However, there still leave something to be desired, mostly about the annotation:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Can we show only the annotation of certain&amp;nbsp;genes?&lt;/li&gt;
-&lt;li&gt;knownGene&amp;rsquo;s identifier is barely meaningless, can we show the gene symbol&amp;nbsp;instead?&lt;/li&gt;
+&lt;li&gt;Can we show only the annotation of certain genes?&lt;/li&gt;
+&lt;li&gt;knownGene&amp;rsquo;s identifier is barely meaningless, can we show the gene symbol instead?&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;So here comes the second part, annotation fine&amp;nbsp;tuning.&lt;/p&gt;
-&lt;h2 id="plot-fine-tune"&gt;Plot fine&amp;nbsp;tune&lt;/h2&gt;
-&lt;p&gt;Say, we only care about gene &lt;em&gt;&lt;span class="caps"&gt;BRCA1&lt;/span&gt;&lt;/em&gt;. So we need to get its location, or specifically, the genomic range that cover all &lt;em&gt;&lt;span class="caps"&gt;BRCA1&lt;/span&gt;&lt;/em&gt; isoforms. In the following example, I will demonstrate the Gviz&amp;rsquo;s annotation fine&amp;nbsp;tuning.&lt;/p&gt;
-&lt;h3 id="genome-annotation-query-in-bioconductorr"&gt;Genome annotation query in&amp;nbsp;Bioconductor/R&lt;/h3&gt;
-&lt;p&gt;If you are not familiar with how to query annotations in Bioconductor, it&amp;rsquo;s easier to think by breaking our goal of finding &lt;em&gt;&lt;span class="caps"&gt;BRCA1&lt;/span&gt;&lt;/em&gt;&amp;lsquo;s ranges into two&amp;nbsp;steps:&lt;/p&gt;
+&lt;p&gt;So here comes the second part, annotation fine tuning.&lt;/p&gt;
+&lt;h2 id="plot-fine-tune"&gt;Plot fine tune&lt;/h2&gt;
+&lt;p&gt;Say, we only care about gene &lt;em&gt;BRCA1&lt;/em&gt;. So we need to get its location, or specifically, the genomic range that cover all &lt;em&gt;BRCA1&lt;/em&gt; isoforms. In the following example, I will demonstrate the Gviz&amp;rsquo;s annotation fine tuning.&lt;/p&gt;
+&lt;h3 id="genome-annotation-query-in-bioconductorr"&gt;Genome annotation query in Bioconductor/R&lt;/h3&gt;
+&lt;p&gt;If you are not familiar with how to query annotations in Bioconductor, it&amp;rsquo;s easier to think by breaking our goal of finding &lt;em&gt;BRCA1&lt;/em&gt;&amp;lsquo;s ranges into two steps:&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;Get the transcript&amp;nbsp;IDs&lt;/li&gt;
-&lt;li&gt;Query the transcript locations by their&amp;nbsp;IDs&lt;/li&gt;
+&lt;li&gt;Get the transcript IDs&lt;/li&gt;
+&lt;li&gt;Query the transcript locations by their IDs&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;Getting transcript IDs given their gene symbol is a &lt;code&gt;select()&lt;/code&gt; on OrganismDb&amp;nbsp;object,&lt;/p&gt;
+&lt;p&gt;Getting transcript IDs given their gene symbol is a &lt;code&gt;select()&lt;/code&gt; on OrganismDb object,&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Get all transcript IDs of gene BRCA1&lt;/span&gt;
 BRCA1_txnames &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; select&lt;span class="p"&gt;(&lt;/span&gt;
     Homo.sapiens&lt;span class="p"&gt;,&lt;/span&gt;
@@ -589,7 +589,7 @@ BRCA1_txnames &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; select&lt;span class=
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Look like it has plenty of&amp;nbsp;isoforms!&lt;/p&gt;
+&lt;p&gt;Look like it has plenty of isoforms!&lt;/p&gt;
 &lt;h4 id="via-transcripts"&gt;via &lt;code&gt;transcripts()&lt;/code&gt;&lt;/h4&gt;
 &lt;p&gt;For the transcript location, the easiest way will be querying the txDb via &lt;code&gt;transcript()&lt;/code&gt;,&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;BRCA1_txs &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; transcripts&lt;span class="p"&gt;(&lt;/span&gt;
@@ -629,21 +629,21 @@ en &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;max&lt;/s
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Some space are added at both ends so the plot won&amp;rsquo;t tightly fit all transcripts and leave some room for the transcript&amp;nbsp;names. &lt;/p&gt;
+&lt;p&gt;Some space are added at both ends so the plot won&amp;rsquo;t tightly fit all transcripts and leave some room for the transcript names. &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;thechr&lt;span class="p"&gt;,&lt;/span&gt; st&lt;span class="p"&gt;,&lt;/span&gt; en&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="go"&gt;[1] &amp;quot;chr17&amp;quot;    &amp;quot;41176312&amp;quot; &amp;quot;41323420&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h4 id="via-exonsby"&gt;via &lt;code&gt;exonsBy()&lt;/code&gt;&lt;/h4&gt;
-&lt;p&gt;Another way to obtain the genomic range is getting the exact range of &lt;span class="caps"&gt;CDS&lt;/span&gt; (e.g. exons and UTRs) for each transcript via &lt;code&gt;exonsBy()&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;Another way to obtain the genomic range is getting the exact range of CDS (e.g. exons and UTRs) for each transcript via &lt;code&gt;exonsBy()&lt;/code&gt;. &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;BRCA1_cds_by_tx &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; exonsBy&lt;span class="p"&gt;(&lt;/span&gt;
     Homo.sapiens&lt;span class="p"&gt;,&lt;/span&gt; by&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;tx&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; use.names&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;
 &lt;span class="p"&gt;)[&lt;/span&gt;BRCA1_txnames&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;The function returns a &lt;code&gt;GRangesList&lt;/code&gt; object, a list of &lt;code&gt;GRanges&lt;/code&gt; that each &lt;code&gt;GRanges&lt;/code&gt; object corresponds to a transcript&amp;nbsp;respectively.&lt;/p&gt;
+&lt;p&gt;The function returns a &lt;code&gt;GRangesList&lt;/code&gt; object, a list of &lt;code&gt;GRanges&lt;/code&gt; that each &lt;code&gt;GRanges&lt;/code&gt; object corresponds to a transcript respectively.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;BRCA1_cds_by_tx
 &lt;span class="go"&gt;GRangesList object of length 20:&lt;/span&gt;
 &lt;span class="go"&gt;$uc010whl.2 &lt;/span&gt;
@@ -669,7 +669,7 @@ en &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;max&lt;/s
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;code&gt;GRangesList&lt;/code&gt; is not merely a R list structure, which can correctly propagate the GRanges-related functions to all the GRanges it&amp;nbsp;contain.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;GRangesList&lt;/code&gt; is not merely a R list structure, which can correctly propagate the GRanges-related functions to all the GRanges it contain.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;start&lt;span class="p"&gt;(&lt;/span&gt;BRCA1_cds_by_tx&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="go"&gt;IntegerList of length 20&lt;/span&gt;
 &lt;span class="go"&gt;[[&amp;quot;uc010whl.2&amp;quot;]] 41276034 41267743 41258473 ... 41201138 41199660 41196312&lt;/span&gt;
@@ -700,8 +700,8 @@ en &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;max&lt;/s
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;We have the &lt;span class="caps"&gt;BRCA1&lt;/span&gt; genomic region, rest of the plotting is the&amp;nbsp;same.&lt;/p&gt;
-&lt;h3 id="show-only-the-annotations-of-certain-genes"&gt;Show only the annotations of certain&amp;nbsp;genes&lt;/h3&gt;
+&lt;p&gt;We have the BRCA1 genomic region, rest of the plotting is the same.&lt;/p&gt;
+&lt;h3 id="show-only-the-annotations-of-certain-genes"&gt;Show only the annotations of certain genes&lt;/h3&gt;
 &lt;p&gt;Before we start to create our own annotation subset, we first take a look at what Gviz generated. The &lt;code&gt;GeneRegionTrack&lt;/code&gt; track store its annotation data at slot &lt;code&gt;range&lt;/code&gt;.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;grtrack&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="kp"&gt;range&lt;/span&gt;
 &lt;span class="go"&gt;GRanges object with 459 ranges and 7 metadata columns:&lt;/span&gt;
@@ -723,7 +723,7 @@ en &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;max&lt;/s
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;So we filter out unrelated ranges by checking if the value of metadata column &lt;code&gt;transcript&lt;/code&gt; is one of &lt;em&gt;&lt;span class="caps"&gt;BRCA1&lt;/span&gt;&lt;/em&gt;&amp;lsquo;s transcript&amp;nbsp;IDs,&lt;/p&gt;
+&lt;p&gt;So we filter out unrelated ranges by checking if the value of metadata column &lt;code&gt;transcript&lt;/code&gt; is one of &lt;em&gt;BRCA1&lt;/em&gt;&amp;lsquo;s transcript IDs,&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;BRCA_only_range &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; grtrack&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="kp"&gt;range&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
     mcols&lt;span class="p"&gt;(&lt;/span&gt;grtrack&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="kp"&gt;range&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;transcript &lt;span class="o"&gt;%in%&lt;/span&gt; BRCA1_txnames
 &lt;span class="p"&gt;]&lt;/span&gt;
@@ -749,9 +749,9 @@ plotTracks&lt;span class="p"&gt;(&lt;/span&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_BRCA1_only.png"/&gt;
 &lt;/div&gt;
 
-&lt;h3 id="display-gene-symbols-at-annotation-track"&gt;Display gene symbols at annotation&amp;nbsp;track&lt;/h3&gt;
-&lt;p&gt;It&amp;rsquo;s more obvious now about how Gviz stores the annotation. All we need is to replace the symbol name with whatever we&amp;nbsp;desire.&lt;/p&gt;
-&lt;p&gt;First, we extract the metadata of the &lt;code&gt;GeneRegionTrack&lt;/code&gt;, and query for their gene symbols. Using either the transcript &lt;span class="caps"&gt;ID&lt;/span&gt; or Entrez &lt;span class="caps"&gt;ID&lt;/span&gt; will&amp;nbsp;do. &lt;/p&gt;
+&lt;h3 id="display-gene-symbols-at-annotation-track"&gt;Display gene symbols at annotation track&lt;/h3&gt;
+&lt;p&gt;It&amp;rsquo;s more obvious now about how Gviz stores the annotation. All we need is to replace the symbol name with whatever we desire.&lt;/p&gt;
+&lt;p&gt;First, we extract the metadata of the &lt;code&gt;GeneRegionTrack&lt;/code&gt;, and query for their gene symbols. Using either the transcript ID or Entrez ID will do. &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grtrack_range &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; grtrack&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="kp"&gt;range&lt;/span&gt;
 range_mapping &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; select&lt;span class="p"&gt;(&lt;/span&gt;
     Homo.sapiens&lt;span class="p"&gt;,&lt;/span&gt;
@@ -773,7 +773,7 @@ range_mapping &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; select&lt;span class=
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Then we concatenate the information of transcript &lt;span class="caps"&gt;ID&lt;/span&gt; and gene symbol using &lt;a href="https://cran.r-project.org/web/packages/stringr/index.html"&gt;stringr&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Then we concatenate the information of transcript ID and gene symbol using &lt;a href="https://cran.r-project.org/web/packages/stringr/index.html"&gt;stringr&lt;/a&gt;.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;stringr&lt;span class="p"&gt;)&lt;/span&gt;
 new_symbols &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;with&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     range_mapping&lt;span class="p"&gt;,&lt;/span&gt;
@@ -788,7 +788,7 @@ new_symbols &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Like how we extract &lt;em&gt;&lt;span class="caps"&gt;BRCA1&lt;/span&gt;&lt;/em&gt;-only annotations, we construct a new &lt;code&gt;GeneRegionTrack&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Like how we extract &lt;em&gt;BRCA1&lt;/em&gt;-only annotations, we construct a new &lt;code&gt;GeneRegionTrack&lt;/code&gt;.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grtrack_symbol &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; GeneRegionTrack&lt;span class="p"&gt;(&lt;/span&gt;
     grtrack&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="kp"&gt;range&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     chromosome &lt;span class="o"&gt;=&lt;/span&gt; thechr&lt;span class="p"&gt;,&lt;/span&gt; start &lt;span class="o"&gt;=&lt;/span&gt; st&lt;span class="p"&gt;,&lt;/span&gt; end &lt;span class="o"&gt;=&lt;/span&gt; en&lt;span class="p"&gt;,&lt;/span&gt;
@@ -808,10 +808,10 @@ plotTracks&lt;span class="p"&gt;(&lt;/span&gt;
 &lt;/div&gt;
 
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
-&lt;p&gt;So we&amp;rsquo;ve learnt how to plot using Gviz. You should go explore other data tracks or try to combine sequencing depth of multiple samples. I found the design of Gviz is clean and easy to modify. I think I&amp;rsquo;ll use Gviz whenever genome-related plots are&amp;nbsp;needed. &lt;/p&gt;
-&lt;p&gt;Really glad I&amp;rsquo;ve tried it&amp;nbsp;:)&lt;/p&gt;
-&lt;h2 id="supplementary-plot-bam-files-directly"&gt;Supplementary - Plot &lt;span class="caps"&gt;BAM&lt;/span&gt; files&amp;nbsp;directly&lt;/h2&gt;
-&lt;p&gt;We will start by replacing &lt;code&gt;DataTrack&lt;/code&gt; with &lt;code&gt;AlignmentsTrack&lt;/code&gt;. Also we select a smaller region this time so the read mapping can be clearly&amp;nbsp;seen.&lt;/p&gt;
+&lt;p&gt;So we&amp;rsquo;ve learnt how to plot using Gviz. You should go explore other data tracks or try to combine sequencing depth of multiple samples. I found the design of Gviz is clean and easy to modify. I think I&amp;rsquo;ll use Gviz whenever genome-related plots are needed. &lt;/p&gt;
+&lt;p&gt;Really glad I&amp;rsquo;ve tried it :)&lt;/p&gt;
+&lt;h2 id="supplementary-plot-bam-files-directly"&gt;Supplementary - Plot BAM files directly&lt;/h2&gt;
+&lt;p&gt;We will start by replacing &lt;code&gt;DataTrack&lt;/code&gt; with &lt;code&gt;AlignmentsTrack&lt;/code&gt;. Also we select a smaller region this time so the read mapping can be clearly seen.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;st &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;41.196e6L&lt;/span&gt;
 en &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;41.202e6L&lt;/span&gt;
 gtrack &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; GenomeAxisTrack&lt;span class="p"&gt;(&lt;/span&gt;cex &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  &lt;span class="c1"&gt;# set the font size larger&lt;/span&gt;
@@ -840,9 +840,9 @@ plotTracks&lt;span class="p"&gt;(&lt;/span&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_BAM_coverage_only.png"/&gt;
 &lt;/div&gt;
 
-&lt;h3 id="fancier-alignment-display"&gt;Fancier alignment&amp;nbsp;display&lt;/h3&gt;
-&lt;p&gt;Spend some time reading the documentation, the alignment can be much more&amp;nbsp;fancier. &lt;/p&gt;
-&lt;p&gt;For example, when looking at a much smaller genome region, we many want to see the sequence and read mismatches. It could be done by adding a new track &lt;code&gt;SequenceTrack&lt;/code&gt; to include the genome&amp;nbsp;sequence,&lt;/p&gt;
+&lt;h3 id="fancier-alignment-display"&gt;Fancier alignment display&lt;/h3&gt;
+&lt;p&gt;Spend some time reading the documentation, the alignment can be much more fancier. &lt;/p&gt;
+&lt;p&gt;For example, when looking at a much smaller genome region, we many want to see the sequence and read mismatches. It could be done by adding a new track &lt;code&gt;SequenceTrack&lt;/code&gt; to include the genome sequence,&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;small_st &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;41267.735e3L&lt;/span&gt;
 small_en &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;41267.805e3L&lt;/span&gt;
 
@@ -855,7 +855,7 @@ strack &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; SequenceTrack&lt;span class=
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;We tweak other tracks as well to make sure the figure won&amp;rsquo;t explode by too much information. Gene annotations are collapsed down to one liner. Also, aligned read&amp;rsquo;s height is increased to fit in individual letters (e.g., &lt;span class="caps"&gt;ATCG&lt;/span&gt;).&lt;/p&gt;
+&lt;p&gt;We tweak other tracks as well to make sure the figure won&amp;rsquo;t explode by too much information. Gene annotations are collapsed down to one liner. Also, aligned read&amp;rsquo;s height is increased to fit in individual letters (e.g., ATCG).&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grtrack_small &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; GeneRegionTrack&lt;span class="p"&gt;(&lt;/span&gt;
    grtrack&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="kp"&gt;range&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
    chromosome &lt;span class="o"&gt;=&lt;/span&gt; thechr&lt;span class="p"&gt;,&lt;/span&gt;
@@ -879,86 +879,86 @@ plotTracks&lt;span class="p"&gt;(&lt;/span&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_BAM_small_region.png"/&gt;
 &lt;/div&gt;
 
-&lt;p&gt;We found a C&amp;gt;T &lt;span class="caps"&gt;SNP&lt;/span&gt;&amp;nbsp;here!&lt;/p&gt;</summary><category term="en"></category><category term="r"></category><category term="bioconductor"></category><category term="gviz"></category><category term="NGS"></category></entry><entry><title>Overview of Genomic Data Processing in Bioconductor</title><link href="https://blog.liang2.tw/posts/2015/12/biocondutor-genomic-data/" rel="alternate"></link><published>2015-12-29T20:28:00+08:00</published><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2015-12-29:posts/2015/12/biocondutor-genomic-data/</id><summary type="html">&lt;p&gt;Sorry for the late update. In the past two months, I finished my Ph.D. applications (hope to hear good news in the next two months) and was busy preparing the PyCon Taiwan 2016. Also, a year-long website development finally came to the&amp;nbsp;end.&lt;/p&gt;
-&lt;p&gt;Now most things are set so I can back to writing my&amp;nbsp;blog.&lt;/p&gt;
-&lt;p&gt;Since September, there accumulates at least 5 drafts and I don&amp;rsquo;t know when I can finish them, so I think I have to change my writing strategy. I will first publish things as soon as information collection is done, and deeper reviews will be given in the following posts. Right now I will focus on Bioconductor (and general Bioinformatics topics) and&amp;nbsp;Django.&lt;/p&gt;
+&lt;p&gt;We found a C&amp;gt;T SNP here!&lt;/p&gt;</summary><category term="en"></category><category term="r"></category><category term="bioconductor"></category><category term="gviz"></category><category term="NGS"></category></entry><entry><title>Overview of Genomic Data Processing in Bioconductor</title><link href="https://blog.liang2.tw/posts/2015/12/biocondutor-genomic-data/" rel="alternate"></link><published>2015-12-29T20:28:00-06:00</published><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2015-12-29:posts/2015/12/biocondutor-genomic-data/</id><summary type="html">&lt;p&gt;Sorry for the late update. In the past two months, I finished my Ph.D. applications (hope to hear good news in the next two months) and was busy preparing the PyCon Taiwan 2016. Also, a year-long website development finally came to the end.&lt;/p&gt;
+&lt;p&gt;Now most things are set so I can back to writing my blog.&lt;/p&gt;
+&lt;p&gt;Since September, there accumulates at least 5 drafts and I don&amp;rsquo;t know when I can finish them, so I think I have to change my writing strategy. I will first publish things as soon as information collection is done, and deeper reviews will be given in the following posts. Right now I will focus on Bioconductor (and general Bioinformatics topics) and Django.&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="#bioconductor"&gt;Bioconductor&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#annotation-and-genome-reference"&gt;Annotation and Genome&amp;nbsp;Reference&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#experiment-data-storage"&gt;Experiment Data&amp;nbsp;Storage&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#operations-on-genome"&gt;Operations on&amp;nbsp;Genome&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#genomic-data-visualization"&gt;Genomic data&amp;nbsp;visualization&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#annotation-and-genome-reference"&gt;Annotation and Genome Reference&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#experiment-data-storage"&gt;Experiment Data Storage&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#operations-on-genome"&gt;Operations on Genome&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#genomic-data-visualization"&gt;Genomic data visualization&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;a href="#summary"&gt;Summary&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;h2 id="bioconductor"&gt;Bioconductor&lt;/h2&gt;
-&lt;p&gt;&lt;a href="https://www.bioconductor.org/"&gt;Bioconductor&lt;/a&gt; is indeed a rich resources for R both in terms of data and tools. And I found I have yet spent time seriously understanding the whole ecosystem, which I believe can drastically lighten the loading of daily&amp;nbsp;analysis.&lt;/p&gt;
-&lt;p&gt;Bioconductor&amp;rsquo;s website is informative. If you are familar with R, you should already know that in order to understand the usage of a package, one of the best way is to read its vignettes. Packages on Bioconductor generally have vignettes, which is really helpful and the website makes them accessible. On top of that, they have &lt;a href="https://www.bioconductor.org/help/course-materials/"&gt;Courses &lt;span class="amp"&gt;&amp;amp;&lt;/span&gt; Conferences&lt;/a&gt; and &lt;a href="https://www.bioconductor.org/help/workflows/"&gt;Workflows&lt;/a&gt;. The former section collects all conference materials in the past few years, which contains package hands-on, analysis tutorial, and R advanced topics. It&amp;rsquo;s a hidden gem to me since I have already found numerous materials worth reading only after a glance over it. The latter one should be well-known. It gives examples of typical analysis&amp;nbsp;workflows.&lt;/p&gt;
-&lt;p&gt;I&amp;rsquo;m interested in the following topics in&amp;nbsp;Biocondutor:&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.bioconductor.org/"&gt;Bioconductor&lt;/a&gt; is indeed a rich resources for R both in terms of data and tools. And I found I have yet spent time seriously understanding the whole ecosystem, which I believe can drastically lighten the loading of daily analysis.&lt;/p&gt;
+&lt;p&gt;Bioconductor&amp;rsquo;s website is informative. If you are familar with R, you should already know that in order to understand the usage of a package, one of the best way is to read its vignettes. Packages on Bioconductor generally have vignettes, which is really helpful and the website makes them accessible. On top of that, they have &lt;a href="https://www.bioconductor.org/help/course-materials/"&gt;Courses &amp;amp; Conferences&lt;/a&gt; and &lt;a href="https://www.bioconductor.org/help/workflows/"&gt;Workflows&lt;/a&gt;. The former section collects all conference materials in the past few years, which contains package hands-on, analysis tutorial, and R advanced topics. It&amp;rsquo;s a hidden gem to me since I have already found numerous materials worth reading only after a glance over it. The latter one should be well-known. It gives examples of typical analysis workflows.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m interested in the following topics in Biocondutor:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Annotation and genome reference (OrgDb, TxDb, OrganismDb,&amp;nbsp;BSgenome)&lt;/li&gt;
-&lt;li&gt;Experiment data storage&amp;nbsp;(ExpressionSets)&lt;/li&gt;
-&lt;li&gt;Operations on genome&amp;nbsp;(GenomicRanges)&lt;/li&gt;
-&lt;li&gt;Genomic data visualization (Gviz,&amp;nbsp;ggbio)&lt;/li&gt;
+&lt;li&gt;Annotation and genome reference (OrgDb, TxDb, OrganismDb, BSgenome)&lt;/li&gt;
+&lt;li&gt;Experiment data storage (ExpressionSets)&lt;/li&gt;
+&lt;li&gt;Operations on genome (GenomicRanges)&lt;/li&gt;
+&lt;li&gt;Genomic data visualization (Gviz, ggbio)&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Keywords in Biocondutors for each topic are attached in the parens, mostly being the package name. For each topic, I&amp;rsquo;ll put the related resources I collected in the following&amp;nbsp;sections.&lt;/p&gt;
-&lt;p&gt;Before the listing, I found &lt;a href="http://genomicsclass.github.io/book/"&gt;PH525x series&lt;/a&gt; maintained by Rafael Irizarry and Michael Love from Harvard serves as a comprehensive entry point for almost every related topic. The site is the accompanied resources for their edX classes. Both of them worth taking a&amp;nbsp;look.&lt;/p&gt;
-&lt;h3 id="annotation-and-genome-reference"&gt;Annotation and Genome&amp;nbsp;Reference&lt;/h3&gt;
+&lt;p&gt;Keywords in Biocondutors for each topic are attached in the parens, mostly being the package name. For each topic, I&amp;rsquo;ll put the related resources I collected in the following sections.&lt;/p&gt;
+&lt;p&gt;Before the listing, I found &lt;a href="http://genomicsclass.github.io/book/"&gt;PH525x series&lt;/a&gt; maintained by Rafael Irizarry and Michael Love from Harvard serves as a comprehensive entry point for almost every related topic. The site is the accompanied resources for their edX classes. Both of them worth taking a look.&lt;/p&gt;
+&lt;h3 id="annotation-and-genome-reference"&gt;Annotation and Genome Reference&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;a href="http://genomicsclass.github.io/book/pages/annoPhen.html"&gt;Annotating phenotypes and molecular function&lt;/a&gt; from &lt;a href="http://genomicsclass.github.io/book/"&gt;PH525x series&lt;/a&gt; gives a good overview and a taste of the powerful ecosystem Bioconductor&amp;nbsp;provides.&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://genomicsclass.github.io/book/pages/annoPhen.html"&gt;Annotating phenotypes and molecular function&lt;/a&gt; from &lt;a href="http://genomicsclass.github.io/book/"&gt;PH525x series&lt;/a&gt; gives a good overview and a taste of the powerful ecosystem Bioconductor provides.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;a href="https://www.bioconductor.org/help/course-materials/2015/BioC2015/Annotation_Resources.html"&gt;Annotation Resources&lt;/a&gt; from &lt;a href="https://www.bioconductor.org/help/course-materials/2015/BioC2015/"&gt;BioC 2015&lt;/a&gt; gives more extensive introduction about all available types of references from genome sequences to transcriptome and gene&amp;nbsp;info.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.bioconductor.org/help/course-materials/2015/BioC2015/Annotation_Resources.html"&gt;Annotation Resources&lt;/a&gt; from &lt;a href="https://www.bioconductor.org/help/course-materials/2015/BioC2015/"&gt;BioC 2015&lt;/a&gt; gives more extensive introduction about all available types of references from genome sequences to transcriptome and gene info.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;For example, human comes&amp;nbsp;with&lt;/p&gt;
+&lt;p&gt;For example, human comes with&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="http://bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html"&gt;org.Hs.eg.db&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://bioconductor.org/packages/release/data/annotation/html/TxDb.Hsapiens.UCSC.hg38.knownGene.html"&gt;TxDb.Hsapiens.&lt;span class="caps"&gt;UCSC&lt;/span&gt;.hg38.knownGene&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://bioconductor.org/packages/release/data/annotation/html/TxDb.Hsapiens.UCSC.hg38.knownGene.html"&gt;TxDb.Hsapiens.UCSC.hg38.knownGene&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://bioconductor.org/packages/release/data/annotation/html/Homo.sapiens.html"&gt;Homo.sapiens&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://bioconductor.org/packages/release/data/annotation/html/BSgenome.Hsapiens.UCSC.hg38.html"&gt;BSgenome.Hsapiens.&lt;span class="caps"&gt;UCSC&lt;/span&gt;.hg38&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://bioconductor.org/packages/release/data/annotation/html/BSgenome.Hsapiens.UCSC.hg38.html"&gt;BSgenome.Hsapiens.UCSC.hg38&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="experiment-data-storage"&gt;Experiment Data&amp;nbsp;Storage&lt;/h3&gt;
-&lt;p&gt;ExpressionSet helps store the expression experiment data, which one can combine   expression values and phenotypes of the same sample. Additionally the experiment data (like descriptions of &lt;span class="caps"&gt;GEO&lt;/span&gt; dataset) can be attached as&amp;nbsp;well.&lt;/p&gt;
+&lt;h3 id="experiment-data-storage"&gt;Experiment Data Storage&lt;/h3&gt;
+&lt;p&gt;ExpressionSet helps store the expression experiment data, which one can combine   expression values and phenotypes of the same sample. Additionally the experiment data (like descriptions of GEO dataset) can be attached as well.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;a href="http://genomicsclass.github.io/book/pages/eset.html"&gt;The ExpressionSet container&lt;/a&gt; from &lt;a href="http://genomicsclass.github.io/book/"&gt;PH525x series&lt;/a&gt; gives an intro. It should be sufficient enough to use ExpressionSet in daily&amp;nbsp;work.&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://genomicsclass.github.io/book/pages/eset.html"&gt;The ExpressionSet container&lt;/a&gt; from &lt;a href="http://genomicsclass.github.io/book/"&gt;PH525x series&lt;/a&gt; gives an intro. It should be sufficient enough to use ExpressionSet in daily work.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;a href="https://www.bioconductor.org/packages/release/bioc/vignettes/Biobase/inst/doc/ExpressionSetIntroduction.pdf"&gt;The ExpressionSet Introduction&lt;/a&gt; from its package &lt;a href="https://www.bioconductor.org/packages/release/bioc/html/Biobase.html"&gt;Biobase&lt;/a&gt;’s vignette gives detailed&amp;nbsp;explanation.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.bioconductor.org/packages/release/bioc/vignettes/Biobase/inst/doc/ExpressionSetIntroduction.pdf"&gt;The ExpressionSet Introduction&lt;/a&gt; from its package &lt;a href="https://www.bioconductor.org/packages/release/bioc/html/Biobase.html"&gt;Biobase&lt;/a&gt;’s vignette gives detailed explanation.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="operations-on-genome"&gt;Operations on&amp;nbsp;Genome&lt;/h3&gt;
-&lt;p&gt;I haven&amp;rsquo;t gone into the details, but operations about genomic ranges are often tricky and more importantly, badly&amp;nbsp;optimized.&lt;/p&gt;
+&lt;h3 id="operations-on-genome"&gt;Operations on Genome&lt;/h3&gt;
+&lt;p&gt;I haven&amp;rsquo;t gone into the details, but operations about genomic ranges are often tricky and more importantly, badly optimized.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;a href="http://genomicsclass.github.io/book/pages/iranges_granges.html"&gt;IRanges and GRanges&lt;/a&gt; and &lt;a href="http://genomicsclass.github.io/book/pages/operateGRanges.html"&gt;GRanges operations&lt;/a&gt; from &lt;a href="http://genomicsclass.github.io/book/"&gt;PH525x series&lt;/a&gt; give the overview of using the package &lt;a href="https://bioconductor.org/packages/release/bioc/html/GenomicRanges.html"&gt;GenomicRanges&lt;/a&gt;.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;a href="https://www.bioconductor.org/packages/release/bioc/vignettes/GenomicRanges/inst/doc/GenomicRangesIntroduction.pdf"&gt;An Introduction to Genomic Ranges Classes&lt;/a&gt;, a &lt;a href="https://bioconductor.org/packages/release/bioc/html/GenomicRanges.html"&gt;GenomicRanges&lt;/a&gt; vignette, gives a detailed&amp;nbsp;view.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.bioconductor.org/packages/release/bioc/vignettes/GenomicRanges/inst/doc/GenomicRangesIntroduction.pdf"&gt;An Introduction to Genomic Ranges Classes&lt;/a&gt;, a &lt;a href="https://bioconductor.org/packages/release/bioc/html/GenomicRanges.html"&gt;GenomicRanges&lt;/a&gt; vignette, gives a detailed view.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;Also, their paper, &lt;a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003118"&gt;&amp;ldquo;Software for Computing and Annotating Genomic Ranges&amp;rdquo;, &lt;em&gt;&lt;span class="caps"&gt;PLOS&lt;/span&gt; One&lt;/em&gt;&lt;/a&gt; should be another overview source of the&amp;nbsp;package.&lt;/p&gt;
+&lt;p&gt;Also, their paper, &lt;a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003118"&gt;&amp;ldquo;Software for Computing and Annotating Genomic Ranges&amp;rdquo;, &lt;em&gt;PLOS One&lt;/em&gt;&lt;/a&gt; should be another overview source of the package.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;a href="https://cran.r-project.org/web/packages/data.table/index.html"&gt;data.table&lt;/a&gt;&amp;lsquo;s &lt;code&gt;foverlap&lt;/code&gt; function worth the comparison, since I already use it and I know it is &lt;a href="https://github.com/Rdatatable/data.table/wiki/talks/EARL2014_OverlapRangeJoin_Arun.pdf"&gt;blazingly fast&lt;/a&gt;. &lt;code&gt;foverlap&lt;/code&gt; handles the overlapping of integer ranges so it can be applied to genomic operation. Its code is quite complex so its mechanism is still a myth to me. I&amp;rsquo;d like to see its comparison with using database like&amp;nbsp;SQLite.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://cran.r-project.org/web/packages/data.table/index.html"&gt;data.table&lt;/a&gt;&amp;lsquo;s &lt;code&gt;foverlap&lt;/code&gt; function worth the comparison, since I already use it and I know it is &lt;a href="https://github.com/Rdatatable/data.table/wiki/talks/EARL2014_OverlapRangeJoin_Arun.pdf"&gt;blazingly fast&lt;/a&gt;. &lt;code&gt;foverlap&lt;/code&gt; handles the overlapping of integer ranges so it can be applied to genomic operation. Its code is quite complex so its mechanism is still a myth to me. I&amp;rsquo;d like to see its comparison with using database like SQLite.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="genomic-data-visualization"&gt;Genomic data&amp;nbsp;visualization&lt;/h3&gt;
-&lt;p&gt;Basically I can find two&amp;nbsp;packages:&lt;/p&gt;
+&lt;h3 id="genomic-data-visualization"&gt;Genomic data visualization&lt;/h3&gt;
+&lt;p&gt;Basically I can find two packages:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="https://bioconductor.org/packages/release/bioc/html/Gviz.html"&gt;Gviz&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://bioconductor.org/packages/release/bioc/html/ggbio.html"&gt;ggbio&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Don&amp;rsquo;t know their difference yet. Both of them can produce well-done figures. But I think I have some experience with ggbio, which was a bit tricky to use. So for now I will go for&amp;nbsp;Gviz.&lt;/p&gt;
+&lt;p&gt;Don&amp;rsquo;t know their difference yet. Both of them can produce well-done figures. But I think I have some experience with ggbio, which was a bit tricky to use. So for now I will go for Gviz.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://www.bioconductor.org/help/course-materials/2012/BiocEurope2012/GvizEuropeanBioc2012.pdf"&gt;Visualizing genomic features with the Gviz package&lt;/a&gt; given at Bioc Europe 2012 has a decent introduction about&amp;nbsp;Gviz.&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://bioconductor.org/packages/release/bioc/vignettes/Gviz/inst/doc/Gviz.pdf"&gt;The Gviz User Guide&lt;/a&gt; looks very comprehensive, which also cover usage with expression and alignment&amp;nbsp;results.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.bioconductor.org/help/course-materials/2012/BiocEurope2012/GvizEuropeanBioc2012.pdf"&gt;Visualizing genomic features with the Gviz package&lt;/a&gt; given at Bioc Europe 2012 has a decent introduction about Gviz.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://bioconductor.org/packages/release/bioc/vignettes/Gviz/inst/doc/Gviz.pdf"&gt;The Gviz User Guide&lt;/a&gt; looks very comprehensive, which also cover usage with expression and alignment results.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
-&lt;p&gt;These resources should be enough for weeks of trying. It&amp;rsquo;s excited to find so many useful&amp;nbsp;tools.&lt;/p&gt;
-&lt;p&gt;So, good luck to me for my Ph.D. application, PyCon Taiwan 2016, and a shorter blog posting&amp;nbsp;frequency.&lt;/p&gt;</summary><category term="en"></category><category term="r"></category><category term="bioconductor"></category></entry></feed>
+&lt;p&gt;These resources should be enough for weeks of trying. It&amp;rsquo;s excited to find so many useful tools.&lt;/p&gt;
+&lt;p&gt;So, good luck to me for my Ph.D. application, PyCon Taiwan 2016, and a shorter blog posting frequency.&lt;/p&gt;</summary><category term="en"></category><category term="r"></category><category term="bioconductor"></category></entry></feed>

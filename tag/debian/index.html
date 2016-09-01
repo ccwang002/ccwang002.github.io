@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+            <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+        <link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+
+		<link href="https://blog.liang2.tw/theme/css/haunter.css?0f9ace0e" rel="stylesheet" />
+
+		<title>Articles tagged as 'debian'</title>
+		<!-- Justfont webfont -->
+		<!-- Local development -->
+		<!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+		<!-- Proudction version -->
+		<script src="https://blog.liang2.tw/theme/js/justfont.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body class="post-template">
+    <header class="site-head">
+			<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+				<h2 class="blog-description">
+					<a href="https://blog.liang2.tw/about-me/">About</a> |
+					<a href="https://blog.liang2.tw/talks/">Talks</a> |
+					<a href="https://blog.liang2.tw/archives.html">Archives</a>
+				</h2>
+    </header>
+    <main id="content" class="content" role="main">
+    <article class="post">
+        <header class="post-header">
+            <span class="post-meta">
+                <time datetime="May 24, 2016">May 24, 2016</time>
+                in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
+            </span>
+            <h2 class="post-title"><a href="https://blog.liang2.tw/posts/2016/05/django-deploy-conda/" rel="bookmark" title="Permalink to 使用 conda env 部署 Django">使用 conda env 部署 Django</a></h2>
+            <span class="post-meta">
+                        <a href="https://blog.liang2.tw/tag/zh/">zh</a>
+                        <a href="https://blog.liang2.tw/tag/python/">python</a>
+                        <a href="https://blog.liang2.tw/tag/django/">django</a>
+                        <a href="https://blog.liang2.tw/tag/postgresql/">postgresql</a>
+                        <a href="https://blog.liang2.tw/tag/deploy/">deploy</a>
+                        <a href="https://blog.liang2.tw/tag/debian/">debian</a>
+                        <a href="https://blog.liang2.tw/tag/systemd/">systemd</a>
+                        <a href="https://blog.liang2.tw/tag/nginx/">nginx</a>
+                        <a href="https://blog.liang2.tw/tag/uwsgi/">uwsgi</a>
+                        <a href="https://blog.liang2.tw/tag/conda/">conda</a>
+            </span>
+        </header>
+        <section class="post-excerpt">
+            <p>沒幾天前剛部署一次 Django，記錄在<a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/">《使用 uWSGI、nginx、systemd 部署 Django》</a>。今天又部署了另一個專案。部署的設定跟上次一樣：</p>
+<div class="highlight"><pre><span></span>nginx -- unix socket -- uWSGI -- Django
+</pre></div>
+
+
+<p>一樣寫一個 <code>PROJ.service</code> 的 systemd unit 來管理網站的啟動 (uWSGI ...</p>
+        </section>
+    </article>
+    <article class="post">
+        <header class="post-header">
+            <span class="post-meta">
+                <time datetime="May 19, 2016">May 19, 2016</time>
+                in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
+            </span>
+            <h2 class="post-title"><a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/" rel="bookmark" title="Permalink to 使用 uWSGI、nginx、systemd 部署 Django">使用 uWSGI、nginx、systemd 部署 Django</a></h2>
+            <span class="post-meta">
+                        <a href="https://blog.liang2.tw/tag/zh/">zh</a>
+                        <a href="https://blog.liang2.tw/tag/python/">python</a>
+                        <a href="https://blog.liang2.tw/tag/django/">django</a>
+                        <a href="https://blog.liang2.tw/tag/postgresql/">postgresql</a>
+                        <a href="https://blog.liang2.tw/tag/deploy/">deploy</a>
+                        <a href="https://blog.liang2.tw/tag/debian/">debian</a>
+                        <a href="https://blog.liang2.tw/tag/systemd/">systemd</a>
+                        <a href="https://blog.liang2.tw/tag/nginx/">nginx</a>
+                        <a href="https://blog.liang2.tw/tag/uwsgi/">uwsgi</a>
+            </span>
+        </header>
+        <section class="post-excerpt">
+            <p>上一次很認真的 Django 部署記錄在<a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/">《設定 Python 官方文件中文化自動更新 Server》</a>一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。</p>
+<p>這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下：</p>
+<div class="highlight"><pre><span></span>nginx -- unix socket -- uWSGI ...</pre></div>
+        </section>
+    </article>
+    <article class="post">
+        <header class="post-header">
+            <span class="post-meta">
+                <time datetime="Feb 14, 2016">Feb 14, 2016</time>
+                in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
+            </span>
+            <h2 class="post-title"><a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/" rel="bookmark" title="Permalink to 設定 Python 官方文件中文化自動更新 Server">設定 Python 官方文件中文化自動更新 Server</a></h2>
+            <span class="post-meta">
+                        <a href="https://blog.liang2.tw/tag/zh/">zh</a>
+                        <a href="https://blog.liang2.tw/tag/pydoctw/">pydoctw</a>
+                        <a href="https://blog.liang2.tw/tag/python/">python</a>
+                        <a href="https://blog.liang2.tw/tag/django/">django</a>
+                        <a href="https://blog.liang2.tw/tag/postgresql/">postgresql</a>
+                        <a href="https://blog.liang2.tw/tag/deploy/">deploy</a>
+                        <a href="https://blog.liang2.tw/tag/debian/">debian</a>
+                        <a href="https://blog.liang2.tw/tag/systemd/">systemd</a>
+                        <a href="https://blog.liang2.tw/tag/nginx/">nginx</a>
+                        <a href="https://blog.liang2.tw/tag/uwsgi/">uwsgi</a>
+            </span>
+        </header>
+        <section class="post-excerpt">
+            <p>設定一個自動更新 Python 說明文件中文翻譯並且 host 中文化網頁版文件的 server。使用 Django 作 web server、Django-Q 做為 task queue，deploy stack 用 nginx、uWSGI，host 於 Amazon EC2 (Debian Jessie)，資料庫用 PostgreSQL，並用 systemd 管理相關的 process。</p>
+        </section>
+    </article>
+    <article class="post">
+        <header class="post-header">
+            <span class="post-meta">
+                <time datetime="Jan 25, 2016">Jan 25, 2016</time>
+                in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
+            </span>
+            <h2 class="post-title"><a href="https://blog.liang2.tw/posts/2016/01/postgresql-install/" rel="bookmark" title="Permalink to 安裝 PostgreSQL 9 於 Debian Jessie / OSX">安裝 PostgreSQL 9 於 Debian Jessie / OSX</a></h2>
+            <span class="post-meta">
+                        <a href="https://blog.liang2.tw/tag/zh/">zh</a>
+                        <a href="https://blog.liang2.tw/tag/postgresql/">postgresql</a>
+                        <a href="https://blog.liang2.tw/tag/debian/">debian</a>
+                        <a href="https://blog.liang2.tw/tag/osx/">osx</a>
+            </span>
+        </header>
+        <section class="post-excerpt">
+            <p>平常用最多的是 <a href="https://www.sqlite.org/">SQLite</a>，但 <a href="http://www.postgresql.org/">PostgreSQL</a> 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。</p>
+<p>用 <a href="https://www.debian.org/releases/stable/">Debian Jessie</a> (Debian 8.3) 與 OSX <a href="http://brew.sh/">Homebrew</a> 舉例。不過 OSX 大概也不會沒事把 PostgreSQL 開著，主要是著重在 Debian ...</p>
+        </section>
+    </article>
+
+    <nav class="pagination" role="navigation">
+<span class="page-number">Page 1 of 1</span>    </nav>
+
+    </main>
+    <footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags/">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">Built using <a href="http://getpelican.com/">Pelican</a>. Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.</section>
+		</div>
+    </footer>
+</body>
+</html>
