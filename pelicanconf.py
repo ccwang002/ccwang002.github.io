@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
-from __future__ import unicode_literals
 from pathlib import Path
 import re
 
 
 AUTHOR = 'Liang2'
-SITENAME = "Liang2's blog"
+SITENAME = "Liang2's Blog"
 SITEURL = ''
 
 PATH = 'content'
@@ -14,24 +13,14 @@ ARTICLE_URL = 'posts/{date:%Y}/{date:%m}/{slug}/'
 ARTICLE_SAVE_AS = 'posts/{date:%Y}/{date:%m}/{slug}/index.html'
 ARTICLE_LANG_URL = 'posts/{date:%Y}/{date:%m}/{slug}/{lang}.html'
 ARTICLE_LANG_SAVE_AS = 'posts/{date:%Y}/{date:%m}/{slug}/{lang}.html'
+CATEGORY_URL = 'category/{slug}'
+CATEGORY_SAVE_AS = 'category/{slug}/index.html'
 PAGE_URL = '{slug}/'
 PAGE_SAVE_AS = '{slug}/index.html'
 PAGE_LANG_URL = '{slug}/{lang}.html'
 PAGE_LANG_SAVE_AS = '{slug}/{lang}.html'
-
-TIMEZONE = 'Asia/Taipei'
-
-DEFAULT_LANG = 'zh-Hant'
-DEFAULT_DATE = 'fs'
-DEFAULT_DATE_FORMAT = '%b %d, %Y'
-USE_FOLDER_AS_CATEGORY = False
-TYPOGRIFY = True
-MD_EXTENSIONS = [
-    'codehilite(css_class=highlight)',
-    'smarty',
-    'toc',
-    'extra',
-]
+TAG_URL = 'tag/{slug}'
+TAG_SAVE_AS = 'tag/{slug}/index.html'
 
 # Static path
 STATIC_PATHS = ['pics', 'B233544E.pub.asc', 'CNAME', 'CV.pdf']
@@ -49,13 +38,44 @@ for dir_pth in _BLOG_ROOT.iterdir():
 STATIC_PATHS += blog_dirs_by_month
 ARTICLE_PATHS += blog_dirs_by_month
 
-# Plugin
-PLUGIN_PATHS = ['./pelican-plugins', ]
-PLUGINS = ['render_math']
+# Datetime settings
+TIMEZONE = 'US/Central'
+DEFAULT_DATE = 'fs'
+DEFAULT_DATE_FORMAT = '%b %d, %Y'
 
-# Theme
-THEME = "./theme-flex"
+DEFAULT_LANG = 'en'
 
+USE_FOLDER_AS_CATEGORY = False
+
+# Markdown settings
+MD_EXTENSIONS = [
+    'codehilite(css_class=highlight)',
+    'smarty',
+    'toc',
+    'extra',
+]
+
+# Feed generation is usually not desired when developing
+FEED_ALL_ATOM = None
+CATEGORY_FEED_ATOM = None
+TRANSLATION_FEED_ATOM = None
+AUTHOR_FEED_ATOM = None
+AUTHOR_FEED_RSS = None
+
+# Blogroll
+LINKS = ()
+
+# Social widget
+SOCIAL = ()
+
+SUMMARY_MAX_LENGTH = 24
+DEFAULT_PAGINATION = 10
+
+# Uncomment following line if you want document-relative URLs when developing
+RELATIVE_URLS = True
+
+# Theme settings
+THEME = 'hauntr'
 
 def sort_by_len(value, len_key=-1, reversed=False):
     return sorted(
@@ -67,51 +87,11 @@ JINJA_FILTERS = {
     'sort_by_len': sort_by_len  # required by theme-flex
 }
 
-# Flex Theme setting
-SITETITLE = "Liang2's Blog"
-SITESUBTITLE = "Code / Stat / Bioinfo"
-SITEDESCRIPTION = SITETITLE
-SITELOGO = "/pics/headpic.jpg"
-MAIN_MENU = True
-MENUITEMS = [
-    ('Archives', '/archives.html'),
-    ('Categories', '/categories.html'),
-    ('Tags', '/tags.html'),
+# Plugin settings
+PLUGIN_PATHS = ['pelican-plugins', ]
+PLUGINS = [
+    'assets',
+    'render_math',
+    'touch',
 ]
-COPYRIGHT_YEAR = 2015
-CC_LICENSE = {
-    'name': 'Creative Commons Attribution',
-    'version': '4.0',
-    'slug': 'by'
-}
-OG_LOCALE = 'zh_TW'
 
-
-# Feed generation is usually not desired when developing
-FEED_ALL_ATOM = None
-CATEGORY_FEED_ATOM = None
-TRANSLATION_FEED_ATOM = None
-AUTHOR_FEED_ATOM = None
-AUTHOR_FEED_RSS = None
-
-# Blogroll
-# LINKS = (('Pelican', 'http://getpelican.com/'),
-#          ('Python.org', 'http://python.org/'),
-#          ('Jinja2', 'http://jinja.pocoo.org/'),
-#          ('You can modify those links in your config file', '#'),)
-
-# Social widget
-SOCIAL = (
-    ('twitter', 'https://twitter.com/ccwang002'),
-    ('facebook', 'https://www.facebook.com/lbwang.2'),
-    ('github', 'https://github.com/ccwang002'),
-    ('bitbucket', 'https://bitbucket.org/ccwang002'),
-    ('envelope-o', 'mailto:me+blog@liang2.tw'),
-    ('linkedin', 'http://tw.linkedin.com/in/liangbowang/'),
-)
-
-SUMMARY_MAX_LENGTH = 24
-DEFAULT_PAGINATION = 10
-
-# Uncomment following line if you want document-relative URLs when developing
-RELATIVE_URLS = True

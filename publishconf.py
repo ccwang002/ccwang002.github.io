@@ -17,11 +17,10 @@ RELATIVE_URLS = False
 FEED_ALL_ATOM = 'feeds/all.atom.xml'
 CATEGORY_FEED_ATOM = 'feeds/%s.atom.xml'
 TAG_FEED_ATOM = 'feeds/tag_%s.atom.xml'
-FEED_MAX_ITEMS = 100
 
 DELETE_OUTPUT_DIRECTORY = True
 
 # Following items are often useful when publishing
 
 DISQUS_SITENAME = "liang2"
-#GOOGLE_ANALYTICS = ""
+# GOOGLE_ANALYTICS = ""
