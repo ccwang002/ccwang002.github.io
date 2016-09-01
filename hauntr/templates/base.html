@@ -20,7 +20,10 @@
 
 		<title>{% block title %}{{ SITENAME }}{% endblock title %}</title>
 		<!-- Justfont webfont -->
-		<script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script>
+		<!-- Local development -->
+		<!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+		<!-- Proudction version -->
+		<script src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/js/justfont.js" type="text/javascript" charset="utf-8"></script>
 	{% endblock head %}
 </head>
 
