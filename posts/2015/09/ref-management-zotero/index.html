@@ -1,33 +1,60 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
-            <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
-        <link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="author" content="Liang2" />
+<meta name="description" content="TL;DR Use Zotero to sync references, webpages, and everything. 一開始會想要收集 reference 無非是做研究。寫論文、平常報告進度需要放上 citation，而在學術界最常就是 cite 別人的期刊。期刊 citation 有它一定的格式，而且每個期刊用的格式不同，手打容易錯 ..." />
+<meta name="keywords" content="zh, zotero">
+	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<title>使用 Zotero 管理文獻書目</title>
 
-		<link href="https://blog.liang2.tw/theme/css/haunter.css?19c33f45" rel="stylesheet" />
+	<!-- og -->
+<meta property="og:locale" content="zh_TW"/>
+<meta property="og:site_name" content="Liang2's Blog"/>
+<meta property="og:title" content="使用 Zotero 管理文獻書目"/>
+<meta property="og:description" content="TL;DR Use Zotero to sync references, webpages, and everything. 一開始會想要收集 reference 無非是做研究。寫論文、平常報告進度需要放上 citation，而在學術界最常就是 cite 別人的期刊。期刊 citation 有它一定的格式，而且每個期刊用的格式不同，手打容易錯 ..."/>
+<meta property="og:locale" content=""/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2015/09/ref-management-zotero/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2015-09-26 00:00:00-05:00"/>
+<meta property="article:modified_time" content="2015-09-26 00:00:00-05:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
+<meta property="article:section" content="Coding"/>
+<meta property="article:tag" content="zh"/>
+<meta property="article:tag" content="zotero"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="使用 Zotero 管理文獻書目">
+<meta name="twitter:description" content="TL;DR Use Zotero to sync references, webpages, and everything. 一開始會想要收集 reference 無非是做研究。寫論文、平常報告進度需要放上 citation，而在學術界最常就是 cite 別人的期刊。期刊 citation 有它一定的格式，而且每個期刊用的格式不同，手打容易錯 ...">
+<meta property="og:image" content="http://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotero.png">
+<meta name="twitter:image" content="http://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotero.png">
 
-		<title>使用 Zotero 管理文獻書目</title>
-		<!-- Justfont webfont -->
-		<!-- Local development -->
-		<!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
-		<!-- Proudction version -->
-		<script src="https://blog.liang2.tw/theme/js/justfont.js" type="text/javascript" charset="utf-8"></script>
+	<!-- Feeds -->
+	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
+		type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?19c33f45" rel="stylesheet" />
+
+	<!-- Justfont webfont -->
+	<!-- Local development -->
+	<!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+	<!-- Proudction version -->
+	<script src="https://blog.liang2.tw/theme/js/justfont.js" type="text/javascript" charset="utf-8"></script>
 </head>
 
 <body class="post-template">
-    <header class="site-head">
-			<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
-				<h2 class="blog-description">
-					<a href="https://blog.liang2.tw/about-me/">About</a> |
-					<a href="https://blog.liang2.tw/talks/">Talks</a> |
-					<a href="https://blog.liang2.tw/archives.html">Archives</a>
-				</h2>
-    </header>
-    <main id="content" class="content" role="main">
+	<header class="site-head">
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+		<h2 class="blog-description">
+			<a href="https://blog.liang2.tw/about-me/">About</a> |
+			<a href="https://blog.liang2.tw/talks/">Talks</a> |
+			<a href="https://blog.liang2.tw/archives.html">Archives</a>
+		</h2>
+	</header>
+	<main id="content" class="content" role="main">
 <article class="post">
     <span class="post-meta">
         <time datetime="Sep 26, 2015">Sep 26, 2015</time>
@@ -174,8 +201,8 @@
     </section>
     <footer>
 </article>
-    </main>
-    <footer class="site-footer">
+	</main>
+	<footer class="site-footer">
 		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
 		<div class="inner">
 			<section>
@@ -196,8 +223,11 @@
 			<section class="copyright">
 				This work is licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 			</section>
-			<section class="poweredby">Built using <a href="http://getpelican.com/">Pelican</a>. Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.</section>
+			<section class="poweredby">
+				Built using <a href="http://getpelican.com/">Pelican</a>.
+				Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.
+			</section>
 		</div>
-    </footer>
+	</footer>
 </body>
 </html>

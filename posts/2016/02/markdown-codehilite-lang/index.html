@@ -1,33 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
-            <link href="https://blog.liang2.tw/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
-        <link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="author" content="Liang2" />
+<meta name="description" content="I used Pelican and its Markdown plugin to render blog post. Recently I was playing with the Python Official Documentation, which has a decent ..." />
+<meta name="keywords" content="en, blog, pelican, codehilite, pygment">
+	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<title>Add code block language name into CSS classes in Pelican Markdown</title>
 
-		<link href="https://blog.liang2.tw/theme/css/haunter.css?19c33f45" rel="stylesheet" />
+	<!-- og -->
+<meta property="og:locale" content="en_USen"/>
+<meta property="og:site_name" content="Liang2's Blog"/>
+<meta property="og:title" content="Add code block language name into CSS classes in Pelican Markdown"/>
+<meta property="og:description" content="I used Pelican and its Markdown plugin to render blog post. Recently I was playing with the Python Official Documentation, which has a decent ..."/>
+<meta property="og:locale" content=""/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2016/02/markdown-codehilite-lang/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-02-19 15:00:00-06:00"/>
+<meta property="article:modified_time" content="2016-02-19 15:00:00-06:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
+<meta property="article:section" content="Coding"/>
+<meta property="article:tag" content="en"/>
+<meta property="article:tag" content="blog"/>
+<meta property="article:tag" content="pelican"/>
+<meta property="article:tag" content="codehilite"/>
+<meta property="article:tag" content="pygment"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Add code block language name into CSS classes in Pelican Markdown">
+<meta name="twitter:description" content="I used Pelican and its Markdown plugin to render blog post. Recently I was playing with the Python Official Documentation, which has a decent ...">
 
-		<title>Add code block language name into CSS classes in Pelican Markdown</title>
-		<!-- Justfont webfont -->
-		<!-- Local development -->
-		<!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
-		<!-- Proudction version -->
-		<script src="https://blog.liang2.tw/theme/js/justfont.js" type="text/javascript" charset="utf-8"></script>
+	<!-- Feeds -->
+	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
+		type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?19c33f45" rel="stylesheet" />
+
+	<!-- Justfont webfont -->
+	<!-- Local development -->
+	<!-- <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-35439.js"></script> -->
+	<!-- Proudction version -->
+	<script src="https://blog.liang2.tw/theme/js/justfont.js" type="text/javascript" charset="utf-8"></script>
 </head>
 
 <body class="post-template">
-    <header class="site-head">
-			<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
-				<h2 class="blog-description">
-					<a href="https://blog.liang2.tw/about-me/">About</a> |
-					<a href="https://blog.liang2.tw/talks/">Talks</a> |
-					<a href="https://blog.liang2.tw/archives.html">Archives</a>
-				</h2>
-    </header>
-    <main id="content" class="content" role="main">
+	<header class="site-head">
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+		<h2 class="blog-description">
+			<a href="https://blog.liang2.tw/about-me/">About</a> |
+			<a href="https://blog.liang2.tw/talks/">Talks</a> |
+			<a href="https://blog.liang2.tw/archives.html">Archives</a>
+		</h2>
+	</header>
+	<main id="content" class="content" role="main">
 <article class="post">
     <span class="post-meta">
         <time datetime="Feb 19, 2016">Feb 19, 2016</time>
@@ -170,8 +198,8 @@
     </section>
     <footer>
 </article>
-    </main>
-    <footer class="site-footer">
+	</main>
+	<footer class="site-footer">
 		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
 		<div class="inner">
 			<section>
@@ -192,8 +220,11 @@
 			<section class="copyright">
 				This work is licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 			</section>
-			<section class="poweredby">Built using <a href="http://getpelican.com/">Pelican</a>. Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.</section>
+			<section class="poweredby">
+				Built using <a href="http://getpelican.com/">Pelican</a>.
+				Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.
+			</section>
 		</div>
-    </footer>
+	</footer>
 </body>
 </html>
