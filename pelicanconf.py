@@ -44,6 +44,7 @@ DEFAULT_DATE = 'fs'
 DEFAULT_DATE_FORMAT = '%b %d, %Y'
 
 DEFAULT_LANG = 'en'
+OG_LOCALE = 'en_US'
 
 USE_FOLDER_AS_CATEGORY = False
 

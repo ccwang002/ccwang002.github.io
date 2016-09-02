@@ -1,6 +1,45 @@
 {% extends "base.html" %}
+
 {% block html_tag %}lang="{% if 'zh' in article.tags %}zh-Hant{% else %}{{ article.lang }}{% endif %}"{% endblock %}
+
 {% block title %}{{ article.title }}{% endblock %}
+
+{% block meta %}
+<meta name="author" content="{{ article.author.name }}" />
+<meta name="description" content="{{ article.summary|striptags }}" />
+<meta name="keywords" content="{{ article.tags|join(', ') }}">
+{% endblock meta %}
+
+{% block og_locale %}
+<meta property="og:locale" content="{% if 'zh' in article.tags %}zh_TW{% elif 'en' in article.tags %}en_US{{ article.lang }}{% endif %}"/>
+{% endblock og_locale %}
+
+{% block og %}
+<meta property="og:site_name" content="{{ SITENAME }}"/>
+<meta property="og:title" content="{{ article.title|striptags }}"/>
+<meta property="og:description" content="{{ article.summary|striptags }}"/>
+<meta property="og:locale" content="{{ article.metadata.get('og_locale', default_locale) }}"/>
+<meta property="og:url" content="{{ SITEURL }}/{{ article.url }}"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="{{ article.date }}"/>
+<meta property="article:modified_time" content="{{ article.modified or article.date }}"/>
+<meta property="article:author" content="{{ SITEURL }}/{{ article.author.url }}">
+<meta property="article:section" content="{{ article.category.name }}"/>
+{% for tag in article.tags %}
+<meta property="article:tag" content="{{ tag.name }}"/>
+{% endfor %}
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="{{ article.title|striptags }}">
+<meta name="twitter:description" content="{{ article.summary|striptags }}">
+{% if article.metadata.cover %}
+<meta property="og:image" content="{{ article.metadata.cover }}">
+<meta name="twitter:image" content="{{ article.metadata.cover }}">
+{% endif %}
+{% endblock og %}
+
+
+
 {% block content %}
 <article class="post">
     <span class="post-meta">
