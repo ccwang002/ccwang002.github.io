@@ -6,9 +6,9 @@ sortorder: 1
 
 (This page also has a [Chinese version](./zh.html#about-me))
 
-Hi, I'm Liang Bo Wang (王亮博). Most people call me 亮亮 (Liang-liang, or liang<sup>2</sup>).
+Hi, I'm Liang-Bo Wang（王亮博）. Most people call me 亮亮 (or liang<sup>2</sup>, pronounced as Liang-liang). In the United States, people now call me Bobo since it is easier to pronunce :)
 
-I'm a Bioinformatics Ph.D student in Washington University in St. Louis. My previous interns include Microsoft Research Asia (MSRA) and [Pinkoi]. I grew up in Taipei, Taiwan.
+I'm studying Computational and Systems Biology as a Ph.D student in Washington University in St. Louis. My previous interns include Microsoft Research Asia (MSRA) and [Pinkoi]. I grew up in Taipei, Taiwan.
 
 My CV is [here](/CV.pdf) (a PDF file).
 
@@ -22,11 +22,18 @@ During my master training, intern, and my free time, I've written a few websites
 
 
 ### Contact me
-Contacting me through either Twitter DM or email is fine. If private info included, my public PGP key is [`B233544E`](/B233544E.pub.asc) and its fingerprint is:
+Contact me through [Twitter] or [email]. If private info included, [my public PGP key](/B233544E.pub.asc) has fingerprint:
 
 ```
 6ECD C5B8 235C D44D 2471 866E 30A4 5011 B233 544E
 ```
+
+Or find me on [Keybase].
+
+[Twitter]: https://twitter.com/ccwang002
+[email]: mailto:me+blog@liang2.tw
+[Keybase]: https://keybase.io/liang2
+
 
 
 ### How to pronounce my nickname?
