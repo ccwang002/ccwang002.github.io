@@ -1,3 +1,7 @@
+/* Noto Sans TC from Google web font
+   https://fonts.google.com/earlyaccess#Noto+Sans+TC */
+@import url(http://fonts.googleapis.com/earlyaccess/notosanstc.css);
+
 @font-face {
   font-family: 'FiraSans';
   font-style: normal;
@@ -38,7 +42,7 @@ audio, canvas, video { display: inline-block; }
 audio:not([controls]) { display: none; height: 0; }
 [hidden], template { display: none; }
 html {
-   font-family: FiraSans, xingothic-tc, sans-serif;
+   font-family: FiraSans, 'Noto Sans TC', sans-serif;
    -ms-text-size-adjust: 100%;
    -webkit-text-size-adjust: 100%;
 }
@@ -172,7 +176,7 @@ html {
 body {
     height: 100%;
     max-height: 100%;
-    font-family: FiraSans, xingothic-tc, 'Open Sans', sans-serif;
+    font-family: FiraSans, 'Noto Sans TC', 'Open Sans', sans-serif;
     font-size: 2.0rem;
     line-height: 1.6em;
     color: #3A4145;
@@ -194,7 +198,7 @@ h1, h2, h3,
 h4, h5, h6 {
     text-rendering: optimizeLegibility;
     line-height: 1;
-    font-family: FiraSans, xingothic-tc, 'Open Sans', sans-serif;
+    font-family: FiraSans, 'Noto Sans TC', 'Open Sans', sans-serif;
 }
 
 h1 {
@@ -497,7 +501,7 @@ margin on the iframe, cause it breaks stuff. */
     font-size: 5rem;
     letter-spacing: -1px;
     font-weight: bold;
-    font-family: FiraSans, xingothic-tc, 'Open Sans', sans-serif;
+    font-family: FiraSans, 'Noto Sans TC', 'Open Sans', sans-serif;
     text-shadow: 0 1px 6px rgba(0,0,0,0.1);
 }
 
@@ -515,7 +519,7 @@ h1.blog-title a:hover {
     font-size: 1.8rem;
     line-height: 1.5em;
     font-weight: 300;
-    font-family: FiraSans, xingothic-tc, 'Open Sans', sans-serif;
+    font-family: FiraSans, 'Noto Sans TC', 'Open Sans', sans-serif;
     letter-spacing: 0;
     text-shadow: 0 1px 3px rgba(0,0,0,0.15);
 }
@@ -586,7 +590,7 @@ h1.blog-title a:hover {
 .post-meta {
     display: inline-block;
     margin: 0 0 5px 0;
-    font-family: FiraSans, xingothic-tc, 'Open Sans', sans-serif;
+    font-family: FiraSans, 'Noto Sans TC', 'Open Sans', sans-serif;
     font-size: 1.5rem;
     color: #9EABB3;
 }
@@ -797,7 +801,7 @@ h1.blog-title a:hover {
     margin: 8rem 0 0 0;
     padding: 4rem 0;
     border-top: #EBF2F6 1px solid;
-    font-family: FiraSans, xingothic-tc, 'Open Sans', sans-serif;
+    font-family: FiraSans, 'Noto Sans TC', 'Open Sans', sans-serif;
     font-size: 1.3rem;
     line-height: 1.7em;
     color: #BBC7CC;
@@ -891,7 +895,7 @@ h1.blog-title a:hover {
 
 div.figure p.caption {
     color: #BBC7CC;
-    font-family: FiraSans, xingothic-tc,'Open Sans',sans-serif;
+    font-family: FiraSans, 'Noto Sans TC', 'Open Sans',sans-serif;
     font-size: 1.2rem;
     font-style: italic;
     line-height: 1.7em;
