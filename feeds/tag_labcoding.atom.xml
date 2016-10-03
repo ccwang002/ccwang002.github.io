@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang2's Blog</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_labcoding.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2016-01-21T23:30:00-06:00</updated><entry><title>Coding 初學指南附錄 - Bioinfo Practices using Python</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-bioinfo-python/" rel="alternate"></link><published>2016-01-21T23:30:00-06:00</published><updated>2016-01-21T23:30:00-06:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-21:posts/2016/01/lab-coding-appendix-bioinfo-python/</id><summary type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang2's Blog</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_labcoding.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2016-01-21T23:30:00-06:00</updated><entry><title>Coding 初學指南附錄 - Bioinfo Practices using Python</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-bioinfo-python/" rel="alternate"></link><published>2016-01-21T23:30:00-06:00</published><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-21:posts/2016/01/lab-coding-appendix-bioinfo-python/</id><summary type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;p&gt;We are going to walk through a series of practice created by &lt;a href="http://rosalind.info/problems/"&gt;Rosalind Team&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Once you register an account at Rosalind, you can use their judging system to work through all problems. However, in this case you cannot arbitrarily skip easy levels and it sucks. So I&amp;rsquo;m not going to force you using the system. Luckily, in each problem one set of example data and expected output is given, which can be used for checking our answer.&lt;/p&gt;
 &lt;p&gt;Note: Their code assumes Python 2 but everything I mention here is Python 3.&lt;/p&gt;
@@ -122,7 +122,7 @@
 &lt;/ol&gt;
 &lt;p&gt;In real case FASTA can span across multiple lines, also likely the file we parse is broken. How could we modify this parser to handle these situations?&lt;/p&gt;
 &lt;h3 id="q-next"&gt;Q: (next?)&lt;/h3&gt;
-&lt;p&gt;I&amp;rsquo;m super tired now so I&amp;rsquo;ll leave the rest for you. Try those problems within yellow correct ratio range.&lt;/p&gt;</summary><category term="en"></category><category term="labcoding"></category><category term="python"></category></entry><entry><title>Coding 初學指南附錄 - OSX 開發環境</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-osx-env/" rel="alternate"></link><published>2016-01-21T23:00:00-06:00</published><updated>2016-01-21T23:00:00-06:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-21:posts/2016/01/lab-coding-appendix-osx-env/</id><summary type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m super tired now so I&amp;rsquo;ll leave the rest for you. Try those problems within yellow correct ratio range.&lt;/p&gt;</summary><category term="en"></category><category term="labcoding"></category><category term="python"></category></entry><entry><title>Coding 初學指南附錄 - OSX 開發環境</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-osx-env/" rel="alternate"></link><published>2016-01-21T23:00:00-06:00</published><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-21:posts/2016/01/lab-coding-appendix-osx-env/</id><summary type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;p&gt;以下的設定都蠻主觀的，見人見智。總之我把我的環境分享出來。&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
@@ -190,7 +190,7 @@ brew install screen tmux
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="http://www.alfredapp.com/"&gt;Alfred App&lt;/a&gt;：一個延伸版的 Spotlight，查應用程式很快速，同時也可以跟 Dash 整合讓查 doc 更方便。&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://macdown.uranusjr.com/"&gt;Macdown&lt;/a&gt;：OSX 上的 markdown 編輯器。&lt;/li&gt;
-&lt;/ul&gt;</summary><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－Python</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-python/" rel="alternate"></link><published>2016-01-21T22:50:00-06:00</published><updated>2016-01-21T22:50:00-06:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-21:posts/2016/01/lab-coding-python/</id><summary type="html">&lt;p&gt;Last Edited: May, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+&lt;/ul&gt;</summary><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－Python</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-python/" rel="alternate"></link><published>2016-01-21T22:50:00-06:00</published><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-21:posts/2016/01/lab-coding-python/</id><summary type="html">&lt;p&gt;Last Edited: May, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Python 是一種物件導向、直譯式的電腦程式語言，具有近二十年的發展歷史。它包含了一組功能完備的標準庫，能夠輕鬆完成很多常見的任務。&lt;/p&gt;
 &lt;p&gt;(From &lt;a href="https://zh.wikipedia.org/wiki/Python"&gt;Wikipedia&lt;/a&gt;)&lt;/p&gt;
@@ -330,7 +330,7 @@ brew install screen tmux
 &lt;p&gt;用 Python 解決一些實驗室會碰到的 Bioinfo 問題。有個網站 Rosalind 出了一系列的題目，我選了一些讓各位練習，請參考&lt;a href="#file-a1_python_bioinfo-md"&gt;附錄 1&lt;/a&gt;。&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;EDIT 2016-05-22: 把 &lt;a href="https://www.ptt.cc/bbs/Python/M.1463750830.A.DA8.html"&gt;ptt 發文&lt;/a&gt; 的內容更新上來，增加一些新書和中文翻譯；調整推薦的順序。&lt;/p&gt;</summary><category term="zh"></category><category term="labcoding"></category><category term="python"></category></entry><entry><title>Coding 初學指南－版本控制</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/" rel="alternate"></link><published>2016-01-21T22:40:00-06:00</published><updated>2016-01-21T22:40:00-06:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-21:posts/2016/01/lab-coding-version-control/</id><summary type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+&lt;p&gt;EDIT 2016-05-22: 把 &lt;a href="https://www.ptt.cc/bbs/Python/M.1463750830.A.DA8.html"&gt;ptt 發文&lt;/a&gt; 的內容更新上來，增加一些新書和中文翻譯；調整推薦的順序。&lt;/p&gt;</summary><category term="zh"></category><category term="labcoding"></category><category term="python"></category></entry><entry><title>Coding 初學指南－版本控制</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/" rel="alternate"></link><published>2016-01-21T22:40:00-06:00</published><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-21:posts/2016/01/lab-coding-version-control/</id><summary type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;p&gt;所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code 搞炸掉的時候，還能回到先前有保存的狀態。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;h3 id="_1"&gt;為什麼使用版本控制？&lt;/h3&gt;
@@ -508,7 +508,7 @@ Further paragraphs come after blank lines.
 &lt;p&gt;所謂的專案目錄就是下 &lt;code&gt;git init&lt;/code&gt; 指令的目錄。&amp;#160;&lt;a class="footnote-backref" href="#fnref:註1" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</summary><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－文字編輯</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/" rel="alternate"></link><published>2016-01-21T22:30:00-06:00</published><updated>2016-01-21T22:30:00-06:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-21:posts/2016/01/lab-coding-text-editing/</id><summary type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+&lt;/div&gt;</summary><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－文字編輯</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/" rel="alternate"></link><published>2016-01-21T22:30:00-06:00</published><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-21:posts/2016/01/lab-coding-text-editing/</id><summary type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;p&gt;這個章節會帶大家認識一個很簡單的純文字格式 Markdown，方便大家整理筆記。同時希望大家學會一個 terminal based 的文字編輯器，方便往後在 server 環境底下的操作。&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
@@ -690,7 +690,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;Perl 的 regex 語法又稱為 &lt;strong&gt;pcre&lt;/strong&gt; style，常被其他工具使用。例如：php&amp;#160;&lt;a class="footnote-backref" href="#fnref:註3" rev="footnote" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</summary><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－Linux</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-linux/" rel="alternate"></link><published>2016-01-21T21:30:00-06:00</published><updated>2016-01-21T21:30:00-06:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-21:posts/2016/01/lab-coding-linux/</id><summary type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+&lt;/div&gt;</summary><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－Linux</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-linux/" rel="alternate"></link><published>2016-01-21T21:30:00-06:00</published><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-21:posts/2016/01/lab-coding-linux/</id><summary type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;p&gt;學習使用 Linux 是第一個比較大的障礙，因為會在短時間接觸到非常多新的東西。後面的東西多少都與 Linux 相關，而 Linux 難的部份在開始使用 terminal 來操作「整台電腦」，對很習慣使用視窗介面的人會覺得很不直覺。好在近年幾個主流的 Linux Distribution 都有很好的圖形介面（正確稱 Desktop Environment），所以一開始能漸近地適應 terminal 操作。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在實驗室 server 上開發，「能在 terminal 裡做事情」是必須的。&lt;/p&gt;
@@ -986,7 +986,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;APT 的使用教學可以參考 &lt;a href="https://help.ubuntu.com/community/AptGet/Howto"&gt;Ubuntu 官網&lt;/a&gt;、&lt;a href="http://blog.longwin.com.tw/2005/05/use_apt/"&gt;網路上大大的筆記&lt;/a&gt;。&amp;#160;&lt;a class="footnote-backref" href="#fnref:‡" rev="footnote" title="Jump back to footnote 7 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</summary><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－總章</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-intro/" rel="alternate"></link><published>2016-01-21T21:00:00-06:00</published><updated>2016-01-21T21:00:00-06:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-21:posts/2016/01/lab-coding-intro/</id><summary type="html">&lt;p&gt;Last Edited: Jan, 2016&lt;/p&gt;
+&lt;/div&gt;</summary><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－總章</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-intro/" rel="alternate"></link><published>2016-01-21T21:00:00-06:00</published><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-21:posts/2016/01/lab-coding-intro/</id><summary type="html">&lt;p&gt;Last Edited: Jan, 2016&lt;/p&gt;
 &lt;p&gt;（如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;p&gt;雖然實驗室不是正規寫程式的地方，多數的人也沒把寫程式當成一回事。不過隨著要分析的資料、樣本數越來越多，多到自己電腦跑不動，server 也要跑很久的時候，就會顯示出程式的重要性。另一方面，現在的研究講求 &lt;em&gt;reproducibility&lt;/em&gt;，如果要讓自己的分析在一年之後也能重現，或者讓世界上其他的研究者也能重現的話，需要基本的程式技巧。&lt;/p&gt;
 &lt;p&gt;這一系列的文章，目標讓實驗室的新生，不論是不是 CS 背景，都能了解當今軟體開發流程及基本技能。軟體開發需要一些背景知識，才能與開發者正常交流。這些背景知識包括：&lt;/p&gt;
