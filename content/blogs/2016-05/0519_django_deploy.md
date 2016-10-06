@@ -90,8 +90,8 @@ server {
 啟動時，先把檔案連結到 `/etc/nginx/site-enabled/`，重載 nginx 設定：
 
 ```bash
-cd /etc/nginx/sites-available/
-sudo ln -s PROJ.conf ../sites-enabled/
+cd /etc/nginx/sites-enabled/
+sudo ln -s ../sites-available/PROJ.conf .
 sudo systemctl reload nginx
 ```
 
