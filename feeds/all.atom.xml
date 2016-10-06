@@ -605,8 +605,8 @@ MAPK1_hg19_lifted
 
 &lt;p&gt;&lt;code&gt;/path/to/PROJ/assets&lt;/code&gt; 是 Django &lt;a href="https://docs.djangoproject.com/en/1.9/ref/settings/#std:setting-STATIC_ROOT"&gt;STATIC_ROOT&lt;/a&gt; 的路徑。只要執行 &lt;code&gt;python manage.py collectstatic&lt;/code&gt; 後，即使 uWSGI 還沒設定就可以測試 /static/&amp;hellip;/ 有沒有被 nginx 抓到。 &lt;/p&gt;
 &lt;p&gt;啟動時，先把檔案連結到 &lt;code&gt;/etc/nginx/site-enabled/&lt;/code&gt;，重載 nginx 設定：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /etc/nginx/sites-available/
-sudo ln -s PROJ.conf ../sites-enabled/
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /etc/nginx/sites-enabled/
+sudo ln -s ../sites-available/PROJ.conf .
 sudo systemctl reload nginx
 &lt;/pre&gt;&lt;/div&gt;
 

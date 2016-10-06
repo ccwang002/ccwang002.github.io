@@ -144,8 +144,8 @@
 
 <p><code>/path/to/PROJ/assets</code> 是 Django <a href="https://docs.djangoproject.com/en/1.9/ref/settings/#std:setting-STATIC_ROOT">STATIC_ROOT</a> 的路徑。只要執行 <code>python manage.py collectstatic</code> 後，即使 uWSGI 還沒設定就可以測試 /static/&hellip;/ 有沒有被 nginx 抓到。 </p>
 <p>啟動時，先把檔案連結到 <code>/etc/nginx/site-enabled/</code>，重載 nginx 設定：</p>
-<div class="highlight"><pre><span></span><span class="nb">cd</span> /etc/nginx/sites-available/
-sudo ln -s PROJ.conf ../sites-enabled/
+<div class="highlight"><pre><span></span><span class="nb">cd</span> /etc/nginx/sites-enabled/
+sudo ln -s ../sites-available/PROJ.conf .
 sudo systemctl reload nginx
 </pre></div>
 
