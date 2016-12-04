@@ -22,10 +22,10 @@ During my master training, intern, and my free time, I've written a few websites
 
 
 ### Contact me
-Contact me through [Twitter] or [email]. If private info included, [my public PGP key](/B233544E.pub.asc) has fingerprint:
+Contact me through [Twitter] or [email]. If private info included, [my public PGP key](/730992C4.pub.asc) has fingerprint:
 
 ```
-6ECD C5B8 235C D44D 2471 866E 30A4 5011 B233 544E
+85DF A3EB 72CD DE7D 3F2A 127C 44D1 0E44 7309 92C4
 ```
 
 Or find me on [Keybase].
@@ -34,6 +34,9 @@ Or find me on [Keybase].
 [email]: mailto:me+blog@liang2.tw
 [Keybase]: https://keybase.io/liang2
 
+My previous PGP keys:
+
+- [B233544E](/B233544E.pub.asc): `6ECD C5B8 235C D44D 2471 866E 30A4 5011 B233 544E`
 
 
 ### How to pronounce my nickname?
