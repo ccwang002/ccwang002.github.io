@@ -23,7 +23,12 @@ TAG_URL = 'tag/{slug}'
 TAG_SAVE_AS = 'tag/{slug}/index.html'
 
 # Static path
-STATIC_PATHS = ['pics', 'B233544E.pub.asc', 'CNAME', 'CV.pdf']
+STATIC_PATHS = [
+    'pics',
+    'B233544E.pub.asc', '730992C4.pub.asc',
+    'CNAME',
+    'CV.pdf'
+]
 
 # Find blog post dirs based on regular expression
 ARTICLE_PATHS = []
