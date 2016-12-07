@@ -63,8 +63,9 @@ mark { background: #ff0; color: #000; }
 code, kbd, pre,
 samp { font-family: FiraMono, monospace, serif; font-size: 1em; }
 pre {
+    font-size: 0.9em;
     /* white-space: pre-wrap; */
-    overflow-x: auto
+    overflow-x: auto;
 }
 
 q { quotes: "\201C" "\201D" "\2018" "\2019"; }
