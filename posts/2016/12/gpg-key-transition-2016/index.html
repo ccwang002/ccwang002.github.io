@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="author" content="Liang2" />
+<meta name="description" content="I started using GPG key as one of my small experiments in March, 2015. Throughout the setup, I made some mistakes, which I revoked ..." />
+<meta name="keywords" content="en, gpg">
+	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<title>GPG Key Transition</title>
+
+	<!-- og -->
+<meta property="og:locale" content="en_USen"/>
+<meta property="og:site_name" content="Liang2's Blog"/>
+<meta property="og:title" content="GPG Key Transition"/>
+<meta property="og:description" content="I started using GPG key as one of my small experiments in March, 2015. Throughout the setup, I made some mistakes, which I revoked ..."/>
+<meta property="og:locale" content=""/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2016/12/gpg-key-transition-2016/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-12-06 00:00:00-06:00"/>
+<meta property="article:modified_time" content="2016-12-06 00:00:00-06:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
+<meta property="article:section" content="Coding"/>
+<meta property="article:tag" content="en"/>
+<meta property="article:tag" content="gpg"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="GPG Key Transition">
+<meta name="twitter:description" content="I started using GPG key as one of my small experiments in March, 2015. Throughout the setup, I made some mistakes, which I revoked ...">
+
+	<!-- Feeds -->
+	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
+		type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?6e53fb3d" rel="stylesheet" />
+</head>
+
+<body class="post-template">
+	<header class="site-head">
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+		<h2 class="blog-description">
+			<a href="https://blog.liang2.tw/about-me/">About</a> |
+			<a href="https://blog.liang2.tw/talks/">Talks</a> |
+			<a href="https://blog.liang2.tw/archives.html">Archives</a>
+		</h2>
+	</header>
+	<main id="content" class="content" role="main">
+<article class="post">
+    <span class="post-meta">
+        <time datetime="Dec 06, 2016">Dec 06, 2016</time>
+        in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2016/12/gpg-key-transition-2016/" rel="bookmark" title="Permalink to GPG Key Transition">GPG Key Transition</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/en/">en</a>
+                <a href="https://blog.liang2.tw/tag/gpg/">gpg</a>
+    </span>
+    <section class="post-content"><p>I started using GPG key as one of my small experiments in March, 2015. Throughout the setup, I made some mistakes, which I revoked later, and explored several usage scenarios. Although like what was said in the post <a href="https://blog.filippo.io/giving-up-on-long-term-pgp/"><em>I&rsquo;m giving up on PGP</em></a>, I don&rsquo;t really use the encryption in daily email communication, it is still good to have an online identity.</p>
+<p>A year later, which is 3 months before my <em>experimental</em> key expires, I think now is a good time to roll out a new one. I followed Alex&rsquo;s post <a href="https://alexcabal.com/creating-the-perfect-gpg-keypair/"><em>Creating the Perfect GPG Keypair</em></a> to create a signing subkey for daily usage and keep my master key sperately in a safe place. The following is my transition statement.</p>
+<div class="highlight"><pre><span></span>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+I am transitioning GPG keys from an old 4192-bit RSA key to a new
+4096-bit RSA key.  The old key will continue to be valid for some
+time, but I prefer all new correspondance to be encrypted in the new
+key, and will be making all signatures going forward with the new key.
+
+This transition document is signed with both keys to validate the
+transition.
+
+If you have signed my old key, I would appreciate signatures on my new
+key as well, provided that your signing policy permits that without
+reauthenticating me.
+
+The old key, which I am transitioning away from, is:
+
+  pub   4096R/30A45011B233544E 2015-03-21 [expires: 2017-03-22]
+      Key fingerprint = 6ECD C5B8 235C D44D 2471  866E 30A4 5011 B233 544E
+
+The new key, to which I am transitioning to, is:
+
+  pub   4096R/44D10E44730992C4 2016-12-04 [expires: 2018-12-04]
+      Key fingerprint = 85DF A3EB 72CD DE7D 3F2A  127C 44D1 0E44 7309 92C4
+
+To fetch the full new key from a public key server using GnuPG, run:
+
+  gpg --keyserver hkps://hkps.pool.sks-keyservers.net --recv-key 44D10E44730992C4
+
+If you have already validated my old key, you can then validate that
+the new key is signed by my old key:
+
+  gpg --check-sigs 44D10E44730992C4
+
+If you then want to sign my new key, a simple and safe way to do that
+is by using caff (shipped in Debian as part of the &quot;signing-party&quot;
+package) as follows:
+
+  caff 44D10E44730992C4
+
+Please contact me via e-mail at &lt;me@liang2.tw&gt; if you have any
+questions about this document or this transition.
+
+                                            Liang-Bo Wang
+                                            (liang2, ccwang002)
+                                            me@liang2.tw
+                                            Dec 06, 2016
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCgAGBQJYR5q3AAoJEPhHjvdXantXlzEP/iEgSd2NcfcBThmrY84U+MXR
+UOLED3Ax6YvDUv/nInkMAH74SyqujeF7E7+ZuZmDEWRCVS6pQtpuLTvKBviDPyWx
+W/hS03AU5nV9llSYZ4I/FzQdVtdY5PBBNCHxK34LoqJQVr3LPdAQOO2m9g8M11z0
++7FjmyNOjvZIxqhU+PK7VNEcZQ9X30ndjgkwCZQFE/8Wz9FnPt5QdwZoxNRBfx7Q
+tMtHpMxKNTHV1t3lCcOubf5zQLFQ07SZv2f2rmfDPlsrvzp4bzq8QWEEo/XvClRc
+hyFpbM55FqlJE+5lg/Dj/XC5AN0LS8HNd9x7UBWZnNQhg00elc+CXxgNc+wMVj+N
+uPXYP2n1oZ4T4Fr45eFg9nJagBpIUsu+M5hoNGXtCdLcYPzJeERPebt/VZJQybse
+T60hO8K15A5WCkZYnw1mXu/JangNGY8Bxq3xm7VzXHLJktf33gIIMUQC2ZCn/I0N
+MQIjkMrARFpsGfb1DEglyWk/QdK4A8Cy3eKsNaKvz4A+PMr4Eskn8zhO05yJQlux
+3IkXt1lnn2YTF5fjInYQPo22bNCuub4qoJhthOoySy2Zv04NHnOtmYPBZMv14aZe
+MPcv4Kvn8szNeBRDT/zKqCWoHmxIbxIs7ZvSIfvj/NpugtkSkJVtvr7gpXmqObcc
+L7kJSEXjkLiqvFrq6MkxiQIcBAEBCgAGBQJYR5q3AAoJEDCkUBGyM1ROlzEQAJ3i
+gpH6z/rHrAVCNxru7ATLmVZYGF0uxLvth0hUnOvmhWb7a60v4KwRgTBFJ9vdUB24
+MW0T0BdxN8zJPrN6hGj9RxML5UpzH///oeL1gINM8IEhZWaG1/th7bx5f/ip8xN+
+dbkA8Hp3LW/LAB09uJOITLbLaPa+N2Umcsu6stPXL+Z/06JSUYIliDRDkzzpb/qw
+/OZD6sj1oI25A7KYEUPiNn+FxtBmNiFetDqwhCJSglEF3SBl8ZlrbgMDxIudZX/5
++ihTn2Za5q59c7u2ESMmInP1n8/lFxYxi/DWE2n8vrw84PwQ5lG5zdiiYQf78QeB
+j77giQzYibzvRHZlslJEM0lSeNLQ72svT5SIFB+45wqtfVIAfZCxTppv35MkpyDw
+gtYW/zL6U+Qx+chPgVpBLkpC7LbBvrJozIU0oHw8V837IByaeqBPu9rm+F3M++Mo
+taLmkzNvhX6wozw9Tj0gnW6e8ytH7Xi8K8IYO7xSSOGih/oKF2PrWPd8gufMiIML
+lOtcuwZOCQqAB2yAQ2BHliwrm78XELARZXM1sbWJTpXBJPAZ+ZbvnNFK6fUwnclK
+H35TsvRJK7hH+4d10EdURleyRj7d0EcXlHqki4urKlwSzRebLzq365vADzXEjFYp
+DmfC2ISS64uLqHgJ3HHxhSmTLdc8KSJqzFi90ZUu
+=JS7v
+-----END PGP SIGNATURE-----
+</pre></div></section>
+    <footer class="post-footer">
+<section class="share">
+    <h2>Share</h2>
+    <a class="icon-twitter" href="https://twitter.com/share?text=GPG Key Transition&amp;url=https://blog.liang2.tw/posts/2016/12/gpg-key-transition-2016/"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u=https://blog.liang2.tw/posts/2016/12/gpg-key-transition-2016/"
+        onclick="window.open(this.href, 'facebook-share', 'width=580,height=296'); return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.liang2.tw/posts/2016/12/gpg-key-transition-2016/"
+        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2016/12/gpg-key-transition-2016/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2016/12/gpg-key-transition-2016/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
+    <footer>
+</article>
+	</main>
+	<footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags/">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">
+				Built using <a href="http://getpelican.com/">Pelican</a>.
+				Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.
+			</section>
+		</div>
+	</footer>
+</body>
+</html>
