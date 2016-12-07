@@ -529,7 +529,7 @@ h1.blog-title a:hover {
 .post {
     position: relative;
     width:80%;
-    max-width: 1000px;
+    max-width: 800px;
     margin: 4rem auto;
     padding-bottom: 4rem;
     border-bottom: #EBF2F6 1px solid;
