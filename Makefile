@@ -71,7 +71,7 @@ clean:
 	[ ! -d $(OUTPUTDIR) ] || rm -rf $(OUTPUTDIR)
 
 clean_src:
-	@ag -l '\x08' | xargs sed -i '' s/`printf '\x08'`//
+	@rg -l '\x08' | xargs sed -i '' s/`printf '\x08'`//
 
 regenerate:
 	$(PELICAN) -r $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS)
