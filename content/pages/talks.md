@@ -9,6 +9,9 @@ The followings are talks I gave in the open source communities.
 
 ### 2016
 
+[**Bioconda, UpSetR, and Snakemake**](https://blog.liang2.tw/2016Talk-Bioconda-UpSetR-Snakemake/) Dec 27, 2016<br>
+MLDM Monday (Taiwan R User Group)
+
 [**多語系 Sphinx 與 Python 官方文件中文化**](https://blog.liang2.tw/2016Talk-PyDoc-TW/) Jun 3, 2016<br>
 PyCon Taiwan 2016
 
