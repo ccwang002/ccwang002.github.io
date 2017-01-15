@@ -54,12 +54,15 @@ OG_LOCALE = 'en_US'
 USE_FOLDER_AS_CATEGORY = False
 
 # Markdown settings
-MD_EXTENSIONS = [
-    'codehilite(css_class=highlight)',
-    'smarty',
-    'toc',
-    'extra',
-]
+MARKDOWN = {
+    'extension_configs' : {
+        'markdown.extensions.codehilite': {'css_class': 'highlight'},
+        'markdown.extensions.smarty': {},
+        'markdown.extensions.toc': {},
+        'markdown.extensions.extra': {},
+    },
+    'output_format': 'html5',
+}
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
