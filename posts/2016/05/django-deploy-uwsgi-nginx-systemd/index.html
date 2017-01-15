@@ -6,7 +6,7 @@
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 <meta name="author" content="Liang2" />
-<meta name="description" content="上一次很認真的 Django 部署記錄在《設定 Python 官方文件中文化自動更新 Server》一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。 這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下： nginx -- unix socket -- uWSGI ..." />
+<meta name="description" content="上一次很認真的 Django 部署記錄在《設定 Python 官方文件中文化自動更新 Server》一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。 這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下： nginx -- unix socket -- uWSGI …" />
 <meta name="keywords" content="zh, python, django, postgresql, deploy, debian, systemd, nginx, uwsgi">
 	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
 	<title>使用 uWSGI、nginx、systemd 部署 Django</title>
@@ -15,7 +15,7 @@
 <meta property="og:locale" content="zh_TW"/>
 <meta property="og:site_name" content="Liang2's Blog"/>
 <meta property="og:title" content="使用 uWSGI、nginx、systemd 部署 Django"/>
-<meta property="og:description" content="上一次很認真的 Django 部署記錄在《設定 Python 官方文件中文化自動更新 Server》一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。 這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下： nginx -- unix socket -- uWSGI ..."/>
+<meta property="og:description" content="上一次很認真的 Django 部署記錄在《設定 Python 官方文件中文化自動更新 Server》一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。 這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下： nginx -- unix socket -- uWSGI …"/>
 <meta property="og:locale" content=""/>
 <meta property="og:url" content="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/"/>
 <meta property="og:type" content="article"/>
@@ -35,7 +35,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@ccwang002">
 <meta name="twitter:title" content="使用 uWSGI、nginx、systemd 部署 Django">
-<meta name="twitter:description" content="上一次很認真的 Django 部署記錄在《設定 Python 官方文件中文化自動更新 Server》一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。 這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下： nginx -- unix socket -- uWSGI ...">
+<meta name="twitter:description" content="上一次很認真的 Django 部署記錄在《設定 Python 官方文件中文化自動更新 Server》一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。 這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下： nginx -- unix socket -- uWSGI …">
 
 	<!-- Feeds -->
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
@@ -110,7 +110,7 @@
 
 
 <h3 id="tmpfilesd">tmpfiles.d</h3>
-<p>把 nginx 與 uwsgi 溝通用的 socket 放在 <code>/run/PROJ</code> 底下，但這也表示重開機之後，<code>/run/PROJ</code> 資料夾就會消失不見，所以使用 <a href="https://www.freedesktop.org/software/systemd/man/tmpfiles.d.html">tmpfiles.d</a><sup id="fnref:systemd-runtimedir"><a class="footnote-ref" href="#fn:systemd-runtimedir" rel="footnote">1</a></sup>。除了資料夾的命名改成用專案名稱，設定都跟<a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/">舊文</a>一樣。</p>
+<p>把 nginx 與 uwsgi 溝通用的 socket 放在 <code>/run/PROJ</code> 底下，但這也表示重開機之後，<code>/run/PROJ</code> 資料夾就會消失不見，所以使用 <a href="https://www.freedesktop.org/software/systemd/man/tmpfiles.d.html">tmpfiles.d</a><sup id="fnref-systemd-runtimedir"><a class="footnote-ref" href="#fn-systemd-runtimedir">1</a></sup>。除了資料夾的命名改成用專案名稱，設定都跟<a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/">舊文</a>一樣。</p>
 <h3 id="nginx">nginx</h3>
 <p>nginx 設定跟<a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/">舊文</a>一樣。放在 <code>/etc/nginx/sites-available/PROJ.conf</code></p>
 <div class="highlight"><pre><span></span><span class="c1"># Upstream Django setting; the socket nginx connects to</span>
@@ -210,10 +210,10 @@ sudo systemctl status PROJ
 <h3 id="_2">確認、總結</h3>
 <p>重啟系統一次，如果網站還活著，就表示一切設定都沒問題。整體上不太複雜，但權限不符的錯誤可能會讓你鬼打牆，要有耐心。</p>
 <div class="footnote">
-<hr />
+<hr>
 <ol>
-<li id="fn:systemd-runtimedir">
-<p>也可以用 <a href="https://www.freedesktop.org/software/systemd/man/systemd.exec.html">systemd.exec(5)</a> 提到的 <code>RuntimeDirectory=PROJ</code> 來建立執行用目錄。但因為 <code>PROJ.service</code> 的 USER 必須是 root，這種情況 man page 就建議改用 tmpfiles.d。我覺得應該能解決使用 root 權限的問題，但太懶了就先這樣……&#160;<a class="footnote-backref" href="#fnref:systemd-runtimedir" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<li id="fn-systemd-runtimedir">
+<p>也可以用 <a href="https://www.freedesktop.org/software/systemd/man/systemd.exec.html">systemd.exec(5)</a> 提到的 <code>RuntimeDirectory=PROJ</code> 來建立執行用目錄。但因為 <code>PROJ.service</code> 的 USER 必須是 root，這種情況 man page 就建議改用 tmpfiles.d。我覺得應該能解決使用 root 權限的問題，但太懶了就先這樣……&#160;<a class="footnote-backref" href="#fnref-systemd-runtimedir" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div></section>

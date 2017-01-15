@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang2's Blog</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_sqlite.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2015-10-04T14:55:00-05:00</updated><entry><title>用 Django 與 SQLite 架抽籤網站</title><link href="https://blog.liang2.tw/posts/2015/10/django-draw-member/" rel="alternate"></link><published>2015-10-04T14:55:00-05:00</published><updated>2015-10-04T14:55:00-05:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2015-10-04:posts/2015/10/django-draw-member/</id><summary type="html">&lt;h4 id="_1"&gt;前情提要&lt;/h4&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang2's Blog - sqlite</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_sqlite.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2015-10-04T14:55:00-05:00</updated><entry><title>用 Django 與 SQLite 架抽籤網站</title><link href="https://blog.liang2.tw/posts/2015/10/django-draw-member/" rel="alternate"></link><published>2015-10-04T14:55:00-05:00</published><updated>2015-10-04T14:55:00-05:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2015-10-04:/posts/2015/10/django-draw-member/</id><summary type="html">&lt;p&gt;把之前用 Flask 架的抽籤網站改用 Django 實作，也藉這個機會比較一下兩個 Framework 設計概念的不同。&lt;/p&gt;</summary><content type="html">&lt;h4 id="_1"&gt;前情提要&lt;/h4&gt;
 &lt;p&gt;我把 LoveLive! 兩季看完了！μ&amp;rsquo;s 在第一季的成長充滿感動啊。&lt;strong&gt;\真姫最高/&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;……呃好啦，之前講了&lt;a href="../../09/flask-draw-member"&gt;用 Flask 去架一個抽籤網站&lt;/a&gt;。不過我們最終的目標是用 Django 嘛，所以接下來就要改寫。也藉這個機會比較一下兩個 Framework 設計概念的不同（&lt;del&gt;例如 Django 一開始寫有多冗&lt;/del&gt;、&lt;del&gt;Flask 寫到最後有多冗&lt;/del&gt;）。&lt;/p&gt;
 &lt;h3 id="from-flask-to-django"&gt;From Flask to Django&lt;/h3&gt;
@@ -1041,7 +1041,7 @@
     &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;csrf_token&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
     &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;input&lt;/span&gt; &lt;span class="na"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;submit&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Submit&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
   &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;form&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="zh"></category><category term="django"></category><category term="sqlite"></category><category term="python"></category></entry><entry><title>Datetime in SQLite and Python</title><link href="https://blog.liang2.tw/posts/2015/09/datetime-sqlite/" rel="alternate"></link><published>2015-09-28T12:00:00-05:00</published><updated>2015-09-28T12:00:00-05:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2015-09-28:posts/2015/09/datetime-sqlite/</id><summary type="html">&lt;p&gt;要正確處理時間並不容易。承接&lt;a href="../flask-draw-member"&gt;我們先前的例子&lt;/a&gt;，其實是直接把時間轉換出來的字串存在 SQLite 裡。這有幾個問題。&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="zh"></category><category term="django"></category><category term="sqlite"></category><category term="python"></category></entry><entry><title>Datetime in SQLite and Python</title><link href="https://blog.liang2.tw/posts/2015/09/datetime-sqlite/" rel="alternate"></link><published>2015-09-28T12:00:00-05:00</published><updated>2015-09-28T12:00:00-05:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2015-09-28:/posts/2015/09/datetime-sqlite/</id><summary type="html">&lt;p&gt;整理在 Python 中處理時區的問題，並如何自 SQLite 存取考慮時區的時間&lt;/p&gt;</summary><content type="html">&lt;p&gt;要正確處理時間並不容易。承接&lt;a href="../flask-draw-member"&gt;我們先前的例子&lt;/a&gt;，其實是直接把時間轉換出來的字串存在 SQLite 裡。這有幾個問題。&lt;/p&gt;
 &lt;p&gt;首先是時區的問題。我們直接把 server 所在時區的時間存到資料庫去，台北的時區為 &lt;a href="https://en.wikipedia.org/wiki/Asia/Taipei"&gt;Asia/Taipei&lt;/a&gt; (UTC+8)。如果今天 server 跑到另一個時區，例如東京 Asia/Tokyo (UTC+9) 好了，這時候資料庫裡就包含了兩個時區的時間，但因為是字串是完全看不出差異的。&lt;/p&gt;
 &lt;p&gt;再來用字串存時間也有一些問題。首先是排序，雖然我們的例子是能正確的排序，但如果時間格式換了（像 &lt;code&gt;%H:%M:%S %Y-%m-%d&lt;/code&gt;）那就不一定。再來可以看到後續想處理時間就會比較複雜。不過這一部份是因為 SQLite 沒有專門處理日期時間的資料型態，像 PostgreSQL 就能看得懂。&lt;/p&gt;
 &lt;p&gt;所以想要正確處理時間有幾個要點：&lt;/p&gt;
@@ -1338,7 +1338,10 @@
 &lt;h3 id="_1"&gt;總結&lt;/h3&gt;
 &lt;p&gt;時區真的很煩，尤其是很多地方不一定都完整支援時區，最好的情況還是用 UTC 溝通，只有在真的需要時再轉換成當地時間。&lt;/p&gt;
 &lt;p&gt;如果大家對時區很有興趣，不久前 &lt;a href="https://www.python.org/dev/peps/pep-0495/"&gt;PEP 495&lt;/a&gt; 已經被接受，沒有意外應該會出現在 Python 3.6 裡面，它處理的是日光節約時間的問題。（感覺在臺灣對日光節約時間完全沒有概念啊）&lt;/p&gt;
-&lt;p&gt;不得不說要正確處理時間…很麻煩啊。&lt;/p&gt;</summary><category term="zh"></category><category term="datetime"></category><category term="pytz"></category><category term="sqlite"></category><category term="python"></category></entry><entry><title>用 Flask 與 SQLite 架抽籤網站</title><link href="https://blog.liang2.tw/posts/2015/09/flask-draw-member/" rel="alternate"></link><published>2015-09-28T12:00:00-05:00</published><updated>2015-09-28T12:00:00-05:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2015-09-28:posts/2015/09/flask-draw-member/</id><summary type="html">&lt;p&gt;為了實驗室的專題生而寫。&lt;/p&gt;
+&lt;p&gt;不得不說要正確處理時間…很麻煩啊。&lt;/p&gt;</content><category term="zh"></category><category term="datetime"></category><category term="pytz"></category><category term="sqlite"></category><category term="python"></category></entry><entry><title>用 Flask 與 SQLite 架抽籤網站</title><link href="https://blog.liang2.tw/posts/2015/09/flask-draw-member/" rel="alternate"></link><published>2015-09-28T12:00:00-05:00</published><updated>2015-09-28T12:00:00-05:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2015-09-28:/posts/2015/09/flask-draw-member/</id><summary type="html">&lt;p&gt;為了實驗室的專題生而寫。&lt;/p&gt;
+&lt;p&gt;目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先操作比較簡單的才好上手。所以這邊講的並不是 best practice，但使用最少（底層）的知識與工具。如果一開始讓太多套件（像 SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;本篇文章非常長，應該沒辦法幾分鐘內讀完。對象是初學者學習簡單網站架設。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;這個專案的目標：因為大家 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;為了實驗室的專題生而寫。&lt;/p&gt;
 &lt;p&gt;目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先操作比較簡單的才好上手。所以這邊講的並不是 best practice，但使用最少（底層）的知識與工具。如果一開始讓太多套件（像 SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;本篇文章非常長，應該沒辦法幾分鐘內讀完。對象是初學者學習簡單網站架設。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;這個專案的目標：因為大家 meeting 的時候都不問問題，教授需要一個抽籤點人問問題的工具。我們實驗室有分成幾個組別，所以抽籤的時候也要能針對單個組別抽。&lt;/p&gt;
@@ -1387,7 +1390,7 @@
 &lt;h3 id="_1"&gt;資料設計&lt;/h3&gt;
 &lt;p&gt;我們先假設所有檔案都放在同個資料夾裡，估且叫 &lt;code&gt;draw_member&lt;/code&gt;。之後沒有額外說明的話，都是在這個目錄下操作。&lt;/p&gt;
 &lt;p&gt;原始資料用 CSV 格式來儲存，有「名字」以及「團體」兩個欄位。不過考慮到可能會把檔案匯出，在原始檔案多加一個「最近被抽到的日期」欄位，希望最近被抽到的會比其他人再被抽到的機會低一點。&lt;/p&gt;
-&lt;p&gt;這個 CSV 檔案命名為 &lt;code&gt;members.csv&lt;/code&gt;。一開始沒有人被抽到，所以最後一欄都先設成空的&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;，第一行是每一欄欄位的名稱。如果從資料庫匯出，這欄位就會有值。&lt;/p&gt;
+&lt;p&gt;這個 CSV 檔案命名為 &lt;code&gt;members.csv&lt;/code&gt;。一開始沒有人被抽到，所以最後一欄都先設成空的&lt;sup id="fnref-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;，第一行是每一欄欄位的名稱。如果從資料庫匯出，這欄位就會有值。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;quot;名字&amp;quot;,&amp;quot;團體&amp;quot;,&amp;quot;最近被抽到的日期&amp;quot;
 &amp;quot;高坂 穂乃果&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
 &amp;quot;絢瀬 絵里&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
@@ -1659,7 +1662,7 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;code&gt;db.executescript('...')&lt;/code&gt; 可以執行一系列的 SQL 指令（注意指令間要有分號）。另外使用 &lt;code&gt;with db: ...&lt;/code&gt; 作用是會 sqlite3 module 會自動幫我們把中間的 SQL 指令送出&lt;sup id="fnref:sqlite3 auto commit"&gt;&lt;a class="footnote-ref" href="#fn:sqlite3 auto commit" rel="footnote"&gt;2&lt;/a&gt;&lt;/sup&gt;，等同於：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;db.executescript('...')&lt;/code&gt; 可以執行一系列的 SQL 指令（注意指令間要有分號）。另外使用 &lt;code&gt;with db: ...&lt;/code&gt; 作用是會 sqlite3 module 會自動幫我們把中間的 SQL 指令送出&lt;sup id="fnref-sqlite3 auto commit"&gt;&lt;a class="footnote-ref" href="#fn-sqlite3 auto commit"&gt;2&lt;/a&gt;&lt;/sup&gt;，等同於：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cursor&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;executescript&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;create_db_sql&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;commit&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
@@ -1756,7 +1759,7 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 
 &lt;p&gt;一下子多了很多 code，如果太複雜可以先當作就是這樣吧。&lt;/p&gt;
 &lt;p&gt;需要了解的部份，第一是 &lt;code&gt;g&lt;/code&gt; 這個變數裡可以放很多需要傳來傳去的變數，所以就把建立好的資料庫連線放在 &lt;code&gt;g._database&lt;/code&gt;。平常如果要用這個連線的話，就用 &lt;code&gt;db = get_db()&lt;/code&gt; 去拿。&lt;/p&gt;
-&lt;p&gt;第二是我們把資料的路徑等等，都寫成變數放在程式碼的最開頭。這是個好習慣，把常數跟程式分開來，管理才方便&lt;sup id="fnref:flask-config"&gt;&lt;a class="footnote-ref" href="#fn:flask-config" rel="footnote"&gt;3&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;p&gt;第二是我們把資料的路徑等等，都寫成變數放在程式碼的最開頭。這是個好習慣，把常數跟程式分開來，管理才方便&lt;sup id="fnref-flask-config"&gt;&lt;a class="footnote-ref" href="#fn-flask-config"&gt;3&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
 &lt;h3 id="first-view-first-template"&gt;First view, first template&lt;/h3&gt;
 &lt;p&gt;先來做首頁，把 HTML 放在 &lt;code&gt;templates/index.html&lt;/code&gt;。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
@@ -2173,16 +2176,16 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;p&gt;這篇文章太長了，寫到&lt;a href="../datetime-sqlite/#datetime-sqlite"&gt;下一篇去&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;2016-06-14 更新：增加使用 &lt;code&gt;datetime.datetime&lt;/code&gt; 的說明避免跟 module 名稱混淆 (credit: 馬國薰)&lt;/p&gt;
 &lt;div class="footnote"&gt;
-&lt;hr /&gt;
+&lt;hr&gt;
 &lt;ol&gt;
-&lt;li id="fn:1"&gt;
-&lt;p&gt;在資料處理上其實會有個 NA 的值來區分「空」以及「空值」的概念。不過這用 Python 內建的 &lt;code&gt;csv.reader&lt;/code&gt; 處理會太複雜就先算了。&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn-1"&gt;
+&lt;p&gt;在資料處理上其實會有個 NA 的值來區分「空」以及「空值」的概念。不過這用 Python 內建的 &lt;code&gt;csv.reader&lt;/code&gt; 處理會太複雜就先算了。&amp;#160;&lt;a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id="fn:sqlite3 auto commit"&gt;
-&lt;p&gt;參考&lt;a href="https://docs.python.org/3.5/library/sqlite3.html#using-the-connection-as-a-context-manager"&gt;官方說明文件&lt;/a&gt;，它是在進入 &lt;code&gt;with db: ...&lt;/code&gt; code block 時開啟一個 transaction，並在正常離開的時候自動 commit。如果中間遇到沒有處理的 Exception 時，就會自動 roll back。&amp;#160;&lt;a class="footnote-backref" href="#fnref:sqlite3 auto commit" rev="footnote" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn-sqlite3 auto commit"&gt;
+&lt;p&gt;參考&lt;a href="https://docs.python.org/3.5/library/sqlite3.html#using-the-connection-as-a-context-manager"&gt;官方說明文件&lt;/a&gt;，它是在進入 &lt;code&gt;with db: ...&lt;/code&gt; code block 時開啟一個 transaction，並在正常離開的時候自動 commit。如果中間遇到沒有處理的 Exception 時，就會自動 roll back。&amp;#160;&lt;a class="footnote-backref" href="#fnref-sqlite3 auto commit" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id="fn:flask-config"&gt;
-&lt;p&gt;其實 Flask 相關的設定通常放在 &lt;code&gt;app.config&lt;/code&gt; 裡面，不過我們的例子沒差。&amp;#160;&lt;a class="footnote-backref" href="#fnref:flask-config" rev="footnote" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn-flask-config"&gt;
+&lt;p&gt;其實 Flask 相關的設定通常放在 &lt;code&gt;app.config&lt;/code&gt; 裡面，不過我們的例子沒差。&amp;#160;&lt;a class="footnote-backref" href="#fnref-flask-config" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</summary><category term="zh"></category><category term="flask"></category><category term="sqlite"></category><category term="jinja2"></category><category term="python"></category></entry></feed>
+&lt;/div&gt;</content><category term="zh"></category><category term="flask"></category><category term="sqlite"></category><category term="jinja2"></category><category term="python"></category></entry></feed>

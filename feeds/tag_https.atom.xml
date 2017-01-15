@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang2's Blog</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_https.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2016-02-21T14:00:00-06:00</updated><entry><title>Python 官方文件中文化 Server HTTPS 使用 Let's Encrypt</title><link href="https://blog.liang2.tw/posts/2016/02/pydoctw-https/" rel="alternate"></link><published>2016-02-21T14:00:00-06:00</published><updated>2016-02-21T14:00:00-06:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-02-21:posts/2016/02/pydoctw-https/</id><summary type="html">&lt;p&gt;現在可以透過 &lt;a href="https://docs.python.org.tw"&gt;https://docs.python.org.tw&lt;/a&gt; 訪問 Python 官方文件中文化網站。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang2's Blog - https</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_https.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2016-02-21T14:00:00-06:00</updated><entry><title>Python 官方文件中文化 Server HTTPS 使用 Let's Encrypt</title><link href="https://blog.liang2.tw/posts/2016/02/pydoctw-https/" rel="alternate"></link><published>2016-02-21T14:00:00-06:00</published><updated>2016-02-21T14:00:00-06:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-02-21:/posts/2016/02/pydoctw-https/</id><summary type="html">&lt;p&gt;整理了 server 從 HTTP 到 HTTPS 相關設定的調整。&lt;/p&gt;</summary><content type="html">&lt;p&gt;現在可以透過 &lt;a href="https://docs.python.org.tw"&gt;https://docs.python.org.tw&lt;/a&gt; 訪問 Python 官方文件中文化網站。&lt;/p&gt;
 &lt;p&gt;Server 本身的設定可以參考&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;之前的文章&lt;/a&gt;。加入 HTTPS 就要設定相關的憑証，我選擇 &lt;a href="https://letsencrypt.org/"&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt; 做為憑証的簽署者。&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s Encrypt (LE) 使用 AMCE (Automated Certificate Management Environment) protocol 去驗証你是否擁有你欲簽証的 domain。官網上有&lt;a href="https://letsencrypt.org/howitworks/technology/"&gt;圖文說明&lt;/a&gt;，簡單來說，LE 會要求你的 server 在特定的 path 加入特定的檔案，如果你做得到，就代表你擁有這個 domain。這樣的簽証第一次要在 LE server 上註冊，之後最長每 90 天認証一次。&lt;/p&gt;
 &lt;div class="toc"&gt;
@@ -79,7 +79,7 @@ journalctl -e -u renew_cert
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;重點只有 &lt;code&gt;[Timer]&lt;/code&gt; 這 directive。&lt;code&gt;Unit=&lt;/code&gt; 表示要啟動的 service。&lt;code&gt;OnCalendar=&lt;/code&gt;&lt;sup id="fnref:calendar"&gt;&lt;a class="footnote-ref" href="#fn:calendar" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt; 則是設定這 timer 根據指定的時間點 (UTC 時間&lt;sup id="fnref:utc"&gt;&lt;a class="footnote-ref" href="#fn:utc" rel="footnote"&gt;2&lt;/a&gt;&lt;/sup&gt;) 啟動。&lt;/p&gt;
+&lt;p&gt;重點只有 &lt;code&gt;[Timer]&lt;/code&gt; 這 directive。&lt;code&gt;Unit=&lt;/code&gt; 表示要啟動的 service。&lt;code&gt;OnCalendar=&lt;/code&gt;&lt;sup id="fnref-calendar"&gt;&lt;a class="footnote-ref" href="#fn-calendar"&gt;1&lt;/a&gt;&lt;/sup&gt; 則是設定這 timer 根據指定的時間點 (UTC 時間&lt;sup id="fnref-utc"&gt;&lt;a class="footnote-ref" href="#fn-utc"&gt;2&lt;/a&gt;&lt;/sup&gt;) 啟動。&lt;/p&gt;
 &lt;p&gt;以這邊寫的時間 &lt;code&gt;*-1/2-1 16:00:00&lt;/code&gt; 為例，代表每年的 1+2n 月 1 日 16:00 UTC 更新 certificate，即臺灣時間 1、3、5、……月 2 日凌晨更新。&lt;/p&gt;
 &lt;p&gt;啟用 timer，它需要被 enable 確保重開機時被執行。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;systemctl enable renew_cert.timer
@@ -141,16 +141,17 @@ systemctl start renew_cert.timer
 
 
 &lt;div class="footnote"&gt;
-&lt;hr /&gt;
+&lt;hr&gt;
 &lt;ol&gt;
-&lt;li id="fn:calendar"&gt;
-&lt;p&gt;除了 &lt;code&gt;OnCalendar&lt;/code&gt; 還有很多設定 timer 的方式，如 &lt;code&gt;OnUnitActiveSec&lt;/code&gt;。不過其他的時間算法，都會受有沒有開機，影響時間的計算。&amp;#160;&lt;a class="footnote-backref" href="#fnref:calendar" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn-calendar"&gt;
+&lt;p&gt;除了 &lt;code&gt;OnCalendar&lt;/code&gt; 還有很多設定 timer 的方式，如 &lt;code&gt;OnUnitActiveSec&lt;/code&gt;。不過其他的時間算法，都會受有沒有開機，影響時間的計算。&amp;#160;&lt;a class="footnote-backref" href="#fnref-calendar" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id="fn:utc"&gt;
-&lt;p&gt;Debian Jessie 的 &lt;a href="https://www.freedesktop.org/software/systemd/man/systemd.time.html#Calendar%20Events"&gt;systemd.time (7)&lt;/a&gt; Calendar Events 裡並沒有指定時區的方式，所以加上時區會有 parse error。但新版的 systemd 似乎支援時區。總之應該用 &lt;code&gt;systemctl list-timers&lt;/code&gt; 確定執行的時間。&amp;#160;&lt;a class="footnote-backref" href="#fnref:utc" rev="footnote" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn-utc"&gt;
+&lt;p&gt;Debian Jessie 的 &lt;a href="https://www.freedesktop.org/software/systemd/man/systemd.time.html#Calendar%20Events"&gt;systemd.time (7)&lt;/a&gt; Calendar Events 裡並沒有指定時區的方式，所以加上時區會有 parse error。但新版的 systemd 似乎支援時區。總之應該用 &lt;code&gt;systemctl list-timers&lt;/code&gt; 確定執行的時間。&amp;#160;&lt;a class="footnote-backref" href="#fnref-utc" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</summary><category term="zh"></category><category term="pydoctw"></category><category term="https"></category><category term="letsencrypt"></category></entry><entry><title>Blog defaults to HTTPS</title><link href="https://blog.liang2.tw/posts/2016/01/blog-https/" rel="alternate"></link><published>2016-01-06T00:00:00-06:00</published><updated>2016-01-06T00:00:00-06:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-06:posts/2016/01/blog-https/</id><summary type="html">&lt;p&gt;簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。&lt;/p&gt;
+&lt;/div&gt;</content><category term="zh"></category><category term="pydoctw"></category><category term="https"></category><category term="letsencrypt"></category></entry><entry><title>Blog defaults to HTTPS</title><link href="https://blog.liang2.tw/posts/2016/01/blog-https/" rel="alternate"></link><published>2016-01-06T00:00:00-06:00</published><updated>2016-01-06T00:00:00-06:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-06:/posts/2016/01/blog-https/</id><summary type="html">&lt;p&gt;簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。&lt;/p&gt;
+&lt;p&gt;Blog 本來就是架在 &lt;a href="https://github.com/ccwang002/ccwang002.github.io"&gt;GitHub Pages&lt;/a&gt; 上，其實預設有 https，但在網址改成自訂 domain 之後 https 自然就失效了。在 GitHub 上有開 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。&lt;/p&gt;
 &lt;p&gt;Blog 本來就是架在 &lt;a href="https://github.com/ccwang002/ccwang002.github.io"&gt;GitHub Pages&lt;/a&gt; 上，其實預設有 https，但在網址改成自訂 domain 之後 https 自然就失效了。在 GitHub 上有開 issue 請他們加入 &lt;a href="https://github.com/isaacs/github/issues/156"&gt;HTTPS support for custom domain&lt;/a&gt; 這功能，不過目前還是需要自己想辦法。隨著 &lt;a href="https://letsencrypt.org/"&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt; 這種服務的流行，GitHub 才會去積極尋找比較合適的解決方案吧。&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
@@ -193,4 +194,4 @@ systemctl start renew_cert.timer
   &lt;p class="caption center"&gt;CloudFlare DNS setting&lt;/p&gt;
 &lt;/div&gt;
 
-&lt;p&gt;大概是這樣。希望能在不要自己架 server 的情況下繼續經營這個 blog。&lt;/p&gt;</summary><category term="zh"></category><category term="blog"></category><category term="pelican"></category><category term="https"></category></entry></feed>
+&lt;p&gt;大概是這樣。希望能在不要自己架 server 的情況下繼續經營這個 blog。&lt;/p&gt;</content><category term="zh"></category><category term="blog"></category><category term="pelican"></category><category term="https"></category></entry></feed>

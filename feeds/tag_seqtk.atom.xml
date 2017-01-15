@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang2's Blog</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_seqtk.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2015-09-27T14:11:00-05:00</updated><entry><title>FASTA/Q sequence processing toolkit -- seqtk</title><link href="https://blog.liang2.tw/posts/2015/09/seqtk/" rel="alternate"></link><published>2015-09-27T14:11:00-05:00</published><updated>2015-09-27T14:11:00-05:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2015-09-27:posts/2015/09/seqtk/</id><summary type="html">&lt;p&gt;This is the first post of the series of my common NGS processing workflows and notes.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang2's Blog - seqtk</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_seqtk.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2015-09-27T14:11:00-05:00</updated><entry><title>FASTA/Q sequence processing toolkit -- seqtk</title><link href="https://blog.liang2.tw/posts/2015/09/seqtk/" rel="alternate"></link><published>2015-09-27T14:11:00-05:00</published><updated>2015-09-27T14:11:00-05:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2015-09-27:/posts/2015/09/seqtk/</id><summary type="html">&lt;p&gt;This post demonstrates the FASTQ to FASTA conversion and sequence quality check using seqtk.&lt;/p&gt;</summary><content type="html">&lt;p&gt;This is the first post of the series of my common NGS processing workflows and notes.&lt;/p&gt;
 &lt;p&gt;Some of the most common operation in sequence processing is FASTQ → FASTA conversion. Tons of conversion scripts using either sed or awk can be found by search. For example,&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# FASTQ to FASTA&lt;/span&gt;
 &lt;span class="c1"&gt;# Assume every read record takes exactly 4 line&lt;/span&gt;
@@ -88,7 +88,7 @@ ALL 236344886 17.0 22.5 31.3 29.2 0.0 39.9 37.6 0.1  99.9
 &lt;div class="math"&gt;$$
     \text{avgQ} = \dfrac{\sum_{q=0}^{93} q \cdot n_q}{\sum_{q = 0}^{93} n_q},
 $$&lt;/div&gt;
-&lt;p&gt;where &lt;span class="math"&gt;\(n_q\)&lt;/span&gt; is the number of bases with quality score being &lt;span class="math"&gt;\(q\)&lt;/span&gt;. The magic number 93 comes from the quality score of Sanger sequencing&lt;sup id="fnref:sanger-qual-score"&gt;&lt;a class="footnote-ref" href="#fn:sanger-qual-score" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;, whose score ranges from 0 to 93.&lt;/p&gt;
+&lt;p&gt;where &lt;span class="math"&gt;\(n_q\)&lt;/span&gt; is the number of bases with quality score being &lt;span class="math"&gt;\(q\)&lt;/span&gt;. The magic number 93 comes from the quality score of Sanger sequencing&lt;sup id="fnref-sanger-qual-score"&gt;&lt;a class="footnote-ref" href="#fn-sanger-qual-score"&gt;1&lt;/a&gt;&lt;/sup&gt;, whose score ranges from 0 to 93.&lt;/p&gt;
 &lt;p&gt;For &lt;code&gt;errQ&lt;/code&gt; we need more background knowledge about how quality score is computed. A base with quality score &lt;span class="math"&gt;\(q\)&lt;/span&gt; implies the probability of being erroneously called, &lt;span class="math"&gt;\(P_q\)&lt;/span&gt;, is &lt;/p&gt;
 &lt;div class="math"&gt;$$
     P_q = 10^{\frac{-q}{10}}, \hspace{1em} q = -10\log_{10}{P_q}.
@@ -101,7 +101,7 @@ $$&lt;/div&gt;
 &lt;th align="right"&gt;0&lt;/th&gt;
 &lt;th align="right"&gt;1&lt;/th&gt;
 &lt;th align="right"&gt;2&lt;/th&gt;
-&lt;th align="right"&gt;3&lt;sup id="fnref:2"&gt;&lt;a class="footnote-ref" href="#fn:2" rel="footnote"&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/th&gt;
+&lt;th align="right"&gt;3&lt;sup id="fnref-2"&gt;&lt;a class="footnote-ref" href="#fn-2"&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
@@ -151,13 +151,13 @@ $$&lt;/div&gt;
 &lt;h3 id="summary"&gt;Summary&lt;/h3&gt;
 &lt;p&gt;&lt;a href="https://github.com/lh3/seqtk"&gt;Seqtk&lt;/a&gt; is fast to use for daily routines of FASTA/Q conversion. On top of that it provide various functionalities such as read random sampling, quality check, and many I haven&amp;rsquo;t tried or mentioned.&lt;/p&gt;
 &lt;div class="footnote"&gt;
-&lt;hr /&gt;
+&lt;hr&gt;
 &lt;ol&gt;
-&lt;li id="fn:sanger-qual-score"&gt;
-&lt;p&gt;See multiple specifications of quality score at &lt;a href="http://scikit-bio.org/docs/latest/generated/skbio.io.format.fastq.html#quality-score-variants"&gt;sckit-bio doc&lt;/a&gt;. The score is &lt;a href="https://en.wikipedia.org/wiki/Phred_quality_score"&gt;Phred quality score&lt;/a&gt;. More other score representations can be found at &lt;a href="https://en.wikipedia.org/wiki/FASTQ_format"&gt;FASTQ wiki&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:sanger-qual-score" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn-sanger-qual-score"&gt;
+&lt;p&gt;See multiple specifications of quality score at &lt;a href="http://scikit-bio.org/docs/latest/generated/skbio.io.format.fastq.html#quality-score-variants"&gt;sckit-bio doc&lt;/a&gt;. The score is &lt;a href="https://en.wikipedia.org/wiki/Phred_quality_score"&gt;Phred quality score&lt;/a&gt;. More other score representations can be found at &lt;a href="https://en.wikipedia.org/wiki/FASTQ_format"&gt;FASTQ wiki&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref-sanger-qual-score" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id="fn:2"&gt;
-&lt;p&gt;Note that the probability of q less than 4 is fixed with 0.5. A quick computation can see when &lt;span class="math"&gt;\(q = 3\)&lt;/span&gt;, its actual Phred probability is &lt;span class="math"&gt;\(10 ^ {-0.3} = 0.501\)&lt;/span&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:2" rev="footnote" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn-2"&gt;
+&lt;p&gt;Note that the probability of q less than 4 is fixed with 0.5. A quick computation can see when &lt;span class="math"&gt;\(q = 3\)&lt;/span&gt;, its actual Phred probability is &lt;span class="math"&gt;\(10 ^ {-0.3} = 0.501\)&lt;/span&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
@@ -217,4 +217,4 @@ $$&lt;/div&gt;
         "}";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-&lt;/script&gt;</summary><category term="en"></category><category term="seqtk"></category><category term="NGS"></category></entry></feed>
+&lt;/script&gt;</content><category term="en"></category><category term="seqtk"></category><category term="NGS"></category></entry></feed>

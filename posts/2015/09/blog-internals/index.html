@@ -6,7 +6,7 @@
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 <meta name="author" content="Liang2" />
-<meta name="description" content="Blog 對我來說，最重要的就是書寫的舒適度。 一開始在設定 github CNAME 的時候就訂為 blog.liang2.tw，但一直以來都只是個一頁式的自我介紹1，用 SemanticUI 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。 整理了一下有幾個目標： 只考慮用 static site 因為不想維護 server，而且 ..." />
+<meta name="description" content="Blog 對我來說，最重要的就是書寫的舒適度。 一開始在設定 github CNAME 的時候就訂為 blog.liang2.tw，但一直以來都只是個一頁式的自我介紹1，用 SemanticUI 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。 整理了一下有幾個目標： 只考慮用 static site 因為不想維護 server，而且 …" />
 <meta name="keywords" content="zh, pelican, blog, python">
 	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
 	<title>設定部落格筆記</title>
@@ -15,7 +15,7 @@
 <meta property="og:locale" content="zh_TW"/>
 <meta property="og:site_name" content="Liang2's Blog"/>
 <meta property="og:title" content="設定部落格筆記"/>
-<meta property="og:description" content="Blog 對我來說，最重要的就是書寫的舒適度。 一開始在設定 github CNAME 的時候就訂為 blog.liang2.tw，但一直以來都只是個一頁式的自我介紹1，用 SemanticUI 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。 整理了一下有幾個目標： 只考慮用 static site 因為不想維護 server，而且 ..."/>
+<meta property="og:description" content="Blog 對我來說，最重要的就是書寫的舒適度。 一開始在設定 github CNAME 的時候就訂為 blog.liang2.tw，但一直以來都只是個一頁式的自我介紹1，用 SemanticUI 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。 整理了一下有幾個目標： 只考慮用 static site 因為不想維護 server，而且 …"/>
 <meta property="og:locale" content=""/>
 <meta property="og:url" content="https://blog.liang2.tw/posts/2015/09/blog-internals/"/>
 <meta property="og:type" content="article"/>
@@ -30,7 +30,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@ccwang002">
 <meta name="twitter:title" content="設定部落格筆記">
-<meta name="twitter:description" content="Blog 對我來說，最重要的就是書寫的舒適度。 一開始在設定 github CNAME 的時候就訂為 blog.liang2.tw，但一直以來都只是個一頁式的自我介紹1，用 SemanticUI 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。 整理了一下有幾個目標： 只考慮用 static site 因為不想維護 server，而且 ...">
+<meta name="twitter:description" content="Blog 對我來說，最重要的就是書寫的舒適度。 一開始在設定 github CNAME 的時候就訂為 blog.liang2.tw，但一直以來都只是個一頁式的自我介紹1，用 SemanticUI 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。 整理了一下有幾個目標： 只考慮用 static site 因為不想維護 server，而且 …">
 
 	<!-- Feeds -->
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
@@ -64,7 +64,7 @@
                 <a href="https://blog.liang2.tw/tag/python/">python</a>
     </span>
     <section class="post-content"><p>Blog 對我來說，最重要的就是書寫的舒適度。</p>
-<p>一開始在設定 github CNAME 的時候就訂為 <code>blog.liang2.tw</code>，但一直以來都只是個一頁式的自我介紹<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup>，用 <a href="http://semantic-ui.com/">SemanticUI</a> 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。</p>
+<p>一開始在設定 github CNAME 的時候就訂為 <code>blog.liang2.tw</code>，但一直以來都只是個一頁式的自我介紹<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup>，用 <a href="http://semantic-ui.com/">SemanticUI</a> 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。</p>
 <p>整理了一下有幾個目標：</p>
 <ul>
 <li>只考慮用 static site 因為不想維護 server，而且 blog 也沒什要炫的，現在光用前端就可以做到很多互動功能</li>
@@ -233,13 +233,13 @@ Hello World_
 <p>不把 <code>"</code>（QUOTATION MARK <code>\u0022</code>）直接寫成 <code>&amp;#34;</code> 就會被轉換成左邊那樣 <code>”</code>（RIGHT DOUBLE QUOTATION MARK <code>\u201D</code>）。</p>
 <p>也把表格的格式加上，仿造 bootstrap 表格 overflow 時會變成 block 可以滑動著看。</p>
 <div class="footnote">
-<hr />
+<hr>
 <ol>
-<li id="fn:1">
+<li id="fn-1">
 <p>以前部落格的長相：
 <div class="figure align-center">
   <img src="https://blog.liang2.tw/posts/2015/09/blog-internals/pics/oldsite.png"/>
-</div>&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</div>&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div></section>

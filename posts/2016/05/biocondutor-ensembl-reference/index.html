@@ -302,7 +302,7 @@ ensembl <span class="o">&lt;-</span> useMart<span class="p">(</span><span class=
 
 
 <h3 id="compatibility-with-annotationdbs-interface">Compatibility with AnnotationDb&rsquo;s interface</h3>
-<p>The way to query the <code>ensembl</code> Mart object is slightly different to how we query a AnnotationDb object. The major difference is the terminology. Luckily, Mart object provides a compatibility layer so we can still call functions such as <code>select(db, ...)</code>, <code>keytypes(db)</code>, <code>keys(db)</code> and <code>columns(db)</code>, which we frequently do<sup id="fnref:select-compat"><a class="footnote-ref" href="#fn:select-compat" rel="footnote">1</a></sup> when using NCBI/UCSC references.</p>
+<p>The way to query the <code>ensembl</code> Mart object is slightly different to how we query a AnnotationDb object. The major difference is the terminology. Luckily, Mart object provides a compatibility layer so we can still call functions such as <code>select(db, ...)</code>, <code>keytypes(db)</code>, <code>keys(db)</code> and <code>columns(db)</code>, which we frequently do<sup id="fnref-select-compat"><a class="footnote-ref" href="#fn-select-compat">1</a></sup> when using NCBI/UCSC references.</p>
 <p>A Mart can have hundreds of keys and columns. So we select a part of them out by <code>grep()</code>,</p>
 <div class="highlight"><pre><span></span><span class="kp">grep</span><span class="p">(</span><span class="s">&quot;^refseq&quot;</span><span class="p">,</span> keytypes<span class="p">(</span>ensembl<span class="p">),</span> value <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
 <span class="c1"># [1] &quot;refseq_mrna&quot; &quot;refseq_mrna_predicted&quot; ...</span>
@@ -451,10 +451,10 @@ MAPK1_hg19_lifted
 <p>Finally, we know how to convert between different version of the reference. Though the correctness of the conversion requires further examination (not meaning it is wrong), at least the conversion by liftOver works as expected.</p>
 <p>Starting here, you should have no trouble dealing with annotations in R anymore. For the next post, I plan to further explore the way to read sequencing analysis results in R.</p>
 <div class="footnote">
-<hr />
+<hr>
 <ol>
-<li id="fn:select-compat">
-<p>Note that the <code>select(mart, ...)</code> compatibility does not apply to all existed filters (keys) and attributes (columns) of the given Mart.&#160;<a class="footnote-backref" href="#fnref:select-compat" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<li id="fn-select-compat">
+<p>Note that the <code>select(mart, ...)</code> compatibility does not apply to all existed filters (keys) and attributes (columns) of the given Mart.&#160;<a class="footnote-backref" href="#fnref-select-compat" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div></section>

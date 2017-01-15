@@ -204,7 +204,7 @@
 </pre></div>
 
 
-<p>但這樣 numpy 會傳兩次 copy<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup> 回來，資料很大的時候就沒效率。所以要怎麼做呢？</p>
+<p>但這樣 numpy 會傳兩次 copy<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup> 回來，資料很大的時候就沒效率。所以要怎麼做呢？</p>
 <p>參考 <a href="http://stackoverflow.com/a/30918530">Stack Overflow</a> 上的回答，底下幾種方式都可以。最簡單的方法就是透過 <a href="http://docs.scipy.org/doc/numpy-1.10.1/reference/generated/numpy.ix_.html#numpy.ix_">numpy.ix_()</a>，</p>
 <div class="highlight"><pre><span></span><span class="n">arr</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])]</span>
 </pre></div>
@@ -258,10 +258,10 @@
 
 
 <div class="footnote">
-<hr />
+<hr>
 <ol>
-<li id="fn:1">
-<p>在這情況資料會被 copy 傳回來，但如果是 <code>start:end:step</code> 的 simple indexing 就只會回傳 view。&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<li id="fn-1">
+<p>在這情況資料會被 copy 傳回來，但如果是 <code>start:end:step</code> 的 simple indexing 就只會回傳 view。&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div></section>

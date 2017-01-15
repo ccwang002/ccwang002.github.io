@@ -150,7 +150,7 @@ ALL 236344886 17.0 22.5 31.3 29.2 0.0 39.9 37.6 0.1  99.9
 <div class="math">$$
     \text{avgQ} = \dfrac{\sum_{q=0}^{93} q \cdot n_q}{\sum_{q = 0}^{93} n_q},
 $$</div>
-<p>where <span class="math">\(n_q\)</span> is the number of bases with quality score being <span class="math">\(q\)</span>. The magic number 93 comes from the quality score of Sanger sequencing<sup id="fnref:sanger-qual-score"><a class="footnote-ref" href="#fn:sanger-qual-score" rel="footnote">1</a></sup>, whose score ranges from 0 to 93.</p>
+<p>where <span class="math">\(n_q\)</span> is the number of bases with quality score being <span class="math">\(q\)</span>. The magic number 93 comes from the quality score of Sanger sequencing<sup id="fnref-sanger-qual-score"><a class="footnote-ref" href="#fn-sanger-qual-score">1</a></sup>, whose score ranges from 0 to 93.</p>
 <p>For <code>errQ</code> we need more background knowledge about how quality score is computed. A base with quality score <span class="math">\(q\)</span> implies the probability of being erroneously called, <span class="math">\(P_q\)</span>, is </p>
 <div class="math">$$
     P_q = 10^{\frac{-q}{10}}, \hspace{1em} q = -10\log_{10}{P_q}.
@@ -163,7 +163,7 @@ $$</div>
 <th align="right">0</th>
 <th align="right">1</th>
 <th align="right">2</th>
-<th align="right">3<sup id="fnref:2"><a class="footnote-ref" href="#fn:2" rel="footnote">2</a></sup></th>
+<th align="right">3<sup id="fnref-2"><a class="footnote-ref" href="#fn-2">2</a></sup></th>
 </tr>
 </thead>
 <tbody>
@@ -213,13 +213,13 @@ $$</div>
 <h3 id="summary">Summary</h3>
 <p><a href="https://github.com/lh3/seqtk">Seqtk</a> is fast to use for daily routines of FASTA/Q conversion. On top of that it provide various functionalities such as read random sampling, quality check, and many I haven&rsquo;t tried or mentioned.</p>
 <div class="footnote">
-<hr />
+<hr>
 <ol>
-<li id="fn:sanger-qual-score">
-<p>See multiple specifications of quality score at <a href="http://scikit-bio.org/docs/latest/generated/skbio.io.format.fastq.html#quality-score-variants">sckit-bio doc</a>. The score is <a href="https://en.wikipedia.org/wiki/Phred_quality_score">Phred quality score</a>. More other score representations can be found at <a href="https://en.wikipedia.org/wiki/FASTQ_format">FASTQ wiki</a>.&#160;<a class="footnote-backref" href="#fnref:sanger-qual-score" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<li id="fn-sanger-qual-score">
+<p>See multiple specifications of quality score at <a href="http://scikit-bio.org/docs/latest/generated/skbio.io.format.fastq.html#quality-score-variants">sckit-bio doc</a>. The score is <a href="https://en.wikipedia.org/wiki/Phred_quality_score">Phred quality score</a>. More other score representations can be found at <a href="https://en.wikipedia.org/wiki/FASTQ_format">FASTQ wiki</a>.&#160;<a class="footnote-backref" href="#fnref-sanger-qual-score" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
-<li id="fn:2">
-<p>Note that the probability of q less than 4 is fixed with 0.5. A quick computation can see when <span class="math">\(q = 3\)</span>, its actual Phred probability is <span class="math">\(10 ^ {-0.3} = 0.501\)</span>.&#160;<a class="footnote-backref" href="#fnref:2" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<li id="fn-2">
+<p>Note that the probability of q less than 4 is fixed with 0.5. A quick computation can see when <span class="math">\(q = 3\)</span>, its actual Phred probability is <span class="math">\(10 ^ {-0.3} = 0.501\)</span>.&#160;<a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
