@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="author" content="Liang2" />
+<meta name="description" content="For my daily life in terminal, I use fish shell all the time. Fish shell is a relatively new shell that can be largely …" />
+<meta name="keywords" content="en, fish, shell">
+	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<title>Changing login shell without chsh</title>
+
+	<!-- og -->
+<meta property="og:locale" content="en_USen"/>
+<meta property="og:site_name" content="Liang2's Blog"/>
+<meta property="og:title" content="Changing login shell without chsh"/>
+<meta property="og:description" content="For my daily life in terminal, I use fish shell all the time. Fish shell is a relatively new shell that can be largely …"/>
+<meta property="og:locale" content=""/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2017/01/without-chsh/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2017-01-23 00:00:00-06:00"/>
+<meta property="article:modified_time" content="2017-01-23 00:00:00-06:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
+<meta property="article:section" content="Coding"/>
+<meta property="article:tag" content="en"/>
+<meta property="article:tag" content="fish"/>
+<meta property="article:tag" content="shell"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Changing login shell without chsh">
+<meta name="twitter:description" content="For my daily life in terminal, I use fish shell all the time. Fish shell is a relatively new shell that can be largely …">
+
+	<!-- Feeds -->
+	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
+		type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?471da5af" rel="stylesheet" />
+</head>
+
+<body class="post-template">
+	<header class="site-head">
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+		<h2 class="blog-description">
+			<a href="https://blog.liang2.tw/about-me/">About</a> |
+			<a href="https://blog.liang2.tw/talks/">Talks</a> |
+			<a href="https://blog.liang2.tw/archives.html">Archives</a>
+		</h2>
+	</header>
+	<main id="content" class="content" role="main">
+<article class="post">
+    <span class="post-meta">
+        <time datetime="Jan 23, 2017">Jan 23, 2017</time>
+        in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2017/01/without-chsh/" rel="bookmark" title="Permalink to Changing login shell without chsh">Changing login shell without chsh</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/en/">en</a>
+                <a href="https://blog.liang2.tw/tag/fish/">fish</a>
+                <a href="https://blog.liang2.tw/tag/shell/">shell</a>
+    </span>
+    <section class="post-content"><p>For my daily life in terminal, I use <a href="https://fishshell.com/">fish shell</a> all the time. Fish shell is a relatively new shell that can be largely described by its headline on the official website:</p>
+<blockquote>
+<p><strong>Finally, a command line shell for the 90s</strong><br>
+fish is a smart and user-friendly command line
+shell for macOS, Linux, and the rest of the family.</p>
+</blockquote>
+<p>Among all of its features, I particularly enjoy how the autocompletions are widely available among all common commands and operations. I think I&rsquo;ve got spoiled by the autocompletion that sometimes I can get very lazy to type the full word at all. Undoubtly, fish has become my login shell.</p>
+<p>Most of the time, if one wants to change the login shell, running the command <code>chsh</code> will do. In order to let <code>chsh</code> accept the new fish shell, it must be added into the list of all accepted shells which requires root permission. However, from time to time and especially on server one may not has such permission.  </p>
+<h4 id="replacing-login-shell-by-exec">Replacing login shell by <code>exec</code></h4>
+<p>Alternative solution will be calling the new shell upon the execution of current shell. For example, most people have Bash as the default, during reading the <code>.profile</code> configuration file, the following command execute fish and sweep the process with bash. </p>
+<div class="highlight"><pre><span></span><span class="nb">exec</span> -l <span class="nv">$SHELL</span> -l
+</pre></div>
+
+
+<p><code>-l</code> tells shell to act like a login shell. More explanation about login and non-login (as well as (non-)interactive) shells can be found at <a href="http://unix.stackexchange.com/a/46856">this StackOverflow anwser</a>. By pointing <code>$SHELL</code> to the desired shell binary, one can achieve the similar behavior to <code>chsh</code>.</p>
+<p>However putting <code>exec</code> in the login profile comes with a risk that one cannot establish proper shell connections if the new shell executible brokes, which I&rsquo;ve had for a couple of times. Since the shell crashes as soon as it loads the profile, one cannot set up the proper terminal session, or simply put, one will fail to login. It will not be fun at all to recover.</p>
+<h4 id="fail-safe-shell-changing">Fail-safe shell changing</h4>
+<p>I use the following code in my <code>~/.profile</code> to change the shell.</p>
+<div class="highlight"><pre><span></span><span class="nv">FISH_BIN</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/.linuxbrew/bin/fish&quot;</span>
+
+<span class="c1"># The replacement is only done in non-fish login interactive shell in</span>
+<span class="c1"># SSH connection and fish executable exists.</span>
+<span class="k">if</span> <span class="o">[</span>                                                            <span class="se">\</span>
+     <span class="s2">&quot;</span><span class="nv">$SHELL</span><span class="s2">&quot;</span> !<span class="o">=</span> <span class="s2">&quot;</span><span class="nv">$FISH_BIN</span><span class="s2">&quot;</span> -a -n <span class="s2">&quot;</span><span class="nv">$SSH_TTY</span><span class="s2">&quot;</span> -a -x <span class="s2">&quot;</span><span class="nv">$FISH_BIN</span><span class="s2">&quot;</span> <span class="se">\</span>
+<span class="o">]</span> <span class="p">;</span> <span class="k">then</span>
+    <span class="c1"># we first check whether fish can be executed, otherwise the</span>
+    <span class="c1"># replacement will cause immediate crash at login (not fun)</span>
+    <span class="k">if</span> <span class="s2">&quot;</span><span class="nv">$FISH_BIN</span><span class="s2">&quot;</span> -c <span class="s1">&#39;echo &quot;Test fish running&quot; &gt;/dev/null&#39;</span> <span class="p">;</span> <span class="k">then</span>
+        <span class="nb">export</span> <span class="nv">SHELL</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$FISH_BIN</span><span class="s2">&quot;</span>
+        <span class="nb">echo</span> <span class="s2">&quot;One can launch the fish shell by &#39;exec -l \$SHELL -l&#39;&quot;</span>
+        <span class="c1"># exec -l $SHELL -l   # launch the fish login shell</span>
+    <span class="k">else</span>
+        <span class="nb">echo</span> <span class="s2">&quot;Failed to launch fish shell. Go check its installation!&quot;</span>
+        <span class="nb">echo</span> <span class="s2">&quot;Fall back to default shell </span><span class="nv">$SHELL</span><span class="s2"> ...&quot;</span>
+    <span class="k">fi</span>
+<span class="k">fi</span>
+</pre></div>
+
+
+<p>So basically we told fish to run <code>echo '...'</code> to ensure it works before we change the shell. By uncommenting the <code>exec ..</code> line one will get automatically directed to fish shell. But the safest option is to run the shell change oneself.</p>
+<p>The actual setting is quite straight-forward. While the backstory here is that I messed up a few times and I was lucky enough to keep another session alive. At first I only checked <code>fish --version</code> but it was not sufficient since it didn&rsquo;t actually execute and I got a illegal instruction after changing to fish even though printing its version was fine.</p></section>
+    <footer class="post-footer">
+<section class="share">
+    <h2>Share</h2>
+    <a class="icon-twitter" href="https://twitter.com/share?text=Changing login shell without chsh&amp;url=https://blog.liang2.tw/posts/2017/01/without-chsh/"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u=https://blog.liang2.tw/posts/2017/01/without-chsh/"
+        onclick="window.open(this.href, 'facebook-share', 'width=580,height=296'); return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.liang2.tw/posts/2017/01/without-chsh/"
+        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2017/01/without-chsh/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2017/01/without-chsh/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
+    <footer>
+</article>
+	</main>
+	<footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags.html">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">
+				Built using <a href="http://getpelican.com/">Pelican</a>.
+				Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.
+			</section>
+		</div>
+	</footer>
+</body>
+</html>
