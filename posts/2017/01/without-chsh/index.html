@@ -6,7 +6,7 @@
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 <meta name="author" content="Liang2" />
-<meta name="description" content="For my daily life in terminal, I use fish shell all the time. Fish shell is a relatively new shell that can be largely …" />
+<meta name="description" content="For my daily terminal life, I use fish shell. Fish shell can be largely described by the headline on its official website: Finally, a …" />
 <meta name="keywords" content="en, fish, shell">
 	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
 	<title>Changing login shell without chsh</title>
@@ -15,7 +15,7 @@
 <meta property="og:locale" content="en_USen"/>
 <meta property="og:site_name" content="Liang2's Blog"/>
 <meta property="og:title" content="Changing login shell without chsh"/>
-<meta property="og:description" content="For my daily life in terminal, I use fish shell all the time. Fish shell is a relatively new shell that can be largely …"/>
+<meta property="og:description" content="For my daily terminal life, I use fish shell. Fish shell can be largely described by the headline on its official website: Finally, a …"/>
 <meta property="og:locale" content=""/>
 <meta property="og:url" content="https://blog.liang2.tw/posts/2017/01/without-chsh/"/>
 <meta property="og:type" content="article"/>
@@ -29,7 +29,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@ccwang002">
 <meta name="twitter:title" content="Changing login shell without chsh">
-<meta name="twitter:description" content="For my daily life in terminal, I use fish shell all the time. Fish shell is a relatively new shell that can be largely …">
+<meta name="twitter:description" content="For my daily terminal life, I use fish shell. Fish shell can be largely described by the headline on its official website: Finally, a …">
 
 	<!-- Feeds -->
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
@@ -61,24 +61,24 @@
                 <a href="https://blog.liang2.tw/tag/fish/">fish</a>
                 <a href="https://blog.liang2.tw/tag/shell/">shell</a>
     </span>
-    <section class="post-content"><p>For my daily life in terminal, I use <a href="https://fishshell.com/">fish shell</a> all the time. Fish shell is a relatively new shell that can be largely described by its headline on the official website:</p>
+    <section class="post-content"><p>For my daily terminal life, I use <a href="https://fishshell.com/">fish shell</a>. Fish shell can be largely described by the headline on its official website:</p>
 <blockquote>
 <p><strong>Finally, a command line shell for the 90s</strong><br>
 fish is a smart and user-friendly command line
 shell for macOS, Linux, and the rest of the family.</p>
 </blockquote>
-<p>Among all of its features, I particularly enjoy how the autocompletions are widely available among all common commands and operations. I think I&rsquo;ve got spoiled by the autocompletion that sometimes I can get very lazy to type the full word at all. Undoubtly, fish has become my login shell.</p>
-<p>Most of the time, if one wants to change the login shell, running the command <code>chsh</code> will do. In order to let <code>chsh</code> accept the new fish shell, it must be added into the list of all accepted shells which requires root permission. However, from time to time and especially on server one may not has such permission.  </p>
+<p>Among all of its features, I particularly enjoy how the autocompletions are widely available and easy to use for generally all common commands and operations. I think I&rsquo;ve got spoiled by the autocompletion so much that sometimes I get lazy at typing the full commands. Undoubtedly, fish is my login shell, replacing the ubiquitous Bash shell.</p>
+<p>Most of the time, one can change the login shell by the command <code>chsh</code>. In order to let <code>chsh</code> accept the new fish shell, it must be added into the list of all accepted shells which requires root permission. However, in many occasions including working on a large shared server, one may not has the permission to add new shell and thus the options for the login shell are often limited.  </p>
 <h4 id="replacing-login-shell-by-exec">Replacing login shell by <code>exec</code></h4>
-<p>Alternative solution will be calling the new shell upon the execution of current shell. For example, most people have Bash as the default, during reading the <code>.profile</code> configuration file, the following command execute fish and sweep the process with bash. </p>
+<p>Alternative solution will be calling the new shell upon the execution of current shell.  A POSIX-compliant shell<sup id="fnref-posix"><a class="footnote-ref" href="#fn-posix">1</a></sup> should always read the <code>.profile</code> configuration file upon login, the following command execute fish and sweep the process with the current running shell (usually, bash). </p>
 <div class="highlight"><pre><span></span><span class="nb">exec</span> -l <span class="nv">$SHELL</span> -l
 </pre></div>
 
 
-<p><code>-l</code> tells shell to act like a login shell. More explanation about login and non-login (as well as (non-)interactive) shells can be found at <a href="http://unix.stackexchange.com/a/46856">this StackOverflow anwser</a>. By pointing <code>$SHELL</code> to the desired shell binary, one can achieve the similar behavior to <code>chsh</code>.</p>
-<p>However putting <code>exec</code> in the login profile comes with a risk that one cannot establish proper shell connections if the new shell executible brokes, which I&rsquo;ve had for a couple of times. Since the shell crashes as soon as it loads the profile, one cannot set up the proper terminal session, or simply put, one will fail to login. It will not be fun at all to recover.</p>
+<p><code>-l</code> tells shell to act like a login shell. For more explanation about login and non-login (as well as (non-)interactive) shells can be found at <a href="http://unix.stackexchange.com/a/46856">this StackOverflow answer</a>. By pointing <code>$SHELL</code> to the desired shell binary, one can achieve the similar behavior to <code>chsh</code>.</p>
+<p>However putting <code>exec</code> in the login profile comes with a risk that if the new shell executable crashes (e.g. failed symlink, erroneous compilation and failed dynamic library linking), one cannot establish proper shell connections. I&rsquo;ve experienced these catastrophic failures for a couple of times. Since the new shell crashes when the original shell is replacing its process, one cannot set up the proper terminal session, or simply put, one will fail to login. It was not fun at all to recover.</p>
 <h4 id="fail-safe-shell-changing">Fail-safe shell changing</h4>
-<p>I use the following code in my <code>~/.profile</code> to change the shell.</p>
+<p>To provide a fail-safe mechanism, I use the following code in my <code>~/.profile</code> to change the shell. Only login shells will read this file so it won&rsquo;t be executed when one runs a bash script.</p>
 <div class="highlight"><pre><span></span><span class="nv">FISH_BIN</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/.linuxbrew/bin/fish&quot;</span>
 
 <span class="c1"># The replacement is only done in non-fish login interactive shell in</span>
@@ -100,8 +100,16 @@ shell for macOS, Linux, and the rest of the family.</p>
 </pre></div>
 
 
-<p>So basically we told fish to run <code>echo '...'</code> to ensure it works before we change the shell. By uncommenting the <code>exec ..</code> line one will get automatically directed to fish shell. But the safest option is to run the shell change oneself.</p>
-<p>The actual setting is quite straight-forward. While the backstory here is that I messed up a few times and I was lucky enough to keep another session alive. At first I only checked <code>fish --version</code> but it was not sufficient since it didn&rsquo;t actually execute and I got a illegal instruction after changing to fish even though printing its version was fine.</p></section>
+<p>Basically we ensure whether fish executable work by running <code>echo '...'</code> before we change the shell. By uncommenting the <code>exec ..</code> line one will get automatically directed to fish shell. But the safest option is to run the shell change oneself. This kind of &ldquo;shell swapping&rdquo; will only happen when we log in the server by ssh</p>
+<p>The actual setting is quite straight-forward. While the backstory here is that I messed up a few times and I was lucky enough to keep another session alive. At first I only checked <code>fish --version</code> but it was not sufficient, since it didn&rsquo;t actually execute fish&rsquo;s main code instructions. I got a illegal instruction after changing to fish even though printing its version was fine.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn-posix">
+<p>Interestingly, fish is not a POSIX-compliant shell so it won&rsquo;t read <code>~/.profile</code> configuration file.&#160;<a class="footnote-backref" href="#fnref-posix" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div></section>
     <footer class="post-footer">
 <section class="share">
     <h2>Share</h2>
