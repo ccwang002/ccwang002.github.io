@@ -28,7 +28,7 @@ Computational Biology 和 Bioinformatics 在現在可能區分不大，本文也
 
 Coding variant 很好理解，就是在某個 gene coding region 產生的序列改變，一般會先看所謂的 nonsynonymous，即這個 variant 造成 amino acid 改變，影響到蛋白質的結構，進而影響到其功能。synonymous variant 雖然不會改變 amino acid，但在模式物種中，可能會討論不同 amino acid 對於不同 tRNA 的偏好，也許會影響到 gene expression。另一方面，它也可能會影響 transcription factor (TF) binding，某些 TF 在 biding 有偏好的 DNA sequence（motif），即使蛋白質序列不變，TF binding 變化也會影響到其他基因的調控。
 
-不過一般而言，coding variant 主要都是考慮 nonsynonymous change，這造成的變化十分具大，無法解釋像 complex traits、gene expression 高低這種細微的變化。
+不過一般而言，coding variant 主要都是考慮 nonsynonymous change，這造成的變化十分具大，無法解釋像 complex traits、gene expression 高低這種細微的變化。
 
 
 ### Noncoding elements
