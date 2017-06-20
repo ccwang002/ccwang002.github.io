@@ -148,7 +148,7 @@ DmfC2ISS64uLqHgJ3HHxhSmTLdc8KSJqzFi90ZUu
 &lt;h3 id="conda"&gt;conda&lt;/h3&gt;
 &lt;p&gt;&lt;a href="http://conda.pydata.org/"&gt;conda&lt;/a&gt; 是一個 Python 套件的管理系統，他的好處是，遇到要使用外部 library 時，會這些套件相依的 library 都一併安裝管理，也可以管理不同 Python 版本。可以想像是加強版的 pip + venv。conda 跟 pip 是相容的。&lt;/p&gt;
 &lt;p&gt;這個 Django 專案就用到很多像 numpy、pandas 的套件。為了維護方便，我考慮用 conda 來安裝。我使用的是 &lt;a href="http://conda.pydata.org/miniconda.html"&gt;miniconda3&lt;/a&gt;，預設會安裝在 &lt;code&gt;~/miniconda3&lt;/code&gt; 底下，虛擬環境會出現在 &lt;code&gt;~/miniconda3/envs/&lt;/code&gt;。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ conda create -n VENV &lt;span class="nv"&gt;python&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;3.5 numpy pandas django
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ conda create -n VENV &lt;span class="nv"&gt;python&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;.5 numpy pandas django
 $ &lt;span class="nb"&gt;source&lt;/span&gt; activate VENV
 &lt;span class="o"&gt;(&lt;/span&gt;VENV&lt;span class="o"&gt;)&lt;/span&gt; $ pip install uwsgi
 &lt;/pre&gt;&lt;/div&gt;
@@ -952,7 +952,7 @@ $ sudo apt-get install python3.5 python3.5-venv python3.5-dev
 &lt;p&gt;因為 Amazon EBS SSD I/O 數不會另外收錢（應該吧？），就建 swap file 在主硬碟裡。&lt;/p&gt;
 &lt;p&gt;Swap 設定的教學很多，這邊就參考 &lt;a href="https://wiki.archlinux.org/index.php/swap"&gt;Arch Wiki&lt;/a&gt; 上的做法，我選擇放在 &lt;code&gt;/var/swap.1&lt;/code&gt;。大小設定為 RAM 的 2 倍，即 1GB。&lt;/p&gt;
 &lt;p&gt;首先把這個檔案建出來，權限改為 600。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo /bin/dd &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/dev/zero &lt;span class="nv"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/var/swap.1 &lt;span class="nv"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1M &lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1024
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo /bin/dd &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/dev/zero &lt;span class="nv"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/var/swap.1 &lt;span class="nv"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1M &lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1024&lt;/span&gt;
 &lt;span class="c1"&gt;# or faster with fallocate&lt;/span&gt;
 sudo fallocate -l 1G /var/swap.1
 &lt;/pre&gt;&lt;/div&gt;
@@ -1544,7 +1544,7 @@ help        # print a hub message for all kinds of help
 &lt;p&gt;Intuitively, we need to implement a FASTA file parser. FASTA contains a series of sequence reads with unique ID. From a object-oriented viewpoint, we create classes &lt;code&gt;Read&lt;/code&gt; for reads and &lt;code&gt;Fasta&lt;/code&gt; for fasta files.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Read&lt;/code&gt; is easy to design and understand,&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;seq&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;seq&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
         &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;id&lt;/span&gt;
         &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;seq&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;seq&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -1563,7 +1563,7 @@ help        # print a hub message for all kinds of help
 
 &lt;p&gt;Then we have to implement the FASTA parser, which reads all read entries and converts them through &lt;code&gt;Read&lt;/code&gt;. In real world we are dealing with &lt;code&gt;myfasta.fa&lt;/code&gt;-like files, but here the input is string.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Fasta&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;raw_str&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;raw_str&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
         &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;Parse a FASTA formated string.&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
         &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;raw_str&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;raw_str&lt;/span&gt;
         &lt;span class="c1"&gt;# convert string into structured reads.&lt;/span&gt;
@@ -1678,7 +1678,7 @@ brew install screen tmux
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="http://www.alfredapp.com/"&gt;Alfred App&lt;/a&gt;：一個延伸版的 Spotlight，查應用程式很快速，同時也可以跟 Dash 整合讓查 doc 更方便。&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://macdown.uranusjr.com/"&gt;Macdown&lt;/a&gt;：OSX 上的 markdown 編輯器。&lt;/li&gt;
-&lt;/ul&gt;</content><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－Python</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-python/" rel="alternate"></link><published>2016-01-21T22:50:00-06:00</published><updated>2016-01-21T22:50:00-06:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-python/</id><summary type="html">&lt;p&gt;選擇 Python 作為第一個深入學習的語言有很多好處。他的語法跟英文相似、用互動式的方式來操作，方便以邊試邊學、內建的標準函式庫功能豐富、第三方套件，幾乎能用 Python 完成各種事情。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: May, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+&lt;/ul&gt;</content><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－Python</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-python/" rel="alternate"></link><published>2016-01-21T22:50:00-06:00</published><updated>2016-01-21T22:50:00-06:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-python/</id><summary type="html">&lt;p&gt;選擇 Python 作為第一個深入學習的語言有很多好處。他的語法跟英文相似、用互動式的方式來操作，方便以邊試邊學、內建的標準函式庫功能豐富、第三方套件，幾乎能用 Python 完成各種事情。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jun, 2017 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Python 是一種物件導向、直譯式的電腦程式語言，具有近二十年的發展歷史。它包含了一組功能完備的標準庫，能夠輕鬆完成很多常見的任務。&lt;/p&gt;
 &lt;p&gt;(From &lt;a href="https://zh.wikipedia.org/wiki/Python"&gt;Wikipedia&lt;/a&gt;)&lt;/p&gt;
@@ -1695,9 +1695,8 @@ brew install screen tmux
 &lt;/li&gt;
 &lt;li&gt;&lt;a href="#_2"&gt;相關資源&lt;/a&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="#introducing-python-python"&gt;Introducing Python（精通 Python）&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#python_1"&gt;Python 程式設計入門&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#python_2"&gt;Python 官網&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#programming-in-python-3-python-3"&gt;Programming in Python 3（精通 Python 3 程式設計）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#python_1"&gt;Python 官網&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#python_2"&gt;Python 程式設計「超入門」&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#learning-python"&gt;Learning Python&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#python-cookbookpython"&gt;Python Cookbook（Python 的錦囊妙計）&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#fluent-python-python"&gt;Fluent Python（流暢的 Python）&lt;/a&gt;&lt;/li&gt;
@@ -1740,9 +1739,12 @@ brew install screen tmux
 &lt;p&gt;所以 Python 跑得快不快？它單打獨鬥有極限，但它有很多快樂夥伴。O&amp;rsquo;Reilly 有本 &lt;a href="http://shop.oreilly.com/product/0636920028963.do"&gt;High Performance Python&lt;/a&gt; 值得一看。&lt;/p&gt;
 &lt;h3 id="python-2-python-3"&gt;Python 2 還是 Python 3，聽我朋友說…比較好？&lt;/h3&gt;
 &lt;p&gt;隨著時間流逝，每過一天我都可以更確信的說&lt;strong&gt;「請學 Python 3」&lt;/strong&gt;。現在有在用 Python 2 多半也是用 2.7 版本，要把 3.3+ 的程式碼改回 2.7 也不難。&lt;/p&gt;
+&lt;p&gt;EDIT 2017-06: Python 2.7 確定&lt;a href="https://pythonclock.org/"&gt;在 2020 年會停止官方支援&lt;/a&gt;，這不代表說在那年 Python 2.7 就會瞬間消失，目前世界上有非常多公司會繼續維護他們內部的 Python 2.x 程式碼，但新的專案都預設使用 3.5+ 版本開發。而市面上的書籍也已經都是針對 Python 3.x 撰寫，過往使用中文學習的障礙已經消失。&lt;/p&gt;
 &lt;h2 id="_2"&gt;相關資源&lt;/h2&gt;
 &lt;p&gt;連同前幾章，如果你要在自己電腦上設定 Python 開發環境，可以參考 &lt;a href="http://djangogirlstaipei.herokuapp.com/tutorials/"&gt;Djang Girls Taipei Tutorial&lt;/a&gt;。另外，&lt;a href="http://wiki.python.org.tw/Python/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%94%A8%E5%B0%B1%E4%B8%8A%E6%89%8B"&gt;Python Taiwan Wiki&lt;/a&gt; 有更完整的 Python 學習資源列表。&lt;/p&gt;
-&lt;p&gt;O&amp;rsquo;Reilly（歐萊禮）的書，官方線上商店常有 50% 折扣，PDF/ePub/Mobi 格式都有, 買一次就能輕鬆在電腦、kindle、eReader 上閱讀，能接受英文的話，十分推薦跟官方購買。中文版就以天瓏書局為主。它也有賣英文紙本，逛實體店很舒服&lt;/p&gt;
+&lt;p&gt;O&amp;rsquo;Reilly（歐萊禮）的書，&lt;a href="https://shop.oreilly.com/"&gt;官方線上商店&lt;/a&gt;常有 50% 折扣，PDF/ePub/Mobi 格式都有, 買一次就能輕鬆在電腦、Kindle、eReader 上閱讀，能接受英文的話，十分推薦跟官方購買。中文版就以&lt;a href="https://www.tenlong.com.tw/"&gt;天瓏書局&lt;/a&gt;為主。它也有賣英文紙本，逛實體店很舒服。&lt;/p&gt;
+&lt;p&gt;EDIT 2017-06: 自本文撰寫兩年以來，市面上 Python 3.x 中文書已經非常充足，在天瓏實體店甚至有一整個專櫃提供不同難易度、各種應用的專書。底下列出的書只是我個人的推薦與偏好，建議有空到書店親自翻一翻更能找到自己喜歡的學習方式。&lt;/p&gt;
+&lt;p&gt;除了書籍之外，現在越來越多以影片、互動形式的教學，像 Jessica McKellar 錄製的 &lt;a href="http://shop.oreilly.com/product/110000448.do"&gt;Introduction to Python&lt;/a&gt; 教學影片即非常受歡迎。因為我並沒有親自玩過這些新課程，它們並沒有列於此，但都歡迎讀者嘗試。&lt;/p&gt;
 &lt;h3 id="introducing-python-python"&gt;Introducing Python（精通 Python）&lt;/h3&gt;
 &lt;p&gt;O&amp;rsquo;Reilly Python 系列的書都寫得很好。這本是比較新出的，好處是它針對初學者，比較薄，能在短時間看完，文字很流暢。想要快速掌握基礎的語法的話，建議閱讀 Chp1 到 Chp7，以及 Chp8 File I/O 部份。&lt;/p&gt;
 &lt;p&gt;&amp;ldquo;Introducing Python&amp;rdquo;, Bill Lubanovic. &lt;em&gt;O&amp;rsquo;Reilly&lt;/em&gt;, 2014.11&lt;/p&gt;
@@ -1750,30 +1752,25 @@ brew install screen tmux
 &lt;li&gt;&lt;a href="http://shop.oreilly.com/product/0636920028659.do"&gt;英文書&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://www.tenlong.com.tw/items/9863477311?item_id=1007464"&gt;中文實體書&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="python_1"&gt;Python 程式設計入門&lt;/h3&gt;
-&lt;p&gt;2015 四月由&lt;a href="http://yehnan.blogspot.tw/2015/03/python_30.html"&gt;葉難&lt;/a&gt;出的中文書，針對初學者，並有列出 Python 2.7、3.3、3.4 不同版本間的差異。&lt;/p&gt;
-&lt;p&gt;《Python 程式設計入門》，葉難。博碩 2015.04&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://www.tenlong.com.tw/items/9864340050"&gt;中文實體書&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id="python_2"&gt;Python 官網&lt;/h3&gt;
-&lt;p&gt;Python 的官網除了查語言特性之外，還能用來學習怎麼使用 stdlib。Python 標準函式庫功能包山包海，在你想要做什麼之前，都應該到官網查看看是不是內建 module 就已經提供功能了。除外，還有一個簡潔的 tutorial，供初學者參考，適合有學過其他語言的人。我認為這份寫得非常好，苦於沒有中文，以前經驗不太容易推廣，但值得看&lt;/p&gt;
+&lt;h3 id="python_1"&gt;Python 官網&lt;/h3&gt;
+&lt;p&gt;Python 的官網除了查語言特性之外，還能用來學習怎麼使用 stdlib。Python 標準函式庫功能包山包海，在你想要做什麼之前，都應該到官網查看看是不是內建 module 就已經提供功能了。除外，還有一個簡潔的 tutorial，供初學者參考，適合有學過其他語言的人。我認為這份寫得非常好，苦於沒有中文，據以前經驗不太容易推廣，但值得一讀。&lt;/p&gt;
 &lt;p&gt;&amp;ldquo;Python Tutorial&amp;rdquo;, Official Python Documentation, Python Devs.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="https://docs.python.org/3/"&gt;連結&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://www.pythondoc.com/pythontutorial3/index.html"&gt;簡中翻譯&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://docs.python.org.tw/3/tutorial/index.html"&gt;繁中翻譯&lt;/a&gt;（進行中）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="programming-in-python-3-python-3"&gt;Programming in Python 3（精通 Python 3 程式設計）&lt;/h3&gt;
-&lt;p&gt;另一本 Python 中文入門書，比《深入淺出》難一點但比較像常規的教科書。&lt;/p&gt;
-&lt;p&gt;&amp;ldquo;Programming in Python 3&amp;rdquo; 2nd, Mark Summerfield. &lt;em&gt;Addison-Wesley&lt;/em&gt;, 2009.11&lt;/p&gt;
+&lt;h3 id="python_2"&gt;Python 程式設計「超入門」&lt;/h3&gt;
+&lt;p&gt;如果你完全沒有任何程式設計的基礎，例如不懂什麼是變數、如果寫程式控制電腦行為、什麼是命令列模式，那麼這本入門書應該很適合你。它用圖解的方式去解釋何謂迴圈、if-else 條件判斷、物件導向概念。這邊所列的其他「入門書」，都會假設你大概知道上述這些概念。到了最後兩章可能會突然變得複雜，這時候可以再回頭看看其他入門書，應該就會有辦法閱讀。&lt;/p&gt;
+&lt;p&gt;《Python 程式設計「超入門」》，鎌田正浩　著、陳禹豪、林子政 譯。旗標 2016.11&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="http://goo.gl/y1xf9u"&gt;英文書&lt;/a&gt; (source: InformIT)&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://www.tenlong.com.tw/items/9862760702"&gt;中文實體書&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://amzn.asia/dQgghO8"&gt;日文書&lt;/a&gt; (source: Amazon)&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.tenlong.com.tw/products/9789863123798"&gt;中文實體書&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id="learning-python"&gt;Learning Python&lt;/h3&gt;
 &lt;p&gt;雖然名稱看起來很像是 Python 的入門書，但它的篇幅已經來到 1600 頁，實在無法推薦給初學者。它在一本書內把 Python 幾乎所有語言特性都說清楚，同時考慮到 Python 2 和 3 版本。當你想要了解，例如 MRO 的順序、何謂 unbounded, bound method，這本書詳細的程度不會讓你失望，只怕你沒空讀。&lt;/p&gt;
 &lt;p&gt;我當初看的是這一本 3ed 中文版（現已絕版），那時還沒有考慮 Python 3。&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;Learning Python&amp;rdquo; 5ed, Mark Lutz. &lt;em&gt;O&amp;rsquo;Reilly&lt;/em&gt;, 2013.06&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="http://shop.oreilly.com/product/0636920028154.do"&gt;英文書&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -1818,7 +1815,8 @@ brew install screen tmux
 &lt;p&gt;用 Python 解決一些實驗室會碰到的 Bioinfo 問題。有個網站 Rosalind 出了一系列的題目，我選了一些讓各位練習，請參考&lt;a href="#file-a1_python_bioinfo-md"&gt;附錄 1&lt;/a&gt;。&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;EDIT 2016-05-22: 把 &lt;a href="https://www.ptt.cc/bbs/Python/M.1463750830.A.DA8.html"&gt;ptt 發文&lt;/a&gt; 的內容更新上來，增加一些新書和中文翻譯；調整推薦的順序。&lt;/p&gt;</content><category term="zh"></category><category term="labcoding"></category><category term="python"></category></entry><entry><title>Coding 初學指南－版本控制</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/" rel="alternate"></link><published>2016-01-21T22:40:00-06:00</published><updated>2016-01-21T22:40:00-06:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-version-control/</id><summary type="html">&lt;p&gt;所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code 搞炸掉的時候，還能回到先前有保存的狀態。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+&lt;p&gt;EDIT 2016-05-22: 把 &lt;a href="https://www.ptt.cc/bbs/Python/M.1463750830.A.DA8.html"&gt;ptt 發文&lt;/a&gt; 的內容更新上來，增加一些新書和中文翻譯；調整推薦的順序。&lt;br&gt;
+EDIT 2017-06-20: 更新書籍資訊與 2/3 比較。&lt;/p&gt;</content><category term="zh"></category><category term="labcoding"></category><category term="python"></category></entry><entry><title>Coding 初學指南－版本控制</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/" rel="alternate"></link><published>2016-01-21T22:40:00-06:00</published><updated>2016-01-21T22:40:00-06:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-version-control/</id><summary type="html">&lt;p&gt;所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code 搞炸掉的時候，還能回到先前有保存的狀態。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;p&gt;所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code 搞炸掉的時候，還能回到先前有保存的狀態。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;h3 id="_1"&gt;為什麼使用版本控制？&lt;/h3&gt;
@@ -2734,7 +2732,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;span class="c1"&gt;# Data cleaning&lt;/span&gt;
 &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;columns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;iloc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;:]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;
 &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;政黨&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;政黨&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;str&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;replace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-    &lt;span class="s1"&gt;r&amp;#39;\[(註 |)\d+\]&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+    &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;\[(註 |)\d+\]&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;政黨&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="n"&gt;df&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;replace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;－&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -2801,7 +2799,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;如果只是改主題，不需要更動 Notebook 設定檔。&lt;/p&gt;
 &lt;p&gt;目前自己使用的主題來自 &lt;a href="https://github.com/dunovank/jupyter-themes"&gt;dunovank&lt;/a&gt;，他有收集了至少深淺兩色，應該足夠使用了。CSS 從別人的基礎上來調整也相對簡單，我自己有&lt;a href="https://github.com/ccwang002/dotfiles/tree/master/ipy_profile/ipython3"&gt;改寫了一點&lt;/a&gt;（忘了改什麼)。dunovank 有寫個安裝 theme 的套件，不過不用也沒關係，只要準備好 CSS 就能用。我用 Grade3 這個主題來示範。&lt;/p&gt;
 &lt;p&gt;把 &lt;code&gt;custom.css&lt;/code&gt; 放到 &lt;code&gt;~/.jupyter/static/custom.css&lt;/code&gt;。設定的目錄長得如下：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; tree ~/.jupyter -F -L 3
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; tree ~/.jupyter -F -L &lt;span class="m"&gt;3&lt;/span&gt;
 &lt;span class="go"&gt;~/.jupyter&lt;/span&gt;
 &lt;span class="go"&gt;├── custom/&lt;/span&gt;
 &lt;span class="go"&gt;│   └── custom.css -&amp;gt; /path/to/custom_light.css&lt;/span&gt;
@@ -3120,8 +3118,8 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;draw_member.views&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;home&lt;/span&gt;
 
 &lt;span class="n"&gt;urlpatterns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;r&amp;#39;^$&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;home&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
-    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;r&amp;#39;^admin/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;admin&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urls&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
+    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^$&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;home&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^admin/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;admin&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urls&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
 &lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -3140,7 +3138,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;.views&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;home&lt;/span&gt;  &lt;span class="c1"&gt;# explicit relative import&lt;/span&gt;
 
 &lt;span class="n"&gt;urlpatterns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;r&amp;#39;^$&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;home&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^$&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;home&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
 &lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -3153,8 +3151,8 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 
 
 &lt;span class="n"&gt;urlpatterns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;r&amp;#39;^admin/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;admin&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urls&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
-    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;r&amp;#39;^&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;draw_member.urls&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
+    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^admin/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;admin&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urls&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
+    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;draw_member.urls&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
 &lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -3515,9 +3513,9 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;.views&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;draw&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;history&lt;/span&gt;
 
 &lt;span class="n"&gt;urlpatterns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;r&amp;#39;^$&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;home&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
-    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;r&amp;#39;^draw/$&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;draw&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;draw&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
-    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;r&amp;#39;^history/$&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;history&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;history&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^$&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;home&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^draw/$&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;draw&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;draw&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^history/$&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;history&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;history&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -4142,22 +4140,22 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sqlite3&lt;/span&gt;
 
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;tz_aware_timestamp_adapter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;val&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-    &lt;span class="n"&gt;datepart&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;timepart&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;val&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot; &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="n"&gt;year&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;month&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;day&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;datepart&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;-&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="n"&gt;datepart&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;timepart&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;val&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot; &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;year&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;month&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;day&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;datepart&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;-&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 
-    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;+&amp;quot;&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;timepart&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-        &lt;span class="n"&gt;timepart&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tz_offset&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;timepart&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rsplit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;+&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;tz_offset&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;00:00&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;+&amp;quot;&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;timepart&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;timepart&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tz_offset&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;timepart&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rsplit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;+&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;tz_offset&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;00:00&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
             &lt;span class="n"&gt;tzinfo&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;timezone&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;utc&lt;/span&gt;
         &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-            &lt;span class="n"&gt;hours&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;minutes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tz_offset&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;:&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+            &lt;span class="n"&gt;hours&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;minutes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tz_offset&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;:&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
             &lt;span class="n"&gt;tzinfo&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;timezone&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
                 &lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;timedelta&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hours&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;hours&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;minutes&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;minutes&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
     &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
         &lt;span class="n"&gt;tzinfo&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;
 
-    &lt;span class="n"&gt;timepart_full&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;timepart&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;.&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="n"&gt;hours&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;minutes&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;seconds&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;timepart_full&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;:&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="n"&gt;timepart_full&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;timepart&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;.&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;hours&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;minutes&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;seconds&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;timepart_full&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;:&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
     &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;timepart_full&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
         &lt;span class="n"&gt;microseconds&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;&lt;span class="si"&gt;{:0&amp;lt;6.6}&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;timepart_full&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;decode&lt;/span&gt;&lt;span class="p"&gt;()))&lt;/span&gt;
     &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -4594,7 +4592,7 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;h3 id="flask"&gt;Flask 基本架構&lt;/h3&gt;
 &lt;p&gt;&lt;a href="http://flask.pocoo.org/"&gt;Flask&lt;/a&gt; 的 web server 可以把所有功能都寫在一個檔案，在這邊就以 &lt;code&gt;draw_member.py&lt;/code&gt; 為例子。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;flask&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Flask&lt;/span&gt;
-&lt;span class="n"&gt;app&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Flask&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;__name__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;app&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Flask&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="vm"&gt;__name__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 
 &lt;span class="nd"&gt;@app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;route&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -4602,7 +4600,7 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;lt;p&amp;gt;Hello World!&amp;lt;/p&amp;gt;&amp;quot;&lt;/span&gt;
 
 
-&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vm"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;debug&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -4629,7 +4627,7 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sqlite3&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;flask&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Flask&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;g&lt;/span&gt;
 
-&lt;span class="n"&gt;app&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Flask&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;__name__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;app&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Flask&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="vm"&gt;__name__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;SQLITE_DB_PATH&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;members.db&amp;#39;&lt;/span&gt;
 &lt;span class="n"&gt;SQLITE_DB_SCHEMA&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;create_db.sql&amp;#39;&lt;/span&gt;
 &lt;span class="n"&gt;MEMBER_CSV_PATH&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;members.csv&amp;#39;&lt;/span&gt;
@@ -4654,7 +4652,7 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
         &lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 
 
-&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vm"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;debug&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -5503,7 +5501,7 @@ Hello World_
 &lt;p&gt;意外的小發現，在內文變窄之後，還可以加上右側的 sidenote，像是 &lt;a href="http://www.daveliepmann.com/tufte-css/"&gt;Tufte CSS&lt;/a&gt; 這樣，有時會比 footnote 好用，但可能又變回內容太擠的狀態。&lt;/p&gt;
 &lt;p&gt;最後是在段落前後距離調整，把標題接內文的間距變小了，但段落間的間距調大。學到了一些以前不會的 CSS 語法，像&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nt"&gt;p&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="nb"&gt;margin-top&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1.5em&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;margin-top&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;1.5&lt;/span&gt;&lt;span class="kt"&gt;em&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 

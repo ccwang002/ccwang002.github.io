@@ -118,7 +118,7 @@
 <p>Intuitively, we need to implement a FASTA file parser. FASTA contains a series of sequence reads with unique ID. From a object-oriented viewpoint, we create classes <code>Read</code> for reads and <code>Fasta</code> for fasta files.</p>
 <p><code>Read</code> is easy to design and understand,</p>
 <div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Read</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">seq</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">seq</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seq</span> <span class="o">=</span> <span class="n">seq</span>
 </pre></div>
@@ -137,7 +137,7 @@
 
 <p>Then we have to implement the FASTA parser, which reads all read entries and converts them through <code>Read</code>. In real world we are dealing with <code>myfasta.fa</code>-like files, but here the input is string.</p>
 <div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Fasta</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_str</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse a FASTA formated string.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">raw_str</span> <span class="o">=</span> <span class="n">raw_str</span>
         <span class="c1"># convert string into structured reads.</span>

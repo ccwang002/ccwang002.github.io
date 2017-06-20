@@ -282,8 +282,8 @@
 <span class="kn">from</span> <span class="nn">draw_member.views</span> <span class="k">import</span> <span class="n">home</span>
 
 <span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">url</span><span class="p">(</span><span class="s1">r&#39;^$&#39;</span><span class="p">,</span> <span class="n">home</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;home&quot;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="s1">r&#39;^admin/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">)),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^$&#39;</span><span class="p">,</span> <span class="n">home</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;home&quot;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^admin/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">)),</span>
 <span class="p">]</span>
 </pre></div>
 
@@ -302,7 +302,7 @@
 <span class="kn">from</span> <span class="nn">.views</span> <span class="k">import</span> <span class="n">home</span>  <span class="c1"># explicit relative import</span>
 
 <span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">url</span><span class="p">(</span><span class="s1">r&#39;^$&#39;</span><span class="p">,</span> <span class="n">home</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;home&quot;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^$&#39;</span><span class="p">,</span> <span class="n">home</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;home&quot;</span><span class="p">),</span>
 <span class="p">]</span>
 </pre></div>
 
@@ -315,8 +315,8 @@
 
 
 <span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">url</span><span class="p">(</span><span class="s1">r&#39;^admin/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">)),</span>
-    <span class="n">url</span><span class="p">(</span><span class="s1">r&#39;^&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">&#39;draw_member.urls&#39;</span><span class="p">)),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^admin/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">)),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">&#39;draw_member.urls&#39;</span><span class="p">)),</span>
 <span class="p">]</span>
 </pre></div>
 
@@ -677,9 +677,9 @@
 <span class="kn">from</span> <span class="nn">.views</span> <span class="k">import</span> <span class="n">home</span><span class="p">,</span> <span class="n">draw</span><span class="p">,</span> <span class="n">history</span>
 
 <span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">url</span><span class="p">(</span><span class="s1">r&#39;^$&#39;</span><span class="p">,</span> <span class="n">home</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;home&quot;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="s1">r&#39;^draw/$&#39;</span><span class="p">,</span> <span class="n">draw</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;draw&quot;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="s1">r&#39;^history/$&#39;</span><span class="p">,</span> <span class="n">history</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;history&quot;</span><span class="p">)</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^$&#39;</span><span class="p">,</span> <span class="n">home</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;home&quot;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^draw/$&#39;</span><span class="p">,</span> <span class="n">draw</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;draw&quot;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^history/$&#39;</span><span class="p">,</span> <span class="n">history</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;history&quot;</span><span class="p">)</span>
 <span class="p">]</span>
 </pre></div>
 

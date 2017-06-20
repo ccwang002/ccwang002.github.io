@@ -240,7 +240,7 @@ $ sudo apt-get install python3.5 python3.5-venv python3.5-dev
 <p>因為 Amazon EBS SSD I/O 數不會另外收錢（應該吧？），就建 swap file 在主硬碟裡。</p>
 <p>Swap 設定的教學很多，這邊就參考 <a href="https://wiki.archlinux.org/index.php/swap">Arch Wiki</a> 上的做法，我選擇放在 <code>/var/swap.1</code>。大小設定為 RAM 的 2 倍，即 1GB。</p>
 <p>首先把這個檔案建出來，權限改為 600。</p>
-<div class="highlight"><pre><span></span>sudo /bin/dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/var/swap.1 <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span>1024
+<div class="highlight"><pre><span></span>sudo /bin/dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/var/swap.1 <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span><span class="m">1024</span>
 <span class="c1"># or faster with fallocate</span>
 sudo fallocate -l 1G /var/swap.1
 </pre></div>

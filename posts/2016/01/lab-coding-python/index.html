@@ -61,7 +61,7 @@
                 <a href="https://blog.liang2.tw/tag/labcoding/">labcoding</a>
                 <a href="https://blog.liang2.tw/tag/python/">python</a>
     </span>
-    <section class="post-content"><p>Last Edited: May, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）</p>
+    <section class="post-content"><p>Last Edited: Jun, 2017 （如果內容有誤，你可以留言，或用任何管道告訴我）</p>
 <blockquote>
 <p>Python 是一種物件導向、直譯式的電腦程式語言，具有近二十年的發展歷史。它包含了一組功能完備的標準庫，能夠輕鬆完成很多常見的任務。</p>
 <p>(From <a href="https://zh.wikipedia.org/wiki/Python">Wikipedia</a>)</p>
@@ -78,9 +78,8 @@
 </li>
 <li><a href="#_2">相關資源</a><ul>
 <li><a href="#introducing-python-python">Introducing Python（精通 Python）</a></li>
-<li><a href="#python_1">Python 程式設計入門</a></li>
-<li><a href="#python_2">Python 官網</a></li>
-<li><a href="#programming-in-python-3-python-3">Programming in Python 3（精通 Python 3 程式設計）</a></li>
+<li><a href="#python_1">Python 官網</a></li>
+<li><a href="#python_2">Python 程式設計「超入門」</a></li>
 <li><a href="#learning-python">Learning Python</a></li>
 <li><a href="#python-cookbookpython">Python Cookbook（Python 的錦囊妙計）</a></li>
 <li><a href="#fluent-python-python">Fluent Python（流暢的 Python）</a></li>
@@ -123,9 +122,12 @@
 <p>所以 Python 跑得快不快？它單打獨鬥有極限，但它有很多快樂夥伴。O&rsquo;Reilly 有本 <a href="http://shop.oreilly.com/product/0636920028963.do">High Performance Python</a> 值得一看。</p>
 <h3 id="python-2-python-3">Python 2 還是 Python 3，聽我朋友說…比較好？</h3>
 <p>隨著時間流逝，每過一天我都可以更確信的說<strong>「請學 Python 3」</strong>。現在有在用 Python 2 多半也是用 2.7 版本，要把 3.3+ 的程式碼改回 2.7 也不難。</p>
+<p>EDIT 2017-06: Python 2.7 確定<a href="https://pythonclock.org/">在 2020 年會停止官方支援</a>，這不代表說在那年 Python 2.7 就會瞬間消失，目前世界上有非常多公司會繼續維護他們內部的 Python 2.x 程式碼，但新的專案都預設使用 3.5+ 版本開發。而市面上的書籍也已經都是針對 Python 3.x 撰寫，過往使用中文學習的障礙已經消失。</p>
 <h2 id="_2">相關資源</h2>
 <p>連同前幾章，如果你要在自己電腦上設定 Python 開發環境，可以參考 <a href="http://djangogirlstaipei.herokuapp.com/tutorials/">Djang Girls Taipei Tutorial</a>。另外，<a href="http://wiki.python.org.tw/Python/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%94%A8%E5%B0%B1%E4%B8%8A%E6%89%8B">Python Taiwan Wiki</a> 有更完整的 Python 學習資源列表。</p>
-<p>O&rsquo;Reilly（歐萊禮）的書，官方線上商店常有 50% 折扣，PDF/ePub/Mobi 格式都有, 買一次就能輕鬆在電腦、kindle、eReader 上閱讀，能接受英文的話，十分推薦跟官方購買。中文版就以天瓏書局為主。它也有賣英文紙本，逛實體店很舒服</p>
+<p>O&rsquo;Reilly（歐萊禮）的書，<a href="https://shop.oreilly.com/">官方線上商店</a>常有 50% 折扣，PDF/ePub/Mobi 格式都有, 買一次就能輕鬆在電腦、Kindle、eReader 上閱讀，能接受英文的話，十分推薦跟官方購買。中文版就以<a href="https://www.tenlong.com.tw/">天瓏書局</a>為主。它也有賣英文紙本，逛實體店很舒服。</p>
+<p>EDIT 2017-06: 自本文撰寫兩年以來，市面上 Python 3.x 中文書已經非常充足，在天瓏實體店甚至有一整個專櫃提供不同難易度、各種應用的專書。底下列出的書只是我個人的推薦與偏好，建議有空到書店親自翻一翻更能找到自己喜歡的學習方式。</p>
+<p>除了書籍之外，現在越來越多以影片、互動形式的教學，像 Jessica McKellar 錄製的 <a href="http://shop.oreilly.com/product/110000448.do">Introduction to Python</a> 教學影片即非常受歡迎。因為我並沒有親自玩過這些新課程，它們並沒有列於此，但都歡迎讀者嘗試。</p>
 <h3 id="introducing-python-python">Introducing Python（精通 Python）</h3>
 <p>O&rsquo;Reilly Python 系列的書都寫得很好。這本是比較新出的，好處是它針對初學者，比較薄，能在短時間看完，文字很流暢。想要快速掌握基礎的語法的話，建議閱讀 Chp1 到 Chp7，以及 Chp8 File I/O 部份。</p>
 <p>&ldquo;Introducing Python&rdquo;, Bill Lubanovic. <em>O&rsquo;Reilly</em>, 2014.11</p>
@@ -133,30 +135,25 @@
 <li><a href="http://shop.oreilly.com/product/0636920028659.do">英文書</a></li>
 <li><a href="http://www.tenlong.com.tw/items/9863477311?item_id=1007464">中文實體書</a></li>
 </ul>
-<h3 id="python_1">Python 程式設計入門</h3>
-<p>2015 四月由<a href="http://yehnan.blogspot.tw/2015/03/python_30.html">葉難</a>出的中文書，針對初學者，並有列出 Python 2.7、3.3、3.4 不同版本間的差異。</p>
-<p>《Python 程式設計入門》，葉難。博碩 2015.04</p>
-<ul>
-<li><a href="http://www.tenlong.com.tw/items/9864340050">中文實體書</a></li>
-</ul>
-<h3 id="python_2">Python 官網</h3>
-<p>Python 的官網除了查語言特性之外，還能用來學習怎麼使用 stdlib。Python 標準函式庫功能包山包海，在你想要做什麼之前，都應該到官網查看看是不是內建 module 就已經提供功能了。除外，還有一個簡潔的 tutorial，供初學者參考，適合有學過其他語言的人。我認為這份寫得非常好，苦於沒有中文，以前經驗不太容易推廣，但值得看</p>
+<h3 id="python_1">Python 官網</h3>
+<p>Python 的官網除了查語言特性之外，還能用來學習怎麼使用 stdlib。Python 標準函式庫功能包山包海，在你想要做什麼之前，都應該到官網查看看是不是內建 module 就已經提供功能了。除外，還有一個簡潔的 tutorial，供初學者參考，適合有學過其他語言的人。我認為這份寫得非常好，苦於沒有中文，據以前經驗不太容易推廣，但值得一讀。</p>
 <p>&ldquo;Python Tutorial&rdquo;, Official Python Documentation, Python Devs.</p>
 <ul>
 <li><a href="https://docs.python.org/3/">連結</a></li>
 <li><a href="http://www.pythondoc.com/pythontutorial3/index.html">簡中翻譯</a></li>
 <li><a href="https://docs.python.org.tw/3/tutorial/index.html">繁中翻譯</a>（進行中）</li>
 </ul>
-<h3 id="programming-in-python-3-python-3">Programming in Python 3（精通 Python 3 程式設計）</h3>
-<p>另一本 Python 中文入門書，比《深入淺出》難一點但比較像常規的教科書。</p>
-<p>&ldquo;Programming in Python 3&rdquo; 2nd, Mark Summerfield. <em>Addison-Wesley</em>, 2009.11</p>
+<h3 id="python_2">Python 程式設計「超入門」</h3>
+<p>如果你完全沒有任何程式設計的基礎，例如不懂什麼是變數、如果寫程式控制電腦行為、什麼是命令列模式，那麼這本入門書應該很適合你。它用圖解的方式去解釋何謂迴圈、if-else 條件判斷、物件導向概念。這邊所列的其他「入門書」，都會假設你大概知道上述這些概念。到了最後兩章可能會突然變得複雜，這時候可以再回頭看看其他入門書，應該就會有辦法閱讀。</p>
+<p>《Python 程式設計「超入門」》，鎌田正浩　著、陳禹豪、林子政 譯。旗標 2016.11</p>
 <ul>
-<li><a href="http://goo.gl/y1xf9u">英文書</a> (source: InformIT)</li>
-<li><a href="http://www.tenlong.com.tw/items/9862760702">中文實體書</a></li>
+<li><a href="http://amzn.asia/dQgghO8">日文書</a> (source: Amazon)</li>
+<li><a href="https://www.tenlong.com.tw/products/9789863123798">中文實體書</a></li>
 </ul>
 <h3 id="learning-python">Learning Python</h3>
 <p>雖然名稱看起來很像是 Python 的入門書，但它的篇幅已經來到 1600 頁，實在無法推薦給初學者。它在一本書內把 Python 幾乎所有語言特性都說清楚，同時考慮到 Python 2 和 3 版本。當你想要了解，例如 MRO 的順序、何謂 unbounded, bound method，這本書詳細的程度不會讓你失望，只怕你沒空讀。</p>
 <p>我當初看的是這一本 3ed 中文版（現已絕版），那時還沒有考慮 Python 3。</p>
+<p>&ldquo;Learning Python&rdquo; 5ed, Mark Lutz. <em>O&rsquo;Reilly</em>, 2013.06</p>
 <ul>
 <li><a href="http://shop.oreilly.com/product/0636920028154.do">英文書</a></li>
 </ul>
@@ -201,7 +198,8 @@
 <p>用 Python 解決一些實驗室會碰到的 Bioinfo 問題。有個網站 Rosalind 出了一系列的題目，我選了一些讓各位練習，請參考<a href="#file-a1_python_bioinfo-md">附錄 1</a>。</p>
 </li>
 </ol>
-<p>EDIT 2016-05-22: 把 <a href="https://www.ptt.cc/bbs/Python/M.1463750830.A.DA8.html">ptt 發文</a> 的內容更新上來，增加一些新書和中文翻譯；調整推薦的順序。</p></section>
+<p>EDIT 2016-05-22: 把 <a href="https://www.ptt.cc/bbs/Python/M.1463750830.A.DA8.html">ptt 發文</a> 的內容更新上來，增加一些新書和中文翻譯；調整推薦的順序。<br>
+EDIT 2017-06-20: 更新書籍資訊與 2/3 比較。</p></section>
     <footer class="post-footer">
 <section class="share">
     <h2>Share</h2>

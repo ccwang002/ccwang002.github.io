@@ -315,7 +315,7 @@ $ sudo apt-get install python3.5 python3.5-venv python3.5-dev
 &lt;p&gt;因為 Amazon EBS SSD I/O 數不會另外收錢（應該吧？），就建 swap file 在主硬碟裡。&lt;/p&gt;
 &lt;p&gt;Swap 設定的教學很多，這邊就參考 &lt;a href="https://wiki.archlinux.org/index.php/swap"&gt;Arch Wiki&lt;/a&gt; 上的做法，我選擇放在 &lt;code&gt;/var/swap.1&lt;/code&gt;。大小設定為 RAM 的 2 倍，即 1GB。&lt;/p&gt;
 &lt;p&gt;首先把這個檔案建出來，權限改為 600。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo /bin/dd &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/dev/zero &lt;span class="nv"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/var/swap.1 &lt;span class="nv"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1M &lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1024
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo /bin/dd &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/dev/zero &lt;span class="nv"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/var/swap.1 &lt;span class="nv"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1M &lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1024&lt;/span&gt;
 &lt;span class="c1"&gt;# or faster with fallocate&lt;/span&gt;
 sudo fallocate -l 1G /var/swap.1
 &lt;/pre&gt;&lt;/div&gt;

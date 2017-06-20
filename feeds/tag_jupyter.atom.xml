@@ -221,7 +221,7 @@ ffmpeg -i Untitled.mov &lt;span class="se"&gt;\&lt;/span&gt;
 &lt;p&gt;如果只是改主題，不需要更動 Notebook 設定檔。&lt;/p&gt;
 &lt;p&gt;目前自己使用的主題來自 &lt;a href="https://github.com/dunovank/jupyter-themes"&gt;dunovank&lt;/a&gt;，他有收集了至少深淺兩色，應該足夠使用了。CSS 從別人的基礎上來調整也相對簡單，我自己有&lt;a href="https://github.com/ccwang002/dotfiles/tree/master/ipy_profile/ipython3"&gt;改寫了一點&lt;/a&gt;（忘了改什麼)。dunovank 有寫個安裝 theme 的套件，不過不用也沒關係，只要準備好 CSS 就能用。我用 Grade3 這個主題來示範。&lt;/p&gt;
 &lt;p&gt;把 &lt;code&gt;custom.css&lt;/code&gt; 放到 &lt;code&gt;~/.jupyter/static/custom.css&lt;/code&gt;。設定的目錄長得如下：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; tree ~/.jupyter -F -L 3
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; tree ~/.jupyter -F -L &lt;span class="m"&gt;3&lt;/span&gt;
 &lt;span class="go"&gt;~/.jupyter&lt;/span&gt;
 &lt;span class="go"&gt;├── custom/&lt;/span&gt;
 &lt;span class="go"&gt;│   └── custom.css -&amp;gt; /path/to/custom_light.css&lt;/span&gt;

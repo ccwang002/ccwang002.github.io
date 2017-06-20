@@ -505,7 +505,7 @@ $ sed -n &lt;span class="s1"&gt;&amp;#39;1~4s/^@/&amp;gt;/p;2~4p&amp;#39;&lt;/sp
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;$seqtk&lt;/span&gt;
 
 Usage:   seqtk &amp;lt;command&amp;gt; &amp;lt;arguments&amp;gt;
-Version: 1.0-r77-dirty
+Version: &lt;span class="m"&gt;1&lt;/span&gt;.0-r77-dirty
 
 Command: seq       common transformation of FASTA/Q
          comp      get the nucleotide composition of FASTA/Q
@@ -657,11 +657,9 @@ $$&lt;/div&gt;
     }
 
     var mathjaxscript = document.createElement('script');
-    var location_protocol = (false) ? 'https' : document.location.protocol;
-    if (location_protocol !== 'http' &amp;&amp; location_protocol !== 'https') location_protocol = 'https:';
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
