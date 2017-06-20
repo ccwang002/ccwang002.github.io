@@ -6,15 +6,16 @@ sortorder: 1
 
 (This page also has a [Chinese version](./zh.html#about-me))
 
-Hi, I'm Liang-Bo Wang（王亮博）. Most people call me 亮亮 (or liang<sup>2</sup>, pronounced as Liang-liang). In the United States, people now call me Bobo since it is easier to pronunce :)
+Hi, I'm Liang-Bo Wang（王亮博）. Most people call me 亮亮 (or liang<sup>2</sup>, pronounced as Liang-liang). In the United States, people call me Bobo since it is easier to pronunce :)
 
-I'm studying Computational and Systems Biology as a Ph.D student in Washington University in St. Louis. My previous interns include Microsoft Research Asia (MSRA) and [Pinkoi]. I grew up in Taipei, Taiwan.
+I'm studying Computational and Systems Biology as a Ph.D. student in Washington University in St. Louis. My graduate advisor is [Prof. Li Ding][dinglab]. My previous interns include Microsoft Research Asia (MSRA) and [Pinkoi]. I grew up in Taipei, Taiwan.
 
-My CV is [here](/CV.pdf) (a PDF file).
+You can find my CV [here](/CV.pdf).
 
+[dinglab]: http://dinglab.wustl.edu/
 
 ### Programming (communities)
-Before studying in St. Louis, I was active in Taipei Python and R meetups and enjoyed giving talks. The full talk list is [here][talks].
+Before studying in St. Louis, I was active in Taipei Python and R meetups and enjoyed giving talks. The full talk list can be found [here][talks].
 
 I speak fluent Python (especially 3.x) and R. My daily research relies on Python scientific computing stack, such as Numpy, pandas, Jupyter(IPython), matplotlib, and Cython. For statistics, I use R more frequently and communicate between Python and R using rpy2.
 
