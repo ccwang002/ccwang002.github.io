@@ -7,7 +7,7 @@ Category: Coding
 Summary: 選擇 Python 作為第一個深入學習的語言有很多好處。他的語法跟英文相似、用互動式的方式來操作，方便以邊試邊學、內建的標準函式庫功能豐富、第三方套件，幾乎能用 Python 完成各種事情。
 ---
 
-Last Edited: May, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）
+Last Edited: Jun, 2017 （如果內容有誤，你可以留言，或用任何管道告訴我）
 
 > Python 是一種物件導向、直譯式的電腦程式語言，具有近二十年的發展歷史。它包含了一組功能完備的標準庫，能夠輕鬆完成很多常見的任務。
 >
@@ -76,13 +76,19 @@ Python 的確執行效率比編譯式的語言差（例：C/C++、Java），但�
 
 隨著時間流逝，每過一天我都可以更確信的說**「請學 Python 3」**。現在有在用 Python 2 多半也是用 2.7 版本，要把 3.3+ 的程式碼改回 2.7 也不難。
 
+EDIT 2017-06: Python 2.7 確定[在 2020 年會停止官方支援](https://pythonclock.org/)，這不代表說在那年 Python 2.7 就會瞬間消失，目前世界上有非常多公司會繼續維護他們內部的 Python 2.x 程式碼，但新的專案都預設使用 3.5+ 版本開發。而市面上的書籍也已經都是針對 Python 3.x 撰寫，過往使用中文學習的障礙已經消失。
+
 
 
 ## 相關資源
 
 連同前幾章，如果你要在自己電腦上設定 Python 開發環境，可以參考 [Djang Girls Taipei Tutorial](http://djangogirlstaipei.herokuapp.com/tutorials/)。另外，[Python Taiwan Wiki](http://wiki.python.org.tw/Python/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%94%A8%E5%B0%B1%E4%B8%8A%E6%89%8B) 有更完整的 Python 學習資源列表。
 
-O'Reilly（歐萊禮）的書，官方線上商店常有 50% 折扣，PDF/ePub/Mobi 格式都有, 買一次就能輕鬆在電腦、kindle、eReader 上閱讀，能接受英文的話，十分推薦跟官方購買。中文版就以天瓏書局為主。它也有賣英文紙本，逛實體店很舒服
+O'Reilly（歐萊禮）的書，[官方線上商店](https://shop.oreilly.com/)常有 50% 折扣，PDF/ePub/Mobi 格式都有, 買一次就能輕鬆在電腦、Kindle、eReader 上閱讀，能接受英文的話，十分推薦跟官方購買。中文版就以[天瓏書局](https://www.tenlong.com.tw/)為主。它也有賣英文紙本，逛實體店很舒服。
+
+EDIT 2017-06: 自本文撰寫兩年以來，市面上 Python 3.x 中文書已經非常充足，在天瓏實體店甚至有一整個專櫃提供不同難易度、各種應用的專書。底下列出的書只是我個人的推薦與偏好，建議有空到書店親自翻一翻更能找到自己喜歡的學習方式。
+
+除了書籍之外，現在越來越多以影片、互動形式的教學，像 Jessica McKellar 錄製的 [Introduction to Python](http://shop.oreilly.com/product/110000448.do) 教學影片即非常受歡迎。因為我並沒有親自玩過這些新課程，它們並沒有列於此，但都歡迎讀者嘗試。
 
 
 ### Introducing Python（精通 Python）
@@ -95,18 +101,9 @@ O'Reilly Python 系列的書都寫得很好。這本是比較新出的，好處�
 - [中文實體書](http://www.tenlong.com.tw/items/9863477311?item_id=1007464)
 
 
-### Python 程式設計入門
-
-2015 四月由[葉難](http://yehnan.blogspot.tw/2015/03/python_30.html)出的中文書，針對初學者，並有列出 Python 2.7、3.3、3.4 不同版本間的差異。
-
-《Python 程式設計入門》，葉難。博碩 2015.04
-
-- [中文實體書](http://www.tenlong.com.tw/items/9864340050)
-
-
 ### Python 官網
 
-Python 的官網除了查語言特性之外，還能用來學習怎麼使用 stdlib。Python 標準函式庫功能包山包海，在你想要做什麼之前，都應該到官網查看看是不是內建 module 就已經提供功能了。除外，還有一個簡潔的 tutorial，供初學者參考，適合有學過其他語言的人。我認為這份寫得非常好，苦於沒有中文，以前經驗不太容易推廣，但值得看
+Python 的官網除了查語言特性之外，還能用來學習怎麼使用 stdlib。Python 標準函式庫功能包山包海，在你想要做什麼之前，都應該到官網查看看是不是內建 module 就已經提供功能了。除外，還有一個簡潔的 tutorial，供初學者參考，適合有學過其他語言的人。我認為這份寫得非常好，苦於沒有中文，據以前經驗不太容易推廣，但值得一讀。
 
 "Python Tutorial", Official Python Documentation, Python Devs.
 
@@ -115,14 +112,14 @@ Python 的官網除了查語言特性之外，還能用來學習怎麼使用 std
 - [繁中翻譯](https://docs.python.org.tw/3/tutorial/index.html)（進行中）
 
 
-### Programming in Python 3（精通 Python 3 程式設計）
+### Python 程式設計「超入門」
 
-另一本 Python 中文入門書，比《深入淺出》難一點但比較像常規的教科書。
+如果你完全沒有任何程式設計的基礎，例如不懂什麼是變數、如果寫程式控制電腦行為、什麼是命令列模式，那麼這本入門書應該很適合你。它用圖解的方式去解釋何謂迴圈、if-else 條件判斷、物件導向概念。這邊所列的其他「入門書」，都會假設你大概知道上述這些概念。到了最後兩章可能會突然變得複雜，這時候可以再回頭看看其他入門書，應該就會有辦法閱讀。
 
-"Programming in Python 3" 2nd, Mark Summerfield. *Addison-Wesley*, 2009.11
+《Python 程式設計「超入門」》，鎌田正浩　著、陳禹豪、林子政 譯。旗標 2016.11
 
-- [英文書](http://goo.gl/y1xf9u) (source: InformIT)
-- [中文實體書](http://www.tenlong.com.tw/items/9862760702)
+- [日文書](http://amzn.asia/dQgghO8) (source: Amazon)
+- [中文實體書](https://www.tenlong.com.tw/products/9789863123798)
 
 
 ### Learning Python
@@ -131,11 +128,16 @@ Python 的官網除了查語言特性之外，還能用來學習怎麼使用 std
 
 我當初看的是這一本 3ed 中文版（現已絕版），那時還沒有考慮 Python 3。
 
+"Learning Python" 5ed, Mark Lutz. *O'Reilly*, 2013.06
+
 - [英文書](http://shop.oreilly.com/product/0636920028154.do)
 
 
 ### Python Cookbook（Python 的錦囊妙計）
-這本不是入門書但很適合深入了解 Python，並讓自己的程式碼寫得更 Pythonic。裡面介紹了很多寫法慣例 idioms，同時也有中文版。非常值得在未來比較懂 Python 時買來看。作者之一 David Beazley 是 PyCon TW 2013 的 Keynote。他平常就是專門教 Python 的講師，他在 PyCon 講過的「所有 talk 與 tutorial」，如 [concurrency](http://www.dabeaz.com/coroutines/), [packaging](http://www.dabeaz.com/modulepackage/index.html), [async io](https://www.youtube.com/watch?v=MCs5OvhV9S4) 等等都值得一看。
+
+這本不是入門書但很適合深入了解 Python，並讓自己的程式碼寫得更 Pythonic。裡面介紹了很多寫法慣例 idioms，同時也有中文版。非常值得在未來比較懂 Python 時買來看。
+
+作者之一 David Beazley 是 PyCon TW 2013 的 Keynote。他平常就是專門教 Python 的講師，他在 PyCon 講過的「所有 talk 與 tutorial」，如 [concurrency](http://www.dabeaz.com/coroutines/), [packaging](http://www.dabeaz.com/modulepackage/index.html), [async io](https://www.youtube.com/watch?v=MCs5OvhV9S4) 等等都值得一看。
 
 "Python Cookbook" 3ed, David Beazley and Brian K. Jones. *O'Reilly*, 2013.05
 
@@ -145,7 +147,9 @@ Python 的官網除了查語言特性之外，還能用來學習怎麼使用 std
 
 ### Fluent Python（流暢的 Python）
 
-當它是詳細、擴充版的 "Python Cookbook"，實際上書中也常常引用 David 的話。講述更多 Python 初介紹時不會深談的語言特性。如：MRO, Mixin, decorator, closure, metaprogramming每章最後的 Future Reading 與 Soapbox 旁徵博引，除了更細節的參考資料，還有當初 Python 為何如此設計等考量與討論的歷史、發展、與各語言比較。非常適合做為邁向 Python core developer 的參考書。
+當它是詳細、擴充版的 "Python Cookbook"，實際上書中也常常引用 David 的話。講述更多 Python 初介紹時不會深談的語言特性。如：MRO, Mixin, decorator, closure, metaprogramming
+
+每章最後的 Future Reading 與 Soapbox 旁徵博引，除了更細節的參考資料，還有當初 Python 為何如此設計等考量與討論的歷史、發展、與各語言比較。非常適合做為邁向 Python core developer 的參考書。
 
 "Fluent Python", Luciano Ramalho. *O'Reilly*, 2015.07
 
@@ -173,7 +177,8 @@ Python 的官網除了查語言特性之外，還能用來學習怎麼使用 std
 4. 用 Python 解決一些實驗室會碰到的 Bioinfo 問題。有個網站 Rosalind 出了一系列的題目，我選了一些讓各位練習，請參考[附錄 1][apx1-bioinfo]。
 
 
-EDIT 2016-05-22: 把 [ptt 發文](https://www.ptt.cc/bbs/Python/M.1463750830.A.DA8.html) 的內容更新上來，增加一些新書和中文翻譯；調整推薦的順序。
+EDIT 2016-05-22: 把 [ptt 發文](https://www.ptt.cc/bbs/Python/M.1463750830.A.DA8.html) 的內容更新上來，增加一些新書和中文翻譯；調整推薦的順序。<br>
+EDIT 2017-06-20: 更新書籍資訊與 2/3 比較。
 
 [pydoc-pip]: https://docs.python.org/3/installing/
 [pydoc-venv]: https://docs.python.org/3/library/venv.html?highlight=venv
