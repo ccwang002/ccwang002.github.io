@@ -19,7 +19,7 @@ Before studying in St. Louis, I was active in Taipei Python and R meetups and en
 
 I speak fluent Python (especially 3.x) and R. My daily research relies on Python scientific computing stack, such as Numpy, pandas, Jupyter(IPython), matplotlib, and Cython. For statistics, I use R more frequently and communicate between Python and R using rpy2.
 
-During my master training, intern, and my free time, I've written a few websites based on Python web frameworks, including Django, Flask, and Bottle. But I won't claim I know much about web development. See [my github] for proof.
+During my master's training, intern, and my free time, I've written a few websites based on Python web frameworks, including Django, Flask, and Bottle. But I won't claim I know much about web development. See [my github] for proof.
 
 
 ### Contact me
