@@ -22,9 +22,9 @@ The post will introduce the Snakemake by writing the pipeline locally, then grad
 
 
 ## RNA-seq dataset and pipeline for demonstration
-In this example, I will use `~/snakemake_example` to store all the files and output. Make sure you change all the paths relative to the actual folder you use in your machine.
+In this example, I will use `~/snakemake_example` to store all the files and output. Make sure you change all the paths to be relative to the actual folder in your machine.
 
-The demo analysis pipeline will be a RNA-seq pipeline for transcript-level expression analysis, often called the [*new Tuxedo*][new-tuxedo-paper] pipeline involving [HISAT2][hisat2] and [StringTie][stringtie].  The RNA-seq dataset is from [Griffith Lab's RNA-seq tutorial][griffith-lab-rnaseq-tutorial] which,
+The demo pipeline will be a RNA-seq pipeline for transcript-level expression analysis, often called the [*new Tuxedo*][new-tuxedo-paper] pipeline involving [HISAT2][hisat2] and [StringTie][stringtie]. The RNA-seq dataset is from [Griffith Lab's RNA-seq tutorial][griffith-lab-rnaseq-tutorial] which,
 
 > ... consists of two commercially available RNA samples: Universal Human Reference (UHR) and Human Brain Reference (HBR). The UHR is total RNA isolated from a diverse set of 10 cancer cell lines. The HBR is total RNA isolated from the brains of 23 Caucasians, male and female, of varying age but mostly 60-80 years old. 
 > 
@@ -155,11 +155,11 @@ expand("hisat2_index/chr22_ERCC92.{ix}.ht2", ix=range(1, 9))
 "hisat2_index/chr22_ERCC92.1.ht2", "hisat2_index/chr22_ERCC92.2.ht2", ..., "hisat2_index/chr22_ERCC92.8.ht2"
 ```
 
-Additional entries for the thrid rule includes `threads`, and `log`, where one can find more information at [the Snakemake documentation about Rules][snakemake-rule].
+For the rest of the entries such as `threads`, and `log`, one can find more information at [the Snakemake documentation about Rules][snakemake-rule].
 
 
 ### Run Snakemake
-Let's actually build the index.
+Let's build the genome reference index.
 
 ```console
 $ snakemake -j 8 -p build_hisat_index
@@ -195,15 +195,13 @@ $ snakemake -j 8 -p build_hisat_index
 Nothing to be done.
 ```
 
-So snakemake won't re-generate the output unless their corresponding rules get updated.
-
 [snakemake-rule]: https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html
 [f-string]: https://docs.python.org/3/whatsnew/3.6.html#whatsnew36-pep498
 [htop]: http://hisham.hm/htop/
 
 
 ### Sample alignment (How to write a general rule)
-Let's move on to the sample alignment. Append the `Snakefile` with:
+Let's write the rule to do the sample alignment. Append the `Snakefile` with the following content:
 
 ```python
 SAMPLES, *_ = glob_wildcards('griffithlab_brain_vs_uhr/HBR_UHR_ERCC_ds_10pc/{sample}.read1.fastq.gz')
@@ -215,7 +213,7 @@ rule align_hisat:
         fastq2="griffithlab_brain_vs_uhr/HBR_UHR_ERCC_ds_10pc/{sample}.read2.fastq.gz",
     output: "align_hisat2/{sample}.bam"
     log: "align_hisat2/{sample}.log"
-    threads: 8
+    threads: 4
     shell:
         "hisat2 -p {threads} --dta -x {HISAT2_INDEX_PREFIX} "
         "-1 {input.fastq1} -2 {input.fastq2} 2>{log} | "
@@ -225,7 +223,7 @@ rule align_all_samples:
     input: expand("align_hisat2/{sample}.bam", sample=SAMPLES)
 ```
 
-There are two rules here but only `align_hisat` does the work. The rule looks alike but there are something new. There is a unresolved variable `{sample}` in input, output and log entries, such as `fastq1=".../{sample}.read1.fastq.gz"`. So this rule will apply to all outputs that match the pattern `align_hisat2/{sample}.bam`. Say given `align_hisat2/mysample.bam`, then Snakemake will look for the inputs `griffithlab_brain_vs_uhr/HBR_UHR_ERCC_ds_10pc/mysample.read1.fastq.gz`, where `sample = "mysample"` in this case. 
+There are two rules here but only `align_hisat` does the real work. The rule looks familar but there are something new. There is a unresolved variable `{sample}` in input, output and log entries, such as `fastq1=".../{sample}.read1.fastq.gz"`. So this rule will apply to all outputs that match the pattern `align_hisat2/{sample}.bam`. For example, given an output `align_hisat2/mysample.bam`, Snakemake will look for the inputs `griffithlab_brain_vs_uhr/HBR_UHR_ERCC_ds_10pc/mysample.read1.fastq.gz`, where `sample = "mysample"` in this case. 
 
 To get the names of all the samples, we use `glob_wildcards(...)` which finds all the files that match the given string pattern, and collects the possible values of the variables in the string pattern as a list. Hence all the sample names are stored in `SAMPLES`, and the other rule takes input of all samples' BAM files to generate alignment of all samples. 
 
@@ -233,7 +231,7 @@ Now run Snakemake again with a different rule target:
 
     snakemake -j 8 -p align_all_samples
     
-This time pay attention to the CPU usage (say, using [`htop`][htop]) , one should find out that snakemake runs jobs in parallel, which tries to use as many cores as possible.
+This time pay attention to the CPU usage (say, using [`htop`][htop]), one should find out that snakemake runs jobs in parallel, and tries to use as many cores as possible.
 
 
 ### Transcript assement 
@@ -377,7 +375,6 @@ One could launch Snakemake again:
 
     snakemake --timestamp -p --verbose --keep-remote -j 8 quant_all_samples
 
-
 [google-cloud-sdk]: https://cloud.google.com/sdk/downloads
 [snakemake-remote-files]: https://snakemake.readthedocs.io/en/stable/snakefiles/remote_files.html
 
@@ -433,9 +430,9 @@ So Snakemake simply downloads/generates the files with the full path on remote s
 
 
 ## Dockerize the environment
-Although bioconda has made the package installation very easy, it would be easier to isolate the whole environment. One of the common approach is to use [Docker][docker]. 
+Although bioconda has made the package installation very easy, it would be easier to just isolate the whole environment at the operating system level. One common approach is to use [Docker][docker]. 
 
-An minimal working Dockerfile would be:
+A minimal working Dockerfile would be:
 
 ```docker
 FROM continuumio/miniconda3
@@ -444,23 +441,26 @@ RUN conda install -y python=3.6 nomkl \
     && conda clean -y --all
 ```
 
-However there might be some bugs or outdated version at the time of writing, so I've created a Docker image for this pipeline on Docker Hub, [`lbwang/snakemake-conda-rnaseq`][docker-image]. One could be able to run the snakemake by:
+However there are some details required extra care at the time of writing, so I've created a Docker image for this pipeline on Docker Hub, [`lbwang/snakemake-conda-rnaseq`][docker-image]. One could be able to run the snakemake by:
 
 ```bash
 cd ~/snakemake_example
 docker run -t                       \
-    -v (pwd):/analysis              \ 
+    -v $(pwd):/analysis             \ 
     lbwang/snakemake-conda-rnaseq   \
     snakemake -j 2 --timestamp      \
         -s /analysis/Snakefile --directory /analysis \
         quant_all_samples
 ```
 
+To run Docker on the GCE, one may refer to Docker's [official installation guide][docker-install].
+
 [docker-image]: https://hub.docker.com/r/lbwang/snakemake-conda-rnaseq/
+[docker-install]: https://docs.docker.com/engine/installation/linux/docker-ce/debian/#install-using-the-repository
 
 
-## Google Container Engine
-To scale the pipeline execution across multiple machines, Snakemake could use [Google Container Engine][gke](GKE, implemented on top of Kubernetes). This method is build on Docker which each node will pull down the given Docker image to load the environment. Although the docker image is currently fixed in the Snakemake's source code, one can hardcode a different one and bundle the modified source code in the docker image. There are some discussions about how to specify user input image [here][issue-602]. Right now we could simply change it locally,
+## Google Container Engine (GKE)
+To scale up the pipeline execution across multiple machines, Snakemake could use [Google Container Engine][gke] (GKE, implemented on top of Kubernetes). This method is built on Docker which each node will pull down the given Docker image to load the environment. Although the docker image is currently fixed in the Snakemake's source code, one can hard code a different image and bundle the modified source code in the docker image. There are some discussions about how to specify user input image [here][issue-602]. Right now we could simply change it locally,
 
 ```python
 # snakemake/executors.py
@@ -469,21 +469,71 @@ container = kubernetes.client.V1Container()
 container.image = "lbwang/snakemake-conda-rnaseq" 
 ```
 
-One can find the full modified file [here](https://bitbucket.org/ccwang002/snakemake/src/1efcd317e92d8d2b05e884647fde73943b6af1d6/snakemake/executors.py?at=custom-docker-image&fileviewer=file-view-default#executors.py-1075).
+One can find the full modified source code [here](https://bitbucket.org/ccwang002/snakemake/src/1efcd317e92d8d2b05e884647fde73943b6af1d6/snakemake/executors.py?at=custom-docker-image&fileviewer=file-view-default#executors.py-1075). To install the modified version of Snakemake, run:
 
-One might need to remove the generated output before calling Snakemake again.
+```bash
+conda uninstall snakemake
+pip install git+https://bitbucket.org/ccwang002/snakemake.git@custom-docker-image
+```
+
+By default, Snakemake will always check if the output files are outdated, that is, older than the rule that generated them. To ensure it re-runs the pipeline, one might need to remove the generated output before calling Snakemake again:
 
 ```bash
 gsutil -m rm -r gs://{WRITABLE_BUCKET_PATH}/{align_hisat2,hisat2_index,stringtie}
 ```
 
+Following Snakemake's [GKE guide][snakemake-gke], extra packages need to be installed:
+
+```bash
+pip install kubernetes
+gcloud components install kubectl
+# or Debian on GCE:
+# sudo apt-get install kubectl
 ```
-snakemake --timestamp -p --verbose --keep-remote -j 12      \
-    --kubernetes                                            \
-    --default-remote-provider GS                            \
-    --default-remote-prefix dinglab/lbwang/snakemake_demo   \
+
+First we start the GKE cluster by:
+
+```bash
+export CLUSTER_NAME="snakemake-cluster"
+export ZONE="us-central-a"
+gcloud container clusters create $CLUSTER_NAME \
+    --zone=$ZONE --num-nodes=3 \
+    --machine-type="n1-standard-4" \
+    --scopes storage-rw
+gcloud container clusters get-credentials --zone=$ZONE $CLUSTER_NAME
+```
+
+This will launch 3 GCE VM instances using `n1-standard-4` machine type (4 CPUs). Therefore in the cluster there are total 12 CPUs available for computation. Modify the variables to fit one's setting.
+
+Note that some rule may specify a number of CPUs that no node in the clusters has, say the rule `build_hisat_index` specifies 8 threads. In this case the cluster cannot find a big enough node to forward the job to a [pod][gke-pod] and the cluster will halt. Therefore, make sure to change the `threads` lower to a more reasonable number (or use [configfile][snakemake-config] to apply to mulitple samples).
+
+```bash
+snakemake                                            \
+    --timestamp -p --verbose --keep-remote           \
+    -j 12 --kubernetes                               \
+    --default-remote-provider GS                     \
+    --default-remote-prefix {WRITABLE_BUCKET_PATH}   \
     quant_all_samples
+```
+
+After the execution, make sure to delete the GKE cluster by:
+
+```bash
+gcloud container clusters delete --zone=$ZONE $CLUSTER_NAME
 ```
 
 [gke]: https://cloud.google.com/container-engine/
 [issue-602]: https://bitbucket.org/snakemake/snakemake/issues/602
+[snakemake-gke]: https://snakemake.readthedocs.io/en/stable/executable.html#executing-a-snakemake-workflow-via-kubernetes
+[gke-pod]: https://kubernetes.io/docs/concepts/workloads/pods/pod/
+[snakemake-config]: https://snakemake.readthedocs.io/en/stable/snakefiles/configuration.html
+
+
+## Summary
+Snakemake is a flexible pipeline management tool that can be run locally and on the cloud. Although it is able to run on Kubernetes such as Google Container Engine, it is a relatively new feature and will take some time to stablize. Currently if one wants to run everything (both the computing and the data) on the cloud, using Google Compute Engine and Google Cloud Storage will be the way to go.
+
+Docker and bioconda have made the deployment a lot easier. Bioconda truly saves a lot of duplicated efforts to figure out the tool compilation. Docker provides an OS-level isolationWith more tools such as [Singularity][singularity] continuing to come out, virtualization seems to be a inevitable trend.
+
+Other than Google cloud products, Snakemake also supports AWS, S3, LSF, SLURM and many other cluster settings. It seems to me that the day when one `Snakefile` works for all platforms might be around the corner. 
+
+[singularity]: http://singularity.lbl.gov/index.html
