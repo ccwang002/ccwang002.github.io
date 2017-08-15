@@ -455,10 +455,25 @@ docker run -t                       \
         quant_all_samples
 ```
 
-To run Docker on the GCE, one may refer to Docker's [official installation guide][docker-install].
+### Use Google Cloud Storage in Docker image
+To use Google's Cloud products in a Docker image, one needs to install [Google Cloud SDK][google-cloud-sdk] inside the Docker image. Refer to [Google's Dockerfile with Cloud SDK][docker-cloud-sdk] for detail. [`lbwang/snakemake-conda-rnaseq`][docker-image] has installed the Cloud SDK.
+
+```bash
+sudo docker run -t -i                           \
+    -v $(pwd):/analysis                         \
+    -v ~/.config/gcloud:/root/.config/gcloud    \
+    lbwang/snakemake-conda-rnaseq               \
+    snakemake -j 4 --timestamp --verbose -p --keep-remote   \
+        -s /analysis/Snakefile --directory /analysis        \
+        --default-remote-provider GS --default-remote-prefix "{WRITABLE_BUCKET_PATH}" \
+        quant_all_samples
+```
+
+To run Docker on a GCE VM instance, it requires the host machine (the VM instance) to have Docker installed. One may refer to Docker's [official installation guide][docker-install] to install it. VM instance by default inherit the user's permission (via the automatically created service account), thus the command above should apply to the GCE instance as well.
 
 [docker-image]: https://hub.docker.com/r/lbwang/snakemake-conda-rnaseq/
 [docker-install]: https://docs.docker.com/engine/installation/linux/docker-ce/debian/#install-using-the-repository
+[docker-cloud-sdk]: https://github.com/GoogleCloudPlatform/cloud-sdk-docker/blob/master/debian_slim/Dockerfile
 
 
 ## Google Container Engine (GKE)
@@ -534,8 +549,11 @@ gcloud container clusters delete --zone=$ZONE $CLUSTER_NAME
 ## Summary
 Snakemake is a flexible pipeline management tool that can be run locally and on the cloud. Although it is able to run on Kubernetes such as Google Container Engine, it is a relatively new feature and will take some time to stablize. Currently if one wants to run everything (both the computing and the data) on the cloud, using Google Compute Engine and Google Cloud Storage will be the way to go.
 
-Docker and bioconda have made the deployment a lot easier. Bioconda truly saves a lot of duplicated efforts to figure out the tool compilation. Docker provides an OS-level isolationWith more tools such as [Singularity][singularity] continuing to come out, virtualization seems to be a inevitable trend.
+Using a 4-core (n1-standard-4) GCE instance, the total time to finish the pipeline locally and via Google Cloud Storage were 3.2 mins and 5.8 mins resepctively. So there are some overhead to transfer files from/to the storage.
+
+Docker and bioconda have made the deployment a lot easier. Bioconda truly saves a lot of duplicated efforts to figure out the tool compilation. Docker provides an OS-level isolation and an ecosystem of deployment. With more tools such as [Singularity][singularity] continuing to come out, virtualization seems to be a inevitable trend.
 
 Other than Google cloud products, Snakemake also supports AWS, S3, LSF, SLURM and many other cluster settings. It seems to me that the day when one `Snakefile` works for all platforms might be around the corner. 
 
+EDIT 2017-08-15: Add a section about using Google Cloud in Docker. Update summary with some time measurements.
 [singularity]: http://singularity.lbl.gov/index.html
