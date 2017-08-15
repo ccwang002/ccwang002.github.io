@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="author" content="Liang2" />
+<meta name="description" content="Snakemake has been my favorite workflow management system for a while. I came across it while writing my master thesis and from the first …" />
+<meta name="keywords" content="en, bio, python, snakemake, cloud">
+	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<title>Use Snakemake on Google cloud</title>
+
+	<!-- og -->
+<meta property="og:locale" content="en_USen"/>
+<meta property="og:site_name" content="Liang2's Blog"/>
+<meta property="og:title" content="Use Snakemake on Google cloud"/>
+<meta property="og:description" content="Snakemake has been my favorite workflow management system for a while. I came across it while writing my master thesis and from the first …"/>
+<meta property="og:locale" content=""/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2017/08/snakemake-google-cloud/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2017-08-10 00:00:00-05:00"/>
+<meta property="article:modified_time" content="2017-08-10 00:00:00-05:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
+<meta property="article:section" content="Bioinfo"/>
+<meta property="article:tag" content="en"/>
+<meta property="article:tag" content="bio"/>
+<meta property="article:tag" content="python"/>
+<meta property="article:tag" content="snakemake"/>
+<meta property="article:tag" content="cloud"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Use Snakemake on Google cloud">
+<meta name="twitter:description" content="Snakemake has been my favorite workflow management system for a while. I came across it while writing my master thesis and from the first …">
+
+	<!-- Feeds -->
+	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
+		type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?471da5af" rel="stylesheet" />
+</head>
+
+<body class="post-template">
+	<header class="site-head">
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+		<h2 class="blog-description">
+			<a href="https://blog.liang2.tw/about-me/">About</a> |
+			<a href="https://blog.liang2.tw/talks/">Talks</a> |
+			<a href="https://blog.liang2.tw/archives.html">Archives</a>
+		</h2>
+	</header>
+	<main id="content" class="content" role="main">
+<article class="post">
+    <span class="post-meta">
+        <time datetime="Aug 10, 2017">Aug 10, 2017</time>
+        in <a href="https://blog.liang2.tw/category/bioinfo/">Bioinfo</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2017/08/snakemake-google-cloud/" rel="bookmark" title="Permalink to Use Snakemake on Google cloud">Use Snakemake on Google cloud</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/en/">en</a>
+                <a href="https://blog.liang2.tw/tag/bio/">bio</a>
+                <a href="https://blog.liang2.tw/tag/python/">python</a>
+                <a href="https://blog.liang2.tw/tag/snakemake/">snakemake</a>
+                <a href="https://blog.liang2.tw/tag/cloud/">cloud</a>
+    </span>
+    <section class="post-content"><p><a href="https://snakemake.readthedocs.io/">Snakemake</a> has been my favorite workflow management system for a while. I came across it while writing <a href="https://www.dropbox.com/s/u7aa2mbsto77wwy/thesis_upload.pdf?dl=0">my master thesis</a> and from the first look, it already appeared to be extremely flexible and powerful. I got some time to play with it during my lab rotation and now after joining the lab, I am using it in my many research projects.  With more and more projects in lab relying on virtualization like <a href="https://www.docker.com/">Docker</a>, package management like <a href="https://bioconda.github.io/">bioconda</a>, and cloud computing like <a href="https://cloud.google.com/">Google Cloud</a>, I would like to continue using Snakemake in those scenarios as well. Hence this post to write down all the details. </p>
+<p>The post will introduce the Snakemake by writing the pipeline locally, then gradually move towards to Docker and more Google Cloud products, e.g., Google Cloud Storage, Google Compute Engine (GCE), and Google Container Engine (GKE). <a href="https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html">Snakemake tutorial</a> is a good place to start with to understand how Snakemake works.</p>
+<div class="toc">
+<ul>
+<li><a href="#rna-seq-dataset-and-pipeline-for-demonstration">RNA-seq dataset and pipeline for demonstration</a></li>
+<li><a href="#installation-of-snakemake-and-all-related-tools">Installation of snakemake and all related tools</a></li>
+<li><a href="#snakemake-local-pipeline-execution">Snakemake local pipeline execution</a><ul>
+<li><a href="#genome-reference-index-build-how-to-write-snakemake-rules">Genome reference index build (How to write snakemake rules)</a></li>
+<li><a href="#run-snakemake">Run Snakemake</a></li>
+<li><a href="#sample-alignment-how-to-write-a-general-rule">Sample alignment (How to write a general rule)</a></li>
+<li><a href="#transcript-assement">Transcript assement</a></li>
+<li><a href="#job-dependencies-and-dag">Job dependencies and DAG</a></li>
+</ul>
+</li>
+<li><a href="#snakemake-on-google-cloud">Snakemake on Google Cloud</a><ul>
+<li><a href="#move-input-files-to-the-cloud-from-google-cloud-storage">Move input files to the cloud (from Google Cloud Storage)</a></li>
+<li><a href="#store-output-files-on-the-cloud">Store output files on the cloud</a></li>
+</ul>
+</li>
+<li><a href="#dockerize-the-environment">Dockerize the environment</a></li>
+<li><a href="#google-container-engine-gke">Google Container Engine (GKE)</a></li>
+<li><a href="#summary">Summary</a></li>
+</ul>
+</div>
+<h2 id="rna-seq-dataset-and-pipeline-for-demonstration">RNA-seq dataset and pipeline for demonstration</h2>
+<p>In this example, I will use <code>~/snakemake_example</code> to store all the files and output. Make sure you change all the paths to be relative to the actual folder in your machine.</p>
+<p>The demo pipeline will be a RNA-seq pipeline for transcript-level expression analysis, often called the <a href="www.nature.com/nprot/journal/v11/n9/full/nprot.2016.095.html"><em>new Tuxedo</em></a> pipeline involving <a href="https://ccb.jhu.edu/software/hisat2/">HISAT2</a> and <a href="https://ccb.jhu.edu/software/stringtie/">StringTie</a>. The RNA-seq dataset is from <a href="https://github.com/griffithlab/rnaseq_tutorial/">Griffith Lab&rsquo;s RNA-seq tutorial</a> which,</p>
+<blockquote>
+<p>&hellip; consists of two commercially available RNA samples: Universal Human Reference (UHR) and Human Brain Reference (HBR). The UHR is total RNA isolated from a diverse set of 10 cancer cell lines. The HBR is total RNA isolated from the brains of 23 Caucasians, male and female, of varying age but mostly 60-80 years old. </p>
+<p>(From the wiki page <a href="[griffith-lab-data]">&ldquo;RNA-seq Data&rdquo;</a> of the tutorial)</p>
+</blockquote>
+<p>Our RNA-seq raw data are the 10% downsampled FASTQ files for these samples. For the human genome reference, only the chromosome 22 from GRCh38 is used. The gene annotation is from <a href="http://dec2016.archive.ensembl.org/Homo_sapiens/Info/Index">Ensembl Version 87</a>.  Let&rsquo;s download all the samples and annotations.</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> ~/snakemake_example
+<span class="gp">$</span> wget https://storage.googleapis.com/dinglab/lbwang/snakemake_demo/griffithlab_brain_vs_uhr.tar.gz
+<span class="gp">$</span> tar xf griffithlab_brain_vs_uhr.tar.gz
+</pre></div>
+
+
+<p>Now you should have the following file structure:</p>
+<div class="highlight"><pre><span></span>~/snakemake_example
+├── griffithlab_brain_vs_uhr/
+│   ├── GRCh38_Ens87_chr22_ERCC/
+│   │   ├── chr22_ERCC92.fa
+│   │   └── genes_chr22_ERCC92.gtf
+│   └── HBR_UHR_ERCC_ds_10pc/
+│       ├── HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read1.fastq.gz
+│       ├── HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read2.fastq.gz
+│       ├── ...
+│       ├── UHR_Rep3_ERCC-Mix1_Build37-ErccTranscripts-chr22.read1.fastq.gz
+│       └── UHR_Rep3_ERCC-Mix1_Build37-ErccTranscripts-chr22.read2.fastq.gz
+└── griffithlab_brain_vs_uhr.tar.gz
+</pre></div>
+
+
+<h2 id="installation-of-snakemake-and-all-related-tools">Installation of snakemake and all related tools</h2>
+<p>After installing <a href="https://conda.io/miniconda.html">conda</a> and setting up <a href="https://bioconda.github.io/">bioconda</a>, the installation is simple. All the dependencies are kept in a conda environment called <code>new_tuxedo</code>.</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> conda create -n new_tuxedo <span class="se">\</span>
+    <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6 snakemake hisat2 stringtie samtools
+<span class="gp">$</span> <span class="nb">source</span> activate new_tuxedo        <span class="c1"># Use the conda env </span>
+<span class="gp">(new_tuxedo) $</span> hisat2 --version     <span class="c1"># Tools are available in the env</span>
+<span class="go">/Users/liang/miniconda3/envs/new_tuxedo/bin/hisat2-align-s version 2.1.0</span>
+<span class="go">...</span>
+<span class="gp">(new_tuxedo) $</span> deactivate           <span class="c1"># Exit the env</span>
+<span class="gp">$</span> hisat2 --version                  <span class="c1"># Tools are isolated in the env</span>
+<span class="go">bash: hisat2: command not found</span>
+</pre></div>
+
+
+<p>All the following steps should be run inside this conda environment unless it&rsquo;s specified otherwise.</p>
+<h2 id="snakemake-local-pipeline-execution">Snakemake local pipeline execution</h2>
+<p>The RNA-seq pipeline largely consists of the following steps:</p>
+<ol>
+<li>Build HISAT2 genome reference index for alignment</li>
+<li>Align sample reads to the genome by HISAT2</li>
+<li>Assemble per-sample transcripts by StringTie</li>
+<li>Merge per-sample transcripts by StringTie </li>
+<li>Quantify transcript abundance by StringTie</li>
+</ol>
+<p>To get the taste of how to write a Snakemake pipeline, I will implement it gradually by breaking it into three major parts: genome reference index build, alignment, and transcript assessment. </p>
+<h3 id="genome-reference-index-build-how-to-write-snakemake-rules">Genome reference index build (How to write snakemake rules)</h3>
+<p>To build the genome reference, we need to extract the splice sites and exons by two of the HISAT2 scripts, <code>hisat2_extract_splice_sites.py</code> and <code>hisat2_extract_exons.py</code>. Then we call <code>hisat2-build</code> to build the index. Create a new file at <code>~/snakemake_example/Snakefile</code> with the following content:</p>
+<div class="highlight"><pre><span></span><span class="n">GENOME_FA</span> <span class="o">=</span> <span class="s2">&quot;griffithlab_brain_vs_uhr/GRCh38_Ens87_chr22_ERCC/chr22_ERCC92.fa&quot;</span>
+<span class="n">GENOME_GTF</span> <span class="o">=</span> <span class="s2">&quot;griffithlab_brain_vs_uhr/GRCh38_Ens87_chr22_ERCC/genes_chr22_ERCC92.gtf&quot;</span>
+<span class="n">HISAT2_INDEX_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;hisat2_index/chr22_ERCC92&quot;</span>
+
+<span class="n">rule</span> <span class="n">extract_genome_splice_sites</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">GENOME_GTF</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;hisat2_index/chr22_ERCC92.ss&quot;</span>
+    <span class="n">shell</span><span class="p">:</span> <span class="s2">&quot;hisat2_extract_splice_sites.py {input} &gt; {output}&quot;</span>
+
+<span class="n">rule</span> <span class="n">extract_genome_exons</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">GENOME_GTF</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;hisat2_index/chr22_ERCC92.exon&quot;</span>
+    <span class="n">shell</span><span class="p">:</span> <span class="s2">&quot;hisat2_extract_exons.py {input} &gt; {output}&quot;</span>
+
+<span class="n">rule</span> <span class="n">build_hisat_index</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="n">genome_fa</span><span class="o">=</span><span class="n">GENOME_FA</span><span class="p">,</span>
+        <span class="n">splice_sites</span><span class="o">=</span><span class="s2">&quot;hisat2_index/chr22_ERCC92.ss&quot;</span><span class="p">,</span>
+        <span class="n">exons</span><span class="o">=</span><span class="s2">&quot;hisat2_index/chr22_ERCC92.exon&quot;</span><span class="p">,</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">expand</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;{HISAT2_INDEX_PREFIX}.{{ix}}.ht2&quot;</span><span class="p">,</span> <span class="n">ix</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+    <span class="n">log</span><span class="p">:</span> <span class="s2">&quot;hisat2_index/build.log&quot;</span>
+    <span class="n">threads</span><span class="p">:</span> <span class="mi">8</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;hisat2-build -p {threads} {input.genome_fa} &quot;</span>
+        <span class="s2">&quot;--ss {input.splice_sites} --exon {input.exons} {HISAT2_INDEX_PREFIX} &quot;</span>
+        <span class="s2">&quot;2&gt;{log}&quot;</span>
+</pre></div>
+
+
+<p>Overall <code>Snakefile</code> is Python-based, so one can define variables and functions, import Python libraries, and use all the string operations as one does in the Python source code.  Here I defined some constants to the genome reference files (<code>GENOME_FA</code> and <code>GENOME_GTF</code>) and the output index prefix (<code>HISAT2_INDEX_PREFIX</code>) because they will get quite repetitive and specifying them at the front can make future modifications easier. </p>
+<p>In case one hasn&rsquo;t read the <a href="https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html">Snakemake Tutorial</a>, here is an overview of the Snakemake pipeline execution.  A Snakemake rule is similar to a Makefile rule.  In a rule, one can specify the input pattern and the output pattern of a rule, as well as the command to run for this rule.  When snakemake runs, all the output user wants to generate will be translated into a sets of rules to be run.  Based on the desired output, Snakemake will find the rule that can generate them (matching the rule&rsquo;s output pattern) and the required input.  The finding process can be traversed rules after rules, that is, some input of a rule depends on the output of another rule, until all the inputs are available.  Then Snakemake will start to generate the output by running the commands each rule gives.  </p>
+<p>Now we can look at the three rules in our current <code>Snakefile</code>. </p>
+<p>The first rule <code>extract_genome_splice_sites</code> extracts the genome splice sites. The input file is <code>GENOME_GTF</code> which is the Ensembl gene annotation. The output is a file at <code>hisat2_index/chr22_ERCC92.ss</code>. The command to generate the output from the given input is a shell command. The command contains some variables, <code>{input}</code> and <code>{output}</code>, where Snakemake will fill in them with the sepcified intput and output. So when the first rule is activated, Snakemake will let Bash shell to run: </p>
+<div class="highlight"><pre><span></span>hisat2_extract_splice_sites.py <span class="se">\</span>
+    griffithlab_brain_vs_uhr/GRCh38_Ens87_chr22_ERCC/genes_chr22_ERCC92.gtf <span class="se">\</span>
+    &gt; hisat2_index/chr22_ERCC92.ss
+</pre></div>
+
+
+<p>The second rule <code>extract_genome_exons</code> is quite similar to the first one, but extracts the genome exons and stores it in <code>hisat2_index/chr22_ERCC92.exon</code>. </p>
+<p>The third rule <code>build_hisat_index</code> builds the actual index. Input can be multiple files, in this case there are three entries, including the chromosome sequence, splice sites and exons. One can later refer only to input of the same entry by their entry name. For example, <code>{input.genome_fa}</code> means the chromosome sequence FASTA file. </p>
+<p>The output of the third rule is <code>expand(f"{HISAT2_INDEX_PREFIX}.{{ix}}.ht2", ix=range(1, 9))</code>, where <code>expand(...)</code> is a Snakemake function which can interpolate a string pattern into an array of strings. In this case the generate index files are <code>&lt;index_prefix&gt;.1.ht2</code>, &hellip; ,<code>&lt;index_prefix&gt;.8.ht2</code>. Instead of specifies the output eight times, we use <code>expand</code> and pass a variable <code>ix</code> to iterate from 1 to 8. The double curly brackets are to escape the <code>f"..."</code> f-string interpolation (see <a href="https://docs.python.org/3/whatsnew/3.6.html#whatsnew36-pep498">the Python documentation</a>). So the whole process to interpret the output is:</p>
+<div class="highlight"><pre><span></span><span class="n">expand</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;{HISAT2_INDEX_PREFIX}.{{ix}}.ht2&quot;</span><span class="p">,</span> <span class="n">ix</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="n">expand</span><span class="p">(</span><span class="s2">&quot;hisat2_index/chr22_ERCC92.{ix}.ht2&quot;</span><span class="p">,</span> <span class="n">ix</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="s2">&quot;hisat2_index/chr22_ERCC92.1.ht2&quot;</span><span class="p">,</span> <span class="s2">&quot;hisat2_index/chr22_ERCC92.2.ht2&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="s2">&quot;hisat2_index/chr22_ERCC92.8.ht2&quot;</span>
+</pre></div>
+
+
+<p>For the rest of the entries such as <code>threads</code>, and <code>log</code>, one can find more information at <a href="https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html">the Snakemake documentation about Rules</a>.</p>
+<h3 id="run-snakemake">Run Snakemake</h3>
+<p>Let&rsquo;s build the genome reference index.</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> snakemake -j <span class="m">8</span> -p build_hisat_index
+<span class="go">Provided cores: 8</span>
+<span class="go">Rules claiming more threads will be scaled down.</span>
+<span class="go">Job counts:</span>
+<span class="go">    count   jobs</span>
+<span class="go">    1   build_hisat_index</span>
+<span class="go">    1   extract_genome_exons</span>
+<span class="go">    1   extract_genome_splice_sites</span>
+<span class="go">    3</span>
+
+<span class="go">rule extract_genome_exons:</span>
+<span class="go">    input: griffithlab_brain_vs_uhr/GRCh38_Ens87_chr22_ERCC/genes_chr22_ERCC92.gtf</span>
+<span class="go">    output: hisat2_index/chr22_ERCC92.exon</span>
+<span class="go">    jobid: 1</span>
+
+<span class="go">hisat2_extract_exons.py griffithlab_brain_vs_uhr/GRCh38_Ens87_chr22_ERCC/genes_chr22_ERCC92.gtf &gt; hisat2_index/chr22_ERCC92.exon</span>
+<span class="go">...</span>
+<span class="go">3 of 3 steps (100%) done</span>
+</pre></div>
+
+
+<p>The command <code>snakemake -j 8 -p build_hisat_index</code> means:</p>
+<ul>
+<li><code>-j 8</code>: Use 8 cores</li>
+<li><code>-p</code>: Print the actual command of each job</li>
+<li><code>build_hisat_index</code>: The rule or certain output to be generated </li>
+</ul>
+<p>If one runs it again, one will find that snakemake won&rsquo;t do anything since all the output are present and updated.</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> snakemake -j <span class="m">8</span> -p build_hisat_index
+<span class="go">Nothing to be done.</span>
+</pre></div>
+
+
+<h3 id="sample-alignment-how-to-write-a-general-rule">Sample alignment (How to write a general rule)</h3>
+<p>Let&rsquo;s write the rule to do the sample alignment. Append the <code>Snakefile</code> with the following content:</p>
+<div class="highlight"><pre><span></span><span class="n">SAMPLES</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">glob_wildcards</span><span class="p">(</span><span class="s1">&#39;griffithlab_brain_vs_uhr/HBR_UHR_ERCC_ds_10pc/{sample}.read1.fastq.gz&#39;</span><span class="p">)</span>
+
+<span class="n">rule</span> <span class="n">align_hisat</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="n">hisat2_index</span><span class="o">=</span><span class="n">expand</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;{HISAT2_INDEX_PREFIX}.{{ix}}.ht2&quot;</span><span class="p">,</span> <span class="n">ix</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">)),</span>
+        <span class="n">fastq1</span><span class="o">=</span><span class="s2">&quot;griffithlab_brain_vs_uhr/HBR_UHR_ERCC_ds_10pc/{sample}.read1.fastq.gz&quot;</span><span class="p">,</span>
+        <span class="n">fastq2</span><span class="o">=</span><span class="s2">&quot;griffithlab_brain_vs_uhr/HBR_UHR_ERCC_ds_10pc/{sample}.read2.fastq.gz&quot;</span><span class="p">,</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;align_hisat2/{sample}.bam&quot;</span>
+    <span class="n">log</span><span class="p">:</span> <span class="s2">&quot;align_hisat2/{sample}.log&quot;</span>
+    <span class="n">threads</span><span class="p">:</span> <span class="mi">4</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;hisat2 -p {threads} --dta -x {HISAT2_INDEX_PREFIX} &quot;</span>
+        <span class="s2">&quot;-1 {input.fastq1} -2 {input.fastq2} 2&gt;{log} | &quot;</span>
+        <span class="s2">&quot;samtools sort -@ {threads} -o {output}&quot;</span>
+
+<span class="n">rule</span> <span class="n">align_all_samples</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">expand</span><span class="p">(</span><span class="s2">&quot;align_hisat2/{sample}.bam&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">SAMPLES</span><span class="p">)</span>
+</pre></div>
+
+
+<p>There are two rules here but only <code>align_hisat</code> does the real work. The rule looks familar but there are something new. There is a unresolved variable <code>{sample}</code> in input, output and log entries, such as <code>fastq1=".../{sample}.read1.fastq.gz"</code>. So this rule will apply to all outputs that match the pattern <code>align_hisat2/{sample}.bam</code>. For example, given an output <code>align_hisat2/mysample.bam</code>, Snakemake will look for the inputs <code>griffithlab_brain_vs_uhr/HBR_UHR_ERCC_ds_10pc/mysample.read1.fastq.gz</code>, where <code>sample = "mysample"</code> in this case. </p>
+<p>To get the names of all the samples, we use <code>glob_wildcards(...)</code> which finds all the files that match the given string pattern, and collects the possible values of the variables in the string pattern as a list. Hence all the sample names are stored in <code>SAMPLES</code>, and the other rule takes input of all samples&rsquo; BAM files to generate alignment of all samples. </p>
+<p>Now run Snakemake again with a different rule target: </p>
+<div class="highlight"><pre><span></span>snakemake -j 8 -p align_all_samples
+</pre></div>
+
+
+<p>This time pay attention to the CPU usage (say, using <a href="http://hisham.hm/htop/"><code>htop</code></a>), one should find out that snakemake runs jobs in parallel, and tries to use as many cores as possible.</p>
+<h3 id="transcript-assement">Transcript assement</h3>
+<p>Let&rsquo;s complete the whole pipeline by adding all StringTie steps to <code>Snakefile</code>:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">rule</span> <span class="n">stringtie_assemble</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="n">genome_gtf</span><span class="o">=</span><span class="n">GENOME_GTF</span><span class="p">,</span>
+        <span class="n">bam</span><span class="o">=</span><span class="s2">&quot;align_hisat2/{sample}.bam&quot;</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;stringtie/assembled/{sample}.gtf&quot;</span>
+    <span class="n">threads</span><span class="p">:</span> <span class="mi">4</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;stringtie -p {threads} -G {input.genome_gtf} &quot;</span>
+        <span class="s2">&quot;-o {output} -l {wildcards.sample} {input.bam}&quot;</span>
+
+<span class="n">rule</span> <span class="n">stringtie_merge_list</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">expand</span><span class="p">(</span><span class="s2">&quot;stringtie/assembled/{sample}.gtf&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">SAMPLES</span><span class="p">)</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;stringtie/merged_list.txt&quot;</span>
+    <span class="n">run</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">gtf</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">gtf</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">(),</span> <span class="nb">file</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
+
+<span class="n">rule</span> <span class="n">stringtie_merge</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="n">genome_gtf</span><span class="o">=</span><span class="n">GENOME_GTF</span><span class="p">,</span>
+        <span class="n">merged_list</span><span class="o">=</span><span class="s2">&quot;stringtie/merged_list.txt&quot;</span><span class="p">,</span>
+        <span class="n">sample_gtfs</span><span class="o">=</span><span class="n">expand</span><span class="p">(</span><span class="s2">&quot;stringtie/assembled/{sample}.gtf&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">SAMPLES</span><span class="p">)</span>
+    <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;stringtie/merged.gtf&quot;</span>
+    <span class="n">threads</span><span class="p">:</span> <span class="mi">4</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;stringtie --merge -p {threads} -G {input.genome_gtf} &quot;</span>
+        <span class="s2">&quot;-o {output} {input.merged_list}&quot;</span>
+
+<span class="n">rule</span> <span class="n">stringtie_quant</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="n">merged_gtf</span><span class="o">=</span><span class="s2">&quot;stringtie/merged.gtf&quot;</span><span class="p">,</span>
+        <span class="n">sample_bam</span><span class="o">=</span><span class="s2">&quot;align_hisat2/{sample}.bam&quot;</span>
+    <span class="n">output</span><span class="p">:</span>
+        <span class="n">gtf</span><span class="o">=</span><span class="s2">&quot;stringtie/quant/{sample}/{sample}.gtf&quot;</span><span class="p">,</span>
+        <span class="n">ctabs</span><span class="o">=</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s2">&quot;stringtie/quant/{{sample}}/{name}.ctab&quot;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;i2t&#39;</span><span class="p">,</span> <span class="s1">&#39;e2t&#39;</span><span class="p">,</span> <span class="s1">&#39;i_data&#39;</span><span class="p">,</span> <span class="s1">&#39;e_data&#39;</span><span class="p">,</span> <span class="s1">&#39;t_data&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
+    <span class="n">threads</span><span class="p">:</span> <span class="mi">4</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;stringtie -e -B -p {threads} -G {input.merged_gtf} &quot;</span>
+        <span class="s2">&quot;-o {output.gtf} {input.sample_bam}&quot;</span>
+
+<span class="n">rule</span> <span class="n">quant_all_samples</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">expand</span><span class="p">(</span><span class="s2">&quot;stringtie/quant/{sample}/{sample}.gtf&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">SAMPLES</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Most rules are similar to the previous ones except for <code>stringtie_merge_list</code>. This step a file is generated to contain list of paths to all the samples&rsquo; GTF file. Instead of running some command (no <code>shell</code> entry), a <code>run</code> entry is used to write a Python code snippet to generate the file.</p>
+<p>Another thing to be noted is the output entry <code>ctabs=...</code> of <code>stringtie_quant</code>. The following lines are equivalent:</p>
+<div class="highlight"><pre><span></span><span class="c1"># Before expansion</span>
+<span class="n">ctabs</span><span class="o">=</span><span class="n">expand</span><span class="p">(</span>
+    <span class="s2">&quot;stringtie/quant/{{sample}}/{name}.ctab&quot;</span><span class="p">,</span> 
+    <span class="n">name</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;i2t&#39;</span><span class="p">,</span> <span class="s1">&#39;e2t&#39;</span><span class="p">,</span> <span class="s1">&#39;i_data&#39;</span><span class="p">,</span> <span class="s1">&#39;e_data&#39;</span><span class="p">,</span> <span class="s1">&#39;t_data&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="c1"># After expansion</span>
+<span class="n">ctabs</span><span class="o">=</span><span class="s2">&quot;stringtie/quant/{sample}/i2t.ctab&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;stringtie/quant/{sample}/e2t.ctab&quot;</span><span class="p">,</span>
+    <span class="o">...</span><span class="p">,</span>
+    <span class="s2">&quot;stringtie/quant/{sample}/t_data.ctab&quot;</span>
+</pre></div>
+
+
+<h3 id="job-dependencies-and-dag">Job dependencies and DAG</h3>
+<p>Now with the pipeline complete, we can further look at the how all the rules are chained with each other. Snakemake has a command to generate the job depedency graph (a DAG):</p>
+<div class="highlight"><pre><span></span>snakemake --dag quant_all_samples | dot -Tsvg &gt; dag.svg
+</pre></div>
+
+
+<div class="figure full-img">
+  <img src="https://blog.liang2.tw/posts/2017/08/snakemake-google-cloud/pics/snakemake_rnaseq_dag.svg"/>
+  <p class="caption">Snakemake job dependency graph.</p>
+</div>
+
+<p>Snakemake generates such DAG first before execution, where each node represents a job. As long as two nodes have no connected edges and their input exist, they can be executed parallely. This is a powerful feature to pipeline management, which can use the resources in a fin grain.</p>
+<p>A simpler graph that shows rules instead of jobs can be generated by:</p>
+<div class="highlight"><pre><span></span>snakemake --rulegraph quant_all_samples | dot -Tsvg &gt; ruledag.svg
+</pre></div>
+
+
+<div class="figure">
+  <img src="https://blog.liang2.tw/posts/2017/08/snakemake-google-cloud/pics/snakemake_rnaseq_ruledag.svg"/>
+  <p class="caption">Snakemake rule dependency graph.</p>
+</div>
+
+<h2 id="snakemake-on-google-cloud">Snakemake on Google Cloud</h2>
+<p>Now we start to move our Snakemake pipeline to the Google Cloud. To complete all the following steps, one needs a Google account and has a bucket on the Google Cloud with write access. That is, be able to upload the output back to Google Cloud Storage. Snakemake is able to download/upload files from the cloud, one needs to <a href="https://cloud.google.com/sdk/downloads">set up the Google Cloud SDK on the local machine</a> and create the default application credentials:</p>
+<div class="highlight"><pre><span></span>gcloud auth application-default login
+</pre></div>
+
+
+<p>Also, install the neccessary Python packages to give Snakemake the access to storage API:</p>
+<div class="highlight"><pre><span></span>conda install google-cloud-storage
+</pre></div>
+
+
+<p>Actually snakemake support remote files from many more providers. More detail can be found at <a href="https://snakemake.readthedocs.io/en/stable/snakefiles/remote_files.html">the Snakemake documentation</a>.</p>
+<p>Note that although one can run this section on a local machine, this step will be significantly faster if one runs it on a Google Computer Engine (GCE) instance. It also saves extra bandwidth and fees.</p>
+<h3 id="move-input-files-to-the-cloud-from-google-cloud-storage">Move input files to the cloud (from Google Cloud Storage)</h3>
+<p>Let&rsquo;s modify the <code>Snakefile</code> to use the reference and FASTQ files from Google Cloud Storage. Replace those file paths with the following:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">snakemake.remote.GS</span> <span class="kn">import</span> <span class="n">RemoteProvider</span> <span class="k">as</span> <span class="n">GSRemoteProvider</span>
+<span class="n">GS</span> <span class="o">=</span> <span class="n">GSRemoteProvider</span><span class="p">()</span>
+
+<span class="n">GS_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;lbwang-playground/snakemake_rnaseq&quot;</span>
+<span class="n">GENOME_FA</span> <span class="o">=</span>  <span class="n">GS</span><span class="o">.</span><span class="n">remote</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;{GS_PREFIX}/griffithlab_brain_vs_uhr/GRCh38_Ens87_chr22_ERCC/chr22_ERCC92.fa&quot;</span><span class="p">)</span>
+<span class="n">GENOME_GTF</span> <span class="o">=</span> <span class="n">GS</span><span class="o">.</span><span class="n">remote</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;{GS_PREFIX}/griffithlab_brain_vs_uhr/GRCh38_Ens87_chr22_ERCC/genes_chr22_ERCC92.gtf&quot;</span><span class="p">)</span>
+<span class="n">HISAT2_INDEX_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;hisat2_index/chr22_ERCC92&quot;</span>
+
+<span class="n">SAMPLES</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">GS</span><span class="o">.</span><span class="n">glob_wildcards</span><span class="p">(</span><span class="n">GS_PREFIX</span> <span class="o">+</span> <span class="s1">&#39;/griffithlab_brain_vs_uhr/HBR_UHR_ERCC_ds_10pc/{sample}.read1.fastq.gz&#39;</span><span class="p">)</span>
+
+<span class="c1"># rule extract_genome_splice_sites:</span>
+<span class="c1"># ...</span>
+
+<span class="n">rule</span> <span class="n">align_hisat</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span>
+        <span class="n">hisat2_index</span><span class="o">=</span><span class="n">expand</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;{HISAT2_INDEX_PREFIX}.{{ix}}.ht2&quot;</span><span class="p">,</span> <span class="n">ix</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">)),</span>
+        <span class="n">fastq1</span><span class="o">=</span><span class="n">GS</span><span class="o">.</span><span class="n">remote</span><span class="p">(</span><span class="n">GS_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;/griffithlab_brain_vs_uhr/HBR_UHR_ERCC_ds_10pc/{sample}.read1.fastq.gz&quot;</span><span class="p">),</span>
+        <span class="n">fastq2</span><span class="o">=</span><span class="n">GS</span><span class="o">.</span><span class="n">remote</span><span class="p">(</span><span class="n">GS_PREFIX</span> <span class="o">+</span> <span class="s2">&quot;/griffithlab_brain_vs_uhr/HBR_UHR_ERCC_ds_10pc/{sample}.read2.fastq.gz&quot;</span><span class="p">),</span>
+    <span class="c1"># ...</span>
+</pre></div>
+
+
+<p>Now all the file paths are on Google Cloud Storage under the bucket <code>lbwang-playground</code>. For example, <code>GENOME_FA</code> points to <code>gs://lbwang-playground/snakemake_rnaseq/griffithlab_brain_vs_uhr/GRCh38_Ens87_chr22_ERCC/chr22_ERCC92.fa</code>.</p>
+<p>One could launch Snakemake again:</p>
+<div class="highlight"><pre><span></span>snakemake --timestamp -p --verbose --keep-remote -j 8 quant_all_samples
+</pre></div>
+
+
+<h3 id="store-output-files-on-the-cloud">Store output files on the cloud</h3>
+<p>Although we could replace all the file paths to <code>GS.remote(...)</code>, there is a simpler way to replace every path through the command line option. On top of that, we need to add a <code>FULL_HISAT2_INDEX_PREFIX</code> variable to reflect the path change that prepends the path under the writable bucket. Replace all <code>{WRITABLE_BUCKET_PATH}</code> with a writable Google Cloud Storage bucket. </p>
+<div class="highlight"><pre><span></span><span class="n">HISAT2_INDEX_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;hisat2_index/chr22_ERCC92&quot;</span>
+<span class="n">FULL_HISAT2_INDEX_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;{WRITABLE_BUCKET_PATH}/hisat2_index/chr22_ERCC92&quot;</span>
+
+<span class="n">rule</span> <span class="n">build_hisat_index</span><span class="p">:</span>
+    <span class="c1"># ...</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;hisat2-build -p {threads} {input.genome_fa} &quot;</span>
+        <span class="s2">&quot;--ss {input.splice_sites} --exon {input.exons} {FULL_HISAT2_INDEX_PREFIX} &quot;</span>
+        <span class="s2">&quot;2&gt;{log}&quot;</span>
+
+<span class="n">rule</span> <span class="n">align_hisat</span><span class="p">:</span>
+    <span class="c1"># ...</span>
+    <span class="n">shell</span><span class="p">:</span>
+        <span class="s2">&quot;hisat2 -p {threads} --dta -x {FULL_HISAT2_INDEX_PREFIX} &quot;</span>
+        <span class="s2">&quot;-1 {input.fastq1} -2 {input.fastq2} 2&gt;{log} | &quot;</span>
+        <span class="s2">&quot;samtools sort -@ {threads} -o {output}&quot;</span>
+</pre></div>
+
+
+<p>And run the Snakemake with the following options:</p>
+<div class="highlight"><pre><span></span>snakemake --timestamp -p --verbose --keep-remote -j <span class="m">8</span> <span class="se">\</span>
+        --default-remote-provider GS <span class="se">\</span>
+        --default-remote-prefix <span class="o">{</span>WRITABLE_BUCKET_PATH<span class="o">}</span> &gt; <span class="se">\</span>
+        quant_all_samples
+</pre></div>
+
+
+<p>To understand how the whole remote files work, here is the the folder structure after the exection:</p>
+<div class="highlight"><pre><span></span>~/snakemake_example
+├── lbwang-playground/
+│   └── snakemake_rnaseq/
+│       └── griffithlab_brain_vs_uhr/
+│           ├── GRCh38_Ens87_chr22_ERCC/
+│           └── HBR_UHR_ERCC_ds_10pc/
+├── {WRITABLE_BUCKET_PATH}/
+│   ├── align_hisat2/
+│   ├── hisat2_index/
+│   └── stringtie/
+└── Snakefile
+</pre></div>
+
+
+<p>So Snakemake simply downloads/generates the files with the full path on remote storage. </p>
+<h2 id="dockerize-the-environment">Dockerize the environment</h2>
+<p>Although bioconda has made the package installation very easy, it would be easier to just isolate the whole environment at the operating system level. One common approach is to use <a href="https://www.docker.com/">Docker</a>. </p>
+<p>A minimal working Dockerfile would be:</p>
+<div class="highlight"><pre><span></span><span class="k">FROM</span><span class="s"> continuumio/miniconda3</span>
+<span class="k">RUN</span> conda install -y <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6 nomkl <span class="se">\</span>
+        stringtie samtools hisat2 snakemake google-cloud-storage <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> conda clean -y --all
+</pre></div>
+
+
+<p>However there are some details required extra care at the time of writing, so I&rsquo;ve created a Docker image for this pipeline on Docker Hub, <a href="https://hub.docker.com/r/lbwang/snakemake-conda-rnaseq/"><code>lbwang/snakemake-conda-rnaseq</code></a>. One could be able to run the snakemake by:</p>
+<div class="highlight"><pre><span></span><span class="nb">cd</span> ~/snakemake_example
+docker run -t                       <span class="se">\</span>
+    -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/analysis             <span class="se">\ </span>
+    lbwang/snakemake-conda-rnaseq   <span class="se">\</span>
+    snakemake -j <span class="m">2</span> --timestamp      <span class="se">\</span>
+        -s /analysis/Snakefile --directory /analysis <span class="se">\</span>
+        quant_all_samples
+</pre></div>
+
+
+<p>To run Docker on the GCE, one may refer to Docker&rsquo;s <a href="https://docs.docker.com/engine/installation/linux/docker-ce/debian/#install-using-the-repository">official installation guide</a>.</p>
+<h2 id="google-container-engine-gke">Google Container Engine (GKE)</h2>
+<p>To scale up the pipeline execution across multiple machines, Snakemake could use <a href="https://cloud.google.com/container-engine/">Google Container Engine</a> (GKE, implemented on top of Kubernetes). This method is built on Docker which each node will pull down the given Docker image to load the environment. Although the docker image is currently fixed in the Snakemake&rsquo;s source code, one can hard code a different image and bundle the modified source code in the docker image. There are some discussions about how to specify user input image <a href="https://bitbucket.org/snakemake/snakemake/issues/602">here</a>. Right now we could simply change it locally,</p>
+<div class="highlight"><pre><span></span><span class="c1"># snakemake/executors.py</span>
+<span class="c1"># container</span>
+<span class="n">container</span> <span class="o">=</span> <span class="n">kubernetes</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">V1Container</span><span class="p">()</span>
+<span class="n">container</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="s2">&quot;lbwang/snakemake-conda-rnaseq&quot;</span> 
+</pre></div>
+
+
+<p>One can find the full modified source code <a href="https://bitbucket.org/ccwang002/snakemake/src/1efcd317e92d8d2b05e884647fde73943b6af1d6/snakemake/executors.py?at=custom-docker-image&amp;fileviewer=file-view-default#executors.py-1075">here</a>. To install the modified version of Snakemake, run:</p>
+<div class="highlight"><pre><span></span>conda uninstall snakemake
+pip install git+https://bitbucket.org/ccwang002/snakemake.git@custom-docker-image
+</pre></div>
+
+
+<p>By default, Snakemake will always check if the output files are outdated, that is, older than the rule that generated them. To ensure it re-runs the pipeline, one might need to remove the generated output before calling Snakemake again:</p>
+<div class="highlight"><pre><span></span>gsutil -m rm -r gs://<span class="o">{</span>WRITABLE_BUCKET_PATH<span class="o">}</span>/<span class="o">{</span>align_hisat2,hisat2_index,stringtie<span class="o">}</span>
+</pre></div>
+
+
+<p>Following Snakemake&rsquo;s <a href="https://snakemake.readthedocs.io/en/stable/executable.html#executing-a-snakemake-workflow-via-kubernetes">GKE guide</a>, extra packages need to be installed:</p>
+<div class="highlight"><pre><span></span>pip install kubernetes
+gcloud components install kubectl
+<span class="c1"># or Debian on GCE:</span>
+<span class="c1"># sudo apt-get install kubectl</span>
+</pre></div>
+
+
+<p>First we start the GKE cluster by:</p>
+<div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">CLUSTER_NAME</span><span class="o">=</span><span class="s2">&quot;snakemake-cluster&quot;</span>
+<span class="nb">export</span> <span class="nv">ZONE</span><span class="o">=</span><span class="s2">&quot;us-central-a&quot;</span>
+gcloud container clusters create <span class="nv">$CLUSTER_NAME</span> <span class="se">\</span>
+    --zone<span class="o">=</span><span class="nv">$ZONE</span> --num-nodes<span class="o">=</span><span class="m">3</span> <span class="se">\</span>
+    --machine-type<span class="o">=</span><span class="s2">&quot;n1-standard-4&quot;</span> <span class="se">\</span>
+    --scopes storage-rw
+gcloud container clusters get-credentials --zone<span class="o">=</span><span class="nv">$ZONE</span> <span class="nv">$CLUSTER_NAME</span>
+</pre></div>
+
+
+<p>This will launch 3 GCE VM instances using <code>n1-standard-4</code> machine type (4 CPUs). Therefore in the cluster there are total 12 CPUs available for computation. Modify the variables to fit one&rsquo;s setting.</p>
+<p>Note that some rule may specify a number of CPUs that no node in the clusters has, say the rule <code>build_hisat_index</code> specifies 8 threads. In this case the cluster cannot find a big enough node to forward the job to a <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod/">pod</a> and the cluster will halt. Therefore, make sure to change the <code>threads</code> lower to a more reasonable number (or use <a href="https://snakemake.readthedocs.io/en/stable/snakefiles/configuration.html">configfile</a> to apply to mulitple samples).</p>
+<div class="highlight"><pre><span></span>snakemake                                            <span class="se">\</span>
+    --timestamp -p --verbose --keep-remote           <span class="se">\</span>
+    -j <span class="m">12</span> --kubernetes                               <span class="se">\</span>
+    --default-remote-provider GS                     <span class="se">\</span>
+    --default-remote-prefix <span class="o">{</span>WRITABLE_BUCKET_PATH<span class="o">}</span>   <span class="se">\</span>
+    quant_all_samples
+</pre></div>
+
+
+<p>After the execution, make sure to delete the GKE cluster by:</p>
+<div class="highlight"><pre><span></span>gcloud container clusters delete --zone<span class="o">=</span><span class="nv">$ZONE</span> <span class="nv">$CLUSTER_NAME</span>
+</pre></div>
+
+
+<h2 id="summary">Summary</h2>
+<p>Snakemake is a flexible pipeline management tool that can be run locally and on the cloud. Although it is able to run on Kubernetes such as Google Container Engine, it is a relatively new feature and will take some time to stablize. Currently if one wants to run everything (both the computing and the data) on the cloud, using Google Compute Engine and Google Cloud Storage will be the way to go.</p>
+<p>Docker and bioconda have made the deployment a lot easier. Bioconda truly saves a lot of duplicated efforts to figure out the tool compilation. Docker provides an OS-level isolationWith more tools such as <a href="http://singularity.lbl.gov/index.html">Singularity</a> continuing to come out, virtualization seems to be a inevitable trend.</p>
+<p>Other than Google cloud products, Snakemake also supports AWS, S3, LSF, SLURM and many other cluster settings. It seems to me that the day when one <code>Snakefile</code> works for all platforms might be around the corner. </p></section>
+    <footer class="post-footer">
+<section class="share">
+    <h2>Share</h2>
+    <a class="icon-twitter" href="https://twitter.com/share?text=Use Snakemake on Google cloud&amp;url=https://blog.liang2.tw/posts/2017/08/snakemake-google-cloud/"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u=https://blog.liang2.tw/posts/2017/08/snakemake-google-cloud/"
+        onclick="window.open(this.href, 'facebook-share', 'width=580,height=296'); return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.liang2.tw/posts/2017/08/snakemake-google-cloud/"
+        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2017/08/snakemake-google-cloud/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2017/08/snakemake-google-cloud/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
+    <footer>
+</article>
+	</main>
+	<footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags.html">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">
+				Built using <a href="http://getpelican.com/">Pelican</a>.
+				Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.
+			</section>
+		</div>
+	</footer>
+</body>
+</html>
