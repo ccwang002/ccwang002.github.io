@@ -19,7 +19,10 @@
 &lt;li&gt;&lt;a href="#store-output-files-on-the-cloud"&gt;Store output files on the cloud&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a href="#dockerize-the-environment"&gt;Dockerize the environment&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#dockerize-the-environment"&gt;Dockerize the environment&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#use-google-cloud-storage-in-docker-image"&gt;Use Google Cloud Storage in Docker image&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;li&gt;&lt;a href="#google-container-engine-gke"&gt;Google Container Engine (GKE)&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#summary"&gt;Summary&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -395,7 +398,20 @@ docker run -t                       &lt;span class="se"&gt;\&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;To run Docker on the GCE, one may refer to Docker&amp;rsquo;s &lt;a href="https://docs.docker.com/engine/installation/linux/docker-ce/debian/#install-using-the-repository"&gt;official installation guide&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id="use-google-cloud-storage-in-docker-image"&gt;Use Google Cloud Storage in Docker image&lt;/h3&gt;
+&lt;p&gt;To use Google&amp;rsquo;s Cloud products in a Docker image, one needs to install &lt;a href="https://cloud.google.com/sdk/downloads"&gt;Google Cloud SDK&lt;/a&gt; inside the Docker image. Refer to &lt;a href="https://github.com/GoogleCloudPlatform/cloud-sdk-docker/blob/master/debian_slim/Dockerfile"&gt;Google&amp;rsquo;s Dockerfile with Cloud SDK&lt;/a&gt; for detail. &lt;a href="https://hub.docker.com/r/lbwang/snakemake-conda-rnaseq/"&gt;&lt;code&gt;lbwang/snakemake-conda-rnaseq&lt;/code&gt;&lt;/a&gt; has installed the Cloud SDK.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo docker run -t -i                           &lt;span class="se"&gt;\&lt;/span&gt;
+    -v &lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;:/analysis                         &lt;span class="se"&gt;\&lt;/span&gt;
+    -v ~/.config/gcloud:/root/.config/gcloud    &lt;span class="se"&gt;\&lt;/span&gt;
+    lbwang/snakemake-conda-rnaseq               &lt;span class="se"&gt;\&lt;/span&gt;
+    snakemake -j &lt;span class="m"&gt;4&lt;/span&gt; --timestamp --verbose -p --keep-remote   &lt;span class="se"&gt;\&lt;/span&gt;
+        -s /analysis/Snakefile --directory /analysis        &lt;span class="se"&gt;\&lt;/span&gt;
+        --default-remote-provider GS --default-remote-prefix &lt;span class="s2"&gt;&amp;quot;{WRITABLE_BUCKET_PATH}&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+        quant_all_samples
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To run Docker on a GCE VM instance, it requires the host machine (the VM instance) to have Docker installed. One may refer to Docker&amp;rsquo;s &lt;a href="https://docs.docker.com/engine/installation/linux/docker-ce/debian/#install-using-the-repository"&gt;official installation guide&lt;/a&gt; to install it. VM instance by default inherit the user&amp;rsquo;s permission (via the automatically created service account), thus the command above should apply to the GCE instance as well.&lt;/p&gt;
 &lt;h2 id="google-container-engine-gke"&gt;Google Container Engine (GKE)&lt;/h2&gt;
 &lt;p&gt;To scale up the pipeline execution across multiple machines, Snakemake could use &lt;a href="https://cloud.google.com/container-engine/"&gt;Google Container Engine&lt;/a&gt; (GKE, implemented on top of Kubernetes). This method is built on Docker which each node will pull down the given Docker image to load the environment. Although the docker image is currently fixed in the Snakemake&amp;rsquo;s source code, one can hard code a different image and bundle the modified source code in the docker image. There are some discussions about how to specify user input image &lt;a href="https://bitbucket.org/snakemake/snakemake/issues/602"&gt;here&lt;/a&gt;. Right now we could simply change it locally,&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# snakemake/executors.py&lt;/span&gt;
@@ -453,5 +469,7 @@ gcloud container clusters get-credentials --zone&lt;span class="o"&gt;=&lt;/span
 
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
 &lt;p&gt;Snakemake is a flexible pipeline management tool that can be run locally and on the cloud. Although it is able to run on Kubernetes such as Google Container Engine, it is a relatively new feature and will take some time to stablize. Currently if one wants to run everything (both the computing and the data) on the cloud, using Google Compute Engine and Google Cloud Storage will be the way to go.&lt;/p&gt;
-&lt;p&gt;Docker and bioconda have made the deployment a lot easier. Bioconda truly saves a lot of duplicated efforts to figure out the tool compilation. Docker provides an OS-level isolationWith more tools such as &lt;a href="http://singularity.lbl.gov/index.html"&gt;Singularity&lt;/a&gt; continuing to come out, virtualization seems to be a inevitable trend.&lt;/p&gt;
-&lt;p&gt;Other than Google cloud products, Snakemake also supports AWS, S3, LSF, SLURM and many other cluster settings. It seems to me that the day when one &lt;code&gt;Snakefile&lt;/code&gt; works for all platforms might be around the corner. &lt;/p&gt;</content><category term="en"></category><category term="bio"></category><category term="python"></category><category term="snakemake"></category><category term="cloud"></category></entry></feed>
+&lt;p&gt;Using a 4-core (n1-standard-4) GCE instance, the total time to finish the pipeline locally and via Google Cloud Storage were 3.2 mins and 5.8 mins resepctively. So there are some overhead to transfer files from/to the storage.&lt;/p&gt;
+&lt;p&gt;Docker and bioconda have made the deployment a lot easier. Bioconda truly saves a lot of duplicated efforts to figure out the tool compilation. Docker provides an OS-level isolation and an ecosystem of deployment. With more tools such as &lt;a href="http://singularity.lbl.gov/index.html"&gt;Singularity&lt;/a&gt; continuing to come out, virtualization seems to be a inevitable trend.&lt;/p&gt;
+&lt;p&gt;Other than Google cloud products, Snakemake also supports AWS, S3, LSF, SLURM and many other cluster settings. It seems to me that the day when one &lt;code&gt;Snakefile&lt;/code&gt; works for all platforms might be around the corner. &lt;/p&gt;
+&lt;p&gt;EDIT 2017-08-15: Add a section about using Google Cloud in Docker. Update summary with some time measurements.&lt;/p&gt;</content><category term="en"></category><category term="bio"></category><category term="python"></category><category term="snakemake"></category><category term="cloud"></category></entry></feed>
