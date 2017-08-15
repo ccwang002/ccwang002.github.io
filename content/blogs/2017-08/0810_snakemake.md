@@ -6,6 +6,8 @@ Tags: en, bio, python, snakemake, cloud
 Category: Bioinfo
 ---
 
+***TL;DR** Run a RNA-seq pipeline using Snakemake locally and later port it to Google Cloud. Snakemake can parallelize jobs of a pipeline and even across machines.*
+
 [Snakemake][Snakemake] has been my favorite workflow management system for a while. I came across it while writing [my master thesis][master-thesis] and from the first look, it already appeared to be extremely flexible and powerful. I got some time to play with it during my lab rotation and now after joining the lab, I am using it in my many research projects.  With more and more projects in lab relying on virtualization like [Docker][docker], package management like [bioconda][bioconda], and cloud computing like [Google Cloud][google-cloud], I would like to continue using Snakemake in those scenarios as well. Hence this post to write down all the details. 
 
 The post will introduce the Snakemake by writing the pipeline locally, then gradually move towards to Docker and more Google Cloud products, e.g., Google Cloud Storage, Google Compute Engine (GCE), and Google Container Engine (GKE). [Snakemake tutorial][snakemake-tutorial] is a good place to start with to understand how Snakemake works.
