@@ -57,7 +57,7 @@ Now you should have the following file structure:
 └── griffithlab_brain_vs_uhr.tar.gz
 ```
 
-[new-tuxedo-paper]: www.nature.com/nprot/journal/v11/n9/full/nprot.2016.095.html
+[new-tuxedo-paper]: https://www.nature.com/nprot/journal/v11/n9/full/nprot.2016.095.html
 [hisat2]: https://ccb.jhu.edu/software/hisat2/
 [stringtie]: https://ccb.jhu.edu/software/stringtie/
 [griffith-lab-rnaseq-tutorial]: https://github.com/griffithlab/rnaseq_tutorial/
