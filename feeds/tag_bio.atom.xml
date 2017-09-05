@@ -36,7 +36,7 @@
 &lt;/blockquote&gt;
 &lt;p&gt;Our RNA-seq raw data are the 10% downsampled FASTQ files for these samples. For the human genome reference, only the chromosome 22 from GRCh38 is used. The gene annotation is from &lt;a href="http://dec2016.archive.ensembl.org/Homo_sapiens/Info/Index"&gt;Ensembl Version 87&lt;/a&gt;.  Let&amp;rsquo;s download all the samples and annotations.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; &lt;span class="nb"&gt;cd&lt;/span&gt; ~/snakemake_example
-&lt;span class="gp"&gt;$&lt;/span&gt; wget https://storage.googleapis.com/dinglab/lbwang/snakemake_demo/griffithlab_brain_vs_uhr.tar.gz
+&lt;span class="gp"&gt;$&lt;/span&gt; wget https://storage.googleapis.com/lbwang-playground/snakemake_rnaseq/griffithlab_brain_vs_uhr.tar.gz
 &lt;span class="gp"&gt;$&lt;/span&gt; tar xf griffithlab_brain_vs_uhr.tar.gz
 &lt;/pre&gt;&lt;/div&gt;
 
