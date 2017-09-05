@@ -36,7 +36,7 @@ Our RNA-seq raw data are the 10% downsampled FASTQ files for these samples. For 
 
 ```console
 $ cd ~/snakemake_example
-$ wget https://storage.googleapis.com/dinglab/lbwang/snakemake_demo/griffithlab_brain_vs_uhr.tar.gz
+$ wget https://storage.googleapis.com/lbwang-playground/snakemake_rnaseq/griffithlab_brain_vs_uhr.tar.gz
 $ tar xf griffithlab_brain_vs_uhr.tar.gz
 ```
 
