@@ -479,29 +479,17 @@ To run Docker on a GCE VM instance, it requires the host machine (the VM instanc
 
 
 ## Google Container Engine (GKE)
-To scale up the pipeline execution across multiple machines, Snakemake could use [Google Container Engine][gke] (GKE, implemented on top of Kubernetes). This method is built on Docker which each node will pull down the given Docker image to load the environment. Although the docker image is currently fixed in the Snakemake's source code, one can hard code a different image and bundle the modified source code in the docker image. There are some discussions about how to specify user input image [here][issue-602]. Right now we could simply change it locally,
+To scale up the pipeline execution across multiple machines, Snakemake could use [Google Container Engine][gke] (GKE, implemented on top of Kubernetes). This method is built on Docker which each node will pull down the given Docker image to load the environment. <del>Although the docker image is currently fixed in the Snakemake's source code, one can hard code a different image and bundle the modified source code in the docker image.</del> After [some discussions][issue-602] about how to specify user input image [^kubernetes-docker], on the master branch of snakemake, one is able to specify the Docker image Kubernete's node uses by `--container-image <image>`. 
 
-```python
-# snakemake/executors.py
-# container
-container = kubernetes.client.V1Container()
-container.image = "lbwang/snakemake-conda-rnaseq"
-```
+[^kubernetes-docker]: In the discussion, Snakemake's author, Johannes, mentioned the possiblity of using [Singularity][singularity] so each rule can run in a different virutal environment. The development is still in progress.
 
-One can find the full modified source code [here](https://bitbucket.org/ccwang002/snakemake/src/1efcd317e92d8d2b05e884647fde73943b6af1d6/snakemake/executors.py?at=custom-docker-image&fileviewer=file-view-default#executors.py-1075). To install the modified version of Snakemake, run:
+To install the master branch of Snakemake, run:
 
 ```bash
-conda uninstall snakemake
-pip install git+https://bitbucket.org/ccwang002/snakemake.git@custom-docker-image
+pip install git+https://bitbucket.org/snakemake/snakemake.git@master
 ```
 
-By default, Snakemake will always check if the output files are outdated, that is, older than the rule that generated them. To ensure it re-runs the pipeline, one might need to remove the generated output before calling Snakemake again:
-
-```bash
-gsutil -m rm -r gs://{WRITABLE_BUCKET_PATH}/{align_hisat2,hisat2_index,stringtie}
-```
-
-Following Snakemake's [GKE guide][snakemake-gke], extra packages need to be installed:
+Following Snakemake's [GKE guide][snakemake-gke], extra packages need to be installed to talk to GKE (Kubernetes) cluster:
 
 ```bash
 pip install kubernetes
@@ -510,7 +498,7 @@ gcloud components install kubectl
 # sudo apt-get install kubectl
 ```
 
-First we start the GKE cluster by:
+First we create the GKE cluster by:
 
 ```bash
 export CLUSTER_NAME="snakemake-cluster"
@@ -524,18 +512,29 @@ gcloud container clusters get-credentials --zone=$ZONE $CLUSTER_NAME
 
 This will launch 3 GCE VM instances using `n1-standard-4` machine type (4 CPUs). Therefore in the cluster there are total 12 CPUs available for computation. Modify the variables to fit one's setting.
 
-Note that some rule may specify a number of CPUs that no node in the clusters has, say the rule `build_hisat_index` specifies 8 threads. In this case the cluster cannot find a big enough node to forward the job to a [pod][gke-pod] and the cluster will halt. Therefore, make sure to change the `threads` lower to a more reasonable number (or use [configfile][snakemake-config] to apply to mulitple samples).
+Note that some rule may specify a number of CPUs that no node in the clusters has, say the rule `build_hisat_index` specifies 8 threads. In this case, the cluster cannot find a node with enough free CPUs to forward the job to a [pod][gke-pod] and the cluster will halt. Therefore, make sure to lower the `threads` to a reasonable number (or use [configfile][snakemake-config] to apply to mulitple samples). We will continue to use the same Docker image [`lbwang/snakemake-conda-rnaseq`][docker-image] as the Kubernetes' container image.
+
+By default, Snakemake will always check if the output files are outdated, that is, older than the rule that generated them. To ensure it re-runs the pipeline, one might need to remove the generated output before calling Snakemake again:
+
+```bash
+gsutil -m rm -r gs://{WRITABLE_BUCKET_PATH}/{align_hisat2,hisat2_index,stringtie}
+```
+
+Then we are able to run the pipeline again.
 
 ```bash
 snakemake                                            \
     --timestamp -p --verbose --keep-remote           \
     -j 12 --kubernetes                               \
+    --container-image lbwang/snakemake-conda-rnaseq \
     --default-remote-provider GS                     \
     --default-remote-prefix {WRITABLE_BUCKET_PATH}   \
     quant_all_samples
 ```
 
-After the execution, make sure to delete the GKE cluster by:
+Note that since we change the container image, we have to make sure the version of Snakemake in the Docker image and the machine starting the pipeline matches. An easy way to ensure that the versions are matched is to start the workflow inside the same Docker image.
+
+After running our pipeline, make sure to delete the GKE cluster by:
 
 ```bash
 gcloud container clusters delete --zone=$ZONE $CLUSTER_NAME
@@ -546,6 +545,7 @@ gcloud container clusters delete --zone=$ZONE $CLUSTER_NAME
 [snakemake-gke]: https://snakemake.readthedocs.io/en/stable/executable.html#executing-a-snakemake-workflow-via-kubernetes
 [gke-pod]: https://kubernetes.io/docs/concepts/workloads/pods/pod/
 [snakemake-config]: https://snakemake.readthedocs.io/en/stable/snakefiles/configuration.html
+[singularity]: http://singularity.lbl.gov/
 
 
 ## Summary
@@ -557,5 +557,5 @@ Docker and bioconda have made the deployment a lot easier. Bioconda truly saves 
 
 Other than Google cloud products, Snakemake also supports AWS, S3, LSF, SLURM and many other cluster settings. It seems to me that the day when one `Snakefile` works for all platforms might be around the corner.
 
-EDIT 2017-08-15: Add a section about using Google Cloud in Docker. Update summary with some time measurements. Add links to the full Snakefiles.
-[singularity]: http://singularity.lbl.gov/index.html
+EDIT 2017-08-15: Add a section about using Google Cloud in Docker. Update summary with some time measurements. Add links to the full Snakefiles.<br>
+EDIT 2017-09-07: Snakemake has added the support of custom Kubernetes container image. Thus update the GKE section to use the official parameter to pass image.
