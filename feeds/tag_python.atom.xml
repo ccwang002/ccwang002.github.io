@@ -414,26 +414,13 @@ docker run -t                       &lt;span class="se"&gt;\&lt;/span&gt;
 
 &lt;p&gt;To run Docker on a GCE VM instance, it requires the host machine (the VM instance) to have Docker installed. One may refer to Docker&amp;rsquo;s &lt;a href="https://docs.docker.com/engine/installation/linux/docker-ce/debian/#install-using-the-repository"&gt;official installation guide&lt;/a&gt; to install it. VM instance by default inherit the user&amp;rsquo;s permission (via the automatically created service account), thus the command above should apply to the GCE instance as well.&lt;/p&gt;
 &lt;h2 id="google-container-engine-gke"&gt;Google Container Engine (GKE)&lt;/h2&gt;
-&lt;p&gt;To scale up the pipeline execution across multiple machines, Snakemake could use &lt;a href="https://cloud.google.com/container-engine/"&gt;Google Container Engine&lt;/a&gt; (GKE, implemented on top of Kubernetes). This method is built on Docker which each node will pull down the given Docker image to load the environment. Although the docker image is currently fixed in the Snakemake&amp;rsquo;s source code, one can hard code a different image and bundle the modified source code in the docker image. There are some discussions about how to specify user input image &lt;a href="https://bitbucket.org/snakemake/snakemake/issues/602"&gt;here&lt;/a&gt;. Right now we could simply change it locally,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# snakemake/executors.py&lt;/span&gt;
-&lt;span class="c1"&gt;# container&lt;/span&gt;
-&lt;span class="n"&gt;container&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;kubernetes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;V1Container&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;image&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;lbwang/snakemake-conda-rnaseq&amp;quot;&lt;/span&gt;
+&lt;p&gt;To scale up the pipeline execution across multiple machines, Snakemake could use &lt;a href="https://cloud.google.com/container-engine/"&gt;Google Container Engine&lt;/a&gt; (GKE, implemented on top of Kubernetes). This method is built on Docker which each node will pull down the given Docker image to load the environment. &lt;del&gt;Although the docker image is currently fixed in the Snakemake&amp;rsquo;s source code, one can hard code a different image and bundle the modified source code in the docker image.&lt;/del&gt; After &lt;a href="https://bitbucket.org/snakemake/snakemake/issues/602"&gt;some discussions&lt;/a&gt; about how to specify user input image &lt;sup id="fnref-kubernetes-docker"&gt;&lt;a class="footnote-ref" href="#fn-kubernetes-docker"&gt;1&lt;/a&gt;&lt;/sup&gt;, on the master branch of snakemake, one is able to specify the Docker image Kubernete&amp;rsquo;s node uses by &lt;code&gt;--container-image &amp;lt;image&amp;gt;&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;To install the master branch of Snakemake, run:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install git+https://bitbucket.org/snakemake/snakemake.git@master
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;One can find the full modified source code &lt;a href="https://bitbucket.org/ccwang002/snakemake/src/1efcd317e92d8d2b05e884647fde73943b6af1d6/snakemake/executors.py?at=custom-docker-image&amp;amp;fileviewer=file-view-default#executors.py-1075"&gt;here&lt;/a&gt;. To install the modified version of Snakemake, run:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;conda uninstall snakemake
-pip install git+https://bitbucket.org/ccwang002/snakemake.git@custom-docker-image
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;By default, Snakemake will always check if the output files are outdated, that is, older than the rule that generated them. To ensure it re-runs the pipeline, one might need to remove the generated output before calling Snakemake again:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;gsutil -m rm -r gs://&lt;span class="o"&gt;{&lt;/span&gt;WRITABLE_BUCKET_PATH&lt;span class="o"&gt;}&lt;/span&gt;/&lt;span class="o"&gt;{&lt;/span&gt;align_hisat2,hisat2_index,stringtie&lt;span class="o"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Following Snakemake&amp;rsquo;s &lt;a href="https://snakemake.readthedocs.io/en/stable/executable.html#executing-a-snakemake-workflow-via-kubernetes"&gt;GKE guide&lt;/a&gt;, extra packages need to be installed:&lt;/p&gt;
+&lt;p&gt;Following Snakemake&amp;rsquo;s &lt;a href="https://snakemake.readthedocs.io/en/stable/executable.html#executing-a-snakemake-workflow-via-kubernetes"&gt;GKE guide&lt;/a&gt;, extra packages need to be installed to talk to GKE (Kubernetes) cluster:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install kubernetes
 gcloud components install kubectl
 &lt;span class="c1"&gt;# or Debian on GCE:&lt;/span&gt;
@@ -441,7 +428,7 @@ gcloud components install kubectl
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;First we start the GKE cluster by:&lt;/p&gt;
+&lt;p&gt;First we create the GKE cluster by:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;CLUSTER_NAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;snakemake-cluster&amp;quot;&lt;/span&gt;
 &lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;ZONE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;us-central-a&amp;quot;&lt;/span&gt;
 gcloud container clusters create &lt;span class="nv"&gt;$CLUSTER_NAME&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
@@ -453,17 +440,25 @@ gcloud container clusters get-credentials --zone&lt;span class="o"&gt;=&lt;/span
 
 
 &lt;p&gt;This will launch 3 GCE VM instances using &lt;code&gt;n1-standard-4&lt;/code&gt; machine type (4 CPUs). Therefore in the cluster there are total 12 CPUs available for computation. Modify the variables to fit one&amp;rsquo;s setting.&lt;/p&gt;
-&lt;p&gt;Note that some rule may specify a number of CPUs that no node in the clusters has, say the rule &lt;code&gt;build_hisat_index&lt;/code&gt; specifies 8 threads. In this case the cluster cannot find a big enough node to forward the job to a &lt;a href="https://kubernetes.io/docs/concepts/workloads/pods/pod/"&gt;pod&lt;/a&gt; and the cluster will halt. Therefore, make sure to change the &lt;code&gt;threads&lt;/code&gt; lower to a more reasonable number (or use &lt;a href="https://snakemake.readthedocs.io/en/stable/snakefiles/configuration.html"&gt;configfile&lt;/a&gt; to apply to mulitple samples).&lt;/p&gt;
+&lt;p&gt;Note that some rule may specify a number of CPUs that no node in the clusters has, say the rule &lt;code&gt;build_hisat_index&lt;/code&gt; specifies 8 threads. In this case, the cluster cannot find a node with enough free CPUs to forward the job to a &lt;a href="https://kubernetes.io/docs/concepts/workloads/pods/pod/"&gt;pod&lt;/a&gt; and the cluster will halt. Therefore, make sure to lower the &lt;code&gt;threads&lt;/code&gt; to a reasonable number (or use &lt;a href="https://snakemake.readthedocs.io/en/stable/snakefiles/configuration.html"&gt;configfile&lt;/a&gt; to apply to mulitple samples). We will continue to use the same Docker image &lt;a href="https://hub.docker.com/r/lbwang/snakemake-conda-rnaseq/"&gt;&lt;code&gt;lbwang/snakemake-conda-rnaseq&lt;/code&gt;&lt;/a&gt; as the Kubernetes&amp;rsquo; container image.&lt;/p&gt;
+&lt;p&gt;By default, Snakemake will always check if the output files are outdated, that is, older than the rule that generated them. To ensure it re-runs the pipeline, one might need to remove the generated output before calling Snakemake again:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;gsutil -m rm -r gs://&lt;span class="o"&gt;{&lt;/span&gt;WRITABLE_BUCKET_PATH&lt;span class="o"&gt;}&lt;/span&gt;/&lt;span class="o"&gt;{&lt;/span&gt;align_hisat2,hisat2_index,stringtie&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then we are able to run the pipeline again.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;snakemake                                            &lt;span class="se"&gt;\&lt;/span&gt;
     --timestamp -p --verbose --keep-remote           &lt;span class="se"&gt;\&lt;/span&gt;
     -j &lt;span class="m"&gt;12&lt;/span&gt; --kubernetes                               &lt;span class="se"&gt;\&lt;/span&gt;
+    --container-image lbwang/snakemake-conda-rnaseq &lt;span class="se"&gt;\&lt;/span&gt;
     --default-remote-provider GS                     &lt;span class="se"&gt;\&lt;/span&gt;
     --default-remote-prefix &lt;span class="o"&gt;{&lt;/span&gt;WRITABLE_BUCKET_PATH&lt;span class="o"&gt;}&lt;/span&gt;   &lt;span class="se"&gt;\&lt;/span&gt;
     quant_all_samples
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;After the execution, make sure to delete the GKE cluster by:&lt;/p&gt;
+&lt;p&gt;Note that since we change the container image, we have to make sure the version of Snakemake in the Docker image and the machine starting the pipeline matches. An easy way to ensure that the versions are matched is to start the workflow inside the same Docker image.&lt;/p&gt;
+&lt;p&gt;After running our pipeline, make sure to delete the GKE cluster by:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;gcloud container clusters delete --zone&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$ZONE&lt;/span&gt; &lt;span class="nv"&gt;$CLUSTER_NAME&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -471,9 +466,18 @@ gcloud container clusters get-credentials --zone&lt;span class="o"&gt;=&lt;/span
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
 &lt;p&gt;Snakemake is a flexible pipeline management tool that can be run locally and on the cloud. Although it is able to run on Kubernetes such as Google Container Engine, it is a relatively new feature and will take some time to stablize. Currently if one wants to run everything (both the computing and the data) on the cloud, using Google Compute Engine and Google Cloud Storage will be the way to go.&lt;/p&gt;
 &lt;p&gt;Using a 4-core (n1-standard-4) GCE instance, the total time to finish the pipeline locally and via Google Cloud Storage were 3.2 mins and 5.8 mins resepctively. So there are some overhead to transfer files from/to the storage.&lt;/p&gt;
-&lt;p&gt;Docker and bioconda have made the deployment a lot easier. Bioconda truly saves a lot of duplicated efforts to figure out the tool compilation. Docker provides an OS-level isolation and an ecosystem of deployment. With more tools such as &lt;a href="http://singularity.lbl.gov/index.html"&gt;Singularity&lt;/a&gt; continuing to come out, virtualization seems to be a inevitable trend.&lt;/p&gt;
+&lt;p&gt;Docker and bioconda have made the deployment a lot easier. Bioconda truly saves a lot of duplicated efforts to figure out the tool compilation. Docker provides an OS-level isolation and an ecosystem of deployment. With more tools such as &lt;a href="http://singularity.lbl.gov/"&gt;Singularity&lt;/a&gt; continuing to come out, virtualization seems to be a inevitable trend.&lt;/p&gt;
 &lt;p&gt;Other than Google cloud products, Snakemake also supports AWS, S3, LSF, SLURM and many other cluster settings. It seems to me that the day when one &lt;code&gt;Snakefile&lt;/code&gt; works for all platforms might be around the corner.&lt;/p&gt;
-&lt;p&gt;EDIT 2017-08-15: Add a section about using Google Cloud in Docker. Update summary with some time measurements. Add links to the full Snakefiles.&lt;/p&gt;</content><category term="en"></category><category term="bio"></category><category term="python"></category><category term="snakemake"></category><category term="cloud"></category></entry><entry><title>使用 conda env 部署 Django</title><link href="https://blog.liang2.tw/posts/2016/05/django-deploy-conda/" rel="alternate"></link><published>2016-05-24T00:00:00-05:00</published><updated>2016-05-24T00:00:00-05:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-05-24:/posts/2016/05/django-deploy-conda/</id><summary type="html">&lt;p&gt;沒幾天前剛部署一次 Django，記錄在&lt;a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/"&gt;《使用 uWSGI、nginx、systemd 部署 Django》&lt;/a&gt;。今天又部署了另一個專案。部署的設定跟上次一樣：&lt;/p&gt;
+&lt;p&gt;EDIT 2017-08-15: Add a section about using Google Cloud in Docker. Update summary with some time measurements. Add links to the full Snakefiles.&lt;br&gt;
+EDIT 2017-09-07: Snakemake has added the support of custom Kubernetes container image. Thus update the GKE section to use the official parameter to pass image.&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn-kubernetes-docker"&gt;
+&lt;p&gt;In the discussion, Snakemake&amp;rsquo;s author, Johannes, mentioned the possiblity of using &lt;a href="http://singularity.lbl.gov/"&gt;Singularity&lt;/a&gt; so each rule can run in a different virutal environment. The development is still in progress.&amp;#160;&lt;a class="footnote-backref" href="#fnref-kubernetes-docker" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="en"></category><category term="bio"></category><category term="python"></category><category term="snakemake"></category><category term="cloud"></category></entry><entry><title>使用 conda env 部署 Django</title><link href="https://blog.liang2.tw/posts/2016/05/django-deploy-conda/" rel="alternate"></link><published>2016-05-24T00:00:00-05:00</published><updated>2016-05-24T00:00:00-05:00</updated><author><name>Liang2</name></author><id>tag:blog.liang2.tw,2016-05-24:/posts/2016/05/django-deploy-conda/</id><summary type="html">&lt;p&gt;沒幾天前剛部署一次 Django，記錄在&lt;a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/"&gt;《使用 uWSGI、nginx、systemd 部署 Django》&lt;/a&gt;。今天又部署了另一個專案。部署的設定跟上次一樣：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;nginx -- unix socket -- uWSGI -- Django
 &lt;/pre&gt;&lt;/div&gt;
 
