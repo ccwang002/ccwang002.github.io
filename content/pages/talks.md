@@ -10,6 +10,7 @@ The followings are talks I gave in the open source communities. Since I have dev
 ### 2017
 
 [**Introduction to Snakemake**](https://blog.liang2.tw/2017Talk-Snakemake/) Sep 05, 2017<br>
+Ding Lab, WUSTL
 
 
 ### 2016
