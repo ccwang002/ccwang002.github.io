@@ -479,7 +479,7 @@ To run Docker on a GCE VM instance, it requires the host machine (the VM instanc
 
 
 ## Google Container Engine (GKE)
-To scale up the pipeline execution across multiple machines, Snakemake could use [Google Container Engine][gke] (GKE, implemented on top of Kubernetes). This method is built on Docker which each node will pull down the given Docker image to load the environment. <del>Although the docker image is currently fixed in the Snakemake's source code, one can hard code a different image and bundle the modified source code in the docker image.</del> After [some discussions][issue-602] about how to specify user input image [^kubernetes-docker], on the master branch of snakemake, one is able to specify the Docker image Kubernete's node uses by `--container-image <image>`. 
+To scale up the pipeline execution across multiple machines, Snakemake could use [Google Container Engine][gke] (GKE, implemented on top of Kubernetes). This method is built on Docker which each node will pull down the given Docker image to load the environment. <del>Although the docker image is currently fixed in the Snakemake's source code, one can hard code a different image and bundle the modified source code in the docker image.</del> After [some discussions][issue-602] about how to specify user input image [^kubernetes-docker], on the master branch of snakemake, one is able to specify the Docker image Kubernete's node uses by `--container-image <image>`.
 
 [^kubernetes-docker]: In the discussion, Snakemake's author, Johannes, mentioned the possiblity of using [Singularity][singularity] so each rule can run in a different virutal environment. The development is still in progress.
 
@@ -502,7 +502,7 @@ First we create the GKE cluster by:
 
 ```bash
 export CLUSTER_NAME="snakemake-cluster"
-export ZONE="us-central-a"
+export ZONE="us-central1-a"
 gcloud container clusters create $CLUSTER_NAME \
     --zone=$ZONE --num-nodes=3 \
     --machine-type="n1-standard-4" \
