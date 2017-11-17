@@ -506,6 +506,7 @@ export ZONE="us-central1-a"
 gcloud container clusters create $CLUSTER_NAME \
     --zone=$ZONE --num-nodes=3 \
     --machine-type="n1-standard-4" \
+    --image-type=ubuntu \
     --scopes storage-rw
 gcloud container clusters get-credentials --zone=$ZONE $CLUSTER_NAME
 ```
@@ -532,13 +533,44 @@ snakemake                                            \
     quant_all_samples
 ```
 
-Note that since we change the container image, we have to make sure the version of Snakemake in the Docker image and the machine starting the pipeline matches. An easy way to ensure that the versions are matched is to start the workflow inside the same Docker image.
+Note that since we change the container image, we have to make sure the version of Snakemake in the Docker image and the machine starting the pipeline matches. An easy way to ensure that the versions are matched is to start the workflow inside the same Docker image. To connect the Kubernete cluster inside Docker, we need to pass kubectl's config file as well, which is at `~/.kube/config`. So the full command will become
+
+```bash
+sudo docker run -t -i                           \
+    -v $(pwd):/analysis                         \
+    -v ~/.config/gcloud:/root/.config/gcloud    \
+    -v ~/.kube/config:/root/.kube/config        \
+    lbwang/snakemake-conda-rnaseq               \
+    snakemake                                           \
+        -s /analysis/Snakefile --directory /analysis    \
+        --timestamp -p --verbose --keep-remote          \
+        -j 12 --kubernetes                              \
+        --container-image lbwang/snakemake-conda-rnaseq \
+        --default-remote-provider GS                    \
+        --default-remote-prefix {WRITABLE_BUCKET_PATH}  \
+        quant_all_samples
+```
 
 After running our pipeline, make sure to delete the GKE cluster by:
 
 ```bash
 gcloud container clusters delete --zone=$ZONE $CLUSTER_NAME
 ```
+
+### Potential issues of using GKE with Snakemake
+I still encountered the following issues while running the whole pipeline on the Kubernetes. It is likely that they are not Snakemake's fault but I couldn't find enough time to dig into the details at the time of writing:
+
+- HISAT2 cannot build its index on Kubenetes. So the step `build_hisat_index` failed for unknown reason. The error message from HISAT2 looks like this:
+
+    ```
+    ...
+    Wrote 8912688 bytes to secondary GFM file: {WRITABLE_BUCKET_PATH}/snakemake_demo/hisat2_index/chr22_ERCC92.6.ht2
+    Index is corrupt: File size for {WRITABLE_BUCKET_PATH}/snakemake_demo/hisat2_index/chr22_ERCC92.6.ht2 should have been 8912688 but is actually 0.
+    Please check if there is a problem with the disk or if disk is full.
+    Total time for call to driver() for forward index: 00:01:18
+    Error: Encountered internal HISAT2 exception (#1)
+    ```
+
 
 [gke]: https://cloud.google.com/container-engine/
 [issue-602]: https://bitbucket.org/snakemake/snakemake/issues/602
@@ -558,4 +590,5 @@ Docker and bioconda have made the deployment a lot easier. Bioconda truly saves 
 Other than Google cloud products, Snakemake also supports AWS, S3, LSF, SLURM and many other cluster settings. It seems to me that the day when one `Snakefile` works for all platforms might be around the corner.
 
 EDIT 2017-08-15: Add a section about using Google Cloud in Docker. Update summary with some time measurements. Add links to the full Snakefiles.<br>
-EDIT 2017-09-07: Snakemake has added the support of custom Kubernetes container image. Thus update the GKE section to use the official parameter to pass image.
+EDIT 2017-09-07: Snakemake has added the support of custom Kubernetes container image. Thus update the GKE section to use the official parameter to pass image.<br>
+EDIT 2017-11-17: Add instructions to run the Snakemake on Kubernete inside Docker. And also list out the issues of using GKE.
