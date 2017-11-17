@@ -479,9 +479,9 @@ To run Docker on a GCE VM instance, it requires the host machine (the VM instanc
 
 
 ## Google Container Engine (GKE)
-To scale up the pipeline execution across multiple machines, Snakemake could use [Google Container Engine][gke] (GKE, implemented on top of Kubernetes). This method is built on Docker which each node will pull down the given Docker image to load the environment. <del>Although the docker image is currently fixed in the Snakemake's source code, one can hard code a different image and bundle the modified source code in the docker image.</del> After [some discussions][issue-602] about how to specify user input image [^kubernetes-docker], on the master branch of snakemake, one is able to specify the Docker image Kubernete's node uses by `--container-image <image>`.
+To scale up the pipeline execution across multiple machines, Snakemake could use [Google Container Engine][gke] (GKE, implemented on top of Kubernetes). This method is built on Docker which each node will pull down the given Docker image to load the environment. After [some discussions][issue-602] about how to specify user input image [^kubernetes-docker], on Snakemake 4.1+ one is able to specify the Docker image Kubernete's node uses by `--container-image <image>`.
 
-[^kubernetes-docker]: In the discussion, Snakemake's author, Johannes, mentioned the possiblity of using [Singularity][singularity] so each rule can run in a different virutal environment. The development is still in progress.
+[^kubernetes-docker]: In the discussion, Snakemake's author, Johannes, mentioned the possiblity of using [Singularity][singularity] so each rule can run in a different virutal environment. Singularity support comes at Snakemake 4.2+.
 
 To install the master branch of Snakemake, run:
 
@@ -506,7 +506,6 @@ export ZONE="us-central1-a"
 gcloud container clusters create $CLUSTER_NAME \
     --zone=$ZONE --num-nodes=3 \
     --machine-type="n1-standard-4" \
-    --image-type=ubuntu \
     --scopes storage-rw
 gcloud container clusters get-credentials --zone=$ZONE $CLUSTER_NAME
 ```
@@ -533,7 +532,9 @@ snakemake                                            \
     quant_all_samples
 ```
 
-Note that since we change the container image, we have to make sure the version of Snakemake in the Docker image and the machine starting the pipeline matches. An easy way to ensure that the versions are matched is to start the workflow inside the same Docker image. To connect the Kubernete cluster inside Docker, we need to pass kubectl's config file as well, which is at `~/.kube/config`. So the full command will become
+Note that since we change the container image, we have to make sure the version of Snakemake in the Docker image and the machine starting the pipeline matches. An easy way to ensure that the versions are matched is to start the workflow inside the same Docker image.
+
+To connect the Kubernete cluster inside Docker, we need to pass kubectl's config file as well, which is at `~/.kube/config`. So the full command becomes:
 
 ```bash
 sudo docker run -t -i                           \
@@ -562,14 +563,14 @@ I still encountered the following issues while running the whole pipeline on the
 
 - HISAT2 cannot build its index on Kubenetes. So the step `build_hisat_index` failed for unknown reason. The error message from HISAT2 looks like this:
 
-    ```
-    ...
-    Wrote 8912688 bytes to secondary GFM file: {WRITABLE_BUCKET_PATH}/snakemake_demo/hisat2_index/chr22_ERCC92.6.ht2
-    Index is corrupt: File size for {WRITABLE_BUCKET_PATH}/snakemake_demo/hisat2_index/chr22_ERCC92.6.ht2 should have been 8912688 but is actually 0.
-    Please check if there is a problem with the disk or if disk is full.
-    Total time for call to driver() for forward index: 00:01:18
-    Error: Encountered internal HISAT2 exception (#1)
-    ```
+```
+...
+Wrote 8912688 bytes to secondary GFM file: {WRITABLE_BUCKET_PATH}/snakemake_demo/hisat2_index/chr22_ERCC92.6.ht2
+Index is corrupt: File size for {WRITABLE_BUCKET_PATH}/snakemake_demo/hisat2_index/chr22_ERCC92.6.ht2 should have been 8912688 but is actually 0.
+Please check if there is a problem with the disk or if disk is full.
+Total time for call to driver() for forward index: 00:01:18
+Error: Encountered internal HISAT2 exception (#1)
+```
 
 
 [gke]: https://cloud.google.com/container-engine/
