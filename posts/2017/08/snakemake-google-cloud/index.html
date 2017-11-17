@@ -89,7 +89,10 @@
 <li><a href="#use-google-cloud-storage-in-docker-image">Use Google Cloud Storage in Docker image</a></li>
 </ul>
 </li>
-<li><a href="#google-container-engine-gke">Google Container Engine (GKE)</a></li>
+<li><a href="#google-container-engine-gke">Google Container Engine (GKE)</a><ul>
+<li><a href="#potential-issues-of-using-gke-with-snakemake">Potential issues of using GKE with Snakemake</a></li>
+</ul>
+</li>
 <li><a href="#summary">Summary</a></li>
 </ul>
 </div>
@@ -480,7 +483,7 @@ docker run -t                       <span class="se">\</span>
 
 <p>To run Docker on a GCE VM instance, it requires the host machine (the VM instance) to have Docker installed. One may refer to Docker&rsquo;s <a href="https://docs.docker.com/engine/installation/linux/docker-ce/debian/#install-using-the-repository">official installation guide</a> to install it. VM instance by default inherit the user&rsquo;s permission (via the automatically created service account), thus the command above should apply to the GCE instance as well.</p>
 <h2 id="google-container-engine-gke">Google Container Engine (GKE)</h2>
-<p>To scale up the pipeline execution across multiple machines, Snakemake could use <a href="https://cloud.google.com/container-engine/">Google Container Engine</a> (GKE, implemented on top of Kubernetes). This method is built on Docker which each node will pull down the given Docker image to load the environment. <del>Although the docker image is currently fixed in the Snakemake&rsquo;s source code, one can hard code a different image and bundle the modified source code in the docker image.</del> After <a href="https://bitbucket.org/snakemake/snakemake/issues/602">some discussions</a> about how to specify user input image <sup id="fnref-kubernetes-docker"><a class="footnote-ref" href="#fn-kubernetes-docker">1</a></sup>, on the master branch of snakemake, one is able to specify the Docker image Kubernete&rsquo;s node uses by <code>--container-image &lt;image&gt;</code>. </p>
+<p>To scale up the pipeline execution across multiple machines, Snakemake could use <a href="https://cloud.google.com/container-engine/">Google Container Engine</a> (GKE, implemented on top of Kubernetes). This method is built on Docker which each node will pull down the given Docker image to load the environment. After <a href="https://bitbucket.org/snakemake/snakemake/issues/602">some discussions</a> about how to specify user input image <sup id="fnref-kubernetes-docker"><a class="footnote-ref" href="#fn-kubernetes-docker">1</a></sup>, on Snakemake 4.1+ one is able to specify the Docker image Kubernete&rsquo;s node uses by <code>--container-image &lt;image&gt;</code>.</p>
 <p>To install the master branch of Snakemake, run:</p>
 <div class="highlight"><pre><span></span>pip install git+https://bitbucket.org/snakemake/snakemake.git@master
 </pre></div>
@@ -496,7 +499,7 @@ gcloud components install kubectl
 
 <p>First we create the GKE cluster by:</p>
 <div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">CLUSTER_NAME</span><span class="o">=</span><span class="s2">&quot;snakemake-cluster&quot;</span>
-<span class="nb">export</span> <span class="nv">ZONE</span><span class="o">=</span><span class="s2">&quot;us-central-a&quot;</span>
+<span class="nb">export</span> <span class="nv">ZONE</span><span class="o">=</span><span class="s2">&quot;us-central1-a&quot;</span>
 gcloud container clusters create <span class="nv">$CLUSTER_NAME</span> <span class="se">\</span>
     --zone<span class="o">=</span><span class="nv">$ZONE</span> --num-nodes<span class="o">=</span><span class="m">3</span> <span class="se">\</span>
     --machine-type<span class="o">=</span><span class="s2">&quot;n1-standard-4&quot;</span> <span class="se">\</span>
@@ -524,8 +527,39 @@ gcloud container clusters get-credentials --zone<span class="o">=</span><span cl
 
 
 <p>Note that since we change the container image, we have to make sure the version of Snakemake in the Docker image and the machine starting the pipeline matches. An easy way to ensure that the versions are matched is to start the workflow inside the same Docker image.</p>
+<p>To connect the Kubernete cluster inside Docker, we need to pass kubectl&rsquo;s config file as well, which is at <code>~/.kube/config</code>. So the full command becomes:</p>
+<div class="highlight"><pre><span></span>sudo docker run -t -i                           <span class="se">\</span>
+    -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/analysis                         <span class="se">\</span>
+    -v ~/.config/gcloud:/root/.config/gcloud    <span class="se">\</span>
+    -v ~/.kube/config:/root/.kube/config        <span class="se">\</span>
+    lbwang/snakemake-conda-rnaseq               <span class="se">\</span>
+    snakemake                                           <span class="se">\</span>
+        -s /analysis/Snakefile --directory /analysis    <span class="se">\</span>
+        --timestamp -p --verbose --keep-remote          <span class="se">\</span>
+        -j <span class="m">12</span> --kubernetes                              <span class="se">\</span>
+        --container-image lbwang/snakemake-conda-rnaseq <span class="se">\</span>
+        --default-remote-provider GS                    <span class="se">\</span>
+        --default-remote-prefix <span class="o">{</span>WRITABLE_BUCKET_PATH<span class="o">}</span>  <span class="se">\</span>
+        quant_all_samples
+</pre></div>
+
+
 <p>After running our pipeline, make sure to delete the GKE cluster by:</p>
 <div class="highlight"><pre><span></span>gcloud container clusters delete --zone<span class="o">=</span><span class="nv">$ZONE</span> <span class="nv">$CLUSTER_NAME</span>
+</pre></div>
+
+
+<h3 id="potential-issues-of-using-gke-with-snakemake">Potential issues of using GKE with Snakemake</h3>
+<p>I still encountered the following issues while running the whole pipeline on the Kubernetes. It is likely that they are not Snakemake&rsquo;s fault but I couldn&rsquo;t find enough time to dig into the details at the time of writing:</p>
+<ul>
+<li>HISAT2 cannot build its index on Kubenetes. So the step <code>build_hisat_index</code> failed for unknown reason. The error message from HISAT2 looks like this:</li>
+</ul>
+<div class="highlight"><pre><span></span>...
+Wrote 8912688 bytes to secondary GFM file: {WRITABLE_BUCKET_PATH}/snakemake_demo/hisat2_index/chr22_ERCC92.6.ht2
+Index is corrupt: File size for {WRITABLE_BUCKET_PATH}/snakemake_demo/hisat2_index/chr22_ERCC92.6.ht2 should have been 8912688 but is actually 0.
+Please check if there is a problem with the disk or if disk is full.
+Total time for call to driver() for forward index: 00:01:18
+Error: Encountered internal HISAT2 exception (#1)
 </pre></div>
 
 
@@ -535,12 +569,13 @@ gcloud container clusters get-credentials --zone<span class="o">=</span><span cl
 <p>Docker and bioconda have made the deployment a lot easier. Bioconda truly saves a lot of duplicated efforts to figure out the tool compilation. Docker provides an OS-level isolation and an ecosystem of deployment. With more tools such as <a href="http://singularity.lbl.gov/">Singularity</a> continuing to come out, virtualization seems to be a inevitable trend.</p>
 <p>Other than Google cloud products, Snakemake also supports AWS, S3, LSF, SLURM and many other cluster settings. It seems to me that the day when one <code>Snakefile</code> works for all platforms might be around the corner.</p>
 <p>EDIT 2017-08-15: Add a section about using Google Cloud in Docker. Update summary with some time measurements. Add links to the full Snakefiles.<br>
-EDIT 2017-09-07: Snakemake has added the support of custom Kubernetes container image. Thus update the GKE section to use the official parameter to pass image.</p>
+EDIT 2017-09-07: Snakemake has added the support of custom Kubernetes container image. Thus update the GKE section to use the official parameter to pass image.<br>
+EDIT 2017-11-17: Add instructions to run the Snakemake on Kubernete inside Docker. And also list out the issues of using GKE.</p>
 <div class="footnote">
 <hr>
 <ol>
 <li id="fn-kubernetes-docker">
-<p>In the discussion, Snakemake&rsquo;s author, Johannes, mentioned the possiblity of using <a href="http://singularity.lbl.gov/">Singularity</a> so each rule can run in a different virutal environment. The development is still in progress.&#160;<a class="footnote-backref" href="#fnref-kubernetes-docker" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p>In the discussion, Snakemake&rsquo;s author, Johannes, mentioned the possiblity of using <a href="http://singularity.lbl.gov/">Singularity</a> so each rule can run in a different virutal environment. Singularity support comes at Snakemake 4.2+.&#160;<a class="footnote-backref" href="#fnref-kubernetes-docker" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div></section>
