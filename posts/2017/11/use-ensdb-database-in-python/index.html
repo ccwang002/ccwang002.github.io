@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="author" content="Liang2" />
+<meta name="description" content="How to find and download the EnsDb, the Ensembl genomic annotation in SQLite database made by R package ensembldb, and use it in Python application." />
+<meta name="keywords" content="en, python, r, bioconductor, ensembldb">
+	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<title>Using EnsDb's annotation database in Python</title>
+
+	<!-- og -->
+<meta property="og:locale" content="en_USen"/>
+<meta property="og:site_name" content="Liang2's Blog"/>
+<meta property="og:title" content="Using EnsDb's annotation database in Python"/>
+<meta property="og:description" content="How to find and download the EnsDb, the Ensembl genomic annotation in SQLite database made by R package ensembldb, and use it in Python application."/>
+<meta property="og:locale" content=""/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2017-11-17 00:00:00-06:00"/>
+<meta property="article:modified_time" content="2017-11-17 00:00:00-06:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
+<meta property="article:section" content="Bioinfo"/>
+<meta property="article:tag" content="en"/>
+<meta property="article:tag" content="python"/>
+<meta property="article:tag" content="r"/>
+<meta property="article:tag" content="bioconductor"/>
+<meta property="article:tag" content="ensembldb"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Using EnsDb's annotation database in Python">
+<meta name="twitter:description" content="How to find and download the EnsDb, the Ensembl genomic annotation in SQLite database made by R package ensembldb, and use it in Python application.">
+
+	<!-- Feeds -->
+	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
+		type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?471da5af" rel="stylesheet" />
+</head>
+
+<body class="post-template">
+	<header class="site-head">
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+		<h2 class="blog-description">
+			<a href="https://blog.liang2.tw/about-me/">About</a> |
+			<a href="https://blog.liang2.tw/talks/">Talks</a> |
+			<a href="https://blog.liang2.tw/archives.html">Archives</a>
+		</h2>
+	</header>
+	<main id="content" class="content" role="main">
+<article class="post">
+    <span class="post-meta">
+        <time datetime="Nov 17, 2017">Nov 17, 2017</time>
+        in <a href="https://blog.liang2.tw/category/bioinfo/">Bioinfo</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/" rel="bookmark" title="Permalink to Using EnsDb's annotation database in Python">Using EnsDb's annotation database in Python</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/en/">en</a>
+                <a href="https://blog.liang2.tw/tag/python/">python</a>
+                <a href="https://blog.liang2.tw/tag/r/">r</a>
+                <a href="https://blog.liang2.tw/tag/bioconductor/">bioconductor</a>
+                <a href="https://blog.liang2.tw/tag/ensembldb/">ensembldb</a>
+    </span>
+    <section class="post-content"><p>I find there isn&rsquo;t a systematic way to query and convert genomic annotation IDs in Python. At least there isn&rsquo;t one as good as <a href="https://www.bioconductor.org/help/workflows/annotation/annotation/">what R/Bioconductor currently has</a>. If you need an introudction, check out <a href="https://www.bioconductor.org/help/workflows/annotation/annotation/">the official workflow</a> or <a href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/">my post in 2016</a> specific for querying Ensembl annotations.</p>
+<p>Although I enjoy using R for genomic annotation conversion, a few days ago I wanted to do the same thing inside my text processing script in Python. I might be able to re-write the script in R but I feel like R is not really the right tool for this task and on top of it, I don&rsquo;t know how to write an efficent text processing in R<sup id="fnref-r-text-processing"><a class="footnote-ref" href="#fn-r-text-processing">1</a></sup>. </p>
+<p>Knowing the fact that all annotations in R are stored in single-file SQLite databases, I should be able to connect the database directly Python or any other language and wirte SQL query to retrieve the same information. So my question now becomes to how to extract or find the path to the databases. Turn out that many new Bioconductor annotation packages are hosted via <a href="https://bioconductor.org/packages/release/bioc/html/AnnotationHub.html">AnnotationHub</a>, and user can search for the annotation package and retrieve them locally by their ID. For example, all the recent Ensembl releases, e.g., <code>EnsDb.Hsapiens.vXX</code>, are available on AnnotationHub. </p>
+<p>After digging around a bit, I am able to query the AnnotationHub, download the correct EnsDB SQLite database file, and make SQL queries for the annotation ID conversion without any R package. I will share the details in the rest of the post. </p>
+<div class="toc">
+<ul>
+<li><a href="#manual-query-in-annotationhub">Manual query in AnnotationHub</a></li>
+<li><a href="#manual-query-in-ensdb">Manual query in EnsDB</a></li>
+<li><a href="#summary">Summary</a></li>
+</ul>
+</div>
+<p>But before we start with the details, I want to clarify that it wasn&rsquo;t my intention to persuade people away from the current R ecosystem. The current R ecosystem is great and I will recommend people to stick with it as much as you can. I am pretty sure I will hit a lot of issues if I want to do more complex analysis or queries without the help of what R packages provide.</p>
+<h2 id="manual-query-in-annotationhub">Manual query in AnnotationHub</h2>
+<p>When one wants to use the R package AnnotationHub, the common usage is </p>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>AnnotationHub<span class="p">)</span>
+ah <span class="o">&lt;-</span> AnnotationHub<span class="p">()</span>
+<span class="c1">## snapshotDate(): 2017-10-27</span>
+
+query<span class="p">(</span>ah<span class="p">,</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;EnsDb&quot;</span><span class="p">,</span> <span class="s">&quot;Homo sapiens&quot;</span><span class="p">))</span>
+</pre></div>
+
+
+<p>The function call <code>AnnotationHub()</code> will download the latest version of the metadata of all available annotation object. The subsequent <code>query(...)</code> function will talk to the local metadata database.</p>
+<p>Now let&rsquo;s do it manually without any R function calls.</p>
+<p>The default <a href="https://bioconductor.org/packages/release/bioc/html/AnnotationHub.html">AnnotationHub</a> is at <a href="https://annotationhub.bioconductor.org/">https://annotationhub.bioconductor.org/</a>. By visiting the page we can find several relevant endpoints:</p>
+<ul>
+<li><code>/metadata/annotationhub.sqlite3</code></li>
+<li><code>/fetch/:id # id =&gt; rdatapaths.id</code></li>
+</ul>
+<p>So as long as we get the <code>rdatapaths.id</code> of the EnsDb using the metadata, we can download it via the <code>/fetch/:id</code> endpoint.</p>
+<p>After downloading the metadata database <code>https://annotationhub.bioconductor.org/metadata/annotationhub.sqlite3</code>, we can inspect it in SQLite3 by connecting it directly:</p>
+<div class="highlight"><pre><span></span>sqlite3 annotationhub.sqlite3
+</pre></div>
+
+
+<p>Some useful commands to inspect a foreign database (or the ultimate help command <code>.help</code>): </p>
+<div class="highlight"><pre><span></span><span class="gp">sqlite&gt; </span><span class="p">.</span><span class="n">header</span> <span class="k">on</span> 
+<span class="gp">sqlite&gt; </span><span class="p">.</span><span class="k">mode</span> <span class="k">column</span>
+<span class="gp">sqlite&gt; </span><span class="p">.</span><span class="n">tables</span>
+<span class="go">biocversions       rdatapaths         schema_info        test             </span>
+<span class="go">input_sources      recipes            statuses           timestamp        </span>
+<span class="go">location_prefixes  resources          tags</span>
+<span class="gp">sqlite&gt; </span><span class="p">.</span><span class="k">schema</span> <span class="n">rdatapaths</span>
+<span class="go">CREATE TABLE `rdatapaths`(`id` integer DEFAULT (NULL) NOT NULL PRIMARY KEY , `rdatapath` varchar(255) DEFAULT (NULL) NULL, `rdataclass` varchar(255) DEFAULT (NULL) NULL, `resource_id` integer DEFAULT (NULL) NULL, `dispatchclass` varchar(255) DEFAULT (NULL) NULL, CONSTRAINT `rdatapaths_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources`(`id`));</span>
+<span class="go">CREATE INDEX `rdatapaths_resource_id` ON `rdatapaths` (`resource_id`);</span>
+</pre></div>
+
+
+<p>So let&rsquo;s make a SQL query to find all Human&rsquo;s EnsDb:</p>
+<div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="n">r</span><span class="p">.</span><span class="n">ah_id</span><span class="p">,</span> <span class="n">rdp</span><span class="p">.</span><span class="n">id</span> <span class="k">AS</span> <span class="n">rdatapaths_id</span><span class="p">,</span> <span class="n">rdp</span><span class="p">.</span><span class="n">rdatapath</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">title</span>
+<span class="k">FROM</span> <span class="n">resources</span> <span class="k">AS</span> <span class="n">r</span>
+<span class="k">JOIN</span> <span class="n">rdatapaths</span> <span class="k">AS</span> <span class="n">rdp</span>
+<span class="k">ON</span> <span class="n">r</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">rdp</span><span class="p">.</span><span class="n">resource_id</span>
+<span class="k">WHERE</span> <span class="n">r</span><span class="p">.</span><span class="n">title</span> <span class="k">LIKE</span> <span class="s1">&#39;%EnsDb for Homo Sapiens%&#39;</span><span class="p">;</span>
+<span class="c1">-- ah_id       rdatapaths_id  rdatapath                               title                            </span>
+<span class="c1">-- ----------  -------------  --------------------------------------  -- ---------------------------------</span>
+<span class="c1">-- AH53211     59949          AHEnsDbs/v87/EnsDb.Hsapiens.v87.sqlite  Ensembl 87 EnsDb for Homo Sapiens</span>
+<span class="c1">-- AH53715     60453          AHEnsDbs/v88/EnsDb.Hsapiens.v88.sqlite  Ensembl 88 EnsDb for Homo Sapiens</span>
+<span class="c1">-- AH56681     63419          AHEnsDbs/v89/EnsDb.Hsapiens.v89.sqlite  Ensembl 89 EnsDb for Homo Sapiens</span>
+<span class="c1">-- AH57757     64495          AHEnsDbs/v90/EnsDb.Hsapiens.v90.sqlite  Ensembl 90 EnsDb for Homo Sapiens</span>
+</pre></div>
+
+
+<p>All the Ensembl releases 87+ are available! I will use the release 90 for example. we can download it by its rdatapaths id:</p>
+<div class="highlight"><pre><span></span>wget -O EnsDb.Hsapiens.v90.sqlite https://annotationhub.bioconductor.org/fetch/64495
+</pre></div>
+
+
+<h2 id="manual-query-in-ensdb">Manual query in EnsDB</h2>
+<p>EnsDb SQLite database are Ensembl annotation databases created by the R package <a href="https://bioconductor.org/packages/release/bioc/html/ensembldb.html">ensembldb</a>.</p>
+<p>Here I will show how to find a transcript&rsquo;s gene name, its genomic location, and all its exon locations given its Ensembl transcript ID.</p>
+<p>First connect the database by <code>sqlite3 EnsDb.Hsapiens.v90.sqlite</code>. Its table design is very straightforward:</p>
+<div class="highlight"><pre><span></span><span class="gp">sqlite&gt; </span><span class="p">.</span><span class="n">tables</span>
+<span class="go">chromosome      exon            metadata        protein_domain  tx2exon</span>
+<span class="go">entrezgene      gene            protein         tx              uniprot</span>
+</pre></div>
+
+
+<p>So it didn&rsquo;t take me long to figure out how to join the transcript and gene information:</p>
+<div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="n">tx</span><span class="p">.</span><span class="n">tx_id</span><span class="p">,</span> <span class="n">tx</span><span class="p">.</span><span class="n">gene_id</span><span class="p">,</span> <span class="n">gene</span><span class="p">.</span><span class="n">gene_name</span><span class="p">,</span> <span class="n">seq_name</span><span class="p">,</span> <span class="n">seq_strand</span>
+<span class="k">FROM</span> <span class="n">tx</span> <span class="k">JOIN</span> <span class="n">gene</span> <span class="k">ON</span> <span class="n">tx</span><span class="p">.</span><span class="n">gene_id</span> <span class="o">=</span> <span class="n">gene</span><span class="p">.</span><span class="n">gene_id</span>
+<span class="k">WHERE</span> <span class="n">tx_id</span><span class="o">=</span><span class="s1">&#39;ENST00000358731&#39;</span><span class="p">;</span>
+<span class="c1">-- tx_id            gene_id          gene_name   seq_name    seq_strand</span>
+<span class="c1">-- ---------------  ---------------  ----------  ----------  ----------</span>
+<span class="c1">-- ENST00000358731  ENSG00000145734  BDP1        5           1</span>
+</pre></div>
+
+
+<p>And for the genomic ranges of its exon:</p>
+<div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="n">tx_id</span><span class="p">,</span> <span class="n">exon_idx</span><span class="p">,</span> <span class="n">exon_seq_start</span><span class="p">,</span> <span class="n">exon_seq_end</span>
+<span class="k">FROM</span> <span class="n">tx2exon</span> <span class="k">JOIN</span> <span class="n">exon</span> <span class="k">ON</span> <span class="n">tx2exon</span><span class="p">.</span><span class="n">exon_id</span> <span class="o">=</span> <span class="n">exon</span><span class="p">.</span><span class="n">exon_id</span>
+<span class="k">WHERE</span> <span class="n">tx_id</span> <span class="o">=</span> <span class="s1">&#39;ENST00000380139&#39;</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">exon_idx</span><span class="p">;</span>
+<span class="c1">-- tx_id            exon_idx    exon_seq_start  exon_seq_end</span>
+<span class="c1">-- ---------------  ----------  --------------  ------------</span>
+<span class="c1">-- ENST00000380139  1           32427904        32428133    </span>
+<span class="c1">-- ENST00000380139  2           32407645        32407772    </span>
+<span class="c1">-- ENST00000380139  3           32407250        32407338    </span>
+<span class="c1">-- ENST00000380139  4           32404203        32404271    </span>
+<span class="c1">-- ENST00000380139  5           32400723        32403200  </span>
+</pre></div>
+
+
+<p>All the coordinates are 1-based and the ranges are inclusive.</p>
+<h2 id="summary">Summary</h2>
+<p>By downloading the underlying annotation database, one can do the same annotation query out of R language and sometimes it may be helpful. I feel like instead of trying to come up with my own layout of annotation mapping across multiple sources, it is more reliable to use a more official build. On the other hand, it is very hard to get the annotaion mapping correct and there are tons of corner cases that require careful and systematic decisions. So I don&rsquo;t really recommend to build my own mapping at the first place anyway. The method here should help the situation of annotation query out of R a bit.</p>
+<p>Potentially one can try copy the full R infrastructure but using the same underlying database and replicate the same experience to other languages, but it might require substantial work to get the infrastructure done and correct.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn-r-text-processing">
+<p>Based on my impression, my R expert friends would probably recommend me to write it with R-cpp, which I think would be over-kill for such a small task. But my impression can be wrong. Feel free to share your thoughts!&#160;<a class="footnote-backref" href="#fnref-r-text-processing" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div></section>
+    <footer class="post-footer">
+<section class="share">
+    <h2>Share</h2>
+    <a class="icon-twitter" href="https://twitter.com/share?text=Using EnsDb's annotation database in Python&amp;url=https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u=https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/"
+        onclick="window.open(this.href, 'facebook-share', 'width=580,height=296'); return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/"
+        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2017/11/use-ensdb-database-in-python/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
+    <footer>
+</article>
+	</main>
+	<footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags.html">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">
+				Built using <a href="http://getpelican.com/">Pelican</a>.
+				Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.
+			</section>
+		</div>
+	</footer>
+</body>
+</html>
