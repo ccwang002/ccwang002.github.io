@@ -7,7 +7,7 @@ Category: Bioinfo
 Summary: How to find and download the EnsDb, the Ensembl genomic annotation in SQLite database made by R package ensembldb, and use it in Python application.
 ---
 
-I find there isn't a systematic way to query and convert genomic annotation IDs in Python. At least there isn't one as good as [what R/Bioconductor currently has][bioconductor-annotation]. If you need an introudction, check out [the official workflow][bioconductor-annotation] or [my post in 2016][my-post-ensembl] specific for querying Ensembl annotations.
+I found that there isn't a systematic way to query and convert genomic annotation IDs in Python. At least there isn't one as good as [what R/Bioconductor currently has][bioconductor-annotation]. If you've never heard of R/Bioconductor annotation tool stack before, check out [the official workflow][bioconductor-annotation] or [my post in 2016][my-post-ensembl] specific for querying Ensembl annotations.
 
 Although I enjoy using R for genomic annotation conversion, a few days ago I wanted to do the same thing inside my text processing script in Python. I might be able to re-write the script in R but I feel like R is not really the right tool for this task and on top of it, I don't know how to write an efficent text processing in R[^r-text-processing]. 
 
