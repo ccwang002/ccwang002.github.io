@@ -67,6 +67,7 @@ query&lt;span class="p"&gt;(&lt;/span&gt;ah&lt;span class="p"&gt;,&lt;/span&gt; 
 &lt;/pre&gt;&lt;/div&gt;
 
 
+&lt;p&gt;For older Ensembl release, one may need to &lt;a href="https://bioconductor.org/packages/release/bioc/vignettes/ensembldb/inst/doc/ensembldb.html#102_building_annotation_packages"&gt;build the SQLite database based by the instructions from ensembldb&lt;/a&gt;.  For the last GRCh37 release, Ensembl release 75, one can download the source of the Bioconductor annotation package &lt;a href="https://bioconductor.org/packages/release/data/annotation/html/EnsDb.Hsapiens.v75.html"&gt;&lt;code&gt;EnsDb.Hsapiens.v75&lt;/code&gt;&lt;/a&gt; and extract it. The database will be under &lt;code&gt;inst/extdata&lt;/code&gt;.&lt;/p&gt;
 &lt;h2 id="manual-query-in-ensdb"&gt;Manual query in EnsDB&lt;/h2&gt;
 &lt;p&gt;EnsDb SQLite database are Ensembl annotation databases created by the R package &lt;a href="https://bioconductor.org/packages/release/bioc/html/ensembldb.html"&gt;ensembldb&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Here I will show how to find a transcript&amp;rsquo;s gene name, its genomic location, and all its exon locations given its Ensembl transcript ID.&lt;/p&gt;
@@ -106,6 +107,7 @@ query&lt;span class="p"&gt;(&lt;/span&gt;ah&lt;span class="p"&gt;,&lt;/span&gt; 
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
 &lt;p&gt;By downloading the underlying annotation database, one can do the same annotation query out of R language and sometimes it may be helpful. I feel like instead of trying to come up with my own layout of annotation mapping across multiple sources, it is more reliable to use a more official build. On the other hand, it is very hard to get the annotaion mapping correct and there are tons of corner cases that require careful and systematic decisions. So I don&amp;rsquo;t really recommend to build my own mapping at the first place anyway. The method here should help the situation of annotation query out of R a bit.&lt;/p&gt;
 &lt;p&gt;Potentially one can try copy the full R infrastructure but using the same underlying database and replicate the same experience to other languages, but it might require substantial work to get the infrastructure done and correct.&lt;/p&gt;
+&lt;p&gt;EDIT 2017-12-13: Add instructions of using older Ensembl release.&lt;/p&gt;
 &lt;div class="footnote"&gt;
 &lt;hr&gt;
 &lt;ol&gt;

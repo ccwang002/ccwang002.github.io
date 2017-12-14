@@ -133,6 +133,7 @@ query<span class="p">(</span>ah<span class="p">,</span> <span class="kt">c</span
 </pre></div>
 
 
+<p>For older Ensembl release, one may need to <a href="https://bioconductor.org/packages/release/bioc/vignettes/ensembldb/inst/doc/ensembldb.html#102_building_annotation_packages">build the SQLite database based by the instructions from ensembldb</a>.  For the last GRCh37 release, Ensembl release 75, one can download the source of the Bioconductor annotation package <a href="https://bioconductor.org/packages/release/data/annotation/html/EnsDb.Hsapiens.v75.html"><code>EnsDb.Hsapiens.v75</code></a> and extract it. The database will be under <code>inst/extdata</code>.</p>
 <h2 id="manual-query-in-ensdb">Manual query in EnsDB</h2>
 <p>EnsDb SQLite database are Ensembl annotation databases created by the R package <a href="https://bioconductor.org/packages/release/bioc/html/ensembldb.html">ensembldb</a>.</p>
 <p>Here I will show how to find a transcript&rsquo;s gene name, its genomic location, and all its exon locations given its Ensembl transcript ID.</p>
@@ -172,6 +173,7 @@ query<span class="p">(</span>ah<span class="p">,</span> <span class="kt">c</span
 <h2 id="summary">Summary</h2>
 <p>By downloading the underlying annotation database, one can do the same annotation query out of R language and sometimes it may be helpful. I feel like instead of trying to come up with my own layout of annotation mapping across multiple sources, it is more reliable to use a more official build. On the other hand, it is very hard to get the annotaion mapping correct and there are tons of corner cases that require careful and systematic decisions. So I don&rsquo;t really recommend to build my own mapping at the first place anyway. The method here should help the situation of annotation query out of R a bit.</p>
 <p>Potentially one can try copy the full R infrastructure but using the same underlying database and replicate the same experience to other languages, but it might require substantial work to get the infrastructure done and correct.</p>
+<p>EDIT 2017-12-13: Add instructions of using older Ensembl release.</p>
 <div class="footnote">
 <hr>
 <ol>
