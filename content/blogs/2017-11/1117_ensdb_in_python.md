@@ -91,6 +91,11 @@ All the Ensembl releases 87+ are available! I will use the release 90 for exampl
 wget -O EnsDb.Hsapiens.v90.sqlite https://annotationhub.bioconductor.org/fetch/64495
 ```
 
+For older Ensembl release, one may need to [build the SQLite database based by the instructions from ensembldb][ensembldb-build].  For the last GRCh37 release, Ensembl release 75, one can download the source of the Bioconductor annotation package [`EnsDb.Hsapiens.v75`][EnsDb.Hsapiens.v75] and extract it. The database will be under `inst/extdata`.
+
+[ensembldb-build]: https://bioconductor.org/packages/release/bioc/vignettes/ensembldb/inst/doc/ensembldb.html#102_building_annotation_packages
+[EnsDb.Hsapiens.v75]: https://bioconductor.org/packages/release/data/annotation/html/EnsDb.Hsapiens.v75.html
+
 
 ## Manual query in EnsDB 
 EnsDb SQLite database are Ensembl annotation databases created by the R package [ensembldb].
@@ -141,3 +146,5 @@ All the coordinates are 1-based and the ranges are inclusive.
 By downloading the underlying annotation database, one can do the same annotation query out of R language and sometimes it may be helpful. I feel like instead of trying to come up with my own layout of annotation mapping across multiple sources, it is more reliable to use a more official build. On the other hand, it is very hard to get the annotaion mapping correct and there are tons of corner cases that require careful and systematic decisions. So I don't really recommend to build my own mapping at the first place anyway. The method here should help the situation of annotation query out of R a bit.
 
 Potentially one can try copy the full R infrastructure but using the same underlying database and replicate the same experience to other languages, but it might require substantial work to get the infrastructure done and correct.
+
+EDIT 2017-12-13: Add instructions of using older Ensembl release.
