@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="author" content="Liang2" />
+<meta name="description" content="Recently I’ve found that bioinformatic analysis in database is not hard at all and the database set up wasn’t as daunting as …" />
+<meta name="keywords" content="en, python, sqlite, postgresql">
+	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<title>Ad hoc bioinformatic analysis in database</title>
+
+	<!-- og -->
+<meta property="og:locale" content="en_USen"/>
+<meta property="og:site_name" content="Liang2's Blog"/>
+<meta property="og:title" content="Ad hoc bioinformatic analysis in database"/>
+<meta property="og:description" content="Recently I’ve found that bioinformatic analysis in database is not hard at all and the database set up wasn’t as daunting as …"/>
+<meta property="og:locale" content=""/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2018/01/ad-hoc-bioinfo-analysis-in-database/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2018-01-20 00:00:00-06:00"/>
+<meta property="article:modified_time" content="2018-01-20 00:00:00-06:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang2.html">
+<meta property="article:section" content="Bioinfo"/>
+<meta property="article:tag" content="en"/>
+<meta property="article:tag" content="python"/>
+<meta property="article:tag" content="sqlite"/>
+<meta property="article:tag" content="postgresql"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Ad hoc bioinformatic analysis in database">
+<meta name="twitter:description" content="Recently I’ve found that bioinformatic analysis in database is not hard at all and the database set up wasn’t as daunting as …">
+
+	<!-- Feeds -->
+	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
+		type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?471da5af" rel="stylesheet" />
+</head>
+
+<body class="post-template">
+	<header class="site-head">
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+		<h2 class="blog-description">
+			<a href="https://blog.liang2.tw/about-me/">About</a> |
+			<a href="https://blog.liang2.tw/talks/">Talks</a> |
+			<a href="https://blog.liang2.tw/archives.html">Archives</a>
+		</h2>
+	</header>
+	<main id="content" class="content" role="main">
+<article class="post">
+    <span class="post-meta">
+        <time datetime="Jan 20, 2018">Jan 20, 2018</time>
+        in <a href="https://blog.liang2.tw/category/bioinfo/">Bioinfo</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2018/01/ad-hoc-bioinfo-analysis-in-database/" rel="bookmark" title="Permalink to Ad hoc bioinformatic analysis in database">Ad hoc bioinformatic analysis in database</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/en/">en</a>
+                <a href="https://blog.liang2.tw/tag/python/">python</a>
+                <a href="https://blog.liang2.tw/tag/sqlite/">sqlite</a>
+                <a href="https://blog.liang2.tw/tag/postgresql/">postgresql</a>
+    </span>
+    <section class="post-content"><p>Recently I&rsquo;ve found that bioinformatic analysis in database is not hard at all and the database set up wasn&rsquo;t as daunting as it sounds, especially when the data are tabular. I used to start my analysis with loading everything into R or Python, and then figuring out all the filtering and grouping commands in my favorite R or Python packages. But with this method, the data size would be bound by memory and the analysis might be slow unless additional optimization was applied. On the other hand, database has already solved the problems by mapping the data to disk and indexing. Therefore I&rsquo;d like to share my recent experience on using database for bioinfo analysis.</p>
+<p>Note that if one is interested in the actual tips of using database for analysis, feel free to skip the whole background section.</p>
+<div class="toc">
+<ul>
+<li><a href="#background">Background</a><ul>
+<li><a href="#reading-tabular-data-in-bioinformatics">Reading tabular data in bioinformatics</a></li>
+<li><a href="#database">Database</a></li>
+</ul>
+</li>
+<li><a href="#tabular-data-io-in-database">Tabular data IO in database</a><ul>
+<li><a href="#sqlite">SQLite</a></li>
+<li><a href="#postgresql">PostgreSQL</a></li>
+<li><a href="#loading-compressed-data-with-named-pipe">Loading compressed data with named pipe</a></li>
+</ul>
+</li>
+<li><a href="#benchmark">Benchmark</a><ul>
+<li><a href="#pandas-python">pandas (Python)</a></li>
+<li><a href="#sqlite_1">SQLite</a></li>
+<li><a href="#postgresql_1">PostgreSQL</a></li>
+<li><a href="#result">Result</a></li>
+</ul>
+</li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+</div>
+<h2 id="background">Background</h2>
+<h3 id="reading-tabular-data-in-bioinformatics">Reading tabular data in bioinformatics</h3>
+<p>Tabular data are everywhere in bioinformatics. To record gene expressions, variants or ID cross reference between different annotation systems or databases, data are stored in various tabular-like formats, such as BED, GTF, MAF, and VCF, which can usually be normalized to the standard CSV and TSV files. Starting with the raw data, we apply different kinds of filtering and grouping to pick up the records of interest. For example, we might subset the data within a genomic region, select transcripts above an expression threshold, or group the data by the same transcript across multiple samples. </p>
+<p>Researchers have developed numerous tools to subset or group the data. In Python, numpy and pandas dominate the analysis; in R, data.frame, tibble, and data.table are all widely used. However, all the tools above only work if the data can be fit into memory. Unfortunately, bioinformatics data can go beyond 10GB easily these day. It has been difficult to analyze everything in memory. Even using a powerful server with a few hundreds GB of memory, the overhead of loading all data into memory can be time consuming. To make things worse, joining multiple data together will be the combination of the issues above.</p>
+<p>One might argue that in Python there are packages like <a href="http://xarray.pydata.org/en/stable/">xarray</a> and <a href="https://dask.pydata.org/en/latest/">dask</a> capable of handling out-of-memory multi-dimensional array. But they are only useful for numerical data. In bioinformatics metadata are frequently used and consist of many text columns, where numpy doesn&rsquo;t have the same computing advantage as numerical columns. For example, gene expression only makes sense if it comes with the gene symbol, the transcript id, and the sample id.</p>
+<h3 id="database">Database</h3>
+<p>On the other hand, databases have been solving all the above tasks for decades, and it also comes with several advantages. Language databases use is standardized, called SQL. SQL is expressive, which means in stead of writing how to load or query the data, one writes what the data or the query look like. Database supports concurrent reads, so one is able to query the same data in parallel. One can speed up the queries by setting up indexes. Database is persistent, so one only needs to load the data once.</p>
+<p>I mainly use two databases: <a href="https://sqlite.org/">SQLite</a> and <a href="https://www.postgresql.org/">PostgreSQL</a>. SQLite&rsquo;s database is a single file and it doesn&rsquo;t need any configuration to run. In fact SQLite ships with Python, available as the <a href="https://docs.python.org/3/library/sqlite3.html"><code>sqlite</code> module</a>. SQLite works very well in my case.</p>
+<p>PostgreSQL is more feature-rich database and has better concurrency supports such as multiple writers at the same time. <a href="https://www.postgresql.org/docs/current/static/indexes-types.html">Its advanced indexing</a> and <a href="https://www.postgresql.org/docs/current/static/datatype.html">data types</a> might be helpful for genomic range query. The downside is that it requires some configurations and installation is not as easy as SQLite. It is actually just a few commands on Debian Linux but one probably needs to go through the documentation to understand what they are about.</p>
+<p>In the past the most annoying thing I found using database is to load my data, where I had to create the table by <code>CREATE TABLE ...</code> and insert all my data by multiple <code>INSERT INTO ... VALUES ...</code> statements. But recently I found that many databases have some builtin utilities to make the process easy. Also, it is not hard to programmatically generate the statements through packages like <a href="https://www.sqlalchemy.org/">SQLAlchemy</a>. Therefore, I will share some experience of using database here. </p>
+<h2 id="tabular-data-io-in-database">Tabular data IO in database</h2>
+<h3 id="sqlite">SQLite</h3>
+<p>For SQLite, use <code>.mode csv</code> with <a href="https://www.sqlite.org/cli.html#csv"><code>.import</code> statement</a>. SQLite will create the table automatically by using the first row as the column names if the table doesn&rsquo;t exist. One can create the table before the loading to define each column&rsquo;s data type. <code>.separator</code> controls the delimiter character SQLite uses between columns.</p>
+<div class="highlight"><pre><span></span><span class="p">.</span><span class="k">mode</span> <span class="n">csv</span>
+<span class="p">.</span><span class="n">separator</span> <span class="err">\</span><span class="n">t</span>   <span class="c1">-- For TSV files</span>
+<span class="p">.</span><span class="n">import</span> <span class="s1">&#39;/path/to/tsv&#39;</span> <span class="k">table_name</span>
+</pre></div>
+
+
+<p>To export data, use <code>.once</code> statement followed by the query:</p>
+<div class="highlight"><pre><span></span><span class="p">.</span><span class="n">header</span> <span class="k">on</span>  <span class="c1">-- Export columns name </span>
+<span class="p">.</span><span class="n">once</span> <span class="s1">&#39;/path/to/output.tsv&#39;</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="k">table_name</span><span class="p">;</span>  <span class="c1">-- Export all data in the table</span>
+</pre></div>
+
+
+<p>Commands above can be scripting into SQLite like:</p>
+<div class="highlight"><pre><span></span>sqlite3 mydb.sqlite &lt; load_data.sql
+</pre></div>
+
+
+<h3 id="postgresql">PostgreSQL</h3>
+<p>For PostgreSQL, the built-in solution is to use the <a href="https://www.postgresql.org/docs/current/static/sql-copy.html"><code>COPY</code> statement</a> or the <a href="https://www.postgresql.org/docs/current/static/app-psql.html#APP-PSQL-META-COMMANDS-COPY"><code>\copy</code> metacommand</a> to import or export data. They generally run faster than normal <code>INSERT</code> statements. Besides built-in commands, an external tool <a href="https://pgloader.io/">pgloader</a> has been very helpful for the data loading. The loading process is more flexible.</p>
+<p>I won&rsquo;t dive into details of their usage here. There will be an example in the benchmark section.</p>
+<h3 id="loading-compressed-data-with-named-pipe">Loading compressed data with named pipe</h3>
+<p>Many tabular data are compressed by gzip or bgzip to save the disk space. To decompress the file and load into the database without storing the uncompressed file somewhere first, one can consider using <a href="https://www.linuxjournal.com/article/2156">named pipe</a>.</p>
+<p>The idea is to decompress the file to the named pipe, and read the data in database from the named pipe. A named pipe can be created by <code>mkfifo</code>.  For example,</p>
+<div class="highlight"><pre><span></span>mkfifo mypipe
+gunzip -c mydata.tsv.gz &gt; mypipe <span class="p">&amp;</span>
+</pre></div>
+
+
+<p>The trailing <code>&amp;</code> makes the decompress command run at the background to keep everything in one shell session. Then read the data in SQLite as if it were a file like:</p>
+<div class="highlight"><pre><span></span><span class="o">.</span><span class="kn">import</span> <span class="nn">mypipe</span> <span class="nn">mytable</span>
+</pre></div>
+
+
+<p>The trick here can be further expand to any preprocessing in any language. One can simply preprocess the file and write the output to a named pipe. The database can read from the named pipe without storing the full intermediate output on disk. Plus, by piping between commands more CPU cores are utilized.</p>
+<h2 id="benchmark">Benchmark</h2>
+<p>To give an idea of the data processing time in database, I used all the <a href="https://www.synapse.org/#!Synapse:syn7214402/wiki/405297">somatic variants from TCGA MC3</a> as a demonstration. The goal here is to count the number of variants by different transcript and its mutation type. So the output result will be something like the following:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Transcript ID</th>
+<th>Mutation type</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">ENST00000000233</td>
+<td>3&rsquo;UTR</td>
+<td>20</td>
+</tr>
+<tr>
+<td align="left">ENST00000000233</td>
+<td>Frame_Shift_Del</td>
+<td>1</td>
+</tr>
+<tr>
+<td align="left">ENST00000000233</td>
+<td>Intron</td>
+<td>6</td>
+</tr>
+<tr>
+<td align="left">&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+</tbody>
+</table>
+<p>After filtering out all the silent mutations, there are total about 2.8 million variants making up 614MB of disk space. </p>
+<p>I used three methods to load and group the variants: pandas, SQLite, and PostgreSQL. </p>
+<h3 id="pandas-python">pandas (Python)</h3>
+<p>Standard pandas IO code.</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span>
+    <span class="s1">&#39;mc3_filtered.tsv&#39;</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">names</span><span class="o">=</span><span class="p">[</span>
+        <span class="s1">&#39;chrom&#39;</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="s1">&#39;strand&#39;</span><span class="p">,</span> <span class="s1">&#39;mutation_type&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;ref_allele&#39;</span><span class="p">,</span> <span class="s1">&#39;alt_allele&#39;</span><span class="p">,</span> <span class="s1">&#39;transcript_id&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;hgvs_c&#39;</span><span class="p">,</span> <span class="s1">&#39;hgvs_p&#39;</span><span class="p">,</span> <span class="s1">&#39;cdna_start&#39;</span><span class="p">,</span> <span class="s1">&#39;cdna_end&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;p_start&#39;</span><span class="p">,</span> <span class="s1">&#39;p_end&#39;</span><span class="p">,</span> <span class="s1">&#39;normal_id&#39;</span><span class="p">,</span> <span class="s1">&#39;tumor_id&#39;</span>
+    <span class="p">],</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;chrom&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span>
+        <span class="s1">&#39;strand&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="s1">&#39;cdna_start&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;cdna_end&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="s1">&#39;p_start&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;p_end&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">grp_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;transcript_id&#39;</span><span class="p">,</span> <span class="s1">&#39;mutation_type&#39;</span><span class="p">])[</span><span class="s1">&#39;alt_allele&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">grp_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;out.pandas.tsv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<h3 id="sqlite_1">SQLite</h3>
+<p>I set some <code>PRAGMA ...</code> statements at the beginning to control some of the SQLite settings. It tells SQLite to use more cache, create temporary tables in memory and disable all the transaction recovery settings. SQLite by default tries to write everything to the disk first so if the program fails or any exception occurs, it can recover all the transactions properly. In our case we don&rsquo;t need to be conservative.</p>
+<div class="highlight"><pre><span></span><span class="n">PRAGMA</span> <span class="n">cache_size</span><span class="o">=-</span><span class="mi">4192000</span><span class="p">;</span>  <span class="c1">-- Use 2GB RAM as cache</span>
+<span class="n">PRAGMA</span> <span class="n">temp_store</span><span class="o">=</span><span class="n">MEMORY</span><span class="p">;</span>
+<span class="n">PRAGMA</span> <span class="n">synchronous</span><span class="o">=</span><span class="k">OFF</span><span class="p">;</span>
+<span class="n">PRAGMA</span> <span class="n">journal_mode</span><span class="o">=</span><span class="k">OFF</span><span class="p">;</span>
+<span class="n">PRAGMA</span> <span class="n">locking_mode</span><span class="o">=</span><span class="k">EXCLUSIVE</span><span class="p">;</span>
+
+<span class="p">.</span><span class="k">mode</span> <span class="n">csv</span>
+<span class="p">.</span><span class="n">separator</span> <span class="err">\</span><span class="n">t</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">mc3</span> <span class="p">(</span>
+    <span class="n">chrom</span>       <span class="nb">TEXT</span><span class="p">,</span>
+    <span class="ss">&quot;start&quot;</span>     <span class="nb">INT</span><span class="p">,</span>
+    <span class="ss">&quot;end&quot;</span>       <span class="nb">INT</span><span class="p">,</span>
+    <span class="n">strand</span>      <span class="nb">INT</span><span class="p">,</span>
+    <span class="n">mutation_type</span>   <span class="nb">TEXT</span><span class="p">,</span>
+    <span class="n">ref_allele</span>  <span class="nb">TEXT</span><span class="p">,</span>
+    <span class="n">alt_allele</span>  <span class="nb">TEXT</span><span class="p">,</span>
+    <span class="n">transcript_id</span>   <span class="nb">TEXT</span><span class="p">,</span>
+    <span class="n">hgvs_c</span>      <span class="nb">TEXT</span><span class="p">,</span>
+    <span class="n">hgvs_p</span>      <span class="nb">TEXT</span><span class="p">,</span>
+    <span class="n">cdna_start</span>  <span class="nb">INT</span><span class="p">,</span>
+    <span class="n">cdna_end</span>    <span class="nb">INT</span><span class="p">,</span>
+    <span class="n">p_start</span>     <span class="nb">INT</span><span class="p">,</span>
+    <span class="n">p_end</span>       <span class="nb">INT</span><span class="p">,</span>
+    <span class="n">normal_id</span>   <span class="nb">TEXT</span><span class="p">,</span>
+    <span class="n">tumor_id</span>    <span class="nb">TEXT</span>
+<span class="p">);</span>
+<span class="p">.</span><span class="n">import</span> <span class="n">mc3_filtered</span><span class="p">.</span><span class="n">tsv</span> <span class="n">mc3</span>
+<span class="c1">-- Create an index to speed up grouping on the same columns</span>
+<span class="k">CREATE</span> <span class="k">INDEX</span> <span class="n">mc3_idx</span> <span class="k">ON</span> <span class="n">mc3</span> <span class="p">(</span><span class="n">transcript_id</span><span class="p">,</span> <span class="n">mutation_type</span><span class="p">);</span>
+
+<span class="c1">-- Output</span>
+<span class="p">.</span><span class="n">once</span> <span class="k">out</span><span class="p">.</span><span class="n">sqlite</span><span class="p">.</span><span class="n">tsv</span>
+<span class="k">SELECT</span> <span class="n">transcript_id</span><span class="p">,</span> <span class="n">mutation_type</span><span class="p">,</span> <span class="k">COUNT</span><span class="p">(</span><span class="n">alt_allele</span><span class="p">)</span> <span class="k">AS</span> <span class="k">c</span>
+<span class="k">FROM</span> <span class="n">mc3</span>
+<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">transcript_id</span><span class="p">,</span> <span class="n">mutation_type</span><span class="p">;</span>
+</pre></div>
+
+
+<h3 id="postgresql_1">PostgreSQL</h3>
+<p>I used <a href="https://pgloader.io/">pgloader</a> to load the data into a local PostgreSQL database <code>test_mc3</code>. It takes a script of its own mini-language.</p>
+<div class="highlight"><pre><span></span>LOAD CSV
+    FROM &#39;mc3_filtered.tsv&#39;
+    INTO postgresql:///test_mc3?mc3
+    WITH fields terminated by &#39;\t&#39;,
+         fields not enclosed,
+         drop indexes
+    BEFORE LOAD DO 
+    $$ DROP TABLE IF EXISTS mc3; $$,
+    $$ CREATE TABLE mc3 (
+            chrom       TEXT,
+            &quot;start&quot;     BIGINT,
+            &quot;end&quot;       BIGINT,
+            strand      SMALLINT,
+            mutation_type   TEXT,
+            ref_allele  TEXT,
+            alt_allele  TEXT,
+            transcript_id   TEXT,
+            hgvs_c      TEXT,
+            hgvs_p      TEXT,
+            cdna_start  INT,
+            cdna_end    INT,
+            p_start     INT,
+            p_end       INT,
+            normal_id   TEXT,
+            tumor_id    TEXT
+        ); 
+    $$,
+    $$ CREATE INDEX mc3_idx ON mc3 (transcript_id, mutation_type); $$
+;
+</pre></div>
+
+
+<p>To do the grouping analysis, I used the built-in <code>COPY</code> command:</p>
+<div class="highlight"><pre><span></span><span class="k">COPY</span> <span class="p">(</span> 
+    <span class="k">SELECT</span> <span class="n">transcript_id</span><span class="p">,</span> <span class="n">mutation_type</span><span class="p">,</span> <span class="n">COUNT</span><span class="p">(</span><span class="n">alt_allele</span><span class="p">)</span> <span class="k">AS</span> <span class="n">c</span>
+    <span class="k">FROM</span> <span class="n">mc3</span>
+    <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">transcript_id</span><span class="p">,</span> <span class="n">mutation_type</span>
+<span class="p">)</span> <span class="k">TO</span> <span class="s1">&#39;/private/tmp/mc3/MC3/out.psql.tsv&#39;</span> <span class="k">WITH</span> <span class="p">(</span><span class="n">FORMAT</span> <span class="nb">TEXT</span><span class="p">);</span>
+</pre></div>
+
+
+<h3 id="result">Result</h3>
+<p>I didn&rsquo;t run it systematically but a few repeats showed the similar numbers. </p>
+<table>
+<thead>
+<tr>
+<th align="left">Method</th>
+<th align="right">Read data (sec)</th>
+<th align="right">Group-by analysis (sec)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Pandas</td>
+<td align="right">10.7</td>
+<td align="right">0.9</td>
+</tr>
+<tr>
+<td align="left">SQLite</td>
+<td align="right">27.7</td>
+<td align="right">4.0</td>
+</tr>
+<tr>
+<td align="left">PostgreSQL</td>
+<td align="right">82.6</td>
+<td align="right">13.5</td>
+</tr>
+</tbody>
+</table>
+<p>In this case, all data can be loaded into memory easily, so pandas gave the best performance here. It actually took nearly no-time to complete the grouping. </p>
+<p>All databases ran much slower on loading data than pandas. PostgreSQL seems to run a lot more slower than SQLite, which I think it has something to do with my server configuration, say, not enough cache size, or not enough working memory for the group-by operation. I feel like PostgreSQL can be faster but anyway that&rsquo;s the result I have so far. Note that the databases are on a PCIe SSD disk. It they were on a normal hard drive, the database creation will take a much longer time.</p>
+<p>However, after the data are loaded into the database, the speed of the query alone is comparable to pandas. For pandas, one cannot skip the step of reading data so if the analysis is on a frequently used dataset, database like SQLite can yield better performance. Once the data get larger than the memory capacity, special care will be needed to make the pandas approach work, whereas database can scale up with little fuss.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>My post provides a different solution to work with tabular data in a database. In-memory approach like pandas works very efficiently at a small dataset but one will have to code the &ldquo;how-tos&rdquo; to scale to a larger dataset that cannot feed into memory (or the overhead is too high). On the other hand, database can easily scale to a few hundred GBs in size and the query is fast. For analysis on a frequently used dataset, loading data into the database first might be a good idea. </p>
+<p>Another good thing about database is that SQL make joining across tables easily. One can easily join across multiple tables, say, expanding the gene annotation and doesn&rsquo;t have to worry how to implement it. With indexing, the joining can be fast. In pandas, one generates many objects representing the joining results, but those objects cannot be easily shared between scripts. Relying on storing the intermediate objects on disk, the accumulated overhead might be significant. Projects like <a href="https://arrow.apache.org/">Apache Arrow</a> might solve the in-memory object passing ultimately, but its development is still in the early phase. As for database, one can define reusable views for the joining logics and filtering results. The post didn&rsquo;t really touch this part so I probably need another benchmark or post to back my thoughts. </p>
+<p>However, working in pandas gives users great room of flexibility. For example, one can iterate over rows and do some complex transformation of the value. Maybe it would be the optimal solution to use <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_sql.html#pandas.read_sql"><code>pandas.read_sql</code></a> to run query in database. </p>
+<p>It seems to me like many people rely on the features of some special file formats such as bgzip and tabix too much and have forgotten the generic yet flexible approach using database. Those formats often optimize the random access by a given genomic query by indexing. In database, such index is analogous to <code>(chrom, start, -end)</code> or even GiST index on Range type in PostgreSQL. Aside from the performance, one can continue to query the records in the same way in database, but for special format the functionality will be much limited.</p>
+<p>At least I will give database a try before writing my own data wrangling script.</p></section>
+    <footer class="post-footer">
+<section class="share">
+    <h2>Share</h2>
+    <a class="icon-twitter" href="https://twitter.com/share?text=Ad hoc bioinformatic analysis in database&amp;url=https://blog.liang2.tw/posts/2018/01/ad-hoc-bioinfo-analysis-in-database/"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u=https://blog.liang2.tw/posts/2018/01/ad-hoc-bioinfo-analysis-in-database/"
+        onclick="window.open(this.href, 'facebook-share', 'width=580,height=296'); return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.liang2.tw/posts/2018/01/ad-hoc-bioinfo-analysis-in-database/"
+        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2018/01/ad-hoc-bioinfo-analysis-in-database/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2018/01/ad-hoc-bioinfo-analysis-in-database/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
+    <footer>
+</article>
+	</main>
+	<footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags.html">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">
+				Built using <a href="http://getpelican.com/">Pelican</a>.
+				Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.
+			</section>
+		</div>
+	</footer>
+</body>
+</html>
