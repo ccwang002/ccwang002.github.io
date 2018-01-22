@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 <meta name="author" content="Liang2" />
 <meta name="description" content="Recently I’ve found that bioinformatic analysis in database is not hard at all and the database set up wasn’t as daunting as …" />
-<meta name="keywords" content="en, python, sqlite, postgresql">
+<meta name="keywords" content="en, python, pandas, sqlite, postgresql">
 	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
 	<title>Ad hoc bioinformatic analysis in database</title>
 
@@ -25,6 +25,7 @@
 <meta property="article:section" content="Bioinfo"/>
 <meta property="article:tag" content="en"/>
 <meta property="article:tag" content="python"/>
+<meta property="article:tag" content="pandas"/>
 <meta property="article:tag" content="sqlite"/>
 <meta property="article:tag" content="postgresql"/>
 <meta name="twitter:card" content="summary">
@@ -60,10 +61,11 @@
     <span class="post-meta">
                 <a href="https://blog.liang2.tw/tag/en/">en</a>
                 <a href="https://blog.liang2.tw/tag/python/">python</a>
+                <a href="https://blog.liang2.tw/tag/pandas/">pandas</a>
                 <a href="https://blog.liang2.tw/tag/sqlite/">sqlite</a>
                 <a href="https://blog.liang2.tw/tag/postgresql/">postgresql</a>
     </span>
-    <section class="post-content"><p>Recently I&rsquo;ve found that bioinformatic analysis in database is not hard at all and the database set up wasn&rsquo;t as daunting as it sounds, especially when the data are tabular. I used to start my analysis with loading everything into R or Python, and then figuring out all the filtering and grouping commands in my favorite R or Python packages. But with this method, the data size would be bound by memory and the analysis might be slow unless additional optimization was applied. On the other hand, database has already solved the problems by mapping the data to disk and indexing. Therefore I&rsquo;d like to share my recent experience on using database for bioinfo analysis.</p>
+    <section class="post-content"><p>Recently I&rsquo;ve found that bioinformatic analysis in database is not hard at all and the database set up wasn&rsquo;t as daunting as it sounds, especially when the data are tabular. I used to start my analysis with loading everything into R or Python, and then figuring out all the filtering and grouping commands with my favorite R or Python packages. However, the data size would be bound by memory and the analysis might be slow unless additional optimization was applied. On the other hand, database has already solved the problems by mapping the data to disk and indexing. Therefore I&rsquo;d like to share my recent experience on using database for bioinfo analysis.</p>
 <p>Note that if one is interested in the actual tips of using database for analysis, feel free to skip the whole background section.</p>
 <div class="toc">
 <ul>
@@ -90,17 +92,17 @@
 </div>
 <h2 id="background">Background</h2>
 <h3 id="reading-tabular-data-in-bioinformatics">Reading tabular data in bioinformatics</h3>
-<p>Tabular data are everywhere in bioinformatics. To record gene expressions, variants or ID cross reference between different annotation systems or databases, data are stored in various tabular-like formats, such as BED, GTF, MAF, and VCF, which can usually be normalized to the standard CSV and TSV files. Starting with the raw data, we apply different kinds of filtering and grouping to pick up the records of interest. For example, we might subset the data within a genomic region, select transcripts above an expression threshold, or group the data by the same transcript across multiple samples. </p>
-<p>Researchers have developed numerous tools to subset or group the data. In Python, numpy and pandas dominate the analysis; in R, data.frame, tibble, and data.table are all widely used. However, all the tools above only work if the data can be fit into memory. Unfortunately, bioinformatics data can go beyond 10GB easily these day. It has been difficult to analyze everything in memory. Even using a powerful server with a few hundreds GB of memory, the overhead of loading all data into memory can be time consuming. To make things worse, joining multiple data together will be the combination of the issues above.</p>
+<p>Tabular data are everywhere in bioinformatics. To record gene expressions, variants or cross reference IDs between different annotation systems or databases, data are stored in various tabular-like formats, such as BED, GTF, MAF, and VCF, which can usually be normalized to the standard CSV and TSV files. Starting with the raw data, we apply different kinds of filtering and grouping to pick up the records of interest. For example, we might subset the data within a genomic region, select transcripts above an expression threshold, or group the data by the same transcript across multiple samples. </p>
+<p>Researchers have developed numerous tools to select the data of interest. In Python, numpy and pandas dominate the analysis; in R, data.frame, tibble, and data.table are all widely used. However, all the tools above only work if the data can be fit into memory. Unfortunately, bioinformatics data can go beyond 10GB easily these day. It has been difficult to analyze everything in memory. Even using a powerful server with a few hundreds GB of memory, the overhead of loading all data into memory can be time consuming. To make things worse, when joining multiple data together, the magnitude of the issues above will be multiplied.</p>
 <p>One might argue that in Python there are packages like <a href="http://xarray.pydata.org/en/stable/">xarray</a> and <a href="https://dask.pydata.org/en/latest/">dask</a> capable of handling out-of-memory multi-dimensional array. But they are only useful for numerical data. In bioinformatics metadata are frequently used and consist of many text columns, where numpy doesn&rsquo;t have the same computing advantage as numerical columns. For example, gene expression only makes sense if it comes with the gene symbol, the transcript id, and the sample id.</p>
 <h3 id="database">Database</h3>
-<p>On the other hand, databases have been solving all the above tasks for decades, and it also comes with several advantages. Language databases use is standardized, called SQL. SQL is expressive, which means in stead of writing how to load or query the data, one writes what the data or the query look like. Database supports concurrent reads, so one is able to query the same data in parallel. One can speed up the queries by setting up indexes. Database is persistent, so one only needs to load the data once.</p>
-<p>I mainly use two databases: <a href="https://sqlite.org/">SQLite</a> and <a href="https://www.postgresql.org/">PostgreSQL</a>. SQLite&rsquo;s database is a single file and it doesn&rsquo;t need any configuration to run. In fact SQLite ships with Python, available as the <a href="https://docs.python.org/3/library/sqlite3.html"><code>sqlite</code> module</a>. SQLite works very well in my case.</p>
-<p>PostgreSQL is more feature-rich database and has better concurrency supports such as multiple writers at the same time. <a href="https://www.postgresql.org/docs/current/static/indexes-types.html">Its advanced indexing</a> and <a href="https://www.postgresql.org/docs/current/static/datatype.html">data types</a> might be helpful for genomic range query. The downside is that it requires some configurations and installation is not as easy as SQLite. It is actually just a few commands on Debian Linux but one probably needs to go through the documentation to understand what they are about.</p>
-<p>In the past the most annoying thing I found using database is to load my data, where I had to create the table by <code>CREATE TABLE ...</code> and insert all my data by multiple <code>INSERT INTO ... VALUES ...</code> statements. But recently I found that many databases have some builtin utilities to make the process easy. Also, it is not hard to programmatically generate the statements through packages like <a href="https://www.sqlalchemy.org/">SQLAlchemy</a>. Therefore, I will share some experience of using database here. </p>
+<p>Databases have been solving the out-of-memory data analysis for decades, and it also comes with several advantages. First, the language databases use is standardized, known as Structured Query Language (SQL). SQL is expressive, which means in stead of writing how to load or query the data, one writes what the data or the query look like. Database supports concurrent reads, so one is able to query the same data in parallel. Second, One can speed up the queries by setting up indexes. Different types of indexes and different combinations of columns can be added to boost the query. Lastly, database is persistent, so one only needs to load the data once.</p>
+<p>I mainly use two databases: <a href="https://sqlite.org/">SQLite</a> and <a href="https://www.postgresql.org/">PostgreSQL</a>. SQLite&rsquo;s database is just a single file on disk and it doesn&rsquo;t need any configuration to run. In fact SQLite ships with Python, available as the <a href="https://docs.python.org/3/library/sqlite3.html"><code>sqlite</code> module</a>. SQLite works very well in my case.</p>
+<p>PostgreSQL is a more feature-rich database and has better concurrency support such as multiple writers at the same time. <a href="https://www.postgresql.org/docs/current/static/indexes-types.html">Its advanced indexing</a> and <a href="https://www.postgresql.org/docs/current/static/datatype.html">data types</a> might be helpful for genomic range query. The downside is that it requires some configurations and its installation is not as easy as SQLite. Though the basic PosgreSQL setup is actually just a few commands on Debian Linux, one probably needs to go through some documentations to understand what they are about and how to tweak the config.</p>
+<p>The most annoying thing I found using database in the past was to load my data, where I had to create the table by <code>CREATE TABLE ...</code> and insert all my data by multiple <code>INSERT INTO ... VALUES ...</code> statements. But recently I found that many databases have some builtin utilities to make the process easy and fast. Also, it is not hard to programmatically generate the statements through packages like <a href="https://www.sqlalchemy.org/">SQLAlchemy</a>. Therefore, I will share some experience of using database here. </p>
 <h2 id="tabular-data-io-in-database">Tabular data IO in database</h2>
 <h3 id="sqlite">SQLite</h3>
-<p>For SQLite, use <code>.mode csv</code> with <a href="https://www.sqlite.org/cli.html#csv"><code>.import</code> statement</a>. SQLite will create the table automatically by using the first row as the column names if the table doesn&rsquo;t exist. One can create the table before the loading to define each column&rsquo;s data type. <code>.separator</code> controls the delimiter character SQLite uses between columns.</p>
+<p>For SQLite, use <code>.mode csv</code> with <a href="https://www.sqlite.org/cli.html#csv"><code>.import</code> statement</a> to load in data. SQLite will create the table automatically by using the first row as the column names if the table doesn&rsquo;t exist. One can create the table before the loading to define each column&rsquo;s data type, otherwise columns are just <code>TEXT</code> type. <code>.separator</code> controls the delimiter character SQLite uses between columns.</p>
 <div class="highlight"><pre><span></span><span class="p">.</span><span class="k">mode</span> <span class="n">csv</span>
 <span class="p">.</span><span class="n">separator</span> <span class="err">\</span><span class="n">t</span>   <span class="c1">-- For TSV files</span>
 <span class="p">.</span><span class="n">import</span> <span class="s1">&#39;/path/to/tsv&#39;</span> <span class="k">table_name</span>
@@ -120,11 +122,11 @@
 
 
 <h3 id="postgresql">PostgreSQL</h3>
-<p>For PostgreSQL, the built-in solution is to use the <a href="https://www.postgresql.org/docs/current/static/sql-copy.html"><code>COPY</code> statement</a> or the <a href="https://www.postgresql.org/docs/current/static/app-psql.html#APP-PSQL-META-COMMANDS-COPY"><code>\copy</code> metacommand</a> to import or export data. They generally run faster than normal <code>INSERT</code> statements. Besides built-in commands, an external tool <a href="https://pgloader.io/">pgloader</a> has been very helpful for the data loading. The loading process is more flexible.</p>
-<p>I won&rsquo;t dive into details of their usage here. There will be an example in the benchmark section.</p>
+<p>For PostgreSQL, the built-in solution is to use the <a href="https://www.postgresql.org/docs/current/static/sql-copy.html"><code>COPY</code> statement</a> or the <a href="https://www.postgresql.org/docs/current/static/app-psql.html#APP-PSQL-META-COMMANDS-COPY"><code>\copy</code> metacommand</a> to import or export data. <code>COPY</code> runs faster than the equivalent <code>INSERT</code> statements. Besides built-in commands, an external tool <a href="https://pgloader.io/">pgloader</a> has been very helpful for the data loading, whose loading process is more flexible. </p>
+<p>In this post, I won&rsquo;t dive into details of their usage. There will be an example in the benchmark section.</p>
 <h3 id="loading-compressed-data-with-named-pipe">Loading compressed data with named pipe</h3>
 <p>Many tabular data are compressed by gzip or bgzip to save the disk space. To decompress the file and load into the database without storing the uncompressed file somewhere first, one can consider using <a href="https://www.linuxjournal.com/article/2156">named pipe</a>.</p>
-<p>The idea is to decompress the file to the named pipe, and read the data in database from the named pipe. A named pipe can be created by <code>mkfifo</code>.  For example,</p>
+<p>The idea is to decompress the file to a named pipe, and read the data in database from the named pipe. A named pipe can be created by <code>mkfifo</code>.  For example,</p>
 <div class="highlight"><pre><span></span>mkfifo mypipe
 gunzip -c mydata.tsv.gz &gt; mypipe <span class="p">&amp;</span>
 </pre></div>
@@ -137,7 +139,7 @@ gunzip -c mydata.tsv.gz &gt; mypipe <span class="p">&amp;</span>
 
 <p>The trick here can be further expand to any preprocessing in any language. One can simply preprocess the file and write the output to a named pipe. The database can read from the named pipe without storing the full intermediate output on disk. Plus, by piping between commands more CPU cores are utilized.</p>
 <h2 id="benchmark">Benchmark</h2>
-<p>To give an idea of the data processing time in database, I used all the <a href="https://www.synapse.org/#!Synapse:syn7214402/wiki/405297">somatic variants from TCGA MC3</a> as a demonstration. The goal here is to count the number of variants by different transcript and its mutation type. So the output result will be something like the following:</p>
+<p>To give an idea of the data processing time in databases, I used all the <a href="https://www.synapse.org/#!Synapse:syn7214402/wiki/405297">somatic variants from TCGA MC3</a> as a demonstration. The goal here is to count the number of variants by different transcript and its mutation type. So the output result will be something like the following:</p>
 <table>
 <thead>
 <tr>
@@ -170,7 +172,7 @@ gunzip -c mydata.tsv.gz &gt; mypipe <span class="p">&amp;</span>
 </tbody>
 </table>
 <p>After filtering out all the silent mutations, there are total about 2.8 million variants making up 614MB of disk space. </p>
-<p>I used three methods to load and group the variants: pandas, SQLite, and PostgreSQL. </p>
+<p>I used three methods to load and group the variants: pandas, SQLite, and PostgreSQL. Their code are shown below.</p>
 <h3 id="pandas-python">pandas (Python)</h3>
 <p>Standard pandas IO code.</p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
@@ -200,7 +202,7 @@ gunzip -c mydata.tsv.gz &gt; mypipe <span class="p">&amp;</span>
 
 
 <h3 id="sqlite_1">SQLite</h3>
-<p>I set some <code>PRAGMA ...</code> statements at the beginning to control some of the SQLite settings. It tells SQLite to use more cache, create temporary tables in memory and disable all the transaction recovery settings. SQLite by default tries to write everything to the disk first so if the program fails or any exception occurs, it can recover all the transactions properly. In our case we don&rsquo;t need to be conservative.</p>
+<p>I set some <code>PRAGMA ...</code> statements at the beginning to control some of the SQLite settings. It tells SQLite to use more cache, create temporary tables in memory and disable all the transaction recovery settings. SQLite by default writes everything to the disk first before changing the actual database content so if the program fails or any exception occurs, it can recover all the transactions properly. In our case we don&rsquo;t care about the integrity of the database.</p>
 <div class="highlight"><pre><span></span><span class="n">PRAGMA</span> <span class="n">cache_size</span><span class="o">=-</span><span class="mi">4192000</span><span class="p">;</span>  <span class="c1">-- Use 2GB RAM as cache</span>
 <span class="n">PRAGMA</span> <span class="n">temp_store</span><span class="o">=</span><span class="n">MEMORY</span><span class="p">;</span>
 <span class="n">PRAGMA</span> <span class="n">synchronous</span><span class="o">=</span><span class="k">OFF</span><span class="p">;</span>
@@ -240,7 +242,7 @@ gunzip -c mydata.tsv.gz &gt; mypipe <span class="p">&amp;</span>
 
 
 <h3 id="postgresql_1">PostgreSQL</h3>
-<p>I used <a href="https://pgloader.io/">pgloader</a> to load the data into a local PostgreSQL database <code>test_mc3</code>. It takes a script of its own mini-language.</p>
+<p>I used <a href="https://pgloader.io/">pgloader</a> to load the data into a local PostgreSQL database <code>test_mc3</code>. pgloader can take a script of its own mini-language.</p>
 <div class="highlight"><pre><span></span>LOAD CSV
     FROM &#39;mc3_filtered.tsv&#39;
     INTO postgresql:///test_mc3?mc3
@@ -311,14 +313,14 @@ gunzip -c mydata.tsv.gz &gt; mypipe <span class="p">&amp;</span>
 </tbody>
 </table>
 <p>In this case, all data can be loaded into memory easily, so pandas gave the best performance here. It actually took nearly no-time to complete the grouping. </p>
-<p>All databases ran much slower on loading data than pandas. PostgreSQL seems to run a lot more slower than SQLite, which I think it has something to do with my server configuration, say, not enough cache size, or not enough working memory for the group-by operation. I feel like PostgreSQL can be faster but anyway that&rsquo;s the result I have so far. Note that the databases are on a PCIe SSD disk. It they were on a normal hard drive, the database creation will take a much longer time.</p>
-<p>However, after the data are loaded into the database, the speed of the query alone is comparable to pandas. For pandas, one cannot skip the step of reading data so if the analysis is on a frequently used dataset, database like SQLite can yield better performance. Once the data get larger than the memory capacity, special care will be needed to make the pandas approach work, whereas database can scale up with little fuss.</p>
+<p>All databases ran much slower on loading data than pandas. PostgreSQL seems to run a lot more slower than SQLite, which I think it has something to do with my server configuration, say, not enough cache size, or not enough working memory for the group-by operation. I feel like PostgreSQL can be faster but anyway this&rsquo;s the result I have so far. Note that all the databases are stored on a PCIe SSD disk. It they were on a normal hard drive, the database creation will take a much longer time.</p>
+<p>However, after the data are loaded into the database, the speed of the query alone is comparable to pandas. Because for pandas, one cannot skip the step of reading data so if the analysis is on a frequently used dataset, database like SQLite can yield better performance. Once the data get larger than the memory capacity, special care will be needed to make the pandas approach work, whereas database can scale up with little fuss.</p>
 <h2 id="conclusion">Conclusion</h2>
-<p>My post provides a different solution to work with tabular data in a database. In-memory approach like pandas works very efficiently at a small dataset but one will have to code the &ldquo;how-tos&rdquo; to scale to a larger dataset that cannot feed into memory (or the overhead is too high). On the other hand, database can easily scale to a few hundred GBs in size and the query is fast. For analysis on a frequently used dataset, loading data into the database first might be a good idea. </p>
+<p>My post provides a different solution to work with tabular data by working in a database. In-memory approach like pandas works very efficiently at a small dataset but one will have to code the &ldquo;how-tos&rdquo; to scale to a larger dataset that cannot feed into memory (or the overhead is too high). On the other hand, database can easily scale to a few hundred GBs in size and the query is fast. For analysis on a frequently used dataset, loading data into the database first might be a good idea. </p>
 <p>Another good thing about database is that SQL make joining across tables easily. One can easily join across multiple tables, say, expanding the gene annotation and doesn&rsquo;t have to worry how to implement it. With indexing, the joining can be fast. In pandas, one generates many objects representing the joining results, but those objects cannot be easily shared between scripts. Relying on storing the intermediate objects on disk, the accumulated overhead might be significant. Projects like <a href="https://arrow.apache.org/">Apache Arrow</a> might solve the in-memory object passing ultimately, but its development is still in the early phase. As for database, one can define reusable views for the joining logics and filtering results. The post didn&rsquo;t really touch this part so I probably need another benchmark or post to back my thoughts. </p>
 <p>However, working in pandas gives users great room of flexibility. For example, one can iterate over rows and do some complex transformation of the value. Maybe it would be the optimal solution to use <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_sql.html#pandas.read_sql"><code>pandas.read_sql</code></a> to run query in database. </p>
-<p>It seems to me like many people rely on the features of some special file formats such as bgzip and tabix too much and have forgotten the generic yet flexible approach using database. Those formats often optimize the random access by a given genomic query by indexing. In database, such index is analogous to <code>(chrom, start, -end)</code> or even GiST index on Range type in PostgreSQL. Aside from the performance, one can continue to query the records in the same way in database, but for special format the functionality will be much limited.</p>
-<p>At least I will give database a try before writing my own data wrangling script.</p></section>
+<p>It seems to me like many people rely too much on the features of some special file formats such as bgzip and tabix and have forgotten the generic yet flexible approach using database. Those formats often optimize the random access by a given genomic query by indexing. In database, such index is analogous to <code>(chrom, start, -end)</code> or even GiST index on Range type in PostgreSQL. It might be slower in database, but aside from the performance, one can continue to query the records in the same way in database. For special format, the functionality will be much limited.</p>
+<p>Now I will give database a try before writing my own data wrangling script.</p></section>
     <footer class="post-footer">
 <section class="share">
     <h2>Share</h2>
