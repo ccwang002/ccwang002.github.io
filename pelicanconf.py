@@ -4,7 +4,7 @@ from pathlib import Path
 import re
 
 
-AUTHOR = 'Liang2'
+AUTHOR = 'Liang-Bo Wang'
 SITENAME = "Liang2's Blog"
 SITEURL = ''
 
