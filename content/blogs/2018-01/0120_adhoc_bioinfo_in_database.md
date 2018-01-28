@@ -258,11 +258,18 @@ My post provides a different solution to work with tabular data by working in a 
 
 Another good thing about databases is that SQL makes joining across tables easily. One can easily join across multiple tables, say, expand the gene annotation and doesn't have to worry how to implement it. With indexing, the joining can be fast. In pandas, one generates many objects representing the joining results, but those objects cannot be easily shared between scripts. Relying on storing the intermediate objects on disk, the accumulated overhead might be significant. Projects like [Apache Arrow] might solve the in-memory object passing ultimately, but its development is still in the early phase. As for databases, one can define reusable views for the joining logic and filtering results. The post didn't really touch this part so I probably need another benchmark or post to back my thoughts.
 
+If one is analyzing variants, using databases or SQL in general has been backed up by many pratical projects. People at [Quinlab Lab][quianlab] hace been building [vcf2db] to load variants into databases for downstream annotation and analysis. To scale way up to terabytes or petabytes of variant data, [Google Cloud Genomics][google-genomics] provides an interface to store and query variants in BigQuery, where users use standard SQL to select the variants of interest.
+
 However, working in pandas gives users great room for flexibility. For example, one can iterate over rows and do some complex transformation of the value. Maybe it would be the optimal solution to use [`pandas.read_sql`][pandas-read-sql] to run a query in a database.
 
 It seems to me like many people rely too much on the features of some special file formats such as bgzip and tabix and have forgotten the generic yet flexible approach using databases. Those formats often optimize the random access by a given genomic query by indexing. In databases, such index is analogous to `(chrom, start, -end)` or even GiST index on Range type in PostgreSQL. It might be slower in databases, but aside from the performance, one can continue to query the records in the same way in databases. For special format, the functionality will be much limited.
 
 Now I will give the database approach a try before writing my own data wrangling script.
 
+EDIT 2018-01-28: Add real world examples of using databases to store variant data.
+
 [pandas-read-sql]: https://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_sql.html#pandas.read_sql
 [Apache Arrow]: https://arrow.apache.org/
+[quianlab]: http://quinlanlab.org/
+[vcf2db]: https://github.com/quinlan-lab/vcf2db
+[google-genomics]: https://cloud.google.com/genomics/v1/analyze-variants
