@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="author" content="Liang-Bo Wang" />
+<meta name="description" content="UniProt Knowledge Base (UniProtKB) provides various methods to access their data. I settled on their XML format since no additional parsing code is required …" />
+<meta name="keywords" content="en, python, uniprot">
+	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<title>Read UniProtKB in XML format</title>
+
+	<!-- og -->
+<meta property="og:locale" content="en_USen"/>
+<meta property="og:site_name" content="Liang2's Blog"/>
+<meta property="og:title" content="Read UniProtKB in XML format"/>
+<meta property="og:description" content="UniProt Knowledge Base (UniProtKB) provides various methods to access their data. I settled on their XML format since no additional parsing code is required …"/>
+<meta property="og:locale" content=""/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2018/01/read-uniprotkb-xml/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2018-01-28 00:00:00-06:00"/>
+<meta property="article:modified_time" content="2018-01-28 00:00:00-06:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
+<meta property="article:section" content="Bioinfo"/>
+<meta property="article:tag" content="en"/>
+<meta property="article:tag" content="python"/>
+<meta property="article:tag" content="uniprot"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Read UniProtKB in XML format">
+<meta name="twitter:description" content="UniProt Knowledge Base (UniProtKB) provides various methods to access their data. I settled on their XML format since no additional parsing code is required …">
+
+	<!-- Feeds -->
+	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
+		type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?471da5af" rel="stylesheet" />
+</head>
+
+<body class="post-template">
+	<header class="site-head">
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+		<h2 class="blog-description">
+			<a href="https://blog.liang2.tw/about-me/">About</a> |
+			<a href="https://blog.liang2.tw/talks/">Talks</a> |
+			<a href="https://blog.liang2.tw/archives.html">Archives</a>
+		</h2>
+	</header>
+	<main id="content" class="content" role="main">
+<article class="post">
+    <span class="post-meta">
+        <time datetime="Jan 28, 2018">Jan 28, 2018</time>
+        in <a href="https://blog.liang2.tw/category/bioinfo/">Bioinfo</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2018/01/read-uniprotkb-xml/" rel="bookmark" title="Permalink to Read UniProtKB in XML format">Read UniProtKB in XML format</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/en/">en</a>
+                <a href="https://blog.liang2.tw/tag/python/">python</a>
+                <a href="https://blog.liang2.tw/tag/uniprot/">uniprot</a>
+    </span>
+    <section class="post-content"><p>UniProt Knowledge Base (<a href="http://www.uniprot.org/help/uniprotkb">UniProtKB</a>) provides <a href="https://www.uniprot.org/help/programmatic_access">various methods</a> to access their data. I settled on their XML format since no additional parsing code is required and the format is well defined, which comes with a schema. Plus, it turns out that databases such as <a href="http://pdbml.pdb.org/">PDB</a> also provide their data export in XML format and the corresponding schema so the method can be applied elsewhere. </p>
+<p>Here I will show how to read XML with its schema in Python using <a href="https://pypi.org/project/xmlschema/">xmlschema</a>.</p>
+<div class="toc">
+<ul>
+<li><a href="#other-ways-to-read-uniprotkb-data-in-bulk">Other ways to read UniProtKB data in bulk</a></li>
+<li><a href="#xml-and-xml-schema">XML and XML schema</a></li>
+<li><a href="#read-uniprot-xml-by-xmlschema">Read UniProt XML by xmlschema</a></li>
+<li><a href="#summary">Summary</a></li>
+</ul>
+</div>
+<h2 id="other-ways-to-read-uniprotkb-data-in-bulk">Other ways to read UniProtKB data in bulk</h2>
+<p>UniProtKB at least provides REST, SPARQL, XML, and a flat text file for its data access. </p>
+<p>RESTful APIs work very well to access a small proportion of data and usually are my way to go for data access, but it will put too much load on the server if I want a lot of information from tens of thousands of entries. Ideally, UniProtKB&rsquo;s data won&rsquo;t change very often so I&rsquo;d like to hit the database once per entry and cache the results locally. </p>
+<p><a href="https://en.wikipedia.org/wiki/SPARQL">SPARQL</a> is kind of similar to REST but can directly query on UniProtKB&rsquo;s <a href="https://en.wikipedia.org/wiki/Resource_Description_Framework">RDF</a> file, thus one can retrieve whatever information available in a complex way. I started my research on this method but I got overwhelmed by the technical details and eventually gave up. I feel like more tutorials or examples on how to access the SPARQL interface will be very helpful.</p>
+<p>UniProtKB&rsquo;s flat text file has been a popular way to parse its data. I mean, it has <a href="https://www.uniprot.org/docs/userman.htm">its own manual</a>, and one can download a full entry&rsquo;s data easily. But this requires writing a custom parser in Python. More code means more bugs, and I will worry about whether my parser works every time UniProt updates.</p>
+<h2 id="xml-and-xml-schema">XML and XML schema</h2>
+<p>XML data are structured. For example, this is what entry <a href="https://www.uniprot.org/uniprot/P51587">P51587</a> looks like in XML format:</p>
+<div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;uniprot</span> <span class="na">xmlns=</span><span class="s">&quot;http://uniprot.org/uniprot&quot;</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://uniprot.org/uniprot http://www.uniprot.org/support/docs/uniprot.xsd&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;entry</span> <span class="na">dataset=</span><span class="s">&quot;Swiss-Prot&quot;</span> <span class="na">created=</span><span class="s">&quot;1996-10-01&quot;</span> <span class="na">modified=</span><span class="s">&quot;2017-12-20&quot;</span> <span class="na">version=</span><span class="s">&quot;201&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;accession&gt;</span>P51587<span class="nt">&lt;/accession&gt;</span>
+<span class="nt">&lt;accession&gt;</span>O00183<span class="nt">&lt;/accession&gt;</span>
+<span class="nt">&lt;accession&gt;</span>O15008<span class="nt">&lt;/accession&gt;</span>
+<span class="nt">&lt;accession&gt;</span>Q13879<span class="nt">&lt;/accession&gt;</span>
+<span class="nt">&lt;accession&gt;</span>Q5TBJ7<span class="nt">&lt;/accession&gt;</span>
+<span class="nt">&lt;name&gt;</span>BRCA2_HUMAN<span class="nt">&lt;/name&gt;</span>
+<span class="nt">&lt;protein&gt;</span>
+<span class="nt">&lt;recommendedName&gt;</span>
+<span class="nt">&lt;fullName&gt;</span>Breast cancer type 2 susceptibility protein<span class="nt">&lt;/fullName&gt;</span>
+<span class="nt">&lt;/recommendedName&gt;</span>
+<span class="nt">&lt;alternativeName&gt;</span>
+<span class="nt">&lt;fullName&gt;</span>Fanconi anemia group D1 protein<span class="nt">&lt;/fullName&gt;</span>
+<span class="nt">&lt;/alternativeName&gt;</span>
+<span class="nt">&lt;/protein&gt;</span>
+<span class="c">&lt;!-- ...  --&gt;</span>
+<span class="nt">&lt;/entry&gt;</span>
+<span class="nt">&lt;/uniprot&gt;</span>
+</pre></div>
+
+
+<p>The file is available at <a href="https://www.uniprot.org/uniprot/P04637.xml">https://www.uniprot.org/uniprot/P04637.xml</a>. Basically, all the information about this entry should be available in this file, as long as one knows how to query the XML via <a href="https://en.wikipedia.org/wiki/XPath">XPath</a>. However, I find XML file harder to read alone, especially without any guide of how the file was constructed.</p>
+<p>UniProt XML is constructed based on its XML schema, available as an XSD file at <a href="http://www.uniprot.org/support/docs/uniprot.xsd">http://www.uniprot.org/support/docs/uniprot.xsd</a>. The schema not only helps understand the XML content, it also validates whether the XML is valid. In other words, since all UniProt XMLs are validated by its schema, one can expect to parse all their data the same as what the schema has defined. XML schema is also part of the <a href="https://www.w3.org/XML/Schema">W3C standard</a> and wildly used.</p>
+<h2 id="read-uniprot-xml-by-xmlschema">Read UniProt XML by xmlschema</h2>
+<p>I use <a href="https://pypi.org/project/xmlschema/">xmlschema</a> to read XML with its schema in Python. Instead of using XPath, one can actually convert the XML content into a dictionary-like format, which can be easily passed to other Python functions.</p>
+<p>Using same entry <a href="https://www.uniprot.org/uniprot/P51587">P51587</a> as an example,</p>
+<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">xmlschema</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">schema</span> <span class="o">=</span> <span class="n">xmlschema</span><span class="o">.</span><span class="n">XMLSchema</span><span class="p">(</span><span class="s1">&#39;https://www.uniprot.org/docs/uniprot.xsd&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry_dict</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s1">&#39;./P51587.xml&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">dict_keys([&#39;@xsi:schemaLocation&#39;, &#39;entry&#39;, &#39;copyright&#39;])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">content</span> <span class="o">=</span> <span class="n">entry_dict</span><span class="p">[</span><span class="s1">&#39;entry&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">content</span><span class="p">)[:</span><span class="mi">6</span><span class="p">]</span>
+<span class="go">[&#39;@dataset&#39;, &#39;@created&#39;, &#39;@modified&#39;, &#39;@version&#39;, &#39;accession&#39;, &#39;name&#39;]</span>
+</pre></div>
+
+
+<p>I don&rsquo;t need any custom code to read the XML content structurally. For example, to get all the accession IDs of this entry,</p>
+<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">content</span><span class="p">[</span><span class="s1">&#39;accession&#39;</span><span class="p">]</span>
+<span class="go">[&#39;P51587&#39;, &#39;O00183&#39;, &#39;O15008&#39;, &#39;Q13879&#39;, &#39;Q5TBJ7&#39;]</span>
+</pre></div>
+
+
+<p>To get the protein names,</p>
+<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">content</span><span class="p">[</span><span class="s1">&#39;protein&#39;</span><span class="p">]</span>
+<span class="go">{&#39;alternativeName&#39;: [{&#39;fullName&#39;: &#39;Fanconi anemia group D1 protein&#39;}],</span>
+<span class="go"> &#39;recommendedName&#39;: {&#39;fullName&#39;: &#39;Breast cancer type 2 susceptibility protein&#39;}}</span>
+</pre></div>
+
+
+<p>One can compare the dictionary converted result with the original XML. I&rsquo;d like to end the demo with a more complicated example that finds all the sequence variants:</p>
+<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq_variants</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;@type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;sequence variant&#39;</span> <span class="ow">and</span> <span class="s1">&#39;variation&#39;</span> <span class="ow">in</span> <span class="n">d</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">content</span><span class="p">[</span><span class="s1">&#39;feature&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">][</span><span class="s1">&#39;position&#39;</span><span class="p">][</span><span class="s1">&#39;@position&#39;</span><span class="p">],</span> 
+<span class="gp">... </span>  <span class="n">d</span><span class="p">[</span><span class="s1">&#39;original&#39;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;variation&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="gp">... </span>  <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">seq_variants</span><span class="p">][:</span><span class="mi">10</span><span class="p">]</span>
+<span class="go">[(25, &#39;G&#39;, &#39;R&#39;),</span>
+<span class="go"> (31, &#39;W&#39;, &#39;C&#39;),</span>
+<span class="go"> (31, &#39;W&#39;, &#39;R&#39;),</span>
+<span class="go"> (32, &#39;F&#39;, &#39;L&#39;),</span>
+<span class="go"> (42, &#39;Y&#39;, &#39;C&#39;),</span>
+<span class="go"> (53, &#39;K&#39;, &#39;R&#39;),</span>
+<span class="go"> (60, &#39;N&#39;, &#39;S&#39;),</span>
+<span class="go"> (64, &#39;T&#39;, &#39;I&#39;),</span>
+<span class="go"> (75, &#39;A&#39;, &#39;P&#39;),</span>
+<span class="go"> (81, &#39;F&#39;, &#39;L&#39;)]</span>
+</pre></div>
+
+
+<h2 id="summary">Summary</h2>
+<p>Using UniProt&rsquo;s XML and its schema can read all the data in a structured fashion without a custom parser. Once downloading the XML files of interest, one could basically query everything locally, which is very helpful to retrieve substantial information from UniProt, say, extracting all the citations for certain protein feature.</p>
+<p>XML schema really helps users to understand the data structure and it also helps the database developers validate their data export. I hope someday all the databases should have this validation enforced.</p>
+<p>However, one may find XML format tedious and not human-friendly to read. JSON has been popular and used heavily by RESTful APIs. The specification of <a href="http://json-schema.org/">JSON schema</a> exists, but it is not a W3C standard yet. </p>
+<p>SPARQL and RDF, part of the attempt for the Semantic web can be a universal query interface solving the same problem more elegantly, though the entry level is a bit high with limited learning resources available.</p>
+<p>For now, reading bulk data in XML with its schema seems to be the mature way to go with abundant support.</p></section>
+    <footer class="post-footer">
+<section class="share">
+    <h2>Share</h2>
+    <a class="icon-twitter" href="https://twitter.com/share?text=Read UniProtKB in XML format&amp;url=https://blog.liang2.tw/posts/2018/01/read-uniprotkb-xml/"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u=https://blog.liang2.tw/posts/2018/01/read-uniprotkb-xml/"
+        onclick="window.open(this.href, 'facebook-share', 'width=580,height=296'); return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.liang2.tw/posts/2018/01/read-uniprotkb-xml/"
+        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2018/01/read-uniprotkb-xml/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2018/01/read-uniprotkb-xml/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
+    <footer>
+</article>
+	</main>
+	<footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags.html">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">
+				Built using <a href="http://getpelican.com/">Pelican</a>.
+				Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.
+			</section>
+		</div>
+	</footer>
+</body>
+</html>

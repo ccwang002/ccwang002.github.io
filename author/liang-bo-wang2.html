@@ -38,6 +38,31 @@
     <article class="post">
         <header class="post-header">
             <span class="post-meta">
+                <time datetime="May 19, 2016">May 19, 2016</time>
+                in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
+            </span>
+            <h2 class="post-title"><a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/" rel="bookmark" title="Permalink to 使用 uWSGI、nginx、systemd 部署 Django">使用 uWSGI、nginx、systemd 部署 Django</a></h2>
+            <span class="post-meta">
+                        <a href="https://blog.liang2.tw/tag/zh/">zh</a>
+                        <a href="https://blog.liang2.tw/tag/python/">python</a>
+                        <a href="https://blog.liang2.tw/tag/django/">django</a>
+                        <a href="https://blog.liang2.tw/tag/postgresql/">postgresql</a>
+                        <a href="https://blog.liang2.tw/tag/deploy/">deploy</a>
+                        <a href="https://blog.liang2.tw/tag/debian/">debian</a>
+                        <a href="https://blog.liang2.tw/tag/systemd/">systemd</a>
+                        <a href="https://blog.liang2.tw/tag/nginx/">nginx</a>
+                        <a href="https://blog.liang2.tw/tag/uwsgi/">uwsgi</a>
+            </span>
+        </header>
+        <section class="post-excerpt">
+            <p>上一次很認真的 Django 部署記錄在<a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/">《設定 Python 官方文件中文化自動更新 Server》</a>一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。</p>
+<p>這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下：</p>
+<div class="highlight"><pre><span></span>nginx -- unix socket -- uWSGI …</pre></div>
+        </section>
+    </article>
+    <article class="post">
+        <header class="post-header">
+            <span class="post-meta">
                 <time datetime="Mar 23, 2016">Mar 23, 2016</time>
                 in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
             </span>
@@ -198,22 +223,6 @@
         </header>
         <section class="post-excerpt">
             <p>所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code 搞炸掉的時候，還能回到先前有保存的狀態。</p>
-        </section>
-    </article>
-    <article class="post">
-        <header class="post-header">
-            <span class="post-meta">
-                <time datetime="Jan 21, 2016">Jan 21, 2016</time>
-                in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
-            </span>
-            <h2 class="post-title"><a href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/" rel="bookmark" title="Permalink to Coding 初學指南－文字編輯">Coding 初學指南－文字編輯</a></h2>
-            <span class="post-meta">
-                        <a href="https://blog.liang2.tw/tag/zh/">zh</a>
-                        <a href="https://blog.liang2.tw/tag/labcoding/">labcoding</a>
-            </span>
-        </header>
-        <section class="post-excerpt">
-            <p>這個章節會帶大家認識一個很簡單的純文字格式 Markdown，方便大家整理筆記。同時希望大家學會一個 terminal based 的文字編輯器，方便往後在 server 環境底下的操作。</p>
         </section>
     </article>
 <nav class="pagination" role="navigation">
