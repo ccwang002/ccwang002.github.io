@@ -676,6 +676,18 @@ h1.blog-title a:hover {
     padding-top: 40px;
 }
 
+/* Language specific line height */
+.post-template article.en-post {
+    line-height: 1.7em;
+}
+
+.post-template article.zh-post {
+    line-height: 1.85em;
+}
+.post-template article.zh-post .post-content p {
+    margin: 1.9em 0;
+}
+
 /* Keep images centred and within the bounds of the post-width */
 .post-content img {
     display: block;
