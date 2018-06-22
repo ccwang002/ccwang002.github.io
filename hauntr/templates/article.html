@@ -11,7 +11,7 @@
 {% endblock meta %}
 
 {% block og_locale %}
-<meta property="og:locale" content="{% if 'zh' in article.tags %}zh_TW{% elif 'en' in article.tags %}en_US{{ article.lang }}{% endif %}"/>
+<meta property="og:locale" content="{% if 'zh' in article.tags %}zh_TW{% elif 'en' in article.tags %}en_US{% else %}{{ article.lang }}{% endif %}"/>
 {% endblock og_locale %}
 
 {% block og %}
@@ -41,7 +41,7 @@
 
 
 {% block content %}
-<article class="post">
+<article class="post {% if 'zh' in article.tags %}zh-post{% elif 'en' in article.tags %}en-post{% endif %}">
     <span class="post-meta">
         <time datetime="{{ article.locale_date }}">{{ article.locale_date }}</time>
         in <a href="{{ SITEURL }}/{{ article.category.url }}/">{{ article.category }}</a>
