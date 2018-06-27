@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="author" content="Liang-Bo Wang" />
+<meta name="description" content="Recently, I had to access gene annotations in multiple versions from multiple sources such as Ensembl, GENCODE, and UCSC. I used to rely on …" />
+<meta name="keywords" content="en, python, sqlite">
+	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<title>Access gene annotation using gffutils</title>
+
+	<!-- og -->
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Liang2's Blog"/>
+<meta property="og:title" content="Access gene annotation using gffutils"/>
+<meta property="og:description" content="Recently, I had to access gene annotations in multiple versions from multiple sources such as Ensembl, GENCODE, and UCSC. I used to rely on …"/>
+<meta property="og:locale" content=""/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2018/06/gene-annotation-using-gffutils/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2018-06-22 00:00:00-05:00"/>
+<meta property="article:modified_time" content="2018-06-22 00:00:00-05:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
+<meta property="article:section" content="Bioinfo"/>
+<meta property="article:tag" content="en"/>
+<meta property="article:tag" content="python"/>
+<meta property="article:tag" content="sqlite"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Access gene annotation using gffutils">
+<meta name="twitter:description" content="Recently, I had to access gene annotations in multiple versions from multiple sources such as Ensembl, GENCODE, and UCSC. I used to rely on …">
+
+	<!-- Feeds -->
+	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
+		type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?415afe0a" rel="stylesheet" />
+</head>
+
+<body class="post-template">
+	<header class="site-head">
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+		<h2 class="blog-description">
+			<a href="https://blog.liang2.tw/about-me/">About</a> |
+			<a href="https://blog.liang2.tw/talks/">Talks</a> |
+			<a href="https://blog.liang2.tw/archives.html">Archives</a>
+		</h2>
+	</header>
+	<main id="content" class="content" role="main">
+<article class="post en-post">
+    <span class="post-meta">
+        <time datetime="Jun 22, 2018">Jun 22, 2018</time>
+        in <a href="https://blog.liang2.tw/category/bioinfo/">Bioinfo</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2018/06/gene-annotation-using-gffutils/" rel="bookmark" title="Permalink to Access gene annotation using gffutils">Access gene annotation using gffutils</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/en/">en</a>
+                <a href="https://blog.liang2.tw/tag/python/">python</a>
+                <a href="https://blog.liang2.tw/tag/sqlite/">sqlite</a>
+    </span>
+    <section class="post-content"><p>Recently, I had to access gene annotations in multiple versions from multiple sources such as Ensembl, GENCODE, and UCSC. I used to rely on the R/Bioconductor ecosystem to query the coordinates of a gene annotation. There are existing Bioconductor packages ready for Ensembl and UCSC annotations (more info in my previous posts: <a href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/">Ensembl</a> and <a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/">UCSC</a>), and one can create a new customized TxDb given a GTF/GFF file. However, the project I was working on was written in Python, so I went on searching for similar alternatives in Python.</p>
+<p>That&rsquo;s how I found <a href="https://daler.github.io/gffutils/">gffutils</a>, a Python package to access gene annotations from GTF/GFF files. <code>gffutils</code> first imports the annotations from the GTF/GFF file into a SQLite database. The package also provides some abstraction on top of the database schema, so user can retrieve an annotation without talking to the database directly using repetitive SQL commands. Database enables fast random access to any gene annotation. </p>
+<p>I will use GENCODE v19, an annotation used by many TCGA GRCh37/hg19 projects, as an example to demo the usage of gffutils. My project requires the coordinates of UTRs and exons of all the transcripts in use.</p>
+<div class="toc">
+<ul>
+<li><a href="#usage-example">Usage example</a><ul>
+<li><a href="#single-feature-access">Single feature access</a></li>
+<li><a href="#gene-model-coordinates-of-a-transcript">Gene model coordinates of a transcript</a></li>
+<li><a href="#feature-selection">Feature selection</a></li>
+</ul>
+</li>
+<li><a href="#direct-operation-on-the-database">Direct operation on the database</a></li>
+<li><a href="#discussions">Discussions</a></li>
+</ul>
+</div>
+<h3 id="usage-example">Usage example</h3>
+<p>To use gffutils to query GENCODE annotation, we need to create the database first. The comprehensive gene annotation GTF can be downloaded from <a href="https://www.gencodegenes.org/releases/19.html">the GENCODE website</a> (<a href="ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/gencode.v19.annotation.gtf.gz">URL to the GTF</a>). The database creation is handled by gffutils&rsquo;s <code>create_db</code> function. It will take a few minutes to run and the database will be at <code>gencode_v19.db</code>.</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gffutils</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">gffutils</span><span class="o">.</span><span class="n">create_db</span><span class="p">(</span>
+    <span class="s1">&#39;./gencode.v19.annotation.gtf.gz&#39;</span><span class="p">,</span>
+    <span class="n">dbfn</span><span class="o">=</span><span class="s1">&#39;gencode_v19.db&#39;</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">merge_strategy</span><span class="o">=</span><span class="s1">&#39;error&#39;</span><span class="p">,</span>
+    <span class="n">disable_infer_transcripts</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">disable_infer_genes</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="c1"># INFO - Committing changes: 2619000 features</span>
+<span class="c1"># INFO - Populating features table and first-order relations: 2619443 features</span>
+<span class="c1"># INFO - Creating relations(parent) index</span>
+<span class="c1"># INFO - Creating relations(child) index</span>
+<span class="c1"># INFO - Creating features(featuretype) index</span>
+<span class="c1"># INFO - Creating features (seqid, start, end) index</span>
+<span class="c1"># INFO - Creating features (seqid, start, end, strand) index</span>
+<span class="c1"># INFO - Running ANALYSE features</span>
+</pre></div>
+
+
+<p>Once the database is created, we don&rsquo;t have to repeat the same process but load the database directly as a FeatureDB object:</p>
+<div class="highlight"><pre><span></span><span class="n">db</span> <span class="o">=</span> <span class="n">gffutils</span><span class="o">.</span><span class="n">FeatureDB</span><span class="p">(</span><span class="s1">&#39;./gencode_v19.db&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<h4 id="single-feature-access">Single feature access</h4>
+<p>One can then access the annotations of a gene or transcript by its ID. Using a transcript of TP53 as an example,</p>
+<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gene</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="s1">&#39;ENSG00000141510.11&#39;</span><span class="p">];</span> <span class="n">gene</span>
+<span class="go">&lt;Feature gene (chr17:7565097-7590856[-]) at 0x7fac828deeb8&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="s1">&#39;ENST00000269305.4&#39;</span><span class="p">];</span> <span class="n">tx</span>
+<span class="go">&lt;Feature transcript (chr17:7571720-7590856[-]) at 0x7fac828f8080&gt;</span>
+</pre></div>
+
+
+<p>We can then access the details of the transcript:</p>
+<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tx</span><span class="o">.</span><span class="n">featuretype</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">source</span>
+<span class="go">(&#39;transcript&#39;, &#39;HAVANA&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx</span><span class="o">.</span><span class="n">chrom</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">end</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">strand</span>
+<span class="go">(&#39;chr17&#39;, 7571720, 7590856, &#39;-&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="go">[(&#39;gene_id&#39;, [&#39;ENSG00000141510.11&#39;]),</span>
+<span class="go"> (&#39;transcript_id&#39;, [&#39;ENST00000269305.4&#39;]),</span>
+<span class="go"> (&#39;gene_type&#39;, [&#39;protein_coding&#39;]),</span>
+<span class="go"> (&#39;gene_status&#39;, [&#39;KNOWN&#39;]),</span>
+<span class="go"> (&#39;gene_name&#39;, [&#39;TP53&#39;]),</span>
+<span class="go"> (&#39;transcript_type&#39;, [&#39;protein_coding&#39;]),</span>
+<span class="go"> (&#39;transcript_status&#39;, [&#39;KNOWN&#39;]),</span>
+<span class="go"> (&#39;transcript_name&#39;, [&#39;TP53-001&#39;]),</span>
+<span class="go"> (&#39;level&#39;, [&#39;2&#39;]),</span>
+<span class="go"> (&#39;protein_id&#39;, [&#39;ENSP00000269305.4&#39;]),</span>
+<span class="go"> (&#39;tag&#39;, [&#39;basic&#39;, &#39;appris_principal&#39;, &#39;CCDS&#39;]),</span>
+<span class="go"> (&#39;ccdsid&#39;, [&#39;CCDS11118.1&#39;]),</span>
+<span class="go"> (&#39;havana_gene&#39;, [&#39;OTTHUMG00000162125.4&#39;]),</span>
+<span class="go"> (&#39;havana_transcript&#39;, [&#39;OTTHUMT00000367397.1&#39;])]</span>
+</pre></div>
+
+
+<h4 id="gene-model-coordinates-of-a-transcript">Gene model coordinates of a transcript</h4>
+<p>To find the coordinates of its exons and UTRs, we use [<code>FeatureDB.children()</code>][gffutils children] which takes an Feature object or its ID and retrieves all the features belong to this feature. TP53 is on the reverse strand of the chromosome, so we can further sort the features by their end position:</p>
+<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">children</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">order_by</span><span class="o">=</span><span class="s1">&#39;-end&#39;</span><span class="p">))</span>             
+<span class="go">[&lt;Feature transcript (chr17:7571720-7590856[-]) at 0x7fac828922e8&gt;,</span>
+<span class="go"> &lt;Feature UTR (chr17:7590695-7590856[-]) at 0x7fac82892208&gt;, </span>
+<span class="go"> &lt;Feature exon (chr17:7590695-7590856[-]) at 0x7fac828922b0&gt;,</span>
+<span class="go"> &lt;Feature UTR (chr17:7579913-7579940[-]) at 0x7fac828925c0&gt;, </span>
+<span class="go"> &lt;Feature exon (chr17:7579839-7579940[-]) at 0x7fac828928d0&gt;,</span>
+<span class="go"> &lt;Feature CDS (chr17:7579839-7579912[-]) at 0x7fac82892c18&gt;, </span>
+<span class="go"> &lt;Feature start_codon (chr17:7579910-7579912[-]) at 0x7fac82892f28&gt;,</span>
+<span class="go"> ...</span>
+<span class="go"> &lt;Feature CDS (chr17:7572930-7573008[-]) at 0x7fac828277b8&gt;, </span>
+<span class="go"> &lt;Feature exon (chr17:7571720-7573008[-]) at 0x7fac82827b38&gt;,</span>
+<span class="go"> &lt;Feature UTR (chr17:7571720-7572929[-]) at 0x7fac82827eb8&gt;,       </span>
+<span class="go"> &lt;Feature stop_codon (chr17:7572927-7572929[-]) at 0x7fac828fca90&gt;]</span>
+</pre></div>
+
+
+<p>We have retrieved the UTRs, CDSs and exons of the transcript. Note that UTR is considered a part of an exon in gene annotation terminology. We should use CDSs as the exons that will be translated to amino acids. <code>FeatureDB.children()</code> provides a way to subset the feature type it returns:</p>
+<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">children</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">order_by</span><span class="o">=</span><span class="s1">&#39;-end&#39;</span><span class="p">,</span> <span class="n">featuretype</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;CDS&#39;</span><span class="p">,</span> <span class="s1">&#39;UTR&#39;</span><span class="p">]))</span>
+<span class="go">[&lt;Feature UTR (chr17:7590695-7590856[-]) at 0x7fac8283d7f0&gt;,</span>
+<span class="go"> &lt;Feature UTR (chr17:7579913-7579940[-]) at 0x7fac8283d710&gt;,</span>
+<span class="go"> &lt;Feature CDS (chr17:7579839-7579912[-]) at 0x7fac8283d7b8&gt;,</span>
+<span class="go"> ...</span>
+<span class="go"> &lt;Feature CDS (chr17:7572930-7573008[-]) at 0x7fac82846470&gt;,</span>
+<span class="go"> &lt;Feature UTR (chr17:7571720-7572929[-]) at 0x7fac828467b8&gt;]</span>
+</pre></div>
+
+
+<p>Now the gene model of TP53 becomes clearly visible.</p>
+<h4 id="feature-selection">Feature selection</h4>
+<p>To select all the transcripts in the database, there is a <code>FeatureDB.all_features()</code> function. Here we want to select only the basic GENOCODE transcripts and count the number of different gene types:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="c1"># All the transcripts of basic GENCODE v19</span>
+<span class="n">all_basic_txs</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">tx</span> <span class="k">for</span> <span class="n">tx</span> <span class="ow">in</span> <span class="n">db</span><span class="o">.</span><span class="n">all_features</span><span class="p">(</span><span class="n">featuretype</span><span class="o">=</span><span class="s1">&#39;transcript&#39;</span><span class="p">)</span> 
+    <span class="k">if</span> <span class="s1">&#39;tag&#39;</span> <span class="ow">in</span> <span class="n">tx</span><span class="o">.</span><span class="n">attributes</span> <span class="ow">and</span> <span class="s1">&#39;basic&#39;</span> <span class="ow">in</span> <span class="n">tx</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;tag&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">Counter</span><span class="p">(</span><span class="n">tx</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;gene_type&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">tx</span> <span class="ow">in</span> <span class="n">all_basic_txs</span><span class="p">)</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="c1"># [(&#39;protein_coding&#39;, 67186),</span>
+<span class="c1">#  (&#39;antisense&#39;, 9160),</span>
+<span class="c1">#  (&#39;lincRNA&#39;, 7121),</span>
+<span class="c1">#  (&#39;miRNA&#39;, 3055),</span>
+<span class="c1">#  (&#39;misc_RNA&#39;, 2034)]</span>
+</pre></div>
+
+
+<h3 id="direct-operation-on-the-database">Direct operation on the database</h3>
+<p>Since gffutils is just a abstraction layer on top of the database, we can always talk to the underlying SQLite database directly by writing SQL commands. The database schema is available on <a href="https://daler.github.io/gffutils/database-schema.html">the gffutils&rsquo;s documentation</a>. Under the hood, FeatureDB object maintains a SQLite connection at <code>FeatureDB.conn</code> and a helper function to run a single SQL command via <code>FeatureDB.execute()</code>. </p>
+<p>For example, GENCODE stores the full version of a transcript ID but in many occasion, such information is not available. Say if we only know the TP53 transcript ID is <code>ENST00000269305</code>, then we can write a SQL query to find the matching ID: </p>
+<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">conn</span>
+<span class="go">&lt;sqlite3.Connection at 0x7fac89423490&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cur</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="s2">&quot;SELECT id FROM features &quot;</span>
+<span class="gp">... </span>   <span class="s2">&quot;WHERE featuretype=&#39;transcript&#39; AND id LIKE &#39;ENST00000269305.%&#39;;&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cur</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">&#39;ENST00000269305.4&#39;</span>
+</pre></div>
+
+
+<p>We can even tweak the SQLite behavior by setting <a href="https://www.sqlite.org/pragma.html">the <code>PRAGMA</code> statements</a>. gffutils has already added default pragma to optimize database query, including less database integrity and large memory size:</p>
+<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">pragmas</span>
+<span class="go">{&#39;synchronous&#39;: &#39;NORMAL&#39;,</span>
+<span class="go"> &#39;journal_mode&#39;: &#39;MEMORY&#39;,</span>
+<span class="go"> &#39;main.page_size&#39;: 4096,</span>
+<span class="go"> &#39;main.cache_size&#39;: 10000}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;PRAGMA temp_store=MEMORY&#39;</span><span class="p">)</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;PRAGMA cache_size=-1000000&#39;</span><span class="p">)</span>  <span class="c1"># Use 1GB memory</span>
+</pre></div>
+
+
+<h3 id="discussions">Discussions</h3>
+<p>gffutils provides a SQLite-based gene annotation storage in Python. Though it may not be as feature complete as what user may get in R, it is highly customizable and can be easily integrated with other Python functions. Like the Bioconductor packages GenomicFeatures and EnsDb, they all use a SQLite database under the hood. As shown in <a href="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/">another post</a>, we can actually connect to those databases built by R packages directly, so user can access information from other sources such as UniProt isoforms and gene names.</p>
+<p>In my opinion, all the approaches mentioned above are always better than trying to bake one&rsquo;s own from scratch. Those packages are backed by numerous tests and are built from reliable or the original data sources. Besides multiple existing solutions in R and Python, one can always access the databases built by those packages from different languages, so it is quite unlikely to build something from scratch anyway.</p></section>
+    <footer class="post-footer">
+<section class="share">
+    <h2>Share</h2>
+    <a class="icon-twitter" href="https://twitter.com/share?text=Access gene annotation using gffutils&amp;url=https://blog.liang2.tw/posts/2018/06/gene-annotation-using-gffutils/"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u=https://blog.liang2.tw/posts/2018/06/gene-annotation-using-gffutils/"
+        onclick="window.open(this.href, 'facebook-share', 'width=580,height=296'); return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.liang2.tw/posts/2018/06/gene-annotation-using-gffutils/"
+        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2018/06/gene-annotation-using-gffutils/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2018/06/gene-annotation-using-gffutils/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
+    <footer>
+</article>
+	</main>
+	<footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags.html">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">
+				Built using <a href="http://getpelican.com/">Pelican</a>.
+				Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.
+			</section>
+		</div>
+	</footer>
+</body>
+</html>
