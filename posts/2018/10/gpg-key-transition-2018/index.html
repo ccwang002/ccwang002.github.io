@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="author" content="Liang-Bo Wang" />
+<meta name="description" content="I am transiting my GPG key again. However, for this time, I expect to use the new GPG master key longer and will start …" />
+<meta name="keywords" content="en, gpg">
+	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<title>GPG Key Transition</title>
+
+	<!-- og -->
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Liang2's Blog"/>
+<meta property="og:title" content="GPG Key Transition"/>
+<meta property="og:description" content="I am transiting my GPG key again. However, for this time, I expect to use the new GPG master key longer and will start …"/>
+<meta property="og:locale" content=""/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2018/10/gpg-key-transition-2018/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2018-10-20 00:00:00-05:00"/>
+<meta property="article:modified_time" content="2018-10-20 00:00:00-05:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
+<meta property="article:section" content="Coding"/>
+<meta property="article:tag" content="en"/>
+<meta property="article:tag" content="gpg"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="GPG Key Transition">
+<meta name="twitter:description" content="I am transiting my GPG key again. However, for this time, I expect to use the new GPG master key longer and will start …">
+
+	<!-- Feeds -->
+	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
+		type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?415afe0a" rel="stylesheet" />
+</head>
+
+<body class="post-template">
+	<header class="site-head">
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+		<h2 class="blog-description">
+			<a href="https://blog.liang2.tw/about-me/">About</a> |
+			<a href="https://blog.liang2.tw/talks/">Talks</a> |
+			<a href="https://blog.liang2.tw/archives.html">Archives</a>
+		</h2>
+	</header>
+	<main id="content" class="content" role="main">
+<article class="post en-post">
+    <span class="post-meta">
+        <time datetime="Oct 20, 2018">Oct 20, 2018</time>
+        in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2018/10/gpg-key-transition-2018/" rel="bookmark" title="Permalink to GPG Key Transition">GPG Key Transition</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/en/">en</a>
+                <a href="https://blog.liang2.tw/tag/gpg/">gpg</a>
+    </span>
+    <section class="post-content"><p>I am transiting my GPG key again.  However, for this time, I expect to use the new GPG master key longer and will start building this identity unless there is a concern about the key strength or I accidentially lose the key. </p>
+<p>Back in <a href="https://blog.liang2.tw/posts/2016/12/gpg-key-transition-2016/">my GPG key transition in 2016</a>, I&rsquo;ve created the subkeys for daily usage and isoloated the master key into a secret offline place. I learned more about PGP throughout the years, sadly though, I still seldom have a chance to use it extensively in my daily life. </p>
+<p>This time, I am moving the subkeys to a YubiKey. I found <a href="https://github.com/drduh/YubiKey-Guide">drduh&rsquo;s guide</a> on GitHub very informative to set up both the GPG key and the yubikey, as well as get my hands on the various possible applications. Another notable change is that I no longer set an expiration date on my master key.</p>
+<p>I will revoke my old keys once the transition is done.</p>
+<div class="highlight"><pre><span></span>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+I am transitioning GPG keys from an old 4096-bit RSA key to a new
+4096-bit RSA key.  The old key will continue to be valid for some
+time, but I prefer all new correspondance to be encrypted in the new
+key, and will be making all signatures going forward with the new key.
+
+This transition document is signed with both keys to validate the
+transition.
+
+The old key, which I am transitioning away from, is:
+
+  pub   rsa4096/0x44D10E44730992C4 2016-12-04 [SC] [expires: 2018-12-04]
+        Key fingerprint = 85DF A3EB 72CD DE7D 3F2A  127C 44D1 0E44 7309 92C4
+
+The new key, to which I am transitioning to, is:
+
+  pub   rsa4096/0x69BAE333BC4DC4BA 2018-10-17 [SC]
+        Key fingerprint = 978B 49B8 EFB7 02F3 3B3F  F2E5 69BA E333 BC4D C4BA
+
+To fetch the full new key from a public key server using GnuPG, run:
+
+  gpg --recv-key 0x69BAE333BC4DC4BA
+
+If you have already validated my old key, you can then validate that
+the new key is signed by my old key:
+
+  gpg --check-sigs 0x69BAE333BC4DC4BA
+
+Please contact me via e-mail at &lt;me@liang2.tw&gt; if you have any
+questions about this document or this transition.
+
+                                            Liang-Bo Wang
+                                            (liang2, ccwang002)
+                                            me@liang2.tw
+                                            Oct 20, 2018
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEExQ3ldlbp0O+Zc1vXBS+kcT+kX08FAlvLdGkACgkQBS+kcT+k
+X092fw/8DFGIIMHtf3JAt8nGth8Y94oyTgrorqzu7TXCxvUiGk6Qd/WBLiMvh//9
+7mVounqtPSGuYHiWm6gtDlT+YRoFoJH3IZ9aboMzd8e/p4TspKhXAsF5bhp6U9ED
+HCds+VRoVBGPtO3Ogizl5wpynYp7OzwqgwTteFlJ167mmqL05n/xLHnsvii3UFO4
+MWwWMxVmwvEpJINsYOJ+mFxOXeD23ckKt3GQh2NF2Dpa+apEvq5l9vjmk4Vnqau2
+WKXygbz1Rm0b629dblV8vU9iwgIsSlXz8oopkETadpkaGk9s/p8AYPupmqfCiwHx
+/gYlAgIV0DmePfOjYGZ0RJTVHFnG5ong3kUyoeuAwCMWLC/QQ6pCIL+pRnXOT1/q
+oXCTK7HUUZjWpRyHf/ptHpQOeYH+AuYAYJNwQA3xjzv57kkGT/gR3Q4APmA6l5lN
+swHVL63QYjcKCNm+fR7pr2ka50WSrerFyLWinAT9G9w+h/31Zcl0cBqEM45nlaye
+B5fYaU/G6ehFxWgVEjS7z7FSLQVNJu7aAXVZy9QlKcduNXBUZsDkcDI1iyKVhvl4
+41SNhLXMO2Jk69kHtuE803/aVgw8N3Y/E5zjlBNXWSpPMPFeKZl9W6eqnl50kQcd
+fKbZGV8bxFl40iBi4mfIrdOXrBQ9Oohp7UVWTHG1qYMruVRmW3aJAjMEAQEKAB0W
+IQS66Rw2AWA1VmCbiTP4R473V2p7VwUCW8t0bgAKCRD4R473V2p7V8DqD/9YpnFP
+usbOW9p3GwUgbvqPdefLszFZZb5LNsgL9eTSKwMUTn5AGldFquDM3hbjiZ+e/nbD
+TwFKbKRt//48R5UTYsYJVxcNVW3CXxMtl+8B5PJORfUbz0/HSEsnKTMlHP1M4ybw
+gZCI45sP4wT1prU3ngkZGHJJY9ojNOCrzHA+DVEp+vROn/zyg6AbLcr0+/yjCHO0
+pxDbGUgEOV93GFKXl85u7qCXUTrIt2fkeFeEQoh248oBJQHPjD9WyOV/O3QNdT7d
+6g7lJcSSpwevtTsWFaWCxRM2IwHlXJiWU/9bA2Jrb8E07mJGlmil7xCe4rPFD69F
+/y9MBfMG0KVjAFgs6vAR5zHnN865d18JCunQ4OhY0tDnhi4q3O0OdehGqyX92pwL
+hMKtHRHLuhYoDud2kdxizmtov1bHghO0kKSTlDGhZvs9Fpod4MKQHaZx4VbpA8np
+OpmPBkX7+34AmnLnJP2GOA4UhsRpX1iyqTaGePjhtA0gqz5285bL02JGx/m7HDtX
+MYI4yoc3rdZz37axnRinWmW7Lu5JmQGeVLJZ7Z2b83BEHVnapXPW2kFp8PcqbNnA
+Lbb9XLkbHNOaiC4EFm07uFmMVkV6aKW3xV1YIlDeovRfNC0cyZDnUNFqaDGtZAeO
+UifqHyDqNjBJX0a8miUMZDOXsZFD2jzm3pjS/Q==
+=JRPp
+-----END PGP SIGNATURE-----
+</pre></div></section>
+    <footer class="post-footer">
+<section class="share">
+    <h2>Share</h2>
+    <a class="icon-twitter" href="https://twitter.com/share?text=GPG Key Transition&amp;url=https://blog.liang2.tw/posts/2018/10/gpg-key-transition-2018/"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u=https://blog.liang2.tw/posts/2018/10/gpg-key-transition-2018/"
+        onclick="window.open(this.href, 'facebook-share', 'width=580,height=296'); return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.liang2.tw/posts/2018/10/gpg-key-transition-2018/"
+        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2018/10/gpg-key-transition-2018/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2018/10/gpg-key-transition-2018/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
+    <footer>
+</article>
+	</main>
+	<footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags.html">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">
+				Built using <a href="http://getpelican.com/">Pelican</a>.
+				Powered by the <a href="https://kura.io/hauntr/">Hauntr</a> theme.
+			</section>
+		</div>
+	</footer>
+</body>
+</html>

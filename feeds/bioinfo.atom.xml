@@ -75,7 +75,7 @@
 
 
 &lt;h4 id="gene-model-coordinates-of-a-transcript"&gt;Gene model coordinates of a transcript&lt;/h4&gt;
-&lt;p&gt;To find the coordinates of its exons and UTRs, we use [&lt;code&gt;FeatureDB.children()&lt;/code&gt;][gffutils children] which takes an Feature object or its ID and retrieves all the features belong to this feature. TP53 is on the reverse strand of the chromosome, so we can further sort the features by their end position:&lt;/p&gt;
+&lt;p&gt;To find the coordinates of its exons and UTRs, we use &lt;a href="https://daler.github.io/gffutils/autodocs/gffutils.interface.FeatureDB.children.html#gffutils.interface.FeatureDB.children"&gt;&lt;code&gt;FeatureDB.children()&lt;/code&gt;&lt;/a&gt; which takes an Feature object or its ID and retrieves all the features belong to this feature. TP53 is on the reverse strand of the chromosome, so we can further sort the features by their end position:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;children&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;order_by&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;-end&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;             
 &lt;span class="go"&gt;[&amp;lt;Feature transcript (chr17:7571720-7590856[-]) at 0x7fac828922e8&amp;gt;,&lt;/span&gt;
 &lt;span class="go"&gt; &amp;lt;Feature UTR (chr17:7590695-7590856[-]) at 0x7fac82892208&amp;gt;, &lt;/span&gt;

@@ -1,5 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang2's Blog - en</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_en.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2018-06-22T00:00:00-05:00</updated><entry><title>Access gene annotation using gffutils</title><link href="https://blog.liang2.tw/posts/2018/06/gene-annotation-using-gffutils/" rel="alternate"></link><published>2018-06-22T00:00:00-05:00</published><updated>2018-06-22T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2018-06-22:/posts/2018/06/gene-annotation-using-gffutils/</id><summary type="html">&lt;p&gt;Recently, I had to access gene annotations in multiple versions from multiple sources such as Ensembl, GENCODE, and UCSC. I used to rely on …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Recently, I had to access gene annotations in multiple versions from multiple sources such as Ensembl, GENCODE, and UCSC. I used to rely on the R/Bioconductor ecosystem to query the coordinates of a gene annotation. There are existing Bioconductor packages ready for Ensembl and UCSC annotations (more info in my previous posts: &lt;a href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/"&gt;Ensembl&lt;/a&gt; and &lt;a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/"&gt;UCSC&lt;/a&gt;), and one can create a new customized TxDb given a GTF/GFF file. However, the project I was working on was written in Python, so I went on searching for similar alternatives in Python.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang2's Blog - en</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_en.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2018-10-20T00:00:00-05:00</updated><entry><title>GPG Key Transition</title><link href="https://blog.liang2.tw/posts/2018/10/gpg-key-transition-2018/" rel="alternate"></link><published>2018-10-20T00:00:00-05:00</published><updated>2018-10-20T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2018-10-20:/posts/2018/10/gpg-key-transition-2018/</id><summary type="html">&lt;p&gt;I am transiting my GPG key again.  However, for this time, I expect to use the new GPG master key longer and will start …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I am transiting my GPG key again.  However, for this time, I expect to use the new GPG master key longer and will start building this identity unless there is a concern about the key strength or I accidentially lose the key. &lt;/p&gt;
+&lt;p&gt;Back in &lt;a href="https://blog.liang2.tw/posts/2016/12/gpg-key-transition-2016/"&gt;my GPG key transition in 2016&lt;/a&gt;, I&amp;rsquo;ve created the subkeys for daily usage and isoloated the master key into a secret offline place. I learned more about PGP throughout the years, sadly though, I still seldom have a chance to use it extensively in my daily life. &lt;/p&gt;
+&lt;p&gt;This time, I am moving the subkeys to a YubiKey. I found &lt;a href="https://github.com/drduh/YubiKey-Guide"&gt;drduh&amp;rsquo;s guide&lt;/a&gt; on GitHub very informative to set up both the GPG key and the yubikey, as well as get my hands on the various possible applications. Another notable change is that I no longer set an expiration date on my master key.&lt;/p&gt;
+&lt;p&gt;I will revoke my old keys once the transition is done.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+I am transitioning GPG keys from an old 4096-bit RSA key to a new
+4096-bit RSA key.  The old key will continue to be valid for some
+time, but I prefer all new correspondance to be encrypted in the new
+key, and will be making all signatures going forward with the new key.
+
+This transition document is signed with both keys to validate the
+transition.
+
+The old key, which I am transitioning away from, is:
+
+  pub   rsa4096/0x44D10E44730992C4 2016-12-04 [SC] [expires: 2018-12-04]
+        Key fingerprint = 85DF A3EB 72CD DE7D 3F2A  127C 44D1 0E44 7309 92C4
+
+The new key, to which I am transitioning to, is:
+
+  pub   rsa4096/0x69BAE333BC4DC4BA 2018-10-17 [SC]
+        Key fingerprint = 978B 49B8 EFB7 02F3 3B3F  F2E5 69BA E333 BC4D C4BA
+
+To fetch the full new key from a public key server using GnuPG, run:
+
+  gpg --recv-key 0x69BAE333BC4DC4BA
+
+If you have already validated my old key, you can then validate that
+the new key is signed by my old key:
+
+  gpg --check-sigs 0x69BAE333BC4DC4BA
+
+Please contact me via e-mail at &amp;lt;me@liang2.tw&amp;gt; if you have any
+questions about this document or this transition.
+
+                                            Liang-Bo Wang
+                                            (liang2, ccwang002)
+                                            me@liang2.tw
+                                            Oct 20, 2018
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEExQ3ldlbp0O+Zc1vXBS+kcT+kX08FAlvLdGkACgkQBS+kcT+k
+X092fw/8DFGIIMHtf3JAt8nGth8Y94oyTgrorqzu7TXCxvUiGk6Qd/WBLiMvh//9
+7mVounqtPSGuYHiWm6gtDlT+YRoFoJH3IZ9aboMzd8e/p4TspKhXAsF5bhp6U9ED
+HCds+VRoVBGPtO3Ogizl5wpynYp7OzwqgwTteFlJ167mmqL05n/xLHnsvii3UFO4
+MWwWMxVmwvEpJINsYOJ+mFxOXeD23ckKt3GQh2NF2Dpa+apEvq5l9vjmk4Vnqau2
+WKXygbz1Rm0b629dblV8vU9iwgIsSlXz8oopkETadpkaGk9s/p8AYPupmqfCiwHx
+/gYlAgIV0DmePfOjYGZ0RJTVHFnG5ong3kUyoeuAwCMWLC/QQ6pCIL+pRnXOT1/q
+oXCTK7HUUZjWpRyHf/ptHpQOeYH+AuYAYJNwQA3xjzv57kkGT/gR3Q4APmA6l5lN
+swHVL63QYjcKCNm+fR7pr2ka50WSrerFyLWinAT9G9w+h/31Zcl0cBqEM45nlaye
+B5fYaU/G6ehFxWgVEjS7z7FSLQVNJu7aAXVZy9QlKcduNXBUZsDkcDI1iyKVhvl4
+41SNhLXMO2Jk69kHtuE803/aVgw8N3Y/E5zjlBNXWSpPMPFeKZl9W6eqnl50kQcd
+fKbZGV8bxFl40iBi4mfIrdOXrBQ9Oohp7UVWTHG1qYMruVRmW3aJAjMEAQEKAB0W
+IQS66Rw2AWA1VmCbiTP4R473V2p7VwUCW8t0bgAKCRD4R473V2p7V8DqD/9YpnFP
+usbOW9p3GwUgbvqPdefLszFZZb5LNsgL9eTSKwMUTn5AGldFquDM3hbjiZ+e/nbD
+TwFKbKRt//48R5UTYsYJVxcNVW3CXxMtl+8B5PJORfUbz0/HSEsnKTMlHP1M4ybw
+gZCI45sP4wT1prU3ngkZGHJJY9ojNOCrzHA+DVEp+vROn/zyg6AbLcr0+/yjCHO0
+pxDbGUgEOV93GFKXl85u7qCXUTrIt2fkeFeEQoh248oBJQHPjD9WyOV/O3QNdT7d
+6g7lJcSSpwevtTsWFaWCxRM2IwHlXJiWU/9bA2Jrb8E07mJGlmil7xCe4rPFD69F
+/y9MBfMG0KVjAFgs6vAR5zHnN865d18JCunQ4OhY0tDnhi4q3O0OdehGqyX92pwL
+hMKtHRHLuhYoDud2kdxizmtov1bHghO0kKSTlDGhZvs9Fpod4MKQHaZx4VbpA8np
+OpmPBkX7+34AmnLnJP2GOA4UhsRpX1iyqTaGePjhtA0gqz5285bL02JGx/m7HDtX
+MYI4yoc3rdZz37axnRinWmW7Lu5JmQGeVLJZ7Z2b83BEHVnapXPW2kFp8PcqbNnA
+Lbb9XLkbHNOaiC4EFm07uFmMVkV6aKW3xV1YIlDeovRfNC0cyZDnUNFqaDGtZAeO
+UifqHyDqNjBJX0a8miUMZDOXsZFD2jzm3pjS/Q==
+=JRPp
+-----END PGP SIGNATURE-----
+&lt;/pre&gt;&lt;/div&gt;</content><category term="en"></category><category term="gpg"></category></entry><entry><title>Access gene annotation using gffutils</title><link href="https://blog.liang2.tw/posts/2018/06/gene-annotation-using-gffutils/" rel="alternate"></link><published>2018-06-22T00:00:00-05:00</published><updated>2018-06-22T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2018-06-22:/posts/2018/06/gene-annotation-using-gffutils/</id><summary type="html">&lt;p&gt;Recently, I had to access gene annotations in multiple versions from multiple sources such as Ensembl, GENCODE, and UCSC. I used to rely on …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Recently, I had to access gene annotations in multiple versions from multiple sources such as Ensembl, GENCODE, and UCSC. I used to rely on the R/Bioconductor ecosystem to query the coordinates of a gene annotation. There are existing Bioconductor packages ready for Ensembl and UCSC annotations (more info in my previous posts: &lt;a href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/"&gt;Ensembl&lt;/a&gt; and &lt;a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/"&gt;UCSC&lt;/a&gt;), and one can create a new customized TxDb given a GTF/GFF file. However, the project I was working on was written in Python, so I went on searching for similar alternatives in Python.&lt;/p&gt;
 &lt;p&gt;That&amp;rsquo;s how I found &lt;a href="https://daler.github.io/gffutils/"&gt;gffutils&lt;/a&gt;, a Python package to access gene annotations from GTF/GFF files. &lt;code&gt;gffutils&lt;/code&gt; first imports the annotations from the GTF/GFF file into a SQLite database. The package also provides some abstraction on top of the database schema, so user can retrieve an annotation without talking to the database directly using repetitive SQL commands. Database enables fast random access to any gene annotation. &lt;/p&gt;
 &lt;p&gt;I will use GENCODE v19, an annotation used by many TCGA GRCh37/hg19 projects, as an example to demo the usage of gffutils. My project requires the coordinates of UTRs and exons of all the transcripts in use.&lt;/p&gt;
 &lt;div class="toc"&gt;
@@ -75,7 +144,7 @@
 
 
 &lt;h4 id="gene-model-coordinates-of-a-transcript"&gt;Gene model coordinates of a transcript&lt;/h4&gt;
-&lt;p&gt;To find the coordinates of its exons and UTRs, we use [&lt;code&gt;FeatureDB.children()&lt;/code&gt;][gffutils children] which takes an Feature object or its ID and retrieves all the features belong to this feature. TP53 is on the reverse strand of the chromosome, so we can further sort the features by their end position:&lt;/p&gt;
+&lt;p&gt;To find the coordinates of its exons and UTRs, we use &lt;a href="https://daler.github.io/gffutils/autodocs/gffutils.interface.FeatureDB.children.html#gffutils.interface.FeatureDB.children"&gt;&lt;code&gt;FeatureDB.children()&lt;/code&gt;&lt;/a&gt; which takes an Feature object or its ID and retrieves all the features belong to this feature. TP53 is on the reverse strand of the chromosome, so we can further sort the features by their end position:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;children&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;order_by&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;-end&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;             
 &lt;span class="go"&gt;[&amp;lt;Feature transcript (chr17:7571720-7590856[-]) at 0x7fac828922e8&amp;gt;,&lt;/span&gt;
 &lt;span class="go"&gt; &amp;lt;Feature UTR (chr17:7590695-7590856[-]) at 0x7fac82892208&amp;gt;, &lt;/span&gt;
