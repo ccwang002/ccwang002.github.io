@@ -23,10 +23,10 @@ During my master's training, intern, and my free time, I've written a few websit
 
 
 ### Contact me
-Contact me through [Twitter] or [email]. If private info included, [my public PGP key](/730992C4.pub.asc) has fingerprint:
+Contact me through [Twitter] or [email]. If private info included, [my public PGP key](/0x69BAE333BC4DC4BA.pub.asc) has fingerprint:
 
 ```
-85DF A3EB 72CD DE7D 3F2A 127C 44D1 0E44 7309 92C4
+978B 49B8 EFB7 02F3 3B3F  F2E5 69BA E333 BC4D C4BA
 ```
 
 Or find me on [Keybase].
@@ -37,7 +37,8 @@ Or find me on [Keybase].
 
 My previous PGP keys:
 
-- [B233544E](/B233544E.pub.asc): `6ECD C5B8 235C D44D 2471 866E 30A4 5011 B233 544E`
+- [0x44D10E44730992C4](/730992C4.pub.asc): `85DF A3EB 72CD DE7D 3F2A 127C 44D1 0E44 7309 92C4` (2016.12 to 2018.10)
+- [0x30A45011B233544E](/B233544E.pub.asc): `6ECD C5B8 235C D44D 2471 866E 30A4 5011 B233 544E` (2015 to 2016.12)
 
 
 ### How to pronounce my nickname?
