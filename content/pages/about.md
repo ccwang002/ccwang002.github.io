@@ -4,7 +4,7 @@ Slug: about-me
 sortorder: 1
 ---
 
-(This page also has a [Chinese version](./zh.html#about-me))
+(This page is also available in [中文](./zh.html#about-me))
 
 Hi, I'm Liang-Bo Wang（王亮博）. Most people call me 亮亮 (or liang<sup>2</sup>, pronounced as Liang-liang). In the United States, people call me Bobo since it is easier to pronunce :)
 
@@ -42,11 +42,11 @@ My previous PGP keys:
 
 
 ### How to pronounce my nickname?
-亮亮 is composed of single character, **亮**, repeated two times with same pronunciation, *lia-ng*. Mind the pitch because in Chinese different pitches have different meanings. The pitch is similar to how people say *shoot!*.
+亮亮 is composed of single character, **亮**, repeated two times with same pronunciation, *lia-ng*. Mind the pitch because in Mandarin different pitches have different meanings. The pitch is similar to how people say *shoot!*.
 
-[Google translator](https://translate.google.com.tw/?hl=zh-TW#zh-CN/zh-TW/%E4%BA%AE%E4%BA%AE) gives an acceptable pronunciation. However, I'd like to recommend an online dictionary, [moedict (萌典)](https://www.moedict.tw/%E4%BA%AE), for its accurate pronunciation and thorough content.
+[Google translator](https://translate.google.com/?hl=zh-TW#zh-CN/zh-TW/%E4%BA%AE%E4%BA%AE) gives an acceptable pronunciation. However, I'd like to recommend an online dictionary, [moedict (萌典)](https://www.moedict.tw/%E4%BA%AE), for its accurate pronunciation and thorough content.
 
-**亮** means *bright* in Chinese.
+**亮** means *bright* in Mandarin.
 
 
 ### How to pronounce my name?
@@ -54,7 +54,7 @@ I'll assume you've already known how to say my nickname, because my full name, �
 
 [Google translator](https://translate.google.com.tw/?hl=zh-TW#zh-CN/zh-TW/%E7%8E%8B%E4%BA%AE%E5%8D%9A) still does an acceptable job here. Also, following [the link](https://www.moedict.tw/%E7%8E%8B%E4%BA%AE%E5%8D%9A) to moedict, click on each character will lead you to their definition pages, where their meaning and pronunciation can be found.
 
-王亮博 maps to Wang / Liang / Bo word-by-word. Last name (王) is first stated in Chinese but when written in English, it follows the common English nomenclature.
+王亮博 maps to Wang / Liang / Bo word-by-word. Last name (王) is first stated in Mandarin but when written in English, it follows the common English nomenclature.
 
 
 [Pinkoi]: http://www.pinkoi.com/
