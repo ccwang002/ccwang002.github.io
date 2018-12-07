@@ -4,3 +4,4 @@ beautifulsoup4
 Markdown
 webassets
 cssmin
+ghp-import
