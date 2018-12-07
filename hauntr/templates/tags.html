@@ -10,7 +10,7 @@
     <ul class="list">
       {%- for tag, articles in tags|sort_by_len %}
       <li>
-          {% if TAG_FEED_ATOM %}<span class="tag-feed-link">[<a href="{{ FEED_DOMAIN }}/{{ TAG_FEED_ATOM|format(tag.name) }}">feed</a>]</span>{% endif %}
+          {% if TAG_FEED_ATOM %}<span class="tag-feed-link">[<a href="{{ FEED_DOMAIN }}/{{ TAG_FEED_ATOM|format(slug=tag.slug) }}">feed</a>]</span>{% endif %}
           <a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a>
           ({{ articles|count }})
       </li>
