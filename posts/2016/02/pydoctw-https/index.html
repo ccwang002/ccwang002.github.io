@@ -143,7 +143,7 @@ journalctl -e -u renew_cert
 </pre></div>
 
 
-<p>重點只有 <code>[Timer]</code> 這 directive。<code>Unit=</code> 表示要啟動的 service。<code>OnCalendar=</code><sup id="fnref-calendar"><a class="footnote-ref" href="#fn-calendar">1</a></sup> 則是設定這 timer 根據指定的時間點 (UTC 時間<sup id="fnref-utc"><a class="footnote-ref" href="#fn-utc">2</a></sup>) 啟動。</p>
+<p>重點只有 <code>[Timer]</code> 這 directive。<code>Unit=</code> 表示要啟動的 service。<code>OnCalendar=</code><sup id="fnref:calendar"><a class="footnote-ref" href="#fn:calendar" rel="footnote">1</a></sup> 則是設定這 timer 根據指定的時間點 (UTC 時間<sup id="fnref:utc"><a class="footnote-ref" href="#fn:utc" rel="footnote">2</a></sup>) 啟動。</p>
 <p>以這邊寫的時間 <code>*-1/2-1 16:00:00</code> 為例，代表每年的 1+2n 月 1 日 16:00 UTC 更新 certificate，即臺灣時間 1、3、5、……月 2 日凌晨更新。</p>
 <p>啟用 timer，它需要被 enable 確保重開機時被執行。</p>
 <div class="highlight"><pre><span></span>systemctl enable renew_cert.timer
@@ -207,11 +207,11 @@ systemctl start renew_cert.timer
 <div class="footnote">
 <hr>
 <ol>
-<li id="fn-calendar">
-<p>除了 <code>OnCalendar</code> 還有很多設定 timer 的方式，如 <code>OnUnitActiveSec</code>。不過其他的時間算法，都會受有沒有開機，影響時間的計算。&#160;<a class="footnote-backref" href="#fnref-calendar" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<li id="fn:calendar">
+<p>除了 <code>OnCalendar</code> 還有很多設定 timer 的方式，如 <code>OnUnitActiveSec</code>。不過其他的時間算法，都會受有沒有開機，影響時間的計算。&#160;<a class="footnote-backref" href="#fnref:calendar" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
-<li id="fn-utc">
-<p>Debian Jessie 的 <a href="https://www.freedesktop.org/software/systemd/man/systemd.time.html#Calendar%20Events">systemd.time (7)</a> Calendar Events 裡並沒有指定時區的方式，所以加上時區會有 parse error。但新版的 systemd 似乎支援時區。總之應該用 <code>systemctl list-timers</code> 確定執行的時間。&#160;<a class="footnote-backref" href="#fnref-utc" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<li id="fn:utc">
+<p>Debian Jessie 的 <a href="https://www.freedesktop.org/software/systemd/man/systemd.time.html#Calendar%20Events">systemd.time (7)</a> Calendar Events 裡並沒有指定時區的方式，所以加上時區會有 parse error。但新版的 systemd 似乎支援時區。總之應該用 <code>systemctl list-timers</code> 確定執行的時間。&#160;<a class="footnote-backref" href="#fnref:utc" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div></section>

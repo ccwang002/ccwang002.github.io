@@ -391,7 +391,7 @@ EDIT 2017-06-20: 更新書籍資訊與 2/3 比較。&lt;/p&gt;</content><categor
 &lt;/blockquote&gt;
 &lt;h1 id="git-version-control"&gt;Git (Version Control)&lt;/h1&gt;
 &lt;p&gt;Git 是一個版本控制的工具。&lt;/p&gt;
-&lt;p&gt;Git 會在你的專案（repo）目錄&lt;sup id="fnref-註1"&gt;&lt;a class="footnote-ref" href="#fn-註1"&gt;1&lt;/a&gt;&lt;/sup&gt;底下建一個 &lt;code&gt;.git&lt;/code&gt; 的資料夾來管理這些「進度點」，而不會去動專案其他路徑裡的東西。&lt;/p&gt;
+&lt;p&gt;Git 會在你的專案（repo）目錄&lt;sup id="fnref:註1"&gt;&lt;a class="footnote-ref" href="#fn:註1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;底下建一個 &lt;code&gt;.git&lt;/code&gt; 的資料夾來管理這些「進度點」，而不會去動專案其他路徑裡的東西。&lt;/p&gt;
 &lt;p&gt;這些進度點可以傳到 server 上，別人下載下來的時候就可以除了得到現在的 code 以外，還能看到過去開發的記錄；而別人上傳了他的更新進度點之後，你抓下來就可以得到他更改的進度。這個就是「同步」的概念，多人之間能彼此共享、更新彼此開發的成果。&lt;/p&gt;
 &lt;p&gt;能夠處理 Git 同步操作的伺服器就叫做 git server。&lt;a href="https://github.com/"&gt;Github&lt;/a&gt; 就是一間公司提供免費的 git server 讓大家同步公開的 Git 專案。很多 Linux 的工具都使用 git 來讓大家合作開發，也有不少工具已經把 git server 轉到了 Github 上面。所以非常多人在用，因此建議大家不妨申請一個 GitHub 帳號。&lt;/p&gt;
 &lt;p&gt;Git 雖然最常用來管理程式碼，但它其實可以有效地管理任何純文字的檔案，也可以把 binary  檔案加到 repo 中。&lt;/p&gt;
@@ -502,8 +502,8 @@ Further paragraphs come after blank lines.
 &lt;div class="footnote"&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id="fn-註1"&gt;
-&lt;p&gt;所謂的專案目錄就是下 &lt;code&gt;git init&lt;/code&gt; 指令的目錄。&amp;#160;&lt;a class="footnote-backref" href="#fnref-註1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:註1"&gt;
+&lt;p&gt;所謂的專案目錄就是下 &lt;code&gt;git init&lt;/code&gt; 指令的目錄。&amp;#160;&lt;a class="footnote-backref" href="#fnref:註1" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</content><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－文字編輯</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/" rel="alternate"></link><published>2016-01-21T22:30:00-06:00</published><updated>2016-01-21T22:30:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-text-editing/</id><summary type="html">&lt;p&gt;這個章節會帶大家認識一個很簡單的純文字格式 Markdown，方便大家整理筆記。同時希望大家學會一個 terminal based 的文字編輯器，方便往後在 server 環境底下的操作。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
@@ -587,7 +587,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;/blockquote&gt;
 &lt;p&gt;除了設定檔之外，功能多的編輯器還會有「外掛」的功能，可以讓使用者增加自己的套件。這也等大家熟悉環境之後再自行玩玩吧。&lt;/p&gt;
 &lt;h2 id="nano"&gt;Nano&lt;/h2&gt;
-&lt;p&gt;這是一個操作簡單好懂的編輯器，&lt;del&gt;沒有語法上色&lt;/del&gt;&lt;sup id="fnref-註1"&gt;&lt;a class="footnote-ref" href="#fn-註1"&gt;1&lt;/a&gt;&lt;/sup&gt;。多數的系統都有內建，所以到一個新的環境時幾乎都能使用。&lt;/p&gt;
+&lt;p&gt;這是一個操作簡單好懂的編輯器，&lt;del&gt;沒有語法上色&lt;/del&gt;&lt;sup id="fnref:註1"&gt;&lt;a class="footnote-ref" href="#fn:註1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;。多數的系統都有內建，所以到一個新的環境時幾乎都能使用。&lt;/p&gt;
 &lt;p&gt;鳥哥有教。其實直接執行它 &lt;code&gt;nano&lt;/code&gt; 它的指令都會顯示在編輯畫面中。&lt;/p&gt;
 &lt;h2 id="emacs"&gt;Emacs&lt;/h2&gt;
 &lt;p&gt;抱歉，我不會。但它是一個很好的編輯器。（誠徵大大補全）&lt;/p&gt;
@@ -662,8 +662,8 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;在 Linux 指令當中通常會因為使用 regex 語法的不同分成多個指令&lt;sup id="fnref-註2"&gt;&lt;a class="footnote-ref" href="#fn-註2"&gt;2&lt;/a&gt;&lt;/sup&gt;。例如 grep 使用 BRE；egrep 使用 ERE。&lt;/p&gt;
-&lt;p&gt;與文字編輯相關的工具，像 Vim、Python、Perl&lt;sup id="fnref-註3"&gt;&lt;a class="footnote-ref" href="#fn-註3"&gt;3&lt;/a&gt;&lt;/sup&gt; 也有他們各自寫 regex 的方式，但多少都與前兩大類相似，使用時都應該先查一下他們的語法。Vim 可以用 &lt;code&gt;:help regex&lt;/code&gt; 查看。&lt;/p&gt;
+&lt;p&gt;在 Linux 指令當中通常會因為使用 regex 語法的不同分成多個指令&lt;sup id="fnref:註2"&gt;&lt;a class="footnote-ref" href="#fn:註2" rel="footnote"&gt;2&lt;/a&gt;&lt;/sup&gt;。例如 grep 使用 BRE；egrep 使用 ERE。&lt;/p&gt;
+&lt;p&gt;與文字編輯相關的工具，像 Vim、Python、Perl&lt;sup id="fnref:註3"&gt;&lt;a class="footnote-ref" href="#fn:註3" rel="footnote"&gt;3&lt;/a&gt;&lt;/sup&gt; 也有他們各自寫 regex 的方式，但多少都與前兩大類相似，使用時都應該先查一下他們的語法。Vim 可以用 &lt;code&gt;:help regex&lt;/code&gt; 查看。&lt;/p&gt;
 &lt;h2 id="_4"&gt;相關資源&lt;/h2&gt;
 &lt;h3 id="regex-one"&gt;Regex One&lt;/h3&gt;
 &lt;p&gt;主要是介紹 pcre 的語法，每一個 example 多介紹一個新的語法。接著還有個 practical examples 練習整理不同的語法。&lt;/p&gt;
@@ -678,14 +678,14 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;div class="footnote"&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id="fn-註1"&gt;
-&lt;p&gt;nano 其實有辦法做語法上色喔，詳見 &lt;a href="https://wiki.archlinux.org/index.php/Nano"&gt;Arch wiki&lt;/a&gt; 及 &lt;a href="https://github.com/scopatz/nanorc"&gt;nanorc&lt;/a&gt;。Thanks @concise&amp;#160;&lt;a class="footnote-backref" href="#fnref-註1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:註1"&gt;
+&lt;p&gt;nano 其實有辦法做語法上色喔，詳見 &lt;a href="https://wiki.archlinux.org/index.php/Nano"&gt;Arch wiki&lt;/a&gt; 及 &lt;a href="https://github.com/scopatz/nanorc"&gt;nanorc&lt;/a&gt;。Thanks @concise&amp;#160;&lt;a class="footnote-backref" href="#fnref:註1" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id="fn-註2"&gt;
-&lt;p&gt;哪些指令有無支援 regex 以及支援的語法可以參考 &lt;a href="https://www.debian.org/doc/manuals/debian-reference/ch01.en.html#_unix_text_tools"&gt;Debian Reference&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref-註2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:註2"&gt;
+&lt;p&gt;哪些指令有無支援 regex 以及支援的語法可以參考 &lt;a href="https://www.debian.org/doc/manuals/debian-reference/ch01.en.html#_unix_text_tools"&gt;Debian Reference&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:註2" rev="footnote" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id="fn-註3"&gt;
-&lt;p&gt;Perl 的 regex 語法又稱為 &lt;strong&gt;pcre&lt;/strong&gt; style，常被其他工具使用。例如：php&amp;#160;&lt;a class="footnote-backref" href="#fnref-註3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:註3"&gt;
+&lt;p&gt;Perl 的 regex 語法又稱為 &lt;strong&gt;pcre&lt;/strong&gt; style，常被其他工具使用。例如：php&amp;#160;&lt;a class="footnote-backref" href="#fnref:註3" rev="footnote" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</content><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－Linux</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-linux/" rel="alternate"></link><published>2016-01-21T21:30:00-06:00</published><updated>2016-01-21T21:30:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-linux/</id><summary type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
@@ -733,7 +733,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;或者，用 &lt;a href="/tag/labcoding.html"&gt;labcoding&lt;/a&gt; 這個 tag 也可以找到所有的文章。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id="linuxunixbsdnix"&gt;Linux、Unix、BSD、*nix&lt;/h2&gt;
-&lt;p&gt;Linux 和 Unix 是不同的，但對初學者來說他們的分別不容易查覺，兩者的終端指令很相似，也因此有了 *nix 的通稱。Linux 介紹書多半會把他們的歷史好好的說一遍&lt;sup id="fnref-註2"&gt;&lt;a class="footnote-ref" href="#fn-註2"&gt;1&lt;/a&gt;&lt;/sup&gt;，有興趣聽軟體發展故事的就多留意這部份。&lt;/p&gt;
+&lt;p&gt;Linux 和 Unix 是不同的，但對初學者來說他們的分別不容易查覺，兩者的終端指令很相似，也因此有了 *nix 的通稱。Linux 介紹書多半會把他們的歷史好好的說一遍&lt;sup id="fnref:註2"&gt;&lt;a class="footnote-ref" href="#fn:註2" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;，有興趣聽軟體發展故事的就多留意這部份。&lt;/p&gt;
 &lt;p&gt;不完整地主要分成：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Redhat, CentOS, Fedora&lt;/li&gt;
@@ -742,7 +742,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;li&gt;openSUSE&lt;/li&gt;
 &lt;li&gt;FreeBSD, OpenBSD&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;這些 distributions (distros)。其實 Linux、BSD (or Unix) 的系統非常多&lt;sup id="fnref-註3"&gt;&lt;a class="footnote-ref" href="#fn-註3"&gt;2&lt;/a&gt;&lt;/sup&gt;，但對初入 Linux 的使用者，應該要找比較熱門的 distro 使用，才好找資料。&lt;/p&gt;
+&lt;p&gt;這些 distributions (distros)。其實 Linux、BSD (or Unix) 的系統非常多&lt;sup id="fnref:註3"&gt;&lt;a class="footnote-ref" href="#fn:註3" rel="footnote"&gt;2&lt;/a&gt;&lt;/sup&gt;，但對初入 Linux 的使用者，應該要找比較熱門的 distro 使用，才好找資料。&lt;/p&gt;
 &lt;p&gt;上面條列的方式是有意義的，我把類似的 distro 放在同一排，只要學了其中一個，同排的其他都很好上手。其中前兩排是兩大家族反映兩種生態。我們實驗室的大 server 用的是 CentOS；但近年來我自己的電腦已經漸漸換到 Debian 上。&lt;/p&gt;
 &lt;h2 id="distro"&gt;Distro 簡介&lt;/h2&gt;
 &lt;p&gt;以下是我不負責任的主觀介紹。從介紹篇幅就知道我是個傾向 Debian 的人。&lt;/p&gt;
@@ -761,7 +761,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;h2 id="gnomekdexfcelxde"&gt;桌面環境 GNOME、KDE、XFCE、LXDE&lt;/h2&gt;
 &lt;p&gt;圖形化介面（GUI），除了使用者的應用程式外，還需要系統輔助、管理等核心套件。一系列的 GUI 套件就稱之為桌面環境。&lt;/p&gt;
 &lt;p&gt;Windows、OSX 在安裝系統時都會自動安裝， 即桌面環境只有一種選擇。但在 Linux 上，GUI 的安裝是選擇性的，系統能在只有單純的 terminal 介面便能完整使用（例如選擇安裝 Ubuntu Server 時），不少 server 為了效能、安全性的考量都不會裝桌面環境。&lt;/p&gt;
-&lt;p&gt;對 Linux 來說桌面環境是能之後再選擇安裝上去的，而且還有「不同口味」可以選擇，使用者也可以自由的移除它們（但很有可能會炸掉），常見就有 GNOME、KDE、XFCE、LXDE&lt;sup id="fnref-註4"&gt;&lt;a class="footnote-ref" href="#fn-註4"&gt;3&lt;/a&gt;&lt;/sup&gt; 幾種系統能使用。例如選擇安裝 Ubuntu Server 後，想要再加上 GNOME 列圖形化介面時，&lt;/p&gt;
+&lt;p&gt;對 Linux 來說桌面環境是能之後再選擇安裝上去的，而且還有「不同口味」可以選擇，使用者也可以自由的移除它們（但很有可能會炸掉），常見就有 GNOME、KDE、XFCE、LXDE&lt;sup id="fnref:註4"&gt;&lt;a class="footnote-ref" href="#fn:註4" rel="footnote"&gt;3&lt;/a&gt;&lt;/sup&gt; 幾種系統能使用。例如選擇安裝 Ubuntu Server 後，想要再加上 GNOME 列圖形化介面時，&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt-get install ubuntu-gnome-desktop
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -777,7 +777,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;/ul&gt;
 &lt;p&gt;在台灣學 Linux 大概都會先推薦鳥哥，這應該是最多人用的完整中文資源了。如果願意啃完他，對 Linux 絕對會有足夠的認識。我大學的時候也是看這本入門的。&lt;/p&gt;
 &lt;p&gt;不適合的地方是鳥哥介紹 Redhat 系的操作，很多設定在 Ubuntu 上不需要或者是用別的方式去管理。例如，在 CentOS 上可能都用文字檔來修改設定，但在 Ubuntu 上可以用 &lt;code&gt;dpkg-reconfigure&lt;/code&gt; 指令來更動。他示範的 OS 為 CentOS 5.x，現在 CentOS 已經 7.x 版了，許多設定也過時了，新的工具不會介紹到。&lt;/p&gt;
-&lt;p&gt;例如現在安裝 Linux 時，在磁區分割上都有很好的預設值，初學者可以不用再學調整 swap 等設定。同時系統也都提供使用 LVM (Logical Volume Manager) &lt;sup id="fnref-註5"&gt;&lt;a class="footnote-ref" href="#fn-註5"&gt;4&lt;/a&gt;&lt;/sup&gt; 管理磁區，這些磁區 (LV) 日後能動態調整。換句話說，第五章（含）的內容都與現在使用 Linux 的方式不同，如果只是順著鳥哥書的順序一章一章看下來，會沒辦法對照自己系統操作，因為近期的 Linux 安裝只要很順的下一步就能完成了。&lt;/p&gt;
+&lt;p&gt;例如現在安裝 Linux 時，在磁區分割上都有很好的預設值，初學者可以不用再學調整 swap 等設定。同時系統也都提供使用 LVM (Logical Volume Manager) &lt;sup id="fnref:註5"&gt;&lt;a class="footnote-ref" href="#fn:註5" rel="footnote"&gt;4&lt;/a&gt;&lt;/sup&gt; 管理磁區，這些磁區 (LV) 日後能動態調整。換句話說，第五章（含）的內容都與現在使用 Linux 的方式不同，如果只是順著鳥哥書的順序一章一章看下來，會沒辦法對照自己系統操作，因為近期的 Linux 安裝只要很順的下一步就能完成了。&lt;/p&gt;
 &lt;h4 id="_3"&gt;各章節重點整理&lt;/h4&gt;
 &lt;p&gt;鳥哥的內容退一千步來說都對初學者很有幫助，但為了避免各位花費無謂的時間在「對照古早與現代操作 (google 到的資料)上」，整理個表格讓大家知道每個章節什麼地方需要看。&lt;/p&gt;
 &lt;table&gt;
@@ -820,7 +820,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;td&gt;壓縮檔案的用途與技術(1)、打包指令(3)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align="center"&gt;10&lt;sup id="fnref-*"&gt;&lt;a class="footnote-ref" href="#fn-*"&gt;5&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
+&lt;td align="center"&gt;10&lt;sup id="fnref:*"&gt;&lt;a class="footnote-ref" href="#fn:*" rel="footnote"&gt;5&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
 &lt;td align="left"&gt;vim 程式編輯器&lt;/td&gt;
 &lt;td&gt;語系編碼轉換(4.3)&lt;/td&gt;
 &lt;/tr&gt;
@@ -830,7 +830,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;td&gt;全。但可視情況忽略 2.4-2.8、6.4&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align="center"&gt;12&lt;sup id="fnref-†"&gt;&lt;a class="footnote-ref" href="#fn-†"&gt;6&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
+&lt;td align="center"&gt;12&lt;sup id="fnref:†"&gt;&lt;a class="footnote-ref" href="#fn:†" rel="footnote"&gt;6&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
 &lt;td align="left"&gt;正規表示法與文件格式化處理&lt;/td&gt;
 &lt;td&gt;前言(1)&lt;/td&gt;
 &lt;/tr&gt;
@@ -847,7 +847,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;tr&gt;
 &lt;td align="center"&gt;23&lt;/td&gt;
 &lt;td align="left"&gt;軟體安裝： RPM, SRPM 與 YUM 功能&lt;/td&gt;
-&lt;td&gt;Ubuntu 用的是 APT&lt;sup id="fnref-‡"&gt;&lt;a class="footnote-ref" href="#fn-‡"&gt;7&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
+&lt;td&gt;Ubuntu 用的是 APT&lt;sup id="fnref:‡"&gt;&lt;a class="footnote-ref" href="#fn:‡" rel="footnote"&gt;7&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -963,26 +963,26 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;div class="footnote"&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id="fn-註2"&gt;
-&lt;p&gt;Linux distros 源流 &lt;a href="http://en.wikipedia.org/wiki/Linux_distribution"&gt;http://en.wikipedia.org/wiki/Linux_distribution&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref-註2" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:註2"&gt;
+&lt;p&gt;Linux distros 源流 &lt;a href="http://en.wikipedia.org/wiki/Linux_distribution"&gt;http://en.wikipedia.org/wiki/Linux_distribution&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:註2" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id="fn-註3"&gt;
-&lt;p&gt;&lt;a href="http://distrowatch.com/"&gt;Distro Watch&lt;/a&gt; 是一個介紹各種 Linux、BSD 系統的地方，可以來這邊看各個 distro 的介紹。&amp;#160;&lt;a class="footnote-backref" href="#fnref-註3" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:註3"&gt;
+&lt;p&gt;&lt;a href="http://distrowatch.com/"&gt;Distro Watch&lt;/a&gt; 是一個介紹各種 Linux、BSD 系統的地方，可以來這邊看各個 distro 的介紹。&amp;#160;&lt;a class="footnote-backref" href="#fnref:註3" rev="footnote" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id="fn-註4"&gt;
-&lt;p&gt;LXDE 原作者是 PCMan 喔，也有相當多的台灣人在維護它。&amp;#160;&lt;a class="footnote-backref" href="#fnref-註4" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:註4"&gt;
+&lt;p&gt;LXDE 原作者是 PCMan 喔，也有相當多的台灣人在維護它。&amp;#160;&lt;a class="footnote-backref" href="#fnref:註4" rev="footnote" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id="fn-註5"&gt;
-&lt;p&gt;LVM 不懂沒關係，有興趣可以參考&lt;a href="http://linux.vbird.org/linux_basic/0420quota.php#lvm"&gt;鳥哥十五章&lt;/a&gt;、&lt;a href="https://wiki.archlinux.org/index.php/LVM"&gt;Arch Wiki&lt;/a&gt; 介紹&amp;#160;&lt;a class="footnote-backref" href="#fnref-註5" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:註5"&gt;
+&lt;p&gt;LVM 不懂沒關係，有興趣可以參考&lt;a href="http://linux.vbird.org/linux_basic/0420quota.php#lvm"&gt;鳥哥十五章&lt;/a&gt;、&lt;a href="https://wiki.archlinux.org/index.php/LVM"&gt;Arch Wiki&lt;/a&gt; 介紹&amp;#160;&lt;a class="footnote-backref" href="#fnref:註5" rev="footnote" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id="fn-*"&gt;
-&lt;p&gt;學 vim 有別的資源，詳見 &lt;a href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/"&gt;2 Text Editing&lt;/a&gt;。&lt;br&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref-*" title="Jump back to footnote 5 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:*"&gt;
+&lt;p&gt;學 vim 有別的資源，詳見 &lt;a href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/"&gt;2 Text Editing&lt;/a&gt;。&lt;br&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:*" rev="footnote" title="Jump back to footnote 5 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id="fn-†"&gt;
-&lt;p&gt;正規表示（regex）很重要，但初學 Linux 時會覺得很複雜可以跳過。 &lt;a href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/"&gt;2 Text Editing&lt;/a&gt; 會再接觸到一次 vim 的 regex、&lt;a href="https://blog.liang2.tw/posts/2016/01/lab-coding-python/"&gt;4 Python&lt;/a&gt; 也會學到 Python 的 regex，可以等到時候再回來學 &lt;code&gt;sed&lt;/code&gt;、&lt;code&gt;egrep&lt;/code&gt; 等指令。&lt;br&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref-†" title="Jump back to footnote 6 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:†"&gt;
+&lt;p&gt;正規表示（regex）很重要，但初學 Linux 時會覺得很複雜可以跳過。 &lt;a href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/"&gt;2 Text Editing&lt;/a&gt; 會再接觸到一次 vim 的 regex、&lt;a href="https://blog.liang2.tw/posts/2016/01/lab-coding-python/"&gt;4 Python&lt;/a&gt; 也會學到 Python 的 regex，可以等到時候再回來學 &lt;code&gt;sed&lt;/code&gt;、&lt;code&gt;egrep&lt;/code&gt; 等指令。&lt;br&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:†" rev="footnote" title="Jump back to footnote 6 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id="fn-‡"&gt;
-&lt;p&gt;APT 的使用教學可以參考 &lt;a href="https://help.ubuntu.com/community/AptGet/Howto"&gt;Ubuntu 官網&lt;/a&gt;、&lt;a href="http://blog.longwin.com.tw/2005/05/use_apt/"&gt;網路上大大的筆記&lt;/a&gt;。&amp;#160;&lt;a class="footnote-backref" href="#fnref-‡" title="Jump back to footnote 7 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:‡"&gt;
+&lt;p&gt;APT 的使用教學可以參考 &lt;a href="https://help.ubuntu.com/community/AptGet/Howto"&gt;Ubuntu 官網&lt;/a&gt;、&lt;a href="http://blog.longwin.com.tw/2005/05/use_apt/"&gt;網路上大大的筆記&lt;/a&gt;。&amp;#160;&lt;a class="footnote-backref" href="#fnref:‡" rev="footnote" title="Jump back to footnote 7 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</content><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－總章</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-intro/" rel="alternate"></link><published>2016-01-21T21:00:00-06:00</published><updated>2016-01-21T21:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-intro/</id><summary type="html">&lt;p&gt;給實驗室新生，了解當今軟體開發流程及基本技能的背景知識與初步技能樹。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016&lt;/p&gt;
@@ -1034,7 +1034,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;建議大家想辦法裝個 Linux（或用 Mac）。如果不想取代掉自己的 Windows 環境話，可以安裝 VirtualBox 裝個虛擬的 Linux，或者在 Amazon 等 VPS 架一台虛擬主機。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;Windows 因為對圖形介面（GUI）設計的很好，也不容易讓使用者用命令列模式（terminal, console)。雖然 Windows 上有像 command prompt、Powershell 之類的環境，但都很難用它來操控整個系統。而且它打從骨子就跟 Linux 不一樣，所以相關的指令不好在網上的教學文章中找到，而多數 Windows 的開發者也不喜歡用 terminal。&lt;/p&gt;
-&lt;p&gt;另一方面，大家對 Visual Studio 的印象都是要收錢的&lt;sup id="fnref-註1"&gt;&lt;a class="footnote-ref" href="#fn-註1"&gt;1&lt;/a&gt;&lt;/sup&gt;，這是 Windows 上最完整最好用的開發環境，不想付費的情況下可能就會覺得「寫程式充滿障礙」，更何況 VS 也是圖形化的編輯器，也會不了解背後運作的方式。市面的開源軟體多半在 *nix 上開發，對 Windows 支援度差也加深這個障礙（「想要自己裝但都一堆限制又很容易失敗」）&lt;/p&gt;
+&lt;p&gt;另一方面，大家對 Visual Studio 的印象都是要收錢的&lt;sup id="fnref:註1"&gt;&lt;a class="footnote-ref" href="#fn:註1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;，這是 Windows 上最完整最好用的開發環境，不想付費的情況下可能就會覺得「寫程式充滿障礙」，更何況 VS 也是圖形化的編輯器，也會不了解背後運作的方式。市面的開源軟體多半在 *nix 上開發，對 Windows 支援度差也加深這個障礙（「想要自己裝但都一堆限制又很容易失敗」）&lt;/p&gt;
 &lt;p&gt;不用 terminal 的壞處是很難想像自己系統中的軟體為什麼能運作。感覺要寫個有 GUI 的程式都要很厲害，跟自己學過的寫程式都不一樣。但實質上是沒有太多區別的，只是要完成一個能安裝在系統中的視窗軟體，需要的步驟多很多，一般簡單的專案都不會到那個階段。&lt;/p&gt;
 &lt;h3 id="osx"&gt;給 OSX 使用者&lt;/h3&gt;
 &lt;p&gt;Mac OSX 使用者也有這樣的現象，但因為 OSX 在底層用的是跟 FreeBSD 很相似，而 FreeBSD 跟 Linux 相似，所以它的 terminal 環境是很完整的。現在軟體開發者很多人用 OSX，因此網路上 Linux、OSX 資源都很多，兩者的經驗常能自然地移植。&lt;/p&gt;
@@ -1054,8 +1054,8 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;div class="footnote"&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id="fn-註1"&gt;
-&lt;p&gt;Visual Studio 自 2013 後有 &lt;a href="https://www.visualstudio.com/en-us/news/vs2013-community-vs.aspx"&gt;Community&lt;/a&gt; 版本，免費但內容與 Professional 版本大致無異，所以未來要有 C/C++ 32/64bit Compiler 會更容易。但多數的開源軟體還沒跟進，所以很多還在用舊的 VS 版本（就要付費），這個現象還會持續一陣。學校都有買。&amp;#160;&lt;a class="footnote-backref" href="#fnref-註1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:註1"&gt;
+&lt;p&gt;Visual Studio 自 2013 後有 &lt;a href="https://www.visualstudio.com/en-us/news/vs2013-community-vs.aspx"&gt;Community&lt;/a&gt; 版本，免費但內容與 Professional 版本大致無異，所以未來要有 C/C++ 32/64bit Compiler 會更容易。但多數的開源軟體還沒跟進，所以很多還在用舊的 VS 版本（就要付費），這個現象還會持續一陣。學校都有買。&amp;#160;&lt;a class="footnote-backref" href="#fnref:註1" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</content><category term="zh"></category><category term="labcoding"></category></entry></feed>

@@ -137,7 +137,7 @@ You can also use widgets to &lt;strong&gt;synchronize stateful and stateless inf
 
 &lt;p&gt;各家 web browser 的支援度可參考 caniuse.com：&lt;a href="http://caniuse.com/#feat=webm"&gt;WebM&lt;/a&gt;、&lt;a href="http://caniuse.com/#feat=mpeg4"&gt;MP4&lt;/a&gt;&lt;/p&gt;
 &lt;h4 id="ffmpeg"&gt;FFmpeg 轉檔&lt;/h4&gt;
-&lt;p&gt;筆記而已，沒有認真調參數讓輸出檔案最小。VP9 的部份參考 &lt;a href="https://trac.ffmpeg.org/wiki/Encode/VP9"&gt;FFmepg&lt;/a&gt;&lt;sup id="fnref-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;p&gt;筆記而已，沒有認真調參數讓輸出檔案最小。VP9 的部份參考 &lt;a href="https://trac.ffmpeg.org/wiki/Encode/VP9"&gt;FFmepg&lt;/a&gt;&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# H.264 MP4&lt;/span&gt;
 ffmpeg -i Untitled.mov &lt;span class="se"&gt;\&lt;/span&gt;
     -vcodec h264 &lt;span class="se"&gt;\&lt;/span&gt;
@@ -165,8 +165,8 @@ ffmpeg -i Untitled.mov &lt;span class="se"&gt;\&lt;/span&gt;
 &lt;div class="footnote"&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id="fn-1"&gt;
-&lt;p&gt;需要額外安裝 libvpx，例如：&lt;code&gt;brew install ffmepg --with-libvpx&lt;/code&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:1"&gt;
+&lt;p&gt;需要額外安裝 libvpx，例如：&lt;code&gt;brew install ffmepg --with-libvpx&lt;/code&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</content><category term="zh"></category><category term="jupyter"></category><category term="notebook"></category></entry><entry><title>Jupyter Notebook Theme</title><link href="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/" rel="alternate"></link><published>2016-01-07T00:00:00-06:00</published><updated>2016-01-07T00:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-07:/posts/2016/01/jupyter-notebook-theme/</id><summary type="html">&lt;p&gt;&lt;a href="http://jupyter.org/"&gt;Jupyter Notebook&lt;/a&gt;，也就是以前的 IPython Notebook，應該是許多人在用 Python 做資料分析時記錄實驗步驗與結果的工具。&lt;/p&gt;
@@ -231,7 +231,7 @@ ffmpeg -i Untitled.mov &lt;span class="se"&gt;\&lt;/span&gt;
 
 &lt;h3 id="custom-theme-before-v41"&gt;Custom Theme Before v4.1&lt;/h3&gt;
 &lt;p&gt;現在因為歷經 IPython 到 Jupyter 的過程，設定還蠻分散的。以往的設定會在 &lt;code&gt;~/.ipython&lt;/code&gt;，而到了 Jupyter 之後，相關設定會在 &lt;code&gt;~/.jupyter&lt;/code&gt;。有時候設定怪怪的話就兩個路徑都檢查一下吧。&lt;/p&gt;
-&lt;p&gt;只要把這個 CSS 放到 &lt;code&gt;~/.ipython/profile_default/custom.css&lt;/code&gt; 再重開 Jupyter Notebook 就可以了&lt;sup id="fnref-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;。效果如下：&lt;/p&gt;
+&lt;p&gt;只要把這個 CSS 放到 &lt;code&gt;~/.ipython/profile_default/custom.css&lt;/code&gt; 再重開 Jupyter Notebook 就可以了&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;。效果如下：&lt;/p&gt;
 &lt;div class="figure"&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/pics/jupyter_grade3_frontpage.png"/&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/pics/jupyter_grade3_notebook1.png"/&gt;
@@ -247,8 +247,8 @@ ffmpeg -i Untitled.mov &lt;span class="se"&gt;\&lt;/span&gt;
 &lt;div class="footnote"&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id="fn-1"&gt;
-&lt;p&gt;這路徑並不符合 Jupyter 跨 kernel 的設計理念，&lt;del&gt;感覺未來會改路徑&lt;/del&gt;已經在 4.1+ 版本中完成整合，與 IPython 設定分家了。&amp;#160;&lt;a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:1"&gt;
+&lt;p&gt;這路徑並不符合 Jupyter 跨 kernel 的設計理念，&lt;del&gt;感覺未來會改路徑&lt;/del&gt;已經在 4.1+ 版本中完成整合，與 IPython 設定分家了。&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</content><category term="zh"></category><category term="jupyter"></category><category term="notebook"></category></entry></feed>

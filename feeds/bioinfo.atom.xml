@@ -294,7 +294,7 @@
 
 
 &lt;p&gt;Commands above can be scripted into SQLite like:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sqlite3 mydb.sqlite &amp;lt; load_data.sql
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sqlite3 mydb.sqlite &amp;amp;lt; load_data.sql
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -500,7 +500,7 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 &lt;p&gt;It seems to me like many people rely too much on the features of some special file formats such as bgzip and tabix and have forgotten the generic yet flexible approach using databases. Those formats often optimize the random access by a given genomic query by indexing. In databases, such index is analogous to &lt;code&gt;(chrom, start, -end)&lt;/code&gt; or even GiST index on Range type in PostgreSQL. It might be slower in databases, but aside from the performance, one can continue to query the records in the same way in databases. For special format, the functionality will be much limited.&lt;/p&gt;
 &lt;p&gt;Now I will give the database approach a try before writing my own data wrangling script.&lt;/p&gt;
 &lt;p&gt;EDIT 2018-01-28: Add real world examples of using databases to store variant data.&lt;/p&gt;</content><category term="en"></category><category term="python"></category><category term="pandas"></category><category term="sqlite"></category><category term="postgresql"></category></entry><entry><title>Using EnsDb's annotation database in Python</title><link href="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/" rel="alternate"></link><published>2017-11-17T00:00:00-06:00</published><updated>2017-11-17T00:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2017-11-17:/posts/2017/11/use-ensdb-database-in-python/</id><summary type="html">&lt;p&gt;How to find and download the EnsDb, the Ensembl genomic annotation in SQLite database made by R package ensembldb, and use it in Python application.&lt;/p&gt;</summary><content type="html">&lt;p&gt;I found that there isn&amp;rsquo;t a systematic way to query and convert genomic annotation IDs in Python. At least there isn&amp;rsquo;t one as good as &lt;a href="https://www.bioconductor.org/help/workflows/annotation/annotation/"&gt;what R/Bioconductor currently has&lt;/a&gt;. If you&amp;rsquo;ve never heard of R/Bioconductor annotation tool stack before, check out &lt;a href="https://www.bioconductor.org/help/workflows/annotation/annotation/"&gt;the official workflow&lt;/a&gt; or &lt;a href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/"&gt;my post in 2016&lt;/a&gt; specific for querying Ensembl annotations.&lt;/p&gt;
-&lt;p&gt;Although I enjoy using R for genomic annotation conversion, a few days ago I wanted to do the same thing inside my text processing script in Python. I might be able to re-write the script in R but I feel like R is not really the right tool for this task and on top of it, I don&amp;rsquo;t know how to write an efficent text processing in R&lt;sup id="fnref-r-text-processing"&gt;&lt;a class="footnote-ref" href="#fn-r-text-processing"&gt;1&lt;/a&gt;&lt;/sup&gt;. &lt;/p&gt;
+&lt;p&gt;Although I enjoy using R for genomic annotation conversion, a few days ago I wanted to do the same thing inside my text processing script in Python. I might be able to re-write the script in R but I feel like R is not really the right tool for this task and on top of it, I don&amp;rsquo;t know how to write an efficent text processing in R&lt;sup id="fnref:r-text-processing"&gt;&lt;a class="footnote-ref" href="#fn:r-text-processing" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;. &lt;/p&gt;
 &lt;p&gt;Knowing the fact that all annotations in R are stored in single-file SQLite databases, I should be able to connect the database directly Python or any other language and wirte SQL query to retrieve the same information. So my question now becomes to how to extract or find the path to the databases. Turn out that many new Bioconductor annotation packages are hosted via &lt;a href="https://bioconductor.org/packages/release/bioc/html/AnnotationHub.html"&gt;AnnotationHub&lt;/a&gt;, and user can search for the annotation package and retrieve them locally by their ID. For example, all the recent Ensembl releases, e.g., &lt;code&gt;EnsDb.Hsapiens.vXX&lt;/code&gt;, are available on AnnotationHub. &lt;/p&gt;
 &lt;p&gt;After digging around a bit, I am able to query the AnnotationHub, download the correct EnsDB SQLite database file, and make SQL queries for the annotation ID conversion without any R package. I will share the details in the rest of the post. &lt;/p&gt;
 &lt;div class="toc"&gt;
@@ -611,8 +611,8 @@ query&lt;span class="p"&gt;(&lt;/span&gt;ah&lt;span class="p"&gt;,&lt;/span&gt; 
 &lt;div class="footnote"&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id="fn-r-text-processing"&gt;
-&lt;p&gt;Based on my impression, my R expert friends would probably recommend me to write it with R-cpp, which I think would be over-kill for such a small task. But my impression can be wrong. Feel free to share your thoughts!&amp;#160;&lt;a class="footnote-backref" href="#fnref-r-text-processing" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:r-text-processing"&gt;
+&lt;p&gt;Based on my impression, my R expert friends would probably recommend me to write it with R-cpp, which I think would be over-kill for such a small task. But my impression can be wrong. Feel free to share your thoughts!&amp;#160;&lt;a class="footnote-backref" href="#fnref:r-text-processing" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</content><category term="en"></category><category term="python"></category><category term="r"></category><category term="bioconductor"></category><category term="ensembldb"></category></entry><entry><title>Use Snakemake on Google cloud</title><link href="https://blog.liang2.tw/posts/2017/08/snakemake-google-cloud/" rel="alternate"></link><published>2017-08-10T00:00:00-05:00</published><updated>2017-08-10T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2017-08-10:/posts/2017/08/snakemake-google-cloud/</id><summary type="html">&lt;p&gt;&lt;em&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; Run a RNA-seq pipeline using Snakemake locally and later port it to Google Cloud. Snakemake can parallelize jobs of a pipeline and …&lt;/em&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; Run a RNA-seq pipeline using Snakemake locally and later port it to Google Cloud. Snakemake can parallelize jobs of a pipeline and even across machines.&lt;/em&gt;&lt;/p&gt;
@@ -888,7 +888,7 @@ query&lt;span class="p"&gt;(&lt;/span&gt;ah&lt;span class="p"&gt;,&lt;/span&gt; 
 &lt;p&gt;The full &lt;code&gt;Snakefile&lt;/code&gt; can be found &lt;a href="https://gist.github.com/ccwang002/2659b19439b6205284c0ae68ca06345d"&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;h3 id="job-dependencies-and-dag"&gt;Job dependencies and DAG&lt;/h3&gt;
 &lt;p&gt;Now with the pipeline complete, we can further look at the how all the rules are chained with each other. Snakemake has a command to generate the job depedency graph (a DAG):&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;snakemake --dag quant_all_samples | dot -Tsvg &amp;gt; dag.svg
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;snakemake --dag quant_all_samples | dot -Tsvg &amp;amp;gt; dag.svg
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -899,7 +899,7 @@ query&lt;span class="p"&gt;(&lt;/span&gt;ah&lt;span class="p"&gt;,&lt;/span&gt; 
 
 &lt;p&gt;Snakemake generates such DAG first before execution, where each node represents a job. As long as two nodes have no connected edges and their input exist, they can be executed parallely. This is a powerful feature to pipeline management, which can use the resources in a fin grain.&lt;/p&gt;
 &lt;p&gt;A simpler graph that shows rules instead of jobs can be generated by:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;snakemake --rulegraph quant_all_samples | dot -Tsvg &amp;gt; ruledag.svg
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;snakemake --rulegraph quant_all_samples | dot -Tsvg &amp;amp;gt; ruledag.svg
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1033,7 +1033,7 @@ docker run -t                       &lt;span class="se"&gt;\&lt;/span&gt;
 
 &lt;p&gt;To run Docker on a GCE VM instance, it requires the host machine (the VM instance) to have Docker installed. One may refer to Docker&amp;rsquo;s &lt;a href="https://docs.docker.com/engine/installation/linux/docker-ce/debian/#install-using-the-repository"&gt;official installation guide&lt;/a&gt; to install it. VM instance by default inherit the user&amp;rsquo;s permission (via the automatically created service account), thus the command above should apply to the GCE instance as well.&lt;/p&gt;
 &lt;h2 id="google-container-engine-gke"&gt;Google Container Engine (GKE)&lt;/h2&gt;
-&lt;p&gt;To scale up the pipeline execution across multiple machines, Snakemake could use &lt;a href="https://cloud.google.com/container-engine/"&gt;Google Container Engine&lt;/a&gt; (GKE, implemented on top of Kubernetes). This method is built on Docker which each node will pull down the given Docker image to load the environment. After &lt;a href="https://bitbucket.org/snakemake/snakemake/issues/602"&gt;some discussions&lt;/a&gt; about how to specify user input image &lt;sup id="fnref-kubernetes-docker"&gt;&lt;a class="footnote-ref" href="#fn-kubernetes-docker"&gt;1&lt;/a&gt;&lt;/sup&gt;, on Snakemake 4.1+ one is able to specify the Docker image Kubernete&amp;rsquo;s node uses by &lt;code&gt;--container-image &amp;lt;image&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;To scale up the pipeline execution across multiple machines, Snakemake could use &lt;a href="https://cloud.google.com/container-engine/"&gt;Google Container Engine&lt;/a&gt; (GKE, implemented on top of Kubernetes). This method is built on Docker which each node will pull down the given Docker image to load the environment. After &lt;a href="https://bitbucket.org/snakemake/snakemake/issues/602"&gt;some discussions&lt;/a&gt; about how to specify user input image &lt;sup id="fnref:kubernetes-docker"&gt;&lt;a class="footnote-ref" href="#fn:kubernetes-docker" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;, on Snakemake 4.1+ one is able to specify the Docker image Kubernete&amp;rsquo;s node uses by &lt;code&gt;--container-image &amp;lt;image&amp;gt;&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;To install the master branch of Snakemake, run:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install git+https://bitbucket.org/snakemake/snakemake.git@master
 &lt;/pre&gt;&lt;/div&gt;
@@ -1124,8 +1124,8 @@ EDIT 2017-11-17: Add instructions to run the Snakemake on Kubernete inside Docke
 &lt;div class="footnote"&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id="fn-kubernetes-docker"&gt;
-&lt;p&gt;In the discussion, Snakemake&amp;rsquo;s author, Johannes, mentioned the possiblity of using &lt;a href="http://singularity.lbl.gov/"&gt;Singularity&lt;/a&gt; so each rule can run in a different virutal environment. Singularity support comes at Snakemake 4.2+.&amp;#160;&lt;a class="footnote-backref" href="#fnref-kubernetes-docker" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:kubernetes-docker"&gt;
+&lt;p&gt;In the discussion, Snakemake&amp;rsquo;s author, Johannes, mentioned the possiblity of using &lt;a href="http://singularity.lbl.gov/"&gt;Singularity&lt;/a&gt; so each rule can run in a different virutal environment. Singularity support comes at Snakemake 4.2+.&amp;#160;&lt;a class="footnote-backref" href="#fnref:kubernetes-docker" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</content><category term="en"></category><category term="bio"></category><category term="python"></category><category term="snakemake"></category><category term="cloud"></category></entry><entry><title>Variants、eQTL、MPRA</title><link href="https://blog.liang2.tw/posts/2017/06/variants-eqtl-mpra/" rel="alternate"></link><published>2017-06-20T00:00:00-05:00</published><updated>2017-06-20T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2017-06-20:/posts/2017/06/variants-eqtl-mpra/</id><summary type="html">&lt;p&gt;本文內容主要來自 Barak Cohen 教授給的數堂課的筆記，以 Systems Biology 的角度來看 coding/noncoding variant modeling 和相關實驗 MPRA。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Computational Biology 和 Bioinformatics 在現在可能區分不大，本文也不打算深究兩定義，但他們大致能代表兩大類將電腦科學、程式運用在生物上的研究。&lt;/p&gt;
@@ -1167,7 +1167,7 @@ EDIT 2017-11-17: Add instructions to run the Snakemake on Kubernete inside Docke
 &lt;li&gt;Lamina Associated Domains (LADs)&lt;/li&gt;
 &lt;li&gt;CTCF/Cohesin&lt;/li&gt;
 &lt;li&gt;Topologically associating domains (TADs)&lt;/li&gt;
-&lt;li&gt;3D genome&lt;sup id="fnref-3D genome"&gt;&lt;a class="footnote-ref" href="#fn-3D genome"&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;li&gt;3D genome&lt;sup id="fnref:3D genome"&gt;&lt;a class="footnote-ref" href="#fn:3D genome" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;Methylation&lt;/li&gt;
@@ -1176,7 +1176,7 @@ EDIT 2017-11-17: Add instructions to run the Snakemake on Kubernete inside Docke
 &lt;blockquote&gt;
 &lt;p&gt;&amp;ldquo;Something you can measure does not mean it is interesting.&amp;rdquo;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;然後建議我們去讀一篇批評 ENCODE 的論文&lt;sup id="fnref-ENCODE paper"&gt;&lt;a class="footnote-ref" href="#fn-ENCODE paper"&gt;2&lt;/a&gt;&lt;/sup&gt;，被他評之為近十年最辛辣，標題也非常有趣。&lt;/p&gt;
+&lt;p&gt;然後建議我們去讀一篇批評 ENCODE 的論文&lt;sup id="fnref:ENCODE paper"&gt;&lt;a class="footnote-ref" href="#fn:ENCODE paper" rel="footnote"&gt;2&lt;/a&gt;&lt;/sup&gt;，被他評之為近十年最辛辣，標題也非常有趣。&lt;/p&gt;
 &lt;h3 id="noncoding-variants"&gt;Noncoding variants&lt;/h3&gt;
 &lt;p&gt;從 non-coding elements 我們能知道控制 gene expression 可以從很多面向切入，於是討論 non-coding variant 時就會有很多不同的機制影響 gene expression。底下針對所謂的 enhancers (RE) 和 promoters 來畫個簡單的示意圖：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;     TF1  TF2  TF3         TF4  [RNA PolII]
@@ -1220,13 +1220,13 @@ EDIT 2017-11-17: Add instructions to run the Snakemake on Kubernete inside Docke
 &lt;div class="footnote"&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id="fn-3D genome"&gt;
+&lt;li id="fn:3D genome"&gt;
 &lt;p&gt;關於 3D genome 就要提一下這篇論文：&lt;br&gt;
 Adrian and Suhas &lt;em&gt;el al.&lt;/em&gt;, &lt;a href="http://www.pnas.org/content/112/47/E6456.abstract"&gt;&lt;em&gt;Chromatin extrusion explains key features of loop and domain formation in wild-type and engineered genomes&lt;/em&gt;&lt;/a&gt;, PNAS, 2015.&lt;br&gt;
-裡面用碎形 (fractal globule) 去解釋 CTCF 形成 TADs 造成怎麼樣的染色體摺疊，並如何透過這樣的摺疊產生 long distance interaction，因為可能在立體空間他們是接近的。模型用來解釋 Hi-C 數據。這篇論文使用數學之抽象和複雜，甚至請丘成桐來當 reviewer。&amp;#160;&lt;a class="footnote-backref" href="#fnref-3D genome" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+裡面用碎形 (fractal globule) 去解釋 CTCF 形成 TADs 造成怎麼樣的染色體摺疊，並如何透過這樣的摺疊產生 long distance interaction，因為可能在立體空間他們是接近的。模型用來解釋 Hi-C 數據。這篇論文使用數學之抽象和複雜，甚至請丘成桐來當 reviewer。&amp;#160;&lt;a class="footnote-backref" href="#fnref:3D genome" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id="fn-ENCODE paper"&gt;
-&lt;p&gt;針對 ENCODE 所謂 80% genome are functional 非常有名的戰文：&lt;br&gt;Dan &lt;em&gt;et al.&lt;/em&gt;, &lt;a href="https://academic.oup.com/gbe/article-lookup/doi/10.1093/gbe/evt028"&gt;&lt;em&gt;On the Immortality of Television Sets: “Function” in the Human Genome According to the Evolution-Free Gospel of ENCODE&lt;/em&gt;&lt;/a&gt;, Genome Biol Evol, 2013.&amp;#160;&lt;a class="footnote-backref" href="#fnref-ENCODE paper" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:ENCODE paper"&gt;
+&lt;p&gt;針對 ENCODE 所謂 80% genome are functional 非常有名的戰文：&lt;br&gt;Dan &lt;em&gt;et al.&lt;/em&gt;, &lt;a href="https://academic.oup.com/gbe/article-lookup/doi/10.1093/gbe/evt028"&gt;&lt;em&gt;On the Immortality of Television Sets: “Function” in the Human Genome According to the Evolution-Free Gospel of ENCODE&lt;/em&gt;&lt;/a&gt;, Genome Biol Evol, 2013.&amp;#160;&lt;a class="footnote-backref" href="#fnref:ENCODE paper" rev="footnote" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</content><category term="zh"></category><category term="bio"></category></entry><entry><title>Ensembl Genomic Reference in Bioconductor</title><link href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/" rel="alternate"></link><published>2016-05-21T18:00:00-05:00</published><updated>2016-05-21T18:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-05-21:/posts/2016/05/biocondutor-ensembl-reference/</id><summary type="html">&lt;p&gt;Using fundamental R/Biocondcutor packages (e.g. AnnotationHub, ensembldb and biomaRt) to query Ensembl genomic references or annotations.&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; I gave a talk &lt;a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/"&gt;Genomics in R&lt;/a&gt; about querying genomic annotations and references in R/Bioconductor. In this post, we re-visit all the operations in my talk using Ensembl references instead of UCSC/NCBI ones.&lt;/em&gt;&lt;/p&gt;
@@ -1470,7 +1470,7 @@ ensembl &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; useMart&lt;span class="p"&g
 
 
 &lt;h3 id="compatibility-with-annotationdbs-interface"&gt;Compatibility with AnnotationDb&amp;rsquo;s interface&lt;/h3&gt;
-&lt;p&gt;The way to query the &lt;code&gt;ensembl&lt;/code&gt; Mart object is slightly different to how we query a AnnotationDb object. The major difference is the terminology. Luckily, Mart object provides a compatibility layer so we can still call functions such as &lt;code&gt;select(db, ...)&lt;/code&gt;, &lt;code&gt;keytypes(db)&lt;/code&gt;, &lt;code&gt;keys(db)&lt;/code&gt; and &lt;code&gt;columns(db)&lt;/code&gt;, which we frequently do&lt;sup id="fnref-select-compat"&gt;&lt;a class="footnote-ref" href="#fn-select-compat"&gt;1&lt;/a&gt;&lt;/sup&gt; when using NCBI/UCSC references.&lt;/p&gt;
+&lt;p&gt;The way to query the &lt;code&gt;ensembl&lt;/code&gt; Mart object is slightly different to how we query a AnnotationDb object. The major difference is the terminology. Luckily, Mart object provides a compatibility layer so we can still call functions such as &lt;code&gt;select(db, ...)&lt;/code&gt;, &lt;code&gt;keytypes(db)&lt;/code&gt;, &lt;code&gt;keys(db)&lt;/code&gt; and &lt;code&gt;columns(db)&lt;/code&gt;, which we frequently do&lt;sup id="fnref:select-compat"&gt;&lt;a class="footnote-ref" href="#fn:select-compat" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt; when using NCBI/UCSC references.&lt;/p&gt;
 &lt;p&gt;A Mart can have hundreds of keys and columns. So we select a part of them out by &lt;code&gt;grep()&lt;/code&gt;,&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;grep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;^refseq&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; keytypes&lt;span class="p"&gt;(&lt;/span&gt;ensembl&lt;span class="p"&gt;),&lt;/span&gt; value &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="c1"&gt;# [1] &amp;quot;refseq_mrna&amp;quot; &amp;quot;refseq_mrna_predicted&amp;quot; ...&lt;/span&gt;
@@ -1621,8 +1621,8 @@ MAPK1_hg19_lifted
 &lt;div class="footnote"&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id="fn-select-compat"&gt;
-&lt;p&gt;Note that the &lt;code&gt;select(mart, ...)&lt;/code&gt; compatibility does not apply to all existed filters (keys) and attributes (columns) of the given Mart.&amp;#160;&lt;a class="footnote-backref" href="#fnref-select-compat" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:select-compat"&gt;
+&lt;p&gt;Note that the &lt;code&gt;select(mart, ...)&lt;/code&gt; compatibility does not apply to all existed filters (keys) and attributes (columns) of the given Mart.&amp;#160;&lt;a class="footnote-backref" href="#fnref:select-compat" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</content><category term="en"></category><category term="r"></category><category term="bioconductor"></category></entry><entry><title>Plot Sequencing Depth with Gviz</title><link href="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/" rel="alternate"></link><published>2016-01-15T23:50:00-06:00</published><updated>2016-01-15T23:50:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-15:/posts/2016/01/plot-seq-depth-gviz/</id><summary type="html">&lt;p&gt;&lt;em&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; Plot exome sequencing depth and coverage with genome annotation using Gviz in R. Then apply detail control on Gviz annotation track displaying …&lt;/em&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; Plot exome sequencing depth and coverage with genome annotation using Gviz in R. Then apply detail control on Gviz annotation track displaying.&lt;/em&gt;&lt;/p&gt;
@@ -2280,7 +2280,7 @@ ALL 236344886 17.0 22.5 31.3 29.2 0.0 39.9 37.6 0.1  99.9
 &lt;div class="math"&gt;$$
     \text{avgQ} = \dfrac{\sum_{q=0}^{93} q \cdot n_q}{\sum_{q = 0}^{93} n_q},
 $$&lt;/div&gt;
-&lt;p&gt;where &lt;span class="math"&gt;\(n_q\)&lt;/span&gt; is the number of bases with quality score being &lt;span class="math"&gt;\(q\)&lt;/span&gt;. The magic number 93 comes from the quality score of Sanger sequencing&lt;sup id="fnref-sanger-qual-score"&gt;&lt;a class="footnote-ref" href="#fn-sanger-qual-score"&gt;1&lt;/a&gt;&lt;/sup&gt;, whose score ranges from 0 to 93.&lt;/p&gt;
+&lt;p&gt;where &lt;span class="math"&gt;\(n_q\)&lt;/span&gt; is the number of bases with quality score being &lt;span class="math"&gt;\(q\)&lt;/span&gt;. The magic number 93 comes from the quality score of Sanger sequencing&lt;sup id="fnref:sanger-qual-score"&gt;&lt;a class="footnote-ref" href="#fn:sanger-qual-score" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;, whose score ranges from 0 to 93.&lt;/p&gt;
 &lt;p&gt;For &lt;code&gt;errQ&lt;/code&gt; we need more background knowledge about how quality score is computed. A base with quality score &lt;span class="math"&gt;\(q\)&lt;/span&gt; implies the probability of being erroneously called, &lt;span class="math"&gt;\(P_q\)&lt;/span&gt;, is &lt;/p&gt;
 &lt;div class="math"&gt;$$
     P_q = 10^{\frac{-q}{10}}, \hspace{1em} q = -10\log_{10}{P_q}.
@@ -2293,7 +2293,7 @@ $$&lt;/div&gt;
 &lt;th align="right"&gt;0&lt;/th&gt;
 &lt;th align="right"&gt;1&lt;/th&gt;
 &lt;th align="right"&gt;2&lt;/th&gt;
-&lt;th align="right"&gt;3&lt;sup id="fnref-2"&gt;&lt;a class="footnote-ref" href="#fn-2"&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/th&gt;
+&lt;th align="right"&gt;3&lt;sup id="fnref:2"&gt;&lt;a class="footnote-ref" href="#fn:2" rel="footnote"&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
@@ -2345,11 +2345,11 @@ $$&lt;/div&gt;
 &lt;div class="footnote"&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id="fn-sanger-qual-score"&gt;
-&lt;p&gt;See multiple specifications of quality score at &lt;a href="http://scikit-bio.org/docs/latest/generated/skbio.io.format.fastq.html#quality-score-variants"&gt;sckit-bio doc&lt;/a&gt;. The score is &lt;a href="https://en.wikipedia.org/wiki/Phred_quality_score"&gt;Phred quality score&lt;/a&gt;. More other score representations can be found at &lt;a href="https://en.wikipedia.org/wiki/FASTQ_format"&gt;FASTQ wiki&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref-sanger-qual-score" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:sanger-qual-score"&gt;
+&lt;p&gt;See multiple specifications of quality score at &lt;a href="http://scikit-bio.org/docs/latest/generated/skbio.io.format.fastq.html#quality-score-variants"&gt;sckit-bio doc&lt;/a&gt;. The score is &lt;a href="https://en.wikipedia.org/wiki/Phred_quality_score"&gt;Phred quality score&lt;/a&gt;. More other score representations can be found at &lt;a href="https://en.wikipedia.org/wiki/FASTQ_format"&gt;FASTQ wiki&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:sanger-qual-score" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id="fn-2"&gt;
-&lt;p&gt;Note that the probability of q less than 4 is fixed with 0.5. A quick computation can see when &lt;span class="math"&gt;\(q = 3\)&lt;/span&gt;, its actual Phred probability is &lt;span class="math"&gt;\(10 ^ {-0.3} = 0.501\)&lt;/span&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;li id="fn:2"&gt;
+&lt;p&gt;Note that the probability of q less than 4 is fixed with 0.5. A quick computation can see when &lt;span class="math"&gt;\(q = 3\)&lt;/span&gt;, its actual Phred probability is &lt;span class="math"&gt;\(10 ^ {-0.3} = 0.501\)&lt;/span&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:2" rev="footnote" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
