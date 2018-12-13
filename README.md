@@ -1,13 +1,22 @@
-## My blog
+## Liang2's blog
+My static blog site using [Pelican] and a modified theme based on Kura's [Hauntr] theme (MIT license).
+
+[Pelican]: https://blog.getpelican.com/
+[Hauntr]: https://kura.github.io/hauntr/
+
 
 ### Setup
+For example, create a conda environment `blog` for the dependencies:
 
-```
-conda create -n blog python=3.7
-conda activate blog
-pip install -r requirements.txt
-```
+    conda create -n blog python=3.7
+    conda activate blog
+    pip install -r requirements.txt
 
-```
-make devserver
-```
+Launch a local web server to serve the blog content at <http://localhost:8000>:
+
+    make devserver
+
+### License 
+The blog content is licensed under [Creative Commons Attribution 4.0 International License][CC BY 4.0]. In addition, the source code of this blog site is also licensed under MIT License. See the file `LICENSE` for details.
+
+[CC BY 4.0]: https://creativecommons.org/licenses/by/4.0/
