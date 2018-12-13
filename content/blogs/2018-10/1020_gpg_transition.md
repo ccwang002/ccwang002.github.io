@@ -6,9 +6,9 @@ Tags: en, gpg
 Category: Coding
 ---
 
-I am transiting my GPG key again.  However, for this time, I expect to use the new GPG master key longer and will start building this identity unless there is a concern about the key strength or I accidentially lose the key. 
+I am transiting my GPG key again.  However, for this time, I expect to use the new GPG master key longer and will start building this identity unless there is a concern about the key strength or I accidentally lose the key. 
 
-Back in [my GPG key transition in 2016][my-post-gpg-2016], I've created the subkeys for daily usage and isoloated the master key into a secret offline place. I learned more about PGP throughout the years, sadly though, I still seldom have a chance to use it extensively in my daily life. 
+Back in [my GPG key transition in 2016][my-post-gpg-2016], I've created the subkeys for daily usage and isolated the master key into a secret offline place. I learned more about PGP throughout the years, sadly though, I still seldom have a chance to use it extensively in my daily life. 
 
 This time, I am moving the subkeys to a YubiKey. I found [drduh's guide][yubikey-guide] on GitHub very informative to set up both the GPG key and the yubikey, as well as get my hands on the various possible applications. Another notable change is that I no longer set an expiration date on my master key.
 
