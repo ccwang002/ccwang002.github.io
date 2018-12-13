@@ -4,7 +4,7 @@ Slug: notebook-progress-bar
 Date: 2016-03-23 02:00
 Tags: zh, jupyter, notebook
 Category: Coding 
-Cover: //blog.liang2.tw/posts/2016/01/notebook-progress-bar/pics/progressbar_demo.webm
+Cover: https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_demo.webm
 ---
 
 相信很多人都已經在使用 [Jupyter (IPython) Notebook][jupyter] 跑分析。隨著分析的資料越跑越多，有時候刷下去就是幾十分鐘甚至數小時。此時沒有個進度條還蠻無聊的，而且能讓自己感覺**很有進度**，何樂不為呢？
@@ -165,7 +165,7 @@ progress.description = '(Done)'
     Your browser doesn't support HTML5 video in WebM with VP8
     or MP4 with H.264. You can still download the 
     <a href="vid.mp4">screencast</a> and view it locally.
-</vide>
+</video>
 ```
 
 各家 web browser 的支援度可參考 caniuse.com：[WebM](http://caniuse.com/#feat=webm)、[MP4](http://caniuse.com/#feat=mpeg4)
