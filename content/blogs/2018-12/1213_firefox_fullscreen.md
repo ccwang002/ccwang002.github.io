@@ -6,12 +6,14 @@ Tags: en
 Category: Coding
 ---
 
-Firefox fullscreen on macOS by default contains the address bar and the tab bar. Although it does not take up too much vertical space, while RStudio server
+Firefox fullscreen on macOS by default contains the address bar and the tab bar. I usually don't really need the full vertical space for web page, so those bars aren't a problem. But when I access a RStudio Server on Firefox, I always want to have more vertical space. As shown in the screenshot below, the address bar and the tab bar of Firefox are unnecessary, and they may be quite distracting. If those bars are hidden and only show up upon request when Firefox enters fullscreen, the vertical space can be saved and the interface will remain clean.
 
 <div class="figure">
   <img src="{attach}pics/rstudio_fullscreen.png">
   <p class="caption"></p>
 </div>
+
+It turns out that Firefox controls its user interface styling using CSS. So we can set the shape of the window tabs, the height of the address bar, and more by adding a CSS file at `~/Library/Application Support/Firefox/Profiles/<profile>/chrome/userChrome.css`. My modification was based on [this answer on Stack Exchange][ext-sol]:
 
 ```css
 #navigator-toolbox[inFullscreen] {
@@ -36,9 +38,15 @@ Firefox fullscreen on macOS by default contains the address bar and the tab bar.
 }
 ```
 
+[ext-sol]: https://apple.stackexchange.com/a/313241
+
+Note that the Firefox needs to be restarted to get the styling in effect. Here is how the Firefox fullscreen looks like after applying the `userChrome.css` above. 
+
 <div class="figure">
   <img src="{attach}pics/rstudio_fullscreen.modified.png">
 </div>
+
+Now the RStudio Server web page feels like a native app, similar to what RStudio Desktop offers. Both address and tab bars are hidden by default, and when the mouse hovers to the top, they get visible again.
 
 <div class="figure">
   <video auto autoplay loop>
@@ -49,6 +57,8 @@ Firefox fullscreen on macOS by default contains the address bar and the tab bar.
   <p class="caption">Switch tabs in the borderless fullscreen of Firefox.</p>
 </div>
 
+Those top bars will show up as well when they are in focus by shortkeys. For example, ⌘ + L will get focus on the address bar. It is useful when I want to launch a quick search in a new tab.
+
 <div class="figure">
   <video controls>
     <source src="{attach}pics/fullscreen_focus.webm" type="video/webm">
@@ -58,6 +68,8 @@ Firefox fullscreen on macOS by default contains the address bar and the tab bar.
   <p class="caption">Address bar is shown automatically when it is focused using shortkey.</p>
 </div>
 
+In `userChrome.css`, I added a small padding between the bars and the top border to make them more accessible by mouse. When the mouse moves to the top, macOS's menu bar will pop up as well, and both Firefox and macOS will overlap. The macOS one will go away first, but the mouse has to stay on the Firefox bars so they don't disappear either. 
+
 <div class="figure">
   <video controls>
     <source src="{attach}pics/fullscreen_hover_for_menubar.webm" type="video/webm">
@@ -66,8 +78,13 @@ Firefox fullscreen on macOS by default contains the address bar and the tab bar.
   </video>
 </div>
 
-### Notes for screen case encoding
-[previous post][notebook-progressbar-post]
+The overlapping of Firefox bars and macOS menubar is still a bit annoying, which will require some practice to navigate between them by mouse. I will probably rely more on the shortkeys instead. Anyway, I now have more vertical space and the modification of `userChrome.css` works fine for now.
+
+For more information about modifying the Firefox user interface, there is [a website](https://www.userchrome.org/) that introduces `userChrome.css` in depth. 
+
+
+### Notes for screencast encoding
+I modified the command from my [previous post][notebook-progressbar-post] to shrink the file size of the original QuickTime screencasts using FFmpeg. More encoding parameters can be found at FFmpeg's wiki ([VP9] and [H.264]).
 
 ```bash
 # VP9 (WEBM)
@@ -86,3 +103,5 @@ ffmpeg -i fullscreen_switch_tabs.mov \
 ```
 
 [notebook-progressbar-post]: {filename}../2016-03/0323_notebook_progressbar.md
+[VP9]: https://trac.ffmpeg.org/wiki/Encode/VP9
+[H.264]: https://trac.ffmpeg.org/wiki/Encode/H.264
