@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="author" content="Liang-Bo Wang" />
+<meta name="description" content="Firefox fullscreen on macOS by default contains the address bar and the tab bar. I usually don’t really need the full vertical space …" />
+<meta name="keywords" content="en">
+	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<title>Make Firefox fullscreen borderless on macOS</title>
+
+	<!-- og -->
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Liang2's Blog"/>
+<meta property="og:title" content="Make Firefox fullscreen borderless on macOS"/>
+<meta property="og:description" content="Firefox fullscreen on macOS by default contains the address bar and the tab bar. I usually don’t really need the full vertical space …"/>
+<meta property="og:locale" content=""/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2018-12-13 00:00:00-06:00"/>
+<meta property="article:modified_time" content="2018-12-13 00:00:00-06:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
+<meta property="article:section" content="Coding"/>
+<meta property="article:tag" content="en"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Make Firefox fullscreen borderless on macOS">
+<meta name="twitter:description" content="Firefox fullscreen on macOS by default contains the address bar and the tab bar. I usually don’t really need the full vertical space …">
+
+	<!-- Feeds -->
+	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
+		type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?bd17f8d9" rel="stylesheet" />
+</head>
+
+<body class="post-template">
+	<header class="site-head">
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+		<h2 class="blog-description">
+			<a href="https://blog.liang2.tw/about-me/">About</a> |
+			<a href="https://blog.liang2.tw/talks/">Talks</a> |
+			<a href="https://blog.liang2.tw/archives.html">Archives</a>
+		</h2>
+	</header>
+	<main id="content" class="content" role="main">
+<article class="post en-post">
+    <span class="post-meta">
+        <time datetime="Dec 13, 2018">Dec 13, 2018</time>
+        in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/" rel="bookmark" title="Permalink to Make Firefox fullscreen borderless on macOS">Make Firefox fullscreen borderless on macOS</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/en/">en</a>
+    </span>
+    <section class="post-content"><p>Firefox fullscreen on macOS by default contains the address bar and the tab bar. I usually don&rsquo;t really need the full vertical space for web page, so those bars aren&rsquo;t a problem. But when I access a RStudio Server on Firefox, I always want to have more vertical space. As shown in the screenshot below, the address bar and the tab bar of Firefox are unnecessary, and they may be quite distracting. If those bars are hidden and only show up upon request when Firefox enters fullscreen, the vertical space can be saved and the interface will remain clean.</p>
+<div class="figure">
+  <img src="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/rstudio_fullscreen.png">
+  <p class="caption"></p>
+</div>
+
+<p>It turns out that Firefox controls its user interface styling using CSS. So we can set the shape of the window tabs, the height of the address bar, and more by adding a CSS file at <code>~/Library/Application Support/Firefox/Profiles/&lt;profile&gt;/chrome/userChrome.css</code>. My modification was based on <a href="https://apple.stackexchange.com/a/313241">this answer on Stack Exchange</a>:</p>
+<div class="highlight"><pre><span></span><span class="p">#</span><span class="nn">navigator-toolbox</span><span class="o">[</span><span class="nt">inFullscreen</span><span class="o">]</span> <span class="p">{</span>
+    <span class="k">height</span><span class="p">:</span> <span class="mf">0.5</span><span class="kt">rem</span><span class="p">;</span>
+    <span class="k">margin-bottom</span><span class="p">:</span> <span class="mf">-0.5</span><span class="kt">rem</span><span class="p">;</span>
+    <span class="k">opacity</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">overflow</span><span class="p">:</span> <span class="kc">hidden</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">#</span><span class="nn">navigator-toolbox</span><span class="o">[</span><span class="nt">inFullscreen</span><span class="o">]</span><span class="p">:</span><span class="nd">hover</span><span class="o">,</span>
+<span class="p">#</span><span class="nn">navigator-toolbox</span><span class="o">[</span><span class="nt">inFullscreen</span><span class="o">]</span><span class="p">:</span><span class="nd">focus-within</span> <span class="p">{</span>
+    <span class="c">/*</span>
+<span class="c">     * Add some padding between the navbar and the top screen edge </span>
+<span class="c">     * to be more visible while the macOS hidden menu bar shows up. </span>
+<span class="c">     * The macOS menubar will hide after a few seconds.</span>
+<span class="c">     */</span>
+    <span class="k">padding-top</span><span class="p">:</span> <span class="mi">1</span><span class="kt">rem</span><span class="p">;</span>
+    <span class="k">height</span><span class="p">:</span> <span class="kc">auto</span><span class="p">;</span>
+    <span class="k">margin-bottom</span><span class="p">:</span> <span class="mi">0</span><span class="kt">rem</span><span class="p">;</span>
+    <span class="k">opacity</span><span class="p">:</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">overflow</span><span class="p">:</span> <span class="kc">visible</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Note that the Firefox needs to be restarted to get the styling in effect. Here is how the Firefox fullscreen looks like after applying the <code>userChrome.css</code> above. </p>
+<div class="figure">
+  <img src="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/rstudio_fullscreen.modified.png">
+</div>
+
+<p>Now the RStudio Server web page feels like a native app, similar to what RStudio Desktop offers. Both address and tab bars are hidden by default, and when the mouse hovers to the top, they get visible again.</p>
+<div class="figure">
+  <video auto autoplay loop>
+    <source src="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/fullscreen_switch_tabs.webm" type="video/webm">
+    <source src="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/fullscreen_switch_tabs.mp4" type="video/mp4">
+    Your browser doesn't support HTML5 video. You can still download the <a href="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/fullscreen_switch_tabs.mp4">screencast</a> and view it locally.
+  </video>
+  <p class="caption">Switch tabs in the borderless fullscreen of Firefox.</p>
+</div>
+
+<p>Those top bars will show up as well when they are in focus by shortkeys. For example, ⌘ + L will get focus on the address bar. It is useful when I want to launch a quick search in a new tab.</p>
+<div class="figure">
+  <video controls>
+    <source src="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/fullscreen_focus.webm" type="video/webm">
+    <source src="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/fullscreen_focus.mp4" type="video/mp4">
+    Your browser doesn't support HTML5 video. You can still download the <a href="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/fullscreen_focus.mp4">screencast</a> and view it locally.
+  </video>
+  <p class="caption">Address bar is shown automatically when it is focused using shortkey.</p>
+</div>
+
+<p>In <code>userChrome.css</code>, I added a small padding between the bars and the top border to make them more accessible by mouse. When the mouse moves to the top, macOS&rsquo;s menu bar will pop up as well, and both Firefox and macOS will overlap. The macOS one will go away first, but the mouse has to stay on the Firefox bars so they don&rsquo;t disappear either. </p>
+<div class="figure">
+  <video controls>
+    <source src="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/fullscreen_hover_for_menubar.webm" type="video/webm">
+    <source src="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/fullscreen_hover_for_menubar.mp4" type="video/mp4">
+    Your browser doesn't support HTML5 video. You can still download the <a href="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/fullscreen_hover_for_menubar.mp4">screencast</a> and view it locally.
+  </video>
+</div>
+
+<p>The overlapping of Firefox bars and macOS menubar is still a bit annoying, which will require some practice to navigate between them by mouse. I will probably rely more on the shortkeys instead. Anyway, I now have more vertical space and the modification of <code>userChrome.css</code> works fine for now.</p>
+<p>For more information about modifying the Firefox user interface, there is <a href="https://www.userchrome.org/">a website</a> that introduces <code>userChrome.css</code> in depth. </p>
+<h3 id="notes-for-screencast-encoding">Notes for screencast encoding</h3>
+<p>I modified the command from my <a href="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/">previous post</a> to shrink the file size of the original QuickTime screencasts using FFmpeg. More encoding parameters can be found at FFmpeg&rsquo;s wiki (<a href="https://trac.ffmpeg.org/wiki/Encode/VP9">VP9</a> and <a href="https://trac.ffmpeg.org/wiki/Encode/H.264">H.264</a>).</p>
+<div class="highlight"><pre><span></span><span class="c1"># VP9 (WEBM)</span>
+ffmpeg -i fullscreen_switch_tabs.mov <span class="se">\</span>
+    -vcodec libvpx-vp9 -b:v 200K <span class="se">\</span>
+    -pass <span class="m">1</span> -an -r <span class="m">24</span> -f webm /dev/null
+ffmpeg -i fullscreen_switch_tabs.mov <span class="se">\</span>
+    -vcodec libvpx-vp9 -b:v 200K <span class="se">\</span>
+    -pass <span class="m">2</span> -an -r <span class="m">24</span> fullscreen_switch_tabs.webm
+
+<span class="c1"># H.264 (MP4)</span>
+ffmpeg -i fullscreen_switch_tabs.mov <span class="se">\</span>
+    -vcodec h264 <span class="se">\</span>
+    -strict -2 -crf <span class="m">40</span> -preset slow -r <span class="m">24</span> <span class="se">\</span>
+    fullscreen_switch_tabs.mp4
+</pre></div></section>
+    <footer class="post-footer">
+<section class="share">
+    <h2>Share</h2>
+    <a class="icon-twitter" href="https://twitter.com/share?text=Make Firefox fullscreen borderless on macOS&amp;url=https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u=https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/"
+        onclick="window.open(this.href, 'facebook-share', 'width=580,height=296'); return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/"
+        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2018/12/firefox-borderless-fullscreen-macos/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
+    <footer>
+</article>
+	</main>
+	<footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags.html">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">
+				Built using <a href="https://getpelican.com/">Pelican</a>.
+				Powered by the <a href="https://kura.github.io/hauntr/">Hauntr</a> theme.
+			</section>
+		</div>
+	</footer>
+</body>
+</html>
