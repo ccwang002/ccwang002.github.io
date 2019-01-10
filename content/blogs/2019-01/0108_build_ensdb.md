@@ -24,35 +24,39 @@ Here are my notes of how to create the EnsDB from a local Ensembl MySQL database
 
 
 ### Ensembl VM
-To create a EnsDB from a Ensembl MySQL database, we need to the Ensembl Perl APIs. And the easiest setup is by a [Ensembl virtual machine][ensembl-vm]. We just need to import the VM image using VirtualBox and install the ensembldb R package inside the      VM, then it is ready to build the EnsDb. I recommend the VM to have more memory than the default 1GB since larger memory help build the R packages and EnsDb.
+To create a EnsDB from a Ensembl MySQL database, we need to the Ensembl Perl APIs. And the easiest setup is by a [Ensembl virtual machine][ensembl-vm]. We just need to import the VM image using VirtualBox and install the ensembldb R package inside the      VM, then it is ready to build the EnsDb. I recommend the VM to have more memory than the default 1GB since a larger memory helps build the R packages and EnsDb.
 
 [ensembl-vm]: http://www.ensembl.org/info/data/virtual_machine.html
 
 
 ### Build a local Ensembl v84 MySQL database
-Ensembl provides [the MySQL database dump][ensembl-data] to allow easy import of their data of any version. Assuming the working directory being `~/Documents/Ensembl_MySQL_mirror/`, we first copy the database dump by:
+Ensembl provides [the MySQL database dump][ensembl-data] to allow easy import of their data of any version. Assuming the working directory is `~/Documents/Ensembl_MySQL_mirror/`, we first copy the database dump by:
 
-```
+```bash
 cd ~/Documents/Ensembl_MySQL_mirror
+
+# Download the db dump
 rsync -a rsync://ftp.ensembl.org/ensembl/pub/release-84/mysql/homo_sapiens_core_84_38 .
-gunzip *.txt.gz  # MySQL doesn't accept compressed db dump
+
+# MySQL doesn't accept compressed db dump files so we decompress them
+gunzip *.txt.gz
 ```
 
-While downloading the data, we also need to install the MySQL server. I install [the same or similar version of MySQL][mysql-ver] Ensembl is currently using, which is 5.6 at the time of writing. On macOS, Homebrew allows the database to be installed with a specific version:
+While downloading the data, we also need to install the MySQL server. I install [the same or similar version of MySQL][mysql-ver] Ensembl is currently using, which is 5.6 at the time of writing. On macOS, Homebrew can specify the version of MySQL to be installed:
 
 ```bash
 brew install mysql@5.6
-# And start the MySQL server
+# And launch the MySQL server
 /usr/local/opt/mysql@5.6/bin/mysql.server start
 ```
 
-First we create a database matching the Ensembl version, in our case of v84:
+First we create a database whose name matches the Ensembl version (v84):
 
 ```sql
 CREATE DATABASE homo_sapiens_core_84_38;
 ```
 
-Then we load the table schema and the Ensembl data:
+Then we load the table schema and Ensembl data:
 
 ```bash
 /usr/local/opt/mysql@5.6/bin/mysql -u root \
@@ -64,28 +68,27 @@ Then we load the table schema and the Ensembl data:
     homo_sapiens_core_84_38 -L *.txt
 ```
 
-Finally, we change the MySQL config `/usr/local/etc/my.cnf` to accept remote database connection so the VM can access the database on the host machine. I don't use MySQL for anything else, so I simply let it accept (bind) any IP address:
+Finally, we modify the MySQL config at `/usr/local/etc/my.cnf` to accept remote database connection, so our VM can access the database on the host machine. I don't use MySQL for anything else, so I simply let MySQL binds to all the possible IP addresses my machine has:
 
 ```
 [mysqld]
 bind-address = *
 ```
 
-Note that this is not a secure configuration. Restart MySQL to get the new setting in effect:
+Note that this is not a secure configuration. To be secure, there should be a designated MySQL user with limited permission and a stricter connection setting. Restart MySQL to load the new config:
 
 ```
 /usr/local/opt/mysql@5.6/bin/mysql.server restart
 ```
 
-By default the vm share the same network as the host machine. Write down the IP address of our host machine.
-
+Write down an (local) IP address of our host machine.
 
 [ensembl-data]:https://www.ensembl.org/info/docs/webcode/mirror/install/ensembl-data.html
 [mysql-ver]: http://www.ensembl.org/info/data/mysql.html
 
 
 ### Build EnsDB from the local MySQL database
-Now we can come back to the vm and build the EnsDb v84. Run the following R script:
+Now we can come back to the vm and build the EnsDb v84. Run the following R script to build the EnsDb:
 
 ```r
 library(ensembldb)
@@ -96,7 +99,7 @@ fetchTablesFromEnsembl(
 DBFile <- makeEnsemblSQLiteFromTables()
 ```
 
-The EnsDb SQLite database will be availabe under the working directory. We can test to load the new EnsDb by:
+The EnsDb SQLite database will be availabe under the working directory. We can test the new EnsDb by:
 
 ```r
 edb <- EnsDb(DBFile)
