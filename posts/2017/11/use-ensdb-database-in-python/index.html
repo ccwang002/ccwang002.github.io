@@ -79,11 +79,11 @@
 <p>But before we start with the details, I want to clarify that it wasn&rsquo;t my intention to persuade people away from the current R ecosystem. The current R ecosystem is great and I will recommend people to stick with it as much as you can. I am pretty sure I will hit a lot of issues if I want to do more complex analysis or queries without the help of what R packages provide.</p>
 <h2 id="manual-query-in-annotationhub">Manual query in AnnotationHub</h2>
 <p>When one wants to use the R package AnnotationHub, the common usage is </p>
-<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>AnnotationHub<span class="p">)</span>
-ah <span class="o">&lt;-</span> AnnotationHub<span class="p">()</span>
+<div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">AnnotationHub</span><span class="p">)</span>
+<span class="n">ah</span> <span class="o">&lt;-</span> <span class="nf">AnnotationHub</span><span class="p">()</span>
 <span class="c1">## snapshotDate(): 2017-10-27</span>
 
-query<span class="p">(</span>ah<span class="p">,</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;EnsDb&quot;</span><span class="p">,</span> <span class="s">&quot;Homo sapiens&quot;</span><span class="p">))</span>
+<span class="nf">query</span><span class="p">(</span><span class="n">ah</span><span class="p">,</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;EnsDb&quot;</span><span class="p">,</span> <span class="s">&quot;Homo sapiens&quot;</span><span class="p">))</span>
 </pre></div>
 
 
@@ -171,7 +171,7 @@ query<span class="p">(</span>ah<span class="p">,</span> <span class="kt">c</span
 
 <p>All the coordinates are 1-based and the ranges are inclusive.</p>
 <h2 id="summary">Summary</h2>
-<p>By downloading the underlying annotation database, one can do the same annotation query out of R language and sometimes it may be helpful. I feel like instead of trying to come up with my own layout of annotation mapping across multiple sources, it is more reliable to use a more official build. On the other hand, it is very hard to get the annotaion mapping correct and there are tons of corner cases that require careful and systematic decisions. So I don&rsquo;t really recommend to build my own mapping at the first place anyway. The method here should help the situation of annotation query out of R a bit.</p>
+<p>By downloading the underlying annotation database, one can do the same annotation query out of R language and sometimes it may be helpful. I feel like instead of trying to come up with my own layout of annotation mapping across multiple sources, it is more reliable to use a more official build. On the other hand, it is very hard to get the annotation mapping correct and there are tons of corner cases that require careful and systematic decisions. So I don&rsquo;t really recommend to build my own mapping at the first place anyway. The method here should help the situation of annotation query out of R a bit.</p>
 <p>Potentially one can try copy the full R infrastructure but using the same underlying database and replicate the same experience to other languages, but it might require substantial work to get the infrastructure done and correct.</p>
 <p>EDIT 2017-12-13: Add instructions of using older Ensembl release.</p>
 <div class="footnote">
