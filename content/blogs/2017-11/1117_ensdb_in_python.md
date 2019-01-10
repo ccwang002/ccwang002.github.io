@@ -143,7 +143,7 @@ All the coordinates are 1-based and the ranges are inclusive.
 
 
 ## Summary
-By downloading the underlying annotation database, one can do the same annotation query out of R language and sometimes it may be helpful. I feel like instead of trying to come up with my own layout of annotation mapping across multiple sources, it is more reliable to use a more official build. On the other hand, it is very hard to get the annotaion mapping correct and there are tons of corner cases that require careful and systematic decisions. So I don't really recommend to build my own mapping at the first place anyway. The method here should help the situation of annotation query out of R a bit.
+By downloading the underlying annotation database, one can do the same annotation query out of R language and sometimes it may be helpful. I feel like instead of trying to come up with my own layout of annotation mapping across multiple sources, it is more reliable to use a more official build. On the other hand, it is very hard to get the annotation mapping correct and there are tons of corner cases that require careful and systematic decisions. So I don't really recommend to build my own mapping at the first place anyway. The method here should help the situation of annotation query out of R a bit.
 
 Potentially one can try copy the full R infrastructure but using the same underlying database and replicate the same experience to other languages, but it might require substantial work to get the infrastructure done and correct.
 
