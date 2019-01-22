@@ -5,7 +5,7 @@ import re
 
 
 AUTHOR = 'Liang-Bo Wang'
-SITENAME = "Liang2's Blog"
+SITENAME = "Liang-Bo Wang's Blog"
 SITEURL = ''
 
 PATH = 'content'
