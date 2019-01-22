@@ -13,7 +13,7 @@
 
 	<!-- og -->
 <meta property="og:locale" content="zh_TW"/>
-<meta property="og:site_name" content="Liang2's Blog"/>
+<meta property="og:site_name" content="Liang-Bo Wang's Blog"/>
 <meta property="og:title" content="用 Django 與 SQLite 架抽籤網站"/>
 <meta property="og:description" content="把之前用 Flask 架的抽籤網站改用 Django 實作，也藉這個機會比較一下兩個 Framework 設計概念的不同。"/>
 <meta property="og:locale" content=""/>
@@ -34,14 +34,14 @@
 
 	<!-- Feeds -->
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
-		type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
 	<link href="https://blog.liang2.tw/theme/css/haunter.css?bd17f8d9" rel="stylesheet" />
 </head>
 
 <body class="post-template">
 	<header class="site-head">
-		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang-Bo Wang's Blog</a></h1>
 		<h2 class="blog-description">
 			<a href="https://blog.liang2.tw/about-me/">About</a> |
 			<a href="https://blog.liang2.tw/talks/">Talks</a> |
@@ -568,12 +568,12 @@
 
 
 <div class="highlight"><pre><span></span><span class="c1"># draw_member/fixtures/anime_members.yaml</span>
-<span class="p p-Indicator">-</span>   <span class="nt">fields</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">group_name</span><span class="p">:</span> <span class="s">&quot;</span><span class="se">\u03BC</span><span class="s">&#39;s&quot;</span><span class="p p-Indicator">,</span><span class="nt"> name</span><span class="p">:</span> <span class="s">&quot;</span><span class="se">\u9AD8\u5742</span><span class="nv"> </span><span class="se">\u7A42\u4E43\u679C</span><span class="s">&quot;</span><span class="p p-Indicator">}</span>
-    <span class="nt">model</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">draw_member.member</span>
-    <span class="nt">pk</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="p p-Indicator">-</span>   <span class="nt">fields</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">group_name</span><span class="p">:</span> <span class="s">&quot;</span><span class="se">\u03BC</span><span class="s">&#39;s&quot;</span><span class="p p-Indicator">,</span><span class="nt"> name</span><span class="p">:</span> <span class="s">&quot;</span><span class="se">\u7D62\u702C</span><span class="nv"> </span><span class="se">\u7D75\u91CC</span><span class="s">&quot;</span><span class="p p-Indicator">}</span>
-    <span class="nt">model</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">draw_member.member</span>
-    <span class="nt">pk</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="p p-Indicator">-</span>   <span class="l l-Scalar l-Scalar-Plain">fields</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">{</span><span class="nv">group_name</span><span class="p p-Indicator">:</span> <span class="s">&quot;</span><span class="se">\u03BC</span><span class="s">&#39;s&quot;</span><span class="p p-Indicator">,</span> <span class="nv">name</span><span class="p p-Indicator">:</span> <span class="s">&quot;</span><span class="se">\u9AD8\u5742</span><span class="nv"> </span><span class="se">\u7A42\u4E43\u679C</span><span class="s">&quot;</span><span class="p p-Indicator">}</span>
+    <span class="l l-Scalar l-Scalar-Plain">model</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">draw_member.member</span>
+    <span class="l l-Scalar l-Scalar-Plain">pk</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="p p-Indicator">-</span>   <span class="l l-Scalar l-Scalar-Plain">fields</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">{</span><span class="nv">group_name</span><span class="p p-Indicator">:</span> <span class="s">&quot;</span><span class="se">\u03BC</span><span class="s">&#39;s&quot;</span><span class="p p-Indicator">,</span> <span class="nv">name</span><span class="p p-Indicator">:</span> <span class="s">&quot;</span><span class="se">\u7D62\u702C</span><span class="nv"> </span><span class="se">\u7D75\u91CC</span><span class="s">&quot;</span><span class="p p-Indicator">}</span>
+    <span class="l l-Scalar l-Scalar-Plain">model</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">draw_member.member</span>
+    <span class="l l-Scalar l-Scalar-Plain">pk</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
 <span class="c1"># ...</span>
 </pre></div>
 

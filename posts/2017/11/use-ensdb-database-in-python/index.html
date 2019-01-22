@@ -13,7 +13,7 @@
 
 	<!-- og -->
 <meta property="og:locale" content="en_US"/>
-<meta property="og:site_name" content="Liang2's Blog"/>
+<meta property="og:site_name" content="Liang-Bo Wang's Blog"/>
 <meta property="og:title" content="Using EnsDb's annotation database in Python"/>
 <meta property="og:description" content="How to find and download the EnsDb, the Ensembl genomic annotation in SQLite database made by R package ensembldb, and use it in Python application."/>
 <meta property="og:locale" content=""/>
@@ -35,14 +35,14 @@
 
 	<!-- Feeds -->
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
-		type="application/atom+xml" rel="alternate" title="Liang2's Blog" />
+		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
 	<link href="https://blog.liang2.tw/theme/css/haunter.css?bd17f8d9" rel="stylesheet" />
 </head>
 
 <body class="post-template">
 	<header class="site-head">
-		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang2's Blog</a></h1>
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang-Bo Wang's Blog</a></h1>
 		<h2 class="blog-description">
 			<a href="https://blog.liang2.tw/about-me/">About</a> |
 			<a href="https://blog.liang2.tw/talks/">Talks</a> |
@@ -79,11 +79,11 @@
 <p>But before we start with the details, I want to clarify that it wasn&rsquo;t my intention to persuade people away from the current R ecosystem. The current R ecosystem is great and I will recommend people to stick with it as much as you can. I am pretty sure I will hit a lot of issues if I want to do more complex analysis or queries without the help of what R packages provide.</p>
 <h2 id="manual-query-in-annotationhub">Manual query in AnnotationHub</h2>
 <p>When one wants to use the R package AnnotationHub, the common usage is </p>
-<div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">AnnotationHub</span><span class="p">)</span>
-<span class="n">ah</span> <span class="o">&lt;-</span> <span class="nf">AnnotationHub</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>AnnotationHub<span class="p">)</span>
+ah <span class="o">&lt;-</span> AnnotationHub<span class="p">()</span>
 <span class="c1">## snapshotDate(): 2017-10-27</span>
 
-<span class="nf">query</span><span class="p">(</span><span class="n">ah</span><span class="p">,</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;EnsDb&quot;</span><span class="p">,</span> <span class="s">&quot;Homo sapiens&quot;</span><span class="p">))</span>
+query<span class="p">(</span>ah<span class="p">,</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;EnsDb&quot;</span><span class="p">,</span> <span class="s">&quot;Homo sapiens&quot;</span><span class="p">))</span>
 </pre></div>
 
 
