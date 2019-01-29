@@ -71,12 +71,22 @@
 <p>After digging around a bit, I am able to query the AnnotationHub, download the correct EnsDB SQLite database file, and make SQL queries for the annotation ID conversion without any R package. I will share the details in the rest of the post. </p>
 <div class="toc">
 <ul>
+<li><a href="#annotationhub-web-interface">AnnotationHub web interface</a></li>
 <li><a href="#manual-query-in-annotationhub">Manual query in AnnotationHub</a></li>
 <li><a href="#manual-query-in-ensdb">Manual query in EnsDB</a></li>
 <li><a href="#summary">Summary</a></li>
 </ul>
 </div>
 <p>But before we start with the details, I want to clarify that it wasn&rsquo;t my intention to persuade people away from the current R ecosystem. The current R ecosystem is great and I will recommend people to stick with it as much as you can. I am pretty sure I will hit a lot of issues if I want to do more complex analysis or queries without the help of what R packages provide.</p>
+<h2 id="annotationhub-web-interface">AnnotationHub web interface</h2>
+<p><strong>EDIT 2019-01-29</strong><br>
+Now AnnotationHub has a nice <a href="https://annotationhub.bioconductor.org/">web interface</a>. With the new API, we can search and download all the EnsDb annotation objects on AnnotationHub by visiting <a href="https://annotationhub.bioconductor.org/package2/AHEnsDbs">https://annotationhub.bioconductor.org/package2/AHEnsDbs</a>:</p>
+<div class="figure">
+  <img src="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/pics/annotataionhub_web_interface.png"/>
+  <p class="caption">The web query interface of AnnotationHub</p>
+</div>
+
+<p>The following section is the old way to navigate through AnnotationHub&rsquo;s database.</p>
 <h2 id="manual-query-in-annotationhub">Manual query in AnnotationHub</h2>
 <p>When one wants to use the R package AnnotationHub, the common usage is </p>
 <div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>AnnotationHub<span class="p">)</span>
@@ -173,7 +183,8 @@ query<span class="p">(</span>ah<span class="p">,</span> <span class="kt">c</span
 <h2 id="summary">Summary</h2>
 <p>By downloading the underlying annotation database, one can do the same annotation query out of R language and sometimes it may be helpful. I feel like instead of trying to come up with my own layout of annotation mapping across multiple sources, it is more reliable to use a more official build. On the other hand, it is very hard to get the annotation mapping correct and there are tons of corner cases that require careful and systematic decisions. So I don&rsquo;t really recommend to build my own mapping at the first place anyway. The method here should help the situation of annotation query out of R a bit.</p>
 <p>Potentially one can try copy the full R infrastructure but using the same underlying database and replicate the same experience to other languages, but it might require substantial work to get the infrastructure done and correct.</p>
-<p>EDIT 2017-12-13: Add instructions of using older Ensembl release.</p>
+<p>EDIT 2017-12-13: Add instructions of using older Ensembl release.<br>
+EDIT 2019-01-29: Add the web interface of AnnotationHub.</p>
 <div class="footnote">
 <hr>
 <ol>
