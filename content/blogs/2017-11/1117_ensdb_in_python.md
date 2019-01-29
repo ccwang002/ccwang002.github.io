@@ -27,6 +27,18 @@ But before we start with the details, I want to clarify that it wasn't my intent
 [AnnotationHub]: https://bioconductor.org/packages/release/bioc/html/AnnotationHub.html
 
 
+## AnnotationHub web interface
+**EDIT 2019-01-29**<br>
+Now AnnotationHub has a nice [web interface](https://annotationhub.bioconductor.org/). With the new API, we can search and download all the EnsDb annotation objects on AnnotationHub by visiting <https://annotationhub.bioconductor.org/package2/AHEnsDbs>:
+
+<div class="figure">
+  <img src="{attach}pics/annotataionhub_web_interface.png"/>
+  <p class="caption">The web query interface of AnnotationHub</p>
+</div>
+
+The following section is the old way to navigate through AnnotationHub's database.
+
+
 ## Manual query in AnnotationHub
 When one wants to use the R package AnnotationHub, the common usage is 
 
@@ -93,6 +105,7 @@ wget -O EnsDb.Hsapiens.v90.sqlite https://annotationhub.bioconductor.org/fetch/6
 
 For older Ensembl release, one may need to [build the SQLite database based by the instructions from ensembldb][ensembldb-build].  For the last GRCh37 release, Ensembl release 75, one can download the source of the Bioconductor annotation package [`EnsDb.Hsapiens.v75`][EnsDb.Hsapiens.v75] and extract it. The database will be under `inst/extdata`.
 
+
 [ensembldb-build]: https://bioconductor.org/packages/release/bioc/vignettes/ensembldb/inst/doc/ensembldb.html#102_building_annotation_packages
 [EnsDb.Hsapiens.v75]: https://bioconductor.org/packages/release/data/annotation/html/EnsDb.Hsapiens.v75.html
 
@@ -147,4 +160,5 @@ By downloading the underlying annotation database, one can do the same annotatio
 
 Potentially one can try copy the full R infrastructure but using the same underlying database and replicate the same experience to other languages, but it might require substantial work to get the infrastructure done and correct.
 
-EDIT 2017-12-13: Add instructions of using older Ensembl release.
+EDIT 2017-12-13: Add instructions of using older Ensembl release.<br>
+EDIT 2019-01-29: Add the web interface of AnnotationHub.
