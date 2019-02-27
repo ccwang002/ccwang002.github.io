@@ -62,17 +62,17 @@ gunzip *.txt.gz
 &lt;p&gt;Write down an (local) IP address of our host machine.&lt;/p&gt;
 &lt;h3 id="build-ensdb-from-the-local-mysql-database"&gt;Build EnsDB from the local MySQL database&lt;/h3&gt;
 &lt;p&gt;Now we can come back to the vm and build the EnsDb v84. Run the following R script to build the EnsDb:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ensembldb&lt;span class="p"&gt;)&lt;/span&gt;
-fetchTablesFromEnsembl&lt;span class="p"&gt;(&lt;/span&gt;
-    &lt;span class="m"&gt;84&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; species &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;human&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    user &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;root&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; host &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;lt;our host IP&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; port &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;3306&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ensembldb&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nf"&gt;fetchTablesFromEnsembl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+    &lt;span class="m"&gt;84&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;species&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;human&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;user&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;root&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;host&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;lt;our host IP&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;port&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;3306&lt;/span&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
-DBFile &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; makeEnsemblSQLiteFromTables&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;DBFile&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;makeEnsemblSQLiteFromTables&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;The EnsDb SQLite database will be availabe under the working directory. We can test the new EnsDb by:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;edb &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; EnsDb&lt;span class="p"&gt;(&lt;/span&gt;DBFile&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;edb&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;EnsDb&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;DBFile&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -991,12 +991,12 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# draw_member/fixtures/anime_members.yaml&lt;/span&gt;
-&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;   &lt;span class="l l-Scalar l-Scalar-Plain"&gt;fields&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt; &lt;span class="p p-Indicator"&gt;{&lt;/span&gt;&lt;span class="nv"&gt;group_name&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\u03BC&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="p p-Indicator"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;name&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\u9AD8\u5742&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="se"&gt;\u7A42\u4E43\u679C&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p p-Indicator"&gt;}&lt;/span&gt;
-    &lt;span class="l l-Scalar l-Scalar-Plain"&gt;model&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;draw_member.member&lt;/span&gt;
-    &lt;span class="l l-Scalar l-Scalar-Plain"&gt;pk&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;1&lt;/span&gt;
-&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;   &lt;span class="l l-Scalar l-Scalar-Plain"&gt;fields&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt; &lt;span class="p p-Indicator"&gt;{&lt;/span&gt;&lt;span class="nv"&gt;group_name&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\u03BC&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="p p-Indicator"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;name&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\u7D62\u702C&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="se"&gt;\u7D75\u91CC&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p p-Indicator"&gt;}&lt;/span&gt;
-    &lt;span class="l l-Scalar l-Scalar-Plain"&gt;model&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;draw_member.member&lt;/span&gt;
-    &lt;span class="l l-Scalar l-Scalar-Plain"&gt;pk&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;2&lt;/span&gt;
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;   &lt;span class="nt"&gt;fields&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p p-Indicator"&gt;{&lt;/span&gt;&lt;span class="nt"&gt;group_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\u03BC&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="p p-Indicator"&gt;,&lt;/span&gt;&lt;span class="nt"&gt; name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\u9AD8\u5742&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="se"&gt;\u7A42\u4E43\u679C&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p p-Indicator"&gt;}&lt;/span&gt;
+    &lt;span class="nt"&gt;model&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;draw_member.member&lt;/span&gt;
+    &lt;span class="nt"&gt;pk&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;1&lt;/span&gt;
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;   &lt;span class="nt"&gt;fields&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p p-Indicator"&gt;{&lt;/span&gt;&lt;span class="nt"&gt;group_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\u03BC&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="p p-Indicator"&gt;,&lt;/span&gt;&lt;span class="nt"&gt; name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\u7D62\u702C&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="se"&gt;\u7D75\u91CC&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p p-Indicator"&gt;}&lt;/span&gt;
+    &lt;span class="nt"&gt;model&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;draw_member.member&lt;/span&gt;
+    &lt;span class="nt"&gt;pk&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;2&lt;/span&gt;
 &lt;span class="c1"&gt;# ...&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 

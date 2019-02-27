@@ -62,17 +62,17 @@ gunzip *.txt.gz
 &lt;p&gt;Write down an (local) IP address of our host machine.&lt;/p&gt;
 &lt;h3 id="build-ensdb-from-the-local-mysql-database"&gt;Build EnsDB from the local MySQL database&lt;/h3&gt;
 &lt;p&gt;Now we can come back to the vm and build the EnsDb v84. Run the following R script to build the EnsDb:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ensembldb&lt;span class="p"&gt;)&lt;/span&gt;
-fetchTablesFromEnsembl&lt;span class="p"&gt;(&lt;/span&gt;
-    &lt;span class="m"&gt;84&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; species &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;human&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    user &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;root&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; host &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;lt;our host IP&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; port &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;3306&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ensembldb&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nf"&gt;fetchTablesFromEnsembl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+    &lt;span class="m"&gt;84&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;species&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;human&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;user&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;root&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;host&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;lt;our host IP&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;port&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;3306&lt;/span&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
-DBFile &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; makeEnsemblSQLiteFromTables&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;DBFile&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;makeEnsemblSQLiteFromTables&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;The EnsDb SQLite database will be availabe under the working directory. We can test the new EnsDb by:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;edb &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; EnsDb&lt;span class="p"&gt;(&lt;/span&gt;DBFile&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;edb&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;EnsDb&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;DBFile&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -104,11 +104,11 @@ Now AnnotationHub has a nice &lt;a href="https://annotationhub.bioconductor.org/
 &lt;p&gt;The following section is the old way to navigate through AnnotationHub&amp;rsquo;s database.&lt;/p&gt;
 &lt;h2 id="manual-query-in-annotationhub"&gt;Manual query in AnnotationHub&lt;/h2&gt;
 &lt;p&gt;When one wants to use the R package AnnotationHub, the common usage is &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;AnnotationHub&lt;span class="p"&gt;)&lt;/span&gt;
-ah &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; AnnotationHub&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;AnnotationHub&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;ah&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;AnnotationHub&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="c1"&gt;## snapshotDate(): 2017-10-27&lt;/span&gt;
 
-query&lt;span class="p"&gt;(&lt;/span&gt;ah&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;EnsDb&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Homo sapiens&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="nf"&gt;query&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ah&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nf"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;EnsDb&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Homo sapiens&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 

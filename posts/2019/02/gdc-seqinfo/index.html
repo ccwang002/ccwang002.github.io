@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="author" content="Liang-Bo Wang" />
+<meta name="description" content="Genomic Data Commons (GDC) hosted by NCI is the place to harmonize past and future genomic data, such as TCGA, TARGET, and CPTAC projects …" />
+<meta name="keywords" content="en, r, bioconductor">
+	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<title>Store GDC genome as a Seqinfo object</title>
+
+	<!-- og -->
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Liang-Bo Wang's Blog"/>
+<meta property="og:title" content="Store GDC genome as a Seqinfo object"/>
+<meta property="og:description" content="Genomic Data Commons (GDC) hosted by NCI is the place to harmonize past and future genomic data, such as TCGA, TARGET, and CPTAC projects …"/>
+<meta property="og:locale" content=""/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2019/02/gdc-seqinfo/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2019-02-26 00:00:00-06:00"/>
+<meta property="article:modified_time" content="2019-02-26 00:00:00-06:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
+<meta property="article:section" content="Bioinfo"/>
+<meta property="article:tag" content="en"/>
+<meta property="article:tag" content="r"/>
+<meta property="article:tag" content="bioconductor"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Store GDC genome as a Seqinfo object">
+<meta name="twitter:description" content="Genomic Data Commons (GDC) hosted by NCI is the place to harmonize past and future genomic data, such as TCGA, TARGET, and CPTAC projects …">
+
+	<!-- Feeds -->
+	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
+		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
+
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?bd17f8d9" rel="stylesheet" />
+</head>
+
+<body class="post-template">
+	<header class="site-head">
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang-Bo Wang's Blog</a></h1>
+		<h2 class="blog-description">
+			<a href="https://blog.liang2.tw/about-me/">About</a> |
+			<a href="https://blog.liang2.tw/talks/">Talks</a> |
+			<a href="https://blog.liang2.tw/archives.html">Archives</a>
+		</h2>
+	</header>
+	<main id="content" class="content" role="main">
+<article class="post en-post">
+    <span class="post-meta">
+        <time datetime="Feb 26, 2019">Feb 26, 2019</time>
+        in <a href="https://blog.liang2.tw/category/bioinfo/">Bioinfo</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2019/02/gdc-seqinfo/" rel="bookmark" title="Permalink to Store GDC genome as a Seqinfo object">Store GDC genome as a Seqinfo object</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/en/">en</a>
+                <a href="https://blog.liang2.tw/tag/r/">r</a>
+                <a href="https://blog.liang2.tw/tag/bioconductor/">bioconductor</a>
+    </span>
+    <section class="post-content"><p>Genomic Data Commons (GDC) hosted by NCI is the place to harmonize past and future genomic data, such as TCGA, TARGET, and CPTAC projects. GDC has its own genome reference, <a href="https://gdc.cancer.gov/about-data/data-harmonization-and-generation/gdc-reference-files"><code>GRCh38.d1.vd1</code></a>, which has 2,779 &ldquo;chromosomes&rdquo; including decoys and virus sequences. That said, the canonical chromosomes of GRCh38.d1.vd1 (e.g., chr1 to chr22, chrM, chrX, and chrY) are identical to that of hg38 and GRCh38. So all these three genome references can be used interchangeably.</p>
+<p>Anyway, I was trying to correctly store the full GRCh38.d1.vd1 genome information in the <code>GRanges</code> and <code>GRangesList</code> R objects, which can be done by creating a <code>Seqinfo</code> object representing all its chromosomes. It was also fun to get familiar with the genomic data structures in R. </p>
+<h3 id="build-gdcs-seqinfo">Build GDC&rsquo;s Seqinfo</h3>
+<p>First, we need the length and the name of all chromosomes in GRCh38.d1.vd1.  I used samtools to extract the information as a <code>.dict</code> file from the genome reference FASTA file.</p>
+<div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">GDC_REF_FA_URL</span><span class="o">=</span><span class="s1">&#39;https://api.gdc.cancer.gov/data/254f697d-310d-4d7d-a27b-27fbf767a834&#39;</span>
+curl -Lo GRCh38.d1.vd1.fa.tar.gz <span class="nv">$GDC_REF_FA_URL</span>
+samtools dict <span class="se">\</span>
+    -a <span class="s1">&#39;GRCh38.d1.vd1&#39;</span> -s <span class="s1">&#39;Homo sapiens&#39;</span> <span class="se">\</span>
+    -u <span class="nv">$GDC_REF_FA_URL</span> <span class="se">\</span>
+    GRCh38.d1.vd1.fa.tar.gz &gt; GRCh38.d1.vd1.dict
+
+head -n <span class="m">3</span> GRCh38.d1.vd1.dict
+<span class="c1"># @HD   VN:1.0  SO:unsorted</span>
+<span class="c1"># @SQ   SN:chr1 LN:248956422    M5:6aef897c3d6ff0c78aff06ac189178dd UR:https://api.gdc.cancer.gov/data/254f697d-310d-4d7d-a27b-27fbf767a834 AS:GRCh38.d1.vd1    SP:Homo sapiens</span>
+<span class="c1"># @SQ   SN:chr2 LN:242193529    M5:f98db672eb0993dcfdabafe2a882905c UR:https://api.gdc.cancer.gov/data/254f697d-310d-4d7d-a27b-27fbf767a834 AS:GRCh38.d1.vd1    SP:Homo sapiens</span>
+</pre></div>
+
+
+<p>Seqinfo also requires the information of whether a chromosome is circular. In GDC&rsquo;s case,  mitochondria chromosome and all viruses sequences are circular. Combining all the information together, we can construct the Seqinfo object describing the genome GRCh38.d1.vd1.</p>
+<div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">GenomeInfoDb</span><span class="p">)</span>
+
+<span class="n">gdc_simple_tbl</span> <span class="o">&lt;-</span> <span class="nf">read_tsv</span><span class="p">(</span>
+    <span class="s">&#39;./GRCh38.d1.vd1.dict&#39;</span><span class="p">,</span> 
+    <span class="n">skip</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span>  <span class="c1"># Skip the first line (@HQ ...)</span>
+    <span class="n">col_names</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;SQ&#39;</span><span class="p">,</span> <span class="s">&#39;chrom&#39;</span><span class="p">,</span> <span class="s">&#39;length&#39;</span><span class="p">,</span> <span class="s">&#39;md5sum&#39;</span><span class="p">,</span> <span class="s">&#39;URI&#39;</span><span class="p">,</span> <span class="s">&#39;assembly&#39;</span><span class="p">,</span> <span class="s">&#39;species&#39;</span><span class="p">)</span>
+<span class="p">)</span> <span class="o">%&gt;%</span>
+    <span class="nf">select</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span> <span class="o">%&gt;%</span>
+    <span class="nf">mutate</span><span class="p">(</span><span class="n">chrom</span> <span class="o">=</span> <span class="nf">str_sub</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="n">start</span> <span class="o">=</span> <span class="m">4</span><span class="p">),</span> 
+           <span class="n">length</span> <span class="o">=</span> <span class="nf">as.integer</span><span class="p">(</span><span class="nf">str_sub</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">start</span> <span class="o">=</span> <span class="m">4</span><span class="p">)),</span>
+           <span class="n">circular</span> <span class="o">=</span> <span class="nf">case_when</span><span class="p">(</span>
+               <span class="n">chrom</span> <span class="o">==</span> <span class="s">&#39;chrM&#39;</span> <span class="o">~</span> <span class="kc">TRUE</span><span class="p">,</span>
+               <span class="n">chrom</span> <span class="o">==</span> <span class="s">&#39;chrEBV&#39;</span> <span class="o">~</span> <span class="kc">TRUE</span><span class="p">,</span>
+               <span class="nf">startsWith</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="s">&#39;HPV&#39;</span><span class="p">)</span> <span class="o">~</span> <span class="kc">TRUE</span><span class="p">,</span>
+               <span class="kc">TRUE</span> <span class="o">~</span> <span class="kc">FALSE</span>
+           <span class="p">))</span>
+
+<span class="n">gdc_seqinfo</span> <span class="o">&lt;-</span> <span class="nf">Seqinfo</span><span class="p">(</span>
+    <span class="n">seqnames</span> <span class="o">=</span> <span class="n">gdc_simple_tbl</span><span class="o">$</span><span class="n">chrom</span><span class="p">,</span>
+    <span class="n">seqlengths</span> <span class="o">=</span> <span class="n">gdc_simple_tbl</span><span class="o">$</span><span class="n">length</span><span class="p">,</span>
+    <span class="n">isCircular</span> <span class="o">=</span> <span class="n">gdc_simple_tbl</span><span class="o">$</span><span class="n">circular</span><span class="p">,</span>
+    <span class="n">genome</span> <span class="o">=</span> <span class="s">&#39;GRCh38.d1.vd1&#39;</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<p>Now we can supply it to any <code>GRanges</code> object coming out from any GDC&rsquo;s sequencing data.</p>
+<div class="highlight"><pre><span></span><span class="gp">&gt; </span><span class="n">gdc_seqinfo</span>
+<span class="go">Seqinfo object with 2779 sequences (191 circular) from GRCh38.d1.vd1 genome:</span>
+<span class="go">  seqnames   seqlengths isCircular        genome</span>
+<span class="go">  chr1        248956422      FALSE GRCh38.d1.vd1</span>
+<span class="go">  chr2        242193529      FALSE GRCh38.d1.vd1</span>
+<span class="go">  chr3        198295559      FALSE GRCh38.d1.vd1</span>
+<span class="go">  chr4        190214555      FALSE GRCh38.d1.vd1</span>
+<span class="go">  chr5        181538259      FALSE GRCh38.d1.vd1</span>
+<span class="go">  ...               ...        ...           ...</span>
+<span class="go">  HPV-mKN2         7299       TRUE GRCh38.d1.vd1</span>
+<span class="go">  HPV-mKN3         7251       TRUE GRCh38.d1.vd1</span>
+<span class="go">  HPV-mL55         7177       TRUE GRCh38.d1.vd1</span>
+<span class="go">  HPV-mRTRX7       7731       TRUE GRCh38.d1.vd1</span>
+<span class="go">  HPV-mSD2         7300       TRUE GRCh38.d1.vd1</span>
+</pre></div>
+
+
+<p>I store the <code>gdc_seqinfo</code> as a RDS file (<a href="https://blog.liang2.tw/posts/2019/02/gdc-seqinfo/results/seqinfo_GRCh38.d1.vd1.rds">link</a> here) so I can re-use it easily.</p>
+<div class="highlight"><pre><span></span><span class="n">gdc_seqinfo</span> <span class="o">&lt;-</span> <span class="nf">readRDS</span><span class="p">(</span><span class="s">&#39;seqinfo_GRCh38.d1.vd1.rds&#39;</span><span class="p">)</span>
+</pre></div></section>
+    <footer class="post-footer">
+<section class="share">
+    <h2>Share</h2>
+    <a class="icon-twitter" href="https://twitter.com/share?text=Store GDC genome as a Seqinfo object&amp;url=https://blog.liang2.tw/posts/2019/02/gdc-seqinfo/"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u=https://blog.liang2.tw/posts/2019/02/gdc-seqinfo/"
+        onclick="window.open(this.href, 'facebook-share', 'width=580,height=296'); return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.liang2.tw/posts/2019/02/gdc-seqinfo/"
+        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2019/02/gdc-seqinfo/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2019/02/gdc-seqinfo/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
+    <footer>
+</article>
+	</main>
+	<footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags.html">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">
+				Built using <a href="https://getpelican.com/">Pelican</a>.
+				Powered by the <a href="https://kura.github.io/hauntr/">Hauntr</a> theme.
+			</section>
+		</div>
+	</footer>
+</body>
+</html>
