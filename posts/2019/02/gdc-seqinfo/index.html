@@ -80,35 +80,35 @@ head -n <span class="m">3</span> GRCh38.d1.vd1.dict
 
 
 <p>Seqinfo also requires the information of whether a chromosome is circular. In GDC&rsquo;s case,  mitochondria chromosome and all viruses sequences are circular. Combining all the information together, we can construct the Seqinfo object describing the genome GRCh38.d1.vd1.</p>
-<div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
-<span class="nf">library</span><span class="p">(</span><span class="n">GenomeInfoDb</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>tidyverse<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>GenomeInfoDb<span class="p">)</span>
 
-<span class="n">gdc_simple_tbl</span> <span class="o">&lt;-</span> <span class="nf">read_tsv</span><span class="p">(</span>
+gdc_simple_tbl <span class="o">&lt;-</span> read_tsv<span class="p">(</span>
     <span class="s">&#39;./GRCh38.d1.vd1.dict&#39;</span><span class="p">,</span> 
-    <span class="n">skip</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span>  <span class="c1"># Skip the first line (@HQ ...)</span>
-    <span class="n">col_names</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;SQ&#39;</span><span class="p">,</span> <span class="s">&#39;chrom&#39;</span><span class="p">,</span> <span class="s">&#39;length&#39;</span><span class="p">,</span> <span class="s">&#39;md5sum&#39;</span><span class="p">,</span> <span class="s">&#39;URI&#39;</span><span class="p">,</span> <span class="s">&#39;assembly&#39;</span><span class="p">,</span> <span class="s">&#39;species&#39;</span><span class="p">)</span>
+    skip <span class="o">=</span> <span class="m">1</span><span class="p">,</span>  <span class="c1"># Skip the first line (@HQ ...)</span>
+    col_names <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;SQ&#39;</span><span class="p">,</span> <span class="s">&#39;chrom&#39;</span><span class="p">,</span> <span class="s">&#39;length&#39;</span><span class="p">,</span> <span class="s">&#39;md5sum&#39;</span><span class="p">,</span> <span class="s">&#39;URI&#39;</span><span class="p">,</span> <span class="s">&#39;assembly&#39;</span><span class="p">,</span> <span class="s">&#39;species&#39;</span><span class="p">)</span>
 <span class="p">)</span> <span class="o">%&gt;%</span>
-    <span class="nf">select</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span> <span class="o">%&gt;%</span>
-    <span class="nf">mutate</span><span class="p">(</span><span class="n">chrom</span> <span class="o">=</span> <span class="nf">str_sub</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="n">start</span> <span class="o">=</span> <span class="m">4</span><span class="p">),</span> 
-           <span class="n">length</span> <span class="o">=</span> <span class="nf">as.integer</span><span class="p">(</span><span class="nf">str_sub</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">start</span> <span class="o">=</span> <span class="m">4</span><span class="p">)),</span>
-           <span class="n">circular</span> <span class="o">=</span> <span class="nf">case_when</span><span class="p">(</span>
-               <span class="n">chrom</span> <span class="o">==</span> <span class="s">&#39;chrM&#39;</span> <span class="o">~</span> <span class="kc">TRUE</span><span class="p">,</span>
-               <span class="n">chrom</span> <span class="o">==</span> <span class="s">&#39;chrEBV&#39;</span> <span class="o">~</span> <span class="kc">TRUE</span><span class="p">,</span>
-               <span class="nf">startsWith</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="s">&#39;HPV&#39;</span><span class="p">)</span> <span class="o">~</span> <span class="kc">TRUE</span><span class="p">,</span>
+    select<span class="p">(</span>chrom<span class="p">,</span> <span class="kp">length</span><span class="p">)</span> <span class="o">%&gt;%</span>
+    mutate<span class="p">(</span>chrom <span class="o">=</span> str_sub<span class="p">(</span>chrom<span class="p">,</span> start <span class="o">=</span> <span class="m">4</span><span class="p">),</span> 
+           length <span class="o">=</span> <span class="kp">as.integer</span><span class="p">(</span>str_sub<span class="p">(</span><span class="kp">length</span><span class="p">,</span> start <span class="o">=</span> <span class="m">4</span><span class="p">)),</span>
+           circular <span class="o">=</span> case_when<span class="p">(</span>
+               chrom <span class="o">==</span> <span class="s">&#39;chrM&#39;</span> <span class="o">~</span> <span class="kc">TRUE</span><span class="p">,</span>
+               chrom <span class="o">==</span> <span class="s">&#39;chrEBV&#39;</span> <span class="o">~</span> <span class="kc">TRUE</span><span class="p">,</span>
+               startsWith<span class="p">(</span>chrom<span class="p">,</span> <span class="s">&#39;HPV&#39;</span><span class="p">)</span> <span class="o">~</span> <span class="kc">TRUE</span><span class="p">,</span>
                <span class="kc">TRUE</span> <span class="o">~</span> <span class="kc">FALSE</span>
            <span class="p">))</span>
 
-<span class="n">gdc_seqinfo</span> <span class="o">&lt;-</span> <span class="nf">Seqinfo</span><span class="p">(</span>
-    <span class="n">seqnames</span> <span class="o">=</span> <span class="n">gdc_simple_tbl</span><span class="o">$</span><span class="n">chrom</span><span class="p">,</span>
-    <span class="n">seqlengths</span> <span class="o">=</span> <span class="n">gdc_simple_tbl</span><span class="o">$</span><span class="n">length</span><span class="p">,</span>
-    <span class="n">isCircular</span> <span class="o">=</span> <span class="n">gdc_simple_tbl</span><span class="o">$</span><span class="n">circular</span><span class="p">,</span>
-    <span class="n">genome</span> <span class="o">=</span> <span class="s">&#39;GRCh38.d1.vd1&#39;</span>
+gdc_seqinfo <span class="o">&lt;-</span> Seqinfo<span class="p">(</span>
+    seqnames <span class="o">=</span> gdc_simple_tbl<span class="o">$</span>chrom<span class="p">,</span>
+    seqlengths <span class="o">=</span> gdc_simple_tbl<span class="o">$</span><span class="kp">length</span><span class="p">,</span>
+    isCircular <span class="o">=</span> gdc_simple_tbl<span class="o">$</span>circular<span class="p">,</span>
+    genome <span class="o">=</span> <span class="s">&#39;GRCh38.d1.vd1&#39;</span>
 <span class="p">)</span>
 </pre></div>
 
 
 <p>Now we can supply it to any <code>GRanges</code> object coming out from any GDC&rsquo;s sequencing data.</p>
-<div class="highlight"><pre><span></span><span class="gp">&gt; </span><span class="n">gdc_seqinfo</span>
+<div class="highlight"><pre><span></span><span class="gp">&gt; </span>gdc_seqinfo
 <span class="go">Seqinfo object with 2779 sequences (191 circular) from GRCh38.d1.vd1 genome:</span>
 <span class="go">  seqnames   seqlengths isCircular        genome</span>
 <span class="go">  chr1        248956422      FALSE GRCh38.d1.vd1</span>
@@ -126,7 +126,7 @@ head -n <span class="m">3</span> GRCh38.d1.vd1.dict
 
 
 <p>I store the <code>gdc_seqinfo</code> as a RDS file (<a href="https://blog.liang2.tw/posts/2019/02/gdc-seqinfo/results/seqinfo_GRCh38.d1.vd1.rds">link</a> here) so I can re-use it easily.</p>
-<div class="highlight"><pre><span></span><span class="n">gdc_seqinfo</span> <span class="o">&lt;-</span> <span class="nf">readRDS</span><span class="p">(</span><span class="s">&#39;seqinfo_GRCh38.d1.vd1.rds&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span>gdc_seqinfo <span class="o">&lt;-</span> <span class="kp">readRDS</span><span class="p">(</span><span class="s">&#39;seqinfo_GRCh38.d1.vd1.rds&#39;</span><span class="p">)</span>
 </pre></div></section>
     <footer class="post-footer">
 <section class="share">

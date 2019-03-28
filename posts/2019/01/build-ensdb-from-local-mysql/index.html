@@ -128,17 +128,17 @@ gunzip *.txt.gz
 <p>Write down an (local) IP address of our host machine.</p>
 <h3 id="build-ensdb-from-the-local-mysql-database">Build EnsDB from the local MySQL database</h3>
 <p>Now we can come back to the vm and build the EnsDb v84. Run the following R script to build the EnsDb:</p>
-<div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">ensembldb</span><span class="p">)</span>
-<span class="nf">fetchTablesFromEnsembl</span><span class="p">(</span>
-    <span class="m">84</span><span class="p">,</span> <span class="n">species</span> <span class="o">=</span> <span class="s">&quot;human&quot;</span><span class="p">,</span>
-    <span class="n">user</span> <span class="o">=</span> <span class="s">&#39;root&#39;</span><span class="p">,</span> <span class="n">host</span> <span class="o">=</span> <span class="s">&#39;&lt;our host IP&gt;&#39;</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="m">3306</span>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>ensembldb<span class="p">)</span>
+fetchTablesFromEnsembl<span class="p">(</span>
+    <span class="m">84</span><span class="p">,</span> species <span class="o">=</span> <span class="s">&quot;human&quot;</span><span class="p">,</span>
+    user <span class="o">=</span> <span class="s">&#39;root&#39;</span><span class="p">,</span> host <span class="o">=</span> <span class="s">&#39;&lt;our host IP&gt;&#39;</span><span class="p">,</span> port <span class="o">=</span> <span class="m">3306</span>
 <span class="p">)</span>
-<span class="n">DBFile</span> <span class="o">&lt;-</span> <span class="nf">makeEnsemblSQLiteFromTables</span><span class="p">()</span>
+DBFile <span class="o">&lt;-</span> makeEnsemblSQLiteFromTables<span class="p">()</span>
 </pre></div>
 
 
 <p>The EnsDb SQLite database will be availabe under the working directory. We can test the new EnsDb by:</p>
-<div class="highlight"><pre><span></span><span class="n">edb</span> <span class="o">&lt;-</span> <span class="nf">EnsDb</span><span class="p">(</span><span class="n">DBFile</span><span class="p">)</span>
+<div class="highlight"><pre><span></span>edb <span class="o">&lt;-</span> EnsDb<span class="p">(</span>DBFile<span class="p">)</span>
 </pre></div>
 
 

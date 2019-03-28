@@ -89,11 +89,11 @@ Now AnnotationHub has a nice <a href="https://annotationhub.bioconductor.org/">w
 <p>The following section is the old way to navigate through AnnotationHub&rsquo;s database.</p>
 <h2 id="manual-query-in-annotationhub">Manual query in AnnotationHub</h2>
 <p>When one wants to use the R package AnnotationHub, the common usage is </p>
-<div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">AnnotationHub</span><span class="p">)</span>
-<span class="n">ah</span> <span class="o">&lt;-</span> <span class="nf">AnnotationHub</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>AnnotationHub<span class="p">)</span>
+ah <span class="o">&lt;-</span> AnnotationHub<span class="p">()</span>
 <span class="c1">## snapshotDate(): 2017-10-27</span>
 
-<span class="nf">query</span><span class="p">(</span><span class="n">ah</span><span class="p">,</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;EnsDb&quot;</span><span class="p">,</span> <span class="s">&quot;Homo sapiens&quot;</span><span class="p">))</span>
+query<span class="p">(</span>ah<span class="p">,</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;EnsDb&quot;</span><span class="p">,</span> <span class="s">&quot;Homo sapiens&quot;</span><span class="p">))</span>
 </pre></div>
 
 
