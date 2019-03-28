@@ -7,6 +7,12 @@ sortorder: 10
 The followings are talks I gave in the open source communities. Since I have devoted most of time to my research, the list is expected to grow much slower from now on.
 
 
+### 2019
+
+[**Genomics in R**](https://blog.liang2.tw/2019Talk-Genomics-in-R/) Mar 27, 2019<br>
+WashU
+
+
 ### 2017
 
 [**Introduction to Snakemake**](https://blog.liang2.tw/2017Talk-Snakemake/) Sep 05, 2017<br>
