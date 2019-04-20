@@ -140,11 +140,11 @@
 &lt;/div&gt;
 
 &lt;p&gt;大概是這樣。希望能在不要自己架 server 的情況下繼續經營這個 blog。&lt;/p&gt;</content><category term="zh"></category><category term="blog"></category><category term="pelican"></category><category term="https"></category></entry><entry><title>設定部落格筆記</title><link href="https://blog.liang2.tw/posts/2015/09/blog-internals/" rel="alternate"></link><published>2015-09-21T00:00:00-05:00</published><updated>2015-09-21T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-09-21:/posts/2015/09/blog-internals/</id><summary type="html">&lt;p&gt;Blog 對我來說，最重要的就是書寫的舒適度。&lt;/p&gt;
-&lt;p&gt;一開始在設定 github CNAME 的時候就訂為 &lt;code&gt;blog.liang2.tw&lt;/code&gt;，但一直以來都只是個一頁式的自我介紹&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;，用 &lt;a href="http://semantic-ui.com/"&gt;SemanticUI&lt;/a&gt; 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。&lt;/p&gt;
+&lt;p&gt;一開始在設定 github CNAME 的時候就訂為 &lt;code&gt;blog.liang2.tw&lt;/code&gt;，但一直以來都只是個一頁式的自我介紹&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;，用 &lt;a href="http://semantic-ui.com/"&gt;SemanticUI&lt;/a&gt; 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。&lt;/p&gt;
 &lt;p&gt;整理了一下有幾個目標：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;只考慮用 static site 因為不想維護 server，而且 …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;Blog 對我來說，最重要的就是書寫的舒適度。&lt;/p&gt;
-&lt;p&gt;一開始在設定 github CNAME 的時候就訂為 &lt;code&gt;blog.liang2.tw&lt;/code&gt;，但一直以來都只是個一頁式的自我介紹&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;，用 &lt;a href="http://semantic-ui.com/"&gt;SemanticUI&lt;/a&gt; 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。&lt;/p&gt;
+&lt;p&gt;一開始在設定 github CNAME 的時候就訂為 &lt;code&gt;blog.liang2.tw&lt;/code&gt;，但一直以來都只是個一頁式的自我介紹&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;，用 &lt;a href="http://semantic-ui.com/"&gt;SemanticUI&lt;/a&gt; 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。&lt;/p&gt;
 &lt;p&gt;整理了一下有幾個目標：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;只考慮用 static site 因為不想維護 server，而且 blog 也沒什要炫的，現在光用前端就可以做到很多互動功能&lt;/li&gt;
@@ -319,7 +319,7 @@ Hello World_
 &lt;p&gt;以前部落格的長相：
 &lt;div class="figure align-center"&gt;
   &lt;img src="https://blog.liang2.tw/posts/2015/09/blog-internals/pics/oldsite.png"/&gt;
-&lt;/div&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</content><category term="zh"></category><category term="pelican"></category><category term="blog"></category><category term="python"></category></entry></feed>

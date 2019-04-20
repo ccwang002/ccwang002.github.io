@@ -114,7 +114,7 @@
 <h3 id="_1">資料設計</h3>
 <p>我們先假設所有檔案都放在同個資料夾裡，估且叫 <code>draw_member</code>。之後沒有額外說明的話，都是在這個目錄下操作。</p>
 <p>原始資料用 CSV 格式來儲存，有「名字」以及「團體」兩個欄位。不過考慮到可能會把檔案匯出，在原始檔案多加一個「最近被抽到的日期」欄位，希望最近被抽到的會比其他人再被抽到的機會低一點。</p>
-<p>這個 CSV 檔案命名為 <code>members.csv</code>。一開始沒有人被抽到，所以最後一欄都先設成空的<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup>，第一行是每一欄欄位的名稱。如果從資料庫匯出，這欄位就會有值。</p>
+<p>這個 CSV 檔案命名為 <code>members.csv</code>。一開始沒有人被抽到，所以最後一欄都先設成空的<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>，第一行是每一欄欄位的名稱。如果從資料庫匯出，這欄位就會有值。</p>
 <div class="highlight"><pre><span></span>&quot;名字&quot;,&quot;團體&quot;,&quot;最近被抽到的日期&quot;
 &quot;高坂 穂乃果&quot;,&quot;μ&#39;s&quot;,&quot;&quot;
 &quot;絢瀬 絵里&quot;,&quot;μ&#39;s&quot;,&quot;&quot;
@@ -386,7 +386,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </pre></div>
 
 
-<p><code>db.executescript('...')</code> 可以執行一系列的 SQL 指令（注意指令間要有分號）。另外使用 <code>with db: ...</code> 作用是會 sqlite3 module 會自動幫我們把中間的 SQL 指令送出<sup id="fnref:sqlite3 auto commit"><a class="footnote-ref" href="#fn:sqlite3 auto commit" rel="footnote">2</a></sup>，等同於：</p>
+<p><code>db.executescript('...')</code> 可以執行一系列的 SQL 指令（注意指令間要有分號）。另外使用 <code>with db: ...</code> 作用是會 sqlite3 module 會自動幫我們把中間的 SQL 指令送出<sup id="fnref:sqlite3 auto commit"><a class="footnote-ref" href="#fn:sqlite3 auto commit">2</a></sup>，等同於：</p>
 <div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="o">.</span><span class="n">executescript</span><span class="p">(</span><span class="n">create_db_sql</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
@@ -483,7 +483,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 
 <p>一下子多了很多 code，如果太複雜可以先當作就是這樣吧。</p>
 <p>需要了解的部份，第一是 <code>g</code> 這個變數裡可以放很多需要傳來傳去的變數，所以就把建立好的資料庫連線放在 <code>g._database</code>。平常如果要用這個連線的話，就用 <code>db = get_db()</code> 去拿。</p>
-<p>第二是我們把資料的路徑等等，都寫成變數放在程式碼的最開頭。這是個好習慣，把常數跟程式分開來，管理才方便<sup id="fnref:flask-config"><a class="footnote-ref" href="#fn:flask-config" rel="footnote">3</a></sup>。</p>
+<p>第二是我們把資料的路徑等等，都寫成變數放在程式碼的最開頭。這是個好習慣，把常數跟程式分開來，管理才方便<sup id="fnref:flask-config"><a class="footnote-ref" href="#fn:flask-config">3</a></sup>。</p>
 <h3 id="first-view-first-template">First view, first template</h3>
 <p>先來做首頁，把 HTML 放在 <code>templates/index.html</code>。</p>
 <div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
@@ -903,13 +903,13 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 <hr>
 <ol>
 <li id="fn:1">
-<p>在資料處理上其實會有個 NA 的值來區分「空」以及「空值」的概念。不過這用 Python 內建的 <code>csv.reader</code> 處理會太複雜就先算了。&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p>在資料處理上其實會有個 NA 的值來區分「空」以及「空值」的概念。不過這用 Python 內建的 <code>csv.reader</code> 處理會太複雜就先算了。&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:sqlite3 auto commit">
-<p>參考<a href="https://docs.python.org/3.5/library/sqlite3.html#using-the-connection-as-a-context-manager">官方說明文件</a>，它是在進入 <code>with db: ...</code> code block 時開啟一個 transaction，並在正常離開的時候自動 commit。如果中間遇到沒有處理的 Exception 時，就會自動 roll back。&#160;<a class="footnote-backref" href="#fnref:sqlite3 auto commit" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<p>參考<a href="https://docs.python.org/3.5/library/sqlite3.html#using-the-connection-as-a-context-manager">官方說明文件</a>，它是在進入 <code>with db: ...</code> code block 時開啟一個 transaction，並在正常離開的時候自動 commit。如果中間遇到沒有處理的 Exception 時，就會自動 roll back。&#160;<a class="footnote-backref" href="#fnref:sqlite3 auto commit" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 <li id="fn:flask-config">
-<p>其實 Flask 相關的設定通常放在 <code>app.config</code> 裡面，不過我們的例子沒差。&#160;<a class="footnote-backref" href="#fnref:flask-config" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+<p>其實 Flask 相關的設定通常放在 <code>app.config</code> 裡面，不過我們的例子沒差。&#160;<a class="footnote-backref" href="#fnref:flask-config" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div></section>

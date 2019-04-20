@@ -51,7 +51,7 @@
 
 
 &lt;p&gt;Commands above can be scripted into SQLite like:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sqlite3 mydb.sqlite &amp;amp;lt; load_data.sql
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sqlite3 mydb.sqlite &amp;lt; load_data.sql
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -397,7 +397,7 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;但這樣 numpy 會傳兩次 copy&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt; 回來，資料很大的時候就沒效率。所以要怎麼做呢？&lt;/p&gt;
+&lt;p&gt;但這樣 numpy 會傳兩次 copy&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt; 回來，資料很大的時候就沒效率。所以要怎麼做呢？&lt;/p&gt;
 &lt;p&gt;參考 &lt;a href="http://stackoverflow.com/a/30918530"&gt;Stack Overflow&lt;/a&gt; 上的回答，底下幾種方式都可以。最簡單的方法就是透過 &lt;a href="http://docs.scipy.org/doc/numpy-1.10.1/reference/generated/numpy.ix_.html#numpy.ix_"&gt;numpy.ix_()&lt;/a&gt;，&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ix_&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;])]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -454,7 +454,7 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 &lt;hr&gt;
 &lt;ol&gt;
 &lt;li id="fn:1"&gt;
-&lt;p&gt;在這情況資料會被 copy 傳回來，但如果是 &lt;code&gt;start:end:step&lt;/code&gt; 的 simple indexing 就只會回傳 view。&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;在這情況資料會被 copy 傳回來，但如果是 &lt;code&gt;start:end:step&lt;/code&gt; 的 simple indexing 就只會回傳 view。&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</content><category term="zh"></category><category term="python"></category><category term="numpy"></category><category term="pandas"></category></entry></feed>

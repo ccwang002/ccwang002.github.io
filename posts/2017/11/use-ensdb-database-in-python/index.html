@@ -66,7 +66,7 @@
                 <a href="https://blog.liang2.tw/tag/ensembldb/">ensembldb</a>
     </span>
     <section class="post-content"><p>I found that there isn&rsquo;t a systematic way to query and convert genomic annotation IDs in Python. At least there isn&rsquo;t one as good as <a href="https://www.bioconductor.org/help/workflows/annotation/annotation/">what R/Bioconductor currently has</a>. If you&rsquo;ve never heard of R/Bioconductor annotation tool stack before, check out <a href="https://www.bioconductor.org/help/workflows/annotation/annotation/">the official workflow</a> or <a href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/">my post in 2016</a> specific for querying Ensembl annotations.</p>
-<p>Although I enjoy using R for genomic annotation conversion, a few days ago I wanted to do the same thing inside my text processing script in Python. I might be able to re-write the script in R but I feel like R is not really the right tool for this task and on top of it, I don&rsquo;t know how to write an efficent text processing in R<sup id="fnref:r-text-processing"><a class="footnote-ref" href="#fn:r-text-processing" rel="footnote">1</a></sup>. </p>
+<p>Although I enjoy using R for genomic annotation conversion, a few days ago I wanted to do the same thing inside my text processing script in Python. I might be able to re-write the script in R but I feel like R is not really the right tool for this task and on top of it, I don&rsquo;t know how to write an efficent text processing in R<sup id="fnref:r-text-processing"><a class="footnote-ref" href="#fn:r-text-processing">1</a></sup>. </p>
 <p>Knowing the fact that all annotations in R are stored in single-file SQLite databases, I should be able to connect the database directly Python or any other language and wirte SQL query to retrieve the same information. So my question now becomes to how to extract or find the path to the databases. Turn out that many new Bioconductor annotation packages are hosted via <a href="https://bioconductor.org/packages/release/bioc/html/AnnotationHub.html">AnnotationHub</a>, and user can search for the annotation package and retrieve them locally by their ID. For example, all the recent Ensembl releases, e.g., <code>EnsDb.Hsapiens.vXX</code>, are available on AnnotationHub. </p>
 <p>After digging around a bit, I am able to query the AnnotationHub, download the correct EnsDB SQLite database file, and make SQL queries for the annotation ID conversion without any R package. I will share the details in the rest of the post. </p>
 <div class="toc">
@@ -89,11 +89,11 @@ Now AnnotationHub has a nice <a href="https://annotationhub.bioconductor.org/">w
 <p>The following section is the old way to navigate through AnnotationHub&rsquo;s database.</p>
 <h2 id="manual-query-in-annotationhub">Manual query in AnnotationHub</h2>
 <p>When one wants to use the R package AnnotationHub, the common usage is </p>
-<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>AnnotationHub<span class="p">)</span>
-ah <span class="o">&lt;-</span> AnnotationHub<span class="p">()</span>
+<div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">AnnotationHub</span><span class="p">)</span>
+<span class="n">ah</span> <span class="o">&lt;-</span> <span class="nf">AnnotationHub</span><span class="p">()</span>
 <span class="c1">## snapshotDate(): 2017-10-27</span>
 
-query<span class="p">(</span>ah<span class="p">,</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;EnsDb&quot;</span><span class="p">,</span> <span class="s">&quot;Homo sapiens&quot;</span><span class="p">))</span>
+<span class="nf">query</span><span class="p">(</span><span class="n">ah</span><span class="p">,</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;EnsDb&quot;</span><span class="p">,</span> <span class="s">&quot;Homo sapiens&quot;</span><span class="p">))</span>
 </pre></div>
 
 
@@ -189,7 +189,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.</p>
 <hr>
 <ol>
 <li id="fn:r-text-processing">
-<p>Based on my impression, my R expert friends would probably recommend me to write it with R-cpp, which I think would be over-kill for such a small task. But my impression can be wrong. Feel free to share your thoughts!&#160;<a class="footnote-backref" href="#fnref:r-text-processing" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p>Based on my impression, my R expert friends would probably recommend me to write it with R-cpp, which I think would be over-kill for such a small task. But my impression can be wrong. Feel free to share your thoughts!&#160;<a class="footnote-backref" href="#fnref:r-text-processing" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div></section>

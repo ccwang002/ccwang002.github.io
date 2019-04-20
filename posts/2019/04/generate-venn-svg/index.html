@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="author" content="Liang-Bo Wang" />
+<meta name="description" content="I find myself generating Venn diagrams quite often. While there are many available Venn diagram plotting libraries available, they don’t always fit my …" />
+<meta name="keywords" content="en">
+	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<title>Generate Venn diagrams easily</title>
+
+	<!-- og -->
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Liang-Bo Wang's Blog"/>
+<meta property="og:title" content="Generate Venn diagrams easily"/>
+<meta property="og:description" content="I find myself generating Venn diagrams quite often. While there are many available Venn diagram plotting libraries available, they don’t always fit my …"/>
+<meta property="og:locale" content=""/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2019/04/generate-venn-svg/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2019-04-20 00:00:00-05:00"/>
+<meta property="article:modified_time" content="2019-04-20 00:00:00-05:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
+<meta property="article:section" content="Bioinfo"/>
+<meta property="article:tag" content="en"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Generate Venn diagrams easily">
+<meta name="twitter:description" content="I find myself generating Venn diagrams quite often. While there are many available Venn diagram plotting libraries available, they don’t always fit my …">
+
+	<!-- Feeds -->
+	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
+		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
+
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?bd17f8d9" rel="stylesheet" />
+</head>
+
+<body class="post-template">
+	<header class="site-head">
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang-Bo Wang's Blog</a></h1>
+		<h2 class="blog-description">
+			<a href="https://blog.liang2.tw/about-me/">About</a> |
+			<a href="https://blog.liang2.tw/talks/">Talks</a> |
+			<a href="https://blog.liang2.tw/archives.html">Archives</a>
+		</h2>
+	</header>
+	<main id="content" class="content" role="main">
+<article class="post en-post">
+    <span class="post-meta">
+        <time datetime="Apr 20, 2019">Apr 20, 2019</time>
+        in <a href="https://blog.liang2.tw/category/bioinfo/">Bioinfo</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2019/04/generate-venn-svg/" rel="bookmark" title="Permalink to Generate Venn diagrams easily">Generate Venn diagrams easily</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/en/">en</a>
+    </span>
+    <section class="post-content"><p>I find myself generating Venn diagrams quite often.  While there are many available Venn diagram plotting libraries available, they don&rsquo;t always fit my need.  My inputs of the diagram are the set sizes rather than lists of observations.  And after drawing the Venn diagram, I often edit them to integrate with other figures, so I prefer a vector format like SVG, which not all the libraries offer.</p>
+<p>So I made <a href="https://observablehq.com/@ccwang002/simple-venn-diagram-generator">an Observable Notebook</a> that allows me to interactively modify the Venn diagram, and download the output as a SVG file. It&rsquo;s built on the <a href="https://github.com/benfred/venn.js/">venn.js</a> library, which does all the heavy lifting.</p>
+<p>Here is the screenshot of the diagram drawing interface (see it live on <a href="https://observablehq.com/@ccwang002/simple-venn-diagram-generator">the notebook</a>):</p>
+<div class="figure">
+  <img src="https://blog.liang2.tw/posts/2019/04/generate-venn-svg/pics/venn_nb.png">
+  <p class="caption">Screenshot of the Observable Notebook</p>
+</div>
+
+<p>The set sizes can be easily tweaked by editing the <code>sets</code> variable. The colors of the two sets can be configured by clicking on the color blocks. There is a button to download the generated Venn diagram. Finally, everything changes will interactively reflect on the diagram.</p>
+<p>What&rsquo;s more cool about the Observable Notebook is I can simply modify the code to change the output. If I want to a new set to have a three-way Venn diagram, I just need to update the <code>sets</code>. For example, copy paste the following to the notebook: </p>
+<div class="highlight"><pre><span></span><span class="nx">sets</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">{</span><span class="nx">sets</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="nx">size</span><span class="o">:</span> <span class="mi">1700</span><span class="p">,</span> <span class="nx">fill</span><span class="o">:</span> <span class="nx">set0_color</span><span class="p">},</span>
+  <span class="p">{</span><span class="nx">sets</span><span class="o">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="nx">size</span><span class="o">:</span> <span class="mi">1350</span><span class="p">,</span> <span class="nx">fill</span><span class="o">:</span> <span class="nx">set1_color</span><span class="p">},</span>
+  <span class="p">{</span><span class="nx">sets</span><span class="o">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="nx">size</span><span class="o">:</span> <span class="mi">700</span><span class="p">,</span> <span class="nx">fill</span><span class="o">:</span> <span class="s1">&#39;green&#39;</span><span class="p">},</span>
+  <span class="p">{</span><span class="nx">sets</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="nx">size</span><span class="o">:</span> <span class="mi">1200</span><span class="p">},</span>
+  <span class="p">{</span><span class="nx">sets</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="nx">size</span><span class="o">:</span> <span class="mi">500</span><span class="p">},</span>
+  <span class="p">{</span><span class="nx">sets</span><span class="o">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="nx">size</span><span class="o">:</span> <span class="mi">450</span><span class="p">},</span>
+  <span class="p">{</span><span class="nx">sets</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="nx">size</span><span class="o">:</span> <span class="mi">350</span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+
+
+<p>And I will get the following new Venn diagram in SVG:</p>
+<div class="figure">
+  <img src="https://blog.liang2.tw/posts/2019/04/generate-venn-svg/pics/threeway_venn.svg">
+</div>
+
+<p>I hope now I will spend less time figuring out how to draw a Venn diagram.</p></section>
+    <footer class="post-footer">
+<section class="share">
+    <h2>Share</h2>
+    <a class="icon-twitter" href="https://twitter.com/share?text=Generate Venn diagrams easily&amp;url=https://blog.liang2.tw/posts/2019/04/generate-venn-svg/"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u=https://blog.liang2.tw/posts/2019/04/generate-venn-svg/"
+        onclick="window.open(this.href, 'facebook-share', 'width=580,height=296'); return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.liang2.tw/posts/2019/04/generate-venn-svg/"
+        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2019/04/generate-venn-svg/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2019/04/generate-venn-svg/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
+    <footer>
+</article>
+	</main>
+	<footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags.html">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/ccwang002">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">
+				Built using <a href="https://getpelican.com/">Pelican</a>.
+				Powered by the <a href="https://kura.github.io/hauntr/">Hauntr</a> theme.
+			</section>
+		</div>
+	</footer>
+</body>
+</html>

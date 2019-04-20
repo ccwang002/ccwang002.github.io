@@ -70,7 +70,7 @@ shell for macOS, Linux, and the rest of the family.</p>
 <p>Among all of its features, I particularly enjoy how the autocompletions are widely available and easy to use for generally all common commands and operations. I think I&rsquo;ve got spoiled by the autocompletion so much that sometimes I get lazy at typing the full commands. Undoubtedly, fish is my login shell, replacing the ubiquitous Bash shell.</p>
 <p>Most of the time, one can change the login shell by the command <code>chsh</code>. In order to let <code>chsh</code> accept the new fish shell, it must be added into the list of all accepted shells which requires root permission. However, in many occasions including working on a large shared server, one may not has the permission to add new shell and thus the options for the login shell are often limited.  </p>
 <h4 id="replacing-login-shell-by-exec">Replacing login shell by <code>exec</code></h4>
-<p>Alternative solution will be calling the new shell upon the execution of current shell.  A POSIX-compliant shell<sup id="fnref:posix"><a class="footnote-ref" href="#fn:posix" rel="footnote">1</a></sup> should always read the <code>.profile</code> configuration file upon login, the following command execute fish and sweep the process with the current running shell (usually, bash). </p>
+<p>Alternative solution will be calling the new shell upon the execution of current shell.  A POSIX-compliant shell<sup id="fnref:posix"><a class="footnote-ref" href="#fn:posix">1</a></sup> should always read the <code>.profile</code> configuration file upon login, the following command execute fish and sweep the process with the current running shell (usually, bash). </p>
 <div class="highlight"><pre><span></span><span class="nb">exec</span> -l <span class="nv">$SHELL</span> -l
 </pre></div>
 
@@ -106,7 +106,7 @@ shell for macOS, Linux, and the rest of the family.</p>
 <hr>
 <ol>
 <li id="fn:posix">
-<p>Interestingly, fish is not a POSIX-compliant shell so it won&rsquo;t read <code>~/.profile</code> configuration file.&#160;<a class="footnote-backref" href="#fnref:posix" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p>Interestingly, fish is not a POSIX-compliant shell so it won&rsquo;t read <code>~/.profile</code> configuration file.&#160;<a class="footnote-backref" href="#fnref:posix" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div></section>

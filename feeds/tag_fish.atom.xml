@@ -10,7 +10,7 @@ shell for macOS, Linux, and the rest of the family.&lt;/p&gt;
 &lt;p&gt;Among all of its features, I particularly enjoy how the autocompletions are widely available and easy to use for generally all common commands and operations. I think I&amp;rsquo;ve got spoiled by the autocompletion so much that sometimes I get lazy at typing the full commands. Undoubtedly, fish is my login shell, replacing the ubiquitous Bash shell.&lt;/p&gt;
 &lt;p&gt;Most of the time, one can change the login shell by the command &lt;code&gt;chsh&lt;/code&gt;. In order to let &lt;code&gt;chsh&lt;/code&gt; accept the new fish shell, it must be added into the list of all accepted shells which requires root permission. However, in many occasions including working on a large shared server, one may not has the permission to add new shell and thus the options for the login shell are often limited.  &lt;/p&gt;
 &lt;h4 id="replacing-login-shell-by-exec"&gt;Replacing login shell by &lt;code&gt;exec&lt;/code&gt;&lt;/h4&gt;
-&lt;p&gt;Alternative solution will be calling the new shell upon the execution of current shell.  A POSIX-compliant shell&lt;sup id="fnref:posix"&gt;&lt;a class="footnote-ref" href="#fn:posix" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt; should always read the &lt;code&gt;.profile&lt;/code&gt; configuration file upon login, the following command execute fish and sweep the process with the current running shell (usually, bash). &lt;/p&gt;
+&lt;p&gt;Alternative solution will be calling the new shell upon the execution of current shell.  A POSIX-compliant shell&lt;sup id="fnref:posix"&gt;&lt;a class="footnote-ref" href="#fn:posix"&gt;1&lt;/a&gt;&lt;/sup&gt; should always read the &lt;code&gt;.profile&lt;/code&gt; configuration file upon login, the following command execute fish and sweep the process with the current running shell (usually, bash). &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;exec&lt;/span&gt; -l &lt;span class="nv"&gt;$SHELL&lt;/span&gt; -l
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -46,7 +46,7 @@ shell for macOS, Linux, and the rest of the family.&lt;/p&gt;
 &lt;hr&gt;
 &lt;ol&gt;
 &lt;li id="fn:posix"&gt;
-&lt;p&gt;Interestingly, fish is not a POSIX-compliant shell so it won&amp;rsquo;t read &lt;code&gt;~/.profile&lt;/code&gt; configuration file.&amp;#160;&lt;a class="footnote-backref" href="#fnref:posix" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Interestingly, fish is not a POSIX-compliant shell so it won&amp;rsquo;t read &lt;code&gt;~/.profile&lt;/code&gt; configuration file.&amp;#160;&lt;a class="footnote-backref" href="#fnref:posix" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</content><category term="en"></category><category term="fish"></category><category term="shell"></category></entry></feed>
