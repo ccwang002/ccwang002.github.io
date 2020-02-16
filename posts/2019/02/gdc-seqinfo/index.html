@@ -65,7 +65,7 @@
 <p>Anyway, I was trying to correctly store the full GRCh38.d1.vd1 genome information in the <code>GRanges</code> and <code>GRangesList</code> R objects, which can be done by creating a <code>Seqinfo</code> object representing all its chromosomes. It was also fun to get familiar with the genomic data structures in R. </p>
 <h3 id="build-gdcs-seqinfo">Build GDC&rsquo;s Seqinfo</h3>
 <p>First, we need the length and the name of all chromosomes in GRCh38.d1.vd1.  I used samtools to extract the information as a <code>.dict</code> file from the genome reference FASTA file.</p>
-<div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">GDC_REF_FA_URL</span><span class="o">=</span><span class="s1">&#39;https://api.gdc.cancer.gov/data/254f697d-310d-4d7d-a27b-27fbf767a834&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">GDC_REF_FA_URL</span><span class="o">=</span><span class="s1">&#39;https://api.gdc.cancer.gov/data/254f697d-310d-4d7d-a27b-27fbf767a834&#39;</span>
 curl -Lo GRCh38.d1.vd1.fa.tar.gz <span class="nv">$GDC_REF_FA_URL</span>
 samtools dict <span class="se">\</span>
     -a <span class="s1">&#39;GRCh38.d1.vd1&#39;</span> -s <span class="s1">&#39;Homo sapiens&#39;</span> <span class="se">\</span>
@@ -76,11 +76,11 @@ head -n <span class="m">3</span> GRCh38.d1.vd1.dict
 <span class="c1"># @HD   VN:1.0  SO:unsorted</span>
 <span class="c1"># @SQ   SN:chr1 LN:248956422    M5:6aef897c3d6ff0c78aff06ac189178dd UR:https://api.gdc.cancer.gov/data/254f697d-310d-4d7d-a27b-27fbf767a834 AS:GRCh38.d1.vd1    SP:Homo sapiens</span>
 <span class="c1"># @SQ   SN:chr2 LN:242193529    M5:f98db672eb0993dcfdabafe2a882905c UR:https://api.gdc.cancer.gov/data/254f697d-310d-4d7d-a27b-27fbf767a834 AS:GRCh38.d1.vd1    SP:Homo sapiens</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Seqinfo also requires the information of whether a chromosome is circular. In GDC&rsquo;s case,  mitochondria chromosome and all viruses sequences are circular. Combining all the information together, we can construct the Seqinfo object describing the genome GRCh38.d1.vd1.</p>
-<div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">GenomeInfoDb</span><span class="p">)</span>
 
 <span class="n">gdc_simple_tbl</span> <span class="o">&lt;-</span> <span class="nf">read_tsv</span><span class="p">(</span>
@@ -104,11 +104,11 @@ head -n <span class="m">3</span> GRCh38.d1.vd1.dict
     <span class="n">isCircular</span> <span class="o">=</span> <span class="n">gdc_simple_tbl</span><span class="o">$</span><span class="n">circular</span><span class="p">,</span>
     <span class="n">genome</span> <span class="o">=</span> <span class="s">&#39;GRCh38.d1.vd1&#39;</span>
 <span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Now we can supply it to any <code>GRanges</code> object coming out from any GDC&rsquo;s sequencing data.</p>
-<div class="highlight"><pre><span></span><span class="gp">&gt; </span><span class="n">gdc_seqinfo</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt; </span><span class="n">gdc_seqinfo</span>
 <span class="go">Seqinfo object with 2779 sequences (191 circular) from GRCh38.d1.vd1 genome:</span>
 <span class="go">  seqnames   seqlengths isCircular        genome</span>
 <span class="go">  chr1        248956422      FALSE GRCh38.d1.vd1</span>
@@ -122,12 +122,12 @@ head -n <span class="m">3</span> GRCh38.d1.vd1.dict
 <span class="go">  HPV-mL55         7177       TRUE GRCh38.d1.vd1</span>
 <span class="go">  HPV-mRTRX7       7731       TRUE GRCh38.d1.vd1</span>
 <span class="go">  HPV-mSD2         7300       TRUE GRCh38.d1.vd1</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>I store the <code>gdc_seqinfo</code> as a RDS file (<a href="https://blog.liang2.tw/posts/2019/02/gdc-seqinfo/results/seqinfo_GRCh38.d1.vd1.rds">link</a> here) so I can re-use it easily.</p>
-<div class="highlight"><pre><span></span><span class="n">gdc_seqinfo</span> <span class="o">&lt;-</span> <span class="nf">readRDS</span><span class="p">(</span><span class="s">&#39;seqinfo_GRCh38.d1.vd1.rds&#39;</span><span class="p">)</span>
-</pre></div></section>
+<div class="highlight"><pre><span></span><code><span class="n">gdc_seqinfo</span> <span class="o">&lt;-</span> <span class="nf">readRDS</span><span class="p">(</span><span class="s">&#39;seqinfo_GRCh38.d1.vd1.rds&#39;</span><span class="p">)</span>
+</code></pre></div></section>
     <footer class="post-footer">
 <section class="share">
     <h2>Share</h2>

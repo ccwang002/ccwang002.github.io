@@ -110,10 +110,10 @@
 <p>然後建議我們去讀一篇批評 ENCODE 的論文<sup id="fnref:ENCODE paper"><a class="footnote-ref" href="#fn:ENCODE paper">2</a></sup>，被他評之為近十年最辛辣，標題也非常有趣。</p>
 <h3 id="noncoding-variants">Noncoding variants</h3>
 <p>從 non-coding elements 我們能知道控制 gene expression 可以從很多面向切入，於是討論 non-coding variant 時就會有很多不同的機制影響 gene expression。底下針對所謂的 enhancers (RE) 和 promoters 來畫個簡單的示意圖：</p>
-<div class="highlight"><pre><span></span>     TF1  TF2  TF3         TF4  [RNA PolII]
+<div class="highlight"><pre><span></span><code>     TF1  TF2  TF3         TF4  [RNA PolII]
 ----[  enhancer  ]-------[promoter]--[gene body]-------------------------
   &lt;-- Topologically Associating Domain, TAD -----&gt;   &lt;-- Another TAD --&gt;
-</pre></div>
+</code></pre></div>
 
 
 <p>RNA Polymerase II (RNA PolII) 負責 gene transcription，而 promoter 是一段在 gene body 前不特定的序列可以吸引 RNA PolII 來提高 gene transcription rate，很有可能就會提高 gene expression。TF 可能會辨別 promoter 上特定的序列，它對 PolII 有更強的吸引力。除了 promoter 之外，enhancer 相較於 gene body 的距離就更不確定，可能是 10kb 或 100kb 之外，但它在立體的距離可能非常近，本身也可以 recruit TF 然後增加 Pol affinity。這一切可以用抑制、競爭的角度來想產生負向的調控。</p>
@@ -122,8 +122,8 @@
 <p>在 non-coding 複雜的交互作用的另一面，代表了每個交互作用很可能僅改變了基因表達的程度，而不是大幅度的開關。但這也代表他們對生物體不一定有很強的影響，所以有變化並一定代表它有功能。不過，不同的 cell type 倒可以用透過 TF 有無來調控一系列的 gene，而不是一味增加 gene 數量。因此，在很多情況下，了解 non-coding variants 造成的影響是很有趣的。</p>
 <h3 id="endophenotypes">Endophenotypes</h3>
 <p>我們要如何看 non-coding variants 呢？首先要了解從 genotype 到 phenotype 其實中間包含了很多層級：</p>
-<div class="highlight"><pre><span></span>DNA (genotype) →  RNA →  Proteins →  Metabolites →  Phenotype
-</pre></div>
+<div class="highlight"><pre><span></span><code>DNA (genotype) →  RNA →  Proteins →  Metabolites →  Phenotype
+</code></pre></div>
 
 
 <p>中間的每個步驟都可能影響，或不會傳遞影響至下個階段。但我們在 DNA 和 RNA level 有非常好的工具─定序─可以同時看 genome wide 非常多基因或區域。於是在大多數的情況我們都只有看到 endophenotypes，要務必僅記在心這和真正的 phenotype 是有所差異的。</p>
@@ -139,9 +139,9 @@
 <h2 id="mpra">MPRA</h2>
 <p>於是我們可以想辦法設計實驗來進一步解釋 eQTL。實驗可以從兩個方向來設計：necessary 和 sufficient。Necessity 可以透過 CRISPR 設計一系列的 tiled gRNAs 把某個 eQTL 逐步刪掉。平行化這個實驗，可以透過 growth selection 和 single cell sequencing 讀出是哪些 gRNAs 最有影響力。</p>
 <p>在 sufficiency 方面，我們可以設計 reporter assay 來回答這問題：</p>
-<div class="highlight"><pre><span></span>-----------------------------[weak promoter]--[GFP]--
+<div class="highlight"><pre><span></span><code>-----------------------------[weak promoter]--[GFP]--
 ---[cis RE, CRE]-------------[weak promoter]--[GFP]--
-</pre></div>
+</code></pre></div>
 
 
 <p>reporter assay 可以用個 plasmid 放到 target cell，但要怎麼平行化，同時看很多 genes 呢？這時候就是 MPRA (Massively Parallel Reporter Assay) 表現的時候了。我們可以用 DNA synthesis 把該 <em>cis</em>-regulatory element (CRE) 和 barcode 做出來，可以建立一個 CRE library，用 RNA-seq 就可以同時看到不同 CRE 所造成的 gene expression change。當然細節有像 normalization DNA amount 和 barcode efficiency，但我們可以用 MPRA 來分析 CRE。</p>

@@ -11,15 +11,15 @@ shell for macOS, Linux, and the rest of the family.&lt;/p&gt;
 &lt;p&gt;Most of the time, one can change the login shell by the command &lt;code&gt;chsh&lt;/code&gt;. In order to let &lt;code&gt;chsh&lt;/code&gt; accept the new fish shell, it must be added into the list of all accepted shells which requires root permission. However, in many occasions including working on a large shared server, one may not has the permission to add new shell and thus the options for the login shell are often limited.  &lt;/p&gt;
 &lt;h4 id="replacing-login-shell-by-exec"&gt;Replacing login shell by &lt;code&gt;exec&lt;/code&gt;&lt;/h4&gt;
 &lt;p&gt;Alternative solution will be calling the new shell upon the execution of current shell.  A POSIX-compliant shell&lt;sup id="fnref:posix"&gt;&lt;a class="footnote-ref" href="#fn:posix"&gt;1&lt;/a&gt;&lt;/sup&gt; should always read the &lt;code&gt;.profile&lt;/code&gt; configuration file upon login, the following command execute fish and sweep the process with the current running shell (usually, bash). &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;exec&lt;/span&gt; -l &lt;span class="nv"&gt;$SHELL&lt;/span&gt; -l
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;exec&lt;/span&gt; -l &lt;span class="nv"&gt;$SHELL&lt;/span&gt; -l
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;&lt;code&gt;-l&lt;/code&gt; tells shell to act like a login shell. For more explanation about login and non-login (as well as (non-)interactive) shells can be found at &lt;a href="http://unix.stackexchange.com/a/46856"&gt;this StackOverflow answer&lt;/a&gt;. By pointing &lt;code&gt;$SHELL&lt;/code&gt; to the desired shell binary, one can achieve the similar behavior to &lt;code&gt;chsh&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;However putting &lt;code&gt;exec&lt;/code&gt; in the login profile comes with a risk that if the new shell executable crashes (e.g. failed symlink, erroneous compilation and failed dynamic library linking), one cannot establish proper shell connections. I&amp;rsquo;ve experienced these catastrophic failures for a couple of times. Since the new shell crashes when the original shell is replacing its process, one cannot set up the proper terminal session, or simply put, one will fail to login. It was not fun at all to recover.&lt;/p&gt;
 &lt;h4 id="fail-safe-shell-changing"&gt;Fail-safe shell changing&lt;/h4&gt;
 &lt;p&gt;To provide a fail-safe mechanism, I use the following code in my &lt;code&gt;~/.profile&lt;/code&gt; to change the shell. Only login shells will read this file so it won&amp;rsquo;t be executed when one runs a bash script.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;FISH_BIN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$HOME&lt;/span&gt;&lt;span class="s2"&gt;/.linuxbrew/bin/fish&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;FISH_BIN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$HOME&lt;/span&gt;&lt;span class="s2"&gt;/.linuxbrew/bin/fish&amp;quot;&lt;/span&gt;
 
 &lt;span class="c1"&gt;# The replacement is only done in non-fish login interactive shell in&lt;/span&gt;
 &lt;span class="c1"&gt;# SSH connection and fish executable exists.&lt;/span&gt;
@@ -37,7 +37,7 @@ shell for macOS, Linux, and the rest of the family.&lt;/p&gt;
         &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Fall back to default shell &lt;/span&gt;&lt;span class="nv"&gt;$SHELL&lt;/span&gt;&lt;span class="s2"&gt; ...&amp;quot;&lt;/span&gt;
     &lt;span class="k"&gt;fi&lt;/span&gt;
 &lt;span class="k"&gt;fi&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Basically we ensure whether fish executable work by running &lt;code&gt;echo '...'&lt;/code&gt; before we change the shell. By uncommenting the &lt;code&gt;exec ..&lt;/code&gt; line one will get automatically directed to fish shell. But the safest option is to run the shell change oneself. This kind of &amp;ldquo;shell swapping&amp;rdquo; will only happen when we log in the server by ssh&lt;/p&gt;
@@ -49,4 +49,4 @@ shell for macOS, Linux, and the rest of the family.&lt;/p&gt;
 &lt;p&gt;Interestingly, fish is not a POSIX-compliant shell so it won&amp;rsquo;t read &lt;code&gt;~/.profile&lt;/code&gt; configuration file.&amp;#160;&lt;a class="footnote-backref" href="#fnref:posix" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="en"></category><category term="fish"></category><category term="shell"></category></entry></feed>
+&lt;/div&gt;</content><category term="Coding"></category><category term="en"></category><category term="fish"></category><category term="shell"></category></entry></feed>

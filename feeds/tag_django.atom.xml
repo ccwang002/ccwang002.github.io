@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - django</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_django.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2016-05-24T00:00:00-05:00</updated><entry><title>使用 conda env 部署 Django</title><link href="https://blog.liang2.tw/posts/2016/05/django-deploy-conda/" rel="alternate"></link><published>2016-05-24T00:00:00-05:00</published><updated>2016-05-24T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-05-24:/posts/2016/05/django-deploy-conda/</id><summary type="html">&lt;p&gt;沒幾天前剛部署一次 Django，記錄在&lt;a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/"&gt;《使用 uWSGI、nginx、systemd 部署 Django》&lt;/a&gt;。今天又部署了另一個專案。部署的設定跟上次一樣：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;nginx -- unix socket -- uWSGI -- Django
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;nginx -- unix socket -- uWSGI -- Django&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;一樣寫一個 &lt;code&gt;PROJ.service&lt;/code&gt; 的 systemd unit 來管理網站的啟動 (uWSGI …&lt;/p&gt;</summary><content type="html">&lt;p&gt;沒幾天前剛部署一次 Django，記錄在&lt;a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/"&gt;《使用 uWSGI、nginx、systemd 部署 Django》&lt;/a&gt;。今天又部署了另一個專案。部署的設定跟上次一樣：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;nginx -- unix socket -- uWSGI -- Django
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;nginx -- unix socket -- uWSGI -- Django&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;一樣寫一個 &lt;code&gt;PROJ.service&lt;/code&gt; 的 systemd unit 來管理網站的啟動 (uWSGI)。之後提到 &lt;code&gt;PROJ&lt;/code&gt; 時就換成自己的專案名稱；&lt;code&gt;USER&lt;/code&gt; 就換成執行網站的帳號。&lt;/p&gt;
@@ -21,16 +21,16 @@
 &lt;h3 id="conda"&gt;conda&lt;/h3&gt;
 &lt;p&gt;&lt;a href="http://conda.pydata.org/"&gt;conda&lt;/a&gt; 是一個 Python 套件的管理系統，他的好處是，遇到要使用外部 library 時，會這些套件相依的 library 都一併安裝管理，也可以管理不同 Python 版本。可以想像是加強版的 pip + venv。conda 跟 pip 是相容的。&lt;/p&gt;
 &lt;p&gt;這個 Django 專案就用到很多像 numpy、pandas 的套件。為了維護方便，我考慮用 conda 來安裝。我使用的是 &lt;a href="http://conda.pydata.org/miniconda.html"&gt;miniconda3&lt;/a&gt;，預設會安裝在 &lt;code&gt;~/miniconda3&lt;/code&gt; 底下，虛擬環境會出現在 &lt;code&gt;~/miniconda3/envs/&lt;/code&gt;。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ conda create -n VENV &lt;span class="nv"&gt;python&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;.5 numpy pandas django
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ conda create -n VENV &lt;span class="nv"&gt;python&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;.5 numpy pandas django
 $ &lt;span class="nb"&gt;source&lt;/span&gt; activate VENV
 &lt;span class="o"&gt;(&lt;/span&gt;VENV&lt;span class="o"&gt;)&lt;/span&gt; $ pip install uwsgi
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;uWSGI 沒有在 conda 裡面，所以就用 pip 裝。從&lt;a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/"&gt;上次的文章&lt;/a&gt;知道系統並不用安裝。&lt;/p&gt;
 &lt;h3 id="uwsgi-path"&gt;uWSGI 和 $PATH&lt;/h3&gt;
 &lt;p&gt;理論上，之後就照著上次操作就好，但在 uWSGI 就碰到問題：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="go"&gt;$ sudo /home/USER/miniconda3/envs/VENV/bin/uwsgi --ini PROJ.ini&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="go"&gt;$ sudo /home/USER/miniconda3/envs/VENV/bin/uwsgi --ini PROJ.ini&lt;/span&gt;
 &lt;span class="go"&gt;[uWSGI] getting INI configuration from PROJ.ini&lt;/span&gt;
 &lt;span class="go"&gt;*** Starting uWSGI 2.0.13.1 (64bit) on [Wed May 25 08:04:23 2016] ***&lt;/span&gt;
 &lt;span class="go"&gt;compiled with version: 5.3.1 20160413 on 25 May 2016 01:35:28&lt;/span&gt;
@@ -59,18 +59,18 @@ $ &lt;span class="nb"&gt;source&lt;/span&gt; activate VENV
 &lt;span class="gr"&gt;  File &amp;quot;/usr/lib/python3.5/_sysconfigdata.py&amp;quot;, line 6, in &amp;lt;module&amp;gt;&lt;/span&gt;
 &lt;span class="gr"&gt;    from _sysconfigdata_m import *&lt;/span&gt;
 &lt;span class="gr"&gt;ImportError&lt;/span&gt;: &lt;span class="n"&gt;No module named &amp;#39;_sysconfigdata_m&amp;#39;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;但因為步驟實在太簡單，想不出來哪裡有錯，查網路也沒什麼相關的結果。在這邊卡了很久。&lt;/p&gt;
 &lt;p&gt;結果後來才發現，Traceback 那邊 uWSGi 跑去讀到 &lt;code&gt;/usr/lib/python3.5/site.py&lt;/code&gt;，這表示一定有環境設錯才讓它找到這個不是我們要的 python 環境，理論上應該是找到 &lt;code&gt;/home/USER/miniconda3/envs/VENV/lib/python3.5/site.py&lt;/code&gt; 才對。&lt;/p&gt;
 &lt;p&gt;經過一陣嘗試，發現只要修改 &lt;code&gt;$PATH&lt;/code&gt; 環境變數就能運作了。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo -i
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo -i
 &lt;span class="gp"&gt;#&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$PATH&lt;/span&gt;
 &lt;span class="go"&gt;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin&lt;/span&gt;
 &lt;span class="gp"&gt;#&lt;/span&gt; &lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/home/USER/miniconda3/envs/VENV/bin:&lt;span class="nv"&gt;$PATH&lt;/span&gt;
 &lt;span class="gp"&gt;#&lt;/span&gt; /home/USER/miniconda3/envs/VENV/bin/uwsgi --ini PROJ.ini
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3 id="sysmted-unit"&gt;在 sysmted unit 使用環境變數&lt;/h3&gt;
@@ -79,7 +79,7 @@ $ &lt;span class="nb"&gt;source&lt;/span&gt; activate VENV
 &lt;p&gt;Colon-separated list of directories to use when launching executables. Systemd uses a fixed value of /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin. &lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;預設只有以上提到的路徑，如果要修改環境變數的話，就透過 &lt;a href="https://www.freedesktop.org/software/systemd/man/systemd.exec.html#Environment="&gt;&lt;code&gt;Environment=&lt;/code&gt;&lt;/a&gt;，因此多加了一行在 systemd unit 裡。其餘的設定都是相同的。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
 &lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;PROJ Django server by uWSGI&lt;/span&gt;
 &lt;span class="na"&gt;After&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;syslog.target&lt;/span&gt;
 
@@ -94,16 +94,16 @@ $ &lt;span class="nb"&gt;source&lt;/span&gt; activate VENV
 
 &lt;span class="k"&gt;[Install]&lt;/span&gt;
 &lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;multi-user.target&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3 id="_1"&gt;結論&lt;/h3&gt;
-&lt;p&gt;如果要改用 conda 管理套件的話，只要在 systemd unit 那邊多加一行修改 $PATH，加入虛擬環境放執行檔的路徑，其餘的設定都與一般 Python 虛擬環境相同。這樣就搞定了。但這個問題花了我 1 個多小時……&lt;/p&gt;</content><category term="zh"></category><category term="python"></category><category term="django"></category><category term="postgresql"></category><category term="deploy"></category><category term="debian"></category><category term="systemd"></category><category term="nginx"></category><category term="uwsgi"></category><category term="conda"></category></entry><entry><title>使用 uWSGI、nginx、systemd 部署 Django</title><link href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/" rel="alternate"></link><published>2016-05-19T00:00:00-05:00</published><updated>2016-05-19T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-05-19:/posts/2016/05/django-deploy-uwsgi-nginx-systemd/</id><summary type="html">&lt;p&gt;上一次很認真的 Django 部署記錄在&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;《設定 Python 官方文件中文化自動更新 Server》&lt;/a&gt;一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。&lt;/p&gt;
+&lt;p&gt;如果要改用 conda 管理套件的話，只要在 systemd unit 那邊多加一行修改 $PATH，加入虛擬環境放執行檔的路徑，其餘的設定都與一般 Python 虛擬環境相同。這樣就搞定了。但這個問題花了我 1 個多小時……&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="python"></category><category term="django"></category><category term="postgresql"></category><category term="deploy"></category><category term="debian"></category><category term="systemd"></category><category term="nginx"></category><category term="uwsgi"></category><category term="conda"></category></entry><entry><title>使用 uWSGI、nginx、systemd 部署 Django</title><link href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/" rel="alternate"></link><published>2016-05-19T00:00:00-05:00</published><updated>2016-05-19T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-05-19:/posts/2016/05/django-deploy-uwsgi-nginx-systemd/</id><summary type="html">&lt;p&gt;上一次很認真的 Django 部署記錄在&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;《設定 Python 官方文件中文化自動更新 Server》&lt;/a&gt;一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。&lt;/p&gt;
 &lt;p&gt;這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;nginx -- unix socket -- uWSGI …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;上一次很認真的 Django 部署記錄在&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;《設定 Python 官方文件中文化自動更新 Server》&lt;/a&gt;一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;nginx -- unix socket -- uWSGI …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;上一次很認真的 Django 部署記錄在&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;《設定 Python 官方文件中文化自動更新 Server》&lt;/a&gt;一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。&lt;/p&gt;
 &lt;p&gt;這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;nginx -- unix socket -- uWSGI -- Django
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;nginx -- unix socket -- uWSGI -- Django&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;寫一個名為 &lt;code&gt;PROJ.service&lt;/code&gt; 的 systemd unit 來管理這網站的啟動與否。之後 &lt;code&gt;PROJ&lt;/code&gt; 就換成自己的專案名稱；&lt;code&gt;USER&lt;/code&gt; 就換成執行網站的帳號。&lt;/p&gt;
@@ -126,21 +126,21 @@ $ &lt;span class="nb"&gt;source&lt;/span&gt; activate VENV
 &lt;p&gt;參考&lt;a href="https://blog.liang2.tw/posts/2016/01/postgresql-install/"&gt;《安裝 PostgreSQL 9 於 Debian Jessie / OSX》&lt;/a&gt;一文設定。建立跟 OS user 同名的 PostgreSQL 帳號，給了建立 database 的權限，這樣開發比較方便。不用設定密碼。&lt;/p&gt;
 &lt;h3 id="django-proj"&gt;Django PROJ&lt;/h3&gt;
 &lt;p&gt;使用內建 &lt;a href="https://docs.python.org/3/library/venv.html"&gt;venv&lt;/a&gt; 在自己家目錄下某處，建立名為 &lt;code&gt;VENV&lt;/code&gt; 的虛擬環境：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python3.5 -m venv VENV
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;python3.5 -m venv VENV
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;有關部署的設定（即 &lt;code&gt;settings.py&lt;/code&gt;），利用 &lt;a href="https://github.com/joke2k/django-environ"&gt;django-environ&lt;/a&gt; 把 secret key、database 連線資訊、寄信 SMTP server 等設定寫在獨立的檔案，就可以讓 local 和 production 環境讀到各自的設定。具體的做法可以參考 &lt;a href="https://github.com/pycontw/pycontw2016/blob/master/src/pycontw2016/settings/production.py"&gt;PyCon Taiwan 2016 網站管理設定&lt;/a&gt; 的寫法。&lt;/p&gt;
 &lt;p&gt;在連 PostgreSQL 時使用 local connection (Unix-domain socket)，即使用者同名的身份。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="na"&gt;DATABASE_URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;postgres:///TABLE_NAME&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="na"&gt;DATABASE_URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;postgres:///TABLE_NAME&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3 id="tmpfilesd"&gt;tmpfiles.d&lt;/h3&gt;
 &lt;p&gt;把 nginx 與 uwsgi 溝通用的 socket 放在 &lt;code&gt;/run/PROJ&lt;/code&gt; 底下，但這也表示重開機之後，&lt;code&gt;/run/PROJ&lt;/code&gt; 資料夾就會消失不見，所以使用 &lt;a href="https://www.freedesktop.org/software/systemd/man/tmpfiles.d.html"&gt;tmpfiles.d&lt;/a&gt;&lt;sup id="fnref:systemd-runtimedir"&gt;&lt;a class="footnote-ref" href="#fn:systemd-runtimedir"&gt;1&lt;/a&gt;&lt;/sup&gt;。除了資料夾的命名改成用專案名稱，設定都跟&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;舊文&lt;/a&gt;一樣。&lt;/p&gt;
 &lt;h3 id="nginx"&gt;nginx&lt;/h3&gt;
 &lt;p&gt;nginx 設定跟&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;舊文&lt;/a&gt;一樣。放在 &lt;code&gt;/etc/nginx/sites-available/PROJ.conf&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Upstream Django setting; the socket nginx connects to&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Upstream Django setting; the socket nginx connects to&lt;/span&gt;
 &lt;span class="k"&gt;upstream&lt;/span&gt; &lt;span class="s"&gt;django&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="kn"&gt;server&lt;/span&gt; &lt;span class="s"&gt;unix:///run/PROJ/django.sock&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
@@ -166,20 +166,20 @@ $ &lt;span class="nb"&gt;source&lt;/span&gt; activate VENV
         &lt;span class="kn"&gt;include&lt;/span&gt;     &lt;span class="s"&gt;/etc/nginx/uwsgi_params&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;&lt;code&gt;/path/to/PROJ/assets&lt;/code&gt; 是 Django &lt;a href="https://docs.djangoproject.com/en/1.9/ref/settings/#std:setting-STATIC_ROOT"&gt;STATIC_ROOT&lt;/a&gt; 的路徑。只要執行 &lt;code&gt;python manage.py collectstatic&lt;/code&gt; 後，即使 uWSGI 還沒設定就可以測試 /static/&amp;hellip;/ 有沒有被 nginx 抓到。 &lt;/p&gt;
 &lt;p&gt;啟動時，先把檔案連結到 &lt;code&gt;/etc/nginx/site-enabled/&lt;/code&gt;，重載 nginx 設定：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /etc/nginx/sites-enabled/
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /etc/nginx/sites-enabled/
 sudo ln -s ../sites-available/PROJ.conf .
 sudo systemctl reload nginx
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3 id="uwsgi"&gt;uWSGI&lt;/h3&gt;
 &lt;p&gt;跟舊文最大的差別，只要裝在 VENV 裡面就好了；然後也不使用 emperor mode。寫一個 &lt;code&gt;/etc/uwsgi/vassals/PROJ.ini&lt;/code&gt; 放設定：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[uwsgi]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[uwsgi]&lt;/span&gt;
 &lt;span class="na"&gt;chdir&lt;/span&gt;        &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;/path/to/PROJ&lt;/span&gt;
 &lt;span class="c1"&gt;# Django&amp;#39;s wsgi file&lt;/span&gt;
 &lt;span class="na"&gt;module&lt;/span&gt;       &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;PROJ.wsgi:application&lt;/span&gt;
@@ -200,17 +200,17 @@ sudo systemctl reload nginx
 &lt;span class="na"&gt;gid&lt;/span&gt;          &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;www-data&lt;/span&gt;
 &lt;span class="c1"&gt;# clear environment on exit&lt;/span&gt;
 &lt;span class="na"&gt;vacuum&lt;/span&gt;       &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;true&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;設定好後執行以下指令，就應該能看到網站能動了。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo /path/to/VENV/bin/uwsgi --ini /etc/uwsgi/vassals/PROJ.ini
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo /path/to/VENV/bin/uwsgi --ini /etc/uwsgi/vassals/PROJ.ini
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3 id="systemd"&gt;systemd&lt;/h3&gt;
 &lt;p&gt;這邊除了執行 uWSGI 的指令不同外，都跟&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;舊文&lt;/a&gt;相同。Debian 系 systemd system unit 設定檔放在 &lt;code&gt;/etc/systemd/system/PROJ.service&lt;/code&gt;：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
 &lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;PROJ&amp;#39;s Django server by uWSGI&lt;/span&gt;
 &lt;span class="na"&gt;After&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;syslog.target&lt;/span&gt;
 
@@ -224,13 +224,13 @@ sudo systemctl reload nginx
 
 &lt;span class="k"&gt;[Install]&lt;/span&gt;
 &lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;multi-user.target&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;這邊設定它會（有錯誤時）自動重新起動，並把 stderr 導到 syslog。接著，就要啟動這個 &lt;code&gt;PROJ.service&lt;/code&gt; 服務：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo systemctl &lt;span class="nb"&gt;enable&lt;/span&gt; PROJ
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo systemctl &lt;span class="nb"&gt;enable&lt;/span&gt; PROJ
 sudo systemctl status PROJ
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;可以透過 &lt;code&gt;sudo journalctl -xe -u PROJ&lt;/code&gt; 來查看 uWSGI 執行、連線 log。&lt;/p&gt;
@@ -243,7 +243,7 @@ sudo systemctl status PROJ
 &lt;p&gt;也可以用 &lt;a href="https://www.freedesktop.org/software/systemd/man/systemd.exec.html"&gt;systemd.exec(5)&lt;/a&gt; 提到的 &lt;code&gt;RuntimeDirectory=PROJ&lt;/code&gt; 來建立執行用目錄。但因為 &lt;code&gt;PROJ.service&lt;/code&gt; 的 USER 必須是 root，這種情況 man page 就建議改用 tmpfiles.d。我覺得應該能解決使用 root 權限的問題，但太懶了就先這樣……&amp;#160;&lt;a class="footnote-backref" href="#fnref:systemd-runtimedir" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="zh"></category><category term="python"></category><category term="django"></category><category term="postgresql"></category><category term="deploy"></category><category term="debian"></category><category term="systemd"></category><category term="nginx"></category><category term="uwsgi"></category></entry><entry><title>設定 Python 官方文件中文化自動更新 Server</title><link href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/" rel="alternate"></link><published>2016-02-14T21:00:00-06:00</published><updated>2016-02-14T21:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-02-14:/posts/2016/02/pydoctw-server/</id><summary type="html">&lt;p&gt;設定一個自動更新 Python 說明文件中文翻譯並且 host 中文化網頁版文件的 server。使用 Django 作 web server、Django-Q 做為 task queue，deploy stack 用 nginx、uWSGI，host 於 Amazon EC2 (Debian Jessie)，資料庫用 PostgreSQL，並用 systemd 管理相關的 process。&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;TL;DR&lt;/em&gt; 可至 &lt;a href="http://docs.python.org.tw"&gt;http://docs.python.org.tw&lt;/a&gt; 看線上自動更新的&lt;a href="http://docs.python.org.tw/3/"&gt;中文化的文件&lt;/a&gt;和 &lt;a href="http://docs.python.org.tw/_build/"&gt;build server&lt;/a&gt;。&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="python"></category><category term="django"></category><category term="postgresql"></category><category term="deploy"></category><category term="debian"></category><category term="systemd"></category><category term="nginx"></category><category term="uwsgi"></category></entry><entry><title>設定 Python 官方文件中文化自動更新 Server</title><link href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/" rel="alternate"></link><published>2016-02-14T21:00:00-06:00</published><updated>2016-02-14T21:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-02-14:/posts/2016/02/pydoctw-server/</id><summary type="html">&lt;p&gt;設定一個自動更新 Python 說明文件中文翻譯並且 host 中文化網頁版文件的 server。使用 Django 作 web server、Django-Q 做為 task queue，deploy stack 用 nginx、uWSGI，host 於 Amazon EC2 (Debian Jessie)，資料庫用 PostgreSQL，並用 systemd 管理相關的 process。&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;TL;DR&lt;/em&gt; 可至 &lt;a href="http://docs.python.org.tw"&gt;http://docs.python.org.tw&lt;/a&gt; 看線上自動更新的&lt;a href="http://docs.python.org.tw/3/"&gt;中文化的文件&lt;/a&gt;和 &lt;a href="http://docs.python.org.tw/_build/"&gt;build server&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;EDIT 2016-02-16: 加上 language code、git sshconfig、swap 的設定；文句潤飾。&lt;br&gt;
 EDIT 2016-02-20: 加上 tmpfiles.d 的設定。&lt;/p&gt;
 &lt;div class="toc"&gt;
@@ -288,7 +288,7 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。&lt;/p&gt;
 &lt;p&gt;先簡介一下 &lt;a href="https://docs.python.org/3/"&gt;CPython Documentation&lt;/a&gt;（下稱 pydoc）的架構和翻譯方式。pydoc 是標準的 &lt;a href="http://www.sphinx-doc.org/en/stable/"&gt;Sphinx&lt;/a&gt; 文件，因此翻譯使用 Sphinx 自帶的 &lt;a href="http://www.sphinx-doc.org/en/stable/intl.html"&gt;internationalization&lt;/a&gt; (i18n or intl) 功能把文件的內容轉換到別的語言上。&lt;/p&gt;
 &lt;p&gt;如同 Django 等專案，i18n 都是透過 gettext，Sphinx 會按照 rst 檔案輸出同檔名的 po 檔。rst 檔案中的每個文字段落會對應到 po 檔一個 entry，不相干的程式碼範例等段落會被跳過。輸出的 po 檔放在對應的路徑例如 &lt;code&gt;locale/&amp;lt;lang&amp;gt;/LC_MESSAGES/xxx.po&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://en.wikipedia.org/wiki/Gettext"&gt;po 檔的格式&lt;/a&gt;很簡單，跳過有的沒的 header，實質內容長這樣：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;#: ../../tutorial/appetite.rst:50&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kd"&gt;#: ../../tutorial/appetite.rst:50&lt;/span&gt;
 &lt;span class="nv"&gt;msgid&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&amp;quot;&lt;/span&gt;
 &lt;span class="s"&gt;&amp;quot;Python enables programs to be written compactly and readably.  Programs &amp;quot;&lt;/span&gt;
 &lt;span class="s"&gt;&amp;quot;written in Python are typically much shorter than equivalent C,  C++, or &amp;quot;&lt;/span&gt;
@@ -296,7 +296,7 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。&lt;/p&gt;
 &lt;span class="nv"&gt;msgstr&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&amp;quot;&lt;/span&gt;
 &lt;span class="s"&gt;&amp;quot;Python 讓程式寫得精簡並易讀。用 Python 實作的程式長度往往遠比用 &amp;quot;&lt;/span&gt;
 &lt;span class="s"&gt;&amp;quot;C、C++、Java 實作的短。這有以下幾個原因：&amp;quot;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;實際上 Sphinx 會先輸出一份乾淨的 po 檔範本（稱為 pot 檔）到 &lt;code&gt;locale/pot/&lt;/code&gt;，基本上就是只有原文的 po 檔。每增加一個新語言就會從 pot 檔製作一份 po 檔到各自的 &lt;code&gt;locale/&amp;lt;lang&amp;gt;/&lt;/code&gt; 目錄下，翻譯時就修改那份 po 檔就可以。&lt;/p&gt;
@@ -327,11 +327,11 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。&lt;/p&gt;
 &lt;h4 id="sphinx_1"&gt;Sphinx 文件&lt;/h4&gt;
 &lt;p&gt;在 Sphinx 文件部份不想搞太複雜，就在每一頁加上一個自己的專屬連結，打這個網址就會加入一個更新該頁面的 task 到 autobuild server&lt;sup id="fnref:build-link"&gt;&lt;a class="footnote-ref" href="#fn:build-link"&gt;3&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
 &lt;p&gt;在 autobuild 時加入專屬連結只要修改 Sphinx doc template 即可。Sphinx 在 build doc 時可以透過 &lt;a href="http://www.sphinx-doc.org/en/stable/man/sphinx-build.html#options"&gt;&lt;code&gt;-A &amp;lt;name=value&amp;gt;&lt;/code&gt;&lt;/a&gt; 增加 Jinja2 template 的變數，就可控制 template render 行為：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;{# &amp;lt;cpython-src&amp;gt;/Doc/tools/templates/layout.html #}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;{# &amp;lt;cpython-src&amp;gt;/Doc/tools/templates/layout.html #}&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt;- &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nv"&gt;autobuildi18n&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
 &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;a&lt;/span&gt; &lt;span class="na"&gt;href&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/_build/update/?source_path=&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;pagename&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;Update Translation&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;a&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt;- &lt;span class="k"&gt;endif&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;ul&gt;
@@ -350,8 +350,8 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;扣掉不支援 Python 3 的套件&lt;sup id="fnref:python3"&gt;&lt;a class="footnote-ref" href="#fn:python3"&gt;4&lt;/a&gt;&lt;/sup&gt;後，就剩 django-celery、django-RQ、django-Q 可以選。這裡面最紅也最老牌的是 django-celery ，它與 &lt;a href="http://www.celeryproject.org/"&gt;Celery&lt;/a&gt; 整合，功能完整且穩定，我用過也覺得十分不錯，缺點是功能太多有點複雜，加上不同 message queue 時會有很多設定要調整，需要一段時間上手。一般 Celery 常見的搭配使用 &lt;a href="https://www.rabbitmq.com/"&gt;Rabbit-MQ&lt;/a&gt; 和 &lt;a href="http://redis.io/"&gt;Redis&lt;/a&gt;，的確在 task 很多時有必要，但我們這個 build doc 一天可能才十幾次，在不隔離 build doc 環境的情況同時間的 worker 只能有一個，不會有效能上的問題。因此我傾向只要使用與 Django 同一個 database 就好，不要再有額外非 Python 的 dependency，讓 local 開發簡單一點。&lt;/p&gt;
 &lt;p&gt;最後選擇 &lt;a href="https://django-q.readthedocs.org/"&gt;django-Q&lt;/a&gt;。雖然很新但作者維護得很勤，worker 可以只用 Python 內建的 multiprocessing 完成。功能簡單卻完整，包含 monitor，跟 django-admin 整合，還可以排程。所以要啟動 django-Q 的 cluster，只要多一個 &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python manage.py qcluster
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;python manage.py qcluster&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;即可，十分方便。&lt;/p&gt;
@@ -375,29 +375,29 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。&lt;/p&gt;
 &lt;p&gt;我的 code 裡用到了 &lt;a href="https://docs.python.org/3/library/subprocess.html#subprocess.run"&gt;&lt;code&gt;subprocess.run&lt;/code&gt;&lt;/a&gt;，這是 Python 3.5+ 才有的 API。但 Jessie 只有 Python 3.4，但我覺得很好用一點都不想改寫成相容舊版的 code。&lt;/p&gt;
 &lt;p&gt;因此需要安裝 Debian testing channel 上最新的 Python 3.5。這樣其實有安全上的疑慮，因為只有 stable channel 才有 security support，但自己編譯的問題更大，所以像 &lt;a href="https://github.com/yyuu/pyenv"&gt;pyenv&lt;/a&gt; 這種多 Python 版本的工具不在考慮內。&lt;/p&gt;
 &lt;p&gt;於是用 &lt;a href="https://wiki.debian.org/AptPreferences"&gt;Apt-Pinning&lt;/a&gt; 只讓 Python 3.5 相關的套件安裝 testing 的版本。首先把 testing channel 加到 &lt;code&gt;/etc/apt/source.list&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;deb&lt;/span&gt; &lt;span class="s"&gt;http://cloudfront.debian.net/debian&lt;/span&gt; &lt;span class="kp"&gt;testing&lt;/span&gt; &lt;span class="kp"&gt;main&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;deb&lt;/span&gt; &lt;span class="s"&gt;http://cloudfront.debian.net/debian&lt;/span&gt; &lt;span class="kp"&gt;testing&lt;/span&gt; &lt;span class="kp"&gt;main&lt;/span&gt;
 &lt;span class="k"&gt;deb-src&lt;/span&gt; &lt;span class="s"&gt;http://cloudfront.debian.net/debian&lt;/span&gt; &lt;span class="kp"&gt;testing&lt;/span&gt; &lt;span class="kp"&gt;main&lt;/span&gt;
 &lt;span class="k"&gt;deb&lt;/span&gt; &lt;span class="s"&gt;http://security.debian.org/&lt;/span&gt; &lt;span class="kp"&gt;testing/updates&lt;/span&gt; &lt;span class="kp"&gt;main&lt;/span&gt;
 &lt;span class="k"&gt;deb-src&lt;/span&gt; &lt;span class="s"&gt;http://security.debian.org/&lt;/span&gt; &lt;span class="kp"&gt;testing/updates&lt;/span&gt; &lt;span class="kp"&gt;main&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;然後修改 &lt;code&gt;/etc/apt/preferences&lt;/code&gt; 確定我們不會不小心裝到 testing 相關的套件，並把 Python 3.5 相關的套件設定權限 &amp;gt;= 990 讓它們能被自動安裝。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# Specify * rules first so later package-specfic rules can override them
-Package: *
-Pin: release a=testing
-Pin-Priority: -10
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;Specify&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;rules&lt;/span&gt; &lt;span class="k"&gt;first&lt;/span&gt; &lt;span class="n"&gt;so&lt;/span&gt; &lt;span class="n"&gt;later&lt;/span&gt; &lt;span class="n"&gt;package&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;specfic&lt;/span&gt; &lt;span class="n"&gt;rules&lt;/span&gt; &lt;span class="n"&gt;can&lt;/span&gt; &lt;span class="n"&gt;override&lt;/span&gt; &lt;span class="n"&gt;them&lt;/span&gt;
+&lt;span class="n"&gt;Package&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
+&lt;span class="n"&gt;Pin&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;release&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;testing&lt;/span&gt;
+&lt;span class="n"&gt;Pin&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;Priority&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;
 
-Package: python3.5* libpython3.5*
-Pin: release a=testing
-Pin-Priority: 990
-&lt;/pre&gt;&lt;/div&gt;
+&lt;span class="n"&gt;Package&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;python3&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;libpython3&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;
+&lt;span class="n"&gt;Pin&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;release&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;testing&lt;/span&gt;
+&lt;span class="n"&gt;Pin&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;Priority&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;990&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;可以用 &lt;code&gt;sudo apt-cache policy &amp;lt;pkg-name&amp;gt;&lt;/code&gt; 檢查目前的規則會裝到哪個版本。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo apt-get update 
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ sudo apt-get update 
 $ sudo apt-get install python3.5 python3.5-venv python3.5-dev
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;這樣只有 Python 3.5 相關的套件才會裝到 testing。&lt;/p&gt;
@@ -408,26 +408,26 @@ $ sudo apt-get install python3.5 python3.5-venv python3.5-dev
 &lt;p&gt;因為 Amazon EBS SSD I/O 數不會另外收錢（應該吧？），就建 swap file 在主硬碟裡。&lt;/p&gt;
 &lt;p&gt;Swap 設定的教學很多，這邊就參考 &lt;a href="https://wiki.archlinux.org/index.php/swap"&gt;Arch Wiki&lt;/a&gt; 上的做法，我選擇放在 &lt;code&gt;/var/swap.1&lt;/code&gt;。大小設定為 RAM 的 2 倍，即 1GB。&lt;/p&gt;
 &lt;p&gt;首先把這個檔案建出來，權限改為 600。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo /bin/dd &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/dev/zero &lt;span class="nv"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/var/swap.1 &lt;span class="nv"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1M &lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1024&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo /bin/dd &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/dev/zero &lt;span class="nv"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/var/swap.1 &lt;span class="nv"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1M &lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1024&lt;/span&gt;
 &lt;span class="c1"&gt;# or faster with fallocate&lt;/span&gt;
 sudo fallocate -l 1G /var/swap.1
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo chmod &lt;span class="m"&gt;600&lt;/span&gt; /var/swap.1
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo chmod &lt;span class="m"&gt;600&lt;/span&gt; /var/swap.1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;再來把這個檔案改成 swap 格式並啟用它，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo /sbin/mkswap /var/swap.1
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo /sbin/mkswap /var/swap.1
 sudo /sbin/swapon /var/swap.1
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;修改 fstab 讓每次開機都有這個 swap 設定，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# /etc/fstab
-/var/swap.1 none swap defaults 0 0
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# /etc/fstab&lt;/span&gt;
+&lt;span class="err"&gt;/var/swap.1 none swap defaults 0 0&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;用 &lt;code&gt;free -h&lt;/code&gt;、&lt;code&gt;cat /proc/meminfo&lt;/code&gt; 檢查此時應該有個 1GB swap 了。&lt;/p&gt;
@@ -435,34 +435,34 @@ sudo /sbin/swapon /var/swap.1
 &lt;p&gt;再來是 code 的同步與更新。autobuild server 只要更新 source code，但 cpython-tw source 需要定時 commit 新的翻譯，因此 deploy server 會有修改 git repo 的權限。&lt;/p&gt;
 &lt;p&gt;不應該使用自己的 SSH key，deploy server 上應該有專屬的 deploy key，其中 cpython-tw 的 deploy key 有寫入權限（即可以 commit）。&lt;/p&gt;
 &lt;p&gt;查了一下，要讓不同 git repo 使用不同的 SSH key 也不複雜。以這邊的例子，先修改 &lt;code&gt;~/.ssh/config&lt;/code&gt; 加入兩個新的 host，使用不同的 SSH key：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Host github-pydoc_autobuild
-  HostName github.com
-  User git
-  IdentityFile /home/pydoc/.ssh/id_rsa.pydoc_autobuild
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;Host&lt;/span&gt; &lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pydoc_autobuild&lt;/span&gt;
+  &lt;span class="n"&gt;HostName&lt;/span&gt; &lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;
+  &lt;span class="k"&gt;User&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt;
+  &lt;span class="n"&gt;IdentityFile&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;pydoc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ssh&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;id_rsa&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pydoc_autobuild&lt;/span&gt;
 
-Host github-cpython_tw
-  HostName github.com
-  User git
-  IdentityFile /home/pydoc/.ssh/id_rsa.cpython_tw
-&lt;/pre&gt;&lt;/div&gt;
+&lt;span class="k"&gt;Host&lt;/span&gt; &lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;cpython_tw&lt;/span&gt;
+  &lt;span class="n"&gt;HostName&lt;/span&gt; &lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;
+  &lt;span class="k"&gt;User&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt;
+  &lt;span class="n"&gt;IdentityFile&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;pydoc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ssh&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;id_rsa&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cpython_tw&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;建立對應的 SSH keypair，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ssh-keygen -t rsa -f ~/.ssh/id_rsa.pydoc_autobuild
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh-keygen -t rsa -f ~/.ssh/id_rsa.pydoc_autobuild
 ssh-keygen -t rsa -f ~/.ssh/id_rsa.cpython_tw
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;把兩個 repo 的 URL host 換掉，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git remote set-url origin git@github-pydoc_autobuild:python-doc-tw/pydoc_autobuild.git
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;git remote set-url origin git@github-pydoc_autobuild:python-doc-tw/pydoc_autobuild.git&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;這樣兩個 repo 會透過給定的 ssh key 連線。GitHub 會顯示每個 key 最近使用的時間，檢查時間就能確認設定正確與否（而且改 host 沒設定對應該直接連不上）。&lt;/p&gt;
 &lt;h4 id="tmpfilesd"&gt;tmpfiles.d&lt;/h4&gt;
 &lt;p&gt;之後 nginx 和 uwsgi 溝通用的 socket 打算放在 &lt;code&gt;/run/django/xxxx.sock&lt;/code&gt; &lt;sup id="fnref:/run"&gt;&lt;a class="footnote-ref" href="#fn:/run"&gt;6&lt;/a&gt;&lt;/sup&gt;。因為只需要非 root 的權限，修改 &lt;a href="https://www.freedesktop.org/software/systemd/man/tmpfiles.d.html"&gt;tmpfiles.d&lt;/a&gt; 的設定，讓這個資料夾能在開機時自動建立。增加設定檔 &lt;code&gt;/etc/tmpfiles.d/pydoc_autobuild.conf&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;d /run/django 0755 pydoc www-data
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;d /run/django 0755 pydoc www-data
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3 id="django-stack-nginx-uwsgi"&gt;Django Stack &amp;ndash; nginx + uWSGI&lt;/h3&gt;
@@ -474,7 +474,7 @@ ssh-keygen -t rsa -f ~/.ssh/id_rsa.cpython_tw
 &lt;p&gt;我們先假設 uWSGI 這段沒問題，首先設定 nginx 本身。由於 static files 在 nginx 就直接導到對應的檔案，不會經過 uWSGI ，所以設定好 nginx 之後 pydoc 文件本身就上線了。用這個來測試設定的正確性。&lt;/p&gt;
 &lt;p&gt;對本網站而言，/static 導到 Django staticfiles；/3/、/3.5/ 導到 pydoc build HTML 的路徑；其餘路徑再交給 Django 處理。其中，/3.5/* 的連結將重新導向到 /3/* 上。&lt;/p&gt;
 &lt;p&gt;整理上述的需求，寫個 nginx 設定檔在 &lt;code&gt;/etc/nginx/sites-available/pydoc_autobuild.conf&lt;/code&gt;：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Upstream Django setting; the socket nginx connects to&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Upstream Django setting; the socket nginx connects to&lt;/span&gt;
 &lt;span class="k"&gt;upstream&lt;/span&gt; &lt;span class="s"&gt;django&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="kn"&gt;server&lt;/span&gt; &lt;span class="s"&gt;unix:///run/django/pydoc_autobuild.sock&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
@@ -509,30 +509,30 @@ ssh-keygen -t rsa -f ~/.ssh/id_rsa.cpython_tw
         &lt;span class="kn"&gt;include&lt;/span&gt;     &lt;span class="s"&gt;/etc/nginx/uwsgi_params&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;再把檔案 soft link 到 &lt;code&gt;/etc/nginx/sites-enabled/&lt;/code&gt;，更新 nginx 設定：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /etc/nginx/sites-available/
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /etc/nginx/sites-available/
 sudo ln -s pydoc_autobuild.conf ../sites-enabled/
 sudo systemctl reload nginx
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;確定 pydoc 上線就可以專心處理 uWSGI 了。&lt;/p&gt;
 &lt;h4 id="uwsgi"&gt;uWSGI 設定&lt;/h4&gt;
 &lt;p&gt;uWSGI 在 VENV 外也要裝，我覺得還是用 pip 比較簡單，雖然這樣就要自己注意 uWSGI 的版本更新了：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo python3.5 -m pip install uwsgi
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sudo python3.5 -m pip install uwsgi&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;把 uWSGI 設定存成 &lt;code&gt;pydoc_autobuild_uwsgi.ini&lt;/code&gt; 並且在測試時，都使用：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo uwsgi --ini pydoc_autobuild_uwsgi.ini
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sudo uwsgi --ini pydoc_autobuild_uwsgi.ini&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;模擬實際上的執行方式，這樣之後改用 systemd 執行才不會又丟一堆權限的問題。設定檔的內容：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[uwsgi]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[uwsgi]&lt;/span&gt;
 &lt;span class="na"&gt;chdir&lt;/span&gt;        &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;/path/to/code/pydoc_autobuild&lt;/span&gt;
 &lt;span class="c1"&gt;# Django&amp;#39;s wsgi file&lt;/span&gt;
 &lt;span class="na"&gt;module&lt;/span&gt;       &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;pydoc_autobuild.wsgi:application&lt;/span&gt;
@@ -553,19 +553,19 @@ sudo systemctl reload nginx
 &lt;span class="na"&gt;gid&lt;/span&gt;          &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;www-data&lt;/span&gt;
 &lt;span class="c1"&gt;# clear environment on exit&lt;/span&gt;
 &lt;span class="na"&gt;vacuum&lt;/span&gt;       &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;true&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;權限上的設定可能要花點時間處理一下，nginx 使用 www-data/www-data 的身份執行，socket 要確定 nginx 能讀寫，但我的 code 放在 pydoc 使用者路徑下，用 www-data 可能會有權限的問題。建議把 uid、gid 都設定好。&lt;/p&gt;
 &lt;p&gt;過程中，搭配 nginx 的錯誤訊息比較好 debug：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo less +F /var/log/nginx/error.log
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sudo less +F /var/log/nginx/error.log&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;成功後，再用 uWSGI 的 Emperor mode，把設定檔丟到一個路徑底下（該路徑稱為 vassals）。uWSGI 在 Emperor mode 時會自動把 vassals 路徑內所有設定檔都讀進來並執行。&lt;/p&gt;
 &lt;p&gt;這裡 vassals 路徑使用 &lt;code&gt;/etc/uwsgi/vassals/&lt;/code&gt;。因為有設 uid、gid，跑的時候就不用再設了：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo uwsgi --emperor /etc/uwsgi/vassals
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sudo uwsgi --emperor /etc/uwsgi/vassals&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;這樣應該 Django 相關的 view 都沒問題了。接下來，要把啟動 uWSGI 的步驟交給系統來管理。&lt;/p&gt;
@@ -573,7 +573,7 @@ sudo systemctl reload nginx
 &lt;p&gt;Autobuild server 包含兩個部份：Django Server 與 Django-Q cluster。所以寫成 systemd service 時會有兩個服務。&lt;/p&gt;
 &lt;p&gt;Debian system service 放在 &lt;code&gt;/etc/systemd/system/&lt;/code&gt; 底下，因此建立 &lt;code&gt;uwsgi.service&lt;/code&gt; 和 &lt;code&gt;qcluster.service&lt;/code&gt; 分別管理 uWSGI Emperor mode 和 Django-Q cluster。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;uwsgi.service&lt;/code&gt; 參考 uWSGI 官網 &lt;a href="http://uwsgi-docs.readthedocs.org/en/latest/Systemd.html"&gt;&lt;em&gt;Django and Systemd&lt;/em&gt;&lt;/a&gt; 一文的設定：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
 &lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;uWSGI Emperor&lt;/span&gt;
 &lt;span class="na"&gt;After&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;syslog.target&lt;/span&gt;
 
@@ -588,11 +588,11 @@ sudo systemctl reload nginx
 
 &lt;span class="k"&gt;[Install]&lt;/span&gt;
 &lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;multi-user.target&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;&lt;code&gt;qcluster.service&lt;/code&gt; 算是自己硬寫模擬 &lt;code&gt;python manage.py qcluster&lt;/code&gt; 行為。因此環境變數都要設定好（當然用絕對路徑就沒問題了，我只是覺得這樣 build log 內的執行檔路徑都很長會很醜 xd）&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
 &lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;Django-Q Cluster for site pydoc_autobuild&lt;/span&gt;
 &lt;span class="na"&gt;After&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;syslog.target&lt;/span&gt;
 &lt;span class="na"&gt;Wants&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;uwsgi.service&lt;/span&gt;
@@ -613,26 +613,26 @@ sudo systemctl reload nginx
 
 &lt;span class="k"&gt;[Install]&lt;/span&gt;
 &lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;multi-user.target&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;這樣的設定檔應該不是 systemd 的慣例，我還在想是不是應該要改寫到 user service 去（但我不會）。&lt;/p&gt;
 &lt;p&gt;加入到 systemd 之後管理就很簡單，啟動這兩個 service：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo systemctl enable uwsgi
-sudo systemctl enable qcluster
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sudo systemctl enable uwsgi&lt;/span&gt;
+&lt;span class="err"&gt;sudo systemctl enable qcluster&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;查看他們的狀態：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo systemctl status uwsgi
-sudo systemctl status qcluster
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sudo systemctl status uwsgi&lt;/span&gt;
+&lt;span class="err"&gt;sudo systemctl status qcluster&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;查看它們的 log 也變得很簡單，因為有把它們的 stderr 抓起來。systemd 好處是 rotation 等等都會幫你注意，看 log 的功能也很多。&lt;/p&gt;
 &lt;p&gt;例如要查最近一小時 uWSGI 的連線記錄，並在有新連線時持續更新 log：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo journalctl -xef -u uwsgi --since &amp;#39;1 hour ago&amp;#39;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sudo journalctl -xef -u uwsgi --since &amp;#39;1 hour ago&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h2 id="_4"&gt;總結&lt;/h2&gt;
@@ -662,7 +662,7 @@ sudo systemctl status qcluster
 &lt;p&gt;/var/run = /run，這個路徑是個 tmpfs 所以每次重開機就會清空，目錄要記得重建。&amp;#160;&lt;a class="footnote-backref" href="#fnref:/run" title="Jump back to footnote 6 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="zh"></category><category term="pydoctw"></category><category term="python"></category><category term="django"></category><category term="postgresql"></category><category term="deploy"></category><category term="debian"></category><category term="systemd"></category><category term="nginx"></category><category term="uwsgi"></category></entry><entry><title>Customize Django User Model</title><link href="https://blog.liang2.tw/posts/2015/11/django-custom-user/" rel="alternate"></link><published>2015-11-04T18:23:00-06:00</published><updated>2015-11-04T18:23:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-11-04:/posts/2015/11/django-custom-user/</id><summary type="html">&lt;p&gt;Django 帳號的欄位定義在 &lt;code&gt;django.contrib.auth&lt;/code&gt; 的 &lt;a href="https://docs.djangoproject.com/en/1.8/ref/contrib/auth/#fields"&gt;User&lt;/a&gt; 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有：&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="pydoctw"></category><category term="python"></category><category term="django"></category><category term="postgresql"></category><category term="deploy"></category><category term="debian"></category><category term="systemd"></category><category term="nginx"></category><category term="uwsgi"></category></entry><entry><title>Customize Django User Model</title><link href="https://blog.liang2.tw/posts/2015/11/django-custom-user/" rel="alternate"></link><published>2015-11-04T18:23:00-06:00</published><updated>2015-11-04T18:23:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-11-04:/posts/2015/11/django-custom-user/</id><summary type="html">&lt;p&gt;Django 帳號的欄位定義在 &lt;code&gt;django.contrib.auth&lt;/code&gt; 的 &lt;a href="https://docs.djangoproject.com/en/1.8/ref/contrib/auth/#fields"&gt;User&lt;/a&gt; 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;指定 Group 和 Permission&lt;/li&gt;
 &lt;li&gt;是否為 staff、superuser&lt;/li&gt;
@@ -674,13 +674,13 @@ sudo systemctl status qcluster
 &lt;/ul&gt;
 &lt;p&gt;內建的帳號功能應該很實用，安全性也很好。所以一般來說都不會去改它。&lt;/p&gt;
 &lt;p&gt;如果只是想要幫 User 加個 profile，例如生日、來自哪個星球等欄位，也不需要改寫 User。參考官網 &lt;a href="https://docs.djangoproject.com/en/1.8/topics/auth/customizing/#extending-the-existing-user-model"&gt;Extending the existing User model&lt;/a&gt;，只需要建一個 one-to-one relationship 指到 User 就好了：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.conf&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;settings&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.conf&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;settings&lt;/span&gt;
 
 &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;UserProfile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Model&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;user&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OneToOneField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AUTH_USER_MODEL&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="n"&gt;birth&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DateField&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
     &lt;span class="n"&gt;orig_planet&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CharField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;max_length&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;255&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;但 Django 預設用 username 來登入，如果要改用 email 登入要怎麼做？&lt;/p&gt;
@@ -688,7 +688,7 @@ sudo systemctl status qcluster
 &lt;p&gt;因為 User 是個很重要的 model，所以改寫時要注意相容性的問題。其實官網也有教學 &lt;a href="https://docs.djangoproject.com/en/1.8/topics/auth/customizing/#specifying-a-custom-user-model"&gt;Specifying a custom User model&lt;/a&gt;，不過這教學比前面長很多。&lt;/p&gt;
 &lt;p&gt;網路上已經有人 @jcugat 做了一個套件 &lt;a href="https://github.com/jcugat/django-custom-user"&gt;django-custom-user&lt;/a&gt;，他實作了 &lt;code&gt;EmailUser&lt;/code&gt; 即用 email 作為帳號登入。已經把所有苦工都做好了，所以如果想要再加上自己的欄位等等，可以繼承他的 &lt;code&gt;AbstractEmailUser&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;其實如果看完自定 User 之後，寫好 User Model 不難，比較複雜的是像創建、修改 User 以及 admin 的設定。除了讀這個套件的 source code 之後，&lt;a href="http://stackoverflow.com/questions/15012235"&gt;這串 Stack Overflow 討論&lt;/a&gt;也提到了不同的實作方式。Django 這部份的 source code 蠻好讀的，也可以看一下。&lt;/p&gt;
-&lt;p&gt;因為之後要做 Email 認証，應該會用 &lt;a href="https://github.com/pennersr/django-allauth"&gt;django-allauth&lt;/a&gt; 做。感覺很久沒發文了，應該要把文章拆短才對 XD&lt;/p&gt;</content><category term="zh"></category><category term="django"></category><category term="python"></category></entry><entry><title>用 Django 與 SQLite 架抽籤網站</title><link href="https://blog.liang2.tw/posts/2015/10/django-draw-member/" rel="alternate"></link><published>2015-10-04T14:55:00-05:00</published><updated>2015-10-04T14:55:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-10-04:/posts/2015/10/django-draw-member/</id><summary type="html">&lt;p&gt;把之前用 Flask 架的抽籤網站改用 Django 實作，也藉這個機會比較一下兩個 Framework 設計概念的不同。&lt;/p&gt;</summary><content type="html">&lt;h4 id="_1"&gt;前情提要&lt;/h4&gt;
+&lt;p&gt;因為之後要做 Email 認証，應該會用 &lt;a href="https://github.com/pennersr/django-allauth"&gt;django-allauth&lt;/a&gt; 做。感覺很久沒發文了，應該要把文章拆短才對 XD&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="django"></category><category term="python"></category></entry><entry><title>用 Django 與 SQLite 架抽籤網站</title><link href="https://blog.liang2.tw/posts/2015/10/django-draw-member/" rel="alternate"></link><published>2015-10-04T14:55:00-05:00</published><updated>2015-10-04T14:55:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-10-04:/posts/2015/10/django-draw-member/</id><summary type="html">&lt;p&gt;把之前用 Flask 架的抽籤網站改用 Django 實作，也藉這個機會比較一下兩個 Framework 設計概念的不同。&lt;/p&gt;</summary><content type="html">&lt;h4 id="_1"&gt;前情提要&lt;/h4&gt;
 &lt;p&gt;我把 LoveLive! 兩季看完了！μ&amp;rsquo;s 在第一季的成長充滿感動啊。&lt;strong&gt;\真姫最高/&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;……呃好啦，之前講了&lt;a href="../../09/flask-draw-member"&gt;用 Flask 去架一個抽籤網站&lt;/a&gt;。不過我們最終的目標是用 Django 嘛，所以接下來就要改寫。也藉這個機會比較一下兩個 Framework 設計概念的不同（&lt;del&gt;例如 Django 一開始寫有多冗&lt;/del&gt;、&lt;del&gt;Flask 寫到最後有多冗&lt;/del&gt;）。&lt;/p&gt;
 &lt;h3 id="from-flask-to-django"&gt;From Flask to Django&lt;/h3&gt;
@@ -739,26 +739,26 @@ sudo systemctl status qcluster
 &lt;/div&gt;
 &lt;h3 id="django"&gt;Django 初始設定&lt;/h3&gt;
 &lt;p&gt;一樣開一個 Python 虛擬環境（這時候就是它的好處了，能把不同專案的套件隔離）。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install django pytz ipython pyyaml
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;pip install django pytz ipython pyyaml&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;&lt;a href="http://pythonhosted.org/pytz/"&gt;pytz&lt;/a&gt; 在&lt;a href="../../09/datetime-sqlite"&gt;前一篇&lt;/a&gt;已經介紹過，是處理時區的套件。&lt;a href="http://ipython.org/"&gt;IPython&lt;/a&gt; 全名是 Interactive Python，同樣是 Python shell 但提供了很多附加功能，最常用的應該是自動補完。&lt;a href="http://pyyaml.org/"&gt;PyYAML&lt;/a&gt; 用來處理 YAML 物件，可裝可不裝，不裝之後的例子就用 JSON 即可。&lt;/p&gt;
 &lt;p&gt;我們的專案根目錄是 &lt;code&gt;demo_django_draw_member&lt;/code&gt;。因為 Django 的設定很多，先在這目錄下用 &lt;a href="https://docs.djangoproject.com/en/1.8/ref/contrib/admin/"&gt;django-admin&lt;/a&gt; 把基本的架構建起來。我們建了一個名為 &lt;code&gt;draw_site&lt;/code&gt; 的專案（Project）。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;VENV&lt;span class="o"&gt;)&lt;/span&gt; $ django-admin startproject draw_site
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;(&lt;/span&gt;VENV&lt;span class="o"&gt;)&lt;/span&gt; $ django-admin startproject draw_site
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;執行完之後應該會多出一堆檔案，結構如下。注意到有兩層 &lt;code&gt;draw_site&lt;/code&gt;。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;demo_django_draw_member/
-└── draw_site/
-    ├── draw_site/
-    │   ├── __init__.py
-    │   ├── settings.py
-    │   ├── urls.py
-    │   └── wsgi.py
-    └── manage.py*
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;demo_django_draw_member/&lt;/span&gt;
+&lt;span class="err"&gt;└── draw_site/&lt;/span&gt;
+&lt;span class="err"&gt;    ├── draw_site/&lt;/span&gt;
+&lt;span class="err"&gt;    │   ├── __init__.py&lt;/span&gt;
+&lt;span class="err"&gt;    │   ├── settings.py&lt;/span&gt;
+&lt;span class="err"&gt;    │   ├── urls.py&lt;/span&gt;
+&lt;span class="err"&gt;    │   └── wsgi.py&lt;/span&gt;
+&lt;span class="err"&gt;    └── manage.py*&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;之後工作的目錄其實是 &lt;code&gt;demo_django_draw_member/draw_site/&lt;/code&gt;，也就是有 &lt;code&gt;manage.py&lt;/code&gt; 的那層目錄，之後的路徑都是相對於 &lt;code&gt;demo_django_draw_member/draw_site/&lt;/code&gt;。介紹一下每個檔案。&lt;/p&gt;
@@ -771,11 +771,11 @@ sudo systemctl status qcluster
 &lt;p&gt;一個 Django 由一個 project 和很多個 apps 所組成。每個 app 就專注在網站的某個功能上，各自包著各自需要的 database schema、template、view logics。這樣的好處是同樣的功能就不用重寫，同時在很大的網站時這樣的結構有助於管理運作的邏輯。&lt;/p&gt;
 &lt;h4 id="django-server"&gt;Django server&lt;/h4&gt;
 &lt;p&gt;先把 Django 跑起來看看吧。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python manage.py runserver
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python manage.py runserver
 &lt;span class="go"&gt;...&lt;/span&gt;
 &lt;span class="go"&gt;Django version 1.8.5, using settings &amp;#39;draw_site.settings&amp;#39;&lt;/span&gt;
 &lt;span class="go"&gt;Starting development server at http://127.0.0.1:8000/&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;div class="figure align-center"&gt;
@@ -786,28 +786,28 @@ sudo systemctl status qcluster
 &lt;p&gt;這是 Django 內建在什麼 URL 都沒設定時的歡迎畫面。看到這個至少表示基本的 settings 正常。Django 跟 Flask 一樣，內建的 server 會在 source code 有改變的時候 reload，所以一直開著跑也可以。&lt;/p&gt;
 &lt;h4 id="django-app"&gt;第一個 Django app&lt;/h4&gt;
 &lt;p&gt;我們的網站只會用到一個 app，把它建出來取名為 &lt;code&gt;draw_member&lt;/code&gt;。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python manage.py startapp draw_member
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;python manage.py startapp draw_member
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;demo_django_draw_member/
-└── draw_site/
-    ├── draw_member/
-    │   ├── __init__.py
-    │   ├── admin.py
-    │   ├── migrations/
-    │   ├── models.py
-    │   ├── tests.py
-    │   └── views.py
-    ├── draw_site/
-    │   └── ...
-    └── manage.py*
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;demo_django_draw_member/&lt;/span&gt;
+&lt;span class="err"&gt;└── draw_site/&lt;/span&gt;
+&lt;span class="err"&gt;    ├── draw_member/&lt;/span&gt;
+&lt;span class="err"&gt;    │   ├── __init__.py&lt;/span&gt;
+&lt;span class="err"&gt;    │   ├── admin.py&lt;/span&gt;
+&lt;span class="err"&gt;    │   ├── migrations/&lt;/span&gt;
+&lt;span class="err"&gt;    │   ├── models.py&lt;/span&gt;
+&lt;span class="err"&gt;    │   ├── tests.py&lt;/span&gt;
+&lt;span class="err"&gt;    │   └── views.py&lt;/span&gt;
+&lt;span class="err"&gt;    ├── draw_site/&lt;/span&gt;
+&lt;span class="err"&gt;    │   └── ...&lt;/span&gt;
+&lt;span class="err"&gt;    └── manage.py*&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;可以看到 app 與 project 的架構是不一樣的。&lt;/p&gt;
 &lt;p&gt;要把這個新的 app 加到 project 裡，修改 &lt;code&gt;draw_site/settings.py&lt;/code&gt;。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# draw_site/settings.py&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_site/settings.py&lt;/span&gt;
 
 &lt;span class="n"&gt;INSTALLED_APPS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="s1"&gt;&amp;#39;draw_member&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;    &lt;span class="c1"&gt;# 加這一行&lt;/span&gt;
@@ -818,13 +818,13 @@ sudo systemctl status qcluster
     &lt;span class="s1"&gt;&amp;#39;django.contrib.messages&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="s1"&gt;&amp;#39;django.contrib.staticfiles&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;預設其實裝了很多 app。暫時不理他們是什麼。&lt;/p&gt;
 &lt;h4 id="django-settings"&gt;Django settings&lt;/h4&gt;
 &lt;p&gt;先簡單介紹一下 &lt;code&gt;draw_site/settings.py&lt;/code&gt;。除了剛剛用到 INSTALLED_APPS，講幾個跟這邊比較有關的參數。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Database&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Database&lt;/span&gt;
 &lt;span class="c1"&gt;# https://docs.djangoproject.com/en/1.8/ref/settings/#databases&lt;/span&gt;
 
 &lt;span class="n"&gt;DATABASES&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
@@ -839,8 +839,8 @@ sudo systemctl status qcluster
 
 &lt;span class="n"&gt;LANGUAGE_CODE&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;en-us&amp;#39;&lt;/span&gt;
 &lt;span class="n"&gt;TIME_ZONE&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;UTC&amp;#39;&lt;/span&gt;
-&lt;span class="n"&gt;USE_TZ&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;span class="n"&gt;USE_TZ&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;True&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;DATABSES 裡定義了使用的資料庫。預設會使用 &lt;code&gt;db.sqlite3&lt;/code&gt; 這個 SQLite 資料庫。&lt;/p&gt;
@@ -850,7 +850,7 @@ sudo systemctl status qcluster
 &lt;p&gt;在之前的例子可以知道，我們會先設計一個資料庫該存什麼東西，整個網站流程會怎麼用這些資料，這些形成 table schema。但是隨著時間，可能網站有新的功能，很難說完全不去更動 schema。&lt;/p&gt;
 &lt;p&gt;更動 schema 不是件簡單的事，如果是上 production 的網站，資料庫會有運作以來累積的資料，總不能 schema 改了這些資料就丟掉吧？而且在網站開發的時候，在不同版本的（或不同人開發的）code 就可能有不同的 schema。要怎麼確保 code 與 database 的狀態就要靠 migration。&lt;/p&gt;
 &lt;p&gt;……一開始就這麼複雜？好啦我們的例子沒有用到 migration 大多數的功能，只有用它 initiate database。內建的 app 都有自己的 database schema，可以用它把資料庫的 table 建出來。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python manage.py migrate
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python manage.py migrate
 &lt;span class="go"&gt;Operations to perform:&lt;/span&gt;
 &lt;span class="go"&gt;  Synchronize unmigrated apps: messages, staticfiles&lt;/span&gt;
 &lt;span class="go"&gt;  Apply all migrations: sessions, auth, contenttypes, admin&lt;/span&gt;
@@ -870,71 +870,71 @@ sudo systemctl status qcluster
 &lt;span class="go"&gt;  Applying auth.0005_alter_user_last_login_null... OK&lt;/span&gt;
 &lt;span class="go"&gt;  Applying auth.0006_require_contenttypes_0002... OK&lt;/span&gt;
 &lt;span class="go"&gt;  Applying sessions.0001_initial... OK&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;migration 就會一步步把 database 調整到符合現在 code 的狀態，這些調整就會記錄在 &lt;code&gt;&amp;lt;app&amp;gt;/migrations/&lt;/code&gt; 底下，等等就會看到了。&lt;/p&gt;
 &lt;h3 id="url-dispatcher"&gt;URL dispatcher&lt;/h3&gt;
 &lt;p&gt;我們接下來要改首頁，把 Django 預設的 &lt;code&gt;/&lt;/code&gt; 首頁換成 Hello World。&lt;/p&gt;
 &lt;p&gt;Flask URL routing 是直接用 decorator 寫在 view function 上面。幫大家回顧一下：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nd"&gt;@app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;route&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;route&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;index&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;lt;p&amp;gt;Hello World!&amp;lt;/p&amp;gt;&amp;quot;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Django 的 view 和 URL 是分開的，首先是 view：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# draw_member/views.py&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.shortcuts&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;render&lt;/span&gt;  &lt;span class="c1"&gt;# 先暫時留著&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.http&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;HttpResponse&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_member/views.py&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.shortcuts&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;render&lt;/span&gt;  &lt;span class="c1"&gt;# 先暫時留著&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.http&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;HttpResponse&lt;/span&gt;
 
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;home&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;HttpResponse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;lt;p&amp;gt;Hello World!&amp;lt;/p&amp;gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;結構上大同小異（也因為有 &lt;a href="http://wsgi.org/"&gt;WSGI&lt;/a&gt; 規範的關係啦）。&lt;/p&gt;
 &lt;p&gt;再來是 URL 設定。我們先把 URL 加在 project 設定。這邊可能覺得設定有點分散比較怪，等一下再把它放到 app 裡面。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# draw_site/urls.py&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_site/urls.py&lt;/span&gt;
 &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;draw_site URL Configuration&lt;/span&gt;
 
 &lt;span class="sd"&gt;The `urlpatterns` list routes URLs to views. For more information please see:&lt;/span&gt;
 &lt;span class="sd"&gt;    https://docs.djangoproject.com/en/1.8/topics/http/urls/&lt;/span&gt;
 &lt;span class="sd"&gt;...&lt;/span&gt;
 &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.conf.urls&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;url&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.contrib&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;admin&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;draw_member.views&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;home&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.conf.urls&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;url&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.contrib&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;admin&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;draw_member.views&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;home&lt;/span&gt;
 
 &lt;span class="n"&gt;urlpatterns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
     &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^$&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;home&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
     &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^admin/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;admin&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urls&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
 &lt;span class="p"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;概念也很簡單，把要的 view function 從 app import 進來（所以 app 目錄是個 Python module，底下會 &lt;code&gt;__init__.py&lt;/code&gt;），給一個 regex 表示的路徑，後面放上處理 function 以及一個 optional 的名字，這個名字就代表了這個 URL 路徑，之後可以反查。&lt;/p&gt;
 &lt;p&gt;測一下確認設定都是正確的。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; curl -XGET &lt;span class="s2"&gt;&amp;quot;localhost:8000&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; curl -XGET &lt;span class="s2"&gt;&amp;quot;localhost:8000&amp;quot;&lt;/span&gt;
 &lt;span class="go"&gt;&amp;lt;p&amp;gt;Hello World!&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;再看一下 &lt;code&gt;draw_site/urls.py&lt;/code&gt;，可以看到 Django 預設放了個 &lt;code&gt;/admin&lt;/code&gt; 後面用的是 &lt;code&gt;include(app.urls)&lt;/code&gt;，表示這一整包只要是 admin/ 開頭的 URL 都交給 admin.site.urls 去處理路徑。這樣方便 app 在不同網站中重覆利用，因為可能放的路徑都不一樣，但一個 app 內的 URL 處理會有一致性。&lt;/p&gt;
 &lt;p&gt;馬上來改寫一下。首先在 app &lt;strong&gt;draw_member&lt;/strong&gt; 底下加一個 &lt;code&gt;urls.py&lt;/code&gt;。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# draw_member/urls.py&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.conf.urls&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;url&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;.views&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;home&lt;/span&gt;  &lt;span class="c1"&gt;# explicit relative import&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_member/urls.py&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.conf.urls&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;url&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;.views&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;home&lt;/span&gt;  &lt;span class="c1"&gt;# explicit relative import&lt;/span&gt;
 
 &lt;span class="n"&gt;urlpatterns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
     &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^$&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;home&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
 &lt;span class="p"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;基本上格式就是照抄原本就有的。因為放在同個 app 裡面了，import view 時就可以用 explicit relative import（這不是 relative import 喔）&lt;/p&gt;
 &lt;p&gt;原本的 urls.py 就改成把 URL 的處理「dispatch」給這個 app，改成底下這樣。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# draw_site/urls.py&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_site/urls.py&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.conf.urls&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;url&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.contrib&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;admin&lt;/span&gt;
 
@@ -943,7 +943,7 @@ sudo systemctl status qcluster
     &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^admin/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;admin&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urls&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
     &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;draw_member.urls&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
 &lt;span class="p"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;&lt;code&gt;r'^'&lt;/code&gt; 代表從根目錄就交給這個 app 去管理，也因為這樣比較專一的路徑要放前面，像是 /admin。用字串表示在執行的時候才 import 這個 module，不想也可以拿掉字串把 app import 進來。&lt;/p&gt;
@@ -969,16 +969,16 @@ sudo systemctl status qcluster
 
 &lt;p&gt;回想一下我們的 schema 設計。改用 ORM 來思考我們就會有成員（Member）以及抽籤歷史（History）兩大 models。&lt;strong&gt;Member&lt;/strong&gt; 記錄了名字與所屬團體；&lt;strong&gt;History&lt;/strong&gt; 會記錄時間、這筆抽籤是屬於哪個成員的。&lt;/p&gt;
 &lt;p&gt;在 Django 中，model 定義在 &lt;code&gt;models.py&lt;/code&gt; 裡面，馬上來寫寫看。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# draw_members/models.py&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.db&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.utils.timezone&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;now&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_members/models.py&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.db&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.utils.timezone&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;now&lt;/span&gt;
 
 
 &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Model&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CharField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;max_length&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;256&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="n"&gt;group_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CharField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;max_length&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;256&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;__str__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__str__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s1"&gt; of &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;group_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 
@@ -987,9 +987,9 @@ sudo systemctl status qcluster
     &lt;span class="c1"&gt;# now() will return datetime.utcnow()&lt;/span&gt;
     &lt;span class="n"&gt;time&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DateTimeField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;default&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;now&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;__str__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__str__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s1"&gt; at &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;member&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;一個 class 裡的屬性就對應到一個欄位（Field），欄位會有他的型別以及資料庫實作上的限制（例如字串有上限，當然也可以不設）。Field type 可以參考&lt;a href="https://docs.djangoproject.com/en/1.8/ref/models/fields/#field-types"&gt;官網&lt;/a&gt;。&lt;/p&gt;
@@ -998,18 +998,18 @@ sudo systemctl status qcluster
 &lt;h4 id="migration-the-tracker-of-model-changes"&gt;Migration the tracker of model changes&lt;/h4&gt;
 &lt;p&gt;多說無用，馬上來試一試。&lt;/p&gt;
 &lt;p&gt;……等等，想到 migration 了嗎？每次更動 database model 都要跑 migration，確保 code 與資料庫狀態一致。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python manage.py makemigrations draw_member
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python manage.py makemigrations draw_member
 &lt;span class="go"&gt;python manage.py makemigrations draw_member&lt;/span&gt;
 &lt;span class="go"&gt;Migrations for &amp;#39;draw_member&amp;#39;:&lt;/span&gt;
 &lt;span class="go"&gt;  0001_initial.py:&lt;/span&gt;
 &lt;span class="go"&gt;    - Create model History&lt;/span&gt;
 &lt;span class="go"&gt;    - Create model Member&lt;/span&gt;
 &lt;span class="go"&gt;    - Add field member to history&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;可以看到 Django 很聰明的知道我們多定義了兩個 models，裡面有些對應到資料庫的欄位型態。這些資訊會寫在 migration file 裡面，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# draw_member/migrations/0001_initial.py&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_member/migrations/0001_initial.py&lt;/span&gt;
 &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Migration&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Migration&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
 
     &lt;span class="n"&gt;dependencies&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
@@ -1037,34 +1037,34 @@ sudo systemctl status qcluster
             &lt;span class="n"&gt;field&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ForeignKey&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;draw_member.Member&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;related_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;draw_histories&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
         &lt;span class="p"&gt;),&lt;/span&gt;
     &lt;span class="p"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;注意到 Django ORM 自動幫我們加了 &lt;code&gt;id&lt;/code&gt; 這個 primary key，等等就會用到。Migration 裡面的細節等對 Django 更熟了之後就能慢慢了解了。&lt;/p&gt;
 &lt;p&gt;有了新的 migration 就要同步資料庫的狀態，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python manage.py migrate
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python manage.py migrate
 &lt;span class="go"&gt;...&lt;/span&gt;
 &lt;span class="go"&gt;Running migrations:&lt;/span&gt;
 &lt;span class="go"&gt;  Rendering model states... DONE&lt;/span&gt;
 &lt;span class="go"&gt;  Applying draw_member.0001_initial... OK&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h4 id="orm-queries-in-shell"&gt;ORM queries in shell&lt;/h4&gt;
 &lt;p&gt;接下來我們操作一下 ORM。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ python manage.py shell
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ python manage.py shell
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;就會打開一個 Python shell。如果裝了 IPython 就會打開 IPython shell。
 這個與一般的有什麼差別呢？他會帶有 Django project 的設定。如果是從一般的 shell 可以先跑以下的指令來達到相同的效果。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="go"&gt;$ DJANGO_SETTINGS_MODULE=&amp;quot;draw_site.settings&amp;quot; python&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="go"&gt;$ DJANGO_SETTINGS_MODULE=&amp;quot;draw_site.settings&amp;quot; python&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;django&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;django&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setup&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;draw_member.models&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;History&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;draw_member.models&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;History&lt;/span&gt;
 &lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;m1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;高坂 穂乃果&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;group_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;μ&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;m2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;平沢 唯&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;group_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;K-ON!&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;m1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;m2&lt;/span&gt;
@@ -1073,20 +1073,20 @@ sudo systemctl status qcluster
 &lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;m2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;h1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;History&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;member&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;m1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;h1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;使用上就把資料當作物件來操作，如同 ORM 字面的意思。注意只有在 &lt;code&gt;.save()&lt;/code&gt; 才真正被存到資料裡。拿沒有存的 object 來操作 database 就會出現 exception。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;h_failed&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;History&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;member&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;FF&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;group_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;f&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;h_failed&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;History&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;member&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;FF&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;group_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;f&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;h_failed&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="gt"&gt;Traceback (most recent call last):&lt;/span&gt;
 &lt;span class="c"&gt;...&lt;/span&gt;
 &lt;span class="gr"&gt;IntegrityError&lt;/span&gt;: &lt;span class="n"&gt;NOT NULL constraint failed: draw_member_history.member_id&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;覺得麻煩的話，用 &lt;code&gt;Model.objects.create()&lt;/code&gt; 就可以一步搞定。正確的存好之後，現在資料庫已經有資料了。我們可以先在 SQLite 裡確認。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="go"&gt;-- sqlite3 db.sqlite3&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="go"&gt;-- sqlite3 db.sqlite3&lt;/span&gt;
 &lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;header&lt;/span&gt; &lt;span class="k"&gt;on&lt;/span&gt;
 &lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="n"&gt;draw_member_member&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="go"&gt;id|name|group_name&lt;/span&gt;
@@ -1095,59 +1095,59 @@ sudo systemctl status qcluster
 &lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="n"&gt;draw_member_history&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="go"&gt;id|time|member_id&lt;/span&gt;
 &lt;span class="go"&gt;1|2015-10-05 15:17:32.061384|1&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;透過像剛剛 object 的操作，我們也能建出如同手寫 SQL 一樣的資料庫，當然像 &lt;code&gt;id&lt;/code&gt;、&lt;code&gt;member_id&lt;/code&gt; 這些欄位是 ORM engine 自動幫我們做出來的，這些可以自訂，不過預設的行為不難理解。&lt;/p&gt;
 &lt;p&gt;要怎麼從 ORM 像剛剛下 SQL 一樣撈資料呢？&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;draw_member.models&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;History&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;draw_member.models&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;History&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;all&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="go"&gt;[&amp;lt;Member: 高坂 穂乃果 of μ&amp;#39;s&amp;gt;, &amp;lt;Member: 平沢 唯 of K-ON!&amp;gt;]&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;History&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;all&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="go"&gt;[&amp;lt;History: 高坂 穂乃果 at 2015-10-05 15:17:32.061384+00:00&amp;gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;資料透過 &lt;code&gt;Model.objects&lt;/code&gt; 這個 Manager 去查詢，細節就去看 Django 關於 &lt;a href="https://docs.djangoproject.com/en/1.8/topics/db/queries"&gt;Making queries&lt;/a&gt; 的內容吧。查詢資料庫就會回傳 &lt;a href="https://docs.djangoproject.com/en/1.8/ref/models/querysets/#django.db.models.query.QuerySet"&gt;QuerySet&lt;/a&gt;，這並不會真的去「查」資料庫，但先把指令存著等真的要用到值時才去計算，也就是 lazy evaluation。&lt;/p&gt;
 &lt;p&gt;QuerySet 底下就有很多對應到 SQL 指令的查詢，像是拿回所有 objects 的 &lt;code&gt;QuerySet.all()&lt;/code&gt;，前面已經用過了。或者篩選的 &lt;code&gt;QuerySet.filter()&lt;/code&gt;，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;group_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;K-ON!&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;group_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;K-ON!&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="go"&gt;[&amp;lt;Member: 平沢 唯 of K-ON!&amp;gt;]&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;group_name__contains&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;!&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="go"&gt;[&amp;lt;Member: 平沢 唯 of K-ON!&amp;gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;其中 &lt;code&gt;&amp;lt;field&amp;gt;__contains&lt;/code&gt; 就是 Django ORM 為了實做像 SQL &lt;code&gt;LIKE&lt;/code&gt; 指令的對應欄位。&lt;/p&gt;
 &lt;p&gt;先講幾個有關的，首先每個 Model 都有個 primary key &lt;code&gt;pk&lt;/code&gt;，預設指到 &lt;code&gt;Model.id&lt;/code&gt; 這個欄位上，另用 &lt;code&gt;QuerySet.get()&lt;/code&gt; 可以拿到單一物件，這時候萬用的 pk 就派上用場了。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pk&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pk&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="go"&gt;&amp;lt;Member: 高坂 穂乃果 of μ&amp;#39;s&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;查 relation 也很簡單，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;h1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;History&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pk&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;h1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;History&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pk&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;h1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;member&lt;/span&gt;
 &lt;span class="go"&gt;&amp;lt;Member: 高坂 穂乃果 of μ&amp;#39;s&amp;gt;&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;h1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;member&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;
 &lt;span class="go"&gt;&amp;#39;高坂 穂乃果&amp;#39;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;還記得之前設得 &lt;code&gt;related_name="draw_histories"&lt;/code&gt;，表示我們能從 &lt;strong&gt;Member&lt;/strong&gt; 反查回去該人相關的歷史，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;m1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pk&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;m1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pk&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;m1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;draw_histories&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;all&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="go"&gt;[&amp;lt;History: 高坂 穂乃果 at 2015-10-05 15:17:32.061384+00:00&amp;gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;最後我們來刪資料，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;all&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;all&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;History&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;all&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;當然一開始我們可以暴力把 &lt;code&gt;db.sqlite3&lt;/code&gt; 整個刪掉再重新 &lt;code&gt;python manage.py migrate&lt;/code&gt; 一次就可以讓 database 對應的 table 都建立好，不過只適用於 SQLite 而已。或者，正確的「清空資料庫」做法是用 &lt;code&gt;flush&lt;/code&gt; 指令，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python manage.py flush
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python manage.py flush
 &lt;span class="go"&gt;You have requested a flush of the database.&lt;/span&gt;
 &lt;span class="go"&gt;This will IRREVERSIBLY DESTROY all data currently in the &amp;#39;draw_site/db.sqlite3&amp;#39; database,&lt;/span&gt;
 &lt;span class="go"&gt;and return each table to an empty state.&lt;/span&gt;
@@ -1156,12 +1156,12 @@ sudo systemctl status qcluster
 &lt;span class="go"&gt;    Type &amp;#39;yes&amp;#39; to continue, or &amp;#39;no&amp;#39; to cancel: yes&lt;/span&gt;
 &lt;span class="go"&gt;Installed 0 object(s) from 0 fixture(s)&lt;/span&gt;
 &lt;span class="go"&gt;Installed 0 object(s) from 0 fixture(s)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h4 id="data-in-orm-and-fixtures"&gt;Data in ORM and fixtures&lt;/h4&gt;
 &lt;p&gt;我們把 &lt;code&gt;members.csv&lt;/code&gt; 的資料填到資料庫吧。這邊就不用細說了。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;csv&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;csv&lt;/span&gt;
 &lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;../../draw_member/members.csv&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;newline&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
    &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;    &lt;span class="n"&gt;csv_reader&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;csv&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DictReader&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
    &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;    &lt;span class="n"&gt;members&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
@@ -1172,27 +1172,27 @@ sudo systemctl status qcluster
 &lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;members&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
    &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;     &lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;group_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
    &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;可以自己檢查一下是不是 14 個人都寫到資料庫了。&lt;/p&gt;
 &lt;p&gt;不過現在有個問題是，之後可能會常常把資料庫砍掉重練，或者要把這些（或很多來源）的資料讀到資料庫，每次都重新讀寫也是可以，但有沒有別的做法能把資料先存起來？&lt;/p&gt;
 &lt;p&gt;這邊就要介紹 &lt;a href="https://docs.djangoproject.com/en/1.8/howto/initial-data/#providing-initial-data-with-fixtures"&gt;Django fixtures&lt;/a&gt; 了。他能把資料庫的資料存成 JSON、YAML（需要 &lt;a href="http://pyyaml.org/"&gt;PyYAML&lt;/a&gt;）等格式。&lt;/p&gt;
 &lt;p&gt;一般 fixtures 是被在 &lt;code&gt;&amp;lt;app&amp;gt;/fixtures/&lt;/code&gt; 目錄底下，記得先把目錄建出來。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mkdir draw_member/fixtures
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mkdir draw_member/fixtures
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;根據 database 的內容建立 fixtures 可以使用 &lt;code&gt;dumpdata&lt;/code&gt; 指令：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python manage.py dumpdata &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;python manage.py dumpdata &lt;span class="se"&gt;\&lt;/span&gt;
     --format&lt;span class="o"&gt;=&lt;/span&gt;yaml &lt;span class="se"&gt;\&lt;/span&gt;
     --indent&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;4&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
     --output draw_member/fixtures/anime_members.yaml
     draw_member.Member &lt;span class="se"&gt;\&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# draw_member/fixtures/anime_members.yaml&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_member/fixtures/anime_members.yaml&lt;/span&gt;
 &lt;span class="p p-Indicator"&gt;-&lt;/span&gt;   &lt;span class="nt"&gt;fields&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p p-Indicator"&gt;{&lt;/span&gt;&lt;span class="nt"&gt;group_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\u03BC&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="p p-Indicator"&gt;,&lt;/span&gt;&lt;span class="nt"&gt; name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\u9AD8\u5742&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="se"&gt;\u7A42\u4E43\u679C&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p p-Indicator"&gt;}&lt;/span&gt;
     &lt;span class="nt"&gt;model&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;draw_member.member&lt;/span&gt;
     &lt;span class="nt"&gt;pk&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;1&lt;/span&gt;
@@ -1200,11 +1200,11 @@ sudo systemctl status qcluster
     &lt;span class="nt"&gt;model&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;draw_member.member&lt;/span&gt;
     &lt;span class="nt"&gt;pk&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;2&lt;/span&gt;
 &lt;span class="c1"&gt;# ...&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;用 JSON 輸出也可以，改成 &lt;code&gt;--format=json&lt;/code&gt; 就可以了&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;[&lt;/span&gt;
 &lt;span class="p"&gt;{&lt;/span&gt;
   &lt;span class="nt"&gt;&amp;quot;model&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;draw_member.member&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
   &lt;span class="nt"&gt;&amp;quot;pk&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -1213,51 +1213,51 @@ sudo systemctl status qcluster
     &lt;span class="nt"&gt;&amp;quot;group_name&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;\u03bc&amp;#39;s&amp;quot;&lt;/span&gt;
   &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="p"&gt;},&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;我們可以用 &lt;code&gt;python manage.py flush&lt;/code&gt; 把資料庫清掉，模擬資料的讀入。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python manage.py loaddata anime_members.yaml
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python manage.py loaddata anime_members.yaml
 &lt;span class="go"&gt;Installed 14 object(s) from 1 fixture(s)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;這樣資料的存取就介紹得差不多了。更多的細節可以參考&lt;a href="https://docs.djangoproject.com/en/1.8/#the-model-layer"&gt;官網 model layer&lt;/a&gt; 的說明。&lt;/p&gt;
 &lt;h3 id="django-template"&gt;Django Template&lt;/h3&gt;
 &lt;p&gt;在進行下去之前，先確認我們的目錄結構是一樣的。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;demo_django_draw_member/
-└── draw_site/
-    ├── db.sqlite3
-    ├── draw_member/
-    │   ├── __init__.py
-    │   ├── admin.py
-    │   ├── fixtures/
-    │   │   ├── anime_members.json
-    │   │   └── anime_members.yaml
-    │   ├── migrations/
-    │   │   ├── 0001_initial.py
-    │   │   └── __init__.py
-    │   ├── models.py
-    │   ├── tests.py
-    │   ├── urls.py
-    │   └── views.py
-    ├── draw_site/
-    │   ├── __init__.py
-    │   ├── settings.py
-    │   ├── urls.py
-    │   └── wsgi.py
-    └── manage.py*
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;demo_django_draw_member/&lt;/span&gt;
+&lt;span class="err"&gt;└── draw_site/&lt;/span&gt;
+&lt;span class="err"&gt;    ├── db.sqlite3&lt;/span&gt;
+&lt;span class="err"&gt;    ├── draw_member/&lt;/span&gt;
+&lt;span class="err"&gt;    │   ├── __init__.py&lt;/span&gt;
+&lt;span class="err"&gt;    │   ├── admin.py&lt;/span&gt;
+&lt;span class="err"&gt;    │   ├── fixtures/&lt;/span&gt;
+&lt;span class="err"&gt;    │   │   ├── anime_members.json&lt;/span&gt;
+&lt;span class="err"&gt;    │   │   └── anime_members.yaml&lt;/span&gt;
+&lt;span class="err"&gt;    │   ├── migrations/&lt;/span&gt;
+&lt;span class="err"&gt;    │   │   ├── 0001_initial.py&lt;/span&gt;
+&lt;span class="err"&gt;    │   │   └── __init__.py&lt;/span&gt;
+&lt;span class="err"&gt;    │   ├── models.py&lt;/span&gt;
+&lt;span class="err"&gt;    │   ├── tests.py&lt;/span&gt;
+&lt;span class="err"&gt;    │   ├── urls.py&lt;/span&gt;
+&lt;span class="err"&gt;    │   └── views.py&lt;/span&gt;
+&lt;span class="err"&gt;    ├── draw_site/&lt;/span&gt;
+&lt;span class="err"&gt;    │   ├── __init__.py&lt;/span&gt;
+&lt;span class="err"&gt;    │   ├── settings.py&lt;/span&gt;
+&lt;span class="err"&gt;    │   ├── urls.py&lt;/span&gt;
+&lt;span class="err"&gt;    │   └── wsgi.py&lt;/span&gt;
+&lt;span class="err"&gt;    └── manage.py*&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Django 的 template 預設是放在 &lt;code&gt;&amp;lt;app&amp;gt;/templates/&lt;/code&gt; 底下。不過為了在跨 app 時不要衝到名字，我們會多包一層 app 為名的資料夾。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mkdir -p draw_member/templates/draw_member
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mkdir -p draw_member/templates/draw_member
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;它跟 Flask 用的 Jinja2 templates 乍看下非常類似（Jinja2 模仿 Django template），兩者最大的差別是在 Jinja2 裡能很自由的使用 Python function，不過 Django 靠的是 template tag 以及 filter。我們的例子兩者是沒差多少。&lt;/p&gt;
 &lt;p&gt;一樣先把 &lt;code&gt;base.html&lt;/code&gt; 以及 &lt;code&gt;home.html&lt;/code&gt; 做出來。我們也先把 Form 寫上了，暫時先用 GET。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;{# draw_member/templates/draw_member/base.html #}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;{# draw_member/templates/draw_member/base.html #}&lt;/span&gt;
 &lt;span class="cp"&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
 &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;html&lt;/span&gt; &lt;span class="na"&gt;lang&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;en&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;head&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
@@ -1275,10 +1275,10 @@ sudo systemctl status qcluster
 &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;ul&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;body&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;html&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;{# draw_member/templates/draw_member/home.html #}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;{# draw_member/templates/draw_member/home.html #}&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;extends&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;draw_member/base.html&amp;#39;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
 
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
@@ -1292,26 +1292,26 @@ sudo systemctl status qcluster
     &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;input&lt;/span&gt; &lt;span class="na"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;submit&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Submit&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
   &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;form&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;整體的概念應該很好理解。&lt;code&gt;{% url 'xxxx' %}&lt;/code&gt; 就是 URL resolver，還記得在 &lt;code&gt;urls.py&lt;/code&gt; 的設定時有給個 &lt;code&gt;name&lt;/code&gt; 參數嗎，這邊就會根據那個名字回傳正確的網址。&lt;/p&gt;
 &lt;p&gt;順便更新一下 URL 把這些 view 先加好，不然等下 runserver 會說找不到這些網址。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# draw_members/urls.py&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.conf.urls&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;url&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;.views&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;draw&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;history&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_members/urls.py&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.conf.urls&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;url&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;.views&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;draw&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;history&lt;/span&gt;
 
 &lt;span class="n"&gt;urlpatterns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
     &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^$&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;home&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
     &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^draw/$&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;draw&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;draw&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
     &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^history/$&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;history&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;history&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="p"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# draw_members/views.py&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.shortcuts&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;render&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.http&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;HttpResponse&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_members/views.py&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.shortcuts&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;render&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.http&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;HttpResponse&lt;/span&gt;
 
 
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;home&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
@@ -1324,13 +1324,13 @@ sudo systemctl status qcluster
 
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;history&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;HttpResponse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;lt;p&amp;gt;History&amp;lt;/p&amp;gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;緊接著改寫我們的首頁，讓它用上 &lt;code&gt;home.html&lt;/code&gt;。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;home&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;home&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;render&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;draw_member/home.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;div class="figure align-center"&gt;
@@ -1343,11 +1343,11 @@ sudo systemctl status qcluster
 &lt;p&gt;我們把最重要的抽籤功能實作出來吧。&lt;/p&gt;
 &lt;p&gt;這邊需要理解的就是，Django 會把傳到 GET / POST 的參數以 dict 存在 &lt;code&gt;request.GET&lt;/code&gt; / &lt;code&gt;request.POST&lt;/code&gt; 裡面，&lt;code&gt;@require_GET&lt;/code&gt; 限制只能使用 GET 去溝通。&lt;/p&gt;
 &lt;p&gt;其他的邏輯都是照抄以前的。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;random&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.shortcuts&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;render&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.http&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;HttpResponse&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Http404&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.views.decorators.http&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;require_GET&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;.models&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;History&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;random&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.shortcuts&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;render&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.http&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;HttpResponse&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Http404&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.views.decorators.http&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;require_GET&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;.models&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;History&lt;/span&gt;
 
 &lt;span class="nd"&gt;@require_GET&lt;/span&gt;
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;draw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
@@ -1370,19 +1370,19 @@ sudo systemctl status qcluster
         &lt;span class="s2"&gt;&amp;quot;&amp;lt;p&amp;gt;&lt;/span&gt;&lt;span class="si"&gt;{0.name}&lt;/span&gt;&lt;span class="s2"&gt;（團體：&lt;/span&gt;&lt;span class="si"&gt;{0.group_name}&lt;/span&gt;&lt;span class="s2"&gt;）&amp;lt;/p&amp;gt;&amp;quot;&lt;/span&gt;
         &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lucky_member&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;用 ORM 寫起來比 raw SQL 乾淨多了，不過一開始要把對應的 function 都記起來就是。
 馬上測試一下，一樣偷懶先不去寫 template。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; curl -XGET &lt;span class="s2"&gt;&amp;quot;localhost:8000/draw/?group=ALL&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; curl -XGET &lt;span class="s2"&gt;&amp;quot;localhost:8000/draw/?group=ALL&amp;quot;&lt;/span&gt;
 &lt;span class="go"&gt;&amp;lt;p&amp;gt;小泉 花陽（團體：μ&amp;#39;s）&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;如果是從首頁去點的，觀察一下網址的變化。例如：&lt;code&gt;http://localhost:8000/draw/?group_name=K-ON!&lt;/code&gt;，可以看到 form 的選項直接寫在網址列。這是使用 POST 與 GET 最大的不同。&lt;/p&gt;
 &lt;p&gt;再來把歷史記錄的部份也寫一下，也把 template 都補上。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;{# draw_member/templates/history.html #}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;{# draw_member/templates/history.html #}&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;extends&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;draw_member/base.html&amp;#39;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
 
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;抽籤歷史&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
@@ -1408,16 +1408,16 @@ sudo systemctl status qcluster
     &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;tbody&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
   &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;table&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;history.html 與本來 Flask 不一樣的地方，在用上了 &lt;code&gt;date:"r"&lt;/code&gt; 的 filter，傳的參數接在 &lt;code&gt;:&lt;/code&gt; 之後。也更新對應 view 的動作，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;history&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;history&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;recent_draws&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;History&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;order_by&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;-time&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;all&lt;/span&gt;&lt;span class="p"&gt;()[:&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;render&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;draw_member/history.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
         &lt;span class="s1"&gt;&amp;#39;recent_histories&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;recent_draws&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="p"&gt;})&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;div class="figure align-center"&gt;
@@ -1425,12 +1425,12 @@ sudo systemctl status qcluster
 &lt;/div&gt;
 
 &lt;p&gt;可以看到預設用的是 UTC 時區，時區的轉換細節放到文末吧。我們可以在 view 裡更改要呈現的時區，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.utils.timezone&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;activate&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.utils.timezone&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;activate&lt;/span&gt;
 
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;history&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;activate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Asia/Taipei&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="c1"&gt;# ...&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;div class="figure align-center"&gt;
@@ -1441,7 +1441,7 @@ sudo systemctl status qcluster
 &lt;h3 id="django-form"&gt;Django Form&lt;/h3&gt;
 &lt;p&gt;直接把 form 寫在 template 裡面也是可以，有時候 form 可能跟 model 息息相關，而且 form input 多了之後每個欄位都要自己讀寫也太不直覺。想要驗証使用者的 input 的話就更複雜了。&lt;/p&gt;
 &lt;p&gt;於是就有了 Django Form。馬上來看用起來是怎麼樣。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# draw_member/forms.py&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_member/forms.py&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;forms&lt;/span&gt;
 
 &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;DrawForm&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;forms&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Form&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
@@ -1457,23 +1457,23 @@ sudo systemctl status qcluster
         &lt;span class="n"&gt;widget&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;forms&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RadioSelect&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
         &lt;span class="n"&gt;initial&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;ALL&amp;#39;&lt;/span&gt;
     &lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;建了一個新的 form class，像 Model 一樣，裡面規定了每個欄位的屬性。我們這邊只有一個 &lt;code&gt;group&lt;/code&gt; 是個單選的 ChoiceField，&lt;code&gt;choices&lt;/code&gt; 是個 list of two-item tuples，第一個是內部的值，第二個是顯示的字。其他的都是細節的調整。&lt;/p&gt;
 &lt;p&gt;把這個 form 用到 view 裡面。新建一個 form object &lt;code&gt;form&lt;/code&gt;，然後把這個變數 &lt;code&gt;form&lt;/code&gt; 傳進 template 裡面。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;.forms&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;DrawForm&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;.forms&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;DrawForm&lt;/span&gt;
 
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;home&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;form&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;DrawForm&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;render&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;draw_member/home.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
         &lt;span class="s1"&gt;&amp;#39;form&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;form&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="p"&gt;})&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;再來修改 template，就不用自己寫 form 的內容了，改成 &lt;code&gt;{{ form }}&lt;/code&gt; Django 就會自動產生。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;{# draw_member/home.html #}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;{# draw_member/home.html #}&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;extends&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;draw_member/base.html&amp;#39;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
 
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
@@ -1484,7 +1484,7 @@ sudo systemctl status qcluster
     &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;input&lt;/span&gt; &lt;span class="na"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;submit&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Submit&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
   &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;form&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;div class="figure align-center"&gt;
@@ -1492,20 +1492,20 @@ sudo systemctl status qcluster
 &lt;/div&gt;
 
 &lt;p&gt;不過這個長得跟我們原本的 form 不一樣嘛。好在 Django form 是很彈性的，form 在被 render 成 HTML 時可以提供細節的調整，大家可以參考&lt;a href="https://docs.djangoproject.com/en/1.8/topics/forms/#form-rendering-options"&gt;官網 Form rendering options&lt;/a&gt; 調整。我直接給調好的結果吧。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;  &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;form&lt;/span&gt; &lt;span class="na"&gt;action&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;url&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;draw&amp;#39;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;method&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;get&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;  &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;form&lt;/span&gt; &lt;span class="na"&gt;action&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;url&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;draw&amp;#39;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;method&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;get&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
     &lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;form.group.label_tag&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;
     &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nv"&gt;radio&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;form.group&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
       &lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;radio.tag&lt;/span&gt; &lt;span class="cp"&gt;}}{{&lt;/span&gt; &lt;span class="nv"&gt;radio.choice_label&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;
     &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endfor&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
     &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;input&lt;/span&gt; &lt;span class="na"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;submit&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Submit&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
   &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;form&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;用結果去對照每個 &lt;code&gt;{{ ... }}&lt;/code&gt; 部件對應的 HTML 元素吧。&lt;/p&gt;
 &lt;h4 id="more-django-form-in-view"&gt;More Django form in view&lt;/h4&gt;
 &lt;p&gt;Form 的功能可不只這樣，可以在創建 DrawForm 時直接把 &lt;code&gt;request.GET&lt;/code&gt; 傳入。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# draw_member/views.py&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_member/views.py&lt;/span&gt;
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;draw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="c1"&gt;# Retrieve all related members&lt;/span&gt;
     &lt;span class="n"&gt;form&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;DrawForm&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GET&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -1522,12 +1522,12 @@ sudo systemctl status qcluster
     &lt;span class="c1"&gt;# Lucky draw&lt;/span&gt;
     &lt;span class="n"&gt;lucky_member&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;choice&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;valid_members&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="c1"&gt;# ...&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;用 &lt;code&gt;form.is_valid()&lt;/code&gt; 可以驗証每個欄位的資料是不是正確的。&lt;/p&gt;
 &lt;p&gt;我們也順便把 /draw 加上 template 吧。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;{# draw_member/draw.html #}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;{# draw_member/draw.html #}&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;extends&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;draw_member/base.html&amp;#39;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
 
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;抽籤結果&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
@@ -1536,16 +1536,16 @@ sudo systemctl status qcluster
 &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;h1&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;抽籤結果&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;h1&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;lucky_member.name&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;（團體：&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;lucky_member.group_name&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;）&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# draw_member/views.py&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_member/views.py&lt;/span&gt;
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;draw&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
     &lt;span class="c1"&gt;# ...&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;render&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;draw_member/draw.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
         &lt;span class="s1"&gt;&amp;#39;lucky_member&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;lucky_member&lt;/span&gt;
     &lt;span class="p"&gt;})&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;更多 Forms 的介紹一樣參考&lt;a href="https://docs.djangoproject.com/en/1.8/#forms"&gt;官網&lt;/a&gt;。&lt;/p&gt;
@@ -1563,7 +1563,7 @@ sudo systemctl status qcluster
 &lt;h4 id="raw-sql"&gt;Raw SQL&lt;/h4&gt;
 &lt;p&gt;在介紹 Django Model 的時候直接用了 ORM，但實際上 Django 是可以寫 raw SQL 了，而且還有「聰明版」的 raw SQL 能夠拿回對應的 model object。馬上來看怎麼回事。&lt;/p&gt;
 &lt;p&gt;先來看聰明版的 raw SQL，使用 &lt;code&gt;Model.objects.raw&lt;/code&gt; 拿回所有團體是 K-ON 類的成員。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;raw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;raw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
 &lt;span class="gp"&gt;... &lt;/span&gt;&lt;span class="s2"&gt;SELECT id, name, group_name&lt;/span&gt;
 &lt;span class="gp"&gt;... &lt;/span&gt;&lt;span class="s2"&gt;FROM draw_member_member&lt;/span&gt;
 &lt;span class="gp"&gt;... &lt;/span&gt;&lt;span class="s2"&gt;WHERE group_name LIKE &amp;#39;K-ON&lt;/span&gt;&lt;span class="si"&gt;%%&lt;/span&gt;&lt;span class="s2"&gt;&amp;#39;&lt;/span&gt;
@@ -1573,29 +1573,29 @@ sudo systemctl status qcluster
 &lt;span class="go"&gt; &amp;lt;Member: 田井中 律 of K-ON!&amp;gt;,&lt;/span&gt;
 &lt;span class="go"&gt; &amp;lt;Member: 琴吹 紬 of K-ON!&amp;gt;,&lt;/span&gt;
 &lt;span class="go"&gt; &amp;lt;Member: 中野 梓 of K-ON!&amp;gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;會回傳一個 RawQuerySet，裡面其實也是 Member objects，這是靠 Django 去認對應的 primary key，也就是說在 raw() SQL query 裡一定要放 primary key。注意那個 &lt;code&gt;%&lt;/code&gt; 需要被 escape 因為 raw() 的 SQL query 是能放參數的（就像 Python 內建 str %-formatting）。&lt;/p&gt;
 &lt;p&gt;不過我們怎麼知道 Member 是存在哪個 table 呢？預設是 &lt;code&gt;&amp;lt;app&amp;gt;_&amp;lt;model&amp;gt;&lt;/code&gt;，但資訊在 meta options 裡的 &lt;code&gt;db_table&lt;/code&gt;，也能被覆寫。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_meta&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;db_table&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_meta&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;db_table&lt;/span&gt;
 &lt;span class="go"&gt;&amp;#39;draw_member_member&amp;#39;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;因為 Member 裡面有像 name、group_name 等欄位，在下 query 的時候不一定都會寫在 SELECT 裡面把拿值回來，那麼這些欄位就是 deferred 狀態，只有在真的拿值時才會去跟 database 要。一般使用不會有感覺兩者的差異。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;raw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;raw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
 &lt;span class="gp"&gt;... &lt;/span&gt;    &lt;span class="s2"&gt;&amp;quot;SELECT id FROM draw_member_member&amp;quot;&lt;/span&gt;
 &lt;span class="gp"&gt;... &lt;/span&gt;&lt;span class="p"&gt;))[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="nb"&gt;type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="go"&gt;draw_member.models.Member_Deferred_group_name_name&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_deferred_fields&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="go"&gt;{&amp;#39;group_name&amp;#39;, &amp;#39;name&amp;#39;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;但我就是不想用 ORM，速度慢，也沒辦法寫複雜的 query（戰）。這就回歸到最傳統的 database connection, cursor 這些概念，就像沒有 SQLAlchemy 的 Flask。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.db&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;connection&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.db&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;connection&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;connection&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cursor&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;execute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
 &lt;span class="gp"&gt;... &lt;/span&gt;&lt;span class="s2"&gt;SELECT name&lt;/span&gt;
@@ -1611,7 +1611,7 @@ sudo systemctl status qcluster
 &lt;span class="go"&gt;[(8, datetime.datetime(2015, 10, 5, 17, 36, 41, 608078, tzinfo=&amp;lt;UTC&amp;gt;)),&lt;/span&gt;
 &lt;span class="go"&gt; (11, datetime.datetime(2015, 10, 5, 17, 37, 26, 164830, tzinfo=&amp;lt;UTC&amp;gt;)),&lt;/span&gt;
 &lt;span class="go"&gt; (11, datetime.datetime(2015, 10, 5, 17, 37, 37, 483697, tzinfo=&amp;lt;UTC&amp;gt;))]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Here you go.&lt;/p&gt;
@@ -1620,7 +1620,7 @@ sudo systemctl status qcluster
 &lt;p&gt;這時候就可以把常用的 query 變成一個 method，例如最近 10 次抽籤記錄就只要用 &lt;code&gt;History.objects.recent(10)&lt;/code&gt; 就可以了。&lt;/p&gt;
 &lt;p&gt;這其實有很多做法，像是寫一個 classmethod、Override default Manager、Override default QuerySet。哪個方法比較好呢？在 &lt;a href="http://stackoverflow.com/a/2213341"&gt;StackOverflow&lt;/a&gt;、&lt;a href="https://groups.google.com/forum/#!topic/django-users/0WSdnWFTuUg"&gt;mail list&lt;/a&gt; 都有討論。基本上都能達到相同的效果，但後兩者的做法是比較偏好的，因為 Manager(or QuerySet for Django 1.7+) 負責處理 model 對應到的 database table 等級的操作，但 classmethod 應該是處理已經從 table row 中拿出的一個 model object 相關的操作。如果把同樣性質的 code 放在一起，就應該使用 Manager(QuerySet)。&lt;/p&gt;
 &lt;p&gt;而且 TP 也在 Gitter 上開示了，就是這樣（結案）。來改寫 model。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# draw_member/models.py&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_member/models.py&lt;/span&gt;
 &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;MemberQuerySet&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;QuerySet&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
 
     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;unique_groups&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
@@ -1641,22 +1641,22 @@ sudo systemctl status qcluster
 &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;History&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Model&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="c1"&gt;# ...&lt;/span&gt;
     &lt;span class="n"&gt;objects&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;HistoryQuerySet&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;as_manager&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;在 Member 我們定義了一個 &lt;code&gt;unique_groups&lt;/code&gt; 拿回所有團體的名稱；在 History 定義了 &lt;code&gt;recent&lt;/code&gt; 拿出按時間排序最前面 n 個。新定義的 &lt;code&gt;QuerySet.as_manager()&lt;/code&gt; 就取代掉本來的 &lt;code&gt;Model.objects&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;接著來改寫 view 把之前寫的 query 換掉。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#draw_member/views.py&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;#draw_member/views.py&lt;/span&gt;
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;history&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="c1"&gt;# ...&lt;/span&gt;
     &lt;span class="n"&gt;recent_draws&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;History&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;recent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="c1"&gt;# ...&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;這樣就簡潔一點。再來順便把 form 改得比較彈性，不要把團體名寫死。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#draw_member/forms.py&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;.models&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;#draw_member/forms.py&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;.models&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;
 
 
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;member_group_choices&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
@@ -1673,14 +1673,14 @@ sudo systemctl status qcluster
         &lt;span class="n"&gt;choices&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;member_group_choices&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
         &lt;span class="c1"&gt;# ...&lt;/span&gt;
     &lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h4 id="timezone"&gt;Timezone&lt;/h4&gt;
 &lt;p&gt;感覺最近一直在寫&lt;a href="../../09/datetime-sqlite/"&gt;時區相關的東西&lt;/a&gt;啊。基本上 server 記錄的時間都用 UTC 問題就少很多，但最後還是要呈現一個使用者用的時區。&lt;/p&gt;
 &lt;p&gt;但問題是 HTTP header 裡面並沒有這樣的資訊，所以一來用 geoip 去猜，二來用寫個 javascript 在使用者載入的時候去判斷時區，總之是個要另外記錄的東西。細節&lt;a href="https://docs.djangoproject.com/en/1.8/topics/i18n/timezones/#selecting-the-current-time-zone"&gt;官網上也有說明&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;在文中是使用 &lt;code&gt;activate('Aisa/Taipei')&lt;/code&gt; 把時區改成 UTC+8。這邊介紹另一個方式，是寫在 template 裡面的。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;{# draw_member/templates/draw_member/history.html #}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;{# draw_member/templates/draw_member/history.html #}&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
   &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;load&lt;/span&gt; &lt;span class="nv"&gt;tz&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
   &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;h1&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;抽籤歷史（最近 10 筆）&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;h1&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
@@ -1695,25 +1695,25 @@ sudo systemctl status qcluster
     &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;tbody&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
   &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;table&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h4 id="post-form-and-csrf"&gt;POST form and CSRF&lt;/h4&gt;
 &lt;p&gt;忘記講了，我們的 form 目前是用 &lt;code&gt;action="get"&lt;/code&gt;，當然可以改回用 POST，也很簡單，就 GET 換成 POST 就好了。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# draw_site/views.py&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.views.decorators.http&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;require_POST&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_site/views.py&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.views.decorators.http&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;require_POST&lt;/span&gt;
 
 &lt;span class="nd"&gt;@require_POST&lt;/span&gt;
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;draw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="c1"&gt;# Retrieve all related members&lt;/span&gt;
     &lt;span class="n"&gt;form&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;DrawForm&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;POST&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="c1"&gt;# ...&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;{# draw_site/templates/home.html #}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;{# draw_site/templates/home.html #}&lt;/span&gt;
   &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;form&lt;/span&gt; &lt;span class="na"&gt;action&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;url&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;draw&amp;#39;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;method&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;post&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;馬上來試試看。&lt;/p&gt;
@@ -1724,10 +1724,10 @@ sudo systemctl status qcluster
 
 &lt;p&gt;拿到了一個 403 Forbidden &amp;ldquo;CSRF verification failed.&amp;rdquo;。CSRF (Cross Site Request Forgery) 在 &lt;a href="https://zh.wikipedia.org/wiki/%E8%B7%A8%E7%AB%99%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0"&gt;wiki&lt;/a&gt; 有比較完整的介紹，這是一種攻擊手法，在使用者登入網站之後（session 為登入狀態），偽造一個跟網站上一樣的 form 來偽裝使用者的行為。例如購票系統買票，如果沒檢查的話，我可以拿使用者的 session 去網站上隨便買票，網站都會認為是使用者在操作。&lt;/p&gt;
 &lt;p&gt;因此 &lt;a href="https://docs.djangoproject.com/en/1.8/ref/csrf/"&gt;CSRF token&lt;/a&gt; 用來防範這個偽造，在產生 form 的時候，網站會再產生一個欄位的值，這個欄位的值每次都會改變，這樣就能確定這個 form 是從網站上拿到的。Django 處理 CSRF protection 是透過 &lt;a href="https://docs.djangoproject.com/en/1.8/topics/http/middleware/"&gt;Middleware&lt;/a&gt;，一個以前沒有提到的概念，表示他是比較底層的東西。相對而言，也不用改我們的 code，在這個例子就只要把 &lt;code&gt;{% csrf_token %}&lt;/code&gt; 加到 form 裡面就可以了。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;{# draw_site/templates/home.html #}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;{# draw_site/templates/home.html #}&lt;/span&gt;
   &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;form&lt;/span&gt; &lt;span class="na"&gt;action&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;url&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;draw&amp;#39;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;method&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;post&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
     &lt;span class="c"&gt;{# ... #}&lt;/span&gt;
     &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;csrf_token&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
     &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;input&lt;/span&gt; &lt;span class="na"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;submit&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Submit&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
   &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;form&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</content><category term="zh"></category><category term="django"></category><category term="sqlite"></category><category term="python"></category></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="django"></category><category term="sqlite"></category><category term="python"></category></entry></feed>

@@ -20,7 +20,7 @@
 &lt;/div&gt;
 &lt;h3 id="bibtex-is-for-latex"&gt;BibTex is for LaTeX&lt;/h3&gt;
 &lt;p&gt;在 &lt;a href="https://www.latex-project.org/"&gt;LaTeX&lt;/a&gt; 當中可以利用 &lt;a href="http://www.bibtex.org/"&gt;BibTeX&lt;/a&gt;（或更新的 &lt;a href="https://www.ctan.org/pkg/biblatex"&gt;BibLaTeX&lt;/a&gt;）提供的流程處理 citation 與管理 reference（即 &lt;a href="https://en.wikibooks.org/wiki/LaTeX/Bibliography_Management"&gt;Bibliography 管理&lt;/a&gt;）。他把所有 reference 集中在一個純文字的檔案，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;@article&lt;span class="nb"&gt;{&lt;/span&gt;Calin:2006aa,
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;@article&lt;span class="nb"&gt;{&lt;/span&gt;Calin:2006aa,
     Author = &lt;span class="nb"&gt;{&lt;/span&gt;Calin, George A. and Croce, Carlo M.&lt;span class="nb"&gt;}&lt;/span&gt;,
     Journal = &lt;span class="nb"&gt;{&lt;/span&gt;Nat Rev Cancer&lt;span class="nb"&gt;}&lt;/span&gt;,
     Month = &lt;span class="nb"&gt;{&lt;/span&gt;11&lt;span class="nb"&gt;}&lt;/span&gt;,
@@ -29,7 +29,7 @@
     Title = &lt;span class="nb"&gt;{&lt;/span&gt;MicroRNA signatures in human cancers&lt;span class="nb"&gt;}&lt;/span&gt;,
     Volume = &lt;span class="nb"&gt;{&lt;/span&gt;6&lt;span class="nb"&gt;}&lt;/span&gt;,
     Year = &lt;span class="nb"&gt;{&lt;/span&gt;2006&lt;span class="nb"&gt;}}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;每篇文章會有一個 cite key，在內文用到的時候就可以引用，而 BibTeX 就會根據現在定義的 style 去放 citation 以及在文末加上對應的 reference。&lt;/p&gt;
@@ -95,11 +95,11 @@
 &lt;p&gt;這邊要額外說明一下 Linked Attachment Base Directory 以及 Data Directory 的差異。像 PDF 這類如果被 Zotfile 所管理的檔案，或是自己手動選「Attach Link &amp;hellip;」的檔案，他使用的是 linked attachment，icon 會有個連結的符號 &lt;img src="https://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotfile_fileicon.png" style="height: 1.6em;"/&gt;。其他像 Webpage Snapshot 或是預設的 PDF 檔都是放在 Data Directory。&lt;/p&gt;
 &lt;h4 id="how-to-sync-data-storage"&gt;How to sync data storage&lt;/h4&gt;
 &lt;p&gt;如果要進一步讓 data storage 也用 Dropbox 同步的話，參考官網關於 &lt;a href="https://www.zotero.org/support/sync"&gt;sync 的介紹&lt;/a&gt;，OSX 上 Zotero Firefox 的資料會存放在&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;~/Library/Application Support/Firefox/Profiles/xxxxxxxx.default/zotero
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;~/Library/Application Support/Firefox/Profiles/xxxxxxxx.default/zotero&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;其中 data storage 就在底下的 &lt;code&gt;storage&lt;/code&gt; 資料夾。官網建議不要把 Zotero 的 SQLite database 等都同步在 Dropbox 上，所以只要把這個資料移到 Dropbox 再 soft link 回來就可以了。&lt;/p&gt;
 &lt;h3 id="_1"&gt;總結&lt;/h3&gt;
 &lt;p&gt;&lt;a href="https://www.zotero.org/"&gt;Zotero&lt;/a&gt; 是個實用並且跟瀏覽器整合的文獻（書目）管理工具。但它也能處理像網頁等其他網路上也很常見的格式，也能與既有的工具、文件編輯軟體結合，並有同步功能，非常適合作為外部記憶庫。&lt;/p&gt;
-&lt;p&gt;（應該要用英文寫的，什麼時候才會有第一篇英文 blog post QAQ）&lt;/p&gt;</content><category term="zh"></category><category term="zotero"></category></entry></feed>
+&lt;p&gt;（應該要用英文寫的，什麼時候才會有第一篇英文 blog post QAQ）&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="zotero"></category></entry></feed>

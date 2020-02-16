@@ -140,14 +140,14 @@
 <h3 id="pandas-indexing">Pandas indexing</h3>
 <p>Pandas indexing 花俏到用<a href="http://pandas.pydata.org/pandas-docs/stable/indexing.html">一</a>、<a href="http://pandas.pydata.org/pandas-docs/stable/advanced.html">兩</a>頁也介紹不完。</p>
 <p>不過今天只想說有關兩個維度以上的 indexing，例如想看國民黨、民進黨、時代力量區域與不分區的提名好了，</p>
-<div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span>
+<div class="highlight"><pre><span></span><code><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span>
     <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 <span class="p">]</span>
 <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
     <span class="p">[</span><span class="s1">&#39;中國國民黨&#39;</span><span class="p">,</span> <span class="s1">&#39;民主進步黨&#39;</span><span class="p">,</span> <span class="s1">&#39;時代力量&#39;</span><span class="p">],</span> 
     <span class="p">[</span><span class="s1">&#39;區域&#39;</span><span class="p">,</span> <span class="s1">&#39;不分區&#39;</span><span class="p">]</span>
 <span class="p">]</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>上述兩個方法都能拿到一部份的表格。</p>
@@ -179,7 +179,7 @@
 </table>
 <h3 id="numpy-indexing">Numpy indexing</h3>
 <p>下意識地以為 <a href="http://docs.scipy.org/doc/numpy/reference/arrays.indexing.html#arrays-indexing">numpy indexing</a> 會是一樣的，畢竟 pandas 底層就是一個 numpy array。</p>
-<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">arr</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">values</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">arr</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">values</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">arr</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
 <span class="go">array([[72,  5, 33],</span>
 <span class="go">       [60,  2, 34],</span>
@@ -190,51 +190,51 @@
 <span class="gp">...</span>
 <span class="go">IndexError: shape mismatch: indexing arrays could not be broadcast </span>
 <span class="go">together with shapes (3,) (2,) </span>
-</pre></div>
+</code></pre></div>
 
 
 <p>回去看<a href="http://docs.scipy.org/doc/numpy/reference/arrays.indexing.html#arrays-indexing">官方文件</a>才想起來， numpy 這時候是如同給定 (x, y) 座標這樣，一個個把元素選出來。</p>
-<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">arr</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">arr</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
 <span class="go">[72, 2, 6]</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>簡單的方式是分兩次選，</p>
-<div class="highlight"><pre><span></span><span class="n">arr</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">:][:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">arr</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">:][:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
+</code></pre></div>
 
 
 <p>但這樣 numpy 會傳兩次 copy<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> 回來，資料很大的時候就沒效率。所以要怎麼做呢？</p>
 <p>參考 <a href="http://stackoverflow.com/a/30918530">Stack Overflow</a> 上的回答，底下幾種方式都可以。最簡單的方法就是透過 <a href="http://docs.scipy.org/doc/numpy-1.10.1/reference/generated/numpy.ix_.html#numpy.ix_">numpy.ix_()</a>，</p>
-<div class="highlight"><pre><span></span><span class="n">arr</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])]</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">arr</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])]</span>
+</code></pre></div>
 
 
 <p>如果了解 numpy broadcasting 機制的話，</p>
-<div class="highlight"><pre><span></span><span class="c1"># index must be numpy array</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># index must be numpy array</span>
 <span class="n">cols</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
 <span class="n">rows</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 <span class="n">arr</span><span class="p">[</span><span class="n">cols</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">rows</span><span class="p">]</span>
 
 <span class="c1"># np.newaxis is None</span>
-<span class="n">arr</span><span class="p">[</span><span class="n">cols</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">],</span> <span class="n">rows</span><span class="p">]</span>
-</pre></div>
+<span class="n">arr</span><span class="p">[</span><span class="n">cols</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">rows</span><span class="p">]</span>
+</code></pre></div>
 
 
 <p>或者直接把所有包含的 index 值都做出來，</p>
-<div class="highlight"><pre><span></span><span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span>
     <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> 
     <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span>
 <span class="p">)</span>
 <span class="n">arr</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>整理一下，這只要一段時間沒用就常會忘記。</p>
 <h3 id="_1">維基原始資料處理</h3>
 <p>Wikipedia 原始資料從<a href="https://zh.wikipedia.org/wiki/2016%E5%B9%B4%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E7%AB%8B%E6%B3%95%E5%A7%94%E5%93%A1%E9%81%B8%E8%88%89">這裡</a>取得，這就是展現 pandas 處理能力的時候了。新版本對字串處理提供更多功能，都讓我忘了底下的 numpy 對 unicode 支援其實不怎麼樣 XD</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">quote_plus</span>
 
 <span class="n">dfs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_html</span><span class="p">(</span>
@@ -254,7 +254,7 @@
 <span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;政黨&#39;</span><span class="p">]</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;－&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <div class="footnote">

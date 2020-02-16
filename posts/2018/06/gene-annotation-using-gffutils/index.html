@@ -78,15 +78,15 @@
 </div>
 <h3 id="usage-example">Usage example</h3>
 <p>To use gffutils to query GENCODE annotation, we need to create the database first. The comprehensive gene annotation GTF can be downloaded from <a href="https://www.gencodegenes.org/releases/19.html">the GENCODE website</a> (<a href="ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/gencode.v19.annotation.gtf.gz">URL to the GTF</a>). The database creation is handled by gffutils&rsquo;s <code>create_db</code> function. It will take a few minutes to run and the database will be at <code>gencode_v19.db</code>.</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gffutils</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">gffutils</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">gffutils</span><span class="o">.</span><span class="n">create_db</span><span class="p">(</span>
     <span class="s1">&#39;./gencode.v19.annotation.gtf.gz&#39;</span><span class="p">,</span>
     <span class="n">dbfn</span><span class="o">=</span><span class="s1">&#39;gencode_v19.db&#39;</span><span class="p">,</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">merge_strategy</span><span class="o">=</span><span class="s1">&#39;error&#39;</span><span class="p">,</span>
-    <span class="n">disable_infer_transcripts</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-    <span class="n">disable_infer_genes</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">disable_infer_transcripts</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">disable_infer_genes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="c1"># INFO - Committing changes: 2619000 features</span>
 <span class="c1"># INFO - Populating features table and first-order relations: 2619443 features</span>
@@ -96,25 +96,25 @@
 <span class="c1"># INFO - Creating features (seqid, start, end) index</span>
 <span class="c1"># INFO - Creating features (seqid, start, end, strand) index</span>
 <span class="c1"># INFO - Running ANALYSE features</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Once the database is created, we don&rsquo;t have to repeat the same process but load the database directly as a FeatureDB object:</p>
-<div class="highlight"><pre><span></span><span class="n">db</span> <span class="o">=</span> <span class="n">gffutils</span><span class="o">.</span><span class="n">FeatureDB</span><span class="p">(</span><span class="s1">&#39;./gencode_v19.db&#39;</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">db</span> <span class="o">=</span> <span class="n">gffutils</span><span class="o">.</span><span class="n">FeatureDB</span><span class="p">(</span><span class="s1">&#39;./gencode_v19.db&#39;</span><span class="p">)</span>
+</code></pre></div>
 
 
 <h4 id="single-feature-access">Single feature access</h4>
 <p>One can then access the annotations of a gene or transcript by its ID. Using a transcript of TP53 as an example,</p>
-<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gene</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="s1">&#39;ENSG00000141510.11&#39;</span><span class="p">];</span> <span class="n">gene</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">gene</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="s1">&#39;ENSG00000141510.11&#39;</span><span class="p">];</span> <span class="n">gene</span>
 <span class="go">&lt;Feature gene (chr17:7565097-7590856[-]) at 0x7fac828deeb8&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tx</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="s1">&#39;ENST00000269305.4&#39;</span><span class="p">];</span> <span class="n">tx</span>
 <span class="go">&lt;Feature transcript (chr17:7571720-7590856[-]) at 0x7fac828f8080&gt;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>We can then access the details of the transcript:</p>
-<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tx</span><span class="o">.</span><span class="n">featuretype</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">source</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">tx</span><span class="o">.</span><span class="n">featuretype</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">source</span>
 <span class="go">(&#39;transcript&#39;, &#39;HAVANA&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tx</span><span class="o">.</span><span class="n">chrom</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">end</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">strand</span>
 <span class="go">(&#39;chr17&#39;, 7571720, 7590856, &#39;-&#39;)</span>
@@ -133,12 +133,12 @@
 <span class="go"> (&#39;ccdsid&#39;, [&#39;CCDS11118.1&#39;]),</span>
 <span class="go"> (&#39;havana_gene&#39;, [&#39;OTTHUMG00000162125.4&#39;]),</span>
 <span class="go"> (&#39;havana_transcript&#39;, [&#39;OTTHUMT00000367397.1&#39;])]</span>
-</pre></div>
+</code></pre></div>
 
 
 <h4 id="gene-model-coordinates-of-a-transcript">Gene model coordinates of a transcript</h4>
 <p>To find the coordinates of its exons and UTRs, we use <a href="https://daler.github.io/gffutils/autodocs/gffutils.interface.FeatureDB.children.html#gffutils.interface.FeatureDB.children"><code>FeatureDB.children()</code></a> which takes an Feature object or its ID and retrieves all the features belong to this feature. TP53 is on the reverse strand of the chromosome, so we can further sort the features by their end position:</p>
-<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">children</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">order_by</span><span class="o">=</span><span class="s1">&#39;-end&#39;</span><span class="p">))</span>             
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">children</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">order_by</span><span class="o">=</span><span class="s1">&#39;-end&#39;</span><span class="p">))</span>             
 <span class="go">[&lt;Feature transcript (chr17:7571720-7590856[-]) at 0x7fac828922e8&gt;,</span>
 <span class="go"> &lt;Feature UTR (chr17:7590695-7590856[-]) at 0x7fac82892208&gt;, </span>
 <span class="go"> &lt;Feature exon (chr17:7590695-7590856[-]) at 0x7fac828922b0&gt;,</span>
@@ -151,24 +151,24 @@
 <span class="go"> &lt;Feature exon (chr17:7571720-7573008[-]) at 0x7fac82827b38&gt;,</span>
 <span class="go"> &lt;Feature UTR (chr17:7571720-7572929[-]) at 0x7fac82827eb8&gt;,       </span>
 <span class="go"> &lt;Feature stop_codon (chr17:7572927-7572929[-]) at 0x7fac828fca90&gt;]</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>We have retrieved the UTRs, CDSs and exons of the transcript. Note that UTR is considered a part of an exon in gene annotation terminology. We should use CDSs as the exons that will be translated to amino acids. <code>FeatureDB.children()</code> provides a way to subset the feature type it returns:</p>
-<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">children</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">order_by</span><span class="o">=</span><span class="s1">&#39;-end&#39;</span><span class="p">,</span> <span class="n">featuretype</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;CDS&#39;</span><span class="p">,</span> <span class="s1">&#39;UTR&#39;</span><span class="p">]))</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">children</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">order_by</span><span class="o">=</span><span class="s1">&#39;-end&#39;</span><span class="p">,</span> <span class="n">featuretype</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;CDS&#39;</span><span class="p">,</span> <span class="s1">&#39;UTR&#39;</span><span class="p">]))</span>
 <span class="go">[&lt;Feature UTR (chr17:7590695-7590856[-]) at 0x7fac8283d7f0&gt;,</span>
 <span class="go"> &lt;Feature UTR (chr17:7579913-7579940[-]) at 0x7fac8283d710&gt;,</span>
 <span class="go"> &lt;Feature CDS (chr17:7579839-7579912[-]) at 0x7fac8283d7b8&gt;,</span>
 <span class="go"> ...</span>
 <span class="go"> &lt;Feature CDS (chr17:7572930-7573008[-]) at 0x7fac82846470&gt;,</span>
 <span class="go"> &lt;Feature UTR (chr17:7571720-7572929[-]) at 0x7fac828467b8&gt;]</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Now the gene model of TP53 becomes clearly visible.</p>
 <h4 id="feature-selection">Feature selection</h4>
 <p>To select all the transcripts in the database, there is a <code>FeatureDB.all_features()</code> function. Here we want to select only the basic GENOCODE transcripts and count the number of different gene types:</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
 <span class="c1"># All the transcripts of basic GENCODE v19</span>
 <span class="n">all_basic_txs</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">tx</span> <span class="k">for</span> <span class="n">tx</span> <span class="ow">in</span> <span class="n">db</span><span class="o">.</span><span class="n">all_features</span><span class="p">(</span><span class="n">featuretype</span><span class="o">=</span><span class="s1">&#39;transcript&#39;</span><span class="p">)</span> 
@@ -181,31 +181,31 @@
 <span class="c1">#  (&#39;lincRNA&#39;, 7121),</span>
 <span class="c1">#  (&#39;miRNA&#39;, 3055),</span>
 <span class="c1">#  (&#39;misc_RNA&#39;, 2034)]</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3 id="direct-operation-on-the-database">Direct operation on the database</h3>
 <p>Since gffutils is just a abstraction layer on top of the database, we can always talk to the underlying SQLite database directly by writing SQL commands. The database schema is available on <a href="https://daler.github.io/gffutils/database-schema.html">the gffutils&rsquo;s documentation</a>. Under the hood, FeatureDB object maintains a SQLite connection at <code>FeatureDB.conn</code> and a helper function to run a single SQL command via <code>FeatureDB.execute()</code>. </p>
 <p>For example, GENCODE stores the full version of a transcript ID but in many occasion, such information is not available. Say if we only know the TP53 transcript ID is <code>ENST00000269305</code>, then we can write a SQL query to find the matching ID: </p>
-<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">conn</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">conn</span>
 <span class="go">&lt;sqlite3.Connection at 0x7fac89423490&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cur</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
 <span class="gp">... </span>   <span class="s2">&quot;SELECT id FROM features &quot;</span>
 <span class="gp">... </span>   <span class="s2">&quot;WHERE featuretype=&#39;transcript&#39; AND id LIKE &#39;ENST00000269305.%&#39;;&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cur</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 <span class="go">&#39;ENST00000269305.4&#39;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>We can even tweak the SQLite behavior by setting <a href="https://www.sqlite.org/pragma.html">the <code>PRAGMA</code> statements</a>. gffutils has already added default pragma to optimize database query, including less database integrity and large memory size:</p>
-<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">pragmas</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">pragmas</span>
 <span class="go">{&#39;synchronous&#39;: &#39;NORMAL&#39;,</span>
 <span class="go"> &#39;journal_mode&#39;: &#39;MEMORY&#39;,</span>
 <span class="go"> &#39;main.page_size&#39;: 4096,</span>
 <span class="go"> &#39;main.cache_size&#39;: 10000}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;PRAGMA temp_store=MEMORY&#39;</span><span class="p">)</span> 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;PRAGMA cache_size=-1000000&#39;</span><span class="p">)</span>  <span class="c1"># Use 1GB memory</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3 id="discussions">Discussions</h3>

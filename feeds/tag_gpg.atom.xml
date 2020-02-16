@@ -3,7 +3,7 @@
 &lt;p&gt;Back in &lt;a href="https://blog.liang2.tw/posts/2016/12/gpg-key-transition-2016/"&gt;my GPG key transition in 2016&lt;/a&gt;, I&amp;rsquo;ve created the subkeys for daily usage and isolated the master key into a secret offline place. I learned more about PGP throughout the years, sadly though, I still seldom have a chance to use it extensively in my daily life. &lt;/p&gt;
 &lt;p&gt;This time, I am moving the subkeys to a YubiKey. I found &lt;a href="https://github.com/drduh/YubiKey-Guide"&gt;drduh&amp;rsquo;s guide&lt;/a&gt; on GitHub very informative to set up both the GPG key and the yubikey, as well as get my hands on the various possible applications. Another notable change is that I no longer set an expiration date on my master key.&lt;/p&gt;
 &lt;p&gt;I will revoke my old keys once the transition is done.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;-----BEGIN PGP SIGNED MESSAGE-----
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;-----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA512
 
 I am transitioning GPG keys from an old 4096-bit RSA key to a new
@@ -68,9 +68,9 @@ Lbb9XLkbHNOaiC4EFm07uFmMVkV6aKW3xV1YIlDeovRfNC0cyZDnUNFqaDGtZAeO
 UifqHyDqNjBJX0a8miUMZDOXsZFD2jzm3pjS/Q==
 =JRPp
 -----END PGP SIGNATURE-----
-&lt;/pre&gt;&lt;/div&gt;</content><category term="en"></category><category term="gpg"></category></entry><entry><title>GPG Key Transition</title><link href="https://blog.liang2.tw/posts/2016/12/gpg-key-transition-2016/" rel="alternate"></link><published>2016-12-06T00:00:00-06:00</published><updated>2016-12-06T00:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-12-06:/posts/2016/12/gpg-key-transition-2016/</id><summary type="html">&lt;p&gt;I started using GPG key as one of my small experiments in March, 2015. Throughout the setup, I made some mistakes, which I revoked …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I started using GPG key as one of my small experiments in March, 2015. Throughout the setup, I made some mistakes, which I revoked later, and explored several usage scenarios. Although like what was said in the post &lt;a href="https://blog.filippo.io/giving-up-on-long-term-pgp/"&gt;&lt;em&gt;I&amp;rsquo;m giving up on PGP&lt;/em&gt;&lt;/a&gt;, I don&amp;rsquo;t really use the encryption in daily email communication, it is still good to have an online identity.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Coding"></category><category term="en"></category><category term="gpg"></category></entry><entry><title>GPG Key Transition</title><link href="https://blog.liang2.tw/posts/2016/12/gpg-key-transition-2016/" rel="alternate"></link><published>2016-12-06T00:00:00-06:00</published><updated>2016-12-06T00:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-12-06:/posts/2016/12/gpg-key-transition-2016/</id><summary type="html">&lt;p&gt;I started using GPG key as one of my small experiments in March, 2015. Throughout the setup, I made some mistakes, which I revoked …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I started using GPG key as one of my small experiments in March, 2015. Throughout the setup, I made some mistakes, which I revoked later, and explored several usage scenarios. Although like what was said in the post &lt;a href="https://blog.filippo.io/giving-up-on-long-term-pgp/"&gt;&lt;em&gt;I&amp;rsquo;m giving up on PGP&lt;/em&gt;&lt;/a&gt;, I don&amp;rsquo;t really use the encryption in daily email communication, it is still good to have an online identity.&lt;/p&gt;
 &lt;p&gt;A year later, which is 3 months before my &lt;em&gt;experimental&lt;/em&gt; key expires, I think now is a good time to roll out a new one. I followed Alex&amp;rsquo;s post &lt;a href="https://alexcabal.com/creating-the-perfect-gpg-keypair/"&gt;&lt;em&gt;Creating the Perfect GPG Keypair&lt;/em&gt;&lt;/a&gt; to create a signing subkey for daily usage and keep my master key sperately in a safe place. The following is my transition statement.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;-----BEGIN PGP SIGNED MESSAGE-----
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;-----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA512
 
 I am transitioning GPG keys from an old 4192-bit RSA key to a new
@@ -145,4 +145,4 @@ H35TsvRJK7hH+4d10EdURleyRj7d0EcXlHqki4urKlwSzRebLzq365vADzXEjFYp
 DmfC2ISS64uLqHgJ3HHxhSmTLdc8KSJqzFi90ZUu
 =JS7v
 -----END PGP SIGNATURE-----
-&lt;/pre&gt;&lt;/div&gt;</content><category term="en"></category><category term="gpg"></category></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Coding"></category><category term="en"></category><category term="gpg"></category></entry></feed>

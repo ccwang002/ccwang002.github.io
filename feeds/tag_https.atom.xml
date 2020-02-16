@@ -38,7 +38,7 @@
 &lt;p&gt;更新 certificate 的指令寫在 &lt;code&gt;/etc/letsencrypt/renew_cert.sh&lt;/code&gt;。Shell script 的內容與參考文章一樣。&lt;/p&gt;
 &lt;h4 id="systemd-service"&gt;Systemd service&lt;/h4&gt;
 &lt;p&gt;首先建立一個 renew_cert，以 Debian 為例放在 &lt;code&gt;/etc/systemd/system/renew_cert.service&lt;/code&gt;，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
 &lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;Renew Let&amp;#39;s Encrypt cert&lt;/span&gt;
 &lt;span class="na"&gt;After&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;syslog.target&lt;/span&gt;
 
@@ -51,23 +51,23 @@
 
 &lt;span class="k"&gt;[Install]&lt;/span&gt;
 &lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;multi-user.target&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;要手動更新 certificate 的時候執行這個 service 即可，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;systemctl start renew_cert
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;systemctl start renew_cert&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;我們不需要 enable 它，不然每次開機都會執行一次。看結果或記錄，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;systemctl status renew_cert
-journalctl -e -u renew_cert
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;systemctl status renew_cert&lt;/span&gt;
+&lt;span class="err"&gt;journalctl -e -u renew_cert&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h4 id="systemd-timer"&gt;Systemd Timer&lt;/h4&gt;
 &lt;p&gt;建立一個 &lt;code&gt;/etc/systemd/system/renew_cert.timer&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
 &lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;Update Let&amp;#39;s Encrypt certificate every two months&lt;/span&gt;
 
 &lt;span class="k"&gt;[Timer]&lt;/span&gt;
@@ -76,29 +76,29 @@ journalctl -e -u renew_cert
 
 &lt;span class="k"&gt;[Install]&lt;/span&gt;
 &lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;multi-user.target&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;重點只有 &lt;code&gt;[Timer]&lt;/code&gt; 這 directive。&lt;code&gt;Unit=&lt;/code&gt; 表示要啟動的 service。&lt;code&gt;OnCalendar=&lt;/code&gt;&lt;sup id="fnref:calendar"&gt;&lt;a class="footnote-ref" href="#fn:calendar"&gt;1&lt;/a&gt;&lt;/sup&gt; 則是設定這 timer 根據指定的時間點 (UTC 時間&lt;sup id="fnref:utc"&gt;&lt;a class="footnote-ref" href="#fn:utc"&gt;2&lt;/a&gt;&lt;/sup&gt;) 啟動。&lt;/p&gt;
 &lt;p&gt;以這邊寫的時間 &lt;code&gt;*-1/2-1 16:00:00&lt;/code&gt; 為例，代表每年的 1+2n 月 1 日 16:00 UTC 更新 certificate，即臺灣時間 1、3、5、……月 2 日凌晨更新。&lt;/p&gt;
 &lt;p&gt;啟用 timer，它需要被 enable 確保重開機時被執行。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;systemctl enable renew_cert.timer
-systemctl start renew_cert.timer
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;systemctl enable renew_cert.timer&lt;/span&gt;
+&lt;span class="err"&gt;systemctl start renew_cert.timer&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;可以用 &lt;code&gt;systemctl list-timers&lt;/code&gt; 檢查它下次執行的時間：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo systemctl list-timers renew_cert.timer
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo systemctl list-timers renew_cert.timer
 &lt;span class="go"&gt;NEXT                         LEFT                LAST PASSED UNIT             ACTIVATES&lt;/span&gt;
 &lt;span class="go"&gt;Tue 2016-03-01 16:00:00 UTC  1 weeks 2 days left n/a  n/a    renew_cert.timer renew_cert.service&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3 id="nginx-http-redirect-to-https"&gt;nginx HTTP redirect to HTTPS&lt;/h3&gt;
 &lt;p&gt;（這邊設定我沒信心，有更好的設定方法歡迎告訴我 &amp;gt; &amp;lt;）&lt;/p&gt;
 &lt;p&gt;要解決的問題為，ACME challenge 是透過 HTTP，其餘的連線都轉到 HTTPS。&lt;/p&gt;
 &lt;p&gt;在 nginx 中把主要的設定檔中拿掉 &lt;code&gt;listen 80;&lt;/code&gt; 與 ACM challenge 的部份。把它們移成新的 server block： &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;server&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;server&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="kn"&gt;listen&lt;/span&gt; &lt;span class="mi"&gt;80&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="kn"&gt;server_name&lt;/span&gt; &lt;span class="s"&gt;docs.python.org.tw&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
@@ -112,7 +112,7 @@ systemctl start renew_cert.timer
         &lt;span class="kn"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;301&lt;/span&gt; &lt;span class="s"&gt;https://&lt;/span&gt;&lt;span class="nv"&gt;$host$request_uri&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3 id="https"&gt;測試 HTTPS 設定&lt;/h3&gt;
@@ -133,11 +133,11 @@ systemctl start renew_cert.timer
 &lt;p&gt;要注意目前 public beta 階段，相同 domain 在 7 天只能被簽署 5 次，測試的時候不要太衝動不然就要等一週了。&lt;/p&gt;
 &lt;h3 id="misc"&gt;Misc.&lt;/h3&gt;
 &lt;p&gt;建立 CSR (Certificate Signing Request) 檔時，可以加入自己的 email 地址，不然預設是 &lt;code&gt;webmaster@&amp;lt;domain&amp;gt;&lt;/code&gt;：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openssl req -new -sha256 &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;openssl req -new -sha256 &lt;span class="se"&gt;\&lt;/span&gt;
     -key /etc/letsencrypt/private/domain.key &lt;span class="se"&gt;\&lt;/span&gt;
     -subj &lt;span class="s2"&gt;&amp;quot;/CN=docs.python.org.tw/emailAddress=me+pydoctw@liang2.tw&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
     &amp;gt; /etc/letsencrypt/private/domain.csr
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;div class="footnote"&gt;
@@ -150,7 +150,7 @@ systemctl start renew_cert.timer
 &lt;p&gt;Debian Jessie 的 &lt;a href="https://www.freedesktop.org/software/systemd/man/systemd.time.html#Calendar%20Events"&gt;systemd.time (7)&lt;/a&gt; Calendar Events 裡並沒有指定時區的方式，所以加上時區會有 parse error。但新版的 systemd 似乎支援時區。總之應該用 &lt;code&gt;systemctl list-timers&lt;/code&gt; 確定執行的時間。&amp;#160;&lt;a class="footnote-backref" href="#fnref:utc" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="zh"></category><category term="pydoctw"></category><category term="https"></category><category term="letsencrypt"></category></entry><entry><title>Blog defaults to HTTPS</title><link href="https://blog.liang2.tw/posts/2016/01/blog-https/" rel="alternate"></link><published>2016-01-06T00:00:00-06:00</published><updated>2016-01-06T00:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-06:/posts/2016/01/blog-https/</id><summary type="html">&lt;p&gt;簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="pydoctw"></category><category term="https"></category><category term="letsencrypt"></category></entry><entry><title>Blog defaults to HTTPS</title><link href="https://blog.liang2.tw/posts/2016/01/blog-https/" rel="alternate"></link><published>2016-01-06T00:00:00-06:00</published><updated>2016-01-06T00:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-06:/posts/2016/01/blog-https/</id><summary type="html">&lt;p&gt;簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。&lt;/p&gt;
 &lt;p&gt;Blog 本來就是架在 &lt;a href="https://github.com/ccwang002/ccwang002.github.io"&gt;GitHub Pages&lt;/a&gt; 上，其實預設有 https，但在網址改成自訂 domain 之後 https 自然就失效了。在 GitHub 上有開 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。&lt;/p&gt;
 &lt;p&gt;Blog 本來就是架在 &lt;a href="https://github.com/ccwang002/ccwang002.github.io"&gt;GitHub Pages&lt;/a&gt; 上，其實預設有 https，但在網址改成自訂 domain 之後 https 自然就失效了。在 GitHub 上有開 issue 請他們加入 &lt;a href="https://github.com/isaacs/github/issues/156"&gt;HTTPS support for custom domain&lt;/a&gt; 這功能，不過目前還是需要自己想辦法。隨著 &lt;a href="https://letsencrypt.org/"&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt; 這種服務的流行，GitHub 才會去積極尋找比較合適的解決方案吧。&lt;/p&gt;
 &lt;div class="toc"&gt;
@@ -194,4 +194,4 @@ systemctl start renew_cert.timer
   &lt;p class="caption center"&gt;CloudFlare DNS setting&lt;/p&gt;
 &lt;/div&gt;
 
-&lt;p&gt;大概是這樣。希望能在不要自己架 server 的情況下繼續經營這個 blog。&lt;/p&gt;</content><category term="zh"></category><category term="blog"></category><category term="pelican"></category><category term="https"></category></entry></feed>
+&lt;p&gt;大概是這樣。希望能在不要自己架 server 的情況下繼續經營這個 blog。&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="blog"></category><category term="pelican"></category><category term="https"></category></entry></feed>

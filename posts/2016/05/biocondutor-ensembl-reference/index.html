@@ -130,7 +130,7 @@
 </div>
 <h2 id="orgdb">OrgDb</h2>
 <p>The same OrgDb object for human (<code>org.Hs.eg.db</code>) can be used. It relates different gene IDs, including Entrez and Ensembl gene ID. From its metadata, human&rsquo;s OrgDb gets updated frequently. Most of its data source were fetched during this March. So one should be able to use it for both hg19 and hg38 human reference.</p>
-<div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">org.Hs.eg.db</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">org.Hs.eg.db</span><span class="p">)</span>
 <span class="n">human</span> <span class="o">&lt;-</span> <span class="n">org.Hs.eg.db</span>
 
 <span class="n">mapk_gene_family_info</span> <span class="o">&lt;-</span> <span class="nf">select</span><span class="p">(</span>
@@ -140,7 +140,7 @@
     <span class="n">columns</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;ENTREZID&quot;</span><span class="p">,</span> <span class="s">&quot;ENSEMBL&quot;</span><span class="p">,</span> <span class="s">&quot;GENENAME&quot;</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="n">mapk_gene_family_info</span>
-</pre></div>
+</code></pre></div>
 
 
 <table>
@@ -174,7 +174,7 @@
 </tbody>
 </table>
 <p>Here comes a small pitfall for Ensembl annotation. We cannot sufficiently map Ensembl&rsquo;s gene ID to its transcript ID,</p>
-<div class="highlight"><pre><span></span><span class="nf">select</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="nf">select</span><span class="p">(</span>
     <span class="n">human</span><span class="p">,</span>
     <span class="n">keys</span> <span class="o">=</span> <span class="n">mapk_gene_family_info</span><span class="o">$</span><span class="n">ENSEMBL[[1]]</span><span class="p">,</span>
     <span class="n">keytype</span> <span class="o">=</span> <span class="s">&quot;ENSEMBL&quot;</span><span class="p">,</span>
@@ -183,7 +183,7 @@
 <span class="c1"># &#39;select()&#39; returned 1:1 mapping between keys and columns</span>
 <span class="c1">#           ENSEMBL ENSEMBLTRANS</span>
 <span class="c1"># 1 ENSG00000100030         &lt;NA&gt;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>We got <em>no</em> Ensembl transcript ID for MAPK1, which is impossible. Therefore, to find the real Ensembl transcript IDs, we need to find other references.</p>
@@ -191,18 +191,18 @@
 <p>There is no pre-built Ensembl TxDb object available on Bioconductor. But with the help of <a href="http://bioconductor.org/packages/release/bioc/html/ensembldb.html">ensembldb</a>, we can easily build the TxDb ourselves.</p>
 <p>Following the instructions in ensembldb&rsquo;s <a href="http://bioconductor.org/packages/release/bioc/vignettes/ensembldb/inst/doc/ensembldb.html">vignette file</a>, we can build the TxDb object from the Ensembl latest release, which is release 84 (Mar, 2016) at the time of writing. Ensembl releases all human transcript records as GTF file, which can be found here <a href="ftp://ftp.ensembl.org/pub/release-84/gtf/homo_sapiens/Homo_sapiens.GRCh38.84.gtf.gz">ftp://ftp.ensembl.org/pub/release-84/gtf/homo_sapiens/Homo_sapiens.GRCh38.84.gtf.gz</a>.</p>
 <p>After processing GTF file via <code>ensDbFromGtf()</code>, the generated data for creating the TxDb object will be stored in a SQLite3 database file <code>Homo_sapiens.GRCh38.84.sqlite</code> at the R working directory. Building TxDB is just one command away, <code>EnsDb()</code>. Putting two commands together, the script for building Ensembl TxDb is listed below. To prevent from rebuilding the TxDb every time the script is executed, we first check if the sqlite file exists,</p>
-<div class="highlight"><pre><span></span><span class="c1"># xxx_DB in the vignette is just a string to the SQLite db file path</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># xxx_DB in the vignette is just a string to the SQLite db file path</span>
 <span class="n">ens84_txdb_pth</span> <span class="o">&lt;-</span> <span class="s">&#39;./Homo_sapiens.GRCh38.84.sqlite&#39;</span>
 <span class="nf">if </span><span class="p">(</span><span class="o">!</span><span class="nf">file.exists</span><span class="p">(</span><span class="n">ens84_human_txdb_pth</span><span class="p">))</span> <span class="p">{</span>
     <span class="n">ens84_txdb_pth</span> <span class="o">&lt;-</span> <span class="nf">ensDbFromGtf</span><span class="p">(</span><span class="n">gtf</span><span class="o">=</span><span class="s">&quot;Homo_sapiens.GRCh38.84.gtf.gz&quot;</span><span class="p">)</span>
 <span class="p">}</span>
 <span class="n">txdb_ens84</span> <span class="o">&lt;-</span> <span class="nf">EnsDb</span><span class="p">(</span><span class="n">ens84txdb_pth</span><span class="p">)</span>
 <span class="n">txdb_ens84</span>  <span class="c1"># Preview the metadata</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>The filtering syntax for finding desired genes or transcripts is different to the built-in TxDb object,</p>
-<div class="highlight"><pre><span></span><span class="nf">transcripts</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="nf">transcripts</span><span class="p">(</span>
     <span class="n">txdb_ens84</span><span class="p">,</span>
     <span class="n">filter</span><span class="o">=</span><span class="nf">GeneidFilter</span><span class="p">(</span><span class="n">mapk_gene_family_info</span><span class="o">$</span><span class="n">ENSEMBL[[1]]</span><span class="p">)</span>
 <span class="p">)</span>
@@ -221,11 +221,11 @@
 <span class="c1">#   ENST00000544786         21769204       21867440 ENSG00000100030</span>
 <span class="c1">#   -------</span>
 <span class="c1">#   seqinfo: 1 sequence from GRCh38 genome</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>So filtering is done by passing special filter functions to <code>filter=</code>. Likewise, there are <code>TxidFilter</code>, <code>TxbiotypeFilter</code>, and <code>GRangesFilter</code> for filtering on the respective columns.</p>
-<div class="highlight"><pre><span></span><span class="n">tx_gr</span> <span class="o">&lt;-</span> <span class="nf">transcripts</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="n">tx_gr</span> <span class="o">&lt;-</span> <span class="nf">transcripts</span><span class="p">(</span>
     <span class="n">txdb_ens84</span><span class="p">,</span>
     <span class="n">filter</span><span class="o">=</span><span class="nf">TxidFilter</span><span class="p">(</span><span class="s">&quot;ENST00000215832&quot;</span><span class="p">)</span>
 <span class="p">)</span>
@@ -236,14 +236,14 @@
 <span class="c1">#   ENST00000215832       22 [21754500, 21867629]      - | ENST00000215832 protein_coding         21769204       21867440 ENSG00000100030</span>
 <span class="c1">#   -------</span>
 <span class="c1">#   seqinfo: 1 sequence from GRCh38 genome</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Check the result with the online Ensembl genome browser. Note that Ensembl release 84 use hg38.</p>
 <h2 id="bsgenome-and-annotationhub">BSgenome and AnnotationHub</h2>
 <p>We can load the sequence from <code>BSgenome.Hsapiens.UCSC.hg38</code>, however, we can obtain the genome (chromosome) sequence of Ensembl using <a href="https://bioconductor.org/packages/release/bioc/html/AnnotationHub.html">AnnotationHub</a>. References of non-model organisms can be found on AnnotationHub, many of which are extracted from Ensembl. But they can be downloaded as Bioconductor objects directly so it should be easier to use.</p>
 <p>First we create a AnnotationHub instance, it cached the metadata all available annotations locally for us to query.</p>
-<div class="highlight"><pre><span></span><span class="n">ah</span> <span class="o">&lt;-</span> <span class="nf">AnnotationHub</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="n">ah</span> <span class="o">&lt;-</span> <span class="nf">AnnotationHub</span><span class="p">()</span>
 <span class="nf">query</span><span class="p">(</span><span class="n">ah</span><span class="p">,</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;Homo sapiens&quot;</span><span class="p">,</span> <span class="s">&quot;release-84&quot;</span><span class="p">))</span>
 <span class="c1"># AnnotationHub with 5 records</span>
 <span class="c1"># # snapshotDate(): 2016-05-12</span>
@@ -259,52 +259,52 @@
 <span class="c1">#   AH50560 | Homo_sapiens.GRCh38.dna_rm.primary_assembly.2bit</span>
 <span class="c1">#   AH50561 | Homo_sapiens.GRCh38.dna_sm.primary_assembly.2bit</span>
 <span class="c1">#   AH50562 | Homo_sapiens.GRCh38.ncrna.2bit</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>From the search results, human hg38 genome sequences are available as <a href="https://genome.ucsc.edu/goldenpath/help/twoBit.html">TwoBit</a> format. But having multiple results is confusing at first. After checking the Ensembl&rsquo;s <a href="ftp://ftp.ensembl.org/pub/release-84/fasta/homo_sapiens/dna/README">gnome DNA assembly readme</a>, what we should use here is the full DNA assembly without any masking (or you can decide it based on your application).</p>
-<div class="highlight"><pre><span></span><span class="c1"># There are a plenty of query hits. Description of different file suffix:</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># There are a plenty of query hits. Description of different file suffix:</span>
 <span class="c1"># GRCh38.dna.*.2bit     genome sequence</span>
 <span class="c1"># GRCh38.dna_rm.*.2bit  hard-masked genome sequence (masked regions are replaced with N&#39;s)</span>
 <span class="c1"># GRCh38.dna_sm.*.2bit  soft-masked genome sequence (.............. are lower cased)</span>
 <span class="n">ens84_human_dna</span> <span class="o">&lt;-</span> <span class="n">ah[[</span><span class="s">&quot;AH50559&quot;</span><span class="n">]]</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Then we can use it to obtain the DNA sequence of desired genomic range (in <code>GRagnes</code>).</p>
-<div class="highlight"><pre><span></span><span class="nf">getSeq</span><span class="p">(</span><span class="n">ens84_human_dna</span><span class="p">,</span> <span class="n">tx_gr</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">getSeq</span><span class="p">(</span><span class="n">ens84_human_dna</span><span class="p">,</span> <span class="n">tx_gr</span><span class="p">)</span>
 
 <span class="c1">#   A DNAStringSet instance of length 1</span>
 <span class="c1">#      width seq                              names</span>
 <span class="c1"># [1] 113130 TTTATAGAGAAAA...CTCGGACCGATTGCCT ENST00000215832</span>
-</pre></div>
+</code></pre></div>
 
 
 <h2 id="biomart">biomaRt</h2>
 <p><a href="http://www.ensembl.org/biomart/martview">BioMart</a> are a collections of database that can be accessed by the same API, including Ensembl, Uniprot and HapMap. <a href="https://bioconductor.org/packages/release/bioc/html/biomaRt.html">biomaRt</a> provides an R interface to these database resources. We will use BioMart for ID conversion between Ensembl and RefSeq. Its <a href="https://bioconductor.org/packages/release/bioc/vignettes/biomaRt/inst/doc/biomaRt.pdf">vignette</a> contains solutions to common scenarios so should be a good starting point to get familiar with it.</p>
 <p>You could first explore which Marts are currently available by <code>listMarts()</code>,</p>
-<div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">biomaRt</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">biomaRt</span><span class="p">)</span>
 <span class="nf">listMarts</span><span class="p">()</span>
 <span class="c1">#                biomart               version</span>
 <span class="c1"># 1 ENSEMBL_MART_ENSEMBL      Ensembl Genes 84</span>
 <span class="c1"># 2     ENSEMBL_MART_SNP  Ensembl Variation 84</span>
 <span class="c1"># 3 ENSEMBL_MART_FUNCGEN Ensembl Regulation 84</span>
 <span class="c1"># 4    ENSEMBL_MART_VEGA               Vega 64</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Here we will use Ensembl&rsquo;s biomart. Each mart contains multiple datasets, usually separated by different organisms. In our case, human&rsquo;s dataset is <code>hsapiens_gene_ensembl</code>. For other organisms, you can find their dataset by <code>listDatasets(ensembl)</code>. </p>
-<div class="highlight"><pre><span></span><span class="n">ensembl</span> <span class="o">&lt;-</span> <span class="nf">useMart</span><span class="p">(</span><span class="s">&quot;ensembl&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">ensembl</span> <span class="o">&lt;-</span> <span class="nf">useMart</span><span class="p">(</span><span class="s">&quot;ensembl&quot;</span><span class="p">)</span>
 <span class="n">ensembl</span> <span class="o">&lt;-</span> <span class="nf">useDataset</span><span class="p">(</span><span class="s">&quot;hsapiens_gene_ensembl&quot;</span><span class="p">,</span> <span class="n">mart</span><span class="o">=</span><span class="n">ensembl</span><span class="p">)</span>
 <span class="c1"># or equivalently</span>
 <span class="n">ensembl</span> <span class="o">&lt;-</span> <span class="nf">useMart</span><span class="p">(</span><span class="s">&quot;ensembl&quot;</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="s">&quot;hsapiens_gene_ensembl&quot;</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3 id="compatibility-with-annotationdbs-interface">Compatibility with AnnotationDb&rsquo;s interface</h3>
 <p>The way to query the <code>ensembl</code> Mart object is slightly different to how we query a AnnotationDb object. The major difference is the terminology. Luckily, Mart object provides a compatibility layer so we can still call functions such as <code>select(db, ...)</code>, <code>keytypes(db)</code>, <code>keys(db)</code> and <code>columns(db)</code>, which we frequently do<sup id="fnref:select-compat"><a class="footnote-ref" href="#fn:select-compat">1</a></sup> when using NCBI/UCSC references.</p>
 <p>A Mart can have hundreds of keys and columns. So we select a part of them out by <code>grep()</code>,</p>
-<div class="highlight"><pre><span></span><span class="nf">grep</span><span class="p">(</span><span class="s">&quot;^refseq&quot;</span><span class="p">,</span> <span class="nf">keytypes</span><span class="p">(</span><span class="n">ensembl</span><span class="p">),</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">grep</span><span class="p">(</span><span class="s">&quot;^refseq&quot;</span><span class="p">,</span> <span class="nf">keytypes</span><span class="p">(</span><span class="n">ensembl</span><span class="p">),</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
 <span class="c1"># [1] &quot;refseq_mrna&quot; &quot;refseq_mrna_predicted&quot; ...</span>
 <span class="nf">grep</span><span class="p">(</span><span class="s">&quot;^ensembl&quot;</span><span class="p">,</span> <span class="nf">keytypes</span><span class="p">(</span><span class="n">ensembl</span><span class="p">),</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
 <span class="c1"># [1] &quot;ensembl_exon_id&quot; &quot;ensembl_gene_id&quot; ...</span>
@@ -313,11 +313,11 @@
 <span class="c1"># [2] &quot;hsapiens_paralog_canonical_transcript_protein&quot;</span>
 <span class="c1"># [3] &quot;hsapiens_paralog_chrom_end&quot;</span>
 <span class="c1"># ...</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>We start by finding the MAPK1&rsquo;s RefSeq transcript IDs and their corresponding Ensembl transcript IDs, which is something we cannot do by our locally built Ensembl TxDb nor the human OrgDb.</p>
-<div class="highlight"><pre><span></span><span class="nf">select</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="nf">select</span><span class="p">(</span>
     <span class="n">ensembl</span><span class="p">,</span>
     <span class="n">keys</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;MAPK1&quot;</span><span class="p">),</span>
     <span class="n">keytype</span> <span class="o">=</span> <span class="s">&quot;hgnc_symbol&quot;</span><span class="p">,</span>
@@ -338,12 +338,12 @@
 <span class="c1"># 2              22         21763984       21769428     -1</span>
 <span class="c1"># 3              22         21769040       21867680     -1</span>
 <span class="c1"># 4              22         21769204       21867440     -1</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>So some of the MAPK1 Ensembl transcripts does not have RefSeq identifiers. This is common to see since RefSeq is more conservative about including new transcripts. Anyway, we can now translate our analysis result between a wider range of naming systems.</p>
 <p>Moreover, what&rsquo;s awesome about BioMart is that almost all the information on the Ensembl genome browser can be retreived by BioMart. For example, getting the paralog and the mouse homolog of MAPK1,</p>
-<div class="highlight"><pre><span></span><span class="c1"># Get paralog of MAPK1</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Get paralog of MAPK1</span>
 <span class="nf">select</span><span class="p">(</span>
     <span class="n">ensembl</span><span class="p">,</span>
     <span class="n">keys</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;ENSG00000100030&quot;</span><span class="p">),</span>
@@ -374,19 +374,19 @@
 <span class="p">)</span>
 <span class="c1">#   mmusculus_homolog_associated_gene_name mmusculus_homolog_orthology_type mmusculus_homolog_ensembl_peptide</span>
 <span class="c1"># 1                                  Mapk1                 ortholog_one2one                ENSMUSP00000065983</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3 id="biomarts-original-interface">biomaRt&rsquo;s original interface</h3>
 <p>The <code>select()</code> function we use is not the original biomaRt&rsquo;s interface. In fact, keys and columns are interpreted as BioMart&rsquo;s <strong>filters</strong> and <strong>attributes</strong> respectively. To find all available filters and attributes,</p>
-<div class="highlight"><pre><span></span><span class="n">filters</span> <span class="o">=</span> <span class="nf">listFilters</span><span class="p">(</span><span class="n">ensembl</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">filters</span> <span class="o">=</span> <span class="nf">listFilters</span><span class="p">(</span><span class="n">ensembl</span><span class="p">)</span>
 <span class="n">attributes</span> <span class="o">=</span> <span class="nf">listAttributes</span><span class="p">(</span><span class="n">ensembl</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>each of the command return a data.frame that contains each filter&rsquo;s or attribute&rsquo;s name and description.</p>
 <p>Behind the scene, arguments of <code>select(db, ...)</code> is converted to <code>getBM(mart, ...)</code>. For the same example of finding RefSeq and Ensembl transcript IDs, it can be re-written as</p>
-<div class="highlight"><pre><span></span><span class="nf">getBM</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="nf">getBM</span><span class="p">(</span>
     <span class="n">attributes</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span>
         <span class="s">&quot;refseq_mrna&quot;</span><span class="p">,</span> <span class="s">&quot;ensembl_transcript_id&quot;</span><span class="p">,</span>
         <span class="s">&quot;chromosome_name&quot;</span><span class="p">,</span>
@@ -397,7 +397,7 @@
     <span class="n">values</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;MAPK1&quot;</span><span class="p">),</span>
     <span class="n">mart</span> <span class="o">=</span> <span class="n">ensembl</span>
 <span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <h2 id="conversion-between-genomic-coordinate-systems">Conversion between genomic coordinate systems</h2>
@@ -408,17 +408,17 @@
 </ul>
 <p>Frankly I don&rsquo;t have experience for such conversion in real study (the converted result still gives the sense of unease), but anyway here I follow <a href="http://genomicsclass.github.io/book/pages/bioc1_liftOver.html">the guide on PH525x series</a>. In Bioconductor, we can use UCSC&rsquo;s Chain file to apply the <code>liftOver()</code> method provided by package <code>rtracklayer</code>. To convert regions from hg38 to hg19, we need the <code>hg38ToHg19.over.chain</code> file, which can be found at <a href="ftp://hgdownload.cse.ucsc.edu/goldenPath/hg38/liftOver/">ftp://hgdownload.cse.ucsc.edu/goldenPath/hg38/liftOver/</a>.</p>
 <p>We still use MAPK1 as an example of conversion. First extract MAPK1&rsquo;s genomic ranges in hg38 and hg19 respectively,</p>
-<div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">TxDb.Hsapiens.UCSC.hg38.knownGene</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">TxDb.Hsapiens.UCSC.hg38.knownGene</span><span class="p">)</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">TxDb.Hsapiens.UCSC.hg19.knownGene</span>
 <span class="n">tx38</span> <span class="o">&lt;-</span> <span class="n">TxDb.Hsapiens.UCSC.hg38.knownGene</span>
 <span class="n">tx19</span> <span class="o">&lt;-</span> <span class="n">TxDb.Hsapiens.UCSC.hg19.knownGene</span>
 <span class="n">MAPK1_hg38</span> <span class="o">&lt;-</span> <span class="nf">genes</span><span class="p">(</span><span class="n">tx38</span><span class="p">,</span> <span class="n">filter</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="n">gene_id</span><span class="o">=</span><span class="s">&quot;5594&quot;</span><span class="p">))</span>
 <span class="n">MAPK1_hg19</span> <span class="o">&lt;-</span> <span class="nf">genes</span><span class="p">(</span><span class="n">tx19</span><span class="p">,</span> <span class="n">filter</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="n">gene_id</span><span class="o">=</span><span class="s">&quot;5594&quot;</span><span class="p">))</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Then we convert <code>MAPK1_hg38</code> to use the hg19 coordinate system.</p>
-<div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">rtracklayer</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">rtracklayer</span><span class="p">)</span>
 <span class="n">ch</span> <span class="o">&lt;-</span> <span class="nf">import.chain</span><span class="p">(</span><span class="s">&quot;./hg38ToHg19.over.chain&quot;</span><span class="p">)</span>
 <span class="n">MAPK1_hg19_lifted</span> <span class="o">&lt;-</span> <span class="nf">liftOver</span><span class="p">(</span><span class="n">MAPK1_hg38</span><span class="p">,</span> <span class="n">ch</span><span class="p">)</span>
 
@@ -441,7 +441,7 @@
 <span class="c1">#</span>
 <span class="c1"># -------</span>
 <span class="c1"># seqinfo: 1 sequence from an unspecified genome; no seqlengths</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>So the conversion worked as expected, though it created a gap in the range (missing a base at 22216653). I haven&rsquo;t looked into the results. To ensure the correctness of the conversion, maybe a comparison with CrossMap is needed.</p>

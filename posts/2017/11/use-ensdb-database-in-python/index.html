@@ -89,12 +89,12 @@ Now AnnotationHub has a nice <a href="https://annotationhub.bioconductor.org/">w
 <p>The following section is the old way to navigate through AnnotationHub&rsquo;s database.</p>
 <h2 id="manual-query-in-annotationhub">Manual query in AnnotationHub</h2>
 <p>When one wants to use the R package AnnotationHub, the common usage is </p>
-<div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">AnnotationHub</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">AnnotationHub</span><span class="p">)</span>
 <span class="n">ah</span> <span class="o">&lt;-</span> <span class="nf">AnnotationHub</span><span class="p">()</span>
 <span class="c1">## snapshotDate(): 2017-10-27</span>
 
 <span class="nf">query</span><span class="p">(</span><span class="n">ah</span><span class="p">,</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;EnsDb&quot;</span><span class="p">,</span> <span class="s">&quot;Homo sapiens&quot;</span><span class="p">))</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>The function call <code>AnnotationHub()</code> will download the latest version of the metadata of all available annotation object. The subsequent <code>query(...)</code> function will talk to the local metadata database.</p>
@@ -106,12 +106,12 @@ Now AnnotationHub has a nice <a href="https://annotationhub.bioconductor.org/">w
 </ul>
 <p>So as long as we get the <code>rdatapaths.id</code> of the EnsDb using the metadata, we can download it via the <code>/fetch/:id</code> endpoint.</p>
 <p>After downloading the metadata database <code>https://annotationhub.bioconductor.org/metadata/annotationhub.sqlite3</code>, we can inspect it in SQLite3 by connecting it directly:</p>
-<div class="highlight"><pre><span></span>sqlite3 annotationhub.sqlite3
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">sqlite3 annotationhub.sqlite3</span>
+</code></pre></div>
 
 
 <p>Some useful commands to inspect a foreign database (or the ultimate help command <code>.help</code>): </p>
-<div class="highlight"><pre><span></span><span class="gp">sqlite&gt; </span><span class="p">.</span><span class="n">header</span> <span class="k">on</span> 
+<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt; </span><span class="p">.</span><span class="n">header</span> <span class="k">on</span> 
 <span class="gp">sqlite&gt; </span><span class="p">.</span><span class="k">mode</span> <span class="k">column</span>
 <span class="gp">sqlite&gt; </span><span class="p">.</span><span class="n">tables</span>
 <span class="go">biocversions       rdatapaths         schema_info        test             </span>
@@ -120,11 +120,11 @@ Now AnnotationHub has a nice <a href="https://annotationhub.bioconductor.org/">w
 <span class="gp">sqlite&gt; </span><span class="p">.</span><span class="k">schema</span> <span class="n">rdatapaths</span>
 <span class="go">CREATE TABLE `rdatapaths`(`id` integer DEFAULT (NULL) NOT NULL PRIMARY KEY , `rdatapath` varchar(255) DEFAULT (NULL) NULL, `rdataclass` varchar(255) DEFAULT (NULL) NULL, `resource_id` integer DEFAULT (NULL) NULL, `dispatchclass` varchar(255) DEFAULT (NULL) NULL, CONSTRAINT `rdatapaths_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources`(`id`));</span>
 <span class="go">CREATE INDEX `rdatapaths_resource_id` ON `rdatapaths` (`resource_id`);</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>So let&rsquo;s make a SQL query to find all Human&rsquo;s EnsDb:</p>
-<div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="n">r</span><span class="p">.</span><span class="n">ah_id</span><span class="p">,</span> <span class="n">rdp</span><span class="p">.</span><span class="n">id</span> <span class="k">AS</span> <span class="n">rdatapaths_id</span><span class="p">,</span> <span class="n">rdp</span><span class="p">.</span><span class="n">rdatapath</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">title</span>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="n">r</span><span class="p">.</span><span class="n">ah_id</span><span class="p">,</span> <span class="n">rdp</span><span class="p">.</span><span class="n">id</span> <span class="k">AS</span> <span class="n">rdatapaths_id</span><span class="p">,</span> <span class="n">rdp</span><span class="p">.</span><span class="n">rdatapath</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">title</span>
 <span class="k">FROM</span> <span class="n">resources</span> <span class="k">AS</span> <span class="n">r</span>
 <span class="k">JOIN</span> <span class="n">rdatapaths</span> <span class="k">AS</span> <span class="n">rdp</span>
 <span class="k">ON</span> <span class="n">r</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">rdp</span><span class="p">.</span><span class="n">resource_id</span>
@@ -135,12 +135,12 @@ Now AnnotationHub has a nice <a href="https://annotationhub.bioconductor.org/">w
 <span class="c1">-- AH53715     60453          AHEnsDbs/v88/EnsDb.Hsapiens.v88.sqlite  Ensembl 88 EnsDb for Homo Sapiens</span>
 <span class="c1">-- AH56681     63419          AHEnsDbs/v89/EnsDb.Hsapiens.v89.sqlite  Ensembl 89 EnsDb for Homo Sapiens</span>
 <span class="c1">-- AH57757     64495          AHEnsDbs/v90/EnsDb.Hsapiens.v90.sqlite  Ensembl 90 EnsDb for Homo Sapiens</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>All the Ensembl releases 87+ are available! I will use the release 90 for example. we can download it by its rdatapaths id:</p>
-<div class="highlight"><pre><span></span>wget -O EnsDb.Hsapiens.v90.sqlite https://annotationhub.bioconductor.org/fetch/64495
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">wget -O EnsDb.Hsapiens.v90.sqlite https://annotationhub.bioconductor.org/fetch/64495</span>
+</code></pre></div>
 
 
 <p>For older Ensembl release, one may need to <a href="https://bioconductor.org/packages/release/bioc/vignettes/ensembldb/inst/doc/ensembldb.html#102_building_annotation_packages">build the SQLite database based by the instructions from ensembldb</a>.  For the last GRCh37 release, Ensembl release 75, one can download the source of the Bioconductor annotation package <a href="https://bioconductor.org/packages/release/data/annotation/html/EnsDb.Hsapiens.v75.html"><code>EnsDb.Hsapiens.v75</code></a> and extract it. The database will be under <code>inst/extdata</code>.</p>
@@ -148,24 +148,24 @@ Now AnnotationHub has a nice <a href="https://annotationhub.bioconductor.org/">w
 <p>EnsDb SQLite database are Ensembl annotation databases created by the R package <a href="https://bioconductor.org/packages/release/bioc/html/ensembldb.html">ensembldb</a>.</p>
 <p>Here I will show how to find a transcript&rsquo;s gene name, its genomic location, and all its exon locations given its Ensembl transcript ID.</p>
 <p>First connect the database by <code>sqlite3 EnsDb.Hsapiens.v90.sqlite</code>. Its table design is very straightforward:</p>
-<div class="highlight"><pre><span></span><span class="gp">sqlite&gt; </span><span class="p">.</span><span class="n">tables</span>
+<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt; </span><span class="p">.</span><span class="n">tables</span>
 <span class="go">chromosome      exon            metadata        protein_domain  tx2exon</span>
 <span class="go">entrezgene      gene            protein         tx              uniprot</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>So it didn&rsquo;t take me long to figure out how to join the transcript and gene information:</p>
-<div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="n">tx</span><span class="p">.</span><span class="n">tx_id</span><span class="p">,</span> <span class="n">tx</span><span class="p">.</span><span class="n">gene_id</span><span class="p">,</span> <span class="n">gene</span><span class="p">.</span><span class="n">gene_name</span><span class="p">,</span> <span class="n">seq_name</span><span class="p">,</span> <span class="n">seq_strand</span>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="n">tx</span><span class="p">.</span><span class="n">tx_id</span><span class="p">,</span> <span class="n">tx</span><span class="p">.</span><span class="n">gene_id</span><span class="p">,</span> <span class="n">gene</span><span class="p">.</span><span class="n">gene_name</span><span class="p">,</span> <span class="n">seq_name</span><span class="p">,</span> <span class="n">seq_strand</span>
 <span class="k">FROM</span> <span class="n">tx</span> <span class="k">JOIN</span> <span class="n">gene</span> <span class="k">ON</span> <span class="n">tx</span><span class="p">.</span><span class="n">gene_id</span> <span class="o">=</span> <span class="n">gene</span><span class="p">.</span><span class="n">gene_id</span>
 <span class="k">WHERE</span> <span class="n">tx_id</span><span class="o">=</span><span class="s1">&#39;ENST00000358731&#39;</span><span class="p">;</span>
 <span class="c1">-- tx_id            gene_id          gene_name   seq_name    seq_strand</span>
 <span class="c1">-- ---------------  ---------------  ----------  ----------  ----------</span>
 <span class="c1">-- ENST00000358731  ENSG00000145734  BDP1        5           1</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>And for the genomic ranges of its exon:</p>
-<div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="n">tx_id</span><span class="p">,</span> <span class="n">exon_idx</span><span class="p">,</span> <span class="n">exon_seq_start</span><span class="p">,</span> <span class="n">exon_seq_end</span>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="n">tx_id</span><span class="p">,</span> <span class="n">exon_idx</span><span class="p">,</span> <span class="n">exon_seq_start</span><span class="p">,</span> <span class="n">exon_seq_end</span>
 <span class="k">FROM</span> <span class="n">tx2exon</span> <span class="k">JOIN</span> <span class="n">exon</span> <span class="k">ON</span> <span class="n">tx2exon</span><span class="p">.</span><span class="n">exon_id</span> <span class="o">=</span> <span class="n">exon</span><span class="p">.</span><span class="n">exon_id</span>
 <span class="k">WHERE</span> <span class="n">tx_id</span> <span class="o">=</span> <span class="s1">&#39;ENST00000380139&#39;</span>
 <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">exon_idx</span><span class="p">;</span>
@@ -176,7 +176,7 @@ Now AnnotationHub has a nice <a href="https://annotationhub.bioconductor.org/">w
 <span class="c1">-- ENST00000380139  3           32407250        32407338    </span>
 <span class="c1">-- ENST00000380139  4           32404203        32404271    </span>
 <span class="c1">-- ENST00000380139  5           32400723        32403200  </span>
-</pre></div>
+</code></pre></div>
 
 
 <p>All the coordinates are 1-based and the ranges are inclusive.</p>

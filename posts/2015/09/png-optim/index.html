@@ -120,22 +120,22 @@
 (<a href="https://github.com/google/zopfli">Zopfli Readme</a>)</p>
 </blockquote>
 <p>這個 <a href="https://github.com/google/zopfli/blob/master/README.zopflipng">Zopflipng</a> 也是同個 repo 維護。自己編譯簡單，</p>
-<div class="highlight"><pre><span></span>git clone https://github.com/google/zopfli.git
-make zopflipng
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">git clone https://github.com/google/zopfli.git</span>
+<span class="err">make zopflipng</span>
+</code></pre></div>
 
 
 <p>如果要一口氣壓縮一堆 PNG，可以這樣使用：</p>
-<div class="highlight"><pre><span></span>zopflipng --lossy_transparent --prefix *.png
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">zopflipng --lossy_transparent --prefix *.png</span>
+</code></pre></div>
 
 
 <p>速度也蠻慢的，有個 <code>-q</code> 選項可以加速。但壓縮效率比 OptiPNG 還好。</p>
 <p>PS 剛好今天早上看到 Google 又出了另一個壓縮演算法 <a href="https://github.com/google/brotli">Brotli</a>，但這個與 deflate 不相容，應該不能用在 PNG 上面。</p>
 <h3 id="pngquant">pngquant</h3>
 <p>想要有損的 PNG 可以用 <a href="https://pngquant.org/">pngquant</a>。看官網有特別強調在透明度的資訊會被保留，並能像 JPEG 一樣設定 quality。一般 quality 容許越低壓縮比都會越高。</p>
-<div class="highlight"><pre><span></span>pngquant -f --ext=.png --quality=70-85 --skip-if-larger *.png
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">pngquant -f --ext=.png --quality=70-85 --skip-if-larger *.png</span>
+</code></pre></div>
 
 
 <p>可以看到 pngquant 能很容易達到 50% 以下的壓縮比。就我的例子看不太出現螢幕截圖哪裡失真了，而且失真了……也不會怎麼樣啦。</p>

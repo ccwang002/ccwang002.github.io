@@ -3,18 +3,18 @@
 &lt;p&gt;Recently I was playing with the &lt;a href="https://docs.python.org/"&gt;Python Official Documentation&lt;/a&gt;, which has a decent …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I used &lt;a href="http://docs.getpelican.com/"&gt;Pelican&lt;/a&gt; and its &lt;a href="https://pythonhosted.org/Markdown/"&gt;Markdown&lt;/a&gt; plugin to render blog post. &lt;/p&gt;
 &lt;p&gt;Recently I was playing with the &lt;a href="https://docs.python.org/"&gt;Python Official Documentation&lt;/a&gt;, which has a decent code syntax highlighter powered by &lt;a href="http://pygments.org/"&gt;Pygments&lt;/a&gt;. &lt;/p&gt;
 &lt;p&gt;What&amp;rsquo;s more, the output of code examples can be toggled. That is, a code example:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Hello World&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Hello World&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;Hello&lt;/span&gt; &lt;span class="n"&gt;World&lt;/span&gt;
 &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;
 &lt;span class="mi"&gt;42&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;can be toggled to:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Hello World&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Hello World&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 &lt;span class="mi"&gt;6&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;which is very convenient for code copy-pasting.&lt;/p&gt;
@@ -23,28 +23,28 @@
 &lt;p&gt;After I fixed the copybutton.js, I wished to add this functionality to my blog. &lt;/p&gt;
 &lt;p&gt;Code highlighting in Pelican markdown files is handled by its &lt;a href="https://pythonhosted.org/Markdown/extensions/code_hilite.html"&gt;CodeHilite&lt;/a&gt; extension. To my surprise, I found CodeHilite does not express the language name specified for each code block.&lt;/p&gt;
 &lt;p&gt;What I expected was&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;highlight-python3&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;highlight-python3&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
     &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;highlight&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
         &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;pre&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
             &lt;span class="c"&gt;&amp;lt;!-- ... --&amp;gt;&lt;/span&gt;
         &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;pre&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
     &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;but the actual output was&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;highlight&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;highlight&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
     &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;pre&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
         &lt;span class="c"&gt;&amp;lt;!-- ... --&amp;gt;&lt;/span&gt;
     &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;pre&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;So no way to find the language name the code block used, nor the lexer aliases Pygments guessed when no language name was specified.&lt;/p&gt;
 &lt;p&gt;A quick dig into the &lt;a href="https://github.com/waylan/Python-Markdown/blob/master/markdown/extensions/codehilite.py#L106-L123"&gt;source code&lt;/a&gt; showed that it is relatively easy to fix. Here is the diff:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gh"&gt;diff --git a/extensions/codehilite.py b/extensions/codehilite_updated.py&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gh"&gt;diff --git a/extensions/codehilite.py b/extensions/codehilite_updated.py&lt;/span&gt;
 &lt;span class="gh"&gt;index 0657c37..4fad7c5 100644&lt;/span&gt;
 &lt;span class="gd"&gt;--- a/extensions/codehilite.py&lt;/span&gt;
 &lt;span class="gi"&gt;+++ b/extensions/codehilite_updated.py&lt;/span&gt;
@@ -90,12 +90,12 @@
          else:
              # just escape and build markup usable by JS highlighting libs
              txt = self.src.replace(&amp;#39;&amp;amp;&amp;#39;, &amp;#39;&amp;amp;amp;&amp;#39;)
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;I&amp;rsquo;m happy with the patched codehilite output. I am now able to give code toggle function to specific code languages. &lt;/p&gt;
 &lt;p&gt;However it&amp;rsquo;s quite busy these days, so it may take a while to submit a proper pull request (e.g. fix any broken unit tests, write new tests, and tune the API as well as the new behavior). Moerover, &lt;strong&gt;currently my site does not use jQuery&lt;/strong&gt; so I am missing a huge dependency. Rewriting it using vanilla JS seems to require considerable work, and the very thing I don&amp;rsquo;t have at hand is time :(&lt;/p&gt;
-&lt;p&gt;I&amp;rsquo;ve decided to leave this improvement in future development. But if your site use Pelican Markdown and imports jQuery, the diff will add the code language back. &lt;/p&gt;</content><category term="en"></category><category term="blog"></category><category term="pelican"></category><category term="codehilite"></category><category term="pygment"></category></entry><entry><title>Blog defaults to HTTPS</title><link href="https://blog.liang2.tw/posts/2016/01/blog-https/" rel="alternate"></link><published>2016-01-06T00:00:00-06:00</published><updated>2016-01-06T00:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-06:/posts/2016/01/blog-https/</id><summary type="html">&lt;p&gt;簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve decided to leave this improvement in future development. But if your site use Pelican Markdown and imports jQuery, the diff will add the code language back. &lt;/p&gt;</content><category term="Coding"></category><category term="en"></category><category term="blog"></category><category term="pelican"></category><category term="codehilite"></category><category term="pygment"></category></entry><entry><title>Blog defaults to HTTPS</title><link href="https://blog.liang2.tw/posts/2016/01/blog-https/" rel="alternate"></link><published>2016-01-06T00:00:00-06:00</published><updated>2016-01-06T00:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-06:/posts/2016/01/blog-https/</id><summary type="html">&lt;p&gt;簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。&lt;/p&gt;
 &lt;p&gt;Blog 本來就是架在 &lt;a href="https://github.com/ccwang002/ccwang002.github.io"&gt;GitHub Pages&lt;/a&gt; 上，其實預設有 https，但在網址改成自訂 domain 之後 https 自然就失效了。在 GitHub 上有開 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。&lt;/p&gt;
 &lt;p&gt;Blog 本來就是架在 &lt;a href="https://github.com/ccwang002/ccwang002.github.io"&gt;GitHub Pages&lt;/a&gt; 上，其實預設有 https，但在網址改成自訂 domain 之後 https 自然就失效了。在 GitHub 上有開 issue 請他們加入 &lt;a href="https://github.com/isaacs/github/issues/156"&gt;HTTPS support for custom domain&lt;/a&gt; 這功能，不過目前還是需要自己想辦法。隨著 &lt;a href="https://letsencrypt.org/"&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt; 這種服務的流行，GitHub 才會去積極尋找比較合適的解決方案吧。&lt;/p&gt;
 &lt;div class="toc"&gt;
@@ -139,7 +139,7 @@
   &lt;p class="caption center"&gt;CloudFlare DNS setting&lt;/p&gt;
 &lt;/div&gt;
 
-&lt;p&gt;大概是這樣。希望能在不要自己架 server 的情況下繼續經營這個 blog。&lt;/p&gt;</content><category term="zh"></category><category term="blog"></category><category term="pelican"></category><category term="https"></category></entry><entry><title>設定部落格筆記</title><link href="https://blog.liang2.tw/posts/2015/09/blog-internals/" rel="alternate"></link><published>2015-09-21T00:00:00-05:00</published><updated>2015-09-21T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-09-21:/posts/2015/09/blog-internals/</id><summary type="html">&lt;p&gt;Blog 對我來說，最重要的就是書寫的舒適度。&lt;/p&gt;
+&lt;p&gt;大概是這樣。希望能在不要自己架 server 的情況下繼續經營這個 blog。&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="blog"></category><category term="pelican"></category><category term="https"></category></entry><entry><title>設定部落格筆記</title><link href="https://blog.liang2.tw/posts/2015/09/blog-internals/" rel="alternate"></link><published>2015-09-21T00:00:00-05:00</published><updated>2015-09-21T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-09-21:/posts/2015/09/blog-internals/</id><summary type="html">&lt;p&gt;Blog 對我來說，最重要的就是書寫的舒適度。&lt;/p&gt;
 &lt;p&gt;一開始在設定 github CNAME 的時候就訂為 &lt;code&gt;blog.liang2.tw&lt;/code&gt;，但一直以來都只是個一頁式的自我介紹&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;，用 &lt;a href="http://semantic-ui.com/"&gt;SemanticUI&lt;/a&gt; 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。&lt;/p&gt;
 &lt;p&gt;整理了一下有幾個目標：&lt;/p&gt;
 &lt;ul&gt;
@@ -171,53 +171,53 @@
 &lt;/div&gt;
 &lt;h3 id="pelican"&gt;Pelican 簡介&lt;/h3&gt;
 &lt;p&gt;&lt;a href="http://docs.getpelican.com/"&gt;Pelican&lt;/a&gt; 結論來說不難理解，而且要自訂 blog theme 也不會很複雜。首先跟 Sphinx 一樣，用內建的 &lt;code&gt;pelican-quickstart&lt;/code&gt; 預設值就能架好一個可以動的。目錄大概長這樣&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;my_blog/
-├── content/
-│   ├── blog_post_1.md
-│   └── blog_post_2.rst
-├── output/
-├── develop_server.sh*
-├── Makefile
-├── fabfile.py
-├── pelicanconf.py
-├── publishconf.py
-└── requirements.txt
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;my_blog/&lt;/span&gt;
+&lt;span class="err"&gt;├── content/&lt;/span&gt;
+&lt;span class="err"&gt;│   ├── blog_post_1.md&lt;/span&gt;
+&lt;span class="err"&gt;│   └── blog_post_2.rst&lt;/span&gt;
+&lt;span class="err"&gt;├── output/&lt;/span&gt;
+&lt;span class="err"&gt;├── develop_server.sh*&lt;/span&gt;
+&lt;span class="err"&gt;├── Makefile&lt;/span&gt;
+&lt;span class="err"&gt;├── fabfile.py&lt;/span&gt;
+&lt;span class="err"&gt;├── pelicanconf.py&lt;/span&gt;
+&lt;span class="err"&gt;├── publishconf.py&lt;/span&gt;
+&lt;span class="err"&gt;└── requirements.txt&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Blog source 都放在 content 底下，設定檔分成 local 用的 &lt;code&gt;pelicanconf.py&lt;/code&gt; 以及 deploy 用的 &lt;code&gt;publishconf.py&lt;/code&gt;。並且提供了像 Fabric、Make、shell script 等自動化腳本把 source 用 theme template render 成一個靜態網站，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;make html
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;make html
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;預設會輸出到 &lt;code&gt;output/&lt;/code&gt;，到時候 deploy 就把這個資料夾的內容丟到 server 上。&lt;/p&gt;
 &lt;p&gt;每篇文章可以用 markdown 或者 reStructuredText(rst) 來寫，概念上像這樣：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;---
-Title: Hello World
-Date: 2016-01-16 18:00
-Tags: world, programming
-Category: test
-Slug: hello-world
----
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;---&lt;/span&gt;
+&lt;span class="nl"&gt;Title&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Hello&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;World&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nc"&gt;Date&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;01&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;18&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;00&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nl"&gt;Tags&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;world&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;programming&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nl"&gt;Category&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nl"&gt;Slug&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;hello&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;world&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="c1"&gt;---&lt;/span&gt;
 
-Hello [World]
+&lt;span class="n"&gt;Hello&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;World&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-[World]: https://en.wikipedia.org/wiki/World
-&lt;/pre&gt;&lt;/div&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;World&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;en&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;wikipedia&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;wiki&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;World&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gh"&gt;Hello World&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gh"&gt;Hello World&lt;/span&gt;
 &lt;span class="gh"&gt;##############&lt;/span&gt;
 
-&lt;span class="nc"&gt;:date:&lt;/span&gt; &lt;span class="nf"&gt;2016-01-16 18:00&lt;/span&gt;
-&lt;span class="nc"&gt;:tags:&lt;/span&gt; &lt;span class="nf"&gt;world, programming&lt;/span&gt;
-&lt;span class="nc"&gt;:category:&lt;/span&gt; &lt;span class="nf"&gt;test&lt;/span&gt;
-&lt;span class="nc"&gt;:slug:&lt;/span&gt; &lt;span class="nf"&gt;hello-world&lt;/span&gt;
+&lt;span class="nc"&gt;:date:&lt;/span&gt; 2016-01-16 18:00
+&lt;span class="nc"&gt;:tags:&lt;/span&gt; world, programming
+&lt;span class="nc"&gt;:category:&lt;/span&gt; test
+&lt;span class="nc"&gt;:slug:&lt;/span&gt; hello-world
 
 Hello World_
 
 &lt;span class="p"&gt;..&lt;/span&gt; &lt;span class="nt"&gt;_World:&lt;/span&gt; https://en.wikipedia.org/wiki/World
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;這樣已經設定好了標題、分類、標籤、發布日期還有 slug（有點像文章的 ID）算很完整了。最低要求至少有標題。&lt;/p&gt;
@@ -259,24 +259,24 @@ Hello World_
 
 &lt;h3 id="figure-caption"&gt;Figure caption&lt;/h3&gt;
 &lt;p&gt;圖的下面還蠻常會放一些圖說、reference 之類。範例上面就有。在 markdown 不容易達成這效果，因為它的語法沒這麼複雜；但 rst 本來就有支援這樣的語法：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;..&lt;/span&gt; &lt;span class="ow"&gt;role&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt; fig
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;..&lt;/span&gt; &lt;span class="ow"&gt;role&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt; fig
 
 &lt;span class="p"&gt;..&lt;/span&gt; &lt;span class="ow"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt; {filename}pics.jpg
-    &lt;span class="nc"&gt;:align:&lt;/span&gt; &lt;span class="nf"&gt;center&lt;/span&gt;
+    &lt;span class="nc"&gt;:align:&lt;/span&gt; center
 
     &lt;span class="na"&gt;:fig:&lt;/span&gt;&lt;span class="nv"&gt;`Figure 1:`&lt;/span&gt; The figure caption.
 
     The legend consists of all elements after the caption.
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;這樣就會變成&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;figure align-center&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;figure align-center&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
   &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;img&lt;/span&gt; &lt;span class="na"&gt;alt&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;src&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{filename}pics.jpg&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
   &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;caption&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;span&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;fig&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;Figure 1:&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;span&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; The figure caption&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
   &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;legend&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;The legend consists of all elements after the caption.&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;在 markdown 基本上就手打上面那一串 HTML，其實也還好，只是醜了一點。真的寫得很煩時再想寫 plugin 來做這件事。&lt;/p&gt;
@@ -299,13 +299,13 @@ Hello World_
 &lt;p&gt;最後內文寬 738px (41em) 或 828px (46em)，實際一行最大為 612px (34em)。一行最多 34 個中文字、大約 14 個英文字（80 個字元）；程式碼一行最多只能放 74 個字元，短了一點點但還可以接受。&lt;/p&gt;
 &lt;p&gt;意外的小發現，在內文變窄之後，還可以加上右側的 sidenote，像是 &lt;a href="http://www.daveliepmann.com/tufte-css/"&gt;Tufte CSS&lt;/a&gt; 這樣，有時會比 footnote 好用，但可能又變回內容太擠的狀態。&lt;/p&gt;
 &lt;p&gt;最後是在段落前後距離調整，把標題接內文的間距變小了，但段落間的間距調大。學到了一些以前不會的 CSS 語法，像&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nt"&gt;p&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;p&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nt"&gt;p&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
   &lt;span class="k"&gt;margin-top&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;1.5&lt;/span&gt;&lt;span class="kt"&gt;em&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;代表選取相鄰的 p 元素，這樣可以避免直接改 p 的 margin 讓 p 與 h*、ul、pre 等間距太寬的狀況。&lt;strong&gt;前端真的太神妙了。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;代表選取相鄰的 p 元素，這樣可以避免直接改 p 的 margin 讓 p 與 h&lt;em&gt;、ul、pre 等間距太寬的狀況。&lt;/em&gt;&lt;em&gt;前端真的太神妙了。&lt;/em&gt;*&lt;/p&gt;
 &lt;h3 id="edit-2015-09-23"&gt;EDIT (2015-09-23)&lt;/h3&gt;
 &lt;p&gt;另外 smartypants 有時候有點煩，像是表達 13 吋時&lt;/p&gt;
 &lt;p class="center"&gt;&lt;span style="font-size: 4em; line-height: 1em;"&gt;13" vs 13&amp;#34;&lt;/span&gt;&lt;/p&gt;
@@ -322,4 +322,4 @@ Hello World_
 &lt;/div&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="zh"></category><category term="pelican"></category><category term="blog"></category><category term="python"></category></entry></feed>
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="pelican"></category><category term="blog"></category><category term="python"></category></entry></feed>

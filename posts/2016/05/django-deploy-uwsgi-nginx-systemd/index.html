@@ -75,8 +75,8 @@
     </span>
     <section class="post-content"><p>上一次很認真的 Django 部署記錄在<a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/">《設定 Python 官方文件中文化自動更新 Server》</a>一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。</p>
 <p>這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下：</p>
-<div class="highlight"><pre><span></span>nginx -- unix socket -- uWSGI -- Django
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">nginx -- unix socket -- uWSGI -- Django</span>
+</code></pre></div>
 
 
 <p>寫一個名為 <code>PROJ.service</code> 的 systemd unit 來管理這網站的啟動與否。之後 <code>PROJ</code> 就換成自己的專案名稱；<code>USER</code> 就換成執行網站的帳號。</p>
@@ -99,21 +99,21 @@
 <p>參考<a href="https://blog.liang2.tw/posts/2016/01/postgresql-install/">《安裝 PostgreSQL 9 於 Debian Jessie / OSX》</a>一文設定。建立跟 OS user 同名的 PostgreSQL 帳號，給了建立 database 的權限，這樣開發比較方便。不用設定密碼。</p>
 <h3 id="django-proj">Django PROJ</h3>
 <p>使用內建 <a href="https://docs.python.org/3/library/venv.html">venv</a> 在自己家目錄下某處，建立名為 <code>VENV</code> 的虛擬環境：</p>
-<div class="highlight"><pre><span></span>python3.5 -m venv VENV
-</pre></div>
+<div class="highlight"><pre><span></span><code>python3.5 -m venv VENV
+</code></pre></div>
 
 
 <p>有關部署的設定（即 <code>settings.py</code>），利用 <a href="https://github.com/joke2k/django-environ">django-environ</a> 把 secret key、database 連線資訊、寄信 SMTP server 等設定寫在獨立的檔案，就可以讓 local 和 production 環境讀到各自的設定。具體的做法可以參考 <a href="https://github.com/pycontw/pycontw2016/blob/master/src/pycontw2016/settings/production.py">PyCon Taiwan 2016 網站管理設定</a> 的寫法。</p>
 <p>在連 PostgreSQL 時使用 local connection (Unix-domain socket)，即使用者同名的身份。</p>
-<div class="highlight"><pre><span></span><span class="na">DATABASE_URL</span><span class="o">=</span><span class="s">postgres:///TABLE_NAME</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="na">DATABASE_URL</span><span class="o">=</span><span class="s">postgres:///TABLE_NAME</span>
+</code></pre></div>
 
 
 <h3 id="tmpfilesd">tmpfiles.d</h3>
 <p>把 nginx 與 uwsgi 溝通用的 socket 放在 <code>/run/PROJ</code> 底下，但這也表示重開機之後，<code>/run/PROJ</code> 資料夾就會消失不見，所以使用 <a href="https://www.freedesktop.org/software/systemd/man/tmpfiles.d.html">tmpfiles.d</a><sup id="fnref:systemd-runtimedir"><a class="footnote-ref" href="#fn:systemd-runtimedir">1</a></sup>。除了資料夾的命名改成用專案名稱，設定都跟<a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/">舊文</a>一樣。</p>
 <h3 id="nginx">nginx</h3>
 <p>nginx 設定跟<a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/">舊文</a>一樣。放在 <code>/etc/nginx/sites-available/PROJ.conf</code></p>
-<div class="highlight"><pre><span></span><span class="c1"># Upstream Django setting; the socket nginx connects to</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Upstream Django setting; the socket nginx connects to</span>
 <span class="k">upstream</span> <span class="s">django</span> <span class="p">{</span>
     <span class="kn">server</span> <span class="s">unix:///run/PROJ/django.sock</span><span class="p">;</span>
 <span class="p">}</span>
@@ -139,20 +139,20 @@
         <span class="kn">include</span>     <span class="s">/etc/nginx/uwsgi_params</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
-</pre></div>
+</code></pre></div>
 
 
 <p><code>/path/to/PROJ/assets</code> 是 Django <a href="https://docs.djangoproject.com/en/1.9/ref/settings/#std:setting-STATIC_ROOT">STATIC_ROOT</a> 的路徑。只要執行 <code>python manage.py collectstatic</code> 後，即使 uWSGI 還沒設定就可以測試 /static/&hellip;/ 有沒有被 nginx 抓到。 </p>
 <p>啟動時，先把檔案連結到 <code>/etc/nginx/site-enabled/</code>，重載 nginx 設定：</p>
-<div class="highlight"><pre><span></span><span class="nb">cd</span> /etc/nginx/sites-enabled/
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span> /etc/nginx/sites-enabled/
 sudo ln -s ../sites-available/PROJ.conf .
 sudo systemctl reload nginx
-</pre></div>
+</code></pre></div>
 
 
 <h3 id="uwsgi">uWSGI</h3>
 <p>跟舊文最大的差別，只要裝在 VENV 裡面就好了；然後也不使用 emperor mode。寫一個 <code>/etc/uwsgi/vassals/PROJ.ini</code> 放設定：</p>
-<div class="highlight"><pre><span></span><span class="k">[uwsgi]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[uwsgi]</span>
 <span class="na">chdir</span>        <span class="o">=</span> <span class="s">/path/to/PROJ</span>
 <span class="c1"># Django&#39;s wsgi file</span>
 <span class="na">module</span>       <span class="o">=</span> <span class="s">PROJ.wsgi:application</span>
@@ -173,17 +173,17 @@ sudo systemctl reload nginx
 <span class="na">gid</span>          <span class="o">=</span> <span class="s">www-data</span>
 <span class="c1"># clear environment on exit</span>
 <span class="na">vacuum</span>       <span class="o">=</span> <span class="s">true</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>設定好後執行以下指令，就應該能看到網站能動了。</p>
-<div class="highlight"><pre><span></span>sudo /path/to/VENV/bin/uwsgi --ini /etc/uwsgi/vassals/PROJ.ini
-</pre></div>
+<div class="highlight"><pre><span></span><code>sudo /path/to/VENV/bin/uwsgi --ini /etc/uwsgi/vassals/PROJ.ini
+</code></pre></div>
 
 
 <h3 id="systemd">systemd</h3>
 <p>這邊除了執行 uWSGI 的指令不同外，都跟<a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/">舊文</a>相同。Debian 系 systemd system unit 設定檔放在 <code>/etc/systemd/system/PROJ.service</code>：</p>
-<div class="highlight"><pre><span></span><span class="k">[Unit]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
 <span class="na">Description</span><span class="o">=</span><span class="s">PROJ&#39;s Django server by uWSGI</span>
 <span class="na">After</span><span class="o">=</span><span class="s">syslog.target</span>
 
@@ -197,13 +197,13 @@ sudo systemctl reload nginx
 
 <span class="k">[Install]</span>
 <span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>這邊設定它會（有錯誤時）自動重新起動，並把 stderr 導到 syslog。接著，就要啟動這個 <code>PROJ.service</code> 服務：</p>
-<div class="highlight"><pre><span></span>sudo systemctl <span class="nb">enable</span> PROJ
+<div class="highlight"><pre><span></span><code>sudo systemctl <span class="nb">enable</span> PROJ
 sudo systemctl status PROJ
-</pre></div>
+</code></pre></div>
 
 
 <p>可以透過 <code>sudo journalctl -xe -u PROJ</code> 來查看 uWSGI 執行、連線 log。</p>

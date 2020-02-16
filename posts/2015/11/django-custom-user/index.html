@@ -69,13 +69,13 @@
 </ul>
 <p>內建的帳號功能應該很實用，安全性也很好。所以一般來說都不會去改它。</p>
 <p>如果只是想要幫 User 加個 profile，例如生日、來自哪個星球等欄位，也不需要改寫 User。參考官網 <a href="https://docs.djangoproject.com/en/1.8/topics/auth/customizing/#extending-the-existing-user-model">Extending the existing User model</a>，只需要建一個 one-to-one relationship 指到 User 就好了：</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
 
 <span class="k">class</span> <span class="nc">UserProfile</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">AUTH_USER_MODEL</span><span class="p">)</span>
     <span class="n">birth</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">()</span>
     <span class="n">orig_planet</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>但 Django 預設用 username 來登入，如果要改用 email 登入要怎麼做？</p>

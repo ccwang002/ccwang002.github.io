@@ -81,7 +81,7 @@
 </div>
 <h3 id="bibtex-is-for-latex">BibTex is for LaTeX</h3>
 <p>在 <a href="https://www.latex-project.org/">LaTeX</a> 當中可以利用 <a href="http://www.bibtex.org/">BibTeX</a>（或更新的 <a href="https://www.ctan.org/pkg/biblatex">BibLaTeX</a>）提供的流程處理 citation 與管理 reference（即 <a href="https://en.wikibooks.org/wiki/LaTeX/Bibliography_Management">Bibliography 管理</a>）。他把所有 reference 集中在一個純文字的檔案，</p>
-<div class="highlight"><pre><span></span>@article<span class="nb">{</span>Calin:2006aa,
+<div class="highlight"><pre><span></span><code>@article<span class="nb">{</span>Calin:2006aa,
     Author = <span class="nb">{</span>Calin, George A. and Croce, Carlo M.<span class="nb">}</span>,
     Journal = <span class="nb">{</span>Nat Rev Cancer<span class="nb">}</span>,
     Month = <span class="nb">{</span>11<span class="nb">}</span>,
@@ -90,7 +90,7 @@
     Title = <span class="nb">{</span>MicroRNA signatures in human cancers<span class="nb">}</span>,
     Volume = <span class="nb">{</span>6<span class="nb">}</span>,
     Year = <span class="nb">{</span>2006<span class="nb">}}</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>每篇文章會有一個 cite key，在內文用到的時候就可以引用，而 BibTeX 就會根據現在定義的 style 去放 citation 以及在文末加上對應的 reference。</p>
@@ -156,8 +156,8 @@
 <p>這邊要額外說明一下 Linked Attachment Base Directory 以及 Data Directory 的差異。像 PDF 這類如果被 Zotfile 所管理的檔案，或是自己手動選「Attach Link &hellip;」的檔案，他使用的是 linked attachment，icon 會有個連結的符號 <img src="https://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotfile_fileicon.png" style="height: 1.6em;"/>。其他像 Webpage Snapshot 或是預設的 PDF 檔都是放在 Data Directory。</p>
 <h4 id="how-to-sync-data-storage">How to sync data storage</h4>
 <p>如果要進一步讓 data storage 也用 Dropbox 同步的話，參考官網關於 <a href="https://www.zotero.org/support/sync">sync 的介紹</a>，OSX 上 Zotero Firefox 的資料會存放在</p>
-<div class="highlight"><pre><span></span>~/Library/Application Support/Firefox/Profiles/xxxxxxxx.default/zotero
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">~/Library/Application Support/Firefox/Profiles/xxxxxxxx.default/zotero</span>
+</code></pre></div>
 
 
 <p>其中 data storage 就在底下的 <code>storage</code> 資料夾。官網建議不要把 Zotero 的 SQLite database 等都同步在 Dropbox 上，所以只要把這個資料移到 Dropbox 再 soft link 回來就可以了。</p>

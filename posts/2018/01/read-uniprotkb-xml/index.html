@@ -78,7 +78,7 @@
 <p>UniProtKB&rsquo;s flat text file has been a popular way to parse its data. I mean, it has <a href="https://www.uniprot.org/docs/userman.htm">its own manual</a>, and one can download a full entry&rsquo;s data easily. But this requires writing a custom parser in Python. More code means more bugs, and I will worry about whether my parser works every time UniProt updates.</p>
 <h2 id="xml-and-xml-schema">XML and XML schema</h2>
 <p>XML data are structured. For example, this is what entry <a href="https://www.uniprot.org/uniprot/P51587">P51587</a> looks like in XML format:</p>
-<div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
 <span class="nt">&lt;uniprot</span> <span class="na">xmlns=</span><span class="s">&quot;http://uniprot.org/uniprot&quot;</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://uniprot.org/uniprot http://www.uniprot.org/support/docs/uniprot.xsd&quot;</span><span class="nt">&gt;</span>
 <span class="nt">&lt;entry</span> <span class="na">dataset=</span><span class="s">&quot;Swiss-Prot&quot;</span> <span class="na">created=</span><span class="s">&quot;1996-10-01&quot;</span> <span class="na">modified=</span><span class="s">&quot;2017-12-20&quot;</span> <span class="na">version=</span><span class="s">&quot;201&quot;</span><span class="nt">&gt;</span>
 <span class="nt">&lt;accession&gt;</span>P51587<span class="nt">&lt;/accession&gt;</span>
@@ -98,7 +98,7 @@
 <span class="c">&lt;!-- ...  --&gt;</span>
 <span class="nt">&lt;/entry&gt;</span>
 <span class="nt">&lt;/uniprot&gt;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>The file is available at <a href="https://www.uniprot.org/uniprot/P04637.xml">https://www.uniprot.org/uniprot/P04637.xml</a>. Basically, all the information about this entry should be available in this file, as long as one knows how to query the XML via <a href="https://en.wikipedia.org/wiki/XPath">XPath</a>. However, I find XML file harder to read alone, especially without any guide of how the file was constructed.</p>
@@ -106,7 +106,7 @@
 <h2 id="read-uniprot-xml-by-xmlschema">Read UniProt XML by xmlschema</h2>
 <p>I use <a href="https://pypi.org/project/xmlschema/">xmlschema</a> to read XML with its schema in Python. Instead of using XPath, one can actually convert the XML content into a dictionary-like format, which can be easily passed to other Python functions.</p>
 <p>Using same entry <a href="https://www.uniprot.org/uniprot/P51587">P51587</a> as an example,</p>
-<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">xmlschema</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">xmlschema</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">schema</span> <span class="o">=</span> <span class="n">xmlschema</span><span class="o">.</span><span class="n">XMLSchema</span><span class="p">(</span><span class="s1">&#39;https://www.uniprot.org/docs/uniprot.xsd&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entry_dict</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s1">&#39;./P51587.xml&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entry_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
@@ -114,24 +114,24 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">content</span> <span class="o">=</span> <span class="n">entry_dict</span><span class="p">[</span><span class="s1">&#39;entry&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">content</span><span class="p">)[:</span><span class="mi">6</span><span class="p">]</span>
 <span class="go">[&#39;@dataset&#39;, &#39;@created&#39;, &#39;@modified&#39;, &#39;@version&#39;, &#39;accession&#39;, &#39;name&#39;]</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>I don&rsquo;t need any custom code to read the XML content structurally. For example, to get all the accession IDs of this entry,</p>
-<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">content</span><span class="p">[</span><span class="s1">&#39;accession&#39;</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">content</span><span class="p">[</span><span class="s1">&#39;accession&#39;</span><span class="p">]</span>
 <span class="go">[&#39;P51587&#39;, &#39;O00183&#39;, &#39;O15008&#39;, &#39;Q13879&#39;, &#39;Q5TBJ7&#39;]</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>To get the protein names,</p>
-<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">content</span><span class="p">[</span><span class="s1">&#39;protein&#39;</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">content</span><span class="p">[</span><span class="s1">&#39;protein&#39;</span><span class="p">]</span>
 <span class="go">{&#39;alternativeName&#39;: [{&#39;fullName&#39;: &#39;Fanconi anemia group D1 protein&#39;}],</span>
 <span class="go"> &#39;recommendedName&#39;: {&#39;fullName&#39;: &#39;Breast cancer type 2 susceptibility protein&#39;}}</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>One can compare the dictionary converted result with the original XML. I&rsquo;d like to end the demo with a more complicated example that finds all the sequence variants:</p>
-<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq_variants</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">seq_variants</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;@type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;sequence variant&#39;</span> <span class="ow">and</span> <span class="s1">&#39;variation&#39;</span> <span class="ow">in</span> <span class="n">d</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">content</span><span class="p">[</span><span class="s1">&#39;feature&#39;</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">][</span><span class="s1">&#39;position&#39;</span><span class="p">][</span><span class="s1">&#39;@position&#39;</span><span class="p">],</span> 
@@ -147,7 +147,7 @@
 <span class="go"> (64, &#39;T&#39;, &#39;I&#39;),</span>
 <span class="go"> (75, &#39;A&#39;, &#39;P&#39;),</span>
 <span class="go"> (81, &#39;F&#39;, &#39;L&#39;)]</span>
-</pre></div>
+</code></pre></div>
 
 
 <h2 id="summary">Summary</h2>

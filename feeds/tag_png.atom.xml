@@ -61,22 +61,22 @@
 (&lt;a href="https://github.com/google/zopfli"&gt;Zopfli Readme&lt;/a&gt;)&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;這個 &lt;a href="https://github.com/google/zopfli/blob/master/README.zopflipng"&gt;Zopflipng&lt;/a&gt; 也是同個 repo 維護。自己編譯簡單，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone https://github.com/google/zopfli.git
-make zopflipng
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;git clone https://github.com/google/zopfli.git&lt;/span&gt;
+&lt;span class="err"&gt;make zopflipng&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;如果要一口氣壓縮一堆 PNG，可以這樣使用：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;zopflipng --lossy_transparent --prefix *.png
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;zopflipng --lossy_transparent --prefix *.png&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;速度也蠻慢的，有個 &lt;code&gt;-q&lt;/code&gt; 選項可以加速。但壓縮效率比 OptiPNG 還好。&lt;/p&gt;
 &lt;p&gt;PS 剛好今天早上看到 Google 又出了另一個壓縮演算法 &lt;a href="https://github.com/google/brotli"&gt;Brotli&lt;/a&gt;，但這個與 deflate 不相容，應該不能用在 PNG 上面。&lt;/p&gt;
 &lt;h3 id="pngquant"&gt;pngquant&lt;/h3&gt;
 &lt;p&gt;想要有損的 PNG 可以用 &lt;a href="https://pngquant.org/"&gt;pngquant&lt;/a&gt;。看官網有特別強調在透明度的資訊會被保留，並能像 JPEG 一樣設定 quality。一般 quality 容許越低壓縮比都會越高。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pngquant -f --ext=.png --quality=70-85 --skip-if-larger *.png
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;pngquant -f --ext=.png --quality=70-85 --skip-if-larger *.png&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;可以看到 pngquant 能很容易達到 50% 以下的壓縮比。就我的例子看不太出現螢幕截圖哪裡失真了，而且失真了……也不會怎麼樣啦。&lt;/p&gt;
@@ -133,4 +133,4 @@ make zopflipng
 &lt;h3 id="truepng"&gt;沒有測的 TruePNG&lt;/h3&gt;
 &lt;p&gt;在原始網站中有提到 &lt;a href="http://css-ig.net/articles/truepng"&gt;TruePNG&lt;/a&gt; 表現很好，但它不是 open source 而且好像只能在 Windows 上跑，那就算了。&lt;/p&gt;
 &lt;h3 id="_1"&gt;結論&lt;/h3&gt;
-&lt;p&gt;以後沒事截圖都會用 pngquant 壓縮一下，完全不能有色差的考慮從 OptiPNG 改為 Zopfli。&lt;/p&gt;</content><category term="zh"></category><category term="png"></category></entry></feed>
+&lt;p&gt;以後沒事截圖都會用 pngquant 壓縮一下，完全不能有色差的考慮從 OptiPNG 改為 Zopfli。&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="png"></category></entry></feed>

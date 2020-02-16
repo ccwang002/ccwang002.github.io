@@ -57,8 +57,8 @@
         </header>
         <section class="post-excerpt">
             <p>沒幾天前剛部署一次 Django，記錄在<a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/">《使用 uWSGI、nginx、systemd 部署 Django》</a>。今天又部署了另一個專案。部署的設定跟上次一樣：</p>
-<div class="highlight"><pre><span></span>nginx -- unix socket -- uWSGI -- Django
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">nginx -- unix socket -- uWSGI -- Django</span>
+</code></pre></div>
 
 
 <p>一樣寫一個 <code>PROJ.service</code> 的 systemd unit 來管理網站的啟動 (uWSGI …</p>

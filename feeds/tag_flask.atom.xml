@@ -52,36 +52,36 @@
 &lt;p&gt;我們先假設所有檔案都放在同個資料夾裡，估且叫 &lt;code&gt;draw_member&lt;/code&gt;。之後沒有額外說明的話，都是在這個目錄下操作。&lt;/p&gt;
 &lt;p&gt;原始資料用 CSV 格式來儲存，有「名字」以及「團體」兩個欄位。不過考慮到可能會把檔案匯出，在原始檔案多加一個「最近被抽到的日期」欄位，希望最近被抽到的會比其他人再被抽到的機會低一點。&lt;/p&gt;
 &lt;p&gt;這個 CSV 檔案命名為 &lt;code&gt;members.csv&lt;/code&gt;。一開始沒有人被抽到，所以最後一欄都先設成空的&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;，第一行是每一欄欄位的名稱。如果從資料庫匯出，這欄位就會有值。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;quot;名字&amp;quot;,&amp;quot;團體&amp;quot;,&amp;quot;最近被抽到的日期&amp;quot;
-&amp;quot;高坂 穂乃果&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
-&amp;quot;絢瀬 絵里&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
-&amp;quot;南 ことり&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
-&amp;quot;園田 海未&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
-&amp;quot;星空 凛&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
-&amp;quot;西木野 真姫&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
-&amp;quot;東條 希&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
-&amp;quot;小泉 花陽&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
-&amp;quot;矢澤 にこ&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
-&amp;quot;平沢 唯&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;
-&amp;quot;秋山 澪&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;
-&amp;quot;田井中 律&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;
-&amp;quot;琴吹 紬&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;
-&amp;quot;中野 梓&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;&amp;quot;名字&amp;quot;,&amp;quot;團體&amp;quot;,&amp;quot;最近被抽到的日期&amp;quot;&lt;/span&gt;
+&lt;span class="err"&gt;&amp;quot;高坂 穂乃果&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="err"&gt;&amp;quot;絢瀬 絵里&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="err"&gt;&amp;quot;南 ことり&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="err"&gt;&amp;quot;園田 海未&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="err"&gt;&amp;quot;星空 凛&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="err"&gt;&amp;quot;西木野 真姫&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="err"&gt;&amp;quot;東條 希&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="err"&gt;&amp;quot;小泉 花陽&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="err"&gt;&amp;quot;矢澤 にこ&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="err"&gt;&amp;quot;平沢 唯&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="err"&gt;&amp;quot;秋山 澪&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="err"&gt;&amp;quot;田井中 律&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="err"&gt;&amp;quot;琴吹 紬&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="err"&gt;&amp;quot;中野 梓&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;首先我們先確定會用 Python 把資料讀出來。在 Python 當中有個叫 &lt;code&gt;csv&lt;/code&gt; 的內建模組（module）可以處理 CSV 的檔案讀寫。在這邊我們選用 &lt;a href="https://docs.python.org/3.5/library/csv.html#csv.DictReader"&gt;csv.DictReader&lt;/a&gt;，它預設會把檔案的第一行當成欄位名稱，然後根據這名稱，每一行都會產生一個 &lt;code&gt;dict&lt;/code&gt; 物件。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;csv&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;csv&lt;/span&gt;
 
 &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;./members.csv&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;newline&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;csv&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DictReader&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-        &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+        &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;可以把這段程式碼直接打在 Python REPL 裡或者存成一個檔案後再用 Python 執行它，結果都會是：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;名字&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;高坂 穂乃果&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;團體&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;μ&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;名字&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;高坂 穂乃果&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;團體&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;μ&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;名字&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;絢瀬 絵里&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;團體&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;μ&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;名字&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;南 ことり&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;團體&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;μ&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;名字&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;園田 海未&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;團體&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;μ&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
@@ -95,21 +95,21 @@
 &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;名字&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;田井中 律&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;團體&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;K-ON!&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;名字&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;琴吹 紬&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;團體&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;K-ON!&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;名字&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;中野 梓&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;團體&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;K-ON!&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;如果不要直接 &lt;code&gt;print(row)&lt;/code&gt; ，而是稍微整理一下資料再輸出，改成：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;csv&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;csv&lt;/span&gt;
 
 &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;./members.csv&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;newline&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;csv&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DictReader&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-        &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;{} of {}&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;名字&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;團體&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+        &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;&lt;span class="si"&gt;{}&lt;/span&gt;&lt;span class="s1"&gt; of &lt;/span&gt;&lt;span class="si"&gt;{}&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;名字&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;團體&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;則輸出結果會是：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;高坂 穂乃果 of μ&amp;#39;s
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;高坂 穂乃果 of μ&amp;#39;s
 絢瀬 絵里 of μ&amp;#39;s
 南 ことり of μ&amp;#39;s
 園田 海未 of μ&amp;#39;s
@@ -123,7 +123,7 @@
 田井中 律 of K-ON!
 琴吹 紬 of K-ON!
 中野 梓 of K-ON!
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;這樣就確定我們有辦法把資料用 Python 讀取了。要拿每個欄位的內容也很簡單，像要名字的話，只要用 &lt;code&gt;row['名字']&lt;/code&gt;。&lt;/p&gt;
@@ -167,55 +167,55 @@
 &lt;/blockquote&gt;
 &lt;h4 id="python"&gt;Python 環境&lt;/h4&gt;
 &lt;p&gt;使用 &lt;a href="https://www.python.org/downloads/"&gt;Python 3.5&lt;/a&gt;。理論上 SQLite 就已經裝好了能直接使用。一般在開發 Python 程式的時候會使用虛擬環境，好處虛擬環境安裝的 Python 套件可以獨立管理，不受系統或其他虛擬環境影響。我們用內建的 &lt;a href="https://docs.python.org/3.5/library/venv.html#module-venv"&gt;venv&lt;/a&gt; 建立一個名稱為 &lt;code&gt;VENV&lt;/code&gt; 的虛擬環境：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ python3.5 -m venv VENV
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ python3.5 -m venv VENV
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;這時候目錄底下就會多一個 &lt;code&gt;VENV&lt;/code&gt; 資料夾，裡面是個完整的 Python 執行結構，就好像在這個路徑安裝 Python 一樣。先暫時不管它怎麼做到虛擬隔離，知道怎麼用就好。使用跟離開分別是：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class="nb"&gt;source&lt;/span&gt; VENV/bin/activate
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ &lt;span class="nb"&gt;source&lt;/span&gt; VENV/bin/activate
 &lt;span class="o"&gt;(&lt;/span&gt;VENV&lt;span class="o"&gt;)&lt;/span&gt; $ which python
 &lt;span class="c1"&gt;# /path/to/draw_member/VENV/bin/python&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;VENV&lt;span class="o"&gt;)&lt;/span&gt; $ deactivate
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;(&lt;/span&gt;VENV&lt;span class="o"&gt;)&lt;/span&gt; $ deactivate
 $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h4 id="flaskjinja2"&gt;安裝 Flask、Jinja2 等套件&lt;/h4&gt;
 &lt;p&gt;Python 使用 pip 管理安裝的套件，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;VENV&lt;span class="o"&gt;)&lt;/span&gt; $ pip install flask jinja2
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;(&lt;/span&gt;VENV&lt;span class="o"&gt;)&lt;/span&gt; $ pip install flask jinja2
 &lt;span class="c1"&gt;# Collecting flask&lt;/span&gt;
 &lt;span class="c1"&gt;# Collecting jinja2&lt;/span&gt;
 &lt;span class="c1"&gt;# ... (連帶裝了相關的套件）&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;這時候如果查看裝了哪些套件就會看到：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;VENV&lt;span class="o"&gt;)&lt;/span&gt; $ pip freeze
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;(&lt;/span&gt;VENV&lt;span class="o"&gt;)&lt;/span&gt; $ pip freeze
 &lt;span class="c1"&gt;# Flask==0.10.1&lt;/span&gt;
 &lt;span class="c1"&gt;# itsdangerous==0.24&lt;/span&gt;
 &lt;span class="c1"&gt;# Jinja2==2.8&lt;/span&gt;
 &lt;span class="c1"&gt;# MarkupSafe==0.23&lt;/span&gt;
 &lt;span class="c1"&gt;# Werkzeug==0.10.4&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;為了方便之後把環境安裝在別的電腦上，記得用&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip freeze &amp;gt; requirements.txt
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip freeze &amp;gt; requirements.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;把套件版本的資訊都存在一個檔案裡的好處是，下次把要環境架起來就只要&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install -r requirements.txt
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip install -r requirements.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;就設定完成了。&lt;/p&gt;
 &lt;h4 id="sqlite-database"&gt;SQLite Database&lt;/h4&gt;
 &lt;p&gt;我們先把 SQLite 每個資料表設定好，這樣之後在寫程式就只要專心讀寫資料就好了。根據前面建的模型，我們可以轉換成 SQL 語法：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;-- create_db.sql&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;-- create_db.sql&lt;/span&gt;
 &lt;span class="k"&gt;CREATE&lt;/span&gt; &lt;span class="k"&gt;TABLE&lt;/span&gt; &lt;span class="n"&gt;members&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;id&lt;/span&gt; &lt;span class="nb"&gt;INTEGER&lt;/span&gt; &lt;span class="k"&gt;PRIMARY&lt;/span&gt; &lt;span class="k"&gt;KEY&lt;/span&gt; &lt;span class="k"&gt;ASC&lt;/span&gt; &lt;span class="n"&gt;AUTOINCREMENT&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="nb"&gt;TEXT&lt;/span&gt; &lt;span class="k"&gt;NOT&lt;/span&gt; &lt;span class="k"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -227,15 +227,15 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
     &lt;span class="n"&gt;time&lt;/span&gt; &lt;span class="n"&gt;DATETIME&lt;/span&gt; &lt;span class="k"&gt;DEFAULT&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;now&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;localtime&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
     &lt;span class="k"&gt;FOREIGN&lt;/span&gt; &lt;span class="k"&gt;KEY&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;memberid&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;REFERENCES&lt;/span&gt; &lt;span class="n"&gt;members&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="p"&gt;);&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;把這串 SQL 寫到一個檔案 &lt;code&gt;create_db.sql&lt;/code&gt; 後就可以實際測試一下。我們把兩個成員寫到檔案裡面，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sqlite3 -init create_db.sql test.db
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ sqlite3 -init create_db.sql test.db
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="go"&gt;-- Loading resources from create_db.sql&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="go"&gt;-- Loading resources from create_db.sql&lt;/span&gt;
 
 &lt;span class="go"&gt;SQLite version 3.8.11.1 2015-07-29 20:00:57&lt;/span&gt;
 &lt;span class="go"&gt;Enter &amp;quot;.help&amp;quot; for usage hints.&lt;/span&gt;
@@ -248,29 +248,29 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;span class="go"&gt;id|name|group_name&lt;/span&gt;
 &lt;span class="go"&gt;1|高坂 穂乃果|μ&amp;#39;s&lt;/span&gt;
 &lt;span class="go"&gt;2|平沢 唯|K-ON!&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;&lt;code&gt;sqlite3 -init xxx.sql&lt;/code&gt; 意思是把 &lt;code&gt;xxx.sql&lt;/code&gt; 裡面的 SQL 指令都執行了一遍，所以一進到 SQLite shell 裡面就建立好表格了。&lt;/p&gt;
 &lt;p&gt;再來我們模擬幾次抽籤的過程。注意到我們之前有寫 &lt;strong&gt;draw_histories&lt;/strong&gt;.time 的預設值，所以抽籤只要寫是誰就可以了，時間 SQLite 會自動根據指令執行的時間給值。不過我們都試一下吧。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;INSERT&lt;/span&gt; &lt;span class="k"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;draw_histories&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;memberid&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;VALUES&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;INSERT&lt;/span&gt; &lt;span class="k"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;draw_histories&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;memberid&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;VALUES&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;INSERT&lt;/span&gt; &lt;span class="k"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;draw_histories&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;memberid&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="gp"&gt;   ...&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;VALUES&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;2015-09-25 16:30&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;所以第一次 INSERT 指令抽了果果以及小唯各一次。第二次 INSERT 再抽了一次小唯，這次還有額外指定時間為的 9 月 25 號下午 4 點半。關於 SQLite 裡 &lt;code&gt;datetime&lt;/code&gt; 的更多使用方式可以參考&lt;a href="https://sqlite.org/lang_datefunc.html"&gt;官網說明文件&lt;/a&gt;，我們的例子只要這樣就足夠了。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="n"&gt;draw_histories&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="n"&gt;draw_histories&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="go"&gt;memberid|time&lt;/span&gt;
 &lt;span class="go"&gt;1|2015-09-28 16:55:03&lt;/span&gt;
 &lt;span class="go"&gt;2|2015-09-28 16:55:03&lt;/span&gt;
 &lt;span class="go"&gt;2|2015-09-25 16:30:00&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;前兩個就是第一次 INSERT 所建立的抽籤歷史，跟你下指令的時間有關。第二次 INSERT 有給定時間，所以記錄永遠是 9 月 25 號下午。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;draw_histories&lt;/strong&gt; 只儲存了 member_id，我們可以做一個比較複雜的查詢，把成員的名字跟所屬團體一起列出來。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;group_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;time&lt;/span&gt; &lt;span class="k"&gt;AS&lt;/span&gt; &lt;span class="n"&gt;draw_time&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;group_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;time&lt;/span&gt; &lt;span class="k"&gt;AS&lt;/span&gt; &lt;span class="n"&gt;draw_time&lt;/span&gt;
 &lt;span class="gp"&gt;   ...&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="n"&gt;draw_histories&lt;/span&gt; &lt;span class="k"&gt;AS&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;members&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;
 &lt;span class="gp"&gt;   ...&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;WHERE&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;memberid&lt;/span&gt;
 &lt;span class="gp"&gt;   ...&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;ORDER&lt;/span&gt; &lt;span class="k"&gt;BY&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;time&lt;/span&gt; &lt;span class="k"&gt;ASC&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
@@ -278,7 +278,7 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;span class="go"&gt;2|平沢 唯|K-ON!|2015-09-25 16:30:00&lt;/span&gt;
 &lt;span class="go"&gt;1|高坂 穂乃果|μ&amp;#39;s|2015-09-28 16:55:03&lt;/span&gt;
 &lt;span class="go"&gt;2|平沢 唯|K-ON!|2015-09-28 16:55:03&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3 id="csv"&gt;把 CSV 寫進資料庫&lt;/h3&gt;
@@ -289,13 +289,13 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;li&gt;&lt;code&gt;create_db.sql&lt;/code&gt;: 資料庫 schema&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;先 import 用到的 module&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sqlite3&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sqlite3&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;csv&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;把成員資料從 CSV 讀進來，跟之前一樣，只是我們稍微整理一下格式，存在 &lt;code&gt;members&lt;/code&gt; 這個變數。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;./members.csv&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;newline&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;./members.csv&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;newline&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 &lt;span class="gp"&gt;... &lt;/span&gt;    &lt;span class="n"&gt;csv_reader&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;csv&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DictReader&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="gp"&gt;... &lt;/span&gt;    &lt;span class="n"&gt;members&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
 &lt;span class="gp"&gt;... &lt;/span&gt;        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;名字&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;團體&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
@@ -309,50 +309,50 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;span class="go"&gt; (&amp;#39;園田 海未&amp;#39;, &amp;quot;μ&amp;#39;s&amp;quot;),&lt;/span&gt;
 &lt;span class="go"&gt; # ...&lt;/span&gt;
 &lt;span class="go"&gt; (&amp;#39;中野 梓&amp;#39;, &amp;#39;K-ON!&amp;#39;)]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;接著是新的部份，要先用 &lt;code&gt;sqlite3.connect()&lt;/code&gt; 建立 SQLite database 連線，然後再用這個連線去下 SQL 指令。首先要把 table 都建立出來：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;create_db.sql&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;create_db.sql&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 &lt;span class="gp"&gt;... &lt;/span&gt;    &lt;span class="n"&gt;create_db_sql&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="gp"&gt;...&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sqlite3&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;connect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;members.db&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 &lt;span class="gp"&gt;... &lt;/span&gt;    &lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;executescript&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;create_db_sql&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="gp"&gt;...&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;&lt;code&gt;db.executescript('...')&lt;/code&gt; 可以執行一系列的 SQL 指令（注意指令間要有分號）。另外使用 &lt;code&gt;with db: ...&lt;/code&gt; 作用是會 sqlite3 module 會自動幫我們把中間的 SQL 指令送出&lt;sup id="fnref:sqlite3 auto commit"&gt;&lt;a class="footnote-ref" href="#fn:sqlite3 auto commit"&gt;2&lt;/a&gt;&lt;/sup&gt;，等同於：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cursor&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cursor&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;executescript&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;create_db_sql&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;commit&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;再來把讀進來的 &lt;code&gt;members&lt;/code&gt; 變數寫到資料表裡面。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 &lt;span class="gp"&gt;... &lt;/span&gt;    &lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;executemany&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
 &lt;span class="gp"&gt;... &lt;/span&gt;        &lt;span class="s1"&gt;&amp;#39;INSERT INTO  members (name, group_name) VALUES (?, ?)&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 &lt;span class="gp"&gt;... &lt;/span&gt;        &lt;span class="n"&gt;members&lt;/span&gt;
 &lt;span class="gp"&gt;... &lt;/span&gt;    &lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;試著把資料讀出來，確定真的存進去了。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;execute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;SELECT * FROM members LIMIT 3&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;execute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;SELECT * FROM members LIMIT 3&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;    &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="go"&gt;(1, &amp;#39;高坂 穂乃果&amp;#39;, &amp;quot;μ&amp;#39;s&amp;quot;)&lt;/span&gt;
 &lt;span class="go"&gt;(2, &amp;#39;絢瀬 絵里&amp;#39;, &amp;quot;μ&amp;#39;s&amp;quot;)&lt;/span&gt;
 &lt;span class="go"&gt;(3, &amp;#39;南 ことり&amp;#39;, &amp;quot;μ&amp;#39;s&amp;quot;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;到了這邊我們資料的部份沒問題了，接下來就要處理網站流程本身。&lt;/p&gt;
 &lt;h3 id="flask"&gt;Flask 基本架構&lt;/h3&gt;
 &lt;p&gt;&lt;a href="http://flask.pocoo.org/"&gt;Flask&lt;/a&gt; 的 web server 可以把所有功能都寫在一個檔案，在這邊就以 &lt;code&gt;draw_member.py&lt;/code&gt; 為例子。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;flask&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Flask&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;flask&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Flask&lt;/span&gt;
 &lt;span class="n"&gt;app&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Flask&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="vm"&gt;__name__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 
@@ -363,20 +363,20 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 
 &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vm"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;debug&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;以上就是最基本的 Flask server 架構。先來測試看看，都已經等待一千六百多字了。先把 server 跑起來，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;VENV&lt;span class="o"&gt;)&lt;/span&gt; $ python draw_member.py
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;(&lt;/span&gt;VENV&lt;span class="o"&gt;)&lt;/span&gt; $ python draw_member.py
  * Running on http://127.0.0.1:5000/ &lt;span class="o"&gt;(&lt;/span&gt;Press CTRL+C to quit&lt;span class="o"&gt;)&lt;/span&gt;
  * Restarting with stat
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;再來可以開瀏覽器訪問 &lt;a href="http://localhost:5000/"&gt;http://localhost:5000/&lt;/a&gt;，或者用 command line 來訪問：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ curl &lt;span class="s1"&gt;&amp;#39;http://localhost:5000/&amp;#39;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ curl &lt;span class="s1"&gt;&amp;#39;http://localhost:5000/&amp;#39;&lt;/span&gt;
 &lt;span class="c1"&gt;# &amp;lt;p&amp;gt;Hello World!&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;會看到 server 回傳「Hello World!」。太感動了！底下先說明整個流程與 code 的關係。&lt;/p&gt;
@@ -384,9 +384,9 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;p&gt;我們定義了一個 &lt;code&gt;index&lt;/code&gt; function 並且用 decorator 把這個函式綁定在 &lt;code&gt;/&lt;/code&gt; 路徑也就是首頁上。使用者訪問 &lt;code&gt;/&lt;/code&gt; 就會跑到這個 function 裡來。&lt;/p&gt;
 &lt;h3 id="flask-sqlite"&gt;Flask 與 SQLite 資料庫讀取&lt;/h3&gt;
 &lt;p&gt;我們先把資料庫相關的函式都先寫好，這邊基本上參照 &lt;a href="http://flask.pocoo.org/docs/0.10/patterns/sqlite3/#using-sqlite-3-with-flask"&gt;Flask 官網 SQLite 使用方式&lt;/a&gt;。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;csv&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;csv&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sqlite3&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;flask&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Flask&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;g&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;flask&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Flask&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;g&lt;/span&gt;
 
 &lt;span class="n"&gt;app&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Flask&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="vm"&gt;__name__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;SQLITE_DB_PATH&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;members.db&amp;#39;&lt;/span&gt;
@@ -415,7 +415,7 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 
 &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vm"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;debug&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;一下子多了很多 code，如果太複雜可以先當作就是這樣吧。&lt;/p&gt;
@@ -423,7 +423,7 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;p&gt;第二是我們把資料的路徑等等，都寫成變數放在程式碼的最開頭。這是個好習慣，把常數跟程式分開來，管理才方便&lt;sup id="fnref:flask-config"&gt;&lt;a class="footnote-ref" href="#fn:flask-config"&gt;3&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
 &lt;h3 id="first-view-first-template"&gt;First view, first template&lt;/h3&gt;
 &lt;p&gt;先來做首頁，把 HTML 放在 &lt;code&gt;templates/index.html&lt;/code&gt;。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
 &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;html&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
   &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;head&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
     &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;meta&lt;/span&gt; &lt;span class="na"&gt;charset&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;utf-8&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
@@ -440,16 +440,16 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
     &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;ul&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
   &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;body&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;html&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;這只是個單純的首頁，有個標題，還有個功能列，但暫時都沒有功能。我們修改一下 &lt;code&gt;draw_member.py&lt;/code&gt; 裡定義的 index 讓：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;flask&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;render_template&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;flask&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;render_template&lt;/span&gt;
 
-&lt;span class="nd"&gt;@app.route&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nd"&gt;@app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;route&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;index&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;render_template&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;index.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;馬上來執行看看，用一樣的方式。不過之前執行的那個可能沒有結束，記得一個 port 只能有一個服務，所以要不是用舊的（Flask 很聰明，在 &lt;code&gt;debug=True&lt;/code&gt; 時知道檔案被更新時就會用新的），要不是就關掉再重開一個新的。&lt;/p&gt;
@@ -469,7 +469,7 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;h4 id="form"&gt;Form&lt;/h4&gt;
 &lt;p&gt;最常見的 POST 就是搭配&lt;a href="https://developer.mozilla.org/en/docs/Web/HTML/Element/form"&gt;表單 (form)&lt;/a&gt; 使用。像登入要填帳號密碼、問卷問題與回答，就很常用 form 實作。Form 裡面有很多種 input，代表使用者能填的欄位，類型可能是單選、複選、單行、多行、密文等。&lt;/p&gt;
 &lt;p&gt;我們就先看一下 form 實際的長相吧。改寫 &lt;code&gt;templates/index.html&lt;/code&gt;，加上一個抽籤選團體的 form。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;來抽出快樂的夥伴吧！&lt;span class="nt"&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;&lt;span class="c"&gt;&amp;lt;!-- 本來有的 --&amp;gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;來抽出快樂的夥伴吧！&lt;span class="nt"&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;&lt;span class="c"&gt;&amp;lt;!-- 本來有的 --&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;選擇要被抽的團體&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;form&lt;/span&gt; &lt;span class="na"&gt;action=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/draw&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;method=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;post&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
   &lt;span class="nt"&gt;&amp;lt;label&lt;/span&gt; &lt;span class="na"&gt;for=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;group_name&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;團隊名稱：&lt;span class="nt"&gt;&amp;lt;/label&amp;gt;&lt;/span&gt;
@@ -479,7 +479,7 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
   &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;submit&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Submit&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;hr&amp;gt;&lt;/span&gt;&lt;span class="c"&gt;&amp;lt;!-- 這是分隔線 --&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;基本上加在 body 裡面就可以。這個 form 包含了一個標籤，指定是給名為 &lt;code&gt;group_name&lt;/code&gt; 的 input。底下接四個 input tags 但實際上只有兩大個。&lt;/p&gt;
@@ -489,8 +489,8 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;p&gt;同樣，form 底下也很多細節，歡迎再去 &lt;a href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms"&gt;MDN&lt;/a&gt; 了解。&lt;/p&gt;
 &lt;h4 id="request-form-post-handling-in-flask"&gt;Request (Form / POST) handling in Flask&lt;/h4&gt;
 &lt;p&gt;所以我們馬上來寫處理 &lt;code&gt;/draw&lt;/code&gt; POST 的 view 吧。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;random&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;flask&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;request&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;random&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;flask&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;request&lt;/span&gt;
 
 
 &lt;span class="nd"&gt;@app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;route&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/draw&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;methods&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;POST&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
@@ -525,7 +525,7 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
         &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lucky_member_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fetchone&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;lt;p&amp;gt;&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s1"&gt;（團體：&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s1"&gt;）&amp;lt;/p&amp;gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;member_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;member_group_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Flask 會把使用者發給 server 的 request 存在 &lt;code&gt;request&lt;/code&gt; 裡面，其實使用者會傳蠻多資訊的，像該人的語言、用的瀏覽器、時間等等，這些都能在 &lt;code&gt;request&lt;/code&gt; 找到。而使用者填好的 form 的內容會存在當中 &lt;code&gt;request.form&lt;/code&gt; 裡，而我們先前定義在 form 中 input name 就會變成這邊的 dict key。&lt;/p&gt;
@@ -556,7 +556,7 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;/ul&gt;
 &lt;p&gt;馬上來改寫一下吧。我們的功能表應該每一頁都要出現，再來我們希望 &lt;code&gt;/draw&lt;/code&gt; 的頁面也是個完整的 HTML。&lt;/p&gt;
 &lt;p&gt;首先先把常用的部份獨立出來，做成 &lt;code&gt;templates/base.html&lt;/code&gt;。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;&amp;lt;!-- templates/base.html --&amp;gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;&amp;lt;!-- templates/base.html --&amp;gt;&lt;/span&gt;
 &lt;span class="cp"&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
   &lt;span class="nt"&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
@@ -575,11 +575,11 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
     &lt;span class="nt"&gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
   &lt;span class="nt"&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;像功能列這種不會變的就很適合放在這邊。而我們的首頁就可以重覆使用這個結構，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;&amp;lt;!-- templates/index.html --&amp;gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;&amp;lt;!-- templates/index.html --&amp;gt;&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;extends&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;base.html&amp;quot;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
 
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
@@ -593,12 +593,12 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
   &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;submit&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Submit&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;可以看到最大的差異就是我們的 &lt;code&gt;index.html&lt;/code&gt; 變簡單了。它就像物件繼承一樣，&lt;code&gt;{% extends "base.html" %}&lt;/code&gt;，表示先把 &lt;code&gt;base.html&lt;/code&gt; 的內容放進來，而裡面定義了兩個 block：&lt;code&gt;title&lt;/code&gt; 以及 &lt;code&gt;content&lt;/code&gt;。Index 有定義 content 的內容，所以就取代掉原本定義在 base 裡空的 content。  Index 並沒有定義 title，那就會用原本 block 內的值，即「成員抽籤」。&lt;/p&gt;
 &lt;p&gt;再來處理 &lt;code&gt;/draw&lt;/code&gt; 的部份，我們除而再利用 &lt;code&gt;base.html&lt;/code&gt; 之外，還要引入 template variable 的概念。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;&amp;lt;!-- templates/draw.html --&amp;gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;&amp;lt;!-- templates/draw.html --&amp;gt;&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;extends&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;base.html&amp;quot;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
 
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;抽籤結果&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
@@ -607,11 +607,11 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;抽籤結果&lt;span class="nt"&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;name&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;（團體：&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;group&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;）&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;特別的是 &lt;code&gt;{{ name }}&lt;/code&gt; 和 &lt;code&gt;{{ group }}&lt;/code&gt;。這語法表示他們的值分別受 &lt;code&gt;name&lt;/code&gt; 和 &lt;code&gt;group&lt;/code&gt; 這兩個變數決定，變數的值在 &lt;code&gt;render_template&lt;/code&gt; 時才會決定。要怎麼把變數的值傳到 template 裡呢？&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nd"&gt;@app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;route&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/draw&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;methods&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;POST&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;route&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/draw&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;methods&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;POST&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;draw&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
     &lt;span class="c1"&gt;# ...&lt;/span&gt;
     &lt;span class="c1"&gt;# return &amp;#39;&amp;lt;p&amp;gt;%s（團體：%s）&amp;lt;/p&amp;gt;&amp;#39; % (member_name, member_group_name)&lt;/span&gt;
@@ -620,7 +620,7 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
         &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;member_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
         &lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;member_group_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;改寫好的 draw 使用 template &lt;code&gt;templates/draw.html&lt;/code&gt;，並在 &lt;code&gt;render_template&lt;/code&gt; 時把變數的值都放進去。&lt;/p&gt;
@@ -632,7 +632,7 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;h3 id="_5"&gt;歷史記錄&lt;/h3&gt;
 &lt;p&gt;記得要在抽籤的時候把記錄加到 database 裡。因為之前有設好 schema 預設用現在時間當抽籤時間，所以時間的處理完全交給 SQLite。用 SQL 語法 &lt;code&gt;LIMIT 10&lt;/code&gt; 以及 &lt;code&gt;ORDER BY&lt;/code&gt; 選擇最近的十筆，同時在查結果時，也同時查詢 &lt;strong&gt;members&lt;/strong&gt; table 對應的名字與團體。這個專業術語叫 &lt;a href="https://en.wikipedia.org/wiki/Join_%28SQL%29"&gt;JOIN&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;把這個 view 放在 &lt;code&gt;/history&lt;/code&gt; 路徑。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nd"&gt;@app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;route&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/draw&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;route&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/draw&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;draw&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
     &lt;span class="c1"&gt;# ...&lt;/span&gt;
     &lt;span class="c1"&gt;# Update draw history&lt;/span&gt;
@@ -657,11 +657,11 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
         &lt;span class="s1"&gt;&amp;#39;history.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
         &lt;span class="n"&gt;recent_histories&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;recent_histories&lt;/span&gt;
     &lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;同理也要建立對應的 template。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;&amp;lt;!-- templates/history.html --&amp;gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;&amp;lt;!-- templates/history.html --&amp;gt;&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;extends&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;base.html&amp;quot;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
 
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;抽籤歷史&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
@@ -687,13 +687,13 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
   &lt;span class="nt"&gt;&amp;lt;/tbody&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;/table&amp;gt;&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;這邊用了新的 template 語法 for loop，每次 loop &lt;code&gt;history&lt;/code&gt; 的值都會變，而且還可以再存取它底下的屬性，寫成 Python 就像：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;history&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;recent_histories&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;history&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;recent_histories&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="n"&gt;history&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Flask 用的 Jinja2 template 功能很多，現在各位已經比較理解 server 的運作了，可以去閱讀一下 &lt;a href="http://jinja.pocoo.org/docs/dev/templates/"&gt;Jinja2 官網文件&lt;/a&gt;看完整的使用方式。&lt;/p&gt;
@@ -703,7 +703,7 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 
 &lt;h4 id="datetime"&gt;時間處理用 datetime&lt;/h4&gt;
 &lt;p&gt;如果有注意到的話，我們用的時間從 SQLite 回傳回來其實是字串。想要改寫時間格式怎麼辦？這時候就要用上內建 module &lt;a href="https://docs.python.org/3.5/library/datetime.html#datetime-objects"&gt;datetime&lt;/a&gt; 裡提供的 &lt;code&gt;datetime&lt;/code&gt; 物件。同時我們也順便把本來用 &lt;code&gt;fetchall()&lt;/code&gt; 的結果，改成用 dict 表示每一筆歷史。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;datetime&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;datetime&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;datetime&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;datetime&lt;/span&gt;
 
 &lt;span class="nd"&gt;@app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;route&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/history&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;history&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
@@ -723,17 +723,17 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
             &lt;span class="s1"&gt;&amp;#39;draw_time&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;strptime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;%Y-%m-&lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s1"&gt; %H:%M:%S&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
         &lt;span class="p"&gt;})&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;render_template&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nv"&gt;history&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;recent_histories&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nv"&gt;history&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;recent_histories&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;tr&amp;gt;&lt;/span&gt;
   &lt;span class="nt"&gt;&amp;lt;td&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;history.name&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
   &lt;span class="nt"&gt;&amp;lt;td&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;history.group&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
   &lt;span class="nt"&gt;&amp;lt;td&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;history.draw_time.strftime&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;%Y 年 %m 月 %d 日 %H 時 %M 分&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;/tr&amp;gt;&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endfor&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;可以看到 for loop 不再使用 0, 1, 2 去拿每筆歷史各欄位的值，而是用欄位名稱，相當於 &lt;code&gt;history['name']&lt;/code&gt;。這樣的做法比較好，因為用數字一下就忘了，隨便調整一下 view 的內容順序就不一定是這樣了；單獨讀 template 也能懂每個欄位的意思。&lt;/p&gt;
@@ -759,7 +759,7 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;p&gt;底下記了很多技術細節，有興趣再看吧。&lt;/p&gt;
 &lt;h4 id="sqlite-table-info"&gt;SQLite table info&lt;/h4&gt;
 &lt;p&gt;除了用 &lt;code&gt;.schema&lt;/code&gt; 去看每個 TABLE 建立時的指令之外，也可以用 &lt;code&gt;PRAGMA table_info&lt;/code&gt; 去看某個 table 每個欄位的設定。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="go"&gt;-- Run `sqlite -init create_db.sql`&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="go"&gt;-- Run `sqlite -init create_db.sql`&lt;/span&gt;
 &lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;header&lt;/span&gt; &lt;span class="k"&gt;on&lt;/span&gt;
 &lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;mode&lt;/span&gt; &lt;span class="k"&gt;column&lt;/span&gt;
 &lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;PRAGMA&lt;/span&gt; &lt;span class="n"&gt;table_info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;members&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
@@ -773,28 +773,28 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;span class="go"&gt;---  -----------  ---------  ------  ----------------------------  --&lt;/span&gt;
 &lt;span class="go"&gt;0    memberid     INTEGER    0                                     0&lt;/span&gt;
 &lt;span class="go"&gt;1    draw_time    DATETIME   0       datetime(&amp;#39;now&amp;#39;, &amp;#39;localtime&amp;#39;)  0&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h4 id="sqlite-foreign-key-check"&gt;SQLite foreign key check&lt;/h4&gt;
 &lt;p&gt;SQLite3 在比較新版才會去處理 foreign key 限制的功能，參考&lt;a href="https://www.sqlite.org/foreignkeys.html#fk_enable"&gt;官網的說明&lt;/a&gt;，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;PRAGMA&lt;/span&gt; &lt;span class="n"&gt;foreign_keys&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;PRAGMA&lt;/span&gt; &lt;span class="n"&gt;foreign_keys&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="go"&gt;0&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;如果是 0 的話表示 SQLite 並不會去檢查 foreign key。這可以手動打開檢查。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;PRAGMA&lt;/span&gt; &lt;span class="n"&gt;foreign_keys&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;ON&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;PRAGMA&lt;/span&gt; &lt;span class="n"&gt;foreign_keys&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;ON&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;PRAGMA&lt;/span&gt; &lt;span class="n"&gt;foreign_keys&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="go"&gt;1&lt;/span&gt;
 &lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;INSERT&lt;/span&gt; &lt;span class="k"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;draw_histories&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;memberid&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;VALUES&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;span class="go"&gt;Error: FOREIGN KEY constraint failed&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h4 id="_7"&gt;重新讀入資料&lt;/h4&gt;
 &lt;p&gt;我們先包好一個 function &lt;code&gt;reset_db&lt;/code&gt;。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# draw_members.py&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_members.py&lt;/span&gt;
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;reset_db&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
     &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SQLITE_DB_SCHEMA&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;r&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
         &lt;span class="n"&gt;create_db_sql&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
@@ -821,16 +821,16 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
             &lt;span class="s1"&gt;&amp;#39;INSERT INTO members (name, group_name) VALUES (?, ?)&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
             &lt;span class="n"&gt;members&lt;/span&gt;
         &lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;&lt;code&gt;reset_db()&lt;/code&gt; 會 DROP 掉舊的 database ，然後再用剛剛介紹的方法再把資料從 CSV 讀進來。&lt;/p&gt;
 &lt;p&gt;所以這個 function 要怎麼使用？&lt;/p&gt;
 &lt;p&gt;一個是像之前一樣綁定一個路徑 &lt;code&gt;@app.route('/reset')&lt;/code&gt;；另一個方式我們可以透過 python shell 達到。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;draw_member&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;reset_db&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;draw_member&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;reset_db&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;app_context&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
 &lt;span class="gp"&gt;... &lt;/span&gt;    &lt;span class="n"&gt;reset_db&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h4 id="datetime-in-sqlite-and-python"&gt;Datetime in SQLite and Python&lt;/h4&gt;
@@ -849,4 +849,4 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;p&gt;其實 Flask 相關的設定通常放在 &lt;code&gt;app.config&lt;/code&gt; 裡面，不過我們的例子沒差。&amp;#160;&lt;a class="footnote-backref" href="#fnref:flask-config" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="zh"></category><category term="flask"></category><category term="sqlite"></category><category term="jinja2"></category><category term="python"></category></entry></feed>
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="flask"></category><category term="sqlite"></category><category term="jinja2"></category><category term="python"></category></entry></feed>

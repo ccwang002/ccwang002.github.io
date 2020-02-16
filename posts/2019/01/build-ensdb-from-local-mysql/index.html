@@ -81,72 +81,72 @@
 <p>To create a EnsDB from a Ensembl MySQL database, we need to the Ensembl Perl APIs. And the easiest setup is by a <a href="http://www.ensembl.org/info/data/virtual_machine.html">Ensembl virtual machine</a>. We just need to import the VM image using VirtualBox and install the ensembldb R package inside the      VM, then it is ready to build the EnsDb. I recommend the VM to have more memory than the default 1GB since a larger memory helps build the R packages and EnsDb.</p>
 <h3 id="build-a-local-ensembl-v84-mysql-database">Build a local Ensembl v84 MySQL database</h3>
 <p>Ensembl provides <a href="https://www.ensembl.org/info/docs/webcode/mirror/install/ensembl-data.html">the MySQL database dump</a> to allow easy import of their data of any version. Assuming the working directory is <code>~/Documents/Ensembl_MySQL_mirror/</code>, we first copy the database dump by:</p>
-<div class="highlight"><pre><span></span><span class="nb">cd</span> ~/Documents/Ensembl_MySQL_mirror
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span> ~/Documents/Ensembl_MySQL_mirror
 
 <span class="c1"># Download the db dump</span>
 rsync -a rsync://ftp.ensembl.org/ensembl/pub/release-84/mysql/homo_sapiens_core_84_38 .
 
 <span class="c1"># MySQL doesn&#39;t accept compressed db dump files so we decompress them</span>
 gunzip *.txt.gz
-</pre></div>
+</code></pre></div>
 
 
 <p>While downloading the data, we also need to install the MySQL server. I install <a href="http://www.ensembl.org/info/data/mysql.html">the same or similar version of MySQL</a> Ensembl is currently using, which is 5.6 at the time of writing. On macOS, Homebrew can specify the version of MySQL to be installed:</p>
-<div class="highlight"><pre><span></span>brew install mysql@5.6
+<div class="highlight"><pre><span></span><code>brew install mysql@5.6
 <span class="c1"># And launch the MySQL server</span>
 /usr/local/opt/mysql@5.6/bin/mysql.server start
-</pre></div>
+</code></pre></div>
 
 
 <p>First we create a database whose name matches the Ensembl version (v84):</p>
-<div class="highlight"><pre><span></span><span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">homo_sapiens_core_84_38</span><span class="p">;</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">homo_sapiens_core_84_38</span><span class="p">;</span>
+</code></pre></div>
 
 
 <p>Then we load the table schema and Ensembl data:</p>
-<div class="highlight"><pre><span></span>/usr/local/opt/mysql@5.6/bin/mysql -u root <span class="se">\</span>
+<div class="highlight"><pre><span></span><code>/usr/local/opt/mysql@5.6/bin/mysql -u root <span class="se">\</span>
     homo_sapiens_core_84_38 &lt; homo_sapiens_core_84_38.sql
 
 /usr/local/opt/mysql@5.6/bin/mysqlimport <span class="se">\</span>
     -u root <span class="se">\</span>
     --fields-terminated-by<span class="o">=</span><span class="s1">&#39;\t&#39;</span> --fields_escaped_by<span class="o">=</span><span class="se">\\</span>  <span class="se">\</span>
     homo_sapiens_core_84_38 -L *.txt
-</pre></div>
+</code></pre></div>
 
 
 <p>Finally, we modify the MySQL config at <code>/usr/local/etc/my.cnf</code> to accept remote database connection, so our VM can access the database on the host machine. I don&rsquo;t use MySQL for anything else, so I simply let MySQL binds to all the possible IP addresses my machine has:</p>
-<div class="highlight"><pre><span></span><span class="k">[mysqld]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[mysqld]</span>
 <span class="na">bind-address</span> <span class="o">=</span> <span class="s">*</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Note that this is not a secure configuration. To be secure, there should be a designated MySQL user with limited permission and a stricter connection setting. Restart MySQL to load the new config:</p>
-<div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">mysql</span><span class="mf">@5.6</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">mysql</span><span class="p">.</span><span class="n">server</span> <span class="n">restart</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">mysql</span><span class="mf">@5.6</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">mysql</span><span class="p">.</span><span class="n">server</span> <span class="n">restart</span>
+</code></pre></div>
 
 
 <p>Write down an (local) IP address of our host machine.</p>
 <h3 id="build-ensdb-from-the-local-mysql-database">Build EnsDB from the local MySQL database</h3>
 <p>Now we can come back to the vm and build the EnsDb v84. Run the following R script to build the EnsDb:</p>
-<div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">ensembldb</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">ensembldb</span><span class="p">)</span>
 <span class="nf">fetchTablesFromEnsembl</span><span class="p">(</span>
     <span class="m">84</span><span class="p">,</span> <span class="n">species</span> <span class="o">=</span> <span class="s">&quot;human&quot;</span><span class="p">,</span>
     <span class="n">user</span> <span class="o">=</span> <span class="s">&#39;root&#39;</span><span class="p">,</span> <span class="n">host</span> <span class="o">=</span> <span class="s">&#39;&lt;our host IP&gt;&#39;</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="m">3306</span>
 <span class="p">)</span>
 <span class="n">DBFile</span> <span class="o">&lt;-</span> <span class="nf">makeEnsemblSQLiteFromTables</span><span class="p">()</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>The EnsDb SQLite database will be availabe under the working directory. We can test the new EnsDb by:</p>
-<div class="highlight"><pre><span></span><span class="n">edb</span> <span class="o">&lt;-</span> <span class="nf">EnsDb</span><span class="p">(</span><span class="n">DBFile</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">edb</span> <span class="o">&lt;-</span> <span class="nf">EnsDb</span><span class="p">(</span><span class="n">DBFile</span><span class="p">)</span>
+</code></pre></div>
 
 
 <h3 id="remove-mysql">Remove MySQL</h3>
 <p>If there is no other need of MySQL, we can uninstall it and remove all its databases by:</p>
-<div class="highlight"><pre><span></span><span class="n">brew</span> <span class="n">remove</span> <span class="n">mysql</span><span class="mf">@5.6</span>
+<div class="highlight"><pre><span></span><code><span class="n">brew</span> <span class="n">remove</span> <span class="n">mysql</span><span class="mf">@5.6</span>
 <span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">mysql</span>
-</pre></div></section>
+</code></pre></div></section>
     <footer class="post-footer">
 <section class="share">
     <h2>Share</h2>

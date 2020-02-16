@@ -91,53 +91,53 @@
 </div>
 <h3 id="pelican">Pelican 簡介</h3>
 <p><a href="http://docs.getpelican.com/">Pelican</a> 結論來說不難理解，而且要自訂 blog theme 也不會很複雜。首先跟 Sphinx 一樣，用內建的 <code>pelican-quickstart</code> 預設值就能架好一個可以動的。目錄大概長這樣</p>
-<div class="highlight"><pre><span></span>my_blog/
-├── content/
-│   ├── blog_post_1.md
-│   └── blog_post_2.rst
-├── output/
-├── develop_server.sh*
-├── Makefile
-├── fabfile.py
-├── pelicanconf.py
-├── publishconf.py
-└── requirements.txt
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">my_blog/</span>
+<span class="err">├── content/</span>
+<span class="err">│   ├── blog_post_1.md</span>
+<span class="err">│   └── blog_post_2.rst</span>
+<span class="err">├── output/</span>
+<span class="err">├── develop_server.sh*</span>
+<span class="err">├── Makefile</span>
+<span class="err">├── fabfile.py</span>
+<span class="err">├── pelicanconf.py</span>
+<span class="err">├── publishconf.py</span>
+<span class="err">└── requirements.txt</span>
+</code></pre></div>
 
 
 <p>Blog source 都放在 content 底下，設定檔分成 local 用的 <code>pelicanconf.py</code> 以及 deploy 用的 <code>publishconf.py</code>。並且提供了像 Fabric、Make、shell script 等自動化腳本把 source 用 theme template render 成一個靜態網站，</p>
-<div class="highlight"><pre><span></span>make html
-</pre></div>
+<div class="highlight"><pre><span></span><code>make html
+</code></pre></div>
 
 
 <p>預設會輸出到 <code>output/</code>，到時候 deploy 就把這個資料夾的內容丟到 server 上。</p>
 <p>每篇文章可以用 markdown 或者 reStructuredText(rst) 來寫，概念上像這樣：</p>
-<div class="highlight"><pre><span></span>---
-Title: Hello World
-Date: 2016-01-16 18:00
-Tags: world, programming
-Category: test
-Slug: hello-world
----
+<div class="highlight"><pre><span></span><code><span class="c1">---</span>
+<span class="nl">Title</span><span class="p">:</span><span class="w"> </span><span class="n">Hello</span><span class="w"> </span><span class="n">World</span><span class="w"></span>
+<span class="nc">Date</span><span class="err">:</span><span class="w"> </span><span class="mi">2016</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">16</span><span class="w"> </span><span class="mi">18</span><span class="err">:</span><span class="mi">00</span><span class="w"></span>
+<span class="nl">Tags</span><span class="p">:</span><span class="w"> </span><span class="n">world</span><span class="p">,</span><span class="w"> </span><span class="n">programming</span><span class="w"></span>
+<span class="nl">Category</span><span class="p">:</span><span class="w"> </span><span class="n">test</span><span class="w"></span>
+<span class="nl">Slug</span><span class="p">:</span><span class="w"> </span><span class="n">hello</span><span class="o">-</span><span class="n">world</span><span class="w"></span>
+<span class="c1">---</span>
 
-Hello [World]
+<span class="n">Hello</span><span class="w"> </span><span class="o">[</span><span class="n">World</span><span class="o">]</span><span class="w"></span>
 
-[World]: https://en.wikipedia.org/wiki/World
-</pre></div>
+<span class="o">[</span><span class="n">World</span><span class="o">]</span><span class="err">:</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">en</span><span class="p">.</span><span class="n">wikipedia</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">wiki</span><span class="o">/</span><span class="n">World</span><span class="w"></span>
+</code></pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="gh">Hello World</span>
+<div class="highlight"><pre><span></span><code><span class="gh">Hello World</span>
 <span class="gh">##############</span>
 
-<span class="nc">:date:</span> <span class="nf">2016-01-16 18:00</span>
-<span class="nc">:tags:</span> <span class="nf">world, programming</span>
-<span class="nc">:category:</span> <span class="nf">test</span>
-<span class="nc">:slug:</span> <span class="nf">hello-world</span>
+<span class="nc">:date:</span> 2016-01-16 18:00
+<span class="nc">:tags:</span> world, programming
+<span class="nc">:category:</span> test
+<span class="nc">:slug:</span> hello-world
 
 Hello World_
 
 <span class="p">..</span> <span class="nt">_World:</span> https://en.wikipedia.org/wiki/World
-</pre></div>
+</code></pre></div>
 
 
 <p>這樣已經設定好了標題、分類、標籤、發布日期還有 slug（有點像文章的 ID）算很完整了。最低要求至少有標題。</p>
@@ -179,24 +179,24 @@ Hello World_
 
 <h3 id="figure-caption">Figure caption</h3>
 <p>圖的下面還蠻常會放一些圖說、reference 之類。範例上面就有。在 markdown 不容易達成這效果，因為它的語法沒這麼複雜；但 rst 本來就有支援這樣的語法：</p>
-<div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">role</span><span class="p">::</span> fig
+<div class="highlight"><pre><span></span><code><span class="p">..</span> <span class="ow">role</span><span class="p">::</span> fig
 
 <span class="p">..</span> <span class="ow">figure</span><span class="p">::</span> {filename}pics.jpg
-    <span class="nc">:align:</span> <span class="nf">center</span>
+    <span class="nc">:align:</span> center
 
     <span class="na">:fig:</span><span class="nv">`Figure 1:`</span> The figure caption.
 
     The legend consists of all elements after the caption.
-</pre></div>
+</code></pre></div>
 
 
 <p>這樣就會變成</p>
-<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;figure align-center&quot;</span><span class="p">&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;figure align-center&quot;</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">img</span> <span class="na">alt</span><span class="o">=</span><span class="s">&quot;&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;{filename}pics.jpg&quot;</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;caption&quot;</span><span class="p">&gt;&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fig&quot;</span><span class="p">&gt;</span>Figure 1:<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span> The figure caption<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;legend&quot;</span><span class="p">&gt;</span>The legend consists of all elements after the caption.<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>在 markdown 基本上就手打上面那一串 HTML，其實也還好，只是醜了一點。真的寫得很煩時再想寫 plugin 來做這件事。</p>
@@ -219,13 +219,13 @@ Hello World_
 <p>最後內文寬 738px (41em) 或 828px (46em)，實際一行最大為 612px (34em)。一行最多 34 個中文字、大約 14 個英文字（80 個字元）；程式碼一行最多只能放 74 個字元，短了一點點但還可以接受。</p>
 <p>意外的小發現，在內文變窄之後，還可以加上右側的 sidenote，像是 <a href="http://www.daveliepmann.com/tufte-css/">Tufte CSS</a> 這樣，有時會比 footnote 好用，但可能又變回內容太擠的狀態。</p>
 <p>最後是在段落前後距離調整，把標題接內文的間距變小了，但段落間的間距調大。學到了一些以前不會的 CSS 語法，像</p>
-<div class="highlight"><pre><span></span><span class="nt">p</span> <span class="o">+</span> <span class="nt">p</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><code><span class="nt">p</span> <span class="o">+</span> <span class="nt">p</span> <span class="p">{</span>
   <span class="k">margin-top</span><span class="p">:</span> <span class="mf">1.5</span><span class="kt">em</span><span class="p">;</span>
 <span class="p">}</span>
-</pre></div>
+</code></pre></div>
 
 
-<p>代表選取相鄰的 p 元素，這樣可以避免直接改 p 的 margin 讓 p 與 h*、ul、pre 等間距太寬的狀況。<strong>前端真的太神妙了。</strong></p>
+<p>代表選取相鄰的 p 元素，這樣可以避免直接改 p 的 margin 讓 p 與 h<em>、ul、pre 等間距太寬的狀況。</em><em>前端真的太神妙了。</em>*</p>
 <h3 id="edit-2015-09-23">EDIT (2015-09-23)</h3>
 <p>另外 smartypants 有時候有點煩，像是表達 13 吋時</p>
 <p class="center"><span style="font-size: 4em; line-height: 1em;">13" vs 13&#34;</span></p>

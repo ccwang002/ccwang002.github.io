@@ -49,7 +49,7 @@
         <section class="post-excerpt">
             <p>中文輸入我用嘸蝦米，在打中英文切換時候，很容易打出 <code>\x08</code> 這東西，在 vim 就會顯示成 <code>^H</code>，功能是 <kbd>Backspace</kbd>，但在一般 GUI 環境裡，可能就會因為它而把前面的字吃掉。</p>
 <p>因此今天寫了個小腳本可以把清掉當目錄底下的文字檔的 <code>^H</code>：</p>
-<div class="highlight"><pre><span></span>ag -l <span class="s1">&#39;\x08&#39;</span> <span class="p">|</span> xargs sed -i <span class="s1">&#39;&#39;</span> <span class="s1">&#39;s …</span></pre></div>
+<div class="highlight"><pre><span></span><code>ag -l <span class="s1">&#39;\x08&#39;</span> <span class="p">|</span> xargs sed -i <span class="s1">&#39;&#39;</span> <span class="s1">&#39;s …</span></code></pre></div>
         </section>
     </article>
     <article class="post">

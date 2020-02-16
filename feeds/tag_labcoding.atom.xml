@@ -55,26 +55,26 @@
 &lt;p&gt;&lt;em&gt;You should implement by yourself before looking my solution. Also I didn&amp;rsquo;t see their official solution so my solution can differ a lot from theirs.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;Intuitively, we need to implement a FASTA file parser. FASTA contains a series of sequence reads with unique ID. From a object-oriented viewpoint, we create classes &lt;code&gt;Read&lt;/code&gt; for reads and &lt;code&gt;Fasta&lt;/code&gt; for fasta files.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Read&lt;/code&gt; is easy to design and understand,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;seq&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
         &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;id&lt;/span&gt;
         &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;seq&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;seq&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Since we need to compute their GC content, add a method for &lt;code&gt;Read&lt;/code&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="c1"&gt;# ... skipped&lt;/span&gt;
     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;gc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
         &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;Compute the GC content (in %) of the read.&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
         &lt;span class="c1"&gt;# put the logic here (think of problem Q DNA)&lt;/span&gt;
         &lt;span class="n"&gt;gc_percent&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;seq&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;gc_percent&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Then we have to implement the FASTA parser, which reads all read entries and converts them through &lt;code&gt;Read&lt;/code&gt;. In real world we are dealing with &lt;code&gt;myfasta.fa&lt;/code&gt;-like files, but here the input is string.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Fasta&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Fasta&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;raw_str&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
         &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;Parse a FASTA formated string.&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
         &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;raw_str&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;raw_str&lt;/span&gt;
@@ -88,29 +88,29 @@
         &lt;span class="n"&gt;raw_lines&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;raw_str&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;splitlines&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
         &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;raw_lines&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
             &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="n"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Here I use &lt;code&gt;yield Read(...)&lt;/code&gt;, which may be unfamiliar for Python beginners. It turns &lt;code&gt;parse(self)&lt;/code&gt; function as a generator. Generator makes you focus on the incoming data. Once data is parsed and converted, the result is immediated thrown out by &lt;code&gt;yield&lt;/code&gt;. We don&amp;rsquo;t care about how to collect all the results. In our case, we catch all the results into a list by &lt;code&gt;list(...)&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;So how should we read FASTA file? A simple rule in this case is that every read consists by two continuous row. Also, the first row will always be the first read id.&lt;/p&gt;
 &lt;p&gt;All we need is read two lines at the same time. Here &lt;a href="https://docs.python.org/3/library/functions.html#zip"&gt;a Pythonic idiom&lt;/a&gt; is introduced. The following code read two non-overlapping lines,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;first_line&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;second_line&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;zip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;iter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;raw_lines&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;first_line&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;second_line&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;zip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;iter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;raw_lines&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="n"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;first_line&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;seq&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;second_line&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;By &lt;code&gt;zip(*[iter(s)]*n)&lt;/code&gt; magic, we are very close to implement a full parser. You could find a lot of &lt;a href="http://stackoverflow.com/a/2233247"&gt;explanations&lt;/a&gt; for this magic.&lt;/p&gt;
 &lt;p&gt;Read id line percedes with a &lt;code&gt;&amp;gt;&lt;/code&gt; sign, so we could use something like &lt;code&gt;first_line[1:]&lt;/code&gt; or &lt;code&gt;first_line[len('&amp;gt;'):]&lt;/code&gt; for explicity.&lt;/p&gt;
 &lt;p&gt;Then sorting the GC% of reads in a FASTA file is easy.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;fasta&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Fasta&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;...&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;fasta&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Fasta&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;...&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;sorted_reads&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;sorted&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fasta&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reads&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gc&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;  &lt;span class="c1"&gt;# note 1&lt;/span&gt;
 &lt;span class="n"&gt;top_gc_read&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sorted_reads&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  &lt;span class="c1"&gt;# note 2&lt;/span&gt;
-&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-    &lt;span class="s1"&gt;&amp;#39;&amp;gt;{0:s}&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;
-    &lt;span class="s1"&gt;&amp;#39;{1:.6f}&amp;#39;&lt;/span&gt;  &lt;span class="c1"&gt;# note 3, 4&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+    &lt;span class="s1"&gt;&amp;#39;&amp;gt;&lt;/span&gt;&lt;span class="si"&gt;{0:s}&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;
+    &lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;&lt;span class="si"&gt;{1:.6f}&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;  &lt;span class="c1"&gt;# note 3, 4&lt;/span&gt;
     &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;top_gc_read&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;top_gc_read&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gc&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;The code above completes the following steps:&lt;/p&gt;
@@ -122,7 +122,7 @@
 &lt;/ol&gt;
 &lt;p&gt;In real case FASTA can span across multiple lines, also likely the file we parse is broken. How could we modify this parser to handle these situations?&lt;/p&gt;
 &lt;h3 id="q-next"&gt;Q: (next?)&lt;/h3&gt;
-&lt;p&gt;I&amp;rsquo;m super tired now so I&amp;rsquo;ll leave the rest for you. Try those problems within yellow correct ratio range.&lt;/p&gt;</content><category term="en"></category><category term="labcoding"></category><category term="python"></category></entry><entry><title>Coding 初學指南附錄 - OSX 開發環境</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-osx-env/" rel="alternate"></link><published>2016-01-21T23:00:00-06:00</published><updated>2016-01-21T23:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-appendix-osx-env/</id><summary type="html">&lt;p&gt;我自己在 OSX 上的主觀開發環境設定&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m super tired now so I&amp;rsquo;ll leave the rest for you. Try those problems within yellow correct ratio range.&lt;/p&gt;</content><category term="Coding"></category><category term="en"></category><category term="labcoding"></category><category term="python"></category></entry><entry><title>Coding 初學指南附錄 - OSX 開發環境</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-osx-env/" rel="alternate"></link><published>2016-01-21T23:00:00-06:00</published><updated>2016-01-21T23:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-appendix-osx-env/</id><summary type="html">&lt;p&gt;我自己在 OSX 上的主觀開發環境設定&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;p&gt;以下的設定都蠻主觀的，見人見智。總之我把我的環境分享出來。&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
@@ -153,32 +153,32 @@
 &lt;h2 id="homebrew-git-and-python"&gt;Homebrew, Git and Python&lt;/h2&gt;
 &lt;p&gt;OSX 上官方沒有一個管理套件的工具，所以社群自行開發了一個叫做 Homebrew。你可以按照&lt;a href="http://djangogirlstaipei.herokuapp.com/tutorials/installation/"&gt;這篇教學&lt;/a&gt;安裝 Homebrew。&lt;/p&gt;
 &lt;p&gt;裝好了之後你可以以下指令去看它該怎麼操作&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ brew --help
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ brew --help
 $ man brew    &lt;span class="c1"&gt;# for full documentation&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;OSX 雖然內建有 git 與 python，但我們可以用 homebrew 安裝比較標準（新）的版本，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ brew install git python3
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ brew install git python3
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;如果 homebrew 有問題可以用 &lt;code&gt;brew doctor&lt;/code&gt; 來檢測。把錯誤訊息問 google 通常就能找到解決方式。&lt;/p&gt;
 &lt;h2 id="text-editors"&gt;Text Editors&lt;/h2&gt;
 &lt;p&gt;我最常用的是 Vim。OSX 有內建，但也可以用 homebrew 安裝。&lt;/p&gt;
 &lt;p&gt;除了 console based 的 Vim，OSX 上也有像 gVim 的 MacVim。一樣能用 homebrew 安裝。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ brew info macvim  &lt;span class="c1"&gt;# 看 MacVim 在安裝有什麼選項可以調整&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ brew info macvim  &lt;span class="c1"&gt;# 看 MacVim 在安裝有什麼選項可以調整&lt;/span&gt;
 $ brew install macvim --override-system-vim --custom-icons
 $ brew linkapps macvim
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;使用 Macvim 的時候除了 vim 之外，也可以呼叫 &lt;code&gt;mvim&lt;/code&gt; 打開 MacVim。&lt;/p&gt;
 &lt;h2 id="terminal-multiplexers"&gt;Terminal Multiplexers&lt;/h2&gt;
 &lt;p&gt;你有可能有聽過 screen 或者 tmux。前者在 osx 上有內建但版本很舊，在顯示顏色上會有問題，因此可以透過 homebrew 再安裝新的。但因為 screen 跟系統提供的重覆到了，所以預設不在 homebrew 的 repo 中，要先新增 repo 清單：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;brew tap homebrew/dupes
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;brew tap homebrew/dupes
 brew install screen tmux
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h2 id="git-gui"&gt;Git GUI&lt;/h2&gt;
@@ -190,7 +190,7 @@ brew install screen tmux
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="http://www.alfredapp.com/"&gt;Alfred App&lt;/a&gt;：一個延伸版的 Spotlight，查應用程式很快速，同時也可以跟 Dash 整合讓查 doc 更方便。&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://macdown.uranusjr.com/"&gt;Macdown&lt;/a&gt;：OSX 上的 markdown 編輯器。&lt;/li&gt;
-&lt;/ul&gt;</content><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－Python</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-python/" rel="alternate"></link><published>2016-01-21T22:50:00-06:00</published><updated>2016-01-21T22:50:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-python/</id><summary type="html">&lt;p&gt;選擇 Python 作為第一個深入學習的語言有很多好處。他的語法跟英文相似、用互動式的方式來操作，方便以邊試邊學、內建的標準函式庫功能豐富、第三方套件，幾乎能用 Python 完成各種事情。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jun, 2017 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+&lt;/ul&gt;</content><category term="Coding"></category><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－Python</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-python/" rel="alternate"></link><published>2016-01-21T22:50:00-06:00</published><updated>2016-01-21T22:50:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-python/</id><summary type="html">&lt;p&gt;選擇 Python 作為第一個深入學習的語言有很多好處。他的語法跟英文相似、用互動式的方式來操作，方便以邊試邊學、內建的標準函式庫功能豐富、第三方套件，幾乎能用 Python 完成各種事情。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jun, 2017 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Python 是一種物件導向、直譯式的電腦程式語言，具有近二十年的發展歷史。它包含了一組功能完備的標準庫，能夠輕鬆完成很多常見的任務。&lt;/p&gt;
 &lt;p&gt;(From &lt;a href="https://zh.wikipedia.org/wiki/Python"&gt;Wikipedia&lt;/a&gt;)&lt;/p&gt;
@@ -328,7 +328,7 @@ brew install screen tmux
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;EDIT 2016-05-22: 把 &lt;a href="https://www.ptt.cc/bbs/Python/M.1463750830.A.DA8.html"&gt;ptt 發文&lt;/a&gt; 的內容更新上來，增加一些新書和中文翻譯；調整推薦的順序。&lt;br&gt;
-EDIT 2017-06-20: 更新書籍資訊與 2/3 比較。&lt;/p&gt;</content><category term="zh"></category><category term="labcoding"></category><category term="python"></category></entry><entry><title>Coding 初學指南－版本控制</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/" rel="alternate"></link><published>2016-01-21T22:40:00-06:00</published><updated>2016-01-21T22:40:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-version-control/</id><summary type="html">&lt;p&gt;所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code 搞炸掉的時候，還能回到先前有保存的狀態。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+EDIT 2017-06-20: 更新書籍資訊與 2/3 比較。&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="labcoding"></category><category term="python"></category></entry><entry><title>Coding 初學指南－版本控制</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/" rel="alternate"></link><published>2016-01-21T22:40:00-06:00</published><updated>2016-01-21T22:40:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-version-control/</id><summary type="html">&lt;p&gt;所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code 搞炸掉的時候，還能回到先前有保存的狀態。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;p&gt;所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code 搞炸掉的時候，還能回到先前有保存的狀態。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;h3 id="_1"&gt;為什麼使用版本控制？&lt;/h3&gt;
@@ -411,24 +411,24 @@ EDIT 2017-06-20: 更新書籍資訊與 2/3 比較。&lt;/p&gt;</content><categor
 &lt;li&gt;善用條列式說明&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;以下是範例（From &lt;a href="http://git-scm.com/book/ch5-2.html"&gt;Git Book&lt;/a&gt;）：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Short (50 chars or less) summary of changes
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;Short&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt; &lt;span class="n"&gt;chars&lt;/span&gt; &lt;span class="k"&gt;or&lt;/span&gt; &lt;span class="k"&gt;less&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;summary&lt;/span&gt; &lt;span class="k"&gt;of&lt;/span&gt; &lt;span class="n"&gt;changes&lt;/span&gt;
 
-More detailed explanatory text, if necessary.  Wrap it to
-about 72 characters or so.  In some contexts, the first
-line is treated as the subject of an email and the rest of
-the text as the body.  The blank line separating the
-summary from the body is critical (unless you omit the body
-entirely); tools like rebase can get confused if you run
-the two together.
+&lt;span class="k"&gt;More&lt;/span&gt; &lt;span class="n"&gt;detailed&lt;/span&gt; &lt;span class="n"&gt;explanatory&lt;/span&gt; &lt;span class="nb"&gt;text&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;necessary&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;  &lt;span class="n"&gt;Wrap&lt;/span&gt; &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt;
+&lt;span class="n"&gt;about&lt;/span&gt; &lt;span class="mi"&gt;72&lt;/span&gt; &lt;span class="n"&gt;characters&lt;/span&gt; &lt;span class="k"&gt;or&lt;/span&gt; &lt;span class="n"&gt;so&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;  &lt;span class="k"&gt;In&lt;/span&gt; &lt;span class="k"&gt;some&lt;/span&gt; &lt;span class="n"&gt;contexts&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="k"&gt;first&lt;/span&gt;
+&lt;span class="n"&gt;line&lt;/span&gt; &lt;span class="k"&gt;is&lt;/span&gt; &lt;span class="n"&gt;treated&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;subject&lt;/span&gt; &lt;span class="k"&gt;of&lt;/span&gt; &lt;span class="n"&gt;an&lt;/span&gt; &lt;span class="n"&gt;email&lt;/span&gt; &lt;span class="k"&gt;and&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;rest&lt;/span&gt; &lt;span class="k"&gt;of&lt;/span&gt;
+&lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="nb"&gt;text&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;body&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;  &lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;blank&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt; &lt;span class="n"&gt;separating&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt;
+&lt;span class="n"&gt;summary&lt;/span&gt; &lt;span class="k"&gt;from&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;body&lt;/span&gt; &lt;span class="k"&gt;is&lt;/span&gt; &lt;span class="n"&gt;critical&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;unless&lt;/span&gt; &lt;span class="n"&gt;you&lt;/span&gt; &lt;span class="n"&gt;omit&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;body&lt;/span&gt;
+&lt;span class="n"&gt;entirely&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="n"&gt;tools&lt;/span&gt; &lt;span class="k"&gt;like&lt;/span&gt; &lt;span class="n"&gt;rebase&lt;/span&gt; &lt;span class="n"&gt;can&lt;/span&gt; &lt;span class="k"&gt;get&lt;/span&gt; &lt;span class="n"&gt;confused&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;you&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt;
+&lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;two&lt;/span&gt; &lt;span class="n"&gt;together&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
 
-Further paragraphs come after blank lines.
+&lt;span class="n"&gt;Further&lt;/span&gt; &lt;span class="n"&gt;paragraphs&lt;/span&gt; &lt;span class="n"&gt;come&lt;/span&gt; &lt;span class="k"&gt;after&lt;/span&gt; &lt;span class="n"&gt;blank&lt;/span&gt; &lt;span class="n"&gt;lines&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
 
-  - Bullet points are okay, too
+  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Bullet&lt;/span&gt; &lt;span class="n"&gt;points&lt;/span&gt; &lt;span class="k"&gt;are&lt;/span&gt; &lt;span class="n"&gt;okay&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;too&lt;/span&gt;
 
-  - Typically a hyphen or asterisk is used for the bullet,
-    preceded by a single space, with blank lines in
-    between, but conventions vary here
-&lt;/pre&gt;&lt;/div&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Typically&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="n"&gt;hyphen&lt;/span&gt; &lt;span class="k"&gt;or&lt;/span&gt; &lt;span class="n"&gt;asterisk&lt;/span&gt; &lt;span class="k"&gt;is&lt;/span&gt; &lt;span class="n"&gt;used&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;bullet&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;preceded&lt;/span&gt; &lt;span class="k"&gt;by&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="n"&gt;single&lt;/span&gt; &lt;span class="k"&gt;space&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;blank&lt;/span&gt; &lt;span class="n"&gt;lines&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt;
+    &lt;span class="k"&gt;between&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;but&lt;/span&gt; &lt;span class="n"&gt;conventions&lt;/span&gt; &lt;span class="n"&gt;vary&lt;/span&gt; &lt;span class="n"&gt;here&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;ps 你可以找到很多有趣的 commit message。例如：&lt;a href="http://www.commitlogsfromlastnight.com/"&gt;抱怨&lt;/a&gt;。&lt;/p&gt;
@@ -506,7 +506,7 @@ Further paragraphs come after blank lines.
 &lt;p&gt;所謂的專案目錄就是下 &lt;code&gt;git init&lt;/code&gt; 指令的目錄。&amp;#160;&lt;a class="footnote-backref" href="#fnref:註1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－文字編輯</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/" rel="alternate"></link><published>2016-01-21T22:30:00-06:00</published><updated>2016-01-21T22:30:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-text-editing/</id><summary type="html">&lt;p&gt;這個章節會帶大家認識一個很簡單的純文字格式 Markdown，方便大家整理筆記。同時希望大家學會一個 terminal based 的文字編輯器，方便往後在 server 環境底下的操作。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－文字編輯</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/" rel="alternate"></link><published>2016-01-21T22:30:00-06:00</published><updated>2016-01-21T22:30:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-text-editing/</id><summary type="html">&lt;p&gt;這個章節會帶大家認識一個很簡單的純文字格式 Markdown，方便大家整理筆記。同時希望大家學會一個 terminal based 的文字編輯器，方便往後在 server 環境底下的操作。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;p&gt;這個章節會帶大家認識一個很簡單的純文字格式 Markdown，方便大家整理筆記。同時希望大家學會一個 terminal based 的文字編輯器，方便往後在 server 環境底下的操作。&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
@@ -571,9 +571,9 @@ Further paragraphs come after blank lines.
 &lt;/ol&gt;
 &lt;h1 id="text-editor"&gt;Text Editor&lt;/h1&gt;
 &lt;p&gt;在 Linux 的世界很多都是純文字檔案，再加上一些規定的語法成為新的格式。前面的 markdown 就是個例子。甚至許多可以執行的程式都只是個腳本檔，能用一般的編輯器（editor）打開就能讀懂。你可以試試&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# cd is a shell script&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# cd is a shell script&lt;/span&gt;
 nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;       &lt;span class="c1"&gt;# thanks TP&amp;#39;s idea&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;常見的 editor 有：nano、vi、vim、emacs。到底什麼是最好用的文字編輯器，這是一場永無止盡的戰爭，近年來又有 Notepad++(GUI)、Sublime Text (GUI)、Neovim 的加入，這話題將不會有結論。對初學者而言，至少學會一個 editor 是必要的。&lt;/p&gt;
@@ -688,7 +688,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;Perl 的 regex 語法又稱為 &lt;strong&gt;pcre&lt;/strong&gt; style，常被其他工具使用。例如：php&amp;#160;&lt;a class="footnote-backref" href="#fnref:註3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－Linux</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-linux/" rel="alternate"></link><published>2016-01-21T21:30:00-06:00</published><updated>2016-01-21T21:30:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-linux/</id><summary type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－Linux</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-linux/" rel="alternate"></link><published>2016-01-21T21:30:00-06:00</published><updated>2016-01-21T21:30:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-linux/</id><summary type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;p&gt;學習使用 Linux 是第一個比較大的障礙，因為會在短時間接觸到非常多新的東西。後面的東西多少都與 Linux 相關，而 Linux 難的部份在開始使用 terminal 來操作「整台電腦」，對很習慣使用視窗介面的人會覺得很不直覺。好在近年幾個主流的 Linux Distribution …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;p&gt;學習使用 Linux 是第一個比較大的障礙，因為會在短時間接觸到非常多新的東西。後面的東西多少都與 Linux 相關，而 Linux 難的部份在開始使用 terminal 來操作「整台電腦」，對很習慣使用視窗介面的人會覺得很不直覺。好在近年幾個主流的 Linux Distribution 都有很好的圖形介面（正確稱 Desktop Environment），所以一開始能漸近地適應 terminal 操作。&lt;/p&gt;
 &lt;blockquote&gt;
@@ -762,8 +762,8 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;圖形化介面（GUI），除了使用者的應用程式外，還需要系統輔助、管理等核心套件。一系列的 GUI 套件就稱之為桌面環境。&lt;/p&gt;
 &lt;p&gt;Windows、OSX 在安裝系統時都會自動安裝， 即桌面環境只有一種選擇。但在 Linux 上，GUI 的安裝是選擇性的，系統能在只有單純的 terminal 介面便能完整使用（例如選擇安裝 Ubuntu Server 時），不少 server 為了效能、安全性的考量都不會裝桌面環境。&lt;/p&gt;
 &lt;p&gt;對 Linux 來說桌面環境是能之後再選擇安裝上去的，而且還有「不同口味」可以選擇，使用者也可以自由的移除它們（但很有可能會炸掉），常見就有 GNOME、KDE、XFCE、LXDE&lt;sup id="fnref:註4"&gt;&lt;a class="footnote-ref" href="#fn:註4"&gt;3&lt;/a&gt;&lt;/sup&gt; 幾種系統能使用。例如選擇安裝 Ubuntu Server 後，想要再加上 GNOME 列圖形化介面時，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt-get install ubuntu-gnome-desktop
-&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo apt-get install ubuntu-gnome-desktop
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;這邊不會去細講這些實作方式的不同。簡單而言，GNOME 最流行。XFCE 使用的系統資源較少，在實驗室上的 server 常會裝這個。在 Ubuntu 上，預設是用 Unity，它是從 GNOME 沿伸出來的。&lt;/p&gt;
@@ -985,7 +985,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;APT 的使用教學可以參考 &lt;a href="https://help.ubuntu.com/community/AptGet/Howto"&gt;Ubuntu 官網&lt;/a&gt;、&lt;a href="http://blog.longwin.com.tw/2005/05/use_apt/"&gt;網路上大大的筆記&lt;/a&gt;。&amp;#160;&lt;a class="footnote-backref" href="#fnref:‡" title="Jump back to footnote 7 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－總章</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-intro/" rel="alternate"></link><published>2016-01-21T21:00:00-06:00</published><updated>2016-01-21T21:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-intro/</id><summary type="html">&lt;p&gt;給實驗室新生，了解當今軟體開發流程及基本技能的背景知識與初步技能樹。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－總章</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-intro/" rel="alternate"></link><published>2016-01-21T21:00:00-06:00</published><updated>2016-01-21T21:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-intro/</id><summary type="html">&lt;p&gt;給實驗室新生，了解當今軟體開發流程及基本技能的背景知識與初步技能樹。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016&lt;/p&gt;
 &lt;p&gt;（如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;p&gt;雖然實驗室不是正規寫程式的地方，多數的人也沒把寫程式當成一回事。不過隨著要分析的資料、樣本數越來越多，多到自己電腦跑不動，server 也要跑很久的時候，就會顯示出程式的重要性。另一方面，現在的研究講求 &lt;em&gt;reproducibility&lt;/em&gt;，如果要讓自己的分析在一年之後也能重現，或者讓世界上其他的研究者也能重現的話，需要基本的程式技巧。&lt;/p&gt;
 &lt;p&gt;這一系列的文章，目標讓實驗室的新生，不論是不是 CS 背景，都能了解當今軟體開發流程及基本技能。軟體開發需要一些背景知識，才能與開發者正常交流。這些背景知識包括：&lt;/p&gt;
@@ -1058,4 +1058,4 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;Visual Studio 自 2013 後有 &lt;a href="https://www.visualstudio.com/en-us/news/vs2013-community-vs.aspx"&gt;Community&lt;/a&gt; 版本，免費但內容與 Professional 版本大致無異，所以未來要有 C/C++ 32/64bit Compiler 會更容易。但多數的開源軟體還沒跟進，所以很多還在用舊的 VS 版本（就要付費），這個現象還會持續一陣。學校都有買。&amp;#160;&lt;a class="footnote-backref" href="#fnref:註1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="zh"></category><category term="labcoding"></category></entry></feed>
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="labcoding"></category></entry></feed>

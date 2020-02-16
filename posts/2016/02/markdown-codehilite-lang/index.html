@@ -68,18 +68,18 @@
     <section class="post-content"><p>I used <a href="http://docs.getpelican.com/">Pelican</a> and its <a href="https://pythonhosted.org/Markdown/">Markdown</a> plugin to render blog post. </p>
 <p>Recently I was playing with the <a href="https://docs.python.org/">Python Official Documentation</a>, which has a decent code syntax highlighter powered by <a href="http://pygments.org/">Pygments</a>. </p>
 <p>What&rsquo;s more, the output of code examples can be toggled. That is, a code example:</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hello World&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hello World&#39;</span><span class="p">)</span>
 <span class="n">Hello</span> <span class="n">World</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="mi">6</span> <span class="o">*</span> <span class="mi">7</span>
 <span class="mi">42</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>can be toggled to:</p>
-<div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hello World&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hello World&#39;</span><span class="p">)</span>
 
 <span class="mi">6</span> <span class="o">*</span> <span class="mi">7</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>which is very convenient for code copy-pasting.</p>
@@ -88,28 +88,28 @@
 <p>After I fixed the copybutton.js, I wished to add this functionality to my blog. </p>
 <p>Code highlighting in Pelican markdown files is handled by its <a href="https://pythonhosted.org/Markdown/extensions/code_hilite.html">CodeHilite</a> extension. To my surprise, I found CodeHilite does not express the language name specified for each code block.</p>
 <p>What I expected was</p>
-<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;highlight-python3&quot;</span><span class="p">&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;highlight-python3&quot;</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;highlight&quot;</span><span class="p">&gt;</span>
         <span class="p">&lt;</span><span class="nt">pre</span><span class="p">&gt;</span>
             <span class="c">&lt;!-- ... --&gt;</span>
         <span class="p">&lt;/</span><span class="nt">pre</span><span class="p">&gt;</span>
     <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>but the actual output was</p>
-<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;highlight&quot;</span><span class="p">&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;highlight&quot;</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">pre</span><span class="p">&gt;</span>
         <span class="c">&lt;!-- ... --&gt;</span>
     <span class="p">&lt;/</span><span class="nt">pre</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>So no way to find the language name the code block used, nor the lexer aliases Pygments guessed when no language name was specified.</p>
 <p>A quick dig into the <a href="https://github.com/waylan/Python-Markdown/blob/master/markdown/extensions/codehilite.py#L106-L123">source code</a> showed that it is relatively easy to fix. Here is the diff:</p>
-<div class="highlight"><pre><span></span><span class="gh">diff --git a/extensions/codehilite.py b/extensions/codehilite_updated.py</span>
+<div class="highlight"><pre><span></span><code><span class="gh">diff --git a/extensions/codehilite.py b/extensions/codehilite_updated.py</span>
 <span class="gh">index 0657c37..4fad7c5 100644</span>
 <span class="gd">--- a/extensions/codehilite.py</span>
 <span class="gi">+++ b/extensions/codehilite_updated.py</span>
@@ -155,7 +155,7 @@
          else:
              # just escape and build markup usable by JS highlighting libs
              txt = self.src.replace(&#39;&amp;&#39;, &#39;&amp;amp;&#39;)
-</pre></div>
+</code></pre></div>
 
 
 <p>I&rsquo;m happy with the patched codehilite output. I am now able to give code toggle function to specific code languages. </p>
