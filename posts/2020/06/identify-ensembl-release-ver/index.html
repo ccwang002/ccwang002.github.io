@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="author" content="Liang-Bo Wang" />
+<meta name="description" content="I often received data that was annotated by an unknown Ensembl release/version. It could be the Ensembl IDs in a gene expression matrix …" />
+<meta name="keywords" content="en">
+	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<title>Identify the Ensembl release from versioned IDs</title>
+
+	<!-- og -->
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Liang-Bo Wang's Blog"/>
+<meta property="og:title" content="Identify the Ensembl release from versioned IDs"/>
+<meta property="og:description" content="I often received data that was annotated by an unknown Ensembl release/version. It could be the Ensembl IDs in a gene expression matrix …"/>
+<meta property="og:locale" content=""/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2020/06/identify-ensembl-release-ver/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2020-06-08 00:00:00-05:00"/>
+<meta property="article:modified_time" content="2020-06-08 00:00:00-05:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
+<meta property="article:section" content="Bioinfo"/>
+<meta property="article:tag" content="en"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Identify the Ensembl release from versioned IDs">
+<meta name="twitter:description" content="I often received data that was annotated by an unknown Ensembl release/version. It could be the Ensembl IDs in a gene expression matrix …">
+
+	<!-- Feeds -->
+	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
+		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
+
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?bd17f8d9" rel="stylesheet" />
+</head>
+
+<body class="post-template">
+	<header class="site-head">
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang-Bo Wang's Blog</a></h1>
+		<h2 class="blog-description">
+			<a href="https://blog.liang2.tw/about-me/">About</a> |
+			<a href="https://blog.liang2.tw/talks/">Talks</a> |
+			<a href="https://blog.liang2.tw/archives.html">Archives</a>
+		</h2>
+	</header>
+	<main id="content" class="content" role="main">
+<article class="post en-post">
+    <span class="post-meta">
+        <time datetime="Jun 08, 2020">Jun 08, 2020</time>
+        in <a href="https://blog.liang2.tw/category/bioinfo/">Bioinfo</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2020/06/identify-ensembl-release-ver/" rel="bookmark" title="Permalink to Identify the Ensembl release from versioned IDs">Identify the Ensembl release from versioned IDs</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/en/">en</a>
+    </span>
+    <section class="post-content"><p>I often received data that was annotated by an unknown Ensembl release/version.</p>
+<p>It could be the Ensembl IDs in a gene expression matrix, a VEP annotated MAF file, or even a customized GTF. The documentation of those files wasn&rsquo;t always clear about the annotation in use. However, it&rsquo;s sometimes necessary to know the exact Ensembl release. Say, I want to reproduce the result, or to pass the output to the extended downstream workflow. While the tiny difference between adjacent releases is only annoying, <a href="https://betatark.ensembl.org/web/statistics/">thousands of changes per release</a> add up quickly to be obvious inconsistency when using releases across different years.</p>
+<p>It&rsquo;s possible to pinpoint the Ensembl release using the ID versions. For example, ENSG00000119772.15 (DNMT3A) only existed in Ensembl releases 79 and 80; ENST00000275493.7 (EGFR) remains alive since release 96. By checking the ID history on <a href="https://ensembl.org">https://ensembl.org</a>, I can identify the possible Ensembl releases my data uses. A handy URL shortcut to accompany the investigation is <code>ensembl.org/id/&lt;ensembl_id&gt;</code>, which can redirect to the different page tabs depends on the ID types (e.g., ENSG to genes and ENST to transcript).</p>
+<div class="figure">
+  <img src="https://blog.liang2.tw/posts/2020/06/identify-ensembl-release-ver/pics/ensembl_r100_dnmt3A_id_history.png">
+  <p class="caption">ID history of ENSG00000119772 (DNMT3A) (<a href="https://www.ensembl.org/Homo_sapiens/Gene/Idhistory?g=ENSG00000119772">source</a>)</p>
+</div>
+
+<p>With <a href="https://betatark.ensembl.org/">Ensembl Tark</a>, I wrote <a href="https://gist.github.com/ccwang002/829a5420a47adfb3be597ed3ea8a0a29">a Python script</a> to automate the query. Given a list of versioned Ensembl IDs<sup id="fnref:versioned-id"><a class="footnote-ref" href="#fn:versioned-id">1</a></sup>, the script will identify the possible Ensembl releases. The IDs can be genes, transcripts, or proteins. Based on my testing, the script can identify Ensembl release range with less than 30 IDs.</p>
+<p>Here is an example list of IDs:</p>
+<div class="highlight"><pre><span></span><code>ENST00000426449.4
+ENST00000434817.4
+ENSP00000222254.6
+ENSP00000477864.1
+ENSG00000170266.14
+ENSG00000238009.5
+ENSG00000173705.7
+</code></pre></div>
+
+
+<p>And the output of the script:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$</span> python check_possible_ensembl_releases.py ensembl_ids.list
+<span class="go">[2020-06-09 13:00:48][INFO   ] Querying for 7 Ensembl IDs</span>
+<span class="go">[2020-06-09 13:00:49][INFO   ] Only Ensembl releases 75–99 are supported by Ensembl Tark. IDs outside the range may not be identified.</span>
+<span class="go">ENSP00000477864.1 in Ensembl releases 76–99</span>
+<span class="go">ENSG00000173705.7 in Ensembl releases 79–80</span>
+<span class="go">ENSG00000238009.5 in Ensembl releases 79–80</span>
+<span class="go">ENST00000434817.4 in Ensembl releases 79–80</span>
+<span class="go">ENSP00000222254.6 in Ensembl releases 75–99</span>
+<span class="go">ENSG00000170266.14 in Ensembl releases 79–80</span>
+<span class="go">ENST00000426449.4 in Ensembl releases 79–80</span>
+<span class="go">Possible Ensembl releases are: 79, 80</span>
+</code></pre></div>
+
+
+<p>In this case, Ensembl releases 79 and 80 have the same gene model.</p>
+<p>The script basically uses Tark&rsquo;s REST APIs to get the release range for each ID, and find the intersection of all the ranges. It runs on Python 3.8 and uses aiohttp 3.6 for concurrent API calls. Tark currently has records from release 75 (2014) to 99 (2020), so this approach will fail if the IDs are too old (or too new, but I think it will include the latest r100 soon). I limited the maximal concurrent calls ≤ 5 so I don&rsquo;t overwhelm the Tark service. </p>
+<p><a href="https://betatark.ensembl.org/">Tark</a> is a great website/service that compares the transcripts between different versions or even different sources (Ensembl vs RefSeq)! It can tell you what exon or UTR was changed, something quick tricky to set up because one has to import databases for every Ensembl release and even RefSeq releases. Tark is currently in beta, but I hope it can be stable and remained updated.</p>
+<p>And this is just another point that it&rsquo;s usually a good idea to include versioned IDs in the data.</p>
+<p>Now I can go back digging the history of my data :)</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:versioned-id">
+<p>It&rsquo;s probably possible to apply the same approach without Ensembl ID version (e.g., ENSG00000119772), but one might need a lot of them because IDs are much more stable.&#160;<a class="footnote-backref" href="#fnref:versioned-id" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div></section>
+    <footer class="post-footer">
+    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2020/06/identify-ensembl-release-ver/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2020/06/identify-ensembl-release-ver/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
+    <footer>
+</article>
+	</main>
+	<footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags.html">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/lbwang2">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">
+				Built using <a href="https://getpelican.com/">Pelican</a>.
+				Powered by the <a href="https://kura.github.io/hauntr/">Hauntr</a> theme.
+			</section>
+		</div>
+	</footer>
+</body>
+</html>

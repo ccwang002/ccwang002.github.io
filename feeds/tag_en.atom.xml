@@ -1,5 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - en</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_en.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2019-04-20T00:00:00-05:00</updated><entry><title>Generate Venn diagrams easily</title><link href="https://blog.liang2.tw/posts/2019/04/generate-venn-svg/" rel="alternate"></link><published>2019-04-20T00:00:00-05:00</published><updated>2019-04-20T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2019-04-20:/posts/2019/04/generate-venn-svg/</id><summary type="html">&lt;p&gt;I find myself generating Venn diagrams quite often.  While there are many available Venn diagram plotting libraries available, they don&amp;rsquo;t always fit my …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I find myself generating Venn diagrams quite often.  While there are many available Venn diagram plotting libraries available, they don&amp;rsquo;t always fit my need.  My inputs of the diagram are the set sizes rather than lists of observations.  And after drawing the Venn diagram, I often edit them to integrate with other figures, so I prefer a vector format like SVG, which not all the libraries offer.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - en</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_en.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2020-06-08T00:00:00-05:00</updated><entry><title>Identify the Ensembl release from versioned IDs</title><link href="https://blog.liang2.tw/posts/2020/06/identify-ensembl-release-ver/" rel="alternate"></link><published>2020-06-08T00:00:00-05:00</published><updated>2020-06-08T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2020-06-08:/posts/2020/06/identify-ensembl-release-ver/</id><summary type="html">&lt;p&gt;I often received data that was annotated by an unknown Ensembl release/version.&lt;/p&gt;
+&lt;p&gt;It could be the Ensembl IDs in a gene expression matrix …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I often received data that was annotated by an unknown Ensembl release/version.&lt;/p&gt;
+&lt;p&gt;It could be the Ensembl IDs in a gene expression matrix, a VEP annotated MAF file, or even a customized GTF. The documentation of those files wasn&amp;rsquo;t always clear about the annotation in use. However, it&amp;rsquo;s sometimes necessary to know the exact Ensembl release. Say, I want to reproduce the result, or to pass the output to the extended downstream workflow. While the tiny difference between adjacent releases is only annoying, &lt;a href="https://betatark.ensembl.org/web/statistics/"&gt;thousands of changes per release&lt;/a&gt; add up quickly to be obvious inconsistency when using releases across different years.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s possible to pinpoint the Ensembl release using the ID versions. For example, ENSG00000119772.15 (DNMT3A) only existed in Ensembl releases 79 and 80; ENST00000275493.7 (EGFR) remains alive since release 96. By checking the ID history on &lt;a href="https://ensembl.org"&gt;https://ensembl.org&lt;/a&gt;, I can identify the possible Ensembl releases my data uses. A handy URL shortcut to accompany the investigation is &lt;code&gt;ensembl.org/id/&amp;lt;ensembl_id&amp;gt;&lt;/code&gt;, which can redirect to the different page tabs depends on the ID types (e.g., ENSG to genes and ENST to transcript).&lt;/p&gt;
+&lt;div class="figure"&gt;
+  &lt;img src="https://blog.liang2.tw/posts/2020/06/identify-ensembl-release-ver/pics/ensembl_r100_dnmt3A_id_history.png"&gt;
+  &lt;p class="caption"&gt;ID history of ENSG00000119772 (DNMT3A) (&lt;a href="https://www.ensembl.org/Homo_sapiens/Gene/Idhistory?g=ENSG00000119772"&gt;source&lt;/a&gt;)&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;With &lt;a href="https://betatark.ensembl.org/"&gt;Ensembl Tark&lt;/a&gt;, I wrote &lt;a href="https://gist.github.com/ccwang002/829a5420a47adfb3be597ed3ea8a0a29"&gt;a Python script&lt;/a&gt; to automate the query. Given a list of versioned Ensembl IDs&lt;sup id="fnref:versioned-id"&gt;&lt;a class="footnote-ref" href="#fn:versioned-id"&gt;1&lt;/a&gt;&lt;/sup&gt;, the script will identify the possible Ensembl releases. The IDs can be genes, transcripts, or proteins. Based on my testing, the script can identify Ensembl release range with less than 30 IDs.&lt;/p&gt;
+&lt;p&gt;Here is an example list of IDs:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ENST00000426449.4
+ENST00000434817.4
+ENSP00000222254.6
+ENSP00000477864.1
+ENSG00000170266.14
+ENSG00000238009.5
+ENSG00000173705.7
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And the output of the script:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python check_possible_ensembl_releases.py ensembl_ids.list
+&lt;span class="go"&gt;[2020-06-09 13:00:48][INFO   ] Querying for 7 Ensembl IDs&lt;/span&gt;
+&lt;span class="go"&gt;[2020-06-09 13:00:49][INFO   ] Only Ensembl releases 75–99 are supported by Ensembl Tark. IDs outside the range may not be identified.&lt;/span&gt;
+&lt;span class="go"&gt;ENSP00000477864.1 in Ensembl releases 76–99&lt;/span&gt;
+&lt;span class="go"&gt;ENSG00000173705.7 in Ensembl releases 79–80&lt;/span&gt;
+&lt;span class="go"&gt;ENSG00000238009.5 in Ensembl releases 79–80&lt;/span&gt;
+&lt;span class="go"&gt;ENST00000434817.4 in Ensembl releases 79–80&lt;/span&gt;
+&lt;span class="go"&gt;ENSP00000222254.6 in Ensembl releases 75–99&lt;/span&gt;
+&lt;span class="go"&gt;ENSG00000170266.14 in Ensembl releases 79–80&lt;/span&gt;
+&lt;span class="go"&gt;ENST00000426449.4 in Ensembl releases 79–80&lt;/span&gt;
+&lt;span class="go"&gt;Possible Ensembl releases are: 79, 80&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In this case, Ensembl releases 79 and 80 have the same gene model.&lt;/p&gt;
+&lt;p&gt;The script basically uses Tark&amp;rsquo;s REST APIs to get the release range for each ID, and find the intersection of all the ranges. It runs on Python 3.8 and uses aiohttp 3.6 for concurrent API calls. Tark currently has records from release 75 (2014) to 99 (2020), so this approach will fail if the IDs are too old (or too new, but I think it will include the latest r100 soon). I limited the maximal concurrent calls ≤ 5 so I don&amp;rsquo;t overwhelm the Tark service. &lt;/p&gt;
+&lt;p&gt;&lt;a href="https://betatark.ensembl.org/"&gt;Tark&lt;/a&gt; is a great website/service that compares the transcripts between different versions or even different sources (Ensembl vs RefSeq)! It can tell you what exon or UTR was changed, something quick tricky to set up because one has to import databases for every Ensembl release and even RefSeq releases. Tark is currently in beta, but I hope it can be stable and remained updated.&lt;/p&gt;
+&lt;p&gt;And this is just another point that it&amp;rsquo;s usually a good idea to include versioned IDs in the data.&lt;/p&gt;
+&lt;p&gt;Now I can go back digging the history of my data :)&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn:versioned-id"&gt;
+&lt;p&gt;It&amp;rsquo;s probably possible to apply the same approach without Ensembl ID version (e.g., ENSG00000119772), but one might need a lot of them because IDs are much more stable.&amp;#160;&lt;a class="footnote-backref" href="#fnref:versioned-id" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="Bioinfo"></category><category term="en"></category></entry><entry><title>Generate Venn diagrams easily</title><link href="https://blog.liang2.tw/posts/2019/04/generate-venn-svg/" rel="alternate"></link><published>2019-04-20T00:00:00-05:00</published><updated>2019-04-20T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2019-04-20:/posts/2019/04/generate-venn-svg/</id><summary type="html">&lt;p&gt;I find myself generating Venn diagrams quite often.  While there are many available Venn diagram plotting libraries available, they don&amp;rsquo;t always fit my …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I find myself generating Venn diagrams quite often.  While there are many available Venn diagram plotting libraries available, they don&amp;rsquo;t always fit my need.  My inputs of the diagram are the set sizes rather than lists of observations.  And after drawing the Venn diagram, I often edit them to integrate with other figures, so I prefer a vector format like SVG, which not all the libraries offer.&lt;/p&gt;
 &lt;p&gt;So I made &lt;a href="https://observablehq.com/@ccwang002/simple-venn-diagram-generator"&gt;an Observable Notebook&lt;/a&gt; that allows me to interactively modify the Venn diagram, and download the output as a SVG file. It&amp;rsquo;s built on the &lt;a href="https://github.com/benfred/venn.js/"&gt;venn.js&lt;/a&gt; library, which does all the heavy lifting.&lt;/p&gt;
 &lt;p&gt;Here is the screenshot of the diagram drawing interface (see it live on &lt;a href="https://observablehq.com/@ccwang002/simple-venn-diagram-generator"&gt;the notebook&lt;/a&gt;):&lt;/p&gt;
 &lt;div class="figure"&gt;
