@@ -63,8 +63,7 @@ mark { background: #ff0; color: #000; }
 code, kbd, pre,
 samp { font-family: FiraMono, monospace, serif; font-size: 1em; }
 pre {
-    font-size: 0.9em;
-    /* white-space: pre-wrap; */
+    font-size: 0.8em;
     overflow-x: auto;
 }
 
@@ -361,10 +360,10 @@ pre {
     border-left: #9EABB3 0.4em solid;
 }
 
-pre code, tt {
+pre code,
+pre tt {
     font-size: inherit;
-    white-space: -moz-pre-wrap;
-    white-space: pre-wrap;
+    white-space: pre;
     background: transparent;
     border: none;
     padding: 0;
