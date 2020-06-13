@@ -8,7 +8,8 @@ My static blog site using [Pelican] and a modified theme based on Kura's [Hauntr
 ### Setup
 For example, create a conda environment `blog` for the dependencies:
 
-    conda create -n blog python=3.7
+    # nodejs for KaTeX server-side render by pelican-katex
+    conda create -n blog python=3.8 nodejs
     conda activate blog
     pip install -r requirements.txt
 
