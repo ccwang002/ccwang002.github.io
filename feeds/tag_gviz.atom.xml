@@ -96,7 +96,7 @@
 &lt;span class="n"&gt;st&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;41176e3&lt;/span&gt;
 &lt;span class="n"&gt;en&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;41324e3&lt;/span&gt;
 
-&lt;span class="n"&gt;bedgraph_dt_one_chr&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;bedgraph_dt[chromosome&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;thechr]&lt;/span&gt;
+&lt;span class="n"&gt;bedgraph_dt_one_chr&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;bedgraph_dt&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;chromosome&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;thechr&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="n"&gt;dtrack&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;DataTrack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;range&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;bedgraph_dt_one_chr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;type&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;a&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -243,7 +243,7 @@ en &amp;lt;- max(end(BRCA1_txs)) + 1e3
 &lt;p&gt;Another way to obtain the genomic range is getting the exact range of CDS (e.g. exons and UTRs) for each transcript via &lt;code&gt;exonsBy()&lt;/code&gt;. &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;BRCA1_cds_by_tx&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;exonsBy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;Homo.sapiens&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;by&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;tx&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;use.names&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;
-&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;[BRCA1_txnames]&lt;/span&gt;
+&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="n"&gt;BRCA1_txnames&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -328,9 +328,9 @@ en &amp;lt;- max(end(BRCA1_txs)) + 1e3
 
 
 &lt;p&gt;So we filter out unrelated ranges by checking if the value of metadata column &lt;code&gt;transcript&lt;/code&gt; is one of &lt;em&gt;BRCA1&lt;/em&gt;&amp;lsquo;s transcript IDs,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;BRCA_only_range&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;grtrack&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;range[&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;BRCA_only_range&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;grtrack&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;range&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
     &lt;span class="nf"&gt;mcols&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;grtrack&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;range&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;transcript&lt;/span&gt; &lt;span class="o"&gt;%in%&lt;/span&gt; &lt;span class="n"&gt;BRCA1_txnames&lt;/span&gt;
-&lt;span class="n"&gt;]&lt;/span&gt;
+&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="n"&gt;grtrack&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;range&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;BRCA_only_range&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 

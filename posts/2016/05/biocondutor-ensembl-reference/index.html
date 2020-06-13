@@ -35,7 +35,9 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link href="https://blog.liang2.tw/theme/css/haunter.css?5138a380" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.11.1/katex.min.css">
 </head>
 
 <body class="post-template">
@@ -176,7 +178,7 @@
 <p>Here comes a small pitfall for Ensembl annotation. We cannot sufficiently map Ensembl&rsquo;s gene ID to its transcript ID,</p>
 <div class="highlight"><pre><span></span><code><span class="nf">select</span><span class="p">(</span>
     <span class="n">human</span><span class="p">,</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="n">mapk_gene_family_info</span><span class="o">$</span><span class="n">ENSEMBL[[1]]</span><span class="p">,</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="n">mapk_gene_family_info</span><span class="o">$</span><span class="n">ENSEMBL</span><span class="p">[[</span><span class="m">1</span><span class="p">]],</span>
     <span class="n">keytype</span> <span class="o">=</span> <span class="s">&quot;ENSEMBL&quot;</span><span class="p">,</span>
     <span class="n">columns</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;ENSEMBLTRANS&quot;</span><span class="p">)</span>
 <span class="p">)</span>
@@ -204,7 +206,7 @@
 <p>The filtering syntax for finding desired genes or transcripts is different to the built-in TxDb object,</p>
 <div class="highlight"><pre><span></span><code><span class="nf">transcripts</span><span class="p">(</span>
     <span class="n">txdb_ens84</span><span class="p">,</span>
-    <span class="n">filter</span><span class="o">=</span><span class="nf">GeneidFilter</span><span class="p">(</span><span class="n">mapk_gene_family_info</span><span class="o">$</span><span class="n">ENSEMBL[[1]]</span><span class="p">)</span>
+    <span class="n">filter</span><span class="o">=</span><span class="nf">GeneidFilter</span><span class="p">(</span><span class="n">mapk_gene_family_info</span><span class="o">$</span><span class="n">ENSEMBL</span><span class="p">[[</span><span class="m">1</span><span class="p">]])</span>
 <span class="p">)</span>
 <span class="c1"># GRanges object with 4 ranges and 5 metadata columns:</span>
 <span class="c1">#                   seqnames               ranges strand |           tx_id           tx_biotype</span>
@@ -267,7 +269,7 @@
 <span class="c1"># GRCh38.dna.*.2bit     genome sequence</span>
 <span class="c1"># GRCh38.dna_rm.*.2bit  hard-masked genome sequence (masked regions are replaced with N&#39;s)</span>
 <span class="c1"># GRCh38.dna_sm.*.2bit  soft-masked genome sequence (.............. are lower cased)</span>
-<span class="n">ens84_human_dna</span> <span class="o">&lt;-</span> <span class="n">ah[[</span><span class="s">&quot;AH50559&quot;</span><span class="n">]]</span>
+<span class="n">ens84_human_dna</span> <span class="o">&lt;-</span> <span class="n">ah</span><span class="p">[[</span><span class="s">&quot;AH50559&quot;</span><span class="p">]]</span>
 </code></pre></div>
 
 

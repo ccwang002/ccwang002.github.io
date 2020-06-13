@@ -37,7 +37,9 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link href="https://blog.liang2.tw/theme/css/haunter.css?5138a380" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.min.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.11.1/katex.min.css">
 </head>
 
 <body class="post-template">
@@ -287,7 +289,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 
 <span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">draw_histories</span> <span class="p">(</span>
     <span class="n">memberid</span> <span class="nb">INTEGER</span><span class="p">,</span>
-    <span class="n">time</span> <span class="n">DATETIME</span> <span class="k">DEFAULT</span> <span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="s1">&#39;now&#39;</span><span class="p">,</span> <span class="s1">&#39;localtime&#39;</span><span class="p">)),</span>
+    <span class="k">time</span> <span class="n">DATETIME</span> <span class="k">DEFAULT</span> <span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="s1">&#39;now&#39;</span><span class="p">,</span> <span class="s1">&#39;localtime&#39;</span><span class="p">)),</span>
     <span class="k">FOREIGN</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">memberid</span><span class="p">)</span> <span class="k">REFERENCES</span> <span class="n">members</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
 <span class="p">);</span>
 </code></pre></div>
@@ -317,7 +319,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 <p><code>sqlite3 -init xxx.sql</code> 意思是把 <code>xxx.sql</code> 裡面的 SQL 指令都執行了一遍，所以一進到 SQLite shell 裡面就建立好表格了。</p>
 <p>再來我們模擬幾次抽籤的過程。注意到我們之前有寫 <strong>draw_histories</strong>.time 的預設值，所以抽籤只要寫是誰就可以了，時間 SQLite 會自動根據指令執行的時間給值。不過我們都試一下吧。</p>
 <div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt; </span><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">draw_histories</span> <span class="p">(</span><span class="n">memberid</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-<span class="gp">sqlite&gt; </span><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">draw_histories</span> <span class="p">(</span><span class="n">memberid</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
+<span class="gp">sqlite&gt; </span><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">draw_histories</span> <span class="p">(</span><span class="n">memberid</span><span class="p">,</span> <span class="k">time</span><span class="p">)</span>
 <span class="gp">   ...&gt; </span><span class="k">VALUES</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">datetime</span><span class="p">(</span><span class="s1">&#39;2015-09-25 16:30&#39;</span><span class="p">));</span>
 </code></pre></div>
 
@@ -333,10 +335,10 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 
 <p>前兩個就是第一次 INSERT 所建立的抽籤歷史，跟你下指令的時間有關。第二次 INSERT 有給定時間，所以記錄永遠是 9 月 25 號下午。</p>
 <p><strong>draw_histories</strong> 只儲存了 member_id，我們可以做一個比較複雜的查詢，把成員的名字跟所屬團體一起列出來。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt; </span><span class="k">SELECT</span> <span class="n">m</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">m</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">m</span><span class="p">.</span><span class="n">group_name</span><span class="p">,</span> <span class="n">d</span><span class="p">.</span><span class="n">time</span> <span class="k">AS</span> <span class="n">draw_time</span>
+<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt; </span><span class="k">SELECT</span> <span class="n">m</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">m</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">m</span><span class="p">.</span><span class="n">group_name</span><span class="p">,</span> <span class="n">d</span><span class="p">.</span><span class="k">time</span> <span class="k">AS</span> <span class="n">draw_time</span>
 <span class="gp">   ...&gt; </span><span class="k">FROM</span> <span class="n">draw_histories</span> <span class="k">AS</span> <span class="n">d</span><span class="p">,</span> <span class="n">members</span> <span class="k">as</span> <span class="n">m</span>
 <span class="gp">   ...&gt; </span><span class="k">WHERE</span> <span class="n">m</span><span class="p">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">d</span><span class="p">.</span><span class="n">memberid</span>
-<span class="gp">   ...&gt; </span><span class="k">ORDER</span> <span class="k">BY</span> <span class="n">d</span><span class="p">.</span><span class="n">time</span> <span class="k">ASC</span><span class="p">;</span>
+<span class="gp">   ...&gt; </span><span class="k">ORDER</span> <span class="k">BY</span> <span class="n">d</span><span class="p">.</span><span class="k">time</span> <span class="k">ASC</span><span class="p">;</span>
 <span class="go">id|name|group_name|draw_time</span>
 <span class="go">2|平沢 唯|K-ON!|2015-09-25 16:30:00</span>
 <span class="go">1|高坂 穂乃果|μ&#39;s|2015-09-28 16:55:03</span>

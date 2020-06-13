@@ -388,7 +388,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;p&gt;Here comes a small pitfall for Ensembl annotation. We cannot sufficiently map Ensembl&amp;rsquo;s gene ID to its transcript ID,&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;select&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;human&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="n"&gt;keys&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mapk_gene_family_info&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;ENSEMBL[[1]]&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;keys&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mapk_gene_family_info&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;ENSEMBL&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]],&lt;/span&gt;
     &lt;span class="n"&gt;keytype&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;ENSEMBL&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;columns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ENSEMBLTRANS&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
@@ -416,7 +416,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;p&gt;The filtering syntax for finding desired genes or transcripts is different to the built-in TxDb object,&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;transcripts&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;txdb_ens84&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nf"&gt;GeneidFilter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mapk_gene_family_info&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;ENSEMBL[[1]]&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nf"&gt;GeneidFilter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mapk_gene_family_info&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;ENSEMBL&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]])&lt;/span&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="c1"&gt;# GRanges object with 4 ranges and 5 metadata columns:&lt;/span&gt;
 &lt;span class="c1"&gt;#                   seqnames               ranges strand |           tx_id           tx_biotype&lt;/span&gt;
@@ -479,7 +479,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="c1"&gt;# GRCh38.dna.*.2bit     genome sequence&lt;/span&gt;
 &lt;span class="c1"&gt;# GRCh38.dna_rm.*.2bit  hard-masked genome sequence (masked regions are replaced with N&amp;#39;s)&lt;/span&gt;
 &lt;span class="c1"&gt;# GRCh38.dna_sm.*.2bit  soft-masked genome sequence (.............. are lower cased)&lt;/span&gt;
-&lt;span class="n"&gt;ens84_human_dna&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;ah[[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;AH50559&amp;quot;&lt;/span&gt;&lt;span class="n"&gt;]]&lt;/span&gt;
+&lt;span class="n"&gt;ens84_human_dna&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;ah&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;AH50559&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -766,7 +766,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="n"&gt;st&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;41176e3&lt;/span&gt;
 &lt;span class="n"&gt;en&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;41324e3&lt;/span&gt;
 
-&lt;span class="n"&gt;bedgraph_dt_one_chr&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;bedgraph_dt[chromosome&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;thechr]&lt;/span&gt;
+&lt;span class="n"&gt;bedgraph_dt_one_chr&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;bedgraph_dt&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;chromosome&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;thechr&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="n"&gt;dtrack&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;DataTrack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;range&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;bedgraph_dt_one_chr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;type&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;a&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -913,7 +913,7 @@ en &amp;lt;- max(end(BRCA1_txs)) + 1e3
 &lt;p&gt;Another way to obtain the genomic range is getting the exact range of CDS (e.g. exons and UTRs) for each transcript via &lt;code&gt;exonsBy()&lt;/code&gt;. &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;BRCA1_cds_by_tx&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;exonsBy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;Homo.sapiens&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;by&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;tx&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;use.names&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;
-&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;[BRCA1_txnames]&lt;/span&gt;
+&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="n"&gt;BRCA1_txnames&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -998,9 +998,9 @@ en &amp;lt;- max(end(BRCA1_txs)) + 1e3
 
 
 &lt;p&gt;So we filter out unrelated ranges by checking if the value of metadata column &lt;code&gt;transcript&lt;/code&gt; is one of &lt;em&gt;BRCA1&lt;/em&gt;&amp;lsquo;s transcript IDs,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;BRCA_only_range&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;grtrack&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;range[&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;BRCA_only_range&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;grtrack&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;range&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
     &lt;span class="nf"&gt;mcols&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;grtrack&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;range&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;transcript&lt;/span&gt; &lt;span class="o"&gt;%in%&lt;/span&gt; &lt;span class="n"&gt;BRCA1_txnames&lt;/span&gt;
-&lt;span class="n"&gt;]&lt;/span&gt;
+&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="n"&gt;grtrack&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;range&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;BRCA_only_range&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
