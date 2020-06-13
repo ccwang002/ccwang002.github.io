@@ -114,13 +114,17 @@ ALL 236344886 17.0 22.5 31.3 29.2 0.0 39.9 37.6 0.1  99.9
 # ... (trimmed)
 ```
 
-The following columns, `avgQ` and `errQ`, need more explanation. Average quality (`avgQ`) is computed by weighted mean of each base's quality,$$
-    \text{avgQ} = \dfrac{\sum_{q=0}^{93} q \cdot n_q}{\sum_{q = 0}^{93} n_q},
+The following columns, `avgQ` and `errQ`, need more explanation. Average quality (`avgQ`) is computed by weighted mean of each base's quality,
+
+$$
+    \mathrm{avgQ} = \dfrac{\sum_{q=0}^{93} q \cdot n_q}{\sum_{q = 0}^{93} n_q},
 $$
 
 where $n_q$ is the number of bases with quality score being $q$. The magic number 93 comes from the quality score of Sanger sequencing[^sanger-qual-score], whose score ranges from 0 to 93.
 
-For `errQ` we need more background knowledge about how quality score is computed. A base with quality score $q$ implies the probability of being erroneously called, $P_q$, is $$
+For `errQ` we need more background knowledge about how quality score is computed. A base with quality score $q$ implies the probability of being erroneously called, $P_q$, is
+
+$$
     P_q = 10^{\frac{-q}{10}}, \hspace{1em} q = -10\log_{10}{P_q}.
 $$
 
@@ -136,12 +140,16 @@ Therefore, given $q$ being $0, 1, 2, \ldots$, seqtk has a conversion table `perr
 | **P**  | 0.398107 | 0.316228 | ... |     0.000158 |     0.000126 |  0.000100 |
 
 
-Based on the probability, it computes the expected number of base call errors, num_err, and the empirical probability of having a base call error at this position, errP, $$
-    \text{num_err} = \sum_q P_q \cdot n_q, \hspace{1em} \text{errP} = \frac{\text{num_err}}{\sum_q n_q}.
+Based on the probability, it computes the expected number of base call errors, num_err, and the empirical probability of having a base call error at this position, errP,
+
+$$
+    \mathrm{num}_\text{err} = \sum_q P_q \cdot n_q, \hspace{1em} \text{errP} = \frac{\mathrm{num}_\text{err}}{\sum_q n_q}.
 $$
 
-Thus the `errQ` is the equivalent quality score of errP, which better interprets the probability of base call error than `avgQ`, $$
-    \text{errQ} = -10\log_{10}{\text{errP}}.
+Thus the `errQ` is the equivalent quality score of errP, which better interprets the probability of base call error than `avgQ`,
+
+$$
+    \mathrm{errQ} = -10\log_{10}{\mathrm{errP}}.
 $$
 
 
