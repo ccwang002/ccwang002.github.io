@@ -13,14 +13,16 @@ Firefox fullscreen on macOS by default contains the address bar and the tab bar.
   <p class="caption"></p>
 </div>
 
-It turns out that Firefox controls its user interface styling using CSS. So we can set the shape of the window tabs, the height of the address bar, and more by adding a CSS file at `~/Library/Application Support/Firefox/Profiles/<profile>/chrome/userChrome.css`. My modification was based on [this answer on Stack Exchange][ext-sol]:
+It turns out that Firefox controls its user interface styling using CSS. So we can set the shape of the window tabs, the height of the address bar, and more by adding a CSS file at `~/Library/Application Support/Firefox/Profiles/<profile>/chrome/userChrome.css`. In Firefox 69+, we need to set `toolkit.legacyUserProfileCustomizations.stylesheets=true` in `about:config` to enable the CSS styling ([more details here][enable-firefox-css]). 
+
+My modification was based on [this answer on Stack Exchange][ext-sol]:
 
 ```css
 #navigator-toolbox[inFullscreen] {
     height: 0.5rem;
     margin-bottom: -0.5rem;
-    opacity: 0;
     overflow: hidden;
+    z-index: 1;
 }
 
 #navigator-toolbox[inFullscreen]:hover,
@@ -30,7 +32,7 @@ It turns out that Firefox controls its user interface styling using CSS. So we c
      * to be more visible while the macOS hidden menu bar shows up. 
      * The macOS menubar will hide after a few seconds.
      */
-    padding-top: 1rem;
+    padding-top: 1.5rem;
     height: auto;
     margin-bottom: 0rem;
     opacity: 1;
@@ -38,6 +40,7 @@ It turns out that Firefox controls its user interface styling using CSS. So we c
 }
 ```
 
+[enable-firefox-css]: https://www.userchrome.org/how-create-userchrome-css.html
 [ext-sol]: https://apple.stackexchange.com/a/313241
 
 Note that the Firefox needs to be restarted to get the styling in effect. Here is how the Firefox fullscreen looks like after applying the `userChrome.css` above. 
@@ -105,3 +108,5 @@ ffmpeg -i fullscreen_switch_tabs.mov \
 [notebook-progressbar-post]: {filename}../2016-03/0323_notebook_progressbar.md
 [VP9]: https://trac.ffmpeg.org/wiki/Encode/VP9
 [H.264]: https://trac.ffmpeg.org/wiki/Encode/H.264
+
+EDIT 2020-06-13: Added extra `about:config` settings in Firefox 69+ and fixed the styling. I also increased the top margin since the new address bar is taller.
