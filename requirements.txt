@@ -4,6 +4,7 @@ beautifulsoup4
 Markdown
 webassets
 cssmin
+pelican-katex == 1.6.1
 ghp-import
 invoke
 livereload

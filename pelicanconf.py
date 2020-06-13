@@ -100,8 +100,7 @@ JINJA_FILTERS = {
 # Plugin settings
 PLUGIN_PATHS = ['pelican-plugins', ]
 PLUGINS = [
-    'assets',
-    'render_math',
     'touch',
+    'pelican_katex.plugin',
 ]
 
