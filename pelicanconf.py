@@ -97,7 +97,7 @@ JINJA_FILTERS = {
 }
 
 # Plugin settings
-PLUGIN_PATHS = ['pelican-plugins', ]
+PLUGIN_PATHS = ['plugins', ]
 PLUGINS = [
     'touch',
     'pelican_katex.plugin',
