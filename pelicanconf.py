@@ -24,7 +24,6 @@ TAG_SAVE_AS = 'tag/{slug}/index.html'
 
 # Static path
 STATIC_PATHS = [
-    'pics',
     'B233544E.pub.asc', '730992C4.pub.asc',
     '0x69BAE333BC4DC4BA.pub.asc',
     'CNAME',
