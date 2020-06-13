@@ -36,7 +36,7 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link href="https://blog.liang2.tw/theme/css/haunter.css?a6ddbbf5" rel="stylesheet" />
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?5138a380" rel="stylesheet" />
 </head>
 
 <body class="post-template">
@@ -114,7 +114,7 @@
 </div>
 <h3 id="django">Django 初始設定</h3>
 <p>一樣開一個 Python 虛擬環境（這時候就是它的好處了，能把不同專案的套件隔離）。</p>
-<div class="highlight"><pre><span></span><code><span class="err">pip install django pytz ipython pyyaml</span>
+<div class="highlight"><pre><span></span><code>pip install django pytz ipython pyyaml
 </code></pre></div>
 
 
@@ -125,14 +125,14 @@
 
 
 <p>執行完之後應該會多出一堆檔案，結構如下。注意到有兩層 <code>draw_site</code>。</p>
-<div class="highlight"><pre><span></span><code><span class="err">demo_django_draw_member/</span>
-<span class="err">└── draw_site/</span>
-<span class="err">    ├── draw_site/</span>
-<span class="err">    │   ├── __init__.py</span>
-<span class="err">    │   ├── settings.py</span>
-<span class="err">    │   ├── urls.py</span>
-<span class="err">    │   └── wsgi.py</span>
-<span class="err">    └── manage.py*</span>
+<div class="highlight"><pre><span></span><code>demo_django_draw_member/
+└── draw_site/
+    ├── draw_site/
+    │   ├── __init__.py
+    │   ├── settings.py
+    │   ├── urls.py
+    │   └── wsgi.py
+    └── manage.py*
 </code></pre></div>
 
 
@@ -165,18 +165,18 @@
 </code></pre></div>
 
 
-<div class="highlight"><pre><span></span><code><span class="err">demo_django_draw_member/</span>
-<span class="err">└── draw_site/</span>
-<span class="err">    ├── draw_member/</span>
-<span class="err">    │   ├── __init__.py</span>
-<span class="err">    │   ├── admin.py</span>
-<span class="err">    │   ├── migrations/</span>
-<span class="err">    │   ├── models.py</span>
-<span class="err">    │   ├── tests.py</span>
-<span class="err">    │   └── views.py</span>
-<span class="err">    ├── draw_site/</span>
-<span class="err">    │   └── ...</span>
-<span class="err">    └── manage.py*</span>
+<div class="highlight"><pre><span></span><code>demo_django_draw_member/
+└── draw_site/
+    ├── draw_member/
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── migrations/
+    │   ├── models.py
+    │   ├── tests.py
+    │   └── views.py
+    ├── draw_site/
+    │   └── ...
+    └── manage.py*
 </code></pre></div>
 
 
@@ -309,15 +309,15 @@
 
 <p>基本上格式就是照抄原本就有的。因為放在同個 app 裡面了，import view 時就可以用 explicit relative import（這不是 relative import 喔）</p>
 <p>原本的 urls.py 就改成把 URL 的處理「dispatch」給這個 app，改成底下這樣。</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># draw_site/urls.py</span>
-<span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">include</span><span class="p">,</span> <span class="n">url</span>
-<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+<div class="highlight"><pre><span></span><code># draw_site/urls.py
+from django.conf.urls import include, url
+from django.contrib import admin
 
 
-<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^admin/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">)),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">&#39;draw_member.urls&#39;</span><span class="p">)),</span>
-<span class="p">]</span>
+urlpatterns = [
+    url(r&#39;^admin/&#39;, include(admin.site.urls)),
+    url(r&#39;^&#39;, include(&#39;draw_member.urls&#39;)),
+]
 </code></pre></div>
 
 
@@ -439,15 +439,15 @@
 </code></pre></div>
 
 
-<div class="highlight"><pre><span></span><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">draw_member.models</span> <span class="kn">import</span> <span class="n">Member</span><span class="p">,</span> <span class="n">History</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">m1</span> <span class="o">=</span> <span class="n">Member</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;高坂 穂乃果&quot;</span><span class="p">,</span> <span class="n">group_name</span><span class="o">=</span><span class="s2">&quot;μ&#39;s&quot;</span><span class="p">)</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">m2</span> <span class="o">=</span> <span class="n">Member</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;平沢 唯&quot;</span><span class="p">,</span> <span class="n">group_name</span><span class="o">=</span><span class="s2">&quot;K-ON!&quot;</span><span class="p">)</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span>
-<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">Member</span><span class="p">:</span> <span class="err">高坂</span> <span class="err">穂乃果</span> <span class="n">of</span> <span class="err">μ</span><span class="s1">&#39;s&gt;, &lt;Member: 平沢 唯 of K-ON!&gt;)</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="n">m1</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="n">m2</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">h1</span> <span class="o">=</span> <span class="n">History</span><span class="p">(</span><span class="n">member</span><span class="o">=</span><span class="n">m1</span><span class="p">)</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="n">h1</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code>In [1]: from draw_member.models import Member, History
+In [2]: m1 = Member(name=&quot;高坂 穂乃果&quot;, group_name=&quot;μ&#39;s&quot;)
+In [4]: m2 = Member(name=&quot;平沢 唯&quot;, group_name=&quot;K-ON!&quot;)
+In [5]: m1, m2
+Out[5]: (&lt;Member: 高坂 穂乃果 of μ&#39;s&gt;, &lt;Member: 平沢 唯 of K-ON!&gt;)
+In [7]: m1.save()
+In [8]: m2.save()
+In [6]: h1 = History(member=m1)
+In [9]: h1.save()
 </code></pre></div>
 
 
@@ -536,17 +536,17 @@
 
 <h4 id="data-in-orm-and-fixtures">Data in ORM and fixtures</h4>
 <p>我們把 <code>members.csv</code> 的資料填到資料庫吧。這邊就不用細說了。</p>
-<div class="highlight"><pre><span></span><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">csv</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;../../draw_member/members.csv&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-   <span class="o">...</span><span class="p">:</span>    <span class="n">csv_reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-   <span class="o">...</span><span class="p">:</span>    <span class="n">members</span> <span class="o">=</span> <span class="p">[</span>
-   <span class="o">...</span><span class="p">:</span>    <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;名字&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;團體&#39;</span><span class="p">])</span>
-   <span class="o">...</span><span class="p">:</span>    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv_reader</span>
-   <span class="o">...</span><span class="p">:</span>    <span class="p">]</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">draw_member.models</span> <span class="kn">import</span> <span class="n">Member</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">members</span><span class="p">:</span>
-   <span class="o">...</span><span class="p">:</span>     <span class="n">Member</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">group_name</span><span class="o">=</span><span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-   <span class="o">...</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code>In [1]: import csv
+In [2]: with open(&#39;../../draw_member/members.csv&#39;, newline=&#39;&#39;) as f:
+   ...:    csv_reader = csv.DictReader(f)
+   ...:    members = [
+   ...:    (row[&#39;名字&#39;], row[&#39;團體&#39;])
+   ...:    for row in csv_reader
+   ...:    ]
+In [3]: from draw_member.models import Member
+In [4]: for m in members:
+   ...:     Member(name=m[0], group_name=m[1]).save()
+   ...:
 </code></pre></div>
 
 
@@ -600,28 +600,28 @@
 <p>這樣資料的存取就介紹得差不多了。更多的細節可以參考<a href="https://docs.djangoproject.com/en/1.8/#the-model-layer">官網 model layer</a> 的說明。</p>
 <h3 id="django-template">Django Template</h3>
 <p>在進行下去之前，先確認我們的目錄結構是一樣的。</p>
-<div class="highlight"><pre><span></span><code><span class="err">demo_django_draw_member/</span>
-<span class="err">└── draw_site/</span>
-<span class="err">    ├── db.sqlite3</span>
-<span class="err">    ├── draw_member/</span>
-<span class="err">    │   ├── __init__.py</span>
-<span class="err">    │   ├── admin.py</span>
-<span class="err">    │   ├── fixtures/</span>
-<span class="err">    │   │   ├── anime_members.json</span>
-<span class="err">    │   │   └── anime_members.yaml</span>
-<span class="err">    │   ├── migrations/</span>
-<span class="err">    │   │   ├── 0001_initial.py</span>
-<span class="err">    │   │   └── __init__.py</span>
-<span class="err">    │   ├── models.py</span>
-<span class="err">    │   ├── tests.py</span>
-<span class="err">    │   ├── urls.py</span>
-<span class="err">    │   └── views.py</span>
-<span class="err">    ├── draw_site/</span>
-<span class="err">    │   ├── __init__.py</span>
-<span class="err">    │   ├── settings.py</span>
-<span class="err">    │   ├── urls.py</span>
-<span class="err">    │   └── wsgi.py</span>
-<span class="err">    └── manage.py*</span>
+<div class="highlight"><pre><span></span><code>demo_django_draw_member/
+└── draw_site/
+    ├── db.sqlite3
+    ├── draw_member/
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── fixtures/
+    │   │   ├── anime_members.json
+    │   │   └── anime_members.yaml
+    │   ├── migrations/
+    │   │   ├── 0001_initial.py
+    │   │   └── __init__.py
+    │   ├── models.py
+    │   ├── tests.py
+    │   ├── urls.py
+    │   └── views.py
+    ├── draw_site/
+    │   ├── __init__.py
+    │   ├── settings.py
+    │   ├── urls.py
+    │   └── wsgi.py
+    └── manage.py*
 </code></pre></div>
 
 
@@ -816,22 +816,22 @@
 <h3 id="django-form">Django Form</h3>
 <p>直接把 form 寫在 template 裡面也是可以，有時候 form 可能跟 model 息息相關，而且 form input 多了之後每個欄位都要自己讀寫也太不直覺。想要驗証使用者的 input 的話就更複雜了。</p>
 <p>於是就有了 Django Form。馬上來看用起來是怎麼樣。</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># draw_member/forms.py</span>
-<span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+<div class="highlight"><pre><span></span><code># draw_member/forms.py
+from django import forms
 
-<span class="k">class</span> <span class="nc">DrawForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
-    <span class="n">GROUP_CHOICES</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="s2">&quot;μ&#39;s&quot;</span><span class="p">,</span> <span class="s2">&quot;μ&#39;s&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;K-ON!&quot;</span><span class="p">,</span> <span class="s2">&quot;K-ON!&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;ALL&quot;</span><span class="p">,</span> <span class="s2">&quot;（全）&quot;</span><span class="p">),</span>
-    <span class="p">]</span>
-    <span class="n">group</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ChoiceField</span><span class="p">(</span>
-        <span class="n">choices</span><span class="o">=</span><span class="n">GROUP_CHOICES</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;團隊名稱&#39;</span><span class="p">,</span>
-        <span class="n">label_suffix</span><span class="o">=</span><span class="s1">&#39;：&#39;</span><span class="p">,</span>
-        <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">RadioSelect</span><span class="p">,</span>
-        <span class="n">initial</span><span class="o">=</span><span class="s1">&#39;ALL&#39;</span>
-    <span class="p">)</span>
+class DrawForm(forms.Form):
+    GROUP_CHOICES = [
+        (&quot;μ&#39;s&quot;, &quot;μ&#39;s&quot;),
+        (&quot;K-ON!&quot;, &quot;K-ON!&quot;),
+        (&quot;ALL&quot;, &quot;（全）&quot;),
+    ]
+    group = forms.ChoiceField(
+        choices=GROUP_CHOICES,
+        label=&#39;團隊名稱&#39;,
+        label_suffix=&#39;：&#39;,
+        widget=forms.RadioSelect,
+        initial=&#39;ALL&#39;
+    )
 </code></pre></div>
 
 

@@ -26,7 +26,7 @@ You can also use widgets to &lt;strong&gt;synchronize stateful and stateless inf
 &lt;p&gt;……只是要用個進度條而已，哪來這麼多背景知識。更多介紹可以參考 &lt;a href="http://nbviewer.jupyter.org/github/ipython/ipywidgets/blob/master/examples/Index.ipynb"&gt;ipywidgets 官方範例&lt;/a&gt;。&lt;/p&gt;
 &lt;h4 id="_1"&gt;安裝&lt;/h4&gt;
 &lt;p&gt;使用 Python 3.5 示範。安裝除了 notebook 本身外，還要額外裝上 ipywidgets 這套件。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;pip install notebook ipywidgets&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip install notebook ipywidgets
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 

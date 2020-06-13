@@ -171,17 +171,17 @@
 &lt;/div&gt;
 &lt;h3 id="pelican"&gt;Pelican 簡介&lt;/h3&gt;
 &lt;p&gt;&lt;a href="http://docs.getpelican.com/"&gt;Pelican&lt;/a&gt; 結論來說不難理解，而且要自訂 blog theme 也不會很複雜。首先跟 Sphinx 一樣，用內建的 &lt;code&gt;pelican-quickstart&lt;/code&gt; 預設值就能架好一個可以動的。目錄大概長這樣&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;my_blog/&lt;/span&gt;
-&lt;span class="err"&gt;├── content/&lt;/span&gt;
-&lt;span class="err"&gt;│   ├── blog_post_1.md&lt;/span&gt;
-&lt;span class="err"&gt;│   └── blog_post_2.rst&lt;/span&gt;
-&lt;span class="err"&gt;├── output/&lt;/span&gt;
-&lt;span class="err"&gt;├── develop_server.sh*&lt;/span&gt;
-&lt;span class="err"&gt;├── Makefile&lt;/span&gt;
-&lt;span class="err"&gt;├── fabfile.py&lt;/span&gt;
-&lt;span class="err"&gt;├── pelicanconf.py&lt;/span&gt;
-&lt;span class="err"&gt;├── publishconf.py&lt;/span&gt;
-&lt;span class="err"&gt;└── requirements.txt&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;my_blog/
+├── content/
+│   ├── blog_post_1.md
+│   └── blog_post_2.rst
+├── output/
+├── develop_server.sh*
+├── Makefile
+├── fabfile.py
+├── pelicanconf.py
+├── publishconf.py
+└── requirements.txt
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -192,17 +192,17 @@
 
 &lt;p&gt;預設會輸出到 &lt;code&gt;output/&lt;/code&gt;，到時候 deploy 就把這個資料夾的內容丟到 server 上。&lt;/p&gt;
 &lt;p&gt;每篇文章可以用 markdown 或者 reStructuredText(rst) 來寫，概念上像這樣：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;---&lt;/span&gt;
-&lt;span class="nl"&gt;Title&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Hello&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;World&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="nc"&gt;Date&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;01&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;18&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;00&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="nl"&gt;Tags&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;world&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;programming&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="nl"&gt;Category&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="nl"&gt;Slug&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;hello&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;world&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="c1"&gt;---&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;---
+Title: Hello World
+Date: 2016-01-16 18:00
+Tags: world, programming
+Category: test
+Slug: hello-world
+---
 
-&lt;span class="n"&gt;Hello&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;World&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+Hello [World]
 
-&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;World&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;en&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;wikipedia&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;wiki&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;World&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+[World]: https://en.wikipedia.org/wiki/World
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 

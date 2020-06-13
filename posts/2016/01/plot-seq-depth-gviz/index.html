@@ -39,7 +39,7 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link href="https://blog.liang2.tw/theme/css/haunter.css?a6ddbbf5" rel="stylesheet" />
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?5138a380" rel="stylesheet" />
 </head>
 
 <body class="post-template">
@@ -293,11 +293,11 @@
 
 
 <p>Then get the genomic range of these transcripts by <code>seqnames()</code>, <code>start()</code> and <code>end()</code> functions on the <code>GRanages</code> object,</p>
-<div class="highlight"><pre><span></span><code><span class="n">thechr</span> <span class="o">&lt;-</span> <span class="nf">as.character</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span>
-    <span class="nf">seqnames</span><span class="p">(</span><span class="n">BRCA1_txs</span><span class="p">)</span>
-<span class="p">))</span>
-<span class="n">st</span> <span class="o">&lt;-</span> <span class="nf">min</span><span class="p">(</span><span class="nf">start</span><span class="p">(</span><span class="n">BRCA1_txs</span><span class="p">))</span> <span class="o">-</span> <span class="m">2e4</span>
-<span class="n">en</span> <span class="o">&lt;-</span> <span class="nf">max</span><span class="p">(</span><span class="nf">end</span><span class="p">(</span><span class="n">BRCA1_txs</span><span class="p">))</span> <span class="o">+</span> <span class="m">1e3</span>
+<div class="highlight"><pre><span></span><code>thechr &lt;- as.character(unique(
+    seqnames(BRCA1_txs)
+))
+st &lt;- min(start(BRCA1_txs)) - 2e4
+en &lt;- max(end(BRCA1_txs)) + 1e3
 </code></pre></div>
 
 

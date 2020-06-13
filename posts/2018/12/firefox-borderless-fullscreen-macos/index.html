@@ -33,7 +33,7 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link href="https://blog.liang2.tw/theme/css/haunter.css?a6ddbbf5" rel="stylesheet" />
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?5138a380" rel="stylesheet" />
 </head>
 
 <body class="post-template">
@@ -63,12 +63,13 @@
   <p class="caption"></p>
 </div>
 
-<p>It turns out that Firefox controls its user interface styling using CSS. So we can set the shape of the window tabs, the height of the address bar, and more by adding a CSS file at <code>~/Library/Application Support/Firefox/Profiles/&lt;profile&gt;/chrome/userChrome.css</code>. My modification was based on <a href="https://apple.stackexchange.com/a/313241">this answer on Stack Exchange</a>:</p>
+<p>It turns out that Firefox controls its user interface styling using CSS. So we can set the shape of the window tabs, the height of the address bar, and more by adding a CSS file at <code>~/Library/Application Support/Firefox/Profiles/&lt;profile&gt;/chrome/userChrome.css</code>. In Firefox 69+, we need to set <code>toolkit.legacyUserProfileCustomizations.stylesheets=true</code> in <code>about:config</code> to enable the CSS styling (<a href="https://www.userchrome.org/how-create-userchrome-css.html">more details here</a>). </p>
+<p>My modification was based on <a href="https://apple.stackexchange.com/a/313241">this answer on Stack Exchange</a>:</p>
 <div class="highlight"><pre><span></span><code><span class="p">#</span><span class="nn">navigator-toolbox</span><span class="o">[</span><span class="nt">inFullscreen</span><span class="o">]</span> <span class="p">{</span>
     <span class="k">height</span><span class="p">:</span> <span class="mf">0.5</span><span class="kt">rem</span><span class="p">;</span>
     <span class="k">margin-bottom</span><span class="p">:</span> <span class="mf">-0.5</span><span class="kt">rem</span><span class="p">;</span>
-    <span class="k">opacity</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
     <span class="k">overflow</span><span class="p">:</span> <span class="kc">hidden</span><span class="p">;</span>
+    <span class="k">z-index</span><span class="p">:</span> <span class="mi">1</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="p">#</span><span class="nn">navigator-toolbox</span><span class="o">[</span><span class="nt">inFullscreen</span><span class="o">]</span><span class="p">:</span><span class="nd">hover</span><span class="o">,</span>
@@ -78,7 +79,7 @@
 <span class="c">     * to be more visible while the macOS hidden menu bar shows up. </span>
 <span class="c">     * The macOS menubar will hide after a few seconds.</span>
 <span class="c">     */</span>
-    <span class="k">padding-top</span><span class="p">:</span> <span class="mi">1</span><span class="kt">rem</span><span class="p">;</span>
+    <span class="k">padding-top</span><span class="p">:</span> <span class="mf">1.5</span><span class="kt">rem</span><span class="p">;</span>
     <span class="k">height</span><span class="p">:</span> <span class="kc">auto</span><span class="p">;</span>
     <span class="k">margin-bottom</span><span class="p">:</span> <span class="mi">0</span><span class="kt">rem</span><span class="p">;</span>
     <span class="k">opacity</span><span class="p">:</span> <span class="mi">1</span><span class="p">;</span>
@@ -138,7 +139,10 @@ ffmpeg -i fullscreen_switch_tabs.mov <span class="se">\</span>
     -vcodec h264 <span class="se">\</span>
     -strict -2 -crf <span class="m">40</span> -preset slow -r <span class="m">24</span> <span class="se">\</span>
     fullscreen_switch_tabs.mp4
-</code></pre></div></section>
+</code></pre></div>
+
+
+<p>EDIT 2020-06-13: Added extra <code>about:config</code> settings in Firefox 69+ and fixed the styling. I also increased the top margin since the new address bar is taller.</p></section>
     <footer class="post-footer">
     <section>
         <h2>Discuss</h2>

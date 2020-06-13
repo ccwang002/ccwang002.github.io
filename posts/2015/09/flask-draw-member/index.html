@@ -37,7 +37,7 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link href="https://blog.liang2.tw/theme/css/haunter.css?a6ddbbf5" rel="stylesheet" />
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?5138a380" rel="stylesheet" />
 </head>
 
 <body class="post-template">
@@ -115,21 +115,21 @@
 <p>我們先假設所有檔案都放在同個資料夾裡，估且叫 <code>draw_member</code>。之後沒有額外說明的話，都是在這個目錄下操作。</p>
 <p>原始資料用 CSV 格式來儲存，有「名字」以及「團體」兩個欄位。不過考慮到可能會把檔案匯出，在原始檔案多加一個「最近被抽到的日期」欄位，希望最近被抽到的會比其他人再被抽到的機會低一點。</p>
 <p>這個 CSV 檔案命名為 <code>members.csv</code>。一開始沒有人被抽到，所以最後一欄都先設成空的<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>，第一行是每一欄欄位的名稱。如果從資料庫匯出，這欄位就會有值。</p>
-<div class="highlight"><pre><span></span><code><span class="err">&quot;名字&quot;,&quot;團體&quot;,&quot;最近被抽到的日期&quot;</span>
-<span class="err">&quot;高坂 穂乃果&quot;,&quot;μ&#39;s&quot;,&quot;&quot;</span>
-<span class="err">&quot;絢瀬 絵里&quot;,&quot;μ&#39;s&quot;,&quot;&quot;</span>
-<span class="err">&quot;南 ことり&quot;,&quot;μ&#39;s&quot;,&quot;&quot;</span>
-<span class="err">&quot;園田 海未&quot;,&quot;μ&#39;s&quot;,&quot;&quot;</span>
-<span class="err">&quot;星空 凛&quot;,&quot;μ&#39;s&quot;,&quot;&quot;</span>
-<span class="err">&quot;西木野 真姫&quot;,&quot;μ&#39;s&quot;,&quot;&quot;</span>
-<span class="err">&quot;東條 希&quot;,&quot;μ&#39;s&quot;,&quot;&quot;</span>
-<span class="err">&quot;小泉 花陽&quot;,&quot;μ&#39;s&quot;,&quot;&quot;</span>
-<span class="err">&quot;矢澤 にこ&quot;,&quot;μ&#39;s&quot;,&quot;&quot;</span>
-<span class="err">&quot;平沢 唯&quot;,&quot;K-ON!&quot;,&quot;&quot;</span>
-<span class="err">&quot;秋山 澪&quot;,&quot;K-ON!&quot;,&quot;&quot;</span>
-<span class="err">&quot;田井中 律&quot;,&quot;K-ON!&quot;,&quot;&quot;</span>
-<span class="err">&quot;琴吹 紬&quot;,&quot;K-ON!&quot;,&quot;&quot;</span>
-<span class="err">&quot;中野 梓&quot;,&quot;K-ON!&quot;,&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code>&quot;名字&quot;,&quot;團體&quot;,&quot;最近被抽到的日期&quot;
+&quot;高坂 穂乃果&quot;,&quot;μ&#39;s&quot;,&quot;&quot;
+&quot;絢瀬 絵里&quot;,&quot;μ&#39;s&quot;,&quot;&quot;
+&quot;南 ことり&quot;,&quot;μ&#39;s&quot;,&quot;&quot;
+&quot;園田 海未&quot;,&quot;μ&#39;s&quot;,&quot;&quot;
+&quot;星空 凛&quot;,&quot;μ&#39;s&quot;,&quot;&quot;
+&quot;西木野 真姫&quot;,&quot;μ&#39;s&quot;,&quot;&quot;
+&quot;東條 希&quot;,&quot;μ&#39;s&quot;,&quot;&quot;
+&quot;小泉 花陽&quot;,&quot;μ&#39;s&quot;,&quot;&quot;
+&quot;矢澤 にこ&quot;,&quot;μ&#39;s&quot;,&quot;&quot;
+&quot;平沢 唯&quot;,&quot;K-ON!&quot;,&quot;&quot;
+&quot;秋山 澪&quot;,&quot;K-ON!&quot;,&quot;&quot;
+&quot;田井中 律&quot;,&quot;K-ON!&quot;,&quot;&quot;
+&quot;琴吹 紬&quot;,&quot;K-ON!&quot;,&quot;&quot;
+&quot;中野 梓&quot;,&quot;K-ON!&quot;,&quot;&quot;
 </code></pre></div>
 
 
@@ -532,16 +532,16 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 <h4 id="form">Form</h4>
 <p>最常見的 POST 就是搭配<a href="https://developer.mozilla.org/en/docs/Web/HTML/Element/form">表單 (form)</a> 使用。像登入要填帳號密碼、問卷問題與回答，就很常用 form 實作。Form 裡面有很多種 input，代表使用者能填的欄位，類型可能是單選、複選、單行、多行、密文等。</p>
 <p>我們就先看一下 form 實際的長相吧。改寫 <code>templates/index.html</code>，加上一個抽籤選團體的 form。</p>
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;h1&gt;</span>來抽出快樂的夥伴吧！<span class="nt">&lt;/h1&gt;</span><span class="c">&lt;!-- 本來有的 --&gt;</span>
-<span class="nt">&lt;p&gt;</span>選擇要被抽的團體<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">&quot;/draw&quot;</span> <span class="na">method=</span><span class="s">&quot;post&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">&quot;group_name&quot;</span><span class="nt">&gt;</span>團隊名稱：<span class="nt">&lt;/label&gt;</span>
-  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;radio&quot;</span> <span class="na">name=</span><span class="s">&quot;group_name&quot;</span> <span class="na">value=</span><span class="s">&quot;μ&#39;s&quot;</span><span class="nt">&gt;</span>μ&#39;s
-  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;radio&quot;</span> <span class="na">name=</span><span class="s">&quot;group_name&quot;</span> <span class="na">value=</span><span class="s">&quot;K-ON!&quot;</span><span class="nt">&gt;</span>K-ON!
-  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;radio&quot;</span> <span class="na">name=</span><span class="s">&quot;group_name&quot;</span> <span class="na">value=</span><span class="s">&quot;ALL&quot;</span> <span class="err">checked</span><span class="nt">&gt;</span>（全）
-  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span> <span class="na">value=</span><span class="s">&quot;Submit&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;/form&gt;</span>
-<span class="nt">&lt;hr&gt;</span><span class="c">&lt;!-- 這是分隔線 --&gt;</span>
+<div class="highlight"><pre><span></span><code>&lt;h1&gt;來抽出快樂的夥伴吧！&lt;/h1&gt;&lt;!-- 本來有的 --&gt;
+&lt;p&gt;選擇要被抽的團體&lt;/p&gt;
+&lt;form action=&quot;/draw&quot; method=&quot;post&quot;&gt;
+  &lt;label for=&quot;group_name&quot;&gt;團隊名稱：&lt;/label&gt;
+  &lt;input type=&quot;radio&quot; name=&quot;group_name&quot; value=&quot;μ&#39;s&quot;&gt;μ&#39;s
+  &lt;input type=&quot;radio&quot; name=&quot;group_name&quot; value=&quot;K-ON!&quot;&gt;K-ON!
+  &lt;input type=&quot;radio&quot; name=&quot;group_name&quot; value=&quot;ALL&quot; checked&gt;（全）
+  &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;
+&lt;/form&gt;
+&lt;hr&gt;&lt;!-- 這是分隔線 --&gt;
 </code></pre></div>
 
 
@@ -619,57 +619,57 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </ul>
 <p>馬上來改寫一下吧。我們的功能表應該每一頁都要出現，再來我們希望 <code>/draw</code> 的頁面也是個完整的 HTML。</p>
 <p>首先先把常用的部份獨立出來，做成 <code>templates/base.html</code>。</p>
-<div class="highlight"><pre><span></span><code><span class="c">&lt;!-- templates/base.html --&gt;</span>
-<span class="cp">&lt;!DOCTYPE html&gt;</span>
-<span class="nt">&lt;html&gt;</span>
-  <span class="nt">&lt;head&gt;</span>
-    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content=</span><span class="s">&quot;width=device-width&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;title&gt;</span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span>成員抽籤<span class="cp">{%</span> <span class="k">endblock</span> <span class="nv">title</span> <span class="cp">%}</span><span class="nt">&lt;/title&gt;</span>
-  <span class="nt">&lt;/head&gt;</span>
-  <span class="nt">&lt;body&gt;</span>
-    <span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}{%</span> <span class="k">endblock</span> <span class="nv">content</span> <span class="cp">%}</span>
-    <span class="nt">&lt;hr&gt;</span>
-    <span class="nt">&lt;h3&gt;</span>功能列<span class="nt">&lt;/h3&gt;</span>
-    <span class="nt">&lt;ul&gt;</span>
-      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/&quot;</span><span class="nt">&gt;</span>首頁（抽籤）<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/history&quot;</span><span class="nt">&gt;</span>歷史記錄<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/reset&quot;</span><span class="nt">&gt;</span>清除記錄、更新成員資料<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;/body&gt;</span>
-<span class="nt">&lt;/html&gt;</span>
+<div class="highlight"><pre><span></span><code>&lt;!-- templates/base.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot;&gt;
+    &lt;title&gt;{% block title %}成員抽籤{% endblock title %}&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    {% block content %}{% endblock content %}
+    &lt;hr&gt;
+    &lt;h3&gt;功能列&lt;/h3&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;/&quot;&gt;首頁（抽籤）&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;/history&quot;&gt;歷史記錄&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;/reset&quot;&gt;清除記錄、更新成員資料&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
 </code></pre></div>
 
 
 <p>像功能列這種不會變的就很適合放在這邊。而我們的首頁就可以重覆使用這個結構，</p>
-<div class="highlight"><pre><span></span><code><span class="c">&lt;!-- templates/index.html --&gt;</span>
-<span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span>
+<div class="highlight"><pre><span></span><code>&lt;!-- templates/index.html --&gt;
+{% extends &quot;base.html&quot; %}
 
-<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span>
-<span class="nt">&lt;h1&gt;</span>來抽出快樂的夥伴吧！<span class="nt">&lt;/h1&gt;</span>
-<span class="nt">&lt;p&gt;</span>選擇要被抽的團體<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">&quot;/draw&quot;</span> <span class="na">method=</span><span class="s">&quot;post&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">&quot;group_name&quot;</span><span class="nt">&gt;</span>團隊名稱：<span class="nt">&lt;/label&gt;</span>
-  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;radio&quot;</span> <span class="na">name=</span><span class="s">&quot;group_name&quot;</span> <span class="na">value=</span><span class="s">&quot;μ&#39;s&quot;</span><span class="nt">&gt;</span>μ&#39;s
-  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;radio&quot;</span> <span class="na">name=</span><span class="s">&quot;group_name&quot;</span> <span class="na">value=</span><span class="s">&quot;K-ON!&quot;</span><span class="nt">&gt;</span>K-ON!
-  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;radio&quot;</span> <span class="na">name=</span><span class="s">&quot;group_name&quot;</span> <span class="na">value=</span><span class="s">&quot;ALL&quot;</span> <span class="err">checked</span><span class="nt">&gt;</span>（全）
-  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span> <span class="na">value=</span><span class="s">&quot;Submit&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;/form&gt;</span>
-<span class="cp">{%</span> <span class="k">endblock</span> <span class="nv">content</span> <span class="cp">%}</span>
+{% block content %}
+&lt;h1&gt;來抽出快樂的夥伴吧！&lt;/h1&gt;
+&lt;p&gt;選擇要被抽的團體&lt;/p&gt;
+&lt;form action=&quot;/draw&quot; method=&quot;post&quot;&gt;
+  &lt;label for=&quot;group_name&quot;&gt;團隊名稱：&lt;/label&gt;
+  &lt;input type=&quot;radio&quot; name=&quot;group_name&quot; value=&quot;μ&#39;s&quot;&gt;μ&#39;s
+  &lt;input type=&quot;radio&quot; name=&quot;group_name&quot; value=&quot;K-ON!&quot;&gt;K-ON!
+  &lt;input type=&quot;radio&quot; name=&quot;group_name&quot; value=&quot;ALL&quot; checked&gt;（全）
+  &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;
+&lt;/form&gt;
+{% endblock content %}
 </code></pre></div>
 
 
 <p>可以看到最大的差異就是我們的 <code>index.html</code> 變簡單了。它就像物件繼承一樣，<code>{% extends "base.html" %}</code>，表示先把 <code>base.html</code> 的內容放進來，而裡面定義了兩個 block：<code>title</code> 以及 <code>content</code>。Index 有定義 content 的內容，所以就取代掉原本定義在 base 裡空的 content。  Index 並沒有定義 title，那就會用原本 block 內的值，即「成員抽籤」。</p>
 <p>再來處理 <code>/draw</code> 的部份，我們除而再利用 <code>base.html</code> 之外，還要引入 template variable 的概念。</p>
-<div class="highlight"><pre><span></span><code><span class="c">&lt;!-- templates/draw.html --&gt;</span>
-<span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span>
+<div class="highlight"><pre><span></span><code>&lt;!-- templates/draw.html --&gt;
+{% extends &quot;base.html&quot; %}
 
-<span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span>抽籤結果<span class="cp">{%</span> <span class="k">endblock</span> <span class="nv">title</span> <span class="cp">%}</span>
+{% block title %}抽籤結果{% endblock title %}
 
-<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span>
-<span class="nt">&lt;h1&gt;</span>抽籤結果<span class="nt">&lt;/h1&gt;</span>
-<span class="nt">&lt;p&gt;</span><span class="cp">{{</span> <span class="nv">name</span> <span class="cp">}}</span>（團體：<span class="cp">{{</span> <span class="nv">group</span> <span class="cp">}}</span>）<span class="nt">&lt;/p&gt;</span>
-<span class="cp">{%</span> <span class="k">endblock</span> <span class="nv">content</span> <span class="cp">%}</span>
+{% block content %}
+&lt;h1&gt;抽籤結果&lt;/h1&gt;
+&lt;p&gt;{{ name }}（團體：{{ group }}）&lt;/p&gt;
+{% endblock content %}
 </code></pre></div>
 
 
@@ -724,32 +724,32 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 
 
 <p>同理也要建立對應的 template。</p>
-<div class="highlight"><pre><span></span><code><span class="c">&lt;!-- templates/history.html --&gt;</span>
-<span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span>
+<div class="highlight"><pre><span></span><code>&lt;!-- templates/history.html --&gt;
+{% extends &quot;base.html&quot; %}
 
-<span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span>抽籤歷史<span class="cp">{%</span> <span class="k">endblock</span> <span class="nv">title</span> <span class="cp">%}</span>
+{% block title %}抽籤歷史{% endblock title %}
 
-<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span>
-<span class="nt">&lt;h1&gt;</span>抽籤歷史（最近 10 筆）<span class="nt">&lt;/h1&gt;</span>
-<span class="nt">&lt;table&gt;</span>
-  <span class="nt">&lt;thead&gt;</span>
-    <span class="nt">&lt;tr&gt;</span>
-      <span class="nt">&lt;th&gt;</span>名字<span class="nt">&lt;/th&gt;</span>
-      <span class="nt">&lt;th&gt;</span>團體<span class="nt">&lt;/th&gt;</span>
-      <span class="nt">&lt;th&gt;</span>抽中時間<span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;/tr&gt;</span>
-  <span class="nt">&lt;/thead&gt;</span>
-  <span class="nt">&lt;tbody&gt;</span>
-    <span class="cp">{%</span> <span class="k">for</span> <span class="nv">history</span> <span class="k">in</span> <span class="nv">recent_histories</span> <span class="cp">%}</span>
-    <span class="nt">&lt;tr&gt;</span>
-      <span class="nt">&lt;td&gt;</span><span class="cp">{{</span> <span class="nv">history.0</span> <span class="cp">}}</span><span class="nt">&lt;/td&gt;</span>
-      <span class="nt">&lt;td&gt;</span><span class="cp">{{</span> <span class="nv">history.1</span> <span class="cp">}}</span><span class="nt">&lt;/td&gt;</span>
-      <span class="nt">&lt;td&gt;</span><span class="cp">{{</span> <span class="nv">history.2</span> <span class="cp">}}</span><span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;/tr&gt;</span>
-    <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
-  <span class="nt">&lt;/tbody&gt;</span>
-<span class="nt">&lt;/table&gt;</span>
-<span class="cp">{%</span> <span class="k">endblock</span> <span class="nv">content</span> <span class="cp">%}</span>
+{% block content %}
+&lt;h1&gt;抽籤歷史（最近 10 筆）&lt;/h1&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;名字&lt;/th&gt;
+      &lt;th&gt;團體&lt;/th&gt;
+      &lt;th&gt;抽中時間&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    {% for history in recent_histories %}
+    &lt;tr&gt;
+      &lt;td&gt;{{ history.0 }}&lt;/td&gt;
+      &lt;td&gt;{{ history.1 }}&lt;/td&gt;
+      &lt;td&gt;{{ history.2 }}&lt;/td&gt;
+    &lt;/tr&gt;
+    {% endfor %}
+  &lt;/tbody&gt;
+&lt;/table&gt;
+{% endblock content %}
 </code></pre></div>
 
 
@@ -789,13 +789,13 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </code></pre></div>
 
 
-<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">for</span> <span class="nv">history</span> <span class="k">in</span> <span class="nv">recent_histories</span> <span class="cp">%}</span>
-<span class="nt">&lt;tr&gt;</span>
-  <span class="nt">&lt;td&gt;</span><span class="cp">{{</span> <span class="nv">history.name</span> <span class="cp">}}</span><span class="nt">&lt;/td&gt;</span>
-  <span class="nt">&lt;td&gt;</span><span class="cp">{{</span> <span class="nv">history.group</span> <span class="cp">}}</span><span class="nt">&lt;/td&gt;</span>
-  <span class="nt">&lt;td&gt;</span><span class="cp">{{</span> <span class="nv">history.draw_time.strftime</span><span class="o">(</span><span class="s2">&quot;%Y 年 %m 月 %d 日 %H 時 %M 分&quot;</span><span class="o">)</span> <span class="cp">}}</span><span class="nt">&lt;/td&gt;</span>
-<span class="nt">&lt;/tr&gt;</span>
-<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+<div class="highlight"><pre><span></span><code>{% for history in recent_histories %}
+&lt;tr&gt;
+  &lt;td&gt;{{ history.name }}&lt;/td&gt;
+  &lt;td&gt;{{ history.group }}&lt;/td&gt;
+  &lt;td&gt;{{ history.draw_time.strftime(&quot;%Y 年 %m 月 %d 日 %H 時 %M 分&quot;) }}&lt;/td&gt;
+&lt;/tr&gt;
+{% endfor %}
 </code></pre></div>
 
 

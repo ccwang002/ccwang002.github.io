@@ -363,6 +363,7 @@ code, tt {
     font-family: 'FiraMono', Inconsolata, monospace, sans-serif;
     font-size: 0.85em;
     white-space: pre-wrap;
+    word-break: break-all;
     border: 1px solid #E3EDF3;
     background: #F7FAFB;
     border-radius: 2px;
@@ -547,7 +548,7 @@ h1.blog-title a:hover {
     margin: 4rem auto;
     padding-bottom: 4rem;
     border-bottom: #EBF2F6 1px solid;
-    word-break: break-word;
+    word-break: normal;
     hyphens: auto;
 }
 

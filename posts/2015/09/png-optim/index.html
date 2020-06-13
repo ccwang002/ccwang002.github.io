@@ -34,7 +34,7 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link href="https://blog.liang2.tw/theme/css/haunter.css?a6ddbbf5" rel="stylesheet" />
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?5138a380" rel="stylesheet" />
 </head>
 
 <body class="post-template">
@@ -120,13 +120,13 @@
 (<a href="https://github.com/google/zopfli">Zopfli Readme</a>)</p>
 </blockquote>
 <p>這個 <a href="https://github.com/google/zopfli/blob/master/README.zopflipng">Zopflipng</a> 也是同個 repo 維護。自己編譯簡單，</p>
-<div class="highlight"><pre><span></span><code><span class="err">git clone https://github.com/google/zopfli.git</span>
-<span class="err">make zopflipng</span>
+<div class="highlight"><pre><span></span><code>git clone https://github.com/google/zopfli.git
+make zopflipng
 </code></pre></div>
 
 
 <p>如果要一口氣壓縮一堆 PNG，可以這樣使用：</p>
-<div class="highlight"><pre><span></span><code><span class="err">zopflipng --lossy_transparent --prefix *.png</span>
+<div class="highlight"><pre><span></span><code>zopflipng --lossy_transparent --prefix *.png
 </code></pre></div>
 
 
@@ -134,7 +134,7 @@
 <p>PS 剛好今天早上看到 Google 又出了另一個壓縮演算法 <a href="https://github.com/google/brotli">Brotli</a>，但這個與 deflate 不相容，應該不能用在 PNG 上面。</p>
 <h3 id="pngquant">pngquant</h3>
 <p>想要有損的 PNG 可以用 <a href="https://pngquant.org/">pngquant</a>。看官網有特別強調在透明度的資訊會被保留，並能像 JPEG 一樣設定 quality。一般 quality 容許越低壓縮比都會越高。</p>
-<div class="highlight"><pre><span></span><code><span class="err">pngquant -f --ext=.png --quality=70-85 --skip-if-larger *.png</span>
+<div class="highlight"><pre><span></span><code>pngquant -f --ext=.png --quality=70-85 --skip-if-larger *.png
 </code></pre></div>
 
 

@@ -49,13 +49,13 @@ gunzip *.txt.gz
 
 
 &lt;p&gt;Finally, we modify the MySQL config at &lt;code&gt;/usr/local/etc/my.cnf&lt;/code&gt; to accept remote database connection, so our VM can access the database on the host machine. I don&amp;rsquo;t use MySQL for anything else, so I simply let MySQL binds to all the possible IP addresses my machine has:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[mysqld]&lt;/span&gt;
-&lt;span class="na"&gt;bind-address&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;*&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;[mysqld]
+bind-address = *
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Note that this is not a secure configuration. To be secure, there should be a designated MySQL user with limited permission and a stricter connection setting. Restart MySQL to load the new config:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;opt&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="mf"&gt;@5.6&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="n"&gt;restart&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;/usr/local/opt/mysql@5.6/bin/mysql.server restart
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -78,8 +78,8 @@ gunzip *.txt.gz
 
 &lt;h3 id="remove-mysql"&gt;Remove MySQL&lt;/h3&gt;
 &lt;p&gt;If there is no other need of MySQL, we can uninstall it and remove all its databases by:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;brew&lt;/span&gt; &lt;span class="n"&gt;remove&lt;/span&gt; &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="mf"&gt;@5.6&lt;/span&gt;
-&lt;span class="n"&gt;rm&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;rf&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mysql&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;brew remove mysql@5.6
+rm -rf /usr/local/var/mysql
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Bioinfo"></category><category term="en"></category><category term="r"></category><category term="bioconductor"></category><category term="sqlite"></category><category term="ensembldb"></category></entry><entry><title>Using EnsDb's annotation database in Python</title><link href="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/" rel="alternate"></link><published>2017-11-17T00:00:00-06:00</published><updated>2017-11-17T00:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2017-11-17:/posts/2017/11/use-ensdb-database-in-python/</id><summary type="html">&lt;p&gt;How to find and download the EnsDb, the Ensembl genomic annotation in SQLite database made by R package ensembldb, and use it in Python application.&lt;/p&gt;</summary><content type="html">&lt;p&gt;I found that there isn&amp;rsquo;t a systematic way to query and convert genomic annotation IDs in Python. At least there isn&amp;rsquo;t one as good as &lt;a href="https://www.bioconductor.org/help/workflows/annotation/annotation/"&gt;what R/Bioconductor currently has&lt;/a&gt;. If you&amp;rsquo;ve never heard of R/Bioconductor annotation tool stack before, check out &lt;a href="https://www.bioconductor.org/help/workflows/annotation/annotation/"&gt;the official workflow&lt;/a&gt; or &lt;a href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/"&gt;my post in 2016&lt;/a&gt; specific for querying Ensembl annotations.&lt;/p&gt;
 &lt;p&gt;Although I enjoy using R for genomic annotation conversion, a few days ago I wanted to do the same thing inside my text processing script in Python. I might be able to re-write the script in R but I feel like R is not really the right tool for this task and on top of it, I don&amp;rsquo;t know how to write an efficent text processing in R&lt;sup id="fnref:r-text-processing"&gt;&lt;a class="footnote-ref" href="#fn:r-text-processing"&gt;1&lt;/a&gt;&lt;/sup&gt;. &lt;/p&gt;
 &lt;p&gt;Knowing the fact that all annotations in R are stored in single-file SQLite databases, I should be able to connect the database directly Python or any other language and wirte SQL query to retrieve the same information. So my question now becomes to how to extract or find the path to the databases. Turn out that many new Bioconductor annotation packages are hosted via &lt;a href="https://bioconductor.org/packages/release/bioc/html/AnnotationHub.html"&gt;AnnotationHub&lt;/a&gt;, and user can search for the annotation package and retrieve them locally by their ID. For example, all the recent Ensembl releases, e.g., &lt;code&gt;EnsDb.Hsapiens.vXX&lt;/code&gt;, are available on AnnotationHub. &lt;/p&gt;
@@ -121,7 +121,7 @@ Now AnnotationHub has a nice &lt;a href="https://annotationhub.bioconductor.org/
 &lt;/ul&gt;
 &lt;p&gt;So as long as we get the &lt;code&gt;rdatapaths.id&lt;/code&gt; of the EnsDb using the metadata, we can download it via the &lt;code&gt;/fetch/:id&lt;/code&gt; endpoint.&lt;/p&gt;
 &lt;p&gt;After downloading the metadata database &lt;code&gt;https://annotationhub.bioconductor.org/metadata/annotationhub.sqlite3&lt;/code&gt;, we can inspect it in SQLite3 by connecting it directly:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sqlite3 annotationhub.sqlite3&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sqlite3 annotationhub.sqlite3
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -154,7 +154,7 @@ Now AnnotationHub has a nice &lt;a href="https://annotationhub.bioconductor.org/
 
 
 &lt;p&gt;All the Ensembl releases 87+ are available! I will use the release 90 for example. we can download it by its rdatapaths id:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;wget -O EnsDb.Hsapiens.v90.sqlite https://annotationhub.bioconductor.org/fetch/64495&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;wget -O EnsDb.Hsapiens.v90.sqlite https://annotationhub.bioconductor.org/fetch/64495
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 

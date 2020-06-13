@@ -95,7 +95,7 @@
 &lt;p&gt;這邊要額外說明一下 Linked Attachment Base Directory 以及 Data Directory 的差異。像 PDF 這類如果被 Zotfile 所管理的檔案，或是自己手動選「Attach Link &amp;hellip;」的檔案，他使用的是 linked attachment，icon 會有個連結的符號 &lt;img src="https://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotfile_fileicon.png" style="height: 1.6em;"/&gt;。其他像 Webpage Snapshot 或是預設的 PDF 檔都是放在 Data Directory。&lt;/p&gt;
 &lt;h4 id="how-to-sync-data-storage"&gt;How to sync data storage&lt;/h4&gt;
 &lt;p&gt;如果要進一步讓 data storage 也用 Dropbox 同步的話，參考官網關於 &lt;a href="https://www.zotero.org/support/sync"&gt;sync 的介紹&lt;/a&gt;，OSX 上 Zotero Firefox 的資料會存放在&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;~/Library/Application Support/Firefox/Profiles/xxxxxxxx.default/zotero&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;~/Library/Application Support/Firefox/Profiles/xxxxxxxx.default/zotero
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 

@@ -37,7 +37,7 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link href="https://blog.liang2.tw/theme/css/haunter.css?a6ddbbf5" rel="stylesheet" />
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?5138a380" rel="stylesheet" />
 </head>
 
 <body class="post-template">
@@ -117,7 +117,7 @@
 
 
 <p>Commands above can be scripted into SQLite like:</p>
-<div class="highlight"><pre><span></span><code><span class="err">sqlite3 mydb.sqlite &lt; load_data.sql</span>
+<div class="highlight"><pre><span></span><code>sqlite3 mydb.sqlite &lt; load_data.sql
 </code></pre></div>
 
 
@@ -133,7 +133,7 @@ gunzip -c mydata.tsv.gz &gt; mypipe <span class="p">&amp;</span>
 
 
 <p>The trailing <code>&amp;</code> makes the decompress command running in the background to keep everything in one shell session. Then read the data in SQLite as if it were a file like:</p>
-<div class="highlight"><pre><span></span><code><span class="o">.</span><span class="kn">import</span> <span class="nn">mypipe</span> <span class="nn">mytable</span>
+<div class="highlight"><pre><span></span><code>.import mypipe mytable
 </code></pre></div>
 
 
@@ -243,35 +243,35 @@ gunzip -c mydata.tsv.gz &gt; mypipe <span class="p">&amp;</span>
 
 <h3 id="postgresql_1">PostgreSQL</h3>
 <p>I used <a href="https://pgloader.io/">pgloader</a> to load the data into a local PostgreSQL database <code>test_mc3</code>. pgloader can take a script of its own mini-language.</p>
-<div class="highlight"><pre><span></span><code><span class="err">LOAD CSV</span>
-<span class="err">    FROM &#39;mc3_filtered.tsv&#39;</span>
-<span class="err">    INTO postgresql:///test_mc3?mc3</span>
-<span class="err">    WITH fields terminated by &#39;\t&#39;,</span>
-<span class="err">         fields not enclosed,</span>
-<span class="err">         drop indexes</span>
-<span class="err">    BEFORE LOAD DO</span>
-<span class="err">    $$ DROP TABLE IF EXISTS mc3; $$,</span>
-<span class="err">    $$ CREATE TABLE mc3 (</span>
-<span class="err">            chrom       TEXT,</span>
-<span class="err">            &quot;start&quot;     BIGINT,</span>
-<span class="err">            &quot;end&quot;       BIGINT,</span>
-<span class="err">            strand      SMALLINT,</span>
-<span class="err">            mutation_type   TEXT,</span>
-<span class="err">            ref_allele  TEXT,</span>
-<span class="err">            alt_allele  TEXT,</span>
-<span class="err">            transcript_id   TEXT,</span>
-<span class="err">            hgvs_c      TEXT,</span>
-<span class="err">            hgvs_p      TEXT,</span>
-<span class="err">            cdna_start  INT,</span>
-<span class="err">            cdna_end    INT,</span>
-<span class="err">            p_start     INT,</span>
-<span class="err">            p_end       INT,</span>
-<span class="err">            normal_id   TEXT,</span>
-<span class="err">            tumor_id    TEXT</span>
-<span class="err">        );</span>
-<span class="err">    $$,</span>
-<span class="err">    $$ CREATE INDEX mc3_idx ON mc3 (transcript_id, mutation_type); $$</span>
-<span class="err">;</span>
+<div class="highlight"><pre><span></span><code>LOAD CSV
+    FROM &#39;mc3_filtered.tsv&#39;
+    INTO postgresql:///test_mc3?mc3
+    WITH fields terminated by &#39;\t&#39;,
+         fields not enclosed,
+         drop indexes
+    BEFORE LOAD DO
+    $$ DROP TABLE IF EXISTS mc3; $$,
+    $$ CREATE TABLE mc3 (
+            chrom       TEXT,
+            &quot;start&quot;     BIGINT,
+            &quot;end&quot;       BIGINT,
+            strand      SMALLINT,
+            mutation_type   TEXT,
+            ref_allele  TEXT,
+            alt_allele  TEXT,
+            transcript_id   TEXT,
+            hgvs_c      TEXT,
+            hgvs_p      TEXT,
+            cdna_start  INT,
+            cdna_end    INT,
+            p_start     INT,
+            p_end       INT,
+            normal_id   TEXT,
+            tumor_id    TEXT
+        );
+    $$,
+    $$ CREATE INDEX mc3_idx ON mc3 (transcript_id, mutation_type); $$
+;
 </code></pre></div>
 
 

@@ -51,7 +51,7 @@
 
 
 &lt;p&gt;Commands above can be scripted into SQLite like:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sqlite3 mydb.sqlite &amp;lt; load_data.sql&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sqlite3 mydb.sqlite &amp;lt; load_data.sql
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -67,7 +67,7 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 
 
 &lt;p&gt;The trailing &lt;code&gt;&amp;amp;&lt;/code&gt; makes the decompress command running in the background to keep everything in one shell session. Then read the data in SQLite as if it were a file like:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;mypipe&lt;/span&gt; &lt;span class="nn"&gt;mytable&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;.import mypipe mytable
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -177,35 +177,35 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 
 &lt;h3 id="postgresql_1"&gt;PostgreSQL&lt;/h3&gt;
 &lt;p&gt;I used &lt;a href="https://pgloader.io/"&gt;pgloader&lt;/a&gt; to load the data into a local PostgreSQL database &lt;code&gt;test_mc3&lt;/code&gt;. pgloader can take a script of its own mini-language.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;LOAD CSV&lt;/span&gt;
-&lt;span class="err"&gt;    FROM &amp;#39;mc3_filtered.tsv&amp;#39;&lt;/span&gt;
-&lt;span class="err"&gt;    INTO postgresql:///test_mc3?mc3&lt;/span&gt;
-&lt;span class="err"&gt;    WITH fields terminated by &amp;#39;\t&amp;#39;,&lt;/span&gt;
-&lt;span class="err"&gt;         fields not enclosed,&lt;/span&gt;
-&lt;span class="err"&gt;         drop indexes&lt;/span&gt;
-&lt;span class="err"&gt;    BEFORE LOAD DO&lt;/span&gt;
-&lt;span class="err"&gt;    $$ DROP TABLE IF EXISTS mc3; $$,&lt;/span&gt;
-&lt;span class="err"&gt;    $$ CREATE TABLE mc3 (&lt;/span&gt;
-&lt;span class="err"&gt;            chrom       TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            &amp;quot;start&amp;quot;     BIGINT,&lt;/span&gt;
-&lt;span class="err"&gt;            &amp;quot;end&amp;quot;       BIGINT,&lt;/span&gt;
-&lt;span class="err"&gt;            strand      SMALLINT,&lt;/span&gt;
-&lt;span class="err"&gt;            mutation_type   TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            ref_allele  TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            alt_allele  TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            transcript_id   TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            hgvs_c      TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            hgvs_p      TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            cdna_start  INT,&lt;/span&gt;
-&lt;span class="err"&gt;            cdna_end    INT,&lt;/span&gt;
-&lt;span class="err"&gt;            p_start     INT,&lt;/span&gt;
-&lt;span class="err"&gt;            p_end       INT,&lt;/span&gt;
-&lt;span class="err"&gt;            normal_id   TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            tumor_id    TEXT&lt;/span&gt;
-&lt;span class="err"&gt;        );&lt;/span&gt;
-&lt;span class="err"&gt;    $$,&lt;/span&gt;
-&lt;span class="err"&gt;    $$ CREATE INDEX mc3_idx ON mc3 (transcript_id, mutation_type); $$&lt;/span&gt;
-&lt;span class="err"&gt;;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;LOAD CSV
+    FROM &amp;#39;mc3_filtered.tsv&amp;#39;
+    INTO postgresql:///test_mc3?mc3
+    WITH fields terminated by &amp;#39;\t&amp;#39;,
+         fields not enclosed,
+         drop indexes
+    BEFORE LOAD DO
+    $$ DROP TABLE IF EXISTS mc3; $$,
+    $$ CREATE TABLE mc3 (
+            chrom       TEXT,
+            &amp;quot;start&amp;quot;     BIGINT,
+            &amp;quot;end&amp;quot;       BIGINT,
+            strand      SMALLINT,
+            mutation_type   TEXT,
+            ref_allele  TEXT,
+            alt_allele  TEXT,
+            transcript_id   TEXT,
+            hgvs_c      TEXT,
+            hgvs_p      TEXT,
+            cdna_start  INT,
+            cdna_end    INT,
+            p_start     INT,
+            p_end       INT,
+            normal_id   TEXT,
+            tumor_id    TEXT
+        );
+    $$,
+    $$ CREATE INDEX mc3_idx ON mc3 (transcript_id, mutation_type); $$
+;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 

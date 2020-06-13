@@ -49,13 +49,13 @@ gunzip *.txt.gz
 
 
 &lt;p&gt;Finally, we modify the MySQL config at &lt;code&gt;/usr/local/etc/my.cnf&lt;/code&gt; to accept remote database connection, so our VM can access the database on the host machine. I don&amp;rsquo;t use MySQL for anything else, so I simply let MySQL binds to all the possible IP addresses my machine has:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[mysqld]&lt;/span&gt;
-&lt;span class="na"&gt;bind-address&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;*&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;[mysqld]
+bind-address = *
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Note that this is not a secure configuration. To be secure, there should be a designated MySQL user with limited permission and a stricter connection setting. Restart MySQL to load the new config:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;opt&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="mf"&gt;@5.6&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="n"&gt;restart&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;/usr/local/opt/mysql@5.6/bin/mysql.server restart
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -78,8 +78,8 @@ gunzip *.txt.gz
 
 &lt;h3 id="remove-mysql"&gt;Remove MySQL&lt;/h3&gt;
 &lt;p&gt;If there is no other need of MySQL, we can uninstall it and remove all its databases by:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;brew&lt;/span&gt; &lt;span class="n"&gt;remove&lt;/span&gt; &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="mf"&gt;@5.6&lt;/span&gt;
-&lt;span class="n"&gt;rm&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;rf&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mysql&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;brew remove mysql@5.6
+rm -rf /usr/local/var/mysql
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Bioinfo"></category><category term="en"></category><category term="r"></category><category term="bioconductor"></category><category term="sqlite"></category><category term="ensembldb"></category></entry><entry><title>Access gene annotation using gffutils</title><link href="https://blog.liang2.tw/posts/2018/06/gene-annotation-using-gffutils/" rel="alternate"></link><published>2018-06-22T00:00:00-05:00</published><updated>2018-06-22T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2018-06-22:/posts/2018/06/gene-annotation-using-gffutils/</id><summary type="html">&lt;p&gt;Recently, I had to access gene annotations in multiple versions from multiple sources such as Ensembl, GENCODE, and UCSC. I used to rely on …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Recently, I had to access gene annotations in multiple versions from multiple sources such as Ensembl, GENCODE, and UCSC. I used to rely on the R/Bioconductor ecosystem to query the coordinates of a gene annotation. There are existing Bioconductor packages ready for Ensembl and UCSC annotations (more info in my previous posts: &lt;a href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/"&gt;Ensembl&lt;/a&gt; and &lt;a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/"&gt;UCSC&lt;/a&gt;), and one can create a new customized TxDb given a GTF/GFF file. However, the project I was working on was written in Python, so I went on searching for similar alternatives in Python.&lt;/p&gt;
 &lt;p&gt;That&amp;rsquo;s how I found &lt;a href="https://daler.github.io/gffutils/"&gt;gffutils&lt;/a&gt;, a Python package to access gene annotations from GTF/GFF files. &lt;code&gt;gffutils&lt;/code&gt; first imports the annotations from the GTF/GFF file into a SQLite database. The package also provides some abstraction on top of the database schema, so user can retrieve an annotation without talking to the database directly using repetitive SQL commands. Database enables fast random access to any gene annotation. &lt;/p&gt;
 &lt;p&gt;I will use GENCODE v19, an annotation used by many TCGA GRCh37/hg19 projects, as an example to demo the usage of gffutils. My project requires the coordinates of UTRs and exons of all the transcripts in use.&lt;/p&gt;
@@ -281,7 +281,7 @@ gunzip *.txt.gz
 
 
 &lt;p&gt;Commands above can be scripted into SQLite like:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sqlite3 mydb.sqlite &amp;lt; load_data.sql&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sqlite3 mydb.sqlite &amp;lt; load_data.sql
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -297,7 +297,7 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 
 
 &lt;p&gt;The trailing &lt;code&gt;&amp;amp;&lt;/code&gt; makes the decompress command running in the background to keep everything in one shell session. Then read the data in SQLite as if it were a file like:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;mypipe&lt;/span&gt; &lt;span class="nn"&gt;mytable&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;.import mypipe mytable
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -407,35 +407,35 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 
 &lt;h3 id="postgresql_1"&gt;PostgreSQL&lt;/h3&gt;
 &lt;p&gt;I used &lt;a href="https://pgloader.io/"&gt;pgloader&lt;/a&gt; to load the data into a local PostgreSQL database &lt;code&gt;test_mc3&lt;/code&gt;. pgloader can take a script of its own mini-language.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;LOAD CSV&lt;/span&gt;
-&lt;span class="err"&gt;    FROM &amp;#39;mc3_filtered.tsv&amp;#39;&lt;/span&gt;
-&lt;span class="err"&gt;    INTO postgresql:///test_mc3?mc3&lt;/span&gt;
-&lt;span class="err"&gt;    WITH fields terminated by &amp;#39;\t&amp;#39;,&lt;/span&gt;
-&lt;span class="err"&gt;         fields not enclosed,&lt;/span&gt;
-&lt;span class="err"&gt;         drop indexes&lt;/span&gt;
-&lt;span class="err"&gt;    BEFORE LOAD DO&lt;/span&gt;
-&lt;span class="err"&gt;    $$ DROP TABLE IF EXISTS mc3; $$,&lt;/span&gt;
-&lt;span class="err"&gt;    $$ CREATE TABLE mc3 (&lt;/span&gt;
-&lt;span class="err"&gt;            chrom       TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            &amp;quot;start&amp;quot;     BIGINT,&lt;/span&gt;
-&lt;span class="err"&gt;            &amp;quot;end&amp;quot;       BIGINT,&lt;/span&gt;
-&lt;span class="err"&gt;            strand      SMALLINT,&lt;/span&gt;
-&lt;span class="err"&gt;            mutation_type   TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            ref_allele  TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            alt_allele  TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            transcript_id   TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            hgvs_c      TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            hgvs_p      TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            cdna_start  INT,&lt;/span&gt;
-&lt;span class="err"&gt;            cdna_end    INT,&lt;/span&gt;
-&lt;span class="err"&gt;            p_start     INT,&lt;/span&gt;
-&lt;span class="err"&gt;            p_end       INT,&lt;/span&gt;
-&lt;span class="err"&gt;            normal_id   TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            tumor_id    TEXT&lt;/span&gt;
-&lt;span class="err"&gt;        );&lt;/span&gt;
-&lt;span class="err"&gt;    $$,&lt;/span&gt;
-&lt;span class="err"&gt;    $$ CREATE INDEX mc3_idx ON mc3 (transcript_id, mutation_type); $$&lt;/span&gt;
-&lt;span class="err"&gt;;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;LOAD CSV
+    FROM &amp;#39;mc3_filtered.tsv&amp;#39;
+    INTO postgresql:///test_mc3?mc3
+    WITH fields terminated by &amp;#39;\t&amp;#39;,
+         fields not enclosed,
+         drop indexes
+    BEFORE LOAD DO
+    $$ DROP TABLE IF EXISTS mc3; $$,
+    $$ CREATE TABLE mc3 (
+            chrom       TEXT,
+            &amp;quot;start&amp;quot;     BIGINT,
+            &amp;quot;end&amp;quot;       BIGINT,
+            strand      SMALLINT,
+            mutation_type   TEXT,
+            ref_allele  TEXT,
+            alt_allele  TEXT,
+            transcript_id   TEXT,
+            hgvs_c      TEXT,
+            hgvs_p      TEXT,
+            cdna_start  INT,
+            cdna_end    INT,
+            p_start     INT,
+            p_end       INT,
+            normal_id   TEXT,
+            tumor_id    TEXT
+        );
+    $$,
+    $$ CREATE INDEX mc3_idx ON mc3 (transcript_id, mutation_type); $$
+;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -537,7 +537,7 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 &lt;/div&gt;
 &lt;h3 id="django"&gt;Django 初始設定&lt;/h3&gt;
 &lt;p&gt;一樣開一個 Python 虛擬環境（這時候就是它的好處了，能把不同專案的套件隔離）。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;pip install django pytz ipython pyyaml&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip install django pytz ipython pyyaml
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -548,14 +548,14 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 
 
 &lt;p&gt;執行完之後應該會多出一堆檔案，結構如下。注意到有兩層 &lt;code&gt;draw_site&lt;/code&gt;。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;demo_django_draw_member/&lt;/span&gt;
-&lt;span class="err"&gt;└── draw_site/&lt;/span&gt;
-&lt;span class="err"&gt;    ├── draw_site/&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── __init__.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── settings.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── urls.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   └── wsgi.py&lt;/span&gt;
-&lt;span class="err"&gt;    └── manage.py*&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;demo_django_draw_member/
+└── draw_site/
+    ├── draw_site/
+    │   ├── __init__.py
+    │   ├── settings.py
+    │   ├── urls.py
+    │   └── wsgi.py
+    └── manage.py*
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -588,18 +588,18 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;demo_django_draw_member/&lt;/span&gt;
-&lt;span class="err"&gt;└── draw_site/&lt;/span&gt;
-&lt;span class="err"&gt;    ├── draw_member/&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── __init__.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── admin.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── migrations/&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── models.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── tests.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   └── views.py&lt;/span&gt;
-&lt;span class="err"&gt;    ├── draw_site/&lt;/span&gt;
-&lt;span class="err"&gt;    │   └── ...&lt;/span&gt;
-&lt;span class="err"&gt;    └── manage.py*&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;demo_django_draw_member/
+└── draw_site/
+    ├── draw_member/
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── migrations/
+    │   ├── models.py
+    │   ├── tests.py
+    │   └── views.py
+    ├── draw_site/
+    │   └── ...
+    └── manage.py*
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -732,15 +732,15 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 
 &lt;p&gt;基本上格式就是照抄原本就有的。因為放在同個 app 裡面了，import view 時就可以用 explicit relative import（這不是 relative import 喔）&lt;/p&gt;
 &lt;p&gt;原本的 urls.py 就改成把 URL 的處理「dispatch」給這個 app，改成底下這樣。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_site/urls.py&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.conf.urls&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;url&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.contrib&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;admin&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# draw_site/urls.py
+from django.conf.urls import include, url
+from django.contrib import admin
 
 
-&lt;span class="n"&gt;urlpatterns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^admin/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;admin&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urls&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
-    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;draw_member.urls&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
-&lt;span class="p"&gt;]&lt;/span&gt;
+urlpatterns = [
+    url(r&amp;#39;^admin/&amp;#39;, include(admin.site.urls)),
+    url(r&amp;#39;^&amp;#39;, include(&amp;#39;draw_member.urls&amp;#39;)),
+]
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -862,15 +862,15 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;draw_member.models&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;History&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;m1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;高坂 穂乃果&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;group_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;μ&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;m2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;平沢 唯&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;group_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;K-ON!&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;m1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;m2&lt;/span&gt;
-&lt;span class="n"&gt;Out&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="err"&gt;高坂&lt;/span&gt; &lt;span class="err"&gt;穂乃果&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="err"&gt;μ&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;s&amp;gt;, &amp;lt;Member: 平沢 唯 of K-ON!&amp;gt;)&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;m1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;m2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;h1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;History&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;member&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;m1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;h1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;In [1]: from draw_member.models import Member, History
+In [2]: m1 = Member(name=&amp;quot;高坂 穂乃果&amp;quot;, group_name=&amp;quot;μ&amp;#39;s&amp;quot;)
+In [4]: m2 = Member(name=&amp;quot;平沢 唯&amp;quot;, group_name=&amp;quot;K-ON!&amp;quot;)
+In [5]: m1, m2
+Out[5]: (&amp;lt;Member: 高坂 穂乃果 of μ&amp;#39;s&amp;gt;, &amp;lt;Member: 平沢 唯 of K-ON!&amp;gt;)
+In [7]: m1.save()
+In [8]: m2.save()
+In [6]: h1 = History(member=m1)
+In [9]: h1.save()
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -959,17 +959,17 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 
 &lt;h4 id="data-in-orm-and-fixtures"&gt;Data in ORM and fixtures&lt;/h4&gt;
 &lt;p&gt;我們把 &lt;code&gt;members.csv&lt;/code&gt; 的資料填到資料庫吧。這邊就不用細說了。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;csv&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;../../draw_member/members.csv&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;newline&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-   &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;    &lt;span class="n"&gt;csv_reader&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;csv&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DictReader&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-   &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;    &lt;span class="n"&gt;members&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-   &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;名字&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;團體&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-   &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;csv_reader&lt;/span&gt;
-   &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;    &lt;span class="p"&gt;]&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;draw_member.models&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;members&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-   &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;     &lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;group_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-   &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;In [1]: import csv
+In [2]: with open(&amp;#39;../../draw_member/members.csv&amp;#39;, newline=&amp;#39;&amp;#39;) as f:
+   ...:    csv_reader = csv.DictReader(f)
+   ...:    members = [
+   ...:    (row[&amp;#39;名字&amp;#39;], row[&amp;#39;團體&amp;#39;])
+   ...:    for row in csv_reader
+   ...:    ]
+In [3]: from draw_member.models import Member
+In [4]: for m in members:
+   ...:     Member(name=m[0], group_name=m[1]).save()
+   ...:
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1023,28 +1023,28 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 &lt;p&gt;這樣資料的存取就介紹得差不多了。更多的細節可以參考&lt;a href="https://docs.djangoproject.com/en/1.8/#the-model-layer"&gt;官網 model layer&lt;/a&gt; 的說明。&lt;/p&gt;
 &lt;h3 id="django-template"&gt;Django Template&lt;/h3&gt;
 &lt;p&gt;在進行下去之前，先確認我們的目錄結構是一樣的。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;demo_django_draw_member/&lt;/span&gt;
-&lt;span class="err"&gt;└── draw_site/&lt;/span&gt;
-&lt;span class="err"&gt;    ├── db.sqlite3&lt;/span&gt;
-&lt;span class="err"&gt;    ├── draw_member/&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── __init__.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── admin.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── fixtures/&lt;/span&gt;
-&lt;span class="err"&gt;    │   │   ├── anime_members.json&lt;/span&gt;
-&lt;span class="err"&gt;    │   │   └── anime_members.yaml&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── migrations/&lt;/span&gt;
-&lt;span class="err"&gt;    │   │   ├── 0001_initial.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   │   └── __init__.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── models.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── tests.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── urls.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   └── views.py&lt;/span&gt;
-&lt;span class="err"&gt;    ├── draw_site/&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── __init__.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── settings.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── urls.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   └── wsgi.py&lt;/span&gt;
-&lt;span class="err"&gt;    └── manage.py*&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;demo_django_draw_member/
+└── draw_site/
+    ├── db.sqlite3
+    ├── draw_member/
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── fixtures/
+    │   │   ├── anime_members.json
+    │   │   └── anime_members.yaml
+    │   ├── migrations/
+    │   │   ├── 0001_initial.py
+    │   │   └── __init__.py
+    │   ├── models.py
+    │   ├── tests.py
+    │   ├── urls.py
+    │   └── views.py
+    ├── draw_site/
+    │   ├── __init__.py
+    │   ├── settings.py
+    │   ├── urls.py
+    │   └── wsgi.py
+    └── manage.py*
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1239,22 +1239,22 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 &lt;h3 id="django-form"&gt;Django Form&lt;/h3&gt;
 &lt;p&gt;直接把 form 寫在 template 裡面也是可以，有時候 form 可能跟 model 息息相關，而且 form input 多了之後每個欄位都要自己讀寫也太不直覺。想要驗証使用者的 input 的話就更複雜了。&lt;/p&gt;
 &lt;p&gt;於是就有了 Django Form。馬上來看用起來是怎麼樣。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_member/forms.py&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;forms&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# draw_member/forms.py
+from django import forms
 
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;DrawForm&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;forms&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Form&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-    &lt;span class="n"&gt;GROUP_CHOICES&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;μ&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;μ&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
-        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;K-ON!&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;K-ON!&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
-        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;ALL&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;（全）&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
-    &lt;span class="p"&gt;]&lt;/span&gt;
-    &lt;span class="n"&gt;group&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;forms&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ChoiceField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-        &lt;span class="n"&gt;choices&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;GROUP_CHOICES&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="n"&gt;label&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;團隊名稱&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="n"&gt;label_suffix&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;：&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="n"&gt;widget&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;forms&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RadioSelect&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="n"&gt;initial&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;ALL&amp;#39;&lt;/span&gt;
-    &lt;span class="p"&gt;)&lt;/span&gt;
+class DrawForm(forms.Form):
+    GROUP_CHOICES = [
+        (&amp;quot;μ&amp;#39;s&amp;quot;, &amp;quot;μ&amp;#39;s&amp;quot;),
+        (&amp;quot;K-ON!&amp;quot;, &amp;quot;K-ON!&amp;quot;),
+        (&amp;quot;ALL&amp;quot;, &amp;quot;（全）&amp;quot;),
+    ]
+    group = forms.ChoiceField(
+        choices=GROUP_CHOICES,
+        label=&amp;#39;團隊名稱&amp;#39;,
+        label_suffix=&amp;#39;：&amp;#39;,
+        widget=forms.RadioSelect,
+        initial=&amp;#39;ALL&amp;#39;
+    )
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1878,21 +1878,21 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 &lt;p&gt;我們先假設所有檔案都放在同個資料夾裡，估且叫 &lt;code&gt;draw_member&lt;/code&gt;。之後沒有額外說明的話，都是在這個目錄下操作。&lt;/p&gt;
 &lt;p&gt;原始資料用 CSV 格式來儲存，有「名字」以及「團體」兩個欄位。不過考慮到可能會把檔案匯出，在原始檔案多加一個「最近被抽到的日期」欄位，希望最近被抽到的會比其他人再被抽到的機會低一點。&lt;/p&gt;
 &lt;p&gt;這個 CSV 檔案命名為 &lt;code&gt;members.csv&lt;/code&gt;。一開始沒有人被抽到，所以最後一欄都先設成空的&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;，第一行是每一欄欄位的名稱。如果從資料庫匯出，這欄位就會有值。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;&amp;quot;名字&amp;quot;,&amp;quot;團體&amp;quot;,&amp;quot;最近被抽到的日期&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;高坂 穂乃果&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;絢瀬 絵里&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;南 ことり&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;園田 海未&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;星空 凛&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;西木野 真姫&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;東條 希&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;小泉 花陽&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;矢澤 にこ&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;平沢 唯&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;秋山 澪&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;田井中 律&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;琴吹 紬&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;中野 梓&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&amp;quot;名字&amp;quot;,&amp;quot;團體&amp;quot;,&amp;quot;最近被抽到的日期&amp;quot;
+&amp;quot;高坂 穂乃果&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;絢瀬 絵里&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;南 ことり&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;園田 海未&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;星空 凛&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;西木野 真姫&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;東條 希&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;小泉 花陽&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;矢澤 にこ&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;平沢 唯&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;秋山 澪&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;田井中 律&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;琴吹 紬&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;中野 梓&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -2295,16 +2295,16 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;h4 id="form"&gt;Form&lt;/h4&gt;
 &lt;p&gt;最常見的 POST 就是搭配&lt;a href="https://developer.mozilla.org/en/docs/Web/HTML/Element/form"&gt;表單 (form)&lt;/a&gt; 使用。像登入要填帳號密碼、問卷問題與回答，就很常用 form 實作。Form 裡面有很多種 input，代表使用者能填的欄位，類型可能是單選、複選、單行、多行、密文等。&lt;/p&gt;
 &lt;p&gt;我們就先看一下 form 實際的長相吧。改寫 &lt;code&gt;templates/index.html&lt;/code&gt;，加上一個抽籤選團體的 form。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;來抽出快樂的夥伴吧！&lt;span class="nt"&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;&lt;span class="c"&gt;&amp;lt;!-- 本來有的 --&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;選擇要被抽的團體&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;form&lt;/span&gt; &lt;span class="na"&gt;action=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/draw&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;method=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;post&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;label&lt;/span&gt; &lt;span class="na"&gt;for=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;group_name&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;團隊名稱：&lt;span class="nt"&gt;&amp;lt;/label&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;radio&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;group_name&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;μ&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;μ&amp;#39;s
-  &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;radio&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;group_name&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;K-ON!&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;K-ON!
-  &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;radio&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;group_name&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ALL&amp;quot;&lt;/span&gt; &lt;span class="err"&gt;checked&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;（全）
-  &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;submit&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Submit&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;hr&amp;gt;&lt;/span&gt;&lt;span class="c"&gt;&amp;lt;!-- 這是分隔線 --&amp;gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&amp;lt;h1&amp;gt;來抽出快樂的夥伴吧！&amp;lt;/h1&amp;gt;&amp;lt;!-- 本來有的 --&amp;gt;
+&amp;lt;p&amp;gt;選擇要被抽的團體&amp;lt;/p&amp;gt;
+&amp;lt;form action=&amp;quot;/draw&amp;quot; method=&amp;quot;post&amp;quot;&amp;gt;
+  &amp;lt;label for=&amp;quot;group_name&amp;quot;&amp;gt;團隊名稱：&amp;lt;/label&amp;gt;
+  &amp;lt;input type=&amp;quot;radio&amp;quot; name=&amp;quot;group_name&amp;quot; value=&amp;quot;μ&amp;#39;s&amp;quot;&amp;gt;μ&amp;#39;s
+  &amp;lt;input type=&amp;quot;radio&amp;quot; name=&amp;quot;group_name&amp;quot; value=&amp;quot;K-ON!&amp;quot;&amp;gt;K-ON!
+  &amp;lt;input type=&amp;quot;radio&amp;quot; name=&amp;quot;group_name&amp;quot; value=&amp;quot;ALL&amp;quot; checked&amp;gt;（全）
+  &amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Submit&amp;quot;&amp;gt;
+&amp;lt;/form&amp;gt;
+&amp;lt;hr&amp;gt;&amp;lt;!-- 這是分隔線 --&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -2382,57 +2382,57 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;/ul&gt;
 &lt;p&gt;馬上來改寫一下吧。我們的功能表應該每一頁都要出現，再來我們希望 &lt;code&gt;/draw&lt;/code&gt; 的頁面也是個完整的 HTML。&lt;/p&gt;
 &lt;p&gt;首先先把常用的部份獨立出來，做成 &lt;code&gt;templates/base.html&lt;/code&gt;。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;&amp;lt;!-- templates/base.html --&amp;gt;&lt;/span&gt;
-&lt;span class="cp"&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;meta&lt;/span&gt; &lt;span class="na"&gt;charset=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;utf-8&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;meta&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;viewport&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;content=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;width=device-width&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;title&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;成員抽籤&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
-    &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;hr&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;h3&amp;gt;&lt;/span&gt;功能列&lt;span class="nt"&gt;&amp;lt;/h3&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;ul&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;li&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;首頁（抽籤）&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;li&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/history&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;歷史記錄&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;li&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/reset&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;清除記錄、更新成員資料&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&amp;lt;!-- templates/base.html --&amp;gt;
+&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html&amp;gt;
+  &amp;lt;head&amp;gt;
+    &amp;lt;meta charset=&amp;quot;utf-8&amp;quot;&amp;gt;
+    &amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device-width&amp;quot;&amp;gt;
+    &amp;lt;title&amp;gt;{% block title %}成員抽籤{% endblock title %}&amp;lt;/title&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    {% block content %}{% endblock content %}
+    &amp;lt;hr&amp;gt;
+    &amp;lt;h3&amp;gt;功能列&amp;lt;/h3&amp;gt;
+    &amp;lt;ul&amp;gt;
+      &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;/&amp;quot;&amp;gt;首頁（抽籤）&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+      &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;/history&amp;quot;&amp;gt;歷史記錄&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+      &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;/reset&amp;quot;&amp;gt;清除記錄、更新成員資料&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+    &amp;lt;/ul&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;像功能列這種不會變的就很適合放在這邊。而我們的首頁就可以重覆使用這個結構，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;&amp;lt;!-- templates/index.html --&amp;gt;&lt;/span&gt;
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;extends&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;base.html&amp;quot;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&amp;lt;!-- templates/index.html --&amp;gt;
+{% extends &amp;quot;base.html&amp;quot; %}
 
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;來抽出快樂的夥伴吧！&lt;span class="nt"&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;選擇要被抽的團體&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;form&lt;/span&gt; &lt;span class="na"&gt;action=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/draw&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;method=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;post&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;label&lt;/span&gt; &lt;span class="na"&gt;for=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;group_name&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;團隊名稱：&lt;span class="nt"&gt;&amp;lt;/label&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;radio&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;group_name&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;μ&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;μ&amp;#39;s
-  &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;radio&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;group_name&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;K-ON!&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;K-ON!
-  &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;radio&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;group_name&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ALL&amp;quot;&lt;/span&gt; &lt;span class="err"&gt;checked&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;（全）
-  &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;submit&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Submit&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+{% block content %}
+&amp;lt;h1&amp;gt;來抽出快樂的夥伴吧！&amp;lt;/h1&amp;gt;
+&amp;lt;p&amp;gt;選擇要被抽的團體&amp;lt;/p&amp;gt;
+&amp;lt;form action=&amp;quot;/draw&amp;quot; method=&amp;quot;post&amp;quot;&amp;gt;
+  &amp;lt;label for=&amp;quot;group_name&amp;quot;&amp;gt;團隊名稱：&amp;lt;/label&amp;gt;
+  &amp;lt;input type=&amp;quot;radio&amp;quot; name=&amp;quot;group_name&amp;quot; value=&amp;quot;μ&amp;#39;s&amp;quot;&amp;gt;μ&amp;#39;s
+  &amp;lt;input type=&amp;quot;radio&amp;quot; name=&amp;quot;group_name&amp;quot; value=&amp;quot;K-ON!&amp;quot;&amp;gt;K-ON!
+  &amp;lt;input type=&amp;quot;radio&amp;quot; name=&amp;quot;group_name&amp;quot; value=&amp;quot;ALL&amp;quot; checked&amp;gt;（全）
+  &amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Submit&amp;quot;&amp;gt;
+&amp;lt;/form&amp;gt;
+{% endblock content %}
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;可以看到最大的差異就是我們的 &lt;code&gt;index.html&lt;/code&gt; 變簡單了。它就像物件繼承一樣，&lt;code&gt;{% extends "base.html" %}&lt;/code&gt;，表示先把 &lt;code&gt;base.html&lt;/code&gt; 的內容放進來，而裡面定義了兩個 block：&lt;code&gt;title&lt;/code&gt; 以及 &lt;code&gt;content&lt;/code&gt;。Index 有定義 content 的內容，所以就取代掉原本定義在 base 裡空的 content。  Index 並沒有定義 title，那就會用原本 block 內的值，即「成員抽籤」。&lt;/p&gt;
 &lt;p&gt;再來處理 &lt;code&gt;/draw&lt;/code&gt; 的部份，我們除而再利用 &lt;code&gt;base.html&lt;/code&gt; 之外，還要引入 template variable 的概念。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;&amp;lt;!-- templates/draw.html --&amp;gt;&lt;/span&gt;
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;extends&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;base.html&amp;quot;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&amp;lt;!-- templates/draw.html --&amp;gt;
+{% extends &amp;quot;base.html&amp;quot; %}
 
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;抽籤結果&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+{% block title %}抽籤結果{% endblock title %}
 
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;抽籤結果&lt;span class="nt"&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;name&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;（團體：&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;group&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;）&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+{% block content %}
+&amp;lt;h1&amp;gt;抽籤結果&amp;lt;/h1&amp;gt;
+&amp;lt;p&amp;gt;{{ name }}（團體：{{ group }}）&amp;lt;/p&amp;gt;
+{% endblock content %}
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -2487,32 +2487,32 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 
 
 &lt;p&gt;同理也要建立對應的 template。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;&amp;lt;!-- templates/history.html --&amp;gt;&lt;/span&gt;
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;extends&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;base.html&amp;quot;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&amp;lt;!-- templates/history.html --&amp;gt;
+{% extends &amp;quot;base.html&amp;quot; %}
 
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;抽籤歷史&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+{% block title %}抽籤歷史{% endblock title %}
 
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;抽籤歷史（最近 10 筆）&lt;span class="nt"&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;table&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;thead&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;tr&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;th&amp;gt;&lt;/span&gt;名字&lt;span class="nt"&gt;&amp;lt;/th&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;th&amp;gt;&lt;/span&gt;團體&lt;span class="nt"&gt;&amp;lt;/th&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;th&amp;gt;&lt;/span&gt;抽中時間&lt;span class="nt"&gt;&amp;lt;/th&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;/tr&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;/thead&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;tbody&amp;gt;&lt;/span&gt;
-    &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nv"&gt;history&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;recent_histories&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;tr&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;td&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;history.0&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;td&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;history.1&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;td&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;history.2&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;/tr&amp;gt;&lt;/span&gt;
-    &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endfor&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;/tbody&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/table&amp;gt;&lt;/span&gt;
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+{% block content %}
+&amp;lt;h1&amp;gt;抽籤歷史（最近 10 筆）&amp;lt;/h1&amp;gt;
+&amp;lt;table&amp;gt;
+  &amp;lt;thead&amp;gt;
+    &amp;lt;tr&amp;gt;
+      &amp;lt;th&amp;gt;名字&amp;lt;/th&amp;gt;
+      &amp;lt;th&amp;gt;團體&amp;lt;/th&amp;gt;
+      &amp;lt;th&amp;gt;抽中時間&amp;lt;/th&amp;gt;
+    &amp;lt;/tr&amp;gt;
+  &amp;lt;/thead&amp;gt;
+  &amp;lt;tbody&amp;gt;
+    {% for history in recent_histories %}
+    &amp;lt;tr&amp;gt;
+      &amp;lt;td&amp;gt;{{ history.0 }}&amp;lt;/td&amp;gt;
+      &amp;lt;td&amp;gt;{{ history.1 }}&amp;lt;/td&amp;gt;
+      &amp;lt;td&amp;gt;{{ history.2 }}&amp;lt;/td&amp;gt;
+    &amp;lt;/tr&amp;gt;
+    {% endfor %}
+  &amp;lt;/tbody&amp;gt;
+&amp;lt;/table&amp;gt;
+{% endblock content %}
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -2552,13 +2552,13 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nv"&gt;history&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;recent_histories&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;tr&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;td&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;history.name&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;td&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;history.group&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;td&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;history.draw_time.strftime&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;%Y 年 %m 月 %d 日 %H 時 %M 分&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/tr&amp;gt;&lt;/span&gt;
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endfor&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;{% for history in recent_histories %}
+&amp;lt;tr&amp;gt;
+  &amp;lt;td&amp;gt;{{ history.name }}&amp;lt;/td&amp;gt;
+  &amp;lt;td&amp;gt;{{ history.group }}&amp;lt;/td&amp;gt;
+  &amp;lt;td&amp;gt;{{ history.draw_time.strftime(&amp;quot;%Y 年 %m 月 %d 日 %H 時 %M 分&amp;quot;) }}&amp;lt;/td&amp;gt;
+&amp;lt;/tr&amp;gt;
+{% endfor %}
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 

@@ -225,11 +225,11 @@
 
 
 &lt;p&gt;Then get the genomic range of these transcripts by &lt;code&gt;seqnames()&lt;/code&gt;, &lt;code&gt;start()&lt;/code&gt; and &lt;code&gt;end()&lt;/code&gt; functions on the &lt;code&gt;GRanages&lt;/code&gt; object,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;thechr&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;as.character&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;unique&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-    &lt;span class="nf"&gt;seqnames&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BRCA1_txs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;span class="n"&gt;st&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;min&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;start&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BRCA1_txs&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="m"&gt;2e4&lt;/span&gt;
-&lt;span class="n"&gt;en&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;max&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;end&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BRCA1_txs&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="m"&gt;1e3&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;thechr &amp;lt;- as.character(unique(
+    seqnames(BRCA1_txs)
+))
+st &amp;lt;- min(start(BRCA1_txs)) - 2e4
+en &amp;lt;- max(end(BRCA1_txs)) + 1e3
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 

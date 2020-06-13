@@ -55,13 +55,13 @@
 
 
 &lt;p&gt;要手動更新 certificate 的時候執行這個 service 即可，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;systemctl start renew_cert&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;systemctl start renew_cert
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;我們不需要 enable 它，不然每次開機都會執行一次。看結果或記錄，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;systemctl status renew_cert&lt;/span&gt;
-&lt;span class="err"&gt;journalctl -e -u renew_cert&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;systemctl status renew_cert
+journalctl -e -u renew_cert
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -82,8 +82,8 @@
 &lt;p&gt;重點只有 &lt;code&gt;[Timer]&lt;/code&gt; 這 directive。&lt;code&gt;Unit=&lt;/code&gt; 表示要啟動的 service。&lt;code&gt;OnCalendar=&lt;/code&gt;&lt;sup id="fnref:calendar"&gt;&lt;a class="footnote-ref" href="#fn:calendar"&gt;1&lt;/a&gt;&lt;/sup&gt; 則是設定這 timer 根據指定的時間點 (UTC 時間&lt;sup id="fnref:utc"&gt;&lt;a class="footnote-ref" href="#fn:utc"&gt;2&lt;/a&gt;&lt;/sup&gt;) 啟動。&lt;/p&gt;
 &lt;p&gt;以這邊寫的時間 &lt;code&gt;*-1/2-1 16:00:00&lt;/code&gt; 為例，代表每年的 1+2n 月 1 日 16:00 UTC 更新 certificate，即臺灣時間 1、3、5、……月 2 日凌晨更新。&lt;/p&gt;
 &lt;p&gt;啟用 timer，它需要被 enable 確保重開機時被執行。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;systemctl enable renew_cert.timer&lt;/span&gt;
-&lt;span class="err"&gt;systemctl start renew_cert.timer&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;systemctl enable renew_cert.timer
+systemctl start renew_cert.timer
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 

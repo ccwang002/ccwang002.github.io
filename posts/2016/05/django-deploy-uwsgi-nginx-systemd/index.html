@@ -41,7 +41,7 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link href="https://blog.liang2.tw/theme/css/haunter.css?a6ddbbf5" rel="stylesheet" />
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?5138a380" rel="stylesheet" />
 </head>
 
 <body class="post-template">
@@ -75,7 +75,7 @@
     </span>
     <section class="post-content"><p>上一次很認真的 Django 部署記錄在<a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/">《設定 Python 官方文件中文化自動更新 Server》</a>一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。</p>
 <p>這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下：</p>
-<div class="highlight"><pre><span></span><code><span class="err">nginx -- unix socket -- uWSGI -- Django</span>
+<div class="highlight"><pre><span></span><code>nginx -- unix socket -- uWSGI -- Django
 </code></pre></div>
 
 
@@ -183,20 +183,20 @@ sudo systemctl reload nginx
 
 <h3 id="systemd">systemd</h3>
 <p>這邊除了執行 uWSGI 的指令不同外，都跟<a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/">舊文</a>相同。Debian 系 systemd system unit 設定檔放在 <code>/etc/systemd/system/PROJ.service</code>：</p>
-<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
-<span class="na">Description</span><span class="o">=</span><span class="s">PROJ&#39;s Django server by uWSGI</span>
-<span class="na">After</span><span class="o">=</span><span class="s">syslog.target</span>
+<div class="highlight"><pre><span></span><code>[Unit]
+Description=PROJ&#39;s Django server by uWSGI
+After=syslog.target
 
-<span class="k">[Service]</span>
-<span class="na">ExecStart</span><span class="o">=</span><span class="s">/path/to/VENV/bin/uwsgi --ini /etc/uwsgi/vassals/PROJ.ini</span>
-<span class="na">Restart</span><span class="o">=</span><span class="s">always</span>
-<span class="na">KillSignal</span><span class="o">=</span><span class="s">SIGQUIT</span>
-<span class="na">Type</span><span class="o">=</span><span class="s">notify</span>
-<span class="na">StandardError</span><span class="o">=</span><span class="s">syslog</span>
-<span class="na">NotifyAccess</span><span class="o">=</span><span class="s">all</span>
+[Service]
+ExecStart=/path/to/VENV/bin/uwsgi --ini /etc/uwsgi/vassals/PROJ.ini
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
 
-<span class="k">[Install]</span>
-<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+[Install]
+WantedBy=multi-user.target
 </code></pre></div>
 
 

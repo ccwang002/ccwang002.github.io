@@ -190,13 +190,13 @@ gunzip *.txt.gz
 
 
 &lt;p&gt;Finally, we modify the MySQL config at &lt;code&gt;/usr/local/etc/my.cnf&lt;/code&gt; to accept remote database connection, so our VM can access the database on the host machine. I don&amp;rsquo;t use MySQL for anything else, so I simply let MySQL binds to all the possible IP addresses my machine has:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[mysqld]&lt;/span&gt;
-&lt;span class="na"&gt;bind-address&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;*&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;[mysqld]
+bind-address = *
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Note that this is not a secure configuration. To be secure, there should be a designated MySQL user with limited permission and a stricter connection setting. Restart MySQL to load the new config:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;opt&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="mf"&gt;@5.6&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="n"&gt;restart&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;/usr/local/opt/mysql@5.6/bin/mysql.server restart
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -219,8 +219,8 @@ gunzip *.txt.gz
 
 &lt;h3 id="remove-mysql"&gt;Remove MySQL&lt;/h3&gt;
 &lt;p&gt;If there is no other need of MySQL, we can uninstall it and remove all its databases by:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;brew&lt;/span&gt; &lt;span class="n"&gt;remove&lt;/span&gt; &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="mf"&gt;@5.6&lt;/span&gt;
-&lt;span class="n"&gt;rm&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;rf&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mysql&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;brew remove mysql@5.6
+rm -rf /usr/local/var/mysql
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Bioinfo"></category><category term="en"></category><category term="r"></category><category term="bioconductor"></category><category term="sqlite"></category><category term="ensembldb"></category></entry><entry><title>Access gene annotation using gffutils</title><link href="https://blog.liang2.tw/posts/2018/06/gene-annotation-using-gffutils/" rel="alternate"></link><published>2018-06-22T00:00:00-05:00</published><updated>2018-06-22T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2018-06-22:/posts/2018/06/gene-annotation-using-gffutils/</id><summary type="html">&lt;p&gt;Recently, I had to access gene annotations in multiple versions from multiple sources such as Ensembl, GENCODE, and UCSC. I used to rely on …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Recently, I had to access gene annotations in multiple versions from multiple sources such as Ensembl, GENCODE, and UCSC. I used to rely on the R/Bioconductor ecosystem to query the coordinates of a gene annotation. There are existing Bioconductor packages ready for Ensembl and UCSC annotations (more info in my previous posts: &lt;a href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/"&gt;Ensembl&lt;/a&gt; and &lt;a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/"&gt;UCSC&lt;/a&gt;), and one can create a new customized TxDb given a GTF/GFF file. However, the project I was working on was written in Python, so I went on searching for similar alternatives in Python.&lt;/p&gt;
 &lt;p&gt;That&amp;rsquo;s how I found &lt;a href="https://daler.github.io/gffutils/"&gt;gffutils&lt;/a&gt;, a Python package to access gene annotations from GTF/GFF files. &lt;code&gt;gffutils&lt;/code&gt; first imports the annotations from the GTF/GFF file into a SQLite database. The package also provides some abstraction on top of the database schema, so user can retrieve an annotation without talking to the database directly using repetitive SQL commands. Database enables fast random access to any gene annotation. &lt;/p&gt;
 &lt;p&gt;I will use GENCODE v19, an annotation used by many TCGA GRCh37/hg19 projects, as an example to demo the usage of gffutils. My project requires the coordinates of UTRs and exons of all the transcripts in use.&lt;/p&gt;
@@ -516,7 +516,7 @@ gunzip *.txt.gz
 
 
 &lt;p&gt;Commands above can be scripted into SQLite like:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sqlite3 mydb.sqlite &amp;lt; load_data.sql&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sqlite3 mydb.sqlite &amp;lt; load_data.sql
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -532,7 +532,7 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 
 
 &lt;p&gt;The trailing &lt;code&gt;&amp;amp;&lt;/code&gt; makes the decompress command running in the background to keep everything in one shell session. Then read the data in SQLite as if it were a file like:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;mypipe&lt;/span&gt; &lt;span class="nn"&gt;mytable&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;.import mypipe mytable
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -642,35 +642,35 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 
 &lt;h3 id="postgresql_1"&gt;PostgreSQL&lt;/h3&gt;
 &lt;p&gt;I used &lt;a href="https://pgloader.io/"&gt;pgloader&lt;/a&gt; to load the data into a local PostgreSQL database &lt;code&gt;test_mc3&lt;/code&gt;. pgloader can take a script of its own mini-language.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;LOAD CSV&lt;/span&gt;
-&lt;span class="err"&gt;    FROM &amp;#39;mc3_filtered.tsv&amp;#39;&lt;/span&gt;
-&lt;span class="err"&gt;    INTO postgresql:///test_mc3?mc3&lt;/span&gt;
-&lt;span class="err"&gt;    WITH fields terminated by &amp;#39;\t&amp;#39;,&lt;/span&gt;
-&lt;span class="err"&gt;         fields not enclosed,&lt;/span&gt;
-&lt;span class="err"&gt;         drop indexes&lt;/span&gt;
-&lt;span class="err"&gt;    BEFORE LOAD DO&lt;/span&gt;
-&lt;span class="err"&gt;    $$ DROP TABLE IF EXISTS mc3; $$,&lt;/span&gt;
-&lt;span class="err"&gt;    $$ CREATE TABLE mc3 (&lt;/span&gt;
-&lt;span class="err"&gt;            chrom       TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            &amp;quot;start&amp;quot;     BIGINT,&lt;/span&gt;
-&lt;span class="err"&gt;            &amp;quot;end&amp;quot;       BIGINT,&lt;/span&gt;
-&lt;span class="err"&gt;            strand      SMALLINT,&lt;/span&gt;
-&lt;span class="err"&gt;            mutation_type   TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            ref_allele  TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            alt_allele  TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            transcript_id   TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            hgvs_c      TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            hgvs_p      TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            cdna_start  INT,&lt;/span&gt;
-&lt;span class="err"&gt;            cdna_end    INT,&lt;/span&gt;
-&lt;span class="err"&gt;            p_start     INT,&lt;/span&gt;
-&lt;span class="err"&gt;            p_end       INT,&lt;/span&gt;
-&lt;span class="err"&gt;            normal_id   TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            tumor_id    TEXT&lt;/span&gt;
-&lt;span class="err"&gt;        );&lt;/span&gt;
-&lt;span class="err"&gt;    $$,&lt;/span&gt;
-&lt;span class="err"&gt;    $$ CREATE INDEX mc3_idx ON mc3 (transcript_id, mutation_type); $$&lt;/span&gt;
-&lt;span class="err"&gt;;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;LOAD CSV
+    FROM &amp;#39;mc3_filtered.tsv&amp;#39;
+    INTO postgresql:///test_mc3?mc3
+    WITH fields terminated by &amp;#39;\t&amp;#39;,
+         fields not enclosed,
+         drop indexes
+    BEFORE LOAD DO
+    $$ DROP TABLE IF EXISTS mc3; $$,
+    $$ CREATE TABLE mc3 (
+            chrom       TEXT,
+            &amp;quot;start&amp;quot;     BIGINT,
+            &amp;quot;end&amp;quot;       BIGINT,
+            strand      SMALLINT,
+            mutation_type   TEXT,
+            ref_allele  TEXT,
+            alt_allele  TEXT,
+            transcript_id   TEXT,
+            hgvs_c      TEXT,
+            hgvs_p      TEXT,
+            cdna_start  INT,
+            cdna_end    INT,
+            p_start     INT,
+            p_end       INT,
+            normal_id   TEXT,
+            tumor_id    TEXT
+        );
+    $$,
+    $$ CREATE INDEX mc3_idx ON mc3 (transcript_id, mutation_type); $$
+;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -762,7 +762,7 @@ Now AnnotationHub has a nice &lt;a href="https://annotationhub.bioconductor.org/
 &lt;/ul&gt;
 &lt;p&gt;So as long as we get the &lt;code&gt;rdatapaths.id&lt;/code&gt; of the EnsDb using the metadata, we can download it via the &lt;code&gt;/fetch/:id&lt;/code&gt; endpoint.&lt;/p&gt;
 &lt;p&gt;After downloading the metadata database &lt;code&gt;https://annotationhub.bioconductor.org/metadata/annotationhub.sqlite3&lt;/code&gt;, we can inspect it in SQLite3 by connecting it directly:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sqlite3 annotationhub.sqlite3&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sqlite3 annotationhub.sqlite3
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -795,7 +795,7 @@ Now AnnotationHub has a nice &lt;a href="https://annotationhub.bioconductor.org/
 
 
 &lt;p&gt;All the Ensembl releases 87+ are available! I will use the release 90 for example. we can download it by its rdatapaths id:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;wget -O EnsDb.Hsapiens.v90.sqlite https://annotationhub.bioconductor.org/fetch/64495&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;wget -O EnsDb.Hsapiens.v90.sqlite https://annotationhub.bioconductor.org/fetch/64495
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -894,18 +894,18 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 
 
 &lt;p&gt;Now you should have the following file structure:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;~/snakemake_example&lt;/span&gt;
-&lt;span class="err"&gt;├── griffithlab_brain_vs_uhr/&lt;/span&gt;
-&lt;span class="err"&gt;│   ├── GRCh38_Ens87_chr22_ERCC/&lt;/span&gt;
-&lt;span class="err"&gt;│   │   ├── chr22_ERCC92.fa&lt;/span&gt;
-&lt;span class="err"&gt;│   │   └── genes_chr22_ERCC92.gtf&lt;/span&gt;
-&lt;span class="err"&gt;│   └── HBR_UHR_ERCC_ds_10pc/&lt;/span&gt;
-&lt;span class="err"&gt;│       ├── HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read1.fastq.gz&lt;/span&gt;
-&lt;span class="err"&gt;│       ├── HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read2.fastq.gz&lt;/span&gt;
-&lt;span class="err"&gt;│       ├── ...&lt;/span&gt;
-&lt;span class="err"&gt;│       ├── UHR_Rep3_ERCC-Mix1_Build37-ErccTranscripts-chr22.read1.fastq.gz&lt;/span&gt;
-&lt;span class="err"&gt;│       └── UHR_Rep3_ERCC-Mix1_Build37-ErccTranscripts-chr22.read2.fastq.gz&lt;/span&gt;
-&lt;span class="err"&gt;└── griffithlab_brain_vs_uhr.tar.gz&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;~/snakemake_example
+├── griffithlab_brain_vs_uhr/
+│   ├── GRCh38_Ens87_chr22_ERCC/
+│   │   ├── chr22_ERCC92.fa
+│   │   └── genes_chr22_ERCC92.gtf
+│   └── HBR_UHR_ERCC_ds_10pc/
+│       ├── HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read1.fastq.gz
+│       ├── HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read2.fastq.gz
+│       ├── ...
+│       ├── UHR_Rep3_ERCC-Mix1_Build37-ErccTranscripts-chr22.read1.fastq.gz
+│       └── UHR_Rep3_ERCC-Mix1_Build37-ErccTranscripts-chr22.read2.fastq.gz
+└── griffithlab_brain_vs_uhr.tar.gz
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1045,7 +1045,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;p&gt;There are two rules here but only &lt;code&gt;align_hisat&lt;/code&gt; does the real work. The rule looks familar but there are something new. There is a unresolved variable &lt;code&gt;{sample}&lt;/code&gt; in input, output and log entries, such as &lt;code&gt;fastq1=".../{sample}.read1.fastq.gz"&lt;/code&gt;. So this rule will apply to all outputs that match the pattern &lt;code&gt;align_hisat2/{sample}.bam&lt;/code&gt;. For example, given an output &lt;code&gt;align_hisat2/mysample.bam&lt;/code&gt;, Snakemake will look for the inputs &lt;code&gt;griffithlab_brain_vs_uhr/HBR_UHR_ERCC_ds_10pc/mysample.read1.fastq.gz&lt;/code&gt;, where &lt;code&gt;sample = "mysample"&lt;/code&gt; in this case.&lt;/p&gt;
 &lt;p&gt;To get the names of all the samples, we use &lt;code&gt;glob_wildcards(...)&lt;/code&gt; which finds all the files that match the given string pattern, and collects the possible values of the variables in the string pattern as a list. Hence all the sample names are stored in &lt;code&gt;SAMPLES&lt;/code&gt;, and the other rule takes input of all samples&amp;rsquo; BAM files to generate alignment of all samples.&lt;/p&gt;
 &lt;p&gt;Now run Snakemake again with a different rule target:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;snakemake -j 8 -p align_all_samples&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;snakemake -j 8 -p align_all_samples
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1121,7 +1121,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;p&gt;The full &lt;code&gt;Snakefile&lt;/code&gt; can be found &lt;a href="https://gist.github.com/ccwang002/2659b19439b6205284c0ae68ca06345d"&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;h3 id="job-dependencies-and-dag"&gt;Job dependencies and DAG&lt;/h3&gt;
 &lt;p&gt;Now with the pipeline complete, we can further look at the how all the rules are chained with each other. Snakemake has a command to generate the job depedency graph (a DAG):&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;snakemake --dag quant_all_samples | dot -Tsvg &amp;gt; dag.svg&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;snakemake --dag quant_all_samples | dot -Tsvg &amp;gt; dag.svg
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1132,7 +1132,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 
 &lt;p&gt;Snakemake generates such DAG first before execution, where each node represents a job. As long as two nodes have no connected edges and their input exist, they can be executed parallely. This is a powerful feature to pipeline management, which can use the resources in a fin grain.&lt;/p&gt;
 &lt;p&gt;A simpler graph that shows rules instead of jobs can be generated by:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;snakemake --rulegraph quant_all_samples | dot -Tsvg &amp;gt; ruledag.svg&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;snakemake --rulegraph quant_all_samples | dot -Tsvg &amp;gt; ruledag.svg
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1143,12 +1143,12 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 
 &lt;h2 id="snakemake-on-google-cloud"&gt;Snakemake on Google Cloud&lt;/h2&gt;
 &lt;p&gt;Now we start to move our Snakemake pipeline to the Google Cloud. To complete all the following steps, one needs a Google account and has a bucket on the Google Cloud with write access. That is, be able to upload the output back to Google Cloud Storage. Snakemake is able to download/upload files from the cloud, one needs to &lt;a href="https://cloud.google.com/sdk/downloads"&gt;set up the Google Cloud SDK on the local machine&lt;/a&gt; and create the default application credentials:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;gcloud auth application-default login&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud auth application-default login
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Also, install the neccessary Python packages to give Snakemake the access to storage API:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;conda install google-cloud-storage&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;conda install google-cloud-storage
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1181,7 +1181,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 
 &lt;p&gt;Now all the file paths are on Google Cloud Storage under the bucket &lt;code&gt;lbwang-playground&lt;/code&gt;. For example, &lt;code&gt;GENOME_FA&lt;/code&gt; points to &lt;code&gt;gs://lbwang-playground/snakemake_rnaseq/griffithlab_brain_vs_uhr/GRCh38_Ens87_chr22_ERCC/chr22_ERCC92.fa&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;One could launch Snakemake again:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;snakemake --timestamp -p --verbose --keep-remote -j 8 quant_all_samples&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;snakemake --timestamp -p --verbose --keep-remote -j 8 quant_all_samples
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1215,17 +1215,17 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 
 
 &lt;p&gt;To understand how the whole remote files work, here is the the folder structure after the exection:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;~/snakemake_example&lt;/span&gt;
-&lt;span class="err"&gt;├── lbwang-playground/&lt;/span&gt;
-&lt;span class="err"&gt;│   └── snakemake_rnaseq/&lt;/span&gt;
-&lt;span class="err"&gt;│       └── griffithlab_brain_vs_uhr/&lt;/span&gt;
-&lt;span class="err"&gt;│           ├── GRCh38_Ens87_chr22_ERCC/&lt;/span&gt;
-&lt;span class="err"&gt;│           └── HBR_UHR_ERCC_ds_10pc/&lt;/span&gt;
-&lt;span class="err"&gt;├── {WRITABLE_BUCKET_PATH}/&lt;/span&gt;
-&lt;span class="err"&gt;│   ├── align_hisat2/&lt;/span&gt;
-&lt;span class="err"&gt;│   ├── hisat2_index/&lt;/span&gt;
-&lt;span class="err"&gt;│   └── stringtie/&lt;/span&gt;
-&lt;span class="err"&gt;└── Snakefile&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;~/snakemake_example
+├── lbwang-playground/
+│   └── snakemake_rnaseq/
+│       └── griffithlab_brain_vs_uhr/
+│           ├── GRCh38_Ens87_chr22_ERCC/
+│           └── HBR_UHR_ERCC_ds_10pc/
+├── {WRITABLE_BUCKET_PATH}/
+│   ├── align_hisat2/
+│   ├── hisat2_index/
+│   └── stringtie/
+└── Snakefile
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1337,12 +1337,12 @@ gcloud container clusters get-credentials --zone&lt;span class="o"&gt;=&lt;/span
 &lt;ul&gt;
 &lt;li&gt;HISAT2 cannot build its index on Kubenetes. So the step &lt;code&gt;build_hisat_index&lt;/code&gt; failed for unknown reason. The error message from HISAT2 looks like this:&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;...&lt;/span&gt;
-&lt;span class="err"&gt;Wrote 8912688 bytes to secondary GFM file: {WRITABLE_BUCKET_PATH}/snakemake_demo/hisat2_index/chr22_ERCC92.6.ht2&lt;/span&gt;
-&lt;span class="err"&gt;Index is corrupt: File size for {WRITABLE_BUCKET_PATH}/snakemake_demo/hisat2_index/chr22_ERCC92.6.ht2 should have been 8912688 but is actually 0.&lt;/span&gt;
-&lt;span class="err"&gt;Please check if there is a problem with the disk or if disk is full.&lt;/span&gt;
-&lt;span class="err"&gt;Total time for call to driver() for forward index: 00:01:18&lt;/span&gt;
-&lt;span class="c"&gt;Error: Encountered internal HISAT2 exception (#1)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;...
+Wrote 8912688 bytes to secondary GFM file: {WRITABLE_BUCKET_PATH}/snakemake_demo/hisat2_index/chr22_ERCC92.6.ht2
+Index is corrupt: File size for {WRITABLE_BUCKET_PATH}/snakemake_demo/hisat2_index/chr22_ERCC92.6.ht2 should have been 8912688 but is actually 0.
+Please check if there is a problem with the disk or if disk is full.
+Total time for call to driver() for forward index: 00:01:18
+Error: Encountered internal HISAT2 exception (#1)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -2084,11 +2084,11 @@ Adrian and Suhas &lt;em&gt;el al.&lt;/em&gt;, &lt;a href="http://www.pnas.org/co
 
 
 &lt;p&gt;Then get the genomic range of these transcripts by &lt;code&gt;seqnames()&lt;/code&gt;, &lt;code&gt;start()&lt;/code&gt; and &lt;code&gt;end()&lt;/code&gt; functions on the &lt;code&gt;GRanages&lt;/code&gt; object,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;thechr&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;as.character&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;unique&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-    &lt;span class="nf"&gt;seqnames&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BRCA1_txs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;span class="n"&gt;st&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;min&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;start&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BRCA1_txs&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="m"&gt;2e4&lt;/span&gt;
-&lt;span class="n"&gt;en&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;max&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;end&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BRCA1_txs&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="m"&gt;1e3&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;thechr &amp;lt;- as.character(unique(
+    seqnames(BRCA1_txs)
+))
+st &amp;lt;- min(start(BRCA1_txs)) - 2e4
+en &amp;lt;- max(end(BRCA1_txs)) + 1e3
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 

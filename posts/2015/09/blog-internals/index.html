@@ -36,7 +36,7 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link href="https://blog.liang2.tw/theme/css/haunter.css?a6ddbbf5" rel="stylesheet" />
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?5138a380" rel="stylesheet" />
 </head>
 
 <body class="post-template">
@@ -91,17 +91,17 @@
 </div>
 <h3 id="pelican">Pelican 簡介</h3>
 <p><a href="http://docs.getpelican.com/">Pelican</a> 結論來說不難理解，而且要自訂 blog theme 也不會很複雜。首先跟 Sphinx 一樣，用內建的 <code>pelican-quickstart</code> 預設值就能架好一個可以動的。目錄大概長這樣</p>
-<div class="highlight"><pre><span></span><code><span class="err">my_blog/</span>
-<span class="err">├── content/</span>
-<span class="err">│   ├── blog_post_1.md</span>
-<span class="err">│   └── blog_post_2.rst</span>
-<span class="err">├── output/</span>
-<span class="err">├── develop_server.sh*</span>
-<span class="err">├── Makefile</span>
-<span class="err">├── fabfile.py</span>
-<span class="err">├── pelicanconf.py</span>
-<span class="err">├── publishconf.py</span>
-<span class="err">└── requirements.txt</span>
+<div class="highlight"><pre><span></span><code>my_blog/
+├── content/
+│   ├── blog_post_1.md
+│   └── blog_post_2.rst
+├── output/
+├── develop_server.sh*
+├── Makefile
+├── fabfile.py
+├── pelicanconf.py
+├── publishconf.py
+└── requirements.txt
 </code></pre></div>
 
 
@@ -112,17 +112,17 @@
 
 <p>預設會輸出到 <code>output/</code>，到時候 deploy 就把這個資料夾的內容丟到 server 上。</p>
 <p>每篇文章可以用 markdown 或者 reStructuredText(rst) 來寫，概念上像這樣：</p>
-<div class="highlight"><pre><span></span><code><span class="c1">---</span>
-<span class="nl">Title</span><span class="p">:</span><span class="w"> </span><span class="n">Hello</span><span class="w"> </span><span class="n">World</span><span class="w"></span>
-<span class="nc">Date</span><span class="err">:</span><span class="w"> </span><span class="mi">2016</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">16</span><span class="w"> </span><span class="mi">18</span><span class="err">:</span><span class="mi">00</span><span class="w"></span>
-<span class="nl">Tags</span><span class="p">:</span><span class="w"> </span><span class="n">world</span><span class="p">,</span><span class="w"> </span><span class="n">programming</span><span class="w"></span>
-<span class="nl">Category</span><span class="p">:</span><span class="w"> </span><span class="n">test</span><span class="w"></span>
-<span class="nl">Slug</span><span class="p">:</span><span class="w"> </span><span class="n">hello</span><span class="o">-</span><span class="n">world</span><span class="w"></span>
-<span class="c1">---</span>
+<div class="highlight"><pre><span></span><code>---
+Title: Hello World
+Date: 2016-01-16 18:00
+Tags: world, programming
+Category: test
+Slug: hello-world
+---
 
-<span class="n">Hello</span><span class="w"> </span><span class="o">[</span><span class="n">World</span><span class="o">]</span><span class="w"></span>
+Hello [World]
 
-<span class="o">[</span><span class="n">World</span><span class="o">]</span><span class="err">:</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">en</span><span class="p">.</span><span class="n">wikipedia</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">wiki</span><span class="o">/</span><span class="n">World</span><span class="w"></span>
+[World]: https://en.wikipedia.org/wiki/World
 </code></pre></div>
 
 

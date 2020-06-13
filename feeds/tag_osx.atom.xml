@@ -176,12 +176,12 @@
 
 &lt;h2 id="psql_1"&gt;psql 指令&lt;/h2&gt;
 &lt;p&gt;psql 的指令很多，用 &lt;code&gt;\?&lt;/code&gt; 可以看到列表。完整的版本可以見&lt;a href="http://www.postgresql.org/docs/9.4/static/app-psql.html#APP-PSQL-META-COMMANDS"&gt;官網 psql meta-commands&lt;/a&gt; 的介紹。底下列幾個常用的：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;\l          # list all database&lt;/span&gt;
-&lt;span class="err"&gt;\d          # list tables in current database&lt;/span&gt;
-&lt;span class="err"&gt;\du         # list roles&lt;/span&gt;
-&lt;span class="err"&gt;\conninfo   # show current SQL connection&lt;/span&gt;
-&lt;span class="err"&gt;\q          # quit&lt;/span&gt;
-&lt;span class="err"&gt;help        # print a hub message for all kinds of help&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;\l          # list all database
+\d          # list tables in current database
+\du         # list roles
+\conninfo   # show current SQL connection
+\q          # quit
+help        # print a hub message for all kinds of help
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 

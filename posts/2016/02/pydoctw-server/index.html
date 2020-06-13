@@ -42,7 +42,7 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link href="https://blog.liang2.tw/theme/css/haunter.css?a6ddbbf5" rel="stylesheet" />
+	<link href="https://blog.liang2.tw/theme/css/haunter.css?5138a380" rel="stylesheet" />
 </head>
 
 <body class="post-template">
@@ -182,7 +182,7 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。</p>
 </ul>
 <p>扣掉不支援 Python 3 的套件<sup id="fnref:python3"><a class="footnote-ref" href="#fn:python3">4</a></sup>後，就剩 django-celery、django-RQ、django-Q 可以選。這裡面最紅也最老牌的是 django-celery ，它與 <a href="http://www.celeryproject.org/">Celery</a> 整合，功能完整且穩定，我用過也覺得十分不錯，缺點是功能太多有點複雜，加上不同 message queue 時會有很多設定要調整，需要一段時間上手。一般 Celery 常見的搭配使用 <a href="https://www.rabbitmq.com/">Rabbit-MQ</a> 和 <a href="http://redis.io/">Redis</a>，的確在 task 很多時有必要，但我們這個 build doc 一天可能才十幾次，在不隔離 build doc 環境的情況同時間的 worker 只能有一個，不會有效能上的問題。因此我傾向只要使用與 Django 同一個 database 就好，不要再有額外非 Python 的 dependency，讓 local 開發簡單一點。</p>
 <p>最後選擇 <a href="https://django-q.readthedocs.org/">django-Q</a>。雖然很新但作者維護得很勤，worker 可以只用 Python 內建的 multiprocessing 完成。功能簡單卻完整，包含 monitor，跟 django-admin 整合，還可以排程。所以要啟動 django-Q 的 cluster，只要多一個 </p>
-<div class="highlight"><pre><span></span><code><span class="err">python manage.py qcluster</span>
+<div class="highlight"><pre><span></span><code>python manage.py qcluster
 </code></pre></div>
 
 
@@ -207,22 +207,22 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。</p>
 <p>我的 code 裡用到了 <a href="https://docs.python.org/3/library/subprocess.html#subprocess.run"><code>subprocess.run</code></a>，這是 Python 3.5+ 才有的 API。但 Jessie 只有 Python 3.4，但我覺得很好用一點都不想改寫成相容舊版的 code。</p>
 <p>因此需要安裝 Debian testing channel 上最新的 Python 3.5。這樣其實有安全上的疑慮，因為只有 stable channel 才有 security support，但自己編譯的問題更大，所以像 <a href="https://github.com/yyuu/pyenv">pyenv</a> 這種多 Python 版本的工具不在考慮內。</p>
 <p>於是用 <a href="https://wiki.debian.org/AptPreferences">Apt-Pinning</a> 只讓 Python 3.5 相關的套件安裝 testing 的版本。首先把 testing channel 加到 <code>/etc/apt/source.list</code></p>
-<div class="highlight"><pre><span></span><code><span class="k">deb</span> <span class="s">http://cloudfront.debian.net/debian</span> <span class="kp">testing</span> <span class="kp">main</span>
-<span class="k">deb-src</span> <span class="s">http://cloudfront.debian.net/debian</span> <span class="kp">testing</span> <span class="kp">main</span>
-<span class="k">deb</span> <span class="s">http://security.debian.org/</span> <span class="kp">testing/updates</span> <span class="kp">main</span>
-<span class="k">deb-src</span> <span class="s">http://security.debian.org/</span> <span class="kp">testing/updates</span> <span class="kp">main</span>
+<div class="highlight"><pre><span></span><code>deb http://cloudfront.debian.net/debian testing main
+deb-src http://cloudfront.debian.net/debian testing main
+deb http://security.debian.org/ testing/updates main
+deb-src http://security.debian.org/ testing/updates main
 </code></pre></div>
 
 
 <p>然後修改 <code>/etc/apt/preferences</code> 確定我們不會不小心裝到 testing 相關的套件，並把 Python 3.5 相關的套件設定權限 &gt;= 990 讓它們能被自動安裝。</p>
-<div class="highlight"><pre><span></span><code><span class="o">#</span> <span class="n">Specify</span> <span class="o">*</span> <span class="n">rules</span> <span class="k">first</span> <span class="n">so</span> <span class="n">later</span> <span class="n">package</span><span class="o">-</span><span class="n">specfic</span> <span class="n">rules</span> <span class="n">can</span> <span class="n">override</span> <span class="n">them</span>
-<span class="n">Package</span><span class="p">:</span> <span class="o">*</span>
-<span class="n">Pin</span><span class="p">:</span> <span class="n">release</span> <span class="n">a</span><span class="o">=</span><span class="n">testing</span>
-<span class="n">Pin</span><span class="o">-</span><span class="n">Priority</span><span class="p">:</span> <span class="o">-</span><span class="mi">10</span>
+<div class="highlight"><pre><span></span><code># Specify * rules first so later package-specfic rules can override them
+Package: *
+Pin: release a=testing
+Pin-Priority: -10
 
-<span class="n">Package</span><span class="p">:</span> <span class="n">python3</span><span class="p">.</span><span class="mi">5</span><span class="o">*</span> <span class="n">libpython3</span><span class="p">.</span><span class="mi">5</span><span class="o">*</span>
-<span class="n">Pin</span><span class="p">:</span> <span class="n">release</span> <span class="n">a</span><span class="o">=</span><span class="n">testing</span>
-<span class="n">Pin</span><span class="o">-</span><span class="n">Priority</span><span class="p">:</span> <span class="mi">990</span>
+Package: python3.5* libpython3.5*
+Pin: release a=testing
+Pin-Priority: 990
 </code></pre></div>
 
 
@@ -257,8 +257,8 @@ sudo /sbin/swapon /var/swap.1
 
 
 <p>修改 fstab 讓每次開機都有這個 swap 設定，</p>
-<div class="highlight"><pre><span></span><code><span class="err"># /etc/fstab</span>
-<span class="err">/var/swap.1 none swap defaults 0 0</span>
+<div class="highlight"><pre><span></span><code># /etc/fstab
+/var/swap.1 none swap defaults 0 0
 </code></pre></div>
 
 
@@ -267,15 +267,15 @@ sudo /sbin/swapon /var/swap.1
 <p>再來是 code 的同步與更新。autobuild server 只要更新 source code，但 cpython-tw source 需要定時 commit 新的翻譯，因此 deploy server 會有修改 git repo 的權限。</p>
 <p>不應該使用自己的 SSH key，deploy server 上應該有專屬的 deploy key，其中 cpython-tw 的 deploy key 有寫入權限（即可以 commit）。</p>
 <p>查了一下，要讓不同 git repo 使用不同的 SSH key 也不複雜。以這邊的例子，先修改 <code>~/.ssh/config</code> 加入兩個新的 host，使用不同的 SSH key：</p>
-<div class="highlight"><pre><span></span><code><span class="k">Host</span> <span class="n">github</span><span class="o">-</span><span class="n">pydoc_autobuild</span>
-  <span class="n">HostName</span> <span class="n">github</span><span class="p">.</span><span class="n">com</span>
-  <span class="k">User</span> <span class="n">git</span>
-  <span class="n">IdentityFile</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">pydoc</span><span class="o">/</span><span class="p">.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_rsa</span><span class="p">.</span><span class="n">pydoc_autobuild</span>
+<div class="highlight"><pre><span></span><code>Host github-pydoc_autobuild
+  HostName github.com
+  User git
+  IdentityFile /home/pydoc/.ssh/id_rsa.pydoc_autobuild
 
-<span class="k">Host</span> <span class="n">github</span><span class="o">-</span><span class="n">cpython_tw</span>
-  <span class="n">HostName</span> <span class="n">github</span><span class="p">.</span><span class="n">com</span>
-  <span class="k">User</span> <span class="n">git</span>
-  <span class="n">IdentityFile</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">pydoc</span><span class="o">/</span><span class="p">.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_rsa</span><span class="p">.</span><span class="n">cpython_tw</span>
+Host github-cpython_tw
+  HostName github.com
+  User git
+  IdentityFile /home/pydoc/.ssh/id_rsa.cpython_tw
 </code></pre></div>
 
 
@@ -286,7 +286,7 @@ ssh-keygen -t rsa -f ~/.ssh/id_rsa.cpython_tw
 
 
 <p>把兩個 repo 的 URL host 換掉，</p>
-<div class="highlight"><pre><span></span><code><span class="err">git remote set-url origin git@github-pydoc_autobuild:python-doc-tw/pydoc_autobuild.git</span>
+<div class="highlight"><pre><span></span><code>git remote set-url origin git@github-pydoc_autobuild:python-doc-tw/pydoc_autobuild.git
 </code></pre></div>
 
 
@@ -354,49 +354,49 @@ sudo systemctl reload nginx
 <p>確定 pydoc 上線就可以專心處理 uWSGI 了。</p>
 <h4 id="uwsgi">uWSGI 設定</h4>
 <p>uWSGI 在 VENV 外也要裝，我覺得還是用 pip 比較簡單，雖然這樣就要自己注意 uWSGI 的版本更新了：</p>
-<div class="highlight"><pre><span></span><code><span class="err">sudo python3.5 -m pip install uwsgi</span>
+<div class="highlight"><pre><span></span><code>sudo python3.5 -m pip install uwsgi
 </code></pre></div>
 
 
 <p>把 uWSGI 設定存成 <code>pydoc_autobuild_uwsgi.ini</code> 並且在測試時，都使用：</p>
-<div class="highlight"><pre><span></span><code><span class="err">sudo uwsgi --ini pydoc_autobuild_uwsgi.ini</span>
+<div class="highlight"><pre><span></span><code>sudo uwsgi --ini pydoc_autobuild_uwsgi.ini
 </code></pre></div>
 
 
 <p>模擬實際上的執行方式，這樣之後改用 systemd 執行才不會又丟一堆權限的問題。設定檔的內容：</p>
-<div class="highlight"><pre><span></span><code><span class="k">[uwsgi]</span>
-<span class="na">chdir</span>        <span class="o">=</span> <span class="s">/path/to/code/pydoc_autobuild</span>
-<span class="c1"># Django&#39;s wsgi file</span>
-<span class="na">module</span>       <span class="o">=</span> <span class="s">pydoc_autobuild.wsgi:application</span>
-<span class="na">env</span>          <span class="o">=</span> <span class="s">DJANGO_SETTINGS_MODULE=pydoc_autobuild.settings.production</span>
-<span class="c1"># the virtualenv (full path)</span>
-<span class="na">home</span>         <span class="o">=</span> <span class="s">/path/to/VENV</span>
+<div class="highlight"><pre><span></span><code>[uwsgi]
+chdir        = /path/to/code/pydoc_autobuild
+# Django&#39;s wsgi file
+module       = pydoc_autobuild.wsgi:application
+env          = DJANGO_SETTINGS_MODULE=pydoc_autobuild.settings.production
+# the virtualenv (full path)
+home         = /path/to/VENV
 
-<span class="c1"># process-related settings</span>
-<span class="c1"># master</span>
-<span class="na">master</span>       <span class="o">=</span> <span class="s">true</span>
-<span class="c1"># maximum number of worker processes</span>
-<span class="na">processes</span>    <span class="o">=</span> <span class="s">4</span>
-<span class="c1"># the socket (use the full path to be safe</span>
-<span class="na">socket</span>       <span class="o">=</span> <span class="s">/run/django/pydoc_autobuild.sock</span>
-<span class="c1"># ... with appropriate permissions - may be needed</span>
-<span class="na">chmod-socket</span> <span class="o">=</span> <span class="s">664</span>
-<span class="na">uid</span>          <span class="o">=</span> <span class="s">pydoc</span>
-<span class="na">gid</span>          <span class="o">=</span> <span class="s">www-data</span>
-<span class="c1"># clear environment on exit</span>
-<span class="na">vacuum</span>       <span class="o">=</span> <span class="s">true</span>
+# process-related settings
+# master
+master       = true
+# maximum number of worker processes
+processes    = 4
+# the socket (use the full path to be safe
+socket       = /run/django/pydoc_autobuild.sock
+# ... with appropriate permissions - may be needed
+chmod-socket = 664
+uid          = pydoc
+gid          = www-data
+# clear environment on exit
+vacuum       = true
 </code></pre></div>
 
 
 <p>權限上的設定可能要花點時間處理一下，nginx 使用 www-data/www-data 的身份執行，socket 要確定 nginx 能讀寫，但我的 code 放在 pydoc 使用者路徑下，用 www-data 可能會有權限的問題。建議把 uid、gid 都設定好。</p>
 <p>過程中，搭配 nginx 的錯誤訊息比較好 debug：</p>
-<div class="highlight"><pre><span></span><code><span class="err">sudo less +F /var/log/nginx/error.log</span>
+<div class="highlight"><pre><span></span><code>sudo less +F /var/log/nginx/error.log
 </code></pre></div>
 
 
 <p>成功後，再用 uWSGI 的 Emperor mode，把設定檔丟到一個路徑底下（該路徑稱為 vassals）。uWSGI 在 Emperor mode 時會自動把 vassals 路徑內所有設定檔都讀進來並執行。</p>
 <p>這裡 vassals 路徑使用 <code>/etc/uwsgi/vassals/</code>。因為有設 uid、gid，跑的時候就不用再設了：</p>
-<div class="highlight"><pre><span></span><code><span class="err">sudo uwsgi --emperor /etc/uwsgi/vassals</span>
+<div class="highlight"><pre><span></span><code>sudo uwsgi --emperor /etc/uwsgi/vassals
 </code></pre></div>
 
 
@@ -405,65 +405,65 @@ sudo systemctl reload nginx
 <p>Autobuild server 包含兩個部份：Django Server 與 Django-Q cluster。所以寫成 systemd service 時會有兩個服務。</p>
 <p>Debian system service 放在 <code>/etc/systemd/system/</code> 底下，因此建立 <code>uwsgi.service</code> 和 <code>qcluster.service</code> 分別管理 uWSGI Emperor mode 和 Django-Q cluster。</p>
 <p><code>uwsgi.service</code> 參考 uWSGI 官網 <a href="http://uwsgi-docs.readthedocs.org/en/latest/Systemd.html"><em>Django and Systemd</em></a> 一文的設定：</p>
-<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
-<span class="na">Description</span><span class="o">=</span><span class="s">uWSGI Emperor</span>
-<span class="na">After</span><span class="o">=</span><span class="s">syslog.target</span>
+<div class="highlight"><pre><span></span><code>[Unit]
+Description=uWSGI Emperor
+After=syslog.target
 
-<span class="k">[Service]</span>
-<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/local/bin/uwsgi --emperor /etc/uwsgi/vassals</span>
-<span class="na">RuntimeDirectory</span><span class="o">=</span><span class="s">uwsgi</span>
-<span class="na">Restart</span><span class="o">=</span><span class="s">always</span>
-<span class="na">KillSignal</span><span class="o">=</span><span class="s">SIGQUIT</span>
-<span class="na">Type</span><span class="o">=</span><span class="s">notify</span>
-<span class="na">StandardError</span><span class="o">=</span><span class="s">syslog</span>
-<span class="na">NotifyAccess</span><span class="o">=</span><span class="s">all</span>
+[Service]
+ExecStart=/usr/local/bin/uwsgi --emperor /etc/uwsgi/vassals
+RuntimeDirectory=uwsgi
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
 
-<span class="k">[Install]</span>
-<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+[Install]
+WantedBy=multi-user.target
 </code></pre></div>
 
 
 <p><code>qcluster.service</code> 算是自己硬寫模擬 <code>python manage.py qcluster</code> 行為。因此環境變數都要設定好（當然用絕對路徑就沒問題了，我只是覺得這樣 build log 內的執行檔路徑都很長會很醜 xd）</p>
-<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
-<span class="na">Description</span><span class="o">=</span><span class="s">Django-Q Cluster for site pydoc_autobuild</span>
-<span class="na">After</span><span class="o">=</span><span class="s">syslog.target</span>
-<span class="na">Wants</span><span class="o">=</span><span class="s">uwsgi.service</span>
+<div class="highlight"><pre><span></span><code>[Unit]
+Description=Django-Q Cluster for site pydoc_autobuild
+After=syslog.target
+Wants=uwsgi.service
 
-<span class="k">[Service]</span>
-<span class="na">User</span><span class="o">=</span><span class="s">pydoc</span>
-<span class="na">Group</span><span class="o">=</span><span class="s">www-data</span>
-<span class="na">Environment</span><span class="o">=</span><span class="s">VIRTUAL_ENV=/path/to/VENV</span>
-<span class="na">Environment</span><span class="o">=</span><span class="s">PATH=/path/to/VENV/bin:$PATH</span>
-<span class="na">Environment</span><span class="o">=</span><span class="s">DJANGO_SETTINGS_MODULE=pydoc_autobuild.settings.production</span>
-<span class="na">WorkingDirectory</span><span class="o">=</span><span class="s">/path/to/code/pydoc_autobuild</span>
-<span class="na">ExecStart</span><span class="o">=</span><span class="s">/path/to/VENV/bin/python manage.py qcluster</span>
-<span class="na">Restart</span><span class="o">=</span><span class="s">always</span>
-<span class="na">KillSignal</span><span class="o">=</span><span class="s">SIGQUIT</span>
-<span class="na">Type</span><span class="o">=</span><span class="s">simple</span>
-<span class="na">NotifyAccess</span><span class="o">=</span><span class="s">none</span>
-<span class="na">StandardError</span><span class="o">=</span><span class="s">syslog</span>
+[Service]
+User=pydoc
+Group=www-data
+Environment=VIRTUAL_ENV=/path/to/VENV
+Environment=PATH=/path/to/VENV/bin:$PATH
+Environment=DJANGO_SETTINGS_MODULE=pydoc_autobuild.settings.production
+WorkingDirectory=/path/to/code/pydoc_autobuild
+ExecStart=/path/to/VENV/bin/python manage.py qcluster
+Restart=always
+KillSignal=SIGQUIT
+Type=simple
+NotifyAccess=none
+StandardError=syslog
 
-<span class="k">[Install]</span>
-<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+[Install]
+WantedBy=multi-user.target
 </code></pre></div>
 
 
 <p>這樣的設定檔應該不是 systemd 的慣例，我還在想是不是應該要改寫到 user service 去（但我不會）。</p>
 <p>加入到 systemd 之後管理就很簡單，啟動這兩個 service：</p>
-<div class="highlight"><pre><span></span><code><span class="err">sudo systemctl enable uwsgi</span>
-<span class="err">sudo systemctl enable qcluster</span>
+<div class="highlight"><pre><span></span><code>sudo systemctl enable uwsgi
+sudo systemctl enable qcluster
 </code></pre></div>
 
 
 <p>查看他們的狀態：</p>
-<div class="highlight"><pre><span></span><code><span class="err">sudo systemctl status uwsgi</span>
-<span class="err">sudo systemctl status qcluster</span>
+<div class="highlight"><pre><span></span><code>sudo systemctl status uwsgi
+sudo systemctl status qcluster
 </code></pre></div>
 
 
 <p>查看它們的 log 也變得很簡單，因為有把它們的 stderr 抓起來。systemd 好處是 rotation 等等都會幫你注意，看 log 的功能也很多。</p>
 <p>例如要查最近一小時 uWSGI 的連線記錄，並在有新連線時持續更新 log：</p>
-<div class="highlight"><pre><span></span><code><span class="err">sudo journalctl -xef -u uwsgi --since &#39;1 hour ago&#39;</span>
+<div class="highlight"><pre><span></span><code>sudo journalctl -xef -u uwsgi --since &#39;1 hour ago&#39;
 </code></pre></div>
 
 

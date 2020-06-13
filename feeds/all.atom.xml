@@ -190,13 +190,13 @@ gunzip *.txt.gz
 
 
 &lt;p&gt;Finally, we modify the MySQL config at &lt;code&gt;/usr/local/etc/my.cnf&lt;/code&gt; to accept remote database connection, so our VM can access the database on the host machine. I don&amp;rsquo;t use MySQL for anything else, so I simply let MySQL binds to all the possible IP addresses my machine has:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[mysqld]&lt;/span&gt;
-&lt;span class="na"&gt;bind-address&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;*&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;[mysqld]
+bind-address = *
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Note that this is not a secure configuration. To be secure, there should be a designated MySQL user with limited permission and a stricter connection setting. Restart MySQL to load the new config:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;opt&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="mf"&gt;@5.6&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="n"&gt;restart&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;/usr/local/opt/mysql@5.6/bin/mysql.server restart
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -219,20 +219,21 @@ gunzip *.txt.gz
 
 &lt;h3 id="remove-mysql"&gt;Remove MySQL&lt;/h3&gt;
 &lt;p&gt;If there is no other need of MySQL, we can uninstall it and remove all its databases by:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;brew&lt;/span&gt; &lt;span class="n"&gt;remove&lt;/span&gt; &lt;span class="n"&gt;mysql&lt;/span&gt;&lt;span class="mf"&gt;@5.6&lt;/span&gt;
-&lt;span class="n"&gt;rm&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;rf&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mysql&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;brew remove mysql@5.6
+rm -rf /usr/local/var/mysql
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Bioinfo"></category><category term="en"></category><category term="r"></category><category term="bioconductor"></category><category term="sqlite"></category><category term="ensembldb"></category></entry><entry><title>Make Firefox fullscreen borderless on macOS</title><link href="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/" rel="alternate"></link><published>2018-12-13T00:00:00-06:00</published><updated>2018-12-13T00:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2018-12-13:/posts/2018/12/firefox-borderless-fullscreen-macos/</id><summary type="html">&lt;p&gt;Firefox fullscreen on macOS by default contains the address bar and the tab bar. I usually don&amp;rsquo;t really need the full vertical space …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Firefox fullscreen on macOS by default contains the address bar and the tab bar. I usually don&amp;rsquo;t really need the full vertical space for web page, so those bars aren&amp;rsquo;t a problem. But when I access a RStudio Server on Firefox, I always want to have more vertical space. As shown in the screenshot below, the address bar and the tab bar of Firefox are unnecessary, and they may be quite distracting. If those bars are hidden and only show up upon request when Firefox enters fullscreen, the vertical space can be saved and the interface will remain clean.&lt;/p&gt;
 &lt;div class="figure"&gt;
   &lt;img src="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/rstudio_fullscreen.png"&gt;
   &lt;p class="caption"&gt;&lt;/p&gt;
 &lt;/div&gt;
 
-&lt;p&gt;It turns out that Firefox controls its user interface styling using CSS. So we can set the shape of the window tabs, the height of the address bar, and more by adding a CSS file at &lt;code&gt;~/Library/Application Support/Firefox/Profiles/&amp;lt;profile&amp;gt;/chrome/userChrome.css&lt;/code&gt;. My modification was based on &lt;a href="https://apple.stackexchange.com/a/313241"&gt;this answer on Stack Exchange&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;It turns out that Firefox controls its user interface styling using CSS. So we can set the shape of the window tabs, the height of the address bar, and more by adding a CSS file at &lt;code&gt;~/Library/Application Support/Firefox/Profiles/&amp;lt;profile&amp;gt;/chrome/userChrome.css&lt;/code&gt;. In Firefox 69+, we need to set &lt;code&gt;toolkit.legacyUserProfileCustomizations.stylesheets=true&lt;/code&gt; in &lt;code&gt;about:config&lt;/code&gt; to enable the CSS styling (&lt;a href="https://www.userchrome.org/how-create-userchrome-css.html"&gt;more details here&lt;/a&gt;). &lt;/p&gt;
+&lt;p&gt;My modification was based on &lt;a href="https://apple.stackexchange.com/a/313241"&gt;this answer on Stack Exchange&lt;/a&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;#&lt;/span&gt;&lt;span class="nn"&gt;navigator-toolbox&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="nt"&gt;inFullscreen&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="k"&gt;height&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;0.5&lt;/span&gt;&lt;span class="kt"&gt;rem&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="k"&gt;margin-bottom&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;-0.5&lt;/span&gt;&lt;span class="kt"&gt;rem&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="k"&gt;opacity&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="k"&gt;overflow&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;hidden&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;z-index&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 
 &lt;span class="p"&gt;#&lt;/span&gt;&lt;span class="nn"&gt;navigator-toolbox&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="nt"&gt;inFullscreen&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;hover&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;
@@ -242,7 +243,7 @@ gunzip *.txt.gz
 &lt;span class="c"&gt;     * to be more visible while the macOS hidden menu bar shows up. &lt;/span&gt;
 &lt;span class="c"&gt;     * The macOS menubar will hide after a few seconds.&lt;/span&gt;
 &lt;span class="c"&gt;     */&lt;/span&gt;
-    &lt;span class="k"&gt;padding-top&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="kt"&gt;rem&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;padding-top&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;1.5&lt;/span&gt;&lt;span class="kt"&gt;rem&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="k"&gt;height&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;auto&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="k"&gt;margin-bottom&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="kt"&gt;rem&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="k"&gt;opacity&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
@@ -302,7 +303,10 @@ ffmpeg -i fullscreen_switch_tabs.mov &lt;span class="se"&gt;\&lt;/span&gt;
     -vcodec h264 &lt;span class="se"&gt;\&lt;/span&gt;
     -strict -2 -crf &lt;span class="m"&gt;40&lt;/span&gt; -preset slow -r &lt;span class="m"&gt;24&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
     fullscreen_switch_tabs.mp4
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Coding"></category><category term="en"></category></entry><entry><title>GPG Key Transition</title><link href="https://blog.liang2.tw/posts/2018/10/gpg-key-transition-2018/" rel="alternate"></link><published>2018-10-20T00:00:00-05:00</published><updated>2018-10-20T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2018-10-20:/posts/2018/10/gpg-key-transition-2018/</id><summary type="html">&lt;p&gt;I am transiting my GPG key again.  However, for this time, I expect to use the new GPG master key longer and will start …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I am transiting my GPG key again.  However, for this time, I expect to use the new GPG master key longer and will start building this identity unless there is a concern about the key strength or I accidentally lose the key. &lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;EDIT 2020-06-13: Added extra &lt;code&gt;about:config&lt;/code&gt; settings in Firefox 69+ and fixed the styling. I also increased the top margin since the new address bar is taller.&lt;/p&gt;</content><category term="Coding"></category><category term="en"></category></entry><entry><title>GPG Key Transition</title><link href="https://blog.liang2.tw/posts/2018/10/gpg-key-transition-2018/" rel="alternate"></link><published>2018-10-20T00:00:00-05:00</published><updated>2018-10-20T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2018-10-20:/posts/2018/10/gpg-key-transition-2018/</id><summary type="html">&lt;p&gt;I am transiting my GPG key again.  However, for this time, I expect to use the new GPG master key longer and will start …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I am transiting my GPG key again.  However, for this time, I expect to use the new GPG master key longer and will start building this identity unless there is a concern about the key strength or I accidentally lose the key. &lt;/p&gt;
 &lt;p&gt;Back in &lt;a href="https://blog.liang2.tw/posts/2016/12/gpg-key-transition-2016/"&gt;my GPG key transition in 2016&lt;/a&gt;, I&amp;rsquo;ve created the subkeys for daily usage and isolated the master key into a secret offline place. I learned more about PGP throughout the years, sadly though, I still seldom have a chance to use it extensively in my daily life. &lt;/p&gt;
 &lt;p&gt;This time, I am moving the subkeys to a YubiKey. I found &lt;a href="https://github.com/drduh/YubiKey-Guide"&gt;drduh&amp;rsquo;s guide&lt;/a&gt; on GitHub very informative to set up both the GPG key and the yubikey, as well as get my hands on the various possible applications. Another notable change is that I no longer set an expiration date on my master key.&lt;/p&gt;
 &lt;p&gt;I will revoke my old keys once the transition is done.&lt;/p&gt;
@@ -666,7 +670,7 @@ UifqHyDqNjBJX0a8miUMZDOXsZFD2jzm3pjS/Q==
 
 
 &lt;p&gt;Commands above can be scripted into SQLite like:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sqlite3 mydb.sqlite &amp;lt; load_data.sql&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sqlite3 mydb.sqlite &amp;lt; load_data.sql
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -682,7 +686,7 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 
 
 &lt;p&gt;The trailing &lt;code&gt;&amp;amp;&lt;/code&gt; makes the decompress command running in the background to keep everything in one shell session. Then read the data in SQLite as if it were a file like:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;mypipe&lt;/span&gt; &lt;span class="nn"&gt;mytable&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;.import mypipe mytable
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -792,35 +796,35 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 
 &lt;h3 id="postgresql_1"&gt;PostgreSQL&lt;/h3&gt;
 &lt;p&gt;I used &lt;a href="https://pgloader.io/"&gt;pgloader&lt;/a&gt; to load the data into a local PostgreSQL database &lt;code&gt;test_mc3&lt;/code&gt;. pgloader can take a script of its own mini-language.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;LOAD CSV&lt;/span&gt;
-&lt;span class="err"&gt;    FROM &amp;#39;mc3_filtered.tsv&amp;#39;&lt;/span&gt;
-&lt;span class="err"&gt;    INTO postgresql:///test_mc3?mc3&lt;/span&gt;
-&lt;span class="err"&gt;    WITH fields terminated by &amp;#39;\t&amp;#39;,&lt;/span&gt;
-&lt;span class="err"&gt;         fields not enclosed,&lt;/span&gt;
-&lt;span class="err"&gt;         drop indexes&lt;/span&gt;
-&lt;span class="err"&gt;    BEFORE LOAD DO&lt;/span&gt;
-&lt;span class="err"&gt;    $$ DROP TABLE IF EXISTS mc3; $$,&lt;/span&gt;
-&lt;span class="err"&gt;    $$ CREATE TABLE mc3 (&lt;/span&gt;
-&lt;span class="err"&gt;            chrom       TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            &amp;quot;start&amp;quot;     BIGINT,&lt;/span&gt;
-&lt;span class="err"&gt;            &amp;quot;end&amp;quot;       BIGINT,&lt;/span&gt;
-&lt;span class="err"&gt;            strand      SMALLINT,&lt;/span&gt;
-&lt;span class="err"&gt;            mutation_type   TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            ref_allele  TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            alt_allele  TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            transcript_id   TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            hgvs_c      TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            hgvs_p      TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            cdna_start  INT,&lt;/span&gt;
-&lt;span class="err"&gt;            cdna_end    INT,&lt;/span&gt;
-&lt;span class="err"&gt;            p_start     INT,&lt;/span&gt;
-&lt;span class="err"&gt;            p_end       INT,&lt;/span&gt;
-&lt;span class="err"&gt;            normal_id   TEXT,&lt;/span&gt;
-&lt;span class="err"&gt;            tumor_id    TEXT&lt;/span&gt;
-&lt;span class="err"&gt;        );&lt;/span&gt;
-&lt;span class="err"&gt;    $$,&lt;/span&gt;
-&lt;span class="err"&gt;    $$ CREATE INDEX mc3_idx ON mc3 (transcript_id, mutation_type); $$&lt;/span&gt;
-&lt;span class="err"&gt;;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;LOAD CSV
+    FROM &amp;#39;mc3_filtered.tsv&amp;#39;
+    INTO postgresql:///test_mc3?mc3
+    WITH fields terminated by &amp;#39;\t&amp;#39;,
+         fields not enclosed,
+         drop indexes
+    BEFORE LOAD DO
+    $$ DROP TABLE IF EXISTS mc3; $$,
+    $$ CREATE TABLE mc3 (
+            chrom       TEXT,
+            &amp;quot;start&amp;quot;     BIGINT,
+            &amp;quot;end&amp;quot;       BIGINT,
+            strand      SMALLINT,
+            mutation_type   TEXT,
+            ref_allele  TEXT,
+            alt_allele  TEXT,
+            transcript_id   TEXT,
+            hgvs_c      TEXT,
+            hgvs_p      TEXT,
+            cdna_start  INT,
+            cdna_end    INT,
+            p_start     INT,
+            p_end       INT,
+            normal_id   TEXT,
+            tumor_id    TEXT
+        );
+    $$,
+    $$ CREATE INDEX mc3_idx ON mc3 (transcript_id, mutation_type); $$
+;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -912,7 +916,7 @@ Now AnnotationHub has a nice &lt;a href="https://annotationhub.bioconductor.org/
 &lt;/ul&gt;
 &lt;p&gt;So as long as we get the &lt;code&gt;rdatapaths.id&lt;/code&gt; of the EnsDb using the metadata, we can download it via the &lt;code&gt;/fetch/:id&lt;/code&gt; endpoint.&lt;/p&gt;
 &lt;p&gt;After downloading the metadata database &lt;code&gt;https://annotationhub.bioconductor.org/metadata/annotationhub.sqlite3&lt;/code&gt;, we can inspect it in SQLite3 by connecting it directly:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sqlite3 annotationhub.sqlite3&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sqlite3 annotationhub.sqlite3
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -945,7 +949,7 @@ Now AnnotationHub has a nice &lt;a href="https://annotationhub.bioconductor.org/
 
 
 &lt;p&gt;All the Ensembl releases 87+ are available! I will use the release 90 for example. we can download it by its rdatapaths id:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;wget -O EnsDb.Hsapiens.v90.sqlite https://annotationhub.bioconductor.org/fetch/64495&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;wget -O EnsDb.Hsapiens.v90.sqlite https://annotationhub.bioconductor.org/fetch/64495
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1044,18 +1048,18 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 
 
 &lt;p&gt;Now you should have the following file structure:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;~/snakemake_example&lt;/span&gt;
-&lt;span class="err"&gt;├── griffithlab_brain_vs_uhr/&lt;/span&gt;
-&lt;span class="err"&gt;│   ├── GRCh38_Ens87_chr22_ERCC/&lt;/span&gt;
-&lt;span class="err"&gt;│   │   ├── chr22_ERCC92.fa&lt;/span&gt;
-&lt;span class="err"&gt;│   │   └── genes_chr22_ERCC92.gtf&lt;/span&gt;
-&lt;span class="err"&gt;│   └── HBR_UHR_ERCC_ds_10pc/&lt;/span&gt;
-&lt;span class="err"&gt;│       ├── HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read1.fastq.gz&lt;/span&gt;
-&lt;span class="err"&gt;│       ├── HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read2.fastq.gz&lt;/span&gt;
-&lt;span class="err"&gt;│       ├── ...&lt;/span&gt;
-&lt;span class="err"&gt;│       ├── UHR_Rep3_ERCC-Mix1_Build37-ErccTranscripts-chr22.read1.fastq.gz&lt;/span&gt;
-&lt;span class="err"&gt;│       └── UHR_Rep3_ERCC-Mix1_Build37-ErccTranscripts-chr22.read2.fastq.gz&lt;/span&gt;
-&lt;span class="err"&gt;└── griffithlab_brain_vs_uhr.tar.gz&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;~/snakemake_example
+├── griffithlab_brain_vs_uhr/
+│   ├── GRCh38_Ens87_chr22_ERCC/
+│   │   ├── chr22_ERCC92.fa
+│   │   └── genes_chr22_ERCC92.gtf
+│   └── HBR_UHR_ERCC_ds_10pc/
+│       ├── HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read1.fastq.gz
+│       ├── HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read2.fastq.gz
+│       ├── ...
+│       ├── UHR_Rep3_ERCC-Mix1_Build37-ErccTranscripts-chr22.read1.fastq.gz
+│       └── UHR_Rep3_ERCC-Mix1_Build37-ErccTranscripts-chr22.read2.fastq.gz
+└── griffithlab_brain_vs_uhr.tar.gz
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1195,7 +1199,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;p&gt;There are two rules here but only &lt;code&gt;align_hisat&lt;/code&gt; does the real work. The rule looks familar but there are something new. There is a unresolved variable &lt;code&gt;{sample}&lt;/code&gt; in input, output and log entries, such as &lt;code&gt;fastq1=".../{sample}.read1.fastq.gz"&lt;/code&gt;. So this rule will apply to all outputs that match the pattern &lt;code&gt;align_hisat2/{sample}.bam&lt;/code&gt;. For example, given an output &lt;code&gt;align_hisat2/mysample.bam&lt;/code&gt;, Snakemake will look for the inputs &lt;code&gt;griffithlab_brain_vs_uhr/HBR_UHR_ERCC_ds_10pc/mysample.read1.fastq.gz&lt;/code&gt;, where &lt;code&gt;sample = "mysample"&lt;/code&gt; in this case.&lt;/p&gt;
 &lt;p&gt;To get the names of all the samples, we use &lt;code&gt;glob_wildcards(...)&lt;/code&gt; which finds all the files that match the given string pattern, and collects the possible values of the variables in the string pattern as a list. Hence all the sample names are stored in &lt;code&gt;SAMPLES&lt;/code&gt;, and the other rule takes input of all samples&amp;rsquo; BAM files to generate alignment of all samples.&lt;/p&gt;
 &lt;p&gt;Now run Snakemake again with a different rule target:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;snakemake -j 8 -p align_all_samples&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;snakemake -j 8 -p align_all_samples
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1271,7 +1275,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;p&gt;The full &lt;code&gt;Snakefile&lt;/code&gt; can be found &lt;a href="https://gist.github.com/ccwang002/2659b19439b6205284c0ae68ca06345d"&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;h3 id="job-dependencies-and-dag"&gt;Job dependencies and DAG&lt;/h3&gt;
 &lt;p&gt;Now with the pipeline complete, we can further look at the how all the rules are chained with each other. Snakemake has a command to generate the job depedency graph (a DAG):&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;snakemake --dag quant_all_samples | dot -Tsvg &amp;gt; dag.svg&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;snakemake --dag quant_all_samples | dot -Tsvg &amp;gt; dag.svg
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1282,7 +1286,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 
 &lt;p&gt;Snakemake generates such DAG first before execution, where each node represents a job. As long as two nodes have no connected edges and their input exist, they can be executed parallely. This is a powerful feature to pipeline management, which can use the resources in a fin grain.&lt;/p&gt;
 &lt;p&gt;A simpler graph that shows rules instead of jobs can be generated by:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;snakemake --rulegraph quant_all_samples | dot -Tsvg &amp;gt; ruledag.svg&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;snakemake --rulegraph quant_all_samples | dot -Tsvg &amp;gt; ruledag.svg
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1293,12 +1297,12 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 
 &lt;h2 id="snakemake-on-google-cloud"&gt;Snakemake on Google Cloud&lt;/h2&gt;
 &lt;p&gt;Now we start to move our Snakemake pipeline to the Google Cloud. To complete all the following steps, one needs a Google account and has a bucket on the Google Cloud with write access. That is, be able to upload the output back to Google Cloud Storage. Snakemake is able to download/upload files from the cloud, one needs to &lt;a href="https://cloud.google.com/sdk/downloads"&gt;set up the Google Cloud SDK on the local machine&lt;/a&gt; and create the default application credentials:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;gcloud auth application-default login&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud auth application-default login
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Also, install the neccessary Python packages to give Snakemake the access to storage API:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;conda install google-cloud-storage&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;conda install google-cloud-storage
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1331,7 +1335,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 
 &lt;p&gt;Now all the file paths are on Google Cloud Storage under the bucket &lt;code&gt;lbwang-playground&lt;/code&gt;. For example, &lt;code&gt;GENOME_FA&lt;/code&gt; points to &lt;code&gt;gs://lbwang-playground/snakemake_rnaseq/griffithlab_brain_vs_uhr/GRCh38_Ens87_chr22_ERCC/chr22_ERCC92.fa&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;One could launch Snakemake again:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;snakemake --timestamp -p --verbose --keep-remote -j 8 quant_all_samples&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;snakemake --timestamp -p --verbose --keep-remote -j 8 quant_all_samples
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1365,17 +1369,17 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 
 
 &lt;p&gt;To understand how the whole remote files work, here is the the folder structure after the exection:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;~/snakemake_example&lt;/span&gt;
-&lt;span class="err"&gt;├── lbwang-playground/&lt;/span&gt;
-&lt;span class="err"&gt;│   └── snakemake_rnaseq/&lt;/span&gt;
-&lt;span class="err"&gt;│       └── griffithlab_brain_vs_uhr/&lt;/span&gt;
-&lt;span class="err"&gt;│           ├── GRCh38_Ens87_chr22_ERCC/&lt;/span&gt;
-&lt;span class="err"&gt;│           └── HBR_UHR_ERCC_ds_10pc/&lt;/span&gt;
-&lt;span class="err"&gt;├── {WRITABLE_BUCKET_PATH}/&lt;/span&gt;
-&lt;span class="err"&gt;│   ├── align_hisat2/&lt;/span&gt;
-&lt;span class="err"&gt;│   ├── hisat2_index/&lt;/span&gt;
-&lt;span class="err"&gt;│   └── stringtie/&lt;/span&gt;
-&lt;span class="err"&gt;└── Snakefile&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;~/snakemake_example
+├── lbwang-playground/
+│   └── snakemake_rnaseq/
+│       └── griffithlab_brain_vs_uhr/
+│           ├── GRCh38_Ens87_chr22_ERCC/
+│           └── HBR_UHR_ERCC_ds_10pc/
+├── {WRITABLE_BUCKET_PATH}/
+│   ├── align_hisat2/
+│   ├── hisat2_index/
+│   └── stringtie/
+└── Snakefile
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1487,12 +1491,12 @@ gcloud container clusters get-credentials --zone&lt;span class="o"&gt;=&lt;/span
 &lt;ul&gt;
 &lt;li&gt;HISAT2 cannot build its index on Kubenetes. So the step &lt;code&gt;build_hisat_index&lt;/code&gt; failed for unknown reason. The error message from HISAT2 looks like this:&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;...&lt;/span&gt;
-&lt;span class="err"&gt;Wrote 8912688 bytes to secondary GFM file: {WRITABLE_BUCKET_PATH}/snakemake_demo/hisat2_index/chr22_ERCC92.6.ht2&lt;/span&gt;
-&lt;span class="err"&gt;Index is corrupt: File size for {WRITABLE_BUCKET_PATH}/snakemake_demo/hisat2_index/chr22_ERCC92.6.ht2 should have been 8912688 but is actually 0.&lt;/span&gt;
-&lt;span class="err"&gt;Please check if there is a problem with the disk or if disk is full.&lt;/span&gt;
-&lt;span class="err"&gt;Total time for call to driver() for forward index: 00:01:18&lt;/span&gt;
-&lt;span class="c"&gt;Error: Encountered internal HISAT2 exception (#1)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;...
+Wrote 8912688 bytes to secondary GFM file: {WRITABLE_BUCKET_PATH}/snakemake_demo/hisat2_index/chr22_ERCC92.6.ht2
+Index is corrupt: File size for {WRITABLE_BUCKET_PATH}/snakemake_demo/hisat2_index/chr22_ERCC92.6.ht2 should have been 8912688 but is actually 0.
+Please check if there is a problem with the disk or if disk is full.
+Total time for call to driver() for forward index: 00:01:18
+Error: Encountered internal HISAT2 exception (#1)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1785,12 +1789,12 @@ DmfC2ISS64uLqHgJ3HHxhSmTLdc8KSJqzFi90ZUu
 &lt;p&gt;花了一點時間安頓，現在這邊的生活其實有相當多的個人時間，除了一年級有課跟作業要準備外，還是有一些自己的時間。目前我已經累積了 6 篇草稿，大部份是關於 Django，但碩班畢業之後，就不太有機會再寫網站，直到最近幫實驗室做了個 proposal review system 才又碰了一下。有機會會整理它們。&lt;/p&gt;
 &lt;p&gt;在台灣還有 Python 文件翻譯這個專案，很可惜沒辦法在離開前完成，但這個是我今年的目標。目前是個擺著讓它自由發展的狀態，但我想在年底 &lt;a href="https://www.python.org/dev/peps/pep-0494/"&gt;Python 3.6 新版本釋出&lt;/a&gt;之前把 tutorial 部份告一段落。除了這專案之外，重新學習 C，以及看了些 Rust 的東西，多練習基本功。還沒有加入當地實體的開源社群，加上晚上活動也比在台灣危險一點。不過在美國時區，不論 IRC 或 mail list 都能輕鬆跟到討論，倒也不會覺得沒辦法接受新知。目標參加明年的 PyCon US。&lt;/p&gt;
 &lt;p&gt;順帶一提，部落格也換了新的主題，風格比較像 Medium，應該比較好閱讀。不過我還沒空把細節調整好，目前維持著只要還不會很不順眼，就維持現狀的做法。希望不久後又能恢復定期發文。&lt;/p&gt;</content><category term="misc"></category><category term="zh"></category></entry><entry><title>使用 conda env 部署 Django</title><link href="https://blog.liang2.tw/posts/2016/05/django-deploy-conda/" rel="alternate"></link><published>2016-05-24T00:00:00-05:00</published><updated>2016-05-24T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-05-24:/posts/2016/05/django-deploy-conda/</id><summary type="html">&lt;p&gt;沒幾天前剛部署一次 Django，記錄在&lt;a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/"&gt;《使用 uWSGI、nginx、systemd 部署 Django》&lt;/a&gt;。今天又部署了另一個專案。部署的設定跟上次一樣：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;nginx -- unix socket -- uWSGI -- Django&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;nginx -- unix socket -- uWSGI -- Django
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;一樣寫一個 &lt;code&gt;PROJ.service&lt;/code&gt; 的 systemd unit 來管理網站的啟動 (uWSGI …&lt;/p&gt;</summary><content type="html">&lt;p&gt;沒幾天前剛部署一次 Django，記錄在&lt;a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/"&gt;《使用 uWSGI、nginx、systemd 部署 Django》&lt;/a&gt;。今天又部署了另一個專案。部署的設定跟上次一樣：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;nginx -- unix socket -- uWSGI -- Django&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;nginx -- unix socket -- uWSGI -- Django
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1864,21 +1868,21 @@ $ &lt;span class="nb"&gt;source&lt;/span&gt; activate VENV
 &lt;p&gt;Colon-separated list of directories to use when launching executables. Systemd uses a fixed value of /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin. &lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;預設只有以上提到的路徑，如果要修改環境變數的話，就透過 &lt;a href="https://www.freedesktop.org/software/systemd/man/systemd.exec.html#Environment="&gt;&lt;code&gt;Environment=&lt;/code&gt;&lt;/a&gt;，因此多加了一行在 systemd unit 裡。其餘的設定都是相同的。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
-&lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;PROJ Django server by uWSGI&lt;/span&gt;
-&lt;span class="na"&gt;After&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;syslog.target&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;[Unit]
+Description=PROJ Django server by uWSGI
+After=syslog.target
 
-&lt;span class="k"&gt;[Service]&lt;/span&gt;
-&lt;span class="na"&gt;Environment&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;PATH=/home/USER/miniconda3/envs/VENV/bin:$PATH&amp;quot;&lt;/span&gt;
-&lt;span class="na"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;/home/USER/miniconda3/envs/VENV/bin/uwsgi --ini /etc/uwsgi/vassals/PROJ.ini&lt;/span&gt;
-&lt;span class="na"&gt;Restart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;always&lt;/span&gt;
-&lt;span class="na"&gt;KillSignal&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;SIGQUIT&lt;/span&gt;
-&lt;span class="na"&gt;Type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;notify&lt;/span&gt;
-&lt;span class="na"&gt;StandardError&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;syslog&lt;/span&gt;
-&lt;span class="na"&gt;NotifyAccess&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;all&lt;/span&gt;
+[Service]
+Environment=&amp;quot;PATH=/home/USER/miniconda3/envs/VENV/bin:$PATH&amp;quot;
+ExecStart=/home/USER/miniconda3/envs/VENV/bin/uwsgi --ini /etc/uwsgi/vassals/PROJ.ini
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
 
-&lt;span class="k"&gt;[Install]&lt;/span&gt;
-&lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;multi-user.target&lt;/span&gt;
+[Install]
+WantedBy=multi-user.target
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -2281,9 +2285,9 @@ $ &lt;span class="nb"&gt;source&lt;/span&gt; activate VENV
 &lt;/ol&gt;
 &lt;/div&gt;</content><category term="Bioinfo"></category><category term="en"></category><category term="r"></category><category term="bioconductor"></category></entry><entry><title>使用 uWSGI、nginx、systemd 部署 Django</title><link href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/" rel="alternate"></link><published>2016-05-19T00:00:00-05:00</published><updated>2016-05-19T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-05-19:/posts/2016/05/django-deploy-uwsgi-nginx-systemd/</id><summary type="html">&lt;p&gt;上一次很認真的 Django 部署記錄在&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;《設定 Python 官方文件中文化自動更新 Server》&lt;/a&gt;一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。&lt;/p&gt;
 &lt;p&gt;這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;nginx -- unix socket -- uWSGI …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;上一次很認真的 Django 部署記錄在&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;《設定 Python 官方文件中文化自動更新 Server》&lt;/a&gt;一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;nginx -- unix socket -- uWSGI …&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;上一次很認真的 Django 部署記錄在&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;《設定 Python 官方文件中文化自動更新 Server》&lt;/a&gt;一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。&lt;/p&gt;
 &lt;p&gt;這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;nginx -- unix socket -- uWSGI -- Django&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;nginx -- unix socket -- uWSGI -- Django
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -2391,20 +2395,20 @@ sudo systemctl reload nginx
 
 &lt;h3 id="systemd"&gt;systemd&lt;/h3&gt;
 &lt;p&gt;這邊除了執行 uWSGI 的指令不同外，都跟&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;舊文&lt;/a&gt;相同。Debian 系 systemd system unit 設定檔放在 &lt;code&gt;/etc/systemd/system/PROJ.service&lt;/code&gt;：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
-&lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;PROJ&amp;#39;s Django server by uWSGI&lt;/span&gt;
-&lt;span class="na"&gt;After&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;syslog.target&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;[Unit]
+Description=PROJ&amp;#39;s Django server by uWSGI
+After=syslog.target
 
-&lt;span class="k"&gt;[Service]&lt;/span&gt;
-&lt;span class="na"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;/path/to/VENV/bin/uwsgi --ini /etc/uwsgi/vassals/PROJ.ini&lt;/span&gt;
-&lt;span class="na"&gt;Restart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;always&lt;/span&gt;
-&lt;span class="na"&gt;KillSignal&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;SIGQUIT&lt;/span&gt;
-&lt;span class="na"&gt;Type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;notify&lt;/span&gt;
-&lt;span class="na"&gt;StandardError&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;syslog&lt;/span&gt;
-&lt;span class="na"&gt;NotifyAccess&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;all&lt;/span&gt;
+[Service]
+ExecStart=/path/to/VENV/bin/uwsgi --ini /etc/uwsgi/vassals/PROJ.ini
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
 
-&lt;span class="k"&gt;[Install]&lt;/span&gt;
-&lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;multi-user.target&lt;/span&gt;
+[Install]
+WantedBy=multi-user.target
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -2451,7 +2455,7 @@ You can also use widgets to &lt;strong&gt;synchronize stateful and stateless inf
 &lt;p&gt;……只是要用個進度條而已，哪來這麼多背景知識。更多介紹可以參考 &lt;a href="http://nbviewer.jupyter.org/github/ipython/ipywidgets/blob/master/examples/Index.ipynb"&gt;ipywidgets 官方範例&lt;/a&gt;。&lt;/p&gt;
 &lt;h4 id="_1"&gt;安裝&lt;/h4&gt;
 &lt;p&gt;使用 Python 3.5 示範。安裝除了 notebook 本身外，還要額外裝上 ipywidgets 這套件。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;pip install notebook ipywidgets&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip install notebook ipywidgets
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -2650,13 +2654,13 @@ ffmpeg -i Untitled.mov &lt;span class="se"&gt;\&lt;/span&gt;
 
 
 &lt;p&gt;要手動更新 certificate 的時候執行這個 service 即可，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;systemctl start renew_cert&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;systemctl start renew_cert
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;我們不需要 enable 它，不然每次開機都會執行一次。看結果或記錄，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;systemctl status renew_cert&lt;/span&gt;
-&lt;span class="err"&gt;journalctl -e -u renew_cert&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;systemctl status renew_cert
+journalctl -e -u renew_cert
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -2677,8 +2681,8 @@ ffmpeg -i Untitled.mov &lt;span class="se"&gt;\&lt;/span&gt;
 &lt;p&gt;重點只有 &lt;code&gt;[Timer]&lt;/code&gt; 這 directive。&lt;code&gt;Unit=&lt;/code&gt; 表示要啟動的 service。&lt;code&gt;OnCalendar=&lt;/code&gt;&lt;sup id="fnref:calendar"&gt;&lt;a class="footnote-ref" href="#fn:calendar"&gt;1&lt;/a&gt;&lt;/sup&gt; 則是設定這 timer 根據指定的時間點 (UTC 時間&lt;sup id="fnref:utc"&gt;&lt;a class="footnote-ref" href="#fn:utc"&gt;2&lt;/a&gt;&lt;/sup&gt;) 啟動。&lt;/p&gt;
 &lt;p&gt;以這邊寫的時間 &lt;code&gt;*-1/2-1 16:00:00&lt;/code&gt; 為例，代表每年的 1+2n 月 1 日 16:00 UTC 更新 certificate，即臺灣時間 1、3、5、……月 2 日凌晨更新。&lt;/p&gt;
 &lt;p&gt;啟用 timer，它需要被 enable 確保重開機時被執行。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;systemctl enable renew_cert.timer&lt;/span&gt;
-&lt;span class="err"&gt;systemctl start renew_cert.timer&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;systemctl enable renew_cert.timer
+systemctl start renew_cert.timer
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -2948,7 +2952,7 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;扣掉不支援 Python 3 的套件&lt;sup id="fnref:python3"&gt;&lt;a class="footnote-ref" href="#fn:python3"&gt;4&lt;/a&gt;&lt;/sup&gt;後，就剩 django-celery、django-RQ、django-Q 可以選。這裡面最紅也最老牌的是 django-celery ，它與 &lt;a href="http://www.celeryproject.org/"&gt;Celery&lt;/a&gt; 整合，功能完整且穩定，我用過也覺得十分不錯，缺點是功能太多有點複雜，加上不同 message queue 時會有很多設定要調整，需要一段時間上手。一般 Celery 常見的搭配使用 &lt;a href="https://www.rabbitmq.com/"&gt;Rabbit-MQ&lt;/a&gt; 和 &lt;a href="http://redis.io/"&gt;Redis&lt;/a&gt;，的確在 task 很多時有必要，但我們這個 build doc 一天可能才十幾次，在不隔離 build doc 環境的情況同時間的 worker 只能有一個，不會有效能上的問題。因此我傾向只要使用與 Django 同一個 database 就好，不要再有額外非 Python 的 dependency，讓 local 開發簡單一點。&lt;/p&gt;
 &lt;p&gt;最後選擇 &lt;a href="https://django-q.readthedocs.org/"&gt;django-Q&lt;/a&gt;。雖然很新但作者維護得很勤，worker 可以只用 Python 內建的 multiprocessing 完成。功能簡單卻完整，包含 monitor，跟 django-admin 整合，還可以排程。所以要啟動 django-Q 的 cluster，只要多一個 &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;python manage.py qcluster&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;python manage.py qcluster
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -2973,22 +2977,22 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。&lt;/p&gt;
 &lt;p&gt;我的 code 裡用到了 &lt;a href="https://docs.python.org/3/library/subprocess.html#subprocess.run"&gt;&lt;code&gt;subprocess.run&lt;/code&gt;&lt;/a&gt;，這是 Python 3.5+ 才有的 API。但 Jessie 只有 Python 3.4，但我覺得很好用一點都不想改寫成相容舊版的 code。&lt;/p&gt;
 &lt;p&gt;因此需要安裝 Debian testing channel 上最新的 Python 3.5。這樣其實有安全上的疑慮，因為只有 stable channel 才有 security support，但自己編譯的問題更大，所以像 &lt;a href="https://github.com/yyuu/pyenv"&gt;pyenv&lt;/a&gt; 這種多 Python 版本的工具不在考慮內。&lt;/p&gt;
 &lt;p&gt;於是用 &lt;a href="https://wiki.debian.org/AptPreferences"&gt;Apt-Pinning&lt;/a&gt; 只讓 Python 3.5 相關的套件安裝 testing 的版本。首先把 testing channel 加到 &lt;code&gt;/etc/apt/source.list&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;deb&lt;/span&gt; &lt;span class="s"&gt;http://cloudfront.debian.net/debian&lt;/span&gt; &lt;span class="kp"&gt;testing&lt;/span&gt; &lt;span class="kp"&gt;main&lt;/span&gt;
-&lt;span class="k"&gt;deb-src&lt;/span&gt; &lt;span class="s"&gt;http://cloudfront.debian.net/debian&lt;/span&gt; &lt;span class="kp"&gt;testing&lt;/span&gt; &lt;span class="kp"&gt;main&lt;/span&gt;
-&lt;span class="k"&gt;deb&lt;/span&gt; &lt;span class="s"&gt;http://security.debian.org/&lt;/span&gt; &lt;span class="kp"&gt;testing/updates&lt;/span&gt; &lt;span class="kp"&gt;main&lt;/span&gt;
-&lt;span class="k"&gt;deb-src&lt;/span&gt; &lt;span class="s"&gt;http://security.debian.org/&lt;/span&gt; &lt;span class="kp"&gt;testing/updates&lt;/span&gt; &lt;span class="kp"&gt;main&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;deb http://cloudfront.debian.net/debian testing main
+deb-src http://cloudfront.debian.net/debian testing main
+deb http://security.debian.org/ testing/updates main
+deb-src http://security.debian.org/ testing/updates main
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;然後修改 &lt;code&gt;/etc/apt/preferences&lt;/code&gt; 確定我們不會不小心裝到 testing 相關的套件，並把 Python 3.5 相關的套件設定權限 &amp;gt;= 990 讓它們能被自動安裝。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;Specify&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;rules&lt;/span&gt; &lt;span class="k"&gt;first&lt;/span&gt; &lt;span class="n"&gt;so&lt;/span&gt; &lt;span class="n"&gt;later&lt;/span&gt; &lt;span class="n"&gt;package&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;specfic&lt;/span&gt; &lt;span class="n"&gt;rules&lt;/span&gt; &lt;span class="n"&gt;can&lt;/span&gt; &lt;span class="n"&gt;override&lt;/span&gt; &lt;span class="n"&gt;them&lt;/span&gt;
-&lt;span class="n"&gt;Package&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
-&lt;span class="n"&gt;Pin&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;release&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;testing&lt;/span&gt;
-&lt;span class="n"&gt;Pin&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;Priority&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# Specify * rules first so later package-specfic rules can override them
+Package: *
+Pin: release a=testing
+Pin-Priority: -10
 
-&lt;span class="n"&gt;Package&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;python3&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;libpython3&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;
-&lt;span class="n"&gt;Pin&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;release&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;testing&lt;/span&gt;
-&lt;span class="n"&gt;Pin&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;Priority&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;990&lt;/span&gt;
+Package: python3.5* libpython3.5*
+Pin: release a=testing
+Pin-Priority: 990
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -3023,8 +3027,8 @@ sudo /sbin/swapon /var/swap.1
 
 
 &lt;p&gt;修改 fstab 讓每次開機都有這個 swap 設定，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# /etc/fstab&lt;/span&gt;
-&lt;span class="err"&gt;/var/swap.1 none swap defaults 0 0&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# /etc/fstab
+/var/swap.1 none swap defaults 0 0
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -3033,15 +3037,15 @@ sudo /sbin/swapon /var/swap.1
 &lt;p&gt;再來是 code 的同步與更新。autobuild server 只要更新 source code，但 cpython-tw source 需要定時 commit 新的翻譯，因此 deploy server 會有修改 git repo 的權限。&lt;/p&gt;
 &lt;p&gt;不應該使用自己的 SSH key，deploy server 上應該有專屬的 deploy key，其中 cpython-tw 的 deploy key 有寫入權限（即可以 commit）。&lt;/p&gt;
 &lt;p&gt;查了一下，要讓不同 git repo 使用不同的 SSH key 也不複雜。以這邊的例子，先修改 &lt;code&gt;~/.ssh/config&lt;/code&gt; 加入兩個新的 host，使用不同的 SSH key：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;Host&lt;/span&gt; &lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pydoc_autobuild&lt;/span&gt;
-  &lt;span class="n"&gt;HostName&lt;/span&gt; &lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;
-  &lt;span class="k"&gt;User&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt;
-  &lt;span class="n"&gt;IdentityFile&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;pydoc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ssh&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;id_rsa&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pydoc_autobuild&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;Host github-pydoc_autobuild
+  HostName github.com
+  User git
+  IdentityFile /home/pydoc/.ssh/id_rsa.pydoc_autobuild
 
-&lt;span class="k"&gt;Host&lt;/span&gt; &lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;cpython_tw&lt;/span&gt;
-  &lt;span class="n"&gt;HostName&lt;/span&gt; &lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;
-  &lt;span class="k"&gt;User&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt;
-  &lt;span class="n"&gt;IdentityFile&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;pydoc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ssh&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;id_rsa&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cpython_tw&lt;/span&gt;
+Host github-cpython_tw
+  HostName github.com
+  User git
+  IdentityFile /home/pydoc/.ssh/id_rsa.cpython_tw
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -3052,7 +3056,7 @@ ssh-keygen -t rsa -f ~/.ssh/id_rsa.cpython_tw
 
 
 &lt;p&gt;把兩個 repo 的 URL host 換掉，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;git remote set-url origin git@github-pydoc_autobuild:python-doc-tw/pydoc_autobuild.git&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git remote set-url origin git@github-pydoc_autobuild:python-doc-tw/pydoc_autobuild.git
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -3120,49 +3124,49 @@ sudo systemctl reload nginx
 &lt;p&gt;確定 pydoc 上線就可以專心處理 uWSGI 了。&lt;/p&gt;
 &lt;h4 id="uwsgi"&gt;uWSGI 設定&lt;/h4&gt;
 &lt;p&gt;uWSGI 在 VENV 外也要裝，我覺得還是用 pip 比較簡單，雖然這樣就要自己注意 uWSGI 的版本更新了：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sudo python3.5 -m pip install uwsgi&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo python3.5 -m pip install uwsgi
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;把 uWSGI 設定存成 &lt;code&gt;pydoc_autobuild_uwsgi.ini&lt;/code&gt; 並且在測試時，都使用：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sudo uwsgi --ini pydoc_autobuild_uwsgi.ini&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo uwsgi --ini pydoc_autobuild_uwsgi.ini
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;模擬實際上的執行方式，這樣之後改用 systemd 執行才不會又丟一堆權限的問題。設定檔的內容：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[uwsgi]&lt;/span&gt;
-&lt;span class="na"&gt;chdir&lt;/span&gt;        &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;/path/to/code/pydoc_autobuild&lt;/span&gt;
-&lt;span class="c1"&gt;# Django&amp;#39;s wsgi file&lt;/span&gt;
-&lt;span class="na"&gt;module&lt;/span&gt;       &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;pydoc_autobuild.wsgi:application&lt;/span&gt;
-&lt;span class="na"&gt;env&lt;/span&gt;          &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;DJANGO_SETTINGS_MODULE=pydoc_autobuild.settings.production&lt;/span&gt;
-&lt;span class="c1"&gt;# the virtualenv (full path)&lt;/span&gt;
-&lt;span class="na"&gt;home&lt;/span&gt;         &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;/path/to/VENV&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;[uwsgi]
+chdir        = /path/to/code/pydoc_autobuild
+# Django&amp;#39;s wsgi file
+module       = pydoc_autobuild.wsgi:application
+env          = DJANGO_SETTINGS_MODULE=pydoc_autobuild.settings.production
+# the virtualenv (full path)
+home         = /path/to/VENV
 
-&lt;span class="c1"&gt;# process-related settings&lt;/span&gt;
-&lt;span class="c1"&gt;# master&lt;/span&gt;
-&lt;span class="na"&gt;master&lt;/span&gt;       &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;true&lt;/span&gt;
-&lt;span class="c1"&gt;# maximum number of worker processes&lt;/span&gt;
-&lt;span class="na"&gt;processes&lt;/span&gt;    &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;4&lt;/span&gt;
-&lt;span class="c1"&gt;# the socket (use the full path to be safe&lt;/span&gt;
-&lt;span class="na"&gt;socket&lt;/span&gt;       &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;/run/django/pydoc_autobuild.sock&lt;/span&gt;
-&lt;span class="c1"&gt;# ... with appropriate permissions - may be needed&lt;/span&gt;
-&lt;span class="na"&gt;chmod-socket&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;664&lt;/span&gt;
-&lt;span class="na"&gt;uid&lt;/span&gt;          &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;pydoc&lt;/span&gt;
-&lt;span class="na"&gt;gid&lt;/span&gt;          &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;www-data&lt;/span&gt;
-&lt;span class="c1"&gt;# clear environment on exit&lt;/span&gt;
-&lt;span class="na"&gt;vacuum&lt;/span&gt;       &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;true&lt;/span&gt;
+# process-related settings
+# master
+master       = true
+# maximum number of worker processes
+processes    = 4
+# the socket (use the full path to be safe
+socket       = /run/django/pydoc_autobuild.sock
+# ... with appropriate permissions - may be needed
+chmod-socket = 664
+uid          = pydoc
+gid          = www-data
+# clear environment on exit
+vacuum       = true
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;權限上的設定可能要花點時間處理一下，nginx 使用 www-data/www-data 的身份執行，socket 要確定 nginx 能讀寫，但我的 code 放在 pydoc 使用者路徑下，用 www-data 可能會有權限的問題。建議把 uid、gid 都設定好。&lt;/p&gt;
 &lt;p&gt;過程中，搭配 nginx 的錯誤訊息比較好 debug：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sudo less +F /var/log/nginx/error.log&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo less +F /var/log/nginx/error.log
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;成功後，再用 uWSGI 的 Emperor mode，把設定檔丟到一個路徑底下（該路徑稱為 vassals）。uWSGI 在 Emperor mode 時會自動把 vassals 路徑內所有設定檔都讀進來並執行。&lt;/p&gt;
 &lt;p&gt;這裡 vassals 路徑使用 &lt;code&gt;/etc/uwsgi/vassals/&lt;/code&gt;。因為有設 uid、gid，跑的時候就不用再設了：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sudo uwsgi --emperor /etc/uwsgi/vassals&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo uwsgi --emperor /etc/uwsgi/vassals
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -3171,65 +3175,65 @@ sudo systemctl reload nginx
 &lt;p&gt;Autobuild server 包含兩個部份：Django Server 與 Django-Q cluster。所以寫成 systemd service 時會有兩個服務。&lt;/p&gt;
 &lt;p&gt;Debian system service 放在 &lt;code&gt;/etc/systemd/system/&lt;/code&gt; 底下，因此建立 &lt;code&gt;uwsgi.service&lt;/code&gt; 和 &lt;code&gt;qcluster.service&lt;/code&gt; 分別管理 uWSGI Emperor mode 和 Django-Q cluster。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;uwsgi.service&lt;/code&gt; 參考 uWSGI 官網 &lt;a href="http://uwsgi-docs.readthedocs.org/en/latest/Systemd.html"&gt;&lt;em&gt;Django and Systemd&lt;/em&gt;&lt;/a&gt; 一文的設定：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
-&lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;uWSGI Emperor&lt;/span&gt;
-&lt;span class="na"&gt;After&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;syslog.target&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;[Unit]
+Description=uWSGI Emperor
+After=syslog.target
 
-&lt;span class="k"&gt;[Service]&lt;/span&gt;
-&lt;span class="na"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;/usr/local/bin/uwsgi --emperor /etc/uwsgi/vassals&lt;/span&gt;
-&lt;span class="na"&gt;RuntimeDirectory&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;uwsgi&lt;/span&gt;
-&lt;span class="na"&gt;Restart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;always&lt;/span&gt;
-&lt;span class="na"&gt;KillSignal&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;SIGQUIT&lt;/span&gt;
-&lt;span class="na"&gt;Type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;notify&lt;/span&gt;
-&lt;span class="na"&gt;StandardError&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;syslog&lt;/span&gt;
-&lt;span class="na"&gt;NotifyAccess&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;all&lt;/span&gt;
+[Service]
+ExecStart=/usr/local/bin/uwsgi --emperor /etc/uwsgi/vassals
+RuntimeDirectory=uwsgi
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
 
-&lt;span class="k"&gt;[Install]&lt;/span&gt;
-&lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;multi-user.target&lt;/span&gt;
+[Install]
+WantedBy=multi-user.target
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;&lt;code&gt;qcluster.service&lt;/code&gt; 算是自己硬寫模擬 &lt;code&gt;python manage.py qcluster&lt;/code&gt; 行為。因此環境變數都要設定好（當然用絕對路徑就沒問題了，我只是覺得這樣 build log 內的執行檔路徑都很長會很醜 xd）&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
-&lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;Django-Q Cluster for site pydoc_autobuild&lt;/span&gt;
-&lt;span class="na"&gt;After&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;syslog.target&lt;/span&gt;
-&lt;span class="na"&gt;Wants&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;uwsgi.service&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;[Unit]
+Description=Django-Q Cluster for site pydoc_autobuild
+After=syslog.target
+Wants=uwsgi.service
 
-&lt;span class="k"&gt;[Service]&lt;/span&gt;
-&lt;span class="na"&gt;User&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;pydoc&lt;/span&gt;
-&lt;span class="na"&gt;Group&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;www-data&lt;/span&gt;
-&lt;span class="na"&gt;Environment&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;VIRTUAL_ENV=/path/to/VENV&lt;/span&gt;
-&lt;span class="na"&gt;Environment&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;PATH=/path/to/VENV/bin:$PATH&lt;/span&gt;
-&lt;span class="na"&gt;Environment&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;DJANGO_SETTINGS_MODULE=pydoc_autobuild.settings.production&lt;/span&gt;
-&lt;span class="na"&gt;WorkingDirectory&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;/path/to/code/pydoc_autobuild&lt;/span&gt;
-&lt;span class="na"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;/path/to/VENV/bin/python manage.py qcluster&lt;/span&gt;
-&lt;span class="na"&gt;Restart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;always&lt;/span&gt;
-&lt;span class="na"&gt;KillSignal&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;SIGQUIT&lt;/span&gt;
-&lt;span class="na"&gt;Type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;simple&lt;/span&gt;
-&lt;span class="na"&gt;NotifyAccess&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;none&lt;/span&gt;
-&lt;span class="na"&gt;StandardError&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;syslog&lt;/span&gt;
+[Service]
+User=pydoc
+Group=www-data
+Environment=VIRTUAL_ENV=/path/to/VENV
+Environment=PATH=/path/to/VENV/bin:$PATH
+Environment=DJANGO_SETTINGS_MODULE=pydoc_autobuild.settings.production
+WorkingDirectory=/path/to/code/pydoc_autobuild
+ExecStart=/path/to/VENV/bin/python manage.py qcluster
+Restart=always
+KillSignal=SIGQUIT
+Type=simple
+NotifyAccess=none
+StandardError=syslog
 
-&lt;span class="k"&gt;[Install]&lt;/span&gt;
-&lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;multi-user.target&lt;/span&gt;
+[Install]
+WantedBy=multi-user.target
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;這樣的設定檔應該不是 systemd 的慣例，我還在想是不是應該要改寫到 user service 去（但我不會）。&lt;/p&gt;
 &lt;p&gt;加入到 systemd 之後管理就很簡單，啟動這兩個 service：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sudo systemctl enable uwsgi&lt;/span&gt;
-&lt;span class="err"&gt;sudo systemctl enable qcluster&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo systemctl enable uwsgi
+sudo systemctl enable qcluster
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;查看他們的狀態：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sudo systemctl status uwsgi&lt;/span&gt;
-&lt;span class="err"&gt;sudo systemctl status qcluster&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo systemctl status uwsgi
+sudo systemctl status qcluster
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;查看它們的 log 也變得很簡單，因為有把它們的 stderr 抓起來。systemd 好處是 rotation 等等都會幫你注意，看 log 的功能也很多。&lt;/p&gt;
 &lt;p&gt;例如要查最近一小時 uWSGI 的連線記錄，並在有新連線時持續更新 log：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;sudo journalctl -xef -u uwsgi --since &amp;#39;1 hour ago&amp;#39;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo journalctl -xef -u uwsgi --since &amp;#39;1 hour ago&amp;#39;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -3437,12 +3441,12 @@ sudo systemctl reload nginx
 
 &lt;h2 id="psql_1"&gt;psql 指令&lt;/h2&gt;
 &lt;p&gt;psql 的指令很多，用 &lt;code&gt;\?&lt;/code&gt; 可以看到列表。完整的版本可以見&lt;a href="http://www.postgresql.org/docs/9.4/static/app-psql.html#APP-PSQL-META-COMMANDS"&gt;官網 psql meta-commands&lt;/a&gt; 的介紹。底下列幾個常用的：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;\l          # list all database&lt;/span&gt;
-&lt;span class="err"&gt;\d          # list tables in current database&lt;/span&gt;
-&lt;span class="err"&gt;\du         # list roles&lt;/span&gt;
-&lt;span class="err"&gt;\conninfo   # show current SQL connection&lt;/span&gt;
-&lt;span class="err"&gt;\q          # quit&lt;/span&gt;
-&lt;span class="err"&gt;help        # print a hub message for all kinds of help&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;\l          # list all database
+\d          # list tables in current database
+\du         # list roles
+\conninfo   # show current SQL connection
+\q          # quit
+help        # print a hub message for all kinds of help
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -3953,23 +3957,23 @@ EDIT 2017-06-20: 更新書籍資訊與 2/3 比較。&lt;/p&gt;</content><categor
 &lt;li&gt;善用條列式說明&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;以下是範例（From &lt;a href="http://git-scm.com/book/ch5-2.html"&gt;Git Book&lt;/a&gt;）：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;Short&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt; &lt;span class="n"&gt;chars&lt;/span&gt; &lt;span class="k"&gt;or&lt;/span&gt; &lt;span class="k"&gt;less&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;summary&lt;/span&gt; &lt;span class="k"&gt;of&lt;/span&gt; &lt;span class="n"&gt;changes&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;Short (50 chars or less) summary of changes
 
-&lt;span class="k"&gt;More&lt;/span&gt; &lt;span class="n"&gt;detailed&lt;/span&gt; &lt;span class="n"&gt;explanatory&lt;/span&gt; &lt;span class="nb"&gt;text&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;necessary&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;  &lt;span class="n"&gt;Wrap&lt;/span&gt; &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt;
-&lt;span class="n"&gt;about&lt;/span&gt; &lt;span class="mi"&gt;72&lt;/span&gt; &lt;span class="n"&gt;characters&lt;/span&gt; &lt;span class="k"&gt;or&lt;/span&gt; &lt;span class="n"&gt;so&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;  &lt;span class="k"&gt;In&lt;/span&gt; &lt;span class="k"&gt;some&lt;/span&gt; &lt;span class="n"&gt;contexts&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="k"&gt;first&lt;/span&gt;
-&lt;span class="n"&gt;line&lt;/span&gt; &lt;span class="k"&gt;is&lt;/span&gt; &lt;span class="n"&gt;treated&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;subject&lt;/span&gt; &lt;span class="k"&gt;of&lt;/span&gt; &lt;span class="n"&gt;an&lt;/span&gt; &lt;span class="n"&gt;email&lt;/span&gt; &lt;span class="k"&gt;and&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;rest&lt;/span&gt; &lt;span class="k"&gt;of&lt;/span&gt;
-&lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="nb"&gt;text&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;body&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;  &lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;blank&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt; &lt;span class="n"&gt;separating&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt;
-&lt;span class="n"&gt;summary&lt;/span&gt; &lt;span class="k"&gt;from&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;body&lt;/span&gt; &lt;span class="k"&gt;is&lt;/span&gt; &lt;span class="n"&gt;critical&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;unless&lt;/span&gt; &lt;span class="n"&gt;you&lt;/span&gt; &lt;span class="n"&gt;omit&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;body&lt;/span&gt;
-&lt;span class="n"&gt;entirely&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="n"&gt;tools&lt;/span&gt; &lt;span class="k"&gt;like&lt;/span&gt; &lt;span class="n"&gt;rebase&lt;/span&gt; &lt;span class="n"&gt;can&lt;/span&gt; &lt;span class="k"&gt;get&lt;/span&gt; &lt;span class="n"&gt;confused&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;you&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt;
-&lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;two&lt;/span&gt; &lt;span class="n"&gt;together&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+More detailed explanatory text, if necessary.  Wrap it to
+about 72 characters or so.  In some contexts, the first
+line is treated as the subject of an email and the rest of
+the text as the body.  The blank line separating the
+summary from the body is critical (unless you omit the body
+entirely); tools like rebase can get confused if you run
+the two together.
 
-&lt;span class="n"&gt;Further&lt;/span&gt; &lt;span class="n"&gt;paragraphs&lt;/span&gt; &lt;span class="n"&gt;come&lt;/span&gt; &lt;span class="k"&gt;after&lt;/span&gt; &lt;span class="n"&gt;blank&lt;/span&gt; &lt;span class="n"&gt;lines&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+Further paragraphs come after blank lines.
 
-  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Bullet&lt;/span&gt; &lt;span class="n"&gt;points&lt;/span&gt; &lt;span class="k"&gt;are&lt;/span&gt; &lt;span class="n"&gt;okay&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;too&lt;/span&gt;
+  - Bullet points are okay, too
 
-  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Typically&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="n"&gt;hyphen&lt;/span&gt; &lt;span class="k"&gt;or&lt;/span&gt; &lt;span class="n"&gt;asterisk&lt;/span&gt; &lt;span class="k"&gt;is&lt;/span&gt; &lt;span class="n"&gt;used&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;bullet&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="n"&gt;preceded&lt;/span&gt; &lt;span class="k"&gt;by&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="n"&gt;single&lt;/span&gt; &lt;span class="k"&gt;space&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;blank&lt;/span&gt; &lt;span class="n"&gt;lines&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt;
-    &lt;span class="k"&gt;between&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;but&lt;/span&gt; &lt;span class="n"&gt;conventions&lt;/span&gt; &lt;span class="n"&gt;vary&lt;/span&gt; &lt;span class="n"&gt;here&lt;/span&gt;
+  - Typically a hyphen or asterisk is used for the bullet,
+    preceded by a single space, with blank lines in
+    between, but conventions vary here
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -5027,11 +5031,11 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 
 
 &lt;p&gt;Then get the genomic range of these transcripts by &lt;code&gt;seqnames()&lt;/code&gt;, &lt;code&gt;start()&lt;/code&gt; and &lt;code&gt;end()&lt;/code&gt; functions on the &lt;code&gt;GRanages&lt;/code&gt; object,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;thechr&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;as.character&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;unique&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-    &lt;span class="nf"&gt;seqnames&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BRCA1_txs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;span class="n"&gt;st&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;min&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;start&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BRCA1_txs&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="m"&gt;2e4&lt;/span&gt;
-&lt;span class="n"&gt;en&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;max&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;end&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BRCA1_txs&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="m"&gt;1e3&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;thechr &amp;lt;- as.character(unique(
+    seqnames(BRCA1_txs)
+))
+st &amp;lt;- min(start(BRCA1_txs)) - 2e4
+en &amp;lt;- max(end(BRCA1_txs)) + 1e3
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -5625,7 +5629,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;/div&gt;
 &lt;h3 id="django"&gt;Django 初始設定&lt;/h3&gt;
 &lt;p&gt;一樣開一個 Python 虛擬環境（這時候就是它的好處了，能把不同專案的套件隔離）。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;pip install django pytz ipython pyyaml&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip install django pytz ipython pyyaml
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -5636,14 +5640,14 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 
 
 &lt;p&gt;執行完之後應該會多出一堆檔案，結構如下。注意到有兩層 &lt;code&gt;draw_site&lt;/code&gt;。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;demo_django_draw_member/&lt;/span&gt;
-&lt;span class="err"&gt;└── draw_site/&lt;/span&gt;
-&lt;span class="err"&gt;    ├── draw_site/&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── __init__.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── settings.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── urls.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   └── wsgi.py&lt;/span&gt;
-&lt;span class="err"&gt;    └── manage.py*&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;demo_django_draw_member/
+└── draw_site/
+    ├── draw_site/
+    │   ├── __init__.py
+    │   ├── settings.py
+    │   ├── urls.py
+    │   └── wsgi.py
+    └── manage.py*
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -5676,18 +5680,18 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;demo_django_draw_member/&lt;/span&gt;
-&lt;span class="err"&gt;└── draw_site/&lt;/span&gt;
-&lt;span class="err"&gt;    ├── draw_member/&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── __init__.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── admin.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── migrations/&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── models.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── tests.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   └── views.py&lt;/span&gt;
-&lt;span class="err"&gt;    ├── draw_site/&lt;/span&gt;
-&lt;span class="err"&gt;    │   └── ...&lt;/span&gt;
-&lt;span class="err"&gt;    └── manage.py*&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;demo_django_draw_member/
+└── draw_site/
+    ├── draw_member/
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── migrations/
+    │   ├── models.py
+    │   ├── tests.py
+    │   └── views.py
+    ├── draw_site/
+    │   └── ...
+    └── manage.py*
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -5820,15 +5824,15 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 
 &lt;p&gt;基本上格式就是照抄原本就有的。因為放在同個 app 裡面了，import view 時就可以用 explicit relative import（這不是 relative import 喔）&lt;/p&gt;
 &lt;p&gt;原本的 urls.py 就改成把 URL 的處理「dispatch」給這個 app，改成底下這樣。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_site/urls.py&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.conf.urls&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;url&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.contrib&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;admin&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# draw_site/urls.py
+from django.conf.urls import include, url
+from django.contrib import admin
 
 
-&lt;span class="n"&gt;urlpatterns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^admin/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;admin&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urls&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
-    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;^&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;draw_member.urls&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
-&lt;span class="p"&gt;]&lt;/span&gt;
+urlpatterns = [
+    url(r&amp;#39;^admin/&amp;#39;, include(admin.site.urls)),
+    url(r&amp;#39;^&amp;#39;, include(&amp;#39;draw_member.urls&amp;#39;)),
+]
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -5950,15 +5954,15 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;draw_member.models&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;History&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;m1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;高坂 穂乃果&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;group_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;μ&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;m2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;平沢 唯&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;group_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;K-ON!&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;m1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;m2&lt;/span&gt;
-&lt;span class="n"&gt;Out&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="err"&gt;高坂&lt;/span&gt; &lt;span class="err"&gt;穂乃果&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="err"&gt;μ&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;s&amp;gt;, &amp;lt;Member: 平沢 唯 of K-ON!&amp;gt;)&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;m1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;m2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;h1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;History&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;member&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;m1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;h1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;In [1]: from draw_member.models import Member, History
+In [2]: m1 = Member(name=&amp;quot;高坂 穂乃果&amp;quot;, group_name=&amp;quot;μ&amp;#39;s&amp;quot;)
+In [4]: m2 = Member(name=&amp;quot;平沢 唯&amp;quot;, group_name=&amp;quot;K-ON!&amp;quot;)
+In [5]: m1, m2
+Out[5]: (&amp;lt;Member: 高坂 穂乃果 of μ&amp;#39;s&amp;gt;, &amp;lt;Member: 平沢 唯 of K-ON!&amp;gt;)
+In [7]: m1.save()
+In [8]: m2.save()
+In [6]: h1 = History(member=m1)
+In [9]: h1.save()
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -6047,17 +6051,17 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 
 &lt;h4 id="data-in-orm-and-fixtures"&gt;Data in ORM and fixtures&lt;/h4&gt;
 &lt;p&gt;我們把 &lt;code&gt;members.csv&lt;/code&gt; 的資料填到資料庫吧。這邊就不用細說了。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;csv&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;../../draw_member/members.csv&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;newline&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-   &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;    &lt;span class="n"&gt;csv_reader&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;csv&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DictReader&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-   &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;    &lt;span class="n"&gt;members&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-   &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;名字&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;團體&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-   &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;csv_reader&lt;/span&gt;
-   &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;    &lt;span class="p"&gt;]&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;draw_member.models&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;members&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-   &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;     &lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;group_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-   &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;In [1]: import csv
+In [2]: with open(&amp;#39;../../draw_member/members.csv&amp;#39;, newline=&amp;#39;&amp;#39;) as f:
+   ...:    csv_reader = csv.DictReader(f)
+   ...:    members = [
+   ...:    (row[&amp;#39;名字&amp;#39;], row[&amp;#39;團體&amp;#39;])
+   ...:    for row in csv_reader
+   ...:    ]
+In [3]: from draw_member.models import Member
+In [4]: for m in members:
+   ...:     Member(name=m[0], group_name=m[1]).save()
+   ...:
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -6111,28 +6115,28 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;這樣資料的存取就介紹得差不多了。更多的細節可以參考&lt;a href="https://docs.djangoproject.com/en/1.8/#the-model-layer"&gt;官網 model layer&lt;/a&gt; 的說明。&lt;/p&gt;
 &lt;h3 id="django-template"&gt;Django Template&lt;/h3&gt;
 &lt;p&gt;在進行下去之前，先確認我們的目錄結構是一樣的。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;demo_django_draw_member/&lt;/span&gt;
-&lt;span class="err"&gt;└── draw_site/&lt;/span&gt;
-&lt;span class="err"&gt;    ├── db.sqlite3&lt;/span&gt;
-&lt;span class="err"&gt;    ├── draw_member/&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── __init__.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── admin.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── fixtures/&lt;/span&gt;
-&lt;span class="err"&gt;    │   │   ├── anime_members.json&lt;/span&gt;
-&lt;span class="err"&gt;    │   │   └── anime_members.yaml&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── migrations/&lt;/span&gt;
-&lt;span class="err"&gt;    │   │   ├── 0001_initial.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   │   └── __init__.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── models.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── tests.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── urls.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   └── views.py&lt;/span&gt;
-&lt;span class="err"&gt;    ├── draw_site/&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── __init__.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── settings.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   ├── urls.py&lt;/span&gt;
-&lt;span class="err"&gt;    │   └── wsgi.py&lt;/span&gt;
-&lt;span class="err"&gt;    └── manage.py*&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;demo_django_draw_member/
+└── draw_site/
+    ├── db.sqlite3
+    ├── draw_member/
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── fixtures/
+    │   │   ├── anime_members.json
+    │   │   └── anime_members.yaml
+    │   ├── migrations/
+    │   │   ├── 0001_initial.py
+    │   │   └── __init__.py
+    │   ├── models.py
+    │   ├── tests.py
+    │   ├── urls.py
+    │   └── views.py
+    ├── draw_site/
+    │   ├── __init__.py
+    │   ├── settings.py
+    │   ├── urls.py
+    │   └── wsgi.py
+    └── manage.py*
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -6327,22 +6331,22 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;h3 id="django-form"&gt;Django Form&lt;/h3&gt;
 &lt;p&gt;直接把 form 寫在 template 裡面也是可以，有時候 form 可能跟 model 息息相關，而且 form input 多了之後每個欄位都要自己讀寫也太不直覺。想要驗証使用者的 input 的話就更複雜了。&lt;/p&gt;
 &lt;p&gt;於是就有了 Django Form。馬上來看用起來是怎麼樣。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# draw_member/forms.py&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;forms&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# draw_member/forms.py
+from django import forms
 
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;DrawForm&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;forms&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Form&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-    &lt;span class="n"&gt;GROUP_CHOICES&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;μ&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;μ&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
-        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;K-ON!&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;K-ON!&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
-        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;ALL&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;（全）&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
-    &lt;span class="p"&gt;]&lt;/span&gt;
-    &lt;span class="n"&gt;group&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;forms&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ChoiceField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-        &lt;span class="n"&gt;choices&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;GROUP_CHOICES&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="n"&gt;label&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;團隊名稱&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="n"&gt;label_suffix&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;：&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="n"&gt;widget&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;forms&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RadioSelect&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="n"&gt;initial&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;ALL&amp;#39;&lt;/span&gt;
-    &lt;span class="p"&gt;)&lt;/span&gt;
+class DrawForm(forms.Form):
+    GROUP_CHOICES = [
+        (&amp;quot;μ&amp;#39;s&amp;quot;, &amp;quot;μ&amp;#39;s&amp;quot;),
+        (&amp;quot;K-ON!&amp;quot;, &amp;quot;K-ON!&amp;quot;),
+        (&amp;quot;ALL&amp;quot;, &amp;quot;（全）&amp;quot;),
+    ]
+    group = forms.ChoiceField(
+        choices=GROUP_CHOICES,
+        label=&amp;#39;團隊名稱&amp;#39;,
+        label_suffix=&amp;#39;：&amp;#39;,
+        widget=forms.RadioSelect,
+        initial=&amp;#39;ALL&amp;#39;
+    )
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -6966,21 +6970,21 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;我們先假設所有檔案都放在同個資料夾裡，估且叫 &lt;code&gt;draw_member&lt;/code&gt;。之後沒有額外說明的話，都是在這個目錄下操作。&lt;/p&gt;
 &lt;p&gt;原始資料用 CSV 格式來儲存，有「名字」以及「團體」兩個欄位。不過考慮到可能會把檔案匯出，在原始檔案多加一個「最近被抽到的日期」欄位，希望最近被抽到的會比其他人再被抽到的機會低一點。&lt;/p&gt;
 &lt;p&gt;這個 CSV 檔案命名為 &lt;code&gt;members.csv&lt;/code&gt;。一開始沒有人被抽到，所以最後一欄都先設成空的&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;，第一行是每一欄欄位的名稱。如果從資料庫匯出，這欄位就會有值。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;&amp;quot;名字&amp;quot;,&amp;quot;團體&amp;quot;,&amp;quot;最近被抽到的日期&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;高坂 穂乃果&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;絢瀬 絵里&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;南 ことり&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;園田 海未&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;星空 凛&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;西木野 真姫&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;東條 希&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;小泉 花陽&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;矢澤 にこ&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;平沢 唯&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;秋山 澪&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;田井中 律&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;琴吹 紬&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;&amp;quot;中野 梓&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&amp;quot;名字&amp;quot;,&amp;quot;團體&amp;quot;,&amp;quot;最近被抽到的日期&amp;quot;
+&amp;quot;高坂 穂乃果&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;絢瀬 絵里&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;南 ことり&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;園田 海未&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;星空 凛&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;西木野 真姫&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;東條 希&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;小泉 花陽&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;矢澤 にこ&amp;quot;,&amp;quot;μ&amp;#39;s&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;平沢 唯&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;秋山 澪&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;田井中 律&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;琴吹 紬&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;
+&amp;quot;中野 梓&amp;quot;,&amp;quot;K-ON!&amp;quot;,&amp;quot;&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -7383,16 +7387,16 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;h4 id="form"&gt;Form&lt;/h4&gt;
 &lt;p&gt;最常見的 POST 就是搭配&lt;a href="https://developer.mozilla.org/en/docs/Web/HTML/Element/form"&gt;表單 (form)&lt;/a&gt; 使用。像登入要填帳號密碼、問卷問題與回答，就很常用 form 實作。Form 裡面有很多種 input，代表使用者能填的欄位，類型可能是單選、複選、單行、多行、密文等。&lt;/p&gt;
 &lt;p&gt;我們就先看一下 form 實際的長相吧。改寫 &lt;code&gt;templates/index.html&lt;/code&gt;，加上一個抽籤選團體的 form。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;來抽出快樂的夥伴吧！&lt;span class="nt"&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;&lt;span class="c"&gt;&amp;lt;!-- 本來有的 --&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;選擇要被抽的團體&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;form&lt;/span&gt; &lt;span class="na"&gt;action=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/draw&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;method=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;post&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;label&lt;/span&gt; &lt;span class="na"&gt;for=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;group_name&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;團隊名稱：&lt;span class="nt"&gt;&amp;lt;/label&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;radio&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;group_name&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;μ&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;μ&amp;#39;s
-  &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;radio&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;group_name&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;K-ON!&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;K-ON!
-  &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;radio&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;group_name&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ALL&amp;quot;&lt;/span&gt; &lt;span class="err"&gt;checked&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;（全）
-  &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;submit&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Submit&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;hr&amp;gt;&lt;/span&gt;&lt;span class="c"&gt;&amp;lt;!-- 這是分隔線 --&amp;gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&amp;lt;h1&amp;gt;來抽出快樂的夥伴吧！&amp;lt;/h1&amp;gt;&amp;lt;!-- 本來有的 --&amp;gt;
+&amp;lt;p&amp;gt;選擇要被抽的團體&amp;lt;/p&amp;gt;
+&amp;lt;form action=&amp;quot;/draw&amp;quot; method=&amp;quot;post&amp;quot;&amp;gt;
+  &amp;lt;label for=&amp;quot;group_name&amp;quot;&amp;gt;團隊名稱：&amp;lt;/label&amp;gt;
+  &amp;lt;input type=&amp;quot;radio&amp;quot; name=&amp;quot;group_name&amp;quot; value=&amp;quot;μ&amp;#39;s&amp;quot;&amp;gt;μ&amp;#39;s
+  &amp;lt;input type=&amp;quot;radio&amp;quot; name=&amp;quot;group_name&amp;quot; value=&amp;quot;K-ON!&amp;quot;&amp;gt;K-ON!
+  &amp;lt;input type=&amp;quot;radio&amp;quot; name=&amp;quot;group_name&amp;quot; value=&amp;quot;ALL&amp;quot; checked&amp;gt;（全）
+  &amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Submit&amp;quot;&amp;gt;
+&amp;lt;/form&amp;gt;
+&amp;lt;hr&amp;gt;&amp;lt;!-- 這是分隔線 --&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -7470,57 +7474,57 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;/ul&gt;
 &lt;p&gt;馬上來改寫一下吧。我們的功能表應該每一頁都要出現，再來我們希望 &lt;code&gt;/draw&lt;/code&gt; 的頁面也是個完整的 HTML。&lt;/p&gt;
 &lt;p&gt;首先先把常用的部份獨立出來，做成 &lt;code&gt;templates/base.html&lt;/code&gt;。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;&amp;lt;!-- templates/base.html --&amp;gt;&lt;/span&gt;
-&lt;span class="cp"&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;meta&lt;/span&gt; &lt;span class="na"&gt;charset=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;utf-8&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;meta&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;viewport&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;content=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;width=device-width&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;title&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;成員抽籤&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
-    &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;hr&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;h3&amp;gt;&lt;/span&gt;功能列&lt;span class="nt"&gt;&amp;lt;/h3&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;ul&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;li&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;首頁（抽籤）&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;li&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/history&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;歷史記錄&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;li&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/reset&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;清除記錄、更新成員資料&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&amp;lt;!-- templates/base.html --&amp;gt;
+&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html&amp;gt;
+  &amp;lt;head&amp;gt;
+    &amp;lt;meta charset=&amp;quot;utf-8&amp;quot;&amp;gt;
+    &amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device-width&amp;quot;&amp;gt;
+    &amp;lt;title&amp;gt;{% block title %}成員抽籤{% endblock title %}&amp;lt;/title&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    {% block content %}{% endblock content %}
+    &amp;lt;hr&amp;gt;
+    &amp;lt;h3&amp;gt;功能列&amp;lt;/h3&amp;gt;
+    &amp;lt;ul&amp;gt;
+      &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;/&amp;quot;&amp;gt;首頁（抽籤）&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+      &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;/history&amp;quot;&amp;gt;歷史記錄&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+      &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;/reset&amp;quot;&amp;gt;清除記錄、更新成員資料&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+    &amp;lt;/ul&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;像功能列這種不會變的就很適合放在這邊。而我們的首頁就可以重覆使用這個結構，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;&amp;lt;!-- templates/index.html --&amp;gt;&lt;/span&gt;
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;extends&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;base.html&amp;quot;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&amp;lt;!-- templates/index.html --&amp;gt;
+{% extends &amp;quot;base.html&amp;quot; %}
 
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;來抽出快樂的夥伴吧！&lt;span class="nt"&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;選擇要被抽的團體&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;form&lt;/span&gt; &lt;span class="na"&gt;action=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/draw&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;method=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;post&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;label&lt;/span&gt; &lt;span class="na"&gt;for=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;group_name&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;團隊名稱：&lt;span class="nt"&gt;&amp;lt;/label&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;radio&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;group_name&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;μ&amp;#39;s&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;μ&amp;#39;s
-  &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;radio&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;group_name&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;K-ON!&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;K-ON!
-  &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;radio&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;group_name&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ALL&amp;quot;&lt;/span&gt; &lt;span class="err"&gt;checked&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;（全）
-  &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;submit&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Submit&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+{% block content %}
+&amp;lt;h1&amp;gt;來抽出快樂的夥伴吧！&amp;lt;/h1&amp;gt;
+&amp;lt;p&amp;gt;選擇要被抽的團體&amp;lt;/p&amp;gt;
+&amp;lt;form action=&amp;quot;/draw&amp;quot; method=&amp;quot;post&amp;quot;&amp;gt;
+  &amp;lt;label for=&amp;quot;group_name&amp;quot;&amp;gt;團隊名稱：&amp;lt;/label&amp;gt;
+  &amp;lt;input type=&amp;quot;radio&amp;quot; name=&amp;quot;group_name&amp;quot; value=&amp;quot;μ&amp;#39;s&amp;quot;&amp;gt;μ&amp;#39;s
+  &amp;lt;input type=&amp;quot;radio&amp;quot; name=&amp;quot;group_name&amp;quot; value=&amp;quot;K-ON!&amp;quot;&amp;gt;K-ON!
+  &amp;lt;input type=&amp;quot;radio&amp;quot; name=&amp;quot;group_name&amp;quot; value=&amp;quot;ALL&amp;quot; checked&amp;gt;（全）
+  &amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Submit&amp;quot;&amp;gt;
+&amp;lt;/form&amp;gt;
+{% endblock content %}
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;可以看到最大的差異就是我們的 &lt;code&gt;index.html&lt;/code&gt; 變簡單了。它就像物件繼承一樣，&lt;code&gt;{% extends "base.html" %}&lt;/code&gt;，表示先把 &lt;code&gt;base.html&lt;/code&gt; 的內容放進來，而裡面定義了兩個 block：&lt;code&gt;title&lt;/code&gt; 以及 &lt;code&gt;content&lt;/code&gt;。Index 有定義 content 的內容，所以就取代掉原本定義在 base 裡空的 content。  Index 並沒有定義 title，那就會用原本 block 內的值，即「成員抽籤」。&lt;/p&gt;
 &lt;p&gt;再來處理 &lt;code&gt;/draw&lt;/code&gt; 的部份，我們除而再利用 &lt;code&gt;base.html&lt;/code&gt; 之外，還要引入 template variable 的概念。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;&amp;lt;!-- templates/draw.html --&amp;gt;&lt;/span&gt;
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;extends&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;base.html&amp;quot;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&amp;lt;!-- templates/draw.html --&amp;gt;
+{% extends &amp;quot;base.html&amp;quot; %}
 
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;抽籤結果&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+{% block title %}抽籤結果{% endblock title %}
 
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;抽籤結果&lt;span class="nt"&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;name&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;（團體：&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;group&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;）&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+{% block content %}
+&amp;lt;h1&amp;gt;抽籤結果&amp;lt;/h1&amp;gt;
+&amp;lt;p&amp;gt;{{ name }}（團體：{{ group }}）&amp;lt;/p&amp;gt;
+{% endblock content %}
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -7575,32 +7579,32 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 
 
 &lt;p&gt;同理也要建立對應的 template。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;&amp;lt;!-- templates/history.html --&amp;gt;&lt;/span&gt;
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;extends&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;base.html&amp;quot;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&amp;lt;!-- templates/history.html --&amp;gt;
+{% extends &amp;quot;base.html&amp;quot; %}
 
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;抽籤歷史&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;title&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+{% block title %}抽籤歷史{% endblock title %}
 
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;抽籤歷史（最近 10 筆）&lt;span class="nt"&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;table&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;thead&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;tr&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;th&amp;gt;&lt;/span&gt;名字&lt;span class="nt"&gt;&amp;lt;/th&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;th&amp;gt;&lt;/span&gt;團體&lt;span class="nt"&gt;&amp;lt;/th&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;th&amp;gt;&lt;/span&gt;抽中時間&lt;span class="nt"&gt;&amp;lt;/th&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;/tr&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;/thead&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;tbody&amp;gt;&lt;/span&gt;
-    &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nv"&gt;history&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;recent_histories&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;tr&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;td&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;history.0&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;td&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;history.1&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;td&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;history.2&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;/tr&amp;gt;&lt;/span&gt;
-    &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endfor&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;/tbody&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/table&amp;gt;&lt;/span&gt;
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+{% block content %}
+&amp;lt;h1&amp;gt;抽籤歷史（最近 10 筆）&amp;lt;/h1&amp;gt;
+&amp;lt;table&amp;gt;
+  &amp;lt;thead&amp;gt;
+    &amp;lt;tr&amp;gt;
+      &amp;lt;th&amp;gt;名字&amp;lt;/th&amp;gt;
+      &amp;lt;th&amp;gt;團體&amp;lt;/th&amp;gt;
+      &amp;lt;th&amp;gt;抽中時間&amp;lt;/th&amp;gt;
+    &amp;lt;/tr&amp;gt;
+  &amp;lt;/thead&amp;gt;
+  &amp;lt;tbody&amp;gt;
+    {% for history in recent_histories %}
+    &amp;lt;tr&amp;gt;
+      &amp;lt;td&amp;gt;{{ history.0 }}&amp;lt;/td&amp;gt;
+      &amp;lt;td&amp;gt;{{ history.1 }}&amp;lt;/td&amp;gt;
+      &amp;lt;td&amp;gt;{{ history.2 }}&amp;lt;/td&amp;gt;
+    &amp;lt;/tr&amp;gt;
+    {% endfor %}
+  &amp;lt;/tbody&amp;gt;
+&amp;lt;/table&amp;gt;
+{% endblock content %}
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -7640,13 +7644,13 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nv"&gt;history&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;recent_histories&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;tr&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;td&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;history.name&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;td&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;history.group&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;td&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;history.draw_time.strftime&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;%Y 年 %m 月 %d 日 %H 時 %M 分&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/tr&amp;gt;&lt;/span&gt;
-&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endfor&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;{% for history in recent_histories %}
+&amp;lt;tr&amp;gt;
+  &amp;lt;td&amp;gt;{{ history.name }}&amp;lt;/td&amp;gt;
+  &amp;lt;td&amp;gt;{{ history.group }}&amp;lt;/td&amp;gt;
+  &amp;lt;td&amp;gt;{{ history.draw_time.strftime(&amp;quot;%Y 年 %m 月 %d 日 %H 時 %M 分&amp;quot;) }}&amp;lt;/td&amp;gt;
+&amp;lt;/tr&amp;gt;
+{% endfor %}
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -8090,7 +8094,7 @@ ag -l &lt;span class="s1"&gt;&amp;#39;\x08&amp;#39;&lt;/span&gt; &lt;span class=
 &lt;p&gt;這邊要額外說明一下 Linked Attachment Base Directory 以及 Data Directory 的差異。像 PDF 這類如果被 Zotfile 所管理的檔案，或是自己手動選「Attach Link &amp;hellip;」的檔案，他使用的是 linked attachment，icon 會有個連結的符號 &lt;img src="https://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotfile_fileicon.png" style="height: 1.6em;"/&gt;。其他像 Webpage Snapshot 或是預設的 PDF 檔都是放在 Data Directory。&lt;/p&gt;
 &lt;h4 id="how-to-sync-data-storage"&gt;How to sync data storage&lt;/h4&gt;
 &lt;p&gt;如果要進一步讓 data storage 也用 Dropbox 同步的話，參考官網關於 &lt;a href="https://www.zotero.org/support/sync"&gt;sync 的介紹&lt;/a&gt;，OSX 上 Zotero Firefox 的資料會存放在&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;~/Library/Application Support/Firefox/Profiles/xxxxxxxx.default/zotero&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;~/Library/Application Support/Firefox/Profiles/xxxxxxxx.default/zotero
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -8159,13 +8163,13 @@ ag -l &lt;span class="s1"&gt;&amp;#39;\x08&amp;#39;&lt;/span&gt; &lt;span class=
 (&lt;a href="https://github.com/google/zopfli"&gt;Zopfli Readme&lt;/a&gt;)&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;這個 &lt;a href="https://github.com/google/zopfli/blob/master/README.zopflipng"&gt;Zopflipng&lt;/a&gt; 也是同個 repo 維護。自己編譯簡單，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;git clone https://github.com/google/zopfli.git&lt;/span&gt;
-&lt;span class="err"&gt;make zopflipng&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git clone https://github.com/google/zopfli.git
+make zopflipng
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;如果要一口氣壓縮一堆 PNG，可以這樣使用：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;zopflipng --lossy_transparent --prefix *.png&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;zopflipng --lossy_transparent --prefix *.png
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -8173,7 +8177,7 @@ ag -l &lt;span class="s1"&gt;&amp;#39;\x08&amp;#39;&lt;/span&gt; &lt;span class=
 &lt;p&gt;PS 剛好今天早上看到 Google 又出了另一個壓縮演算法 &lt;a href="https://github.com/google/brotli"&gt;Brotli&lt;/a&gt;，但這個與 deflate 不相容，應該不能用在 PNG 上面。&lt;/p&gt;
 &lt;h3 id="pngquant"&gt;pngquant&lt;/h3&gt;
 &lt;p&gt;想要有損的 PNG 可以用 &lt;a href="https://pngquant.org/"&gt;pngquant&lt;/a&gt;。看官網有特別強調在透明度的資訊會被保留，並能像 JPEG 一樣設定 quality。一般 quality 容許越低壓縮比都會越高。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;pngquant -f --ext=.png --quality=70-85 --skip-if-larger *.png&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pngquant -f --ext=.png --quality=70-85 --skip-if-larger *.png
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -8263,17 +8267,17 @@ ag -l &lt;span class="s1"&gt;&amp;#39;\x08&amp;#39;&lt;/span&gt; &lt;span class=
 &lt;/div&gt;
 &lt;h3 id="pelican"&gt;Pelican 簡介&lt;/h3&gt;
 &lt;p&gt;&lt;a href="http://docs.getpelican.com/"&gt;Pelican&lt;/a&gt; 結論來說不難理解，而且要自訂 blog theme 也不會很複雜。首先跟 Sphinx 一樣，用內建的 &lt;code&gt;pelican-quickstart&lt;/code&gt; 預設值就能架好一個可以動的。目錄大概長這樣&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;my_blog/&lt;/span&gt;
-&lt;span class="err"&gt;├── content/&lt;/span&gt;
-&lt;span class="err"&gt;│   ├── blog_post_1.md&lt;/span&gt;
-&lt;span class="err"&gt;│   └── blog_post_2.rst&lt;/span&gt;
-&lt;span class="err"&gt;├── output/&lt;/span&gt;
-&lt;span class="err"&gt;├── develop_server.sh*&lt;/span&gt;
-&lt;span class="err"&gt;├── Makefile&lt;/span&gt;
-&lt;span class="err"&gt;├── fabfile.py&lt;/span&gt;
-&lt;span class="err"&gt;├── pelicanconf.py&lt;/span&gt;
-&lt;span class="err"&gt;├── publishconf.py&lt;/span&gt;
-&lt;span class="err"&gt;└── requirements.txt&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;my_blog/
+├── content/
+│   ├── blog_post_1.md
+│   └── blog_post_2.rst
+├── output/
+├── develop_server.sh*
+├── Makefile
+├── fabfile.py
+├── pelicanconf.py
+├── publishconf.py
+└── requirements.txt
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -8284,17 +8288,17 @@ ag -l &lt;span class="s1"&gt;&amp;#39;\x08&amp;#39;&lt;/span&gt; &lt;span class=
 
 &lt;p&gt;預設會輸出到 &lt;code&gt;output/&lt;/code&gt;，到時候 deploy 就把這個資料夾的內容丟到 server 上。&lt;/p&gt;
 &lt;p&gt;每篇文章可以用 markdown 或者 reStructuredText(rst) 來寫，概念上像這樣：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;---&lt;/span&gt;
-&lt;span class="nl"&gt;Title&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Hello&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;World&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="nc"&gt;Date&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;01&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;18&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;00&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="nl"&gt;Tags&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;world&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;programming&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="nl"&gt;Category&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="nl"&gt;Slug&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;hello&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;world&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="c1"&gt;---&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;---
+Title: Hello World
+Date: 2016-01-16 18:00
+Tags: world, programming
+Category: test
+Slug: hello-world
+---
 
-&lt;span class="n"&gt;Hello&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;World&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+Hello [World]
 
-&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;World&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;en&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;wikipedia&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;wiki&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;World&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+[World]: https://en.wikipedia.org/wiki/World
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
