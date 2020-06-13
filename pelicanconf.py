@@ -57,7 +57,7 @@ USE_FOLDER_AS_CATEGORY = False
 # Markdown settings
 MARKDOWN = {
     'extension_configs' : {
-        'markdown.extensions.codehilite': {'css_class': 'highlight'},
+        'markdown.extensions.codehilite': {'css_class': 'highlight', 'guess_lang': False},
         'markdown.extensions.smarty': {},
         'markdown.extensions.toc': {},
         'markdown.extensions.extra': {},
