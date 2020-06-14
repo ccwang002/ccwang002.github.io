@@ -5,11 +5,12 @@
   &lt;p class="caption"&gt;&lt;/p&gt;
 &lt;/div&gt;
 
-&lt;p&gt;It turns out that Firefox controls its user interface styling using CSS. So we can set the shape of the window tabs, the height of the address bar, and more by adding a CSS file at &lt;code&gt;~/Library/Application Support/Firefox/Profiles/&amp;lt;profile&amp;gt;/chrome/userChrome.css&lt;/code&gt;. In Firefox 69+, we need to set &lt;code&gt;toolkit.legacyUserProfileCustomizations.stylesheets=true&lt;/code&gt; in &lt;code&gt;about:config&lt;/code&gt; to enable the CSS styling (&lt;a href="https://www.userchrome.org/how-create-userchrome-css.html"&gt;more details here&lt;/a&gt;). &lt;/p&gt;
+&lt;p&gt;It turns out that Firefox controls its user interface styling using CSS. So we can set the shape of the window tabs, the height of the address bar, and more by adding a CSS file at &lt;code&gt;~/Library/Application Support/Firefox/Profiles/&amp;lt;profile&amp;gt;/chrome/userChrome.css&lt;/code&gt;. In Firefox 69+, we need to set &lt;code&gt;toolkit.legacyUserProfileCustomizations.stylesheets=true&lt;/code&gt; in &lt;code&gt;about:config&lt;/code&gt; to enable the CSS styling (&lt;a href="https://www.userchrome.org/how-create-userchrome-css.html"&gt;more details here&lt;/a&gt;).&lt;/p&gt;
 &lt;p&gt;My modification was based on &lt;a href="https://apple.stackexchange.com/a/313241"&gt;this answer on Stack Exchange&lt;/a&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;#&lt;/span&gt;&lt;span class="nn"&gt;navigator-toolbox&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="nt"&gt;inFullscreen&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="k"&gt;height&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;0.5&lt;/span&gt;&lt;span class="kt"&gt;rem&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="k"&gt;margin-bottom&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;-0.5&lt;/span&gt;&lt;span class="kt"&gt;rem&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;opacity&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="k"&gt;overflow&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;hidden&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="k"&gt;z-index&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
@@ -17,8 +18,8 @@
 &lt;span class="p"&gt;#&lt;/span&gt;&lt;span class="nn"&gt;navigator-toolbox&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="nt"&gt;inFullscreen&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;hover&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;
 &lt;span class="p"&gt;#&lt;/span&gt;&lt;span class="nn"&gt;navigator-toolbox&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="nt"&gt;inFullscreen&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;focus-within&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="c"&gt;/*&lt;/span&gt;
-&lt;span class="c"&gt;     * Add some padding between the navbar and the top screen edge &lt;/span&gt;
-&lt;span class="c"&gt;     * to be more visible while the macOS hidden menu bar shows up. &lt;/span&gt;
+&lt;span class="c"&gt;     * Add some padding between the navbar and the top screen edge&lt;/span&gt;
+&lt;span class="c"&gt;     * to be more visible while the macOS hidden menu bar shows up.&lt;/span&gt;
 &lt;span class="c"&gt;     * The macOS menubar will hide after a few seconds.&lt;/span&gt;
 &lt;span class="c"&gt;     */&lt;/span&gt;
     &lt;span class="k"&gt;padding-top&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;1.5&lt;/span&gt;&lt;span class="kt"&gt;rem&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
@@ -30,7 +31,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Note that the Firefox needs to be restarted to get the styling in effect. Here is how the Firefox fullscreen looks like after applying the &lt;code&gt;userChrome.css&lt;/code&gt; above. &lt;/p&gt;
+&lt;p&gt;Note that the Firefox needs to be restarted to get the styling in effect. Here is how the Firefox fullscreen looks like after applying the &lt;code&gt;userChrome.css&lt;/code&gt; above.&lt;/p&gt;
 &lt;div class="figure"&gt;
   &lt;img src="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/rstudio_fullscreen.modified.png"&gt;
 &lt;/div&gt;
@@ -55,7 +56,7 @@
   &lt;p class="caption"&gt;Address bar is shown automatically when it is focused using shortkey.&lt;/p&gt;
 &lt;/div&gt;
 
-&lt;p&gt;In &lt;code&gt;userChrome.css&lt;/code&gt;, I added a small padding between the bars and the top border to make them more accessible by mouse. When the mouse moves to the top, macOS&amp;rsquo;s menu bar will pop up as well, and both Firefox and macOS will overlap. The macOS one will go away first, but the mouse has to stay on the Firefox bars so they don&amp;rsquo;t disappear either. &lt;/p&gt;
+&lt;p&gt;In &lt;code&gt;userChrome.css&lt;/code&gt;, I added a small padding between the bars and the top border to make them more accessible by mouse. When the mouse moves to the top, macOS&amp;rsquo;s menu bar will pop up as well, and both Firefox and macOS will overlap. The macOS one will go away first, but the mouse has to stay on the Firefox bars so they don&amp;rsquo;t disappear either.&lt;/p&gt;
 &lt;div class="figure"&gt;
   &lt;video controls&gt;
     &lt;source src="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/fullscreen_hover_for_menubar.webm" type="video/webm"&gt;
@@ -65,7 +66,7 @@
 &lt;/div&gt;
 
 &lt;p&gt;The overlapping of Firefox bars and macOS menubar is still a bit annoying, which will require some practice to navigate between them by mouse. I will probably rely more on the shortkeys instead. Anyway, I now have more vertical space and the modification of &lt;code&gt;userChrome.css&lt;/code&gt; works fine for now.&lt;/p&gt;
-&lt;p&gt;For more information about modifying the Firefox user interface, there is &lt;a href="https://www.userchrome.org/"&gt;a website&lt;/a&gt; that introduces &lt;code&gt;userChrome.css&lt;/code&gt; in depth. &lt;/p&gt;
+&lt;p&gt;For more information about modifying the Firefox user interface, there is &lt;a href="https://www.userchrome.org/"&gt;a website&lt;/a&gt; that introduces &lt;code&gt;userChrome.css&lt;/code&gt; in depth.&lt;/p&gt;
 &lt;h3 id="notes-for-screencast-encoding"&gt;Notes for screencast encoding&lt;/h3&gt;
 &lt;p&gt;I modified the command from my &lt;a href="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/"&gt;previous post&lt;/a&gt; to shrink the file size of the original QuickTime screencasts using FFmpeg. More encoding parameters can be found at FFmpeg&amp;rsquo;s wiki (&lt;a href="https://trac.ffmpeg.org/wiki/Encode/VP9"&gt;VP9&lt;/a&gt; and &lt;a href="https://trac.ffmpeg.org/wiki/Encode/H.264"&gt;H.264&lt;/a&gt;).&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# VP9 (WEBM)&lt;/span&gt;
