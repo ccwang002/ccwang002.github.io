@@ -10,7 +10,7 @@ The followings are talks I gave in the open source communities. Since I have dev
 ### 2019
 
 [**Genomics in R**](https://blog.liang2.tw/2019Talk-Genomics-in-R/) Mar 27, 2019<br>
-WashU
+WUSTL
 
 
 ### 2017
