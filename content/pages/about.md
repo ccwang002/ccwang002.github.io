@@ -4,59 +4,40 @@ Slug: about-me
 sortorder: 1
 ---
 
-(This page is also available in [中文](./zh.html#about-me))
+I'm a Ph.D. student in [Li Ding's Lab][dinglab] at Washington University in St. Louis. My research focuses on cancer protegenomics in two directions. I process and analyze [CPTAC proteognomic datasets][CPTAC] (mostly glioblastoma) to better understand the disease and the potential treatment avenues, and I build tools and databases to help the analysis and collect the information we gain from the datasets.
 
-Hi, I'm Liang-Bo Wang（王亮博）. Most people call me 亮亮 (or liang<sup>2</sup>, pronounced as Liang-liang). In the United States, people call me Bobo since it is easier to pronunce :)
+You can find my academic publications [here][google scholar], or my CV [here](/CV.pdf).
 
-I'm studying Computational and Systems Biology as a Ph.D. student in Washington University in St. Louis. My graduate advisor is [Prof. Li Ding][dinglab]. My previous interns include Microsoft Research Asia (MSRA) and [Pinkoi]. I grew up in Taipei, Taiwan.
+Before graduate school, I interned in [Microsoft Research Asia][MSRA] and [Pinkoi], where I had a lot of fun in imaging deep learning and Chinese/Mandarin text search. I grew up in Taipei, Taiwan. Back in Taiwan, I went by liang<sup>2</sup> (pronounced as *liang-liang*). While in the United States, my lab calls me Bobo. I was offered with two options at the time, LB and Bobo, so [you know why][LB] I picked the latter :)
 
-You can find my CV [here](/CV.pdf).
+I was active in Taipei Python and R programming communities and enjoyed giving talks. You can find my previous talks [here][talks]. I give much less talks nowadays, mostly because I've been working on quite specific bioinformatic topics for a while so it's harder to find the audience. Feel free to contact me if you are interested in my stuff and I'd love to share.
 
 [dinglab]: http://dinglab.wustl.edu/
+[CPTAC]: https://proteomics.cancer.gov/programs/cptac
+[google scholar]: https://scholar.google.com/citations?user=-tdb3hcAAAAJ
+[Pinkoi]: http://www.pinkoi.com/
+[MSRA]: https://www.microsoft.com/en-us/research/lab/microsoft-research-asia/
+[LB]: https://en.wikipedia.org/wiki/Lysogeny_broth
+[talks]: /talks/#talks
 
-### Programming (communities)
-Before studying in St. Louis, I was active in Taipei Python and R meetups and enjoyed giving talks. The full talk list can be found [here][talks].
 
-I speak fluent Python (especially 3.x) and R. My daily research relies on Python scientific computing stack, such as Numpy, pandas, Jupyter(IPython), matplotlib, and Cython. For statistics, I use R more frequently and communicate between Python and R using rpy2.
-
-During my master's training, intern, and my free time, I've written a few websites based on Python web frameworks, including Django, Flask, and Bottle. But I won't claim I know much about web development. See [my github] for proof.
-
-
-### Contact me
-Contact me through [Twitter] or [email]. If private info included, [my public PGP key](/0x69BAE333BC4DC4BA.pub.asc) has fingerprint:
-
-```
-978B 49B8 EFB7 02F3 3B3F  F2E5 69BA E333 BC4D C4BA
-```
-
-Or find me on [Keybase].
-
-[Twitter]: https://twitter.com/ccwang002
-[email]: mailto:me+blog@liang2.tw
-[Keybase]: https://keybase.io/liang2
-
-My previous PGP keys:
+You can find me on [Twitter] or by [email]. My current GPG key is [0x69BAE333BC4DC4BA](/0x69BAE333BC4DC4BA.pub.asc) with fingerprint `978B 49B8 EFB7 02F3 3B3F  F2E5 69BA E333 BC4D C4BA`. My previous GPG keys include:
 
 - [0x44D10E44730992C4](/730992C4.pub.asc): `85DF A3EB 72CD DE7D 3F2A 127C 44D1 0E44 7309 92C4` (2016.12 to 2018.10)
 - [0x30A45011B233544E](/B233544E.pub.asc): `6ECD C5B8 235C D44D 2471 866E 30A4 5011 B233 544E` (2015 to 2016.12)
 
-
-### How to pronounce my nickname?
-亮亮 is composed of single character, **亮**, repeated two times with same pronunciation, *lia-ng*. Mind the pitch because in Mandarin different pitches have different meanings. The pitch is similar to how people say *shoot!*.
-
-[Google translator](https://translate.google.com/?hl=zh-TW#zh-CN/zh-TW/%E4%BA%AE%E4%BA%AE) gives an acceptable pronunciation. However, I'd like to recommend an online dictionary, [moedict (萌典)](https://www.moedict.tw/%E4%BA%AE), for its accurate pronunciation and thorough content.
-
-**亮** means *bright* in Mandarin.
+[Twitter]: https://twitter.com/ccwang002
+[email]: mailto:me+blog@liang2.tw
 
 
-### How to pronounce my name?
-I'll assume you've already known how to say my nickname, because my full name, 王亮博, should be two levels harder :)
+### How to pronounce my (nick)name?
+To pronounce my nickname in Mandarin (*liang-liang*), just repeat [the same pronunciation][liang on wiktionary] *lia-ng* twice (Pinyin notation is liàng). [Google Translate](https://translate.google.com/?hl=zh-TW#zh-CN/zh-TW/%E4%BA%AE%E4%BA%AE) pronounces it right. You can find out what *liang* means on [Wiktionary][liang on wiktionary] and [moedict][liang on moedict].
 
-[Google translator](https://translate.google.com.tw/?hl=zh-TW#zh-CN/zh-TW/%E7%8E%8B%E4%BA%AE%E5%8D%9A) still does an acceptable job here. Also, following [the link](https://www.moedict.tw/%E7%8E%8B%E4%BA%AE%E5%8D%9A) to moedict, click on each character will lead you to their definition pages, where their meaning and pronunciation can be found.
+My Mandarin name is 王亮博. The three characters [王][wang on wiktionary]/[亮][liang on wiktionary]/[博][bo on wiktionary] maps to Wang/Liang/Bo, respectively (links have their individual meaning and pronunciation). Last name (王/Wang) goes first in Mandarin. [Google Translate](https://translate.google.com.tw/?hl=zh-TW#zh-CN/zh-TW/%E7%8E%8B%E4%BA%AE%E5%8D%9A) pronounces my full name right.
 
-王亮博 maps to Wang / Liang / Bo word-by-word. Last name (王) is first stated in Mandarin but when written in English, it follows the common English nomenclature.
+[liang on wiktionary]: https://en.wiktionary.org/wiki/%E4%BA%AE
+[liang on moedict]: https://www.moedict.tw/%E4%BA%AE
+[wang on wiktionary]: https://en.wiktionary.org/wiki/%E7%8E%8B
+[bo on wiktionary]: https://en.wiktionary.org/wiki/%E5%8D%9A
 
-
-[Pinkoi]: http://www.pinkoi.com/
-[talks]: /talks/#talks
-[my github]: https://github.com/ccwang002
+(This page is also available in [Mandarin](./zh.html#about-me))
