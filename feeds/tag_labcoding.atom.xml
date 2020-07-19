@@ -689,7 +689,17 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－Linux</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-linux/" rel="alternate"></link><published>2016-01-21T21:30:00-06:00</published><updated>2016-01-21T21:30:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-linux/</id><summary type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
-&lt;p&gt;學習使用 Linux 是第一個比較大的障礙，因為會在短時間接觸到非常多新的東西。後面的東西多少都與 Linux 相關，而 Linux 難的部份在開始使用 terminal 來操作「整台電腦」，對很習慣使用視窗介面的人會覺得很不直覺。好在近年幾個主流的 Linux Distribution …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+&lt;p&gt;學習使用 Linux 是第一個比較大的障礙，因為會在短時間接觸到非常多新的東西。後面的東西多少都與 Linux 相關，而 Linux 難的部份在開始使用 terminal 來操作「整台電腦」，對很習慣使用視窗介面的人會覺得很不直覺。好在近年幾個主流的 Linux Distribution 都有很好的圖形介面（正確稱 Desktop Environment），所以一開始能漸近地適應 terminal 操作。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在實驗室 server 上開發，「能在 terminal 裡做事情」是必須的。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class="toc"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#linuxunixbsdnix"&gt;Linux、Unix、BSD、*nix&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#distro"&gt;Distro 簡介&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#redhat-centos-fedora"&gt;Redhat / CentOS / Fedora&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#debian-ubuntu"&gt;Debian / Ubuntu&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#archlinux"&gt;ArchLinux …&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;p&gt;學習使用 Linux 是第一個比較大的障礙，因為會在短時間接觸到非常多新的東西。後面的東西多少都與 Linux 相關，而 Linux 難的部份在開始使用 terminal 來操作「整台電腦」，對很習慣使用視窗介面的人會覺得很不直覺。好在近年幾個主流的 Linux Distribution 都有很好的圖形介面（正確稱 Desktop Environment），所以一開始能漸近地適應 terminal 操作。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在實驗室 server 上開發，「能在 terminal 裡做事情」是必須的。&lt;/p&gt;

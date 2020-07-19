@@ -68,7 +68,18 @@
         <section class="post-excerpt">
             <p>中文輸入我用嘸蝦米，在打中英文切換時候，很容易打出 <code>\x08</code> 這東西，在 vim 就會顯示成 <code>^H</code>，功能是 <kbd>Backspace</kbd>，但在一般 GUI 環境裡，可能就會因為它而把前面的字吃掉。</p>
 <p>因此今天寫了個小腳本可以把清掉當目錄底下的文字檔的 <code>^H</code>：</p>
-<div class="highlight"><pre><span></span><code>ag -l <span class="s1">&#39;\x08&#39;</span> <span class="p">|</span> xargs sed -i <span class="s1">&#39;&#39;</span> <span class="s1">&#39;s …</span></code></pre></div>
+<div class="highlight"><pre><span></span><code>ag -l <span class="s1">&#39;\x08&#39;</span> <span class="p">|</span> xargs sed -i <span class="s1">&#39;&#39;</span> <span class="s1">&#39;s/\x08//&#39;</span>
+</code></pre></div>
+
+
+<p><a href="https://github.com/ggreer/the_silver_searcher">ag</a> 能夠換成比較慢但內建就有的 grep，參數兩者是相容的。</p>
+<p>如果要順便印出改了哪些檔案的話：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span> <span class="s1">&#39;Found ^H in the following files:&#39;</span>
+ag -l <span class="s1">&#39;\x08&#39;</span> <span class="p">|</span> tee /dev/fd/2 <span class="p">|</span> xargs sed -i <span class="s1">&#39;&#39;</span> <span class="s1">&#39;s/\x08//&#39;</span>
+</code></pre></div>
+
+
+<p>用 …</p>
         </section>
     </article>
     <article class="post">
@@ -85,7 +96,24 @@
         </header>
         <section class="post-excerpt">
             <p><strong>TL;DR</strong> Use Zotero to sync references, webpages, and everything.</p>
-<p>一開始會想要收集 reference 無非是做研究。寫論文、平常報告進度需要放上 citation，而在學術界最常就是 cite 別人的期刊。期刊 citation 有它一定的格式，而且每個期刊用的格式不同，手打容易錯 …</p>
+<p>一開始會想要收集 reference 無非是做研究。寫論文、平常報告進度需要放上 citation，而在學術界最常就是 cite 別人的期刊。期刊 citation 有它一定的格式，而且每個期刊用的格式不同，手打容易錯，也很難維護。所以最好的方式就是把期刊完整的資訊存在資料庫，然後引用的時候再插到文件裡面。</p>
+<p>整個問題就變成怎麼管理這些期刊資訊。</p>
+<div class="toc">
+<ul>
+<li><a href="#bibtex-is-for-latex">BibTex is for LaTeX</a><ul>
+<li><a href="#bibdesk">BibDesk</a></li>
+</ul>
+</li>
+<li><a href="#endnote-is-for-word">EndNote is for Word</a></li>
+<li><a href="#zotero-bridges-the-both-world">Zotero bridges the both world</a><ul>
+<li><a href="#zotfile">Zotfile</a></li>
+<li><a href="#how-to-sync-data-storage">How to sync data storage</a></li>
+</ul>
+</li>
+<li><a href="#_1">總結</a></li>
+</ul>
+</div>
+<h3 id="bibtex-is-for-latex">BibTex …</h3>
         </section>
     </article>
     <article class="post">
@@ -102,7 +130,16 @@
         </header>
         <section class="post-excerpt">
             <p>部落格剛成立總是特別興奮，測了一下瀏覽像這樣的網站要用多少頻寬。首頁能壓在 600KB 左右，因為文章 summary 裡面暫時還沒圖。不過像部落格設定這篇文章，裡面有幾張螢幕截圖的就要花快 2MB 傳。</p>
-<p>就想了一下圖檔有什麼壓縮方式。如果是 JPG 的話，<a href="https://github.com/tjko/jpegoptim">jpegoptim</a> 簡單又有效；如果是 PNG 的話，以前都是用 <a href="http://optipng.sourceforge.net/">OptiPNG</a>，但效果有限 …</p>
+<p>就想了一下圖檔有什麼壓縮方式。如果是 JPG 的話，<a href="https://github.com/tjko/jpegoptim">jpegoptim</a> 簡單又有效；如果是 PNG 的話，以前都是用 <a href="http://optipng.sourceforge.net/">OptiPNG</a>，但效果有限，而且是無損壓縮。在螢幕截圖的情況，我倒不介意幾個像素的顏色稍微不一樣（其實人眼無法分辨）</p>
+<p>於是，需要比較看看市面找得到的幾種 PNG 壓縮方式。很碰巧找到 <a href="http://css-ig.net/png-tools-overview.html">http://css-ig.net/png-tools-overview.html</a> 專講 PNG 優化的比較，就挑了幾款來試。</p>
+<p>直接把結果整理成下表：</p>
+<table>
+<thead>
+<tr>
+<th align="left">Filename</th>
+<th align="right">Original size</th>
+<th align="right"><a href="http://optipng.sourceforge.net/">OptiPNG</a> (lossless)</th>
+<th align="right"><a href="https://github.com/google/zopfli">Zopfli</a> (lossless …</th></tr></thead></table>
         </section>
     </article>
     <article class="post">
@@ -124,7 +161,11 @@
 <p>一開始在設定 github CNAME 的時候就訂為 <code>blog.liang2.tw</code>，但一直以來都只是個一頁式的自我介紹<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>，用 <a href="http://semantic-ui.com/">SemanticUI</a> 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。</p>
 <p>整理了一下有幾個目標：</p>
 <ul>
-<li>只考慮用 static site 因為不想維護 server，而且 …</li></ul>
+<li>只考慮用 static site 因為不想維護 server，而且 blog 也沒什要炫的，現在光用前端就可以做到很多互動功能</li>
+<li>最好 site generator 是用 Python 實作，這樣想要調整它的功能時，比較懂怎麼改 </li>
+<li>能支援 markdown 和 reStructuredText 最好</li>
+</ul>
+<p>篩完之後選項也沒幾個：<a href="http://docs.getpelican.com/">Pelican</a>、<a href="http://sphinx-doc.org/">Sphinx</a>，但 Sphinx 可能對 blog 開發的功能比較少，最多人用的大概就 Pelican …</p>
         </section>
     </article>
     <article class="post">
@@ -146,7 +187,17 @@
 用純文字記就很麻煩，可讀性非常差，再來自己編輯、排版上也很困難，多個面向加在一起就成為很大的問題。</p>
 <p>於是有了建自己部落格的想法。</p>
 <h3 id="_1">會有什麼內容？</h3>
-<p>目前至少有這些東西 …</p>
+<p>目前至少有這些東西：</p>
+<ul>
+<li>程式開發心得</li>
+<li>研究的筆記</li>
+<li>社群（Ex PyCon）的記錄</li>
+<li>宅物，主要是動畫</li>
+</ul>
+<p>另外可能會有一些的英文文章，因為我也要申請學校。這應該可以用 Tag 或者 Category 來篩選。不過主要應該是個技術性的部落格。</p>
+<h3 id="_2">部落格之從前種種譬如黑歷史</h3>
+<p>我目前記憶中，第一個部落格是國中用的 MSN/Hotmail。但在我無法登入 hotmail 信箱帳號被凍結的同時，它應該也消失在這個世界上了。</p>
+<p>第二個部落格應該是剛上高中的 …</p>
         </section>
     </article>
 <nav class="pagination" role="navigation">

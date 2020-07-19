@@ -83,7 +83,17 @@
         </header>
         <section class="post-excerpt">
             <p>Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）</p>
-<p>學習使用 Linux 是第一個比較大的障礙，因為會在短時間接觸到非常多新的東西。後面的東西多少都與 Linux 相關，而 Linux 難的部份在開始使用 terminal 來操作「整台電腦」，對很習慣使用視窗介面的人會覺得很不直覺。好在近年幾個主流的 Linux Distribution …</p>
+<p>學習使用 Linux 是第一個比較大的障礙，因為會在短時間接觸到非常多新的東西。後面的東西多少都與 Linux 相關，而 Linux 難的部份在開始使用 terminal 來操作「整台電腦」，對很習慣使用視窗介面的人會覺得很不直覺。好在近年幾個主流的 Linux Distribution 都有很好的圖形介面（正確稱 Desktop Environment），所以一開始能漸近地適應 terminal 操作。</p>
+<blockquote>
+<p>在實驗室 server 上開發，「能在 terminal 裡做事情」是必須的。</p>
+</blockquote>
+<div class="toc">
+<ul>
+<li><a href="#linuxunixbsdnix">Linux、Unix、BSD、*nix</a></li>
+<li><a href="#distro">Distro 簡介</a><ul>
+<li><a href="#redhat-centos-fedora">Redhat / CentOS / Fedora</a></li>
+<li><a href="#debian-ubuntu">Debian / Ubuntu</a></li>
+<li><a href="#archlinux">ArchLinux …</a></li></ul></li></ul></div>
         </section>
     </article>
     <article class="post">
@@ -135,7 +145,8 @@
         </header>
         <section class="post-excerpt">
             <p><a href="http://jupyter.org/">Jupyter Notebook</a>，也就是以前的 IPython Notebook，應該是許多人在用 Python 做資料分析時記錄實驗步驗與結果的工具。</p>
-<p>現在 <a href="http://ipython.org/">IPython</a> (v4.0+) 已經回歸到 Interactive Python Shell 的本質，變成只是擴充內建 Python REPL 的套件，相依的模組也清掉了。原本的 IPyton …</p>
+<p>現在 <a href="http://ipython.org/">IPython</a> (v4.0+) 已經回歸到 Interactive Python Shell 的本質，變成只是擴充內建 Python REPL 的套件，相依的模組也清掉了。原本的 IPyton Notebook 主要是提供一個像 <a href="https://reference.wolfram.com/language/tutorial/UsingANotebookInterface.html">Mathematica Notebook</a> 的環境，功能很多就不多提。它可以用 web 或者 QT 介面來跑。</p>
+<p>後來又開始整合很多語言，變成像 Julia / R / Lua 等語言都可以利用這樣的 Notebook 架構，於是 <a href="http://jupyter.org/">Jupyter</a> 就因此誕生，變成原本的 IPython 只是其中一個可能的語言 kernel …</p>
         </section>
     </article>
     <article class="post">
@@ -154,7 +165,16 @@
         </header>
         <section class="post-excerpt">
             <p>簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。</p>
-<p>Blog 本來就是架在 <a href="https://github.com/ccwang002/ccwang002.github.io">GitHub Pages</a> 上，其實預設有 https，但在網址改成自訂 domain 之後 https 自然就失效了。在 GitHub 上有開 …</p>
+<p>Blog 本來就是架在 <a href="https://github.com/ccwang002/ccwang002.github.io">GitHub Pages</a> 上，其實預設有 https，但在網址改成自訂 domain 之後 https 自然就失效了。在 GitHub 上有開 issue 請他們加入 <a href="https://github.com/isaacs/github/issues/156">HTTPS support for custom domain</a> 這功能，不過目前還是需要自己想辦法。隨著 <a href="https://letsencrypt.org/">Let&rsquo;s Encrypt</a> 這種服務的流行，GitHub 才會去積極尋找比較合適的解決方案吧。</p>
+<div class="toc">
+<ul>
+<li><a href="#cloudflare-ssl-and-cdn">CloudFlare SSL and CDN</a></li>
+<li><a href="#disqus">Disqus</a></li>
+<li><a href="#justfont">justfont</a></li>
+<li><a href="#hinet">Hinet 轉址服務</a></li>
+</ul>
+</div>
+<h2 id="cloudflare-ssl-and-cdn">CloudFlare SSL …</h2>
         </section>
     </article>
     <article class="post">
@@ -175,7 +195,11 @@
 <ul>
 <li>指定 Group 和 Permission</li>
 <li>是否為 staff、superuser</li>
-<li>帳號開通 …</li></ul>
+<li>帳號開通、最後一次登入時間</li>
+</ul>
+<p>內建的帳號功能應該很實用，安全性也很好。所以一般來說都不會去改它。</p>
+<p>如果只是想要幫 User 加個 profile，例如生日、來自哪個星球等欄位，也不需要改寫 User。參考官網 <a href="https://docs.djangoproject.com/en/1.8/topics/auth/customizing/#extending-the-existing-user-model">Extending the existing User model</a>，只需要建一個 one-to-one relationship 指到 User 就好了：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">django …</span></code></pre></div>
         </section>
     </article>
     <article class="post">
@@ -192,7 +216,22 @@
         <section class="post-excerpt">
             <p>在數位時代，很用力地的生氣是件很困難的事。</p>
 <p>首先溝通媒介就不太鼓勵這種事。想要在 FB 上放地圖砲狂譙一件事，但 FB 會因為太激烈的發言，所以真正看到的人其實不多，或者只會推播到擁有相同偏好的那群人，好像達不到「譙人」的目標。其實絕大多數的社群網站或多或少都有這種「取暖的功能」。</p>
-<p>再來，撇開生氣的對象，不論是一個群體，或者是私下的幾個人之間，數位時代的生氣還是很不一樣的。先從一般的情緒表達說起吧，數位時代的工具們，大幅地加強抒發自己日常的情緒的表現力 …</p>
+<p>再來，撇開生氣的對象，不論是一個群體，或者是私下的幾個人之間，數位時代的生氣還是很不一樣的。先從一般的情緒表達說起吧，數位時代的工具們，大幅地加強抒發自己日常的情緒的表現力。從傳統文書多少能使用的顏文字，到表情符號，到貼圖、會動的貼圖，人們越來越有辦法把日常中再小的情緒波動，用很誇張的方式表現。</p>
+<p>例如，發現垃圾車今天早來的十分鐘：</p>
+<ol>
+<li>今天垃圾車竟然早來十分鐘（怒）</li>
+<li>今天垃圾車竟然早來十分鐘 Σ(°Д°;</li>
+<li>今天垃圾車竟然早來十分鐘 !!!!!!!!（附上抱頭痛哭的動圖）</li>
+</ol>
+<p>但很極端的負面情緒呢？</p>
+<blockquote>
+<p>今天醒來發現總統跟國會最大黨，都還是國民黨</p>
+</blockquote>
+<p>這樣僅陳述了事實，但沒有表達出自己心中的憤怒。</p>
+<blockquote>
+<p>乾瞪著眼躺在床上未能起身，咬著牙憤恨地向天花板空揮拳頭，雙手交替著直到手臂也失去了力量。</p>
+</blockquote>
+<p>……干我屁事，而且動作太長了像在寫小說，可能也超過一些媒體的字數限制 …</p>
         </section>
     </article>
     <article class="post">

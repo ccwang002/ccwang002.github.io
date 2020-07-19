@@ -63,7 +63,17 @@
 </code></pre></div>
 
 
-<p>一樣寫一個 <code>PROJ.service</code> 的 systemd unit 來管理網站的啟動 (uWSGI …</p>
+<p>一樣寫一個 <code>PROJ.service</code> 的 systemd unit 來管理網站的啟動 (uWSGI)。之後提到 <code>PROJ</code> 時就換成自己的專案名稱；<code>USER</code> 就換成執行網站的帳號。</p>
+<div class="toc">
+<ul>
+<li><a href="#conda">conda</a></li>
+<li><a href="#uwsgi-path">uWSGI 和 $PATH</a></li>
+<li><a href="#sysmted-unit">在 sysmted unit 使用環境變數</a></li>
+<li><a href="#_1">結論</a></li>
+</ul>
+</div>
+<h3 id="conda">conda</h3>
+<p><a href="http://conda.pydata.org/">conda</a> 是一個 Python 套件的管理系統，他的好處是，遇到要使用外部 library 時，會這些套件相依的 library 都一併安裝管理 …</p>
         </section>
     </article>
     <article class="post">
@@ -88,7 +98,25 @@
         <section class="post-excerpt">
             <p>上一次很認真的 Django 部署記錄在<a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/">《設定 Python 官方文件中文化自動更新 Server》</a>一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。</p>
 <p>這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下：</p>
-<div class="highlight"><pre><span></span><code>nginx -- unix socket -- uWSGI …</code></pre></div>
+<div class="highlight"><pre><span></span><code>nginx -- unix socket -- uWSGI -- Django
+</code></pre></div>
+
+
+<p>寫一個名為 <code>PROJ.service</code> 的 systemd unit 來管理這網站的啟動與否。之後 <code>PROJ</code> 就換成自己的專案名稱；<code>USER</code> 就換成執行網站的帳號。</p>
+<div class="toc">
+<ul>
+<li><a href="#_1">作業系統</a></li>
+<li><a href="#postgresql">PostgreSQL</a></li>
+<li><a href="#django-proj">Django PROJ</a></li>
+<li><a href="#tmpfilesd">tmpfiles.d</a></li>
+<li><a href="#nginx">nginx</a></li>
+<li><a href="#uwsgi">uWSGI</a></li>
+<li><a href="#systemd">systemd</a></li>
+<li><a href="#_2">確認、總結</a></li>
+</ul>
+</div>
+<h3 id="_1">作業系統</h3>
+<p>使用 …</p>
         </section>
     </article>
     <article class="post">
@@ -131,7 +159,17 @@
         </header>
         <section class="post-excerpt">
             <p>平常用最多的是 <a href="https://www.sqlite.org/">SQLite</a>，但 <a href="http://www.postgresql.org/">PostgreSQL</a> 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。</p>
-<p>用 <a href="https://www.debian.org/releases/stable/">Debian Jessie</a> (Debian 8.3) 與 OSX <a href="http://brew.sh/">Homebrew</a> 舉例。不過 OSX 大概也不會沒事把 PostgreSQL 開著，主要是著重在 Debian …</p>
+<p>用 <a href="https://www.debian.org/releases/stable/">Debian Jessie</a> (Debian 8.3) 與 OSX <a href="http://brew.sh/">Homebrew</a> 舉例。不過 OSX 大概也不會沒事把 PostgreSQL 開著，主要是著重在 Debian 的環境設定上。目前 PostgreSQL 出到 9.5 但 Debian stable 是 9.4。基本設定應該完全沒差別。</p>
+<div class="toc">
+<ul>
+<li><a href="#postgresql">安裝 PostgreSQL</a><ul>
+<li><a href="#osx">安裝在 OSX</a></li>
+<li><a href="#debian-jessie">安裝在 Debian Jessie</a></li>
+</ul>
+</li>
+<li><a href="#database">初始個人的 Database</a><ul>
+<li><a href="#postgresql_1">建立同使用者名稱的 PostgreSQL 帳號</a></li>
+<li><a href="#database_1">建立與帳號同名稱的 …</a></li></ul></li></ul></div>
         </section>
     </article>
 <nav class="pagination" role="navigation">

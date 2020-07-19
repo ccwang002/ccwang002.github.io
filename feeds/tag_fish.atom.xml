@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - fish</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_fish.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2017-01-23T00:00:00-06:00</updated><entry><title>Changing login shell without chsh</title><link href="https://blog.liang2.tw/posts/2017/01/without-chsh/" rel="alternate"></link><published>2017-01-23T00:00:00-06:00</published><updated>2017-01-23T00:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2017-01-23:/posts/2017/01/without-chsh/</id><summary type="html">&lt;p&gt;For my daily terminal life, I use &lt;a href="https://fishshell.com/"&gt;fish shell&lt;/a&gt;. Fish shell can be largely described by the headline on its official website:&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;Finally, a …&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;</summary><content type="html">&lt;p&gt;For my daily terminal life, I use &lt;a href="https://fishshell.com/"&gt;fish shell&lt;/a&gt;. Fish shell can be largely described by the headline on its official website:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Finally, a command line shell for the 90s&lt;/strong&gt;&lt;br&gt;
+fish is a smart and user-friendly command line
+shell for macOS, Linux, and the rest of the family.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Among all …&lt;/p&gt;</summary><content type="html">&lt;p&gt;For my daily terminal life, I use &lt;a href="https://fishshell.com/"&gt;fish shell&lt;/a&gt;. Fish shell can be largely described by the headline on its official website:&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;Finally, a command line shell for the 90s&lt;/strong&gt;&lt;br&gt;
 fish is a smart and user-friendly command line

@@ -6,7 +6,7 @@
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 <meta name="author" content="Liang-Bo Wang" />
-<meta name="description" content="Django 帳號的欄位定義在 django.contrib.auth 的 User 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有： 指定 Group 和 Permission 是否為 staff、superuser 帳號開通 …" />
+<meta name="description" content="Django 帳號的欄位定義在 django.contrib.auth 的 User 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有： 指定 Group 和 Permission 是否為 staff、superuser 帳號開通、最後一次登入時間 內建的帳號功能應該很實用，安全性也很好。所以一般來說都不會去改它。 如果只是想要幫 User 加個 profile，例如生日、來自哪個星球等欄位，也不需要改寫 User。參考官網 Extending the existing User model，只需要建一個 one-to-one relationship 指到 User 就好了： from django …" />
 <meta name="keywords" content="zh, django, python">
 	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
 	<title>Customize Django User Model</title>
@@ -15,7 +15,7 @@
 <meta property="og:locale" content="zh_TW"/>
 <meta property="og:site_name" content="Liang-Bo Wang's Blog"/>
 <meta property="og:title" content="Customize Django User Model"/>
-<meta property="og:description" content="Django 帳號的欄位定義在 django.contrib.auth 的 User 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有： 指定 Group 和 Permission 是否為 staff、superuser 帳號開通 …"/>
+<meta property="og:description" content="Django 帳號的欄位定義在 django.contrib.auth 的 User 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有： 指定 Group 和 Permission 是否為 staff、superuser 帳號開通、最後一次登入時間 內建的帳號功能應該很實用，安全性也很好。所以一般來說都不會去改它。 如果只是想要幫 User 加個 profile，例如生日、來自哪個星球等欄位，也不需要改寫 User。參考官網 Extending the existing User model，只需要建一個 one-to-one relationship 指到 User 就好了： from django …"/>
 <meta property="og:locale" content=""/>
 <meta property="og:url" content="https://blog.liang2.tw/posts/2015/11/django-custom-user/"/>
 <meta property="og:type" content="article"/>
@@ -29,7 +29,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@ccwang002">
 <meta name="twitter:title" content="Customize Django User Model">
-<meta name="twitter:description" content="Django 帳號的欄位定義在 django.contrib.auth 的 User 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有： 指定 Group 和 Permission 是否為 staff、superuser 帳號開通 …">
+<meta name="twitter:description" content="Django 帳號的欄位定義在 django.contrib.auth 的 User 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有： 指定 Group 和 Permission 是否為 staff、superuser 帳號開通、最後一次登入時間 內建的帳號功能應該很實用，安全性也很好。所以一般來說都不會去改它。 如果只是想要幫 User 加個 profile，例如生日、來自哪個星球等欄位，也不需要改寫 User。參考官網 Extending the existing User model，只需要建一個 one-to-one relationship 指到 User 就好了： from django …">
 
 	<!-- Feeds -->
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"

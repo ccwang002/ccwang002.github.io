@@ -6,7 +6,7 @@
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 <meta name="author" content="Liang-Bo Wang" />
-<meta name="description" content="部落格剛成立總是特別興奮，測了一下瀏覽像這樣的網站要用多少頻寬。首頁能壓在 600KB 左右，因為文章 summary 裡面暫時還沒圖。不過像部落格設定這篇文章，裡面有幾張螢幕截圖的就要花快 2MB 傳。 就想了一下圖檔有什麼壓縮方式。如果是 JPG 的話，jpegoptim 簡單又有效；如果是 PNG 的話，以前都是用 OptiPNG，但效果有限 …" />
+<meta name="description" content="部落格剛成立總是特別興奮，測了一下瀏覽像這樣的網站要用多少頻寬。首頁能壓在 600KB 左右，因為文章 summary 裡面暫時還沒圖。不過像部落格設定這篇文章，裡面有幾張螢幕截圖的就要花快 2MB 傳。 就想了一下圖檔有什麼壓縮方式。如果是 JPG 的話，jpegoptim 簡單又有效；如果是 PNG 的話，以前都是用 OptiPNG，但效果有限，而且是無損壓縮。在螢幕截圖的情況，我倒不介意幾個像素的顏色稍微不一樣（其實人眼無法分辨） 於是，需要比較看看市面找得到的幾種 PNG 壓縮方式。很碰巧找到 http://css-ig.net/png-tools-overview.html 專講 PNG 優化的比較，就挑了幾款來試。 直接把結果整理成下表： Filename Original size OptiPNG (lossless) Zopfli (lossless …" />
 <meta name="keywords" content="zh, png">
 	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
 	<title>PNG Optimizer</title>
@@ -15,7 +15,7 @@
 <meta property="og:locale" content="zh_TW"/>
 <meta property="og:site_name" content="Liang-Bo Wang's Blog"/>
 <meta property="og:title" content="PNG Optimizer"/>
-<meta property="og:description" content="部落格剛成立總是特別興奮，測了一下瀏覽像這樣的網站要用多少頻寬。首頁能壓在 600KB 左右，因為文章 summary 裡面暫時還沒圖。不過像部落格設定這篇文章，裡面有幾張螢幕截圖的就要花快 2MB 傳。 就想了一下圖檔有什麼壓縮方式。如果是 JPG 的話，jpegoptim 簡單又有效；如果是 PNG 的話，以前都是用 OptiPNG，但效果有限 …"/>
+<meta property="og:description" content="部落格剛成立總是特別興奮，測了一下瀏覽像這樣的網站要用多少頻寬。首頁能壓在 600KB 左右，因為文章 summary 裡面暫時還沒圖。不過像部落格設定這篇文章，裡面有幾張螢幕截圖的就要花快 2MB 傳。 就想了一下圖檔有什麼壓縮方式。如果是 JPG 的話，jpegoptim 簡單又有效；如果是 PNG 的話，以前都是用 OptiPNG，但效果有限，而且是無損壓縮。在螢幕截圖的情況，我倒不介意幾個像素的顏色稍微不一樣（其實人眼無法分辨） 於是，需要比較看看市面找得到的幾種 PNG 壓縮方式。很碰巧找到 http://css-ig.net/png-tools-overview.html 專講 PNG 優化的比較，就挑了幾款來試。 直接把結果整理成下表： Filename Original size OptiPNG (lossless) Zopfli (lossless …"/>
 <meta property="og:locale" content=""/>
 <meta property="og:url" content="https://blog.liang2.tw/posts/2015/09/png-optim/"/>
 <meta property="og:type" content="article"/>
@@ -28,7 +28,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@ccwang002">
 <meta name="twitter:title" content="PNG Optimizer">
-<meta name="twitter:description" content="部落格剛成立總是特別興奮，測了一下瀏覽像這樣的網站要用多少頻寬。首頁能壓在 600KB 左右，因為文章 summary 裡面暫時還沒圖。不過像部落格設定這篇文章，裡面有幾張螢幕截圖的就要花快 2MB 傳。 就想了一下圖檔有什麼壓縮方式。如果是 JPG 的話，jpegoptim 簡單又有效；如果是 PNG 的話，以前都是用 OptiPNG，但效果有限 …">
+<meta name="twitter:description" content="部落格剛成立總是特別興奮，測了一下瀏覽像這樣的網站要用多少頻寬。首頁能壓在 600KB 左右，因為文章 summary 裡面暫時還沒圖。不過像部落格設定這篇文章，裡面有幾張螢幕截圖的就要花快 2MB 傳。 就想了一下圖檔有什麼壓縮方式。如果是 JPG 的話，jpegoptim 簡單又有效；如果是 PNG 的話，以前都是用 OptiPNG，但效果有限，而且是無損壓縮。在螢幕截圖的情況，我倒不介意幾個像素的顏色稍微不一樣（其實人眼無法分辨） 於是，需要比較看看市面找得到的幾種 PNG 壓縮方式。很碰巧找到 http://css-ig.net/png-tools-overview.html 專講 PNG 優化的比較，就挑了幾款來試。 直接把結果整理成下表： Filename Original size OptiPNG (lossless) Zopfli (lossless …">
 
 	<!-- Feeds -->
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"

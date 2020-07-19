@@ -4,7 +4,17 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;一樣寫一個 &lt;code&gt;PROJ.service&lt;/code&gt; 的 systemd unit 來管理網站的啟動 (uWSGI …&lt;/p&gt;</summary><content type="html">&lt;p&gt;沒幾天前剛部署一次 Django，記錄在&lt;a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/"&gt;《使用 uWSGI、nginx、systemd 部署 Django》&lt;/a&gt;。今天又部署了另一個專案。部署的設定跟上次一樣：&lt;/p&gt;
+&lt;p&gt;一樣寫一個 &lt;code&gt;PROJ.service&lt;/code&gt; 的 systemd unit 來管理網站的啟動 (uWSGI)。之後提到 &lt;code&gt;PROJ&lt;/code&gt; 時就換成自己的專案名稱；&lt;code&gt;USER&lt;/code&gt; 就換成執行網站的帳號。&lt;/p&gt;
+&lt;div class="toc"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#conda"&gt;conda&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#uwsgi-path"&gt;uWSGI 和 $PATH&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#sysmted-unit"&gt;在 sysmted unit 使用環境變數&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#_1"&gt;結論&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;h3 id="conda"&gt;conda&lt;/h3&gt;
+&lt;p&gt;&lt;a href="http://conda.pydata.org/"&gt;conda&lt;/a&gt; 是一個 Python 套件的管理系統，他的好處是，遇到要使用外部 library 時，會這些套件相依的 library 都一併安裝管理 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;沒幾天前剛部署一次 Django，記錄在&lt;a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/"&gt;《使用 uWSGI、nginx、systemd 部署 Django》&lt;/a&gt;。今天又部署了另一個專案。部署的設定跟上次一樣：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;nginx -- unix socket -- uWSGI -- Django
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -100,7 +110,25 @@ WantedBy=multi-user.target
 &lt;h3 id="_1"&gt;結論&lt;/h3&gt;
 &lt;p&gt;如果要改用 conda 管理套件的話，只要在 systemd unit 那邊多加一行修改 $PATH，加入虛擬環境放執行檔的路徑，其餘的設定都與一般 Python 虛擬環境相同。這樣就搞定了。但這個問題花了我 1 個多小時……&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="python"></category><category term="django"></category><category term="postgresql"></category><category term="deploy"></category><category term="debian"></category><category term="systemd"></category><category term="nginx"></category><category term="uwsgi"></category><category term="conda"></category></entry><entry><title>使用 uWSGI、nginx、systemd 部署 Django</title><link href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/" rel="alternate"></link><published>2016-05-19T00:00:00-05:00</published><updated>2016-05-19T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-05-19:/posts/2016/05/django-deploy-uwsgi-nginx-systemd/</id><summary type="html">&lt;p&gt;上一次很認真的 Django 部署記錄在&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;《設定 Python 官方文件中文化自動更新 Server》&lt;/a&gt;一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。&lt;/p&gt;
 &lt;p&gt;這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;nginx -- unix socket -- uWSGI …&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;上一次很認真的 Django 部署記錄在&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;《設定 Python 官方文件中文化自動更新 Server》&lt;/a&gt;一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;nginx -- unix socket -- uWSGI -- Django
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;寫一個名為 &lt;code&gt;PROJ.service&lt;/code&gt; 的 systemd unit 來管理這網站的啟動與否。之後 &lt;code&gt;PROJ&lt;/code&gt; 就換成自己的專案名稱；&lt;code&gt;USER&lt;/code&gt; 就換成執行網站的帳號。&lt;/p&gt;
+&lt;div class="toc"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#_1"&gt;作業系統&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#postgresql"&gt;PostgreSQL&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#django-proj"&gt;Django PROJ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#tmpfilesd"&gt;tmpfiles.d&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#nginx"&gt;nginx&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#uwsgi"&gt;uWSGI&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#systemd"&gt;systemd&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#_2"&gt;確認、總結&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;h3 id="_1"&gt;作業系統&lt;/h3&gt;
+&lt;p&gt;使用 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;上一次很認真的 Django 部署記錄在&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;《設定 Python 官方文件中文化自動更新 Server》&lt;/a&gt;一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。&lt;/p&gt;
 &lt;p&gt;這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;nginx -- unix socket -- uWSGI -- Django
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;

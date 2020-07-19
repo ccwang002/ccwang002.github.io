@@ -54,7 +54,10 @@
         </header>
         <section class="post-excerpt">
             <p>I used <a href="http://docs.getpelican.com/">Pelican</a> and its <a href="https://pythonhosted.org/Markdown/">Markdown</a> plugin to render blog post. </p>
-<p>Recently I was playing with the <a href="https://docs.python.org/">Python Official Documentation</a>, which has a decent …</p>
+<p>Recently I was playing with the <a href="https://docs.python.org/">Python Official Documentation</a>, which has a decent code syntax highlighter powered by <a href="http://pygments.org/">Pygments</a>. </p>
+<p>What&rsquo;s more, the output of code examples can be toggled. That is, a code example:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hello World&#39;</span><span class="p">)</span>
+<span class="n">Hello …</span></code></pre></div>
         </section>
     </article>
     <article class="post">
@@ -73,7 +76,16 @@
         </header>
         <section class="post-excerpt">
             <p>簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。</p>
-<p>Blog 本來就是架在 <a href="https://github.com/ccwang002/ccwang002.github.io">GitHub Pages</a> 上，其實預設有 https，但在網址改成自訂 domain 之後 https 自然就失效了。在 GitHub 上有開 …</p>
+<p>Blog 本來就是架在 <a href="https://github.com/ccwang002/ccwang002.github.io">GitHub Pages</a> 上，其實預設有 https，但在網址改成自訂 domain 之後 https 自然就失效了。在 GitHub 上有開 issue 請他們加入 <a href="https://github.com/isaacs/github/issues/156">HTTPS support for custom domain</a> 這功能，不過目前還是需要自己想辦法。隨著 <a href="https://letsencrypt.org/">Let&rsquo;s Encrypt</a> 這種服務的流行，GitHub 才會去積極尋找比較合適的解決方案吧。</p>
+<div class="toc">
+<ul>
+<li><a href="#cloudflare-ssl-and-cdn">CloudFlare SSL and CDN</a></li>
+<li><a href="#disqus">Disqus</a></li>
+<li><a href="#justfont">justfont</a></li>
+<li><a href="#hinet">Hinet 轉址服務</a></li>
+</ul>
+</div>
+<h2 id="cloudflare-ssl-and-cdn">CloudFlare SSL …</h2>
         </section>
     </article>
     <article class="post">
@@ -95,7 +107,11 @@
 <p>一開始在設定 github CNAME 的時候就訂為 <code>blog.liang2.tw</code>，但一直以來都只是個一頁式的自我介紹<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>，用 <a href="http://semantic-ui.com/">SemanticUI</a> 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。</p>
 <p>整理了一下有幾個目標：</p>
 <ul>
-<li>只考慮用 static site 因為不想維護 server，而且 …</li></ul>
+<li>只考慮用 static site 因為不想維護 server，而且 blog 也沒什要炫的，現在光用前端就可以做到很多互動功能</li>
+<li>最好 site generator 是用 Python 實作，這樣想要調整它的功能時，比較懂怎麼改 </li>
+<li>能支援 markdown 和 reStructuredText 最好</li>
+</ul>
+<p>篩完之後選項也沒幾個：<a href="http://docs.getpelican.com/">Pelican</a>、<a href="http://sphinx-doc.org/">Sphinx</a>，但 Sphinx 可能對 blog 開發的功能比較少，最多人用的大概就 Pelican …</p>
         </section>
     </article>
 <nav class="pagination" role="navigation">

@@ -6,7 +6,7 @@
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 <meta name="author" content="Liang-Bo Wang" />
-<meta name="description" content="平常用最多的是 SQLite，但 PostgreSQL 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。 用 Debian Jessie (Debian 8.3) 與 OSX Homebrew 舉例。不過 OSX 大概也不會沒事把 PostgreSQL 開著，主要是著重在 Debian …" />
+<meta name="description" content="平常用最多的是 SQLite，但 PostgreSQL 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。 用 Debian Jessie (Debian 8.3) 與 OSX Homebrew 舉例。不過 OSX 大概也不會沒事把 PostgreSQL 開著，主要是著重在 Debian 的環境設定上。目前 PostgreSQL 出到 9.5 但 Debian stable 是 9.4。基本設定應該完全沒差別。 安裝 PostgreSQL 安裝在 OSX 安裝在 Debian Jessie 初始個人的 Database 建立同使用者名稱的 PostgreSQL 帳號 建立與帳號同名稱的 …" />
 <meta name="keywords" content="zh, postgresql, debian, osx">
 	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
 	<title>安裝 PostgreSQL 9 於 Debian Jessie / OSX</title>
@@ -15,7 +15,7 @@
 <meta property="og:locale" content="zh_TW"/>
 <meta property="og:site_name" content="Liang-Bo Wang's Blog"/>
 <meta property="og:title" content="安裝 PostgreSQL 9 於 Debian Jessie / OSX"/>
-<meta property="og:description" content="平常用最多的是 SQLite，但 PostgreSQL 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。 用 Debian Jessie (Debian 8.3) 與 OSX Homebrew 舉例。不過 OSX 大概也不會沒事把 PostgreSQL 開著，主要是著重在 Debian …"/>
+<meta property="og:description" content="平常用最多的是 SQLite，但 PostgreSQL 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。 用 Debian Jessie (Debian 8.3) 與 OSX Homebrew 舉例。不過 OSX 大概也不會沒事把 PostgreSQL 開著，主要是著重在 Debian 的環境設定上。目前 PostgreSQL 出到 9.5 但 Debian stable 是 9.4。基本設定應該完全沒差別。 安裝 PostgreSQL 安裝在 OSX 安裝在 Debian Jessie 初始個人的 Database 建立同使用者名稱的 PostgreSQL 帳號 建立與帳號同名稱的 …"/>
 <meta property="og:locale" content=""/>
 <meta property="og:url" content="https://blog.liang2.tw/posts/2016/01/postgresql-install/"/>
 <meta property="og:type" content="article"/>
@@ -30,7 +30,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@ccwang002">
 <meta name="twitter:title" content="安裝 PostgreSQL 9 於 Debian Jessie / OSX">
-<meta name="twitter:description" content="平常用最多的是 SQLite，但 PostgreSQL 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。 用 Debian Jessie (Debian 8.3) 與 OSX Homebrew 舉例。不過 OSX 大概也不會沒事把 PostgreSQL 開著，主要是著重在 Debian …">
+<meta name="twitter:description" content="平常用最多的是 SQLite，但 PostgreSQL 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。 用 Debian Jessie (Debian 8.3) 與 OSX Homebrew 舉例。不過 OSX 大概也不會沒事把 PostgreSQL 開著，主要是著重在 Debian 的環境設定上。目前 PostgreSQL 出到 9.5 但 Debian stable 是 9.4。基本設定應該完全沒差別。 安裝 PostgreSQL 安裝在 OSX 安裝在 Debian Jessie 初始個人的 Database 建立同使用者名稱的 PostgreSQL 帳號 建立與帳號同名稱的 …">
 
 	<!-- Feeds -->
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"

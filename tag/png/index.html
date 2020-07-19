@@ -51,7 +51,16 @@
         </header>
         <section class="post-excerpt">
             <p>部落格剛成立總是特別興奮，測了一下瀏覽像這樣的網站要用多少頻寬。首頁能壓在 600KB 左右，因為文章 summary 裡面暫時還沒圖。不過像部落格設定這篇文章，裡面有幾張螢幕截圖的就要花快 2MB 傳。</p>
-<p>就想了一下圖檔有什麼壓縮方式。如果是 JPG 的話，<a href="https://github.com/tjko/jpegoptim">jpegoptim</a> 簡單又有效；如果是 PNG 的話，以前都是用 <a href="http://optipng.sourceforge.net/">OptiPNG</a>，但效果有限 …</p>
+<p>就想了一下圖檔有什麼壓縮方式。如果是 JPG 的話，<a href="https://github.com/tjko/jpegoptim">jpegoptim</a> 簡單又有效；如果是 PNG 的話，以前都是用 <a href="http://optipng.sourceforge.net/">OptiPNG</a>，但效果有限，而且是無損壓縮。在螢幕截圖的情況，我倒不介意幾個像素的顏色稍微不一樣（其實人眼無法分辨）</p>
+<p>於是，需要比較看看市面找得到的幾種 PNG 壓縮方式。很碰巧找到 <a href="http://css-ig.net/png-tools-overview.html">http://css-ig.net/png-tools-overview.html</a> 專講 PNG 優化的比較，就挑了幾款來試。</p>
+<p>直接把結果整理成下表：</p>
+<table>
+<thead>
+<tr>
+<th align="left">Filename</th>
+<th align="right">Original size</th>
+<th align="right"><a href="http://optipng.sourceforge.net/">OptiPNG</a> (lossless)</th>
+<th align="right"><a href="https://github.com/google/zopfli">Zopfli</a> (lossless …</th></tr></thead></table>
         </section>
     </article>
 <nav class="pagination" role="navigation">
