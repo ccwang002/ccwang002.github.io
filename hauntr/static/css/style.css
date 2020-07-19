@@ -282,7 +282,7 @@ div#contents li a {
 
 p, ul, ol, dl {
     margin: 1.5em 0;
-    line-height: 2em;
+    line-height: 1.75em;
 }
 
 ol ol, ul ul,
@@ -678,12 +678,9 @@ margin on the iframe, cause it breaks stuff. */
 }
 
 /* Language specific line height */
-.zh-post {
-    line-height: 1.85em;
-}
-
 .zh-post p {
-    margin: 1.9em 0;
+    line-height: 2em;
+    margin: 1.5em 0;
 }
 
 /* Keep images centred and within the bounds of the post-width */
