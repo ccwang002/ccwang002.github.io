@@ -56,16 +56,9 @@ summary { display: block; }
 audio, canvas, video { display: inline-block; }
 audio:not([controls]) { display: none; height: 0; }
 [hidden], template { display: none; }
-html {
-   font-family: FiraSans, 'Noto Sans TC', sans-serif;
-   -ms-text-size-adjust: 100%;
-   -webkit-text-size-adjust: 100%;
-}
-body { margin: 0; }
 a { background: transparent; }
 a:focus { outline: thin dotted; }
 a:active, a:hover { outline: 0; }
-h1 { font-size: 2em; margin: 0.67em 0; }
 abbr[title] { border-bottom: 1px dotted; }
 b, strong { font-weight: bold; }
 dfn { font-style: italic; }
@@ -186,16 +179,16 @@ table { border-collapse: collapse; border-spacing: 0; }
 html {
     height: 100%;
     max-height: 100%;
-    font-size: 62.5%;
 }
 
 body {
     height: 100%;
     max-height: 100%;
+    font-size: 1rem;
     font-family: FiraSans, 'Noto Sans TC', 'Open Sans', sans-serif;
-    font-size: 2.0rem;
-    line-height: 1.6em;
+    line-height: 1.5em;
     color: #3A4145;
+    margin: 0;
 }
 
 ::-moz-selection {
@@ -212,43 +205,39 @@ body {
 
 h1, h2, h3,
 h4, h5, h6 {
-    text-rendering: optimizeLegibility;
-    line-height: 1;
-    font-family: FiraSans, 'Noto Sans TC', 'Open Sans', sans-serif;
+    line-height: 1.2em;
 }
 
 h1 {
-    font-size: 5rem;
+    font-size: 2.25em;
     line-height: 1.2em;
-    letter-spacing: -2px;
     text-indent: -3px;
 }
 
 h2 {
-    font-size: 4rem;
-    line-height: 1.2em;
-    letter-spacing: -1px;
+    font-size: 2em;
     text-indent: -2px;
+    line-height: 1.2em;
     margin-top: 2.5em;
 }
 
 h3 {
-    font-size: 3.5rem;
+    font-size: 1.75em;
     margin-top: 2.5em;
 }
 
 h4 {
-    font-size: 3rem;
+    font-size: 1.5em;
     margin-top: 2em;
 }
 
 h5 {
-    font-size: 2.5rem;
+    font-size: 1.25rem;
     margin-top: 1.5em;
 }
 
 h6 {
-    font-size: 2rem;
+    font-size: 1.25em;
     margin-top: 1.5em;
 }
 
@@ -292,7 +281,8 @@ div#contents li a {
 }
 
 p, ul, ol, dl {
-    margin: 1.6em 0;
+    margin: 1.5em 0;
+    line-height: 2em;
 }
 
 ol ol, ul ul,
@@ -388,13 +378,12 @@ pre tt {
 
 kbd {
     display: inline-block;
-    margin-bottom: 0.4em;
     padding: 1px 8px;
     border: #ccc 1px solid;
     color: #666;
-    text-shadow: #fff 0 1px 0;
-    font-size: 0.9em;
+    font-size: 0.8em;
     font-weight: bold;
+    line-height: 1.5em;
     background: #f4f4f4;
     border-radius: 4px;
     box-shadow:
@@ -479,8 +468,7 @@ margin on the iframe, cause it breaks stuff. */
 /* Creates a responsive wrapper that makes our content scale nicely */
 .inner {
     position: relative;
-    width: 80%;
-    max-width: 700px;
+    max-width: 80%;
     margin: 0 auto;
 }
 
@@ -500,8 +488,8 @@ margin on the iframe, cause it breaks stuff. */
     position: relative;
     display: table;
     width: 100%;
-    margin-bottom: 5rem;
-    padding-bottom: 5rem;
+    margin: 0 0 4rem 0;
+    padding: 2.5rem 0;
     text-align: center;
     background: none repeat scroll 0 0 #F7FAFB;
     border-bottom: 1px solid #EBF2F6;
@@ -511,42 +499,35 @@ margin on the iframe, cause it breaks stuff. */
     text-decoration: none;
 }
 
-/* The details of your blog. Defined in ghost/settings/ */
 .blog-title {
-    margin: 10px 0 10px 0;
-    font-size: 5rem;
-    letter-spacing: -1px;
+    padding: 0;
+    margin: 0 0 1rem 0;
+    font-size: 2em;
     font-weight: bold;
-    font-family: FiraSans, 'Noto Sans TC', 'Open Sans', sans-serif;
-    text-shadow: 0 1px 6px rgba(0,0,0,0.1);
 }
 
-h1.blog-title a {
+.blog-title a {
     transition: color 0.3s ease 0s;
     text-decoration: none;
 }
 
-h1.blog-title a:hover {
+.blog-title a:hover {
     color: #57A3E8;
 }
 
 .blog-description {
     margin: 0;
-    font-size: 1.8rem;
-    line-height: 1.5em;
-    font-weight: 300;
-    font-family: FiraSans, 'Noto Sans TC', 'Open Sans', sans-serif;
-    letter-spacing: 0;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    font-size: 1rem;
+    font-weight: normal;
 }
 
 /* Every post, on every page, gets this style on its <article> tag */
 .post {
     position: relative;
-    width:80%;
+    width: 80%;
     max-width: 800px;
-    margin: 4rem auto;
-    padding-bottom: 4rem;
+    margin: 1.5rem auto;
+    padding-bottom: 5rem;
     border-bottom: #EBF2F6 1px solid;
     word-break: normal;
     hyphens: auto;
@@ -573,12 +554,13 @@ h1.blog-title a:hover {
 
 .post-title::before {
     content: '§';
-    margin-left: -1.1em;
+    margin-left: -1em;
     position: absolute;
 }
 
 .post-title {
-    margin:0;
+    margin: 0;
+    font-size: 1.75em;
     color: #222;
 }
 
@@ -594,9 +576,19 @@ h1.blog-title a:hover {
 }
 
 .post-excerpt p {
-    margin: 1.6rem 0 0 0;
-    font-size: 0.9em;
-    line-height: 1.6em;
+    margin: 1rem 0;
+}
+
+.post-excerpt h1,
+.post-excerpt h2,
+.post-excerpt h3,
+.post-excerpt h4,
+.post-excerpt h5,
+.post-excerpt h6,
+.post-excerpt h6,
+.post-excerpt .figure,
+.post-excerpt .toc {
+    display: none;
 }
 
 .read-more {
@@ -606,8 +598,6 @@ h1.blog-title a:hover {
 .post-meta {
     display: inline-block;
     margin: 0 0 5px 0;
-    font-family: FiraSans, 'Noto Sans TC', 'Open Sans', sans-serif;
-    font-size: 1.5rem;
     color: #9EABB3;
 }
 
@@ -681,10 +671,6 @@ h1.blog-title a:hover {
     display: none;
 }
 
-.post-template .blog-title {
-    display: inline-block;
-    padding-top: 2.5rem;
-}
 
 /* Give post-header some top padding */
 .post-template article:not(:first-child) .post-header {
@@ -692,14 +678,11 @@ h1.blog-title a:hover {
 }
 
 /* Language specific line height */
-.post-template article.en-post {
-    line-height: 1.7em;
-}
-
-.post-template article.zh-post {
+.zh-post {
     line-height: 1.85em;
 }
-.post-template article.zh-post .post-content p {
+
+.zh-post p {
     margin: 1.9em 0;
 }
 
@@ -708,17 +691,39 @@ h1.blog-title a:hover {
 .post-content video {
     display: block;
     max-width: 100%;
-    height: auto;
-    margin: 0 auto;
     padding: 0.6em 0;
 }
 
-/* Break out larger images to be wider than the main text column
-   the class is applied with jQuery */
-.post-content .full-img {
-    width: 126%;
-    max-width: none;
-    margin: 0 -13%;
+.figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    margin: 3em 0;
+}
+
+.figure img {
+    padding: 0;
+    max-width: 100%;
+}
+
+.figure .caption {
+    color: #999;
+    line-height: 1.2em;
+    margin: 0.5em 0;
+}
+
+.figure .caption a {
+    color: #999;
+}
+
+.figure a:hover {
+    color: #57A3E8;
+}
+
+.full-img img {
+    width: calc(100% + 30rem); /* expand with to image + margins */
+    max-width: 100vw;
 }
 
 /* The author credit area after the post */
@@ -781,7 +786,7 @@ h1.blog-title a:hover {
     max-width: 700px;
     margin: 4rem auto;
     font-family: FiraSans, 'Open Sans', sans-serif;
-    font-size: 1.3rem;
+    font-size: 1rem;
     color: #9EABB3;
     text-align: center;
 }
@@ -827,24 +832,15 @@ h1.blog-title a:hover {
 
 .site-footer {
     position: relative;
-    margin: 8rem 0 0 0;
+    margin: 2rem 0 0 0;
     padding: 4rem 0;
     border-top: #EBF2F6 1px solid;
     font-family: FiraSans, 'Noto Sans TC', 'Open Sans', sans-serif;
-    font-size: 1.3rem;
+    font-size: 1rem;
     line-height: 1.7em;
-    color: #BBC7CC;
+    color: #555;
     text-align: center;
     background: #F7FAFB;
-}
-
-.site-footer a {
-    color: #BBC7CC;
-    text-decoration: underline;
-}
-
-.site-footer a:hover {
-    color: #50585D;
 }
 
 /* The subscribe icon on the footer */
@@ -922,22 +918,6 @@ h1.blog-title a:hover {
     top: -33px;
 }
 
-div.figure p.caption {
-    color: #BBC7CC;
-    font-family: FiraSans, 'Noto Sans TC', 'Open Sans',sans-serif;
-    font-size: 1.2rem;
-    font-style: italic;
-    line-height: 1.7em;
-}
-
-.figure a {
-    color: #BBC7CC;
-}
-
-.figure a:hover {
-    color: #57A3E8;
-}
-
 
 /* ==========================================================================
    10. Media Queries - Smaller than 900px
@@ -949,49 +929,8 @@ div.figure p.caption {
         margin-left: 0;
     }
 
-    .site-head {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        height: auto;
-        text-align: center;
-        padding: 15% 0;
-    }
-
-    .blog-title {
-        font-size: 4rem;
-        letter-spacing: -1px;
-    }
-
-    .blog-description {
-        font-size: 1.7rem;
-        line-height: 1.5em;
-    }
-
-    .post {
-        font-size: 0.9em;
-        line-height: 1.6em;
-    }
-
     .post-template .post {
         padding-bottom: 1rem;
-    }
-
-    h1 {
-        font-size: 4.8rem;
-        text-indent: -2px;
-    }
-
-    h2 {
-        font-size: 3.8rem;
-    }
-
-    h3 {
-        font-size: 3.3rem;
-    }
-
-    h4 {
-        font-size: 2.8rem;
     }
 
 }
@@ -1004,45 +943,15 @@ div.figure p.caption {
 @media only screen and (max-width: 500px) {
 
     .inner,
-    .pagination {
-        width: auto;
-        margin-left: 16px;
-        margin-right: 16px;
-    }
-
+    .pagination,
     .post {
-        width:auto;
-        margin-left: 16px;
-        margin-right: 16px;
-        font-size: 0.8em;
-        line-height: 1.6em;
+        width: auto;
+        margin-left: 1rem;
+        margin-right: 1rem;
     }
 
     .site-head {
-        padding: 10% 0;
-    }
-
-    .blog-title {
-        font-size: 3rem;
-    }
-
-    .blog-description {
-        font-size: 1.5rem;
-    }
-
-
-    h1, h2 {
-        font-size: 3rem;
-        line-height: 1.1em;
-        letter-spacing: -1px;
-    }
-
-    h3 {
-        font-size: 2.8rem;
-    }
-
-    h4 {
-        font-size: 2.3rem;
+        padding: 2rem 0;
     }
 
     .post-template .post {
@@ -1064,14 +973,27 @@ div.figure p.caption {
 
     .post-content .full-img {
         width: auto;
-        width: calc(100% + 32px); /* expand with to image + margins */
-        margin: 0 -16px; /* get rid of margins */
+        width: calc(100% + 2rem); /* expand with to image + margins */
+        margin: 0 -1rem; /* get rid of margins */
         min-width: 0;
         max-width: 112%; /* fallback when calc doesn't work */
     }
 
+    .post-header {
+        font-size: 1em;
+    }
+
     .post-meta {
-        font-size: 1.3rem;
+        font-size: 0.8rem;
+    }
+
+    .post-title {
+        font-size: 1.5rem;
+        text-indent: 0;
+    }
+
+    .post-title::before {
+        content: none;
     }
 
     .post-footer {

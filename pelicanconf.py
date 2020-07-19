@@ -77,7 +77,7 @@ LINKS = ()
 # Social widget
 SOCIAL = ()
 
-SUMMARY_MAX_LENGTH = 24
+SUMMARY_MAX_LENGTH = 50
 DEFAULT_PAGINATION = 10
 
 # Uncomment following line if you want document-relative URLs when developing
