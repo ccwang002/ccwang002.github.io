@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="author" content="Liang-Bo Wang" />
+<meta name="description" content="TL;DR: Many existing ID mappings between different biological ID systems (RefSeq/Ensembl/UniProt) don’t consider if the IDs have the same exact protein sequence. When the exact sequence is needed, UniParc can be used to cross-reference the IDs. I will demonstrate how to use UniParc to map RefSeq …" />
+<meta name="keywords" content="en, id-crossref, cptac">
+	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<title>ID cross reference with exact protein sequence identity using UniParc</title>
+
+	<!-- og -->
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Liang-Bo Wang's Blog"/>
+<meta property="og:title" content="ID cross reference with exact protein sequence identity using UniParc"/>
+<meta property="og:description" content="TL;DR: Many existing ID mappings between different biological ID systems (RefSeq/Ensembl/UniProt) don’t consider if the IDs have the same exact protein sequence. When the exact sequence is needed, UniParc can be used to cross-reference the IDs. I will demonstrate how to use UniParc to map RefSeq …"/>
+<meta property="og:locale" content=""/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2020/07/id-crossref-exact-protein-uniparc/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2020-07-24 00:00:00-05:00"/>
+<meta property="article:modified_time" content="2020-07-24 00:00:00-05:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
+<meta property="article:section" content="Bioinfo"/>
+<meta property="article:tag" content="en"/>
+<meta property="article:tag" content="id-crossref"/>
+<meta property="article:tag" content="cptac"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="ID cross reference with exact protein sequence identity using UniParc">
+<meta name="twitter:description" content="TL;DR: Many existing ID mappings between different biological ID systems (RefSeq/Ensembl/UniProt) don’t consider if the IDs have the same exact protein sequence. When the exact sequence is needed, UniParc can be used to cross-reference the IDs. I will demonstrate how to use UniParc to map RefSeq …">
+
+	<!-- Feeds -->
+	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
+		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
+
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.11.1/katex.min.css">
+</head>
+
+<body class="post-template">
+	<header class="site-head">
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang-Bo Wang's Blog</a></h1>
+		<h2 class="blog-description">
+			<a href="https://blog.liang2.tw/about-me/">About</a> |
+			<a href="https://blog.liang2.tw/talks/">Talks</a> |
+			<a href="https://blog.liang2.tw/archives.html">Archives</a>
+		</h2>
+	</header>
+	<main id="content" class="content" role="main">
+<article class="post en-post">
+    <span class="post-meta">
+        <time datetime="Jul 24, 2020">Jul 24, 2020</time>
+        in <a href="https://blog.liang2.tw/category/bioinfo/">Bioinfo</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2020/07/id-crossref-exact-protein-uniparc/" rel="bookmark" title="Permalink to ID cross reference with exact protein sequence identity using UniParc">ID cross reference with exact protein sequence identity using UniParc</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/en/">en</a>
+                <a href="https://blog.liang2.tw/tag/id-crossref/">id-crossref</a>
+                <a href="https://blog.liang2.tw/tag/cptac/">cptac</a>
+    </span>
+    <section class="post-content"><p><em>TL;DR: Many existing ID mappings between different biological ID systems (RefSeq/Ensembl/UniProt) don&rsquo;t consider if the IDs have the same exact protein sequence. When the exact sequence is needed, UniParc can be used to cross-reference the IDs. I will demonstrate how to use UniParc to map RefSeq human proteins to UniProt and Ensembl at scale.</em></p>
+<p>You can skip to the solution if you already know what&rsquo;s the problem I want to tackle.</p>
+<div class="toc">
+<ul>
+<li><a href="#camps-of-biological-ids">Camps of biological IDs</a></li>
+<li><a href="#challenges-to-map-ids-with-exact-sequence-identity">Challenges to map IDs with exact sequence identity</a></li>
+<li><a href="#why-mapping-with-exact-sequence-identity">Why mapping with exact sequence identity?</a></li>
+<li><a href="#uniparc-comes-into-rescue-for-protein-sequence-identity">UniParc comes into rescue for protein sequence identity</a></li>
+<li><a href="#programatic-uniparc-access-using-its-xml">Programatic UniParc access using its XML</a></li>
+<li><a href="#summary">Summary</a></li>
+</ul>
+</div>
+<h3 id="camps-of-biological-ids">Camps of biological IDs</h3>
+<p>There are a few &ldquo;camps&rdquo; of biological IDs that are used by many (human) databases and datasets: <a href="https://ensembl.org/">Ensembl</a>, <a href="https://www.ncbi.nlm.nih.gov/refseq/">RefSeq</a> (plus <a href="https://www.ncbi.nlm.nih.gov/gene/">NCBI/Entrez Gene</a>), and <a href="https://www.uniprot.org/">UniProt</a>. Each ID camp is comprehensive independently, containing gene-level, transcript-level, and protein-level information using their own systems of IDs. Unfortunately, all three ID systems/camps are useful in their own way, making the choice of the &ldquo;favorite&rdquo; ID system really divided for different databases and datasets.</p>
+<p>To get a sense of these &ldquo;ID camps&rdquo; and how information is connected through them and across them, this great illustration from <a href="https://biodbnet-abcc.ncifcrf.gov/dbInfo/netGraph.php">bioDBnet</a> sums it all (it&rsquo;s huge):</p>
+<div class="figure">
+    <img src="https://blog.liang2.tw/posts/2020/07/id-crossref-exact-protein-uniparc/pics/bioDBnet.jpg">
+    <p class="caption">Best illustration of the complex ID crossref: bioDBnet Network Diagram (<a href="https://biodbnet-abcc.ncifcrf.gov/dbInfo/netGraph.php">source</a>)</p>
+</div>
+
+<h3 id="challenges-to-map-ids-with-exact-sequence-identity">Challenges to map IDs with exact sequence identity</h3>
+<p>It&rsquo;s usually straightforward to cross reference within each ID camp, as long as one has the versioned ID and a copy of that camp&rsquo;s ID system. For example, to know the gene symbol of <code>ENSP00000368632.3</code>, I can easily use <a href="https://bioconductor.org/packages/release/bioc/html/ensembldb.html">ensembldb</a>, a lite copy of Ensembl&rsquo;s ID system, to find out it is translated from transcript <code>ENST00000379328.9</code>, which is one of the transcripts of gene <code>ENSG00000107485.18</code>, whose gene symbol is <code>GATA3</code>. Easy peasy. The story goes the same for RefSeq and UniProt (albeit this one is more protein centric).</p>
+<p>However, things get messy when one wants to cross reference across ID camps. While both official and third-party services (e.g., <a href="https://biodbnet-abcc.ncifcrf.gov/">bioDBnet</a> and <a href="https://david.ncifcrf.gov/home.jsp">DAVID</a>) exist, they don&rsquo;t guarantee sequence identity match. In this post, I will focus on the protein sequence. For example, bioDBnet says <code>ENSP00000368632</code> can be mapped to (note the lack of version):</p>
+<ul>
+<li>RefSeq: NP_002042, NP_001002295, &hellip;</li>
+<li>UniProt: P23771, &hellip;</li>
+</ul>
+<p>But when considering their sequence being identical, ENSP00000368632.3 should only match NP_001002295.1 in RefSeq, and the non-canonical form of UniProt P23771-2 (sequence version 1). The other IDs don&rsquo;t have the exact same protein sequence because of an 1aa deletion. To complicate things more, many mappings don&rsquo;t handle ID versions, and sequence often changes across ID versions. Without tracking the versioned ID, it&rsquo;s impossible to say which IDs have the same sequence.</p>
+<p>Let me be clear that there is nothing wrong about these services. They&rsquo;re built so people can map IDs at high level and increase the number of mappable IDs, which is extremely useful in its own way. In fact, a lot of IDs simply cannot be mapped when consider exact sequence identity.</p>
+<p>For transcripts the situation isn&rsquo;t any better because many mapped transcripts of different ID camps have different UTR sequences. I will probably write another post to touch on transcript ID mapping. The short answer is that the <a href="https://www.ncbi.nlm.nih.gov/refseq/MANE/">MANE</a> project started by RefSeq and Ensembl is working on the problem.</p>
+<h3 id="why-mapping-with-exact-sequence-identity">Why mapping with exact sequence identity?</h3>
+<p>Well, when do I need ID mapping with exact protein sequence identity? My use case is to map post-translation modifications (PTMs) from RefSeq to UniProt. CPTAC detected loads of PTMs (mostly phosphosites) using RefSeq as the peptide spectral library (peptide search database). But a lot of what we know about a protein is from UniProt. So I need a reliable way to map a specific amino acid of one RefSeq protein to its UniProt counterpart. I&rsquo;ve been using existing services for the job, but they not perfect.</p>
+<p>For example, we found a phosphosite NP_001317366.1 (PTPN11) p.Y546. PTPN11 corresponds to Q06124 in UniProt reviewed proteome (the current canonical isoform is Q06124-2 seq. ver3). But you won&rsquo;t find anything (e.g. antibody) about this site at 546aa because sequences of NP_001317366.1 and Q06124-2 don&rsquo;t match. This phosphosite actually maps to Q06124-2 p.Y542.</p>
+<p>While one can argue that I should re-run the peptide search using UniProt, this solution only works around the problem. The problem comes back when I want to map the Ensembl based mutations to UniProt. I am also aware that two proteins with different sequence can be biologically different, and we shouldn&rsquo;t just blindly integrate their annotation. I totally agree, so the integration should be further validated. Due to the nature of the shotgun proteomics, as long as the peptide sequence of the PTM site can be found in both proteins, it&rsquo;s fairly possible that the site can be mapped to both. This topic has been on my mind <a href="https://twitter.com/lbwang2/status/1238144323218288643">for a while</a>. I&rsquo;ll write about it once I figure out the details. Anyway, mapping PTMs between different protein sequences is my next step, and it goes beyond the scope of this post.</p>
+<h3 id="uniparc-comes-into-rescue-for-protein-sequence-identity">UniParc comes into rescue for protein sequence identity</h3>
+<blockquote>
+<p><a href="https://www.uniprot.org/uniparc/">The UniProt Archive (UniParc)</a> is a comprehensive and non-redundant database that contains most of the publicly available protein sequences in the world. Proteins may exist in different source databases and in multiple copies in the same database. UniParc avoided such redundancy by storing each unique sequence only once and giving it a stable and unique identifier (UPI) making it possible to identify the same protein from different source databases. A UPI is never removed, changed or reassigned. UniParc contains only protein sequences.</p>
+<p>(source: <a href="https://www.uniprot.org/help/uniparc">UniParc help page</a>)</p>
+</blockquote>
+<p>UniParc is a collection of non-redundant protein sequence archive. The UniParc ID and sequence is permanently stable, but the cross-references associated to one UniParc entry may change over time. All of its properties make UniParc perfect to be the identifer to map across ID camps. UniParc IDs can be queried using the <a href="https://en.wikipedia.org/wiki/Cyclic_redundancy_check">CRC64-ISO checksum</a> of the protein sequence.</p>
+<p>For example, let&rsquo;s find the UniPrac ID of <code>NP_001317366.1</code>. First, we obtain its protein sequence in FASTA from NCBI:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$</span> <span class="nb">export</span> <span class="nv">refseq_id</span><span class="o">=</span><span class="s2">&quot;NP_001317366.1&quot;</span>
+<span class="gp">$</span> curl -Lo <span class="s2">&quot;</span><span class="nv">$refseq_id</span><span class="s2">&quot;</span>.fasta <span class="se">\</span>
+    <span class="s2">&quot;https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=protein&amp;id=</span><span class="nv">$refseq_id</span><span class="s2">&amp;rettype=fasta&amp;retmode=text&quot;</span>
+
+<span class="gp">$</span> head -n <span class="m">3</span> <span class="s2">&quot;</span><span class="nv">$refseq_id</span><span class="s2">&quot;</span>.fasta
+<span class="gp">&gt;</span>NP_001317366.1 tyrosine-protein phosphatase non-receptor <span class="nb">type</span> <span class="m">11</span> isoform <span class="m">3</span> <span class="o">[</span>Homo sapiens<span class="o">]</span>
+<span class="go">MTSRRWFHPNITGVEAENLLLTRGVDGSFLARPSKSNPGDFTLSVRRNGAVTHIKIQNTGDYYDLYGGEK</span>
+<span class="go">FATLAELVQYYMEHHGQLKEKNGDVIELKYPLNCADPTSERWFHGHLSGKEAEKLLTEKGKHGSFLVRES</span>
+</code></pre></div>
+
+
+<p>Then calculate the CRC64 checksum (there are a few packages capable, or use <a href="https://www.ebi.ac.uk/Tools/so/seqcksum/">EBI&rsquo;s checksum calculator</a>):</p>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pysam</span> <span class="kn">import</span> <span class="n">FastaFile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">crc64iso</span> <span class="kn">import</span> <span class="n">crc64iso</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fa</span> <span class="o">=</span> <span class="n">FastaFile</span><span class="p">(</span><span class="s1">&#39;NP_001317366.1.fasta&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">fa</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">fa</span><span class="o">.</span><span class="n">references</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">crc64iso</span><span class="o">.</span><span class="n">crc64</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">&#39;37E8BFC7ECA2D03F&#39;</span>
+</code></pre></div>
+
+
+<p>Search <code>checksum:37E8BFC7ECA2D03F</code> on UniParc gives an unique entry<sup id="fnref:checksum-collision"><a class="footnote-ref" href="#fn:checksum-collision">1</a></sup> <code>UPI000041C017</code>: <a href="https://www.uniprot.org/uniparc/?query=checksum%3A37E8BFC7ECA2D03F&amp;sort=score&amp;direct=yes">https://www.uniprot.org/uniparc/?query=checksum%3A37E8BFC7ECA2D03F&amp;sort=score&amp;direct=yes</a>.</p>
+<div class="figure full-img">
+    <img src="https://blog.liang2.tw/posts/2020/07/id-crossref-exact-protein-uniparc/pics/uniparc_UPI000041C017.png">
+    <p class="caption">UniParc entry <a href="https://www.uniprot.org/uniparc/UPI000041C017">UPI000041C017</a> and all of its human ID cross references with exact sequence identity.</p>
+</div>
+
+<p>All the external IDs listed here have the identical protein sequence to <code>NP_001317366.1</code>, which of course includes itself. UniParc also marks the IDs inactive if they are superseded by a newer version or become obsolete, which is quite useful for data forensics.</p>
+<h3 id="programatic-uniparc-access-using-its-xml">Programatic UniParc access using its XML</h3>
+<p>To extract UniParc&rsquo;s cross reference, it&rsquo;s easiest to parse its XML, which is also easy to download in bulk.
+Continue to use <code>UPI000041C017</code> (<code>NP_001317366.1</code>) as the example,</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$</span> curl -LO https://www.uniprot.org/uniparc/UPI000041C017.xml
+<span class="gp">$</span> head -n <span class="m">10</span> UPI000041C017.xml
+<span class="go">&lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39;?&gt;</span>
+<span class="go">&lt;uniparc xmlns=&quot;http://uniprot.org/uniparc&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://uniprot.org/uniparc http://www.uniprot.org/docs/uniparc.xsd&quot; version=&quot;2020_03&quot;&gt;</span>
+<span class="go">&lt;entry dataset=&quot;uniparc&quot;&gt;</span>
+<span class="go">&lt;accession&gt;UPI000041C017&lt;/accession&gt;</span>
+<span class="go">&lt;dbReference type=&quot;UniProtKB/Swiss-Prot&quot; id=&quot;Q06124&quot; version_i=&quot;2&quot; active=&quot;N&quot; version=&quot;2&quot; created=&quot;2005-12-20&quot; last=&quot;2019-11-13&quot;&gt;</span>
+<span class="go">&lt;property type=&quot;NCBI_GI&quot; value=&quot;84028248&quot;/&gt;</span>
+<span class="go">&lt;property type=&quot;NCBI_taxonomy_id&quot; value=&quot;9606&quot;/&gt;</span>
+<span class="go">&lt;property type=&quot;protein_name&quot; value=&quot;Tyrosine-protein phosphatase non-receptor type 11&quot;/&gt;</span>
+<span class="go">&lt;property type=&quot;gene_name&quot; value=&quot;PTPN11&quot;/&gt;</span>
+<span class="go">&lt;/dbReference&gt;</span>
+</code></pre></div>
+
+
+<p>While I don&rsquo;t find XML easy to read, I&rsquo;ve figured out <a href="https://blog.liang2.tw/posts/2018/01/read-uniprotkb-xml/">a way</a> before to parse XMLs as a JSON-like dictionary given its schema. Let&rsquo;s define a function to flatten the nested structure and only select the information we want:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">parse_dbref</span><span class="p">(</span><span class="n">entry</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse Ensembl/UniProt/RefSeq IDs of an UniParc entry.</span>
+
+<span class="sd">    Keep both active and inactive IDs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ref_ids</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">db_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;Ensembl&quot;</span><span class="p">,</span> <span class="s2">&quot;UniProt&quot;</span><span class="p">,</span> <span class="s2">&quot;RefSeq&quot;</span><span class="p">]:</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;dbReference&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;@type&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">db_type</span><span class="p">):</span>
+                <span class="c1"># Skip non-human entries</span>
+                <span class="n">ncbi_taxid</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+                    <span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;@value&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;property&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="s1">&#39;@type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;NCBI_taxonomy_id&#39;</span><span class="p">),</span>
+                    <span class="kc">None</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">ncbi_taxid</span> <span class="o">!=</span> <span class="s1">&#39;9606&#39;</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="c1"># Make versioned ID</span>
+                <span class="k">if</span> <span class="s1">&#39;@version&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+                    <span class="c1"># Use the UniParc internal version (for UniProt)</span>
+                    <span class="n">id_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;@id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;@version_i&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">id_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;@id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;@version&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">ids</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">id_str</span><span class="p">)</span>
+        <span class="n">ref_ids</span><span class="p">[</span><span class="n">db_type</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ref_ids</span>
+</code></pre></div>
+
+
+<p><a href="https://pypi.org/project/xmlschema/">xmlschema</a> makes it really easy to parse a XML with schema:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">xmlschema</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">xmlschema</span><span class="o">.</span><span class="n">XMLSchema</span><span class="p">(</span><span class="s1">&#39;https://www.uniprot.org/docs/uniparc.xsd&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">,</span> <span class="n">errors</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s1">&#39;UPI000041C017.xml&#39;</span><span class="p">,</span> <span class="n">validation</span><span class="o">=</span><span class="s1">&#39;lax&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pprint</span><span class="p">(</span><span class="n">parse_dbref</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;entry&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+<span class="go">{&#39;Ensembl&#39;: [&#39;ENSP00000489597.1&#39;],</span>
+<span class="go"> &#39;RefSeq&#39;: [&#39;NP_001317366.1&#39;, &#39;XP_006719589.1&#39;],</span>
+<span class="go"> &#39;UniProt&#39;: [&#39;Q06124-1.1&#39;, &#39;Q06124.2&#39;]}</span>
+</code></pre></div>
+
+
+<p><em>Voilà</em>, we can now map across ID camps with confidence!</p>
+<p>This method can be applied to a large number of queries efficiently. By reading in a FASTA of protein sequences of interest, we can build URLs to UniParc XML per protein entry using its checksum, and pass the URLs as an <a href="https://aria2.github.io/">aria2</a>'s input file <code>xml.links</code>:</p>
+<div class="highlight"><pre><span></span><code>https://www.uniprot.org/uniparc/?query=checksum%3A{crc64_checksum}&amp;format=xml
+    out={protein_id}.xml
+
+...
+</code></pre></div>
+
+
+<p>And download all the links in batch:</p>
+<div class="highlight"><pre><span></span><code>aria2c -c -j5 --max-overall-download-limit<span class="o">=</span>10M -i xml.links
+</code></pre></div>
+
+
+<h3 id="summary">Summary</h3>
+<p>We solve the ID mapping with exact protein sequence identity between Ensembl/RefSeq/UniProt camps through UniParc.</p>
+<p>Note that the version of UniProt entries is a bit confusing. For example, <code>Q06124.2</code> means the sequence version 2 of <code>Q06124</code>. But finding UniProt&rsquo;s sequence version is not that straightforward, and the UniProt isoforms unlike the canonical isoform lack version tracking. As a result, while processing UniProt associated annotation, I will always add UniParc IDs or keep its protein sequence for future reference.</p>
+<p>RefSeq and Ensembl protein IDs are always versioned. Thus it&rsquo;s highly recommended to keep the versioned ID for these two systems.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:checksum-collision">
+<p>It&rsquo;s possible that two different protein sequences have the same checksum, though very unlikely.
+So always double check so do this in batch.&#160;<a class="footnote-backref" href="#fnref:checksum-collision" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div></section>
+    <footer class="post-footer">
+    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2020/07/id-crossref-exact-protein-uniparc/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2020/07/id-crossref-exact-protein-uniparc/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
+    <footer>
+</article>
+	</main>
+	<footer class="site-footer">
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags.html">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/lbwang2">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://keybase.io/liang2">Keybase</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="https://bitbucket.org/ccwang002">Bitbucket</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">
+				Built using <a href="https://getpelican.com/">Pelican</a>.
+				Powered by the <a href="https://kura.github.io/hauntr/">Hauntr</a> theme.
+			</section>
+		</div>
+	</footer>
+</body>
+</html>
