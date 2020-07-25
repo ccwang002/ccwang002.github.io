@@ -1,12 +1,12 @@
 ---
 Title: ID cross reference with exact protein sequence identity using UniParc
 Slug: id-crossref-exact-protein-uniparc
-Date: 2020-07-19
+Date: 2020-07-24
 Tags: en, id-crossref, cptac
 Category: Bioinfo
 ---
 
-*TL;DR: Many existing ID mappings between different biological ID systems (RefSeq/Ensembl/UniProt) don't consider if the IDs have the same exact protein sequence. When the exact sequence is needed, UniParc can be used to cross-reference the IDs. I will demonstrate how to use UniParc to map RefSeq human proteins to UniProt and Ensembl at scale*
+*TL;DR: Many existing ID mappings between different biological ID systems (RefSeq/Ensembl/UniProt) don't consider if the IDs have the same exact protein sequence. When the exact sequence is needed, UniParc can be used to cross-reference the IDs. I will demonstrate how to use UniParc to map RefSeq human proteins to UniProt and Ensembl at scale.*
 
 You can skip to the solution if you already know what's the problem I want to tackle.
 
@@ -14,7 +14,9 @@ You can skip to the solution if you already know what's the problem I want to ta
 
 
 ### Camps of biological IDs
-There are a few "camps" of biological IDs that are used by many (human) databases and datasets: [Ensembl], [RefSeq] (plus [NCBI/Entrez Gene][ncbi-gene]), and [UniProt]. Each ID camp is comprehensive independently, containing gene-level, transcript-level, and protein-level information using their own systems of IDs. To get a sense these "ID camps" and how information is connected through them, this great illustration from [bioDBnet][bioDBnet graph] sums it all (it's huge):
+There are a few "camps" of biological IDs that are used by many (human) databases and datasets: [Ensembl], [RefSeq] (plus [NCBI/Entrez Gene][ncbi-gene]), and [UniProt]. Each ID camp is comprehensive independently, containing gene-level, transcript-level, and protein-level information using their own systems of IDs. Unfortunately, all three ID systems/camps are useful in their own way, making the choice of the "favorite" ID system really divided for different databases and datasets.
+
+To get a sense of these "ID camps" and how information is connected through them and across them, this great illustration from [bioDBnet][bioDBnet graph] sums it all (it's huge):
 
 <div class="figure">
     <img src="{attach}pics/bioDBnet.jpg">
@@ -163,14 +165,28 @@ def parse_dbref(entry):
 
 *Voilà*, we can now map across ID camps with confidence!
 
+This method can be applied to a large number of queries efficiently. By reading in a FASTA of protein sequences of interest, we can build URLs to UniParc XML per protein entry using its checksum, and pass the URLs as an [aria2]\'s input file `xml.links`:
+
+```text
+https://www.uniprot.org/uniparc/?query=checksum%3A{crc64_checksum}&format=xml
+    out={protein_id}.xml
+
+...
+```
+
+And download all the links in batch:
+
+```bash
+aria2c -c -j5 --max-overall-download-limit=10M -i xml.links
+```
+
 
 ### Summary
 We solve the ID mapping with exact protein sequence identity between Ensembl/RefSeq/UniProt camps through UniParc.
 
-Note that the version of UniProt entries is a bit confusing. For example, `Q06124.2` means the sequence version 2 of `Q06124`
+Note that the version of UniProt entries is a bit confusing. For example, `Q06124.2` means the sequence version 2 of `Q06124`. But finding UniProt's sequence version is not that straightforward, and the UniProt isoforms unlike the canonical isoform lack version tracking. As a result, while processing UniProt associated annotation, I will always add UniParc IDs or keep its protein sequence for future reference.
 
-
-I'm probably going to write a series of blog posts about proteogenomic ID cross references.
+RefSeq and Ensembl protein IDs are always versioned. Thus it's highly recommended to keep the versioned ID for these two systems.
 
 [^checksum-collision]:
     It's possible that two different protein sequences have the same checksum, though very unlikely.
@@ -181,3 +197,4 @@ I'm probably going to write a series of blog posts about proteogenomic ID cross 
 [ebi-checksum]: https://www.ebi.ac.uk/Tools/so/seqcksum/
 [my-post-uniprot-xml]: {filename}../2018-01/0128_uniprot_xml.md
 [xmlschema]: https://pypi.org/project/xmlschema/
+[aria2]: https://aria2.github.io/
