@@ -24,11 +24,8 @@ sortorder: 1
 978B 49B8 EFB7 02F3 3B3F  F2E5 69BA E333 BC4D C4BA
 ```
 
-或者透過 [Keybase] 找到我。
-
-[Twitter]: https://twitter.com/ccwang002
+[Twitter]: https://twitter.com/lbwang2
 [email]: mailto:me+blog@liang2.tw
-[Keybase]: https://keybase.io/liang2
 
 我的舊 PGP keys：
 

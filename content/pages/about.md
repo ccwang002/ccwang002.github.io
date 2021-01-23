@@ -26,7 +26,7 @@ You can find me on [Twitter] or by [email]. My current GPG key is [0x69BAE333BC4
 - [0x44D10E44730992C4](/730992C4.pub.asc): `85DF A3EB 72CD DE7D 3F2A 127C 44D1 0E44 7309 92C4` (2016.12 to 2018.10)
 - [0x30A45011B233544E](/B233544E.pub.asc): `6ECD C5B8 235C D44D 2471 866E 30A4 5011 B233 544E` (2015 to 2016.12)
 
-[Twitter]: https://twitter.com/ccwang002
+[Twitter]: https://twitter.com/lbwang2
 [email]: mailto:me+blog@liang2.tw
 
 
