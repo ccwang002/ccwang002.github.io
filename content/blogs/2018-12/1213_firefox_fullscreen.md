@@ -5,6 +5,7 @@ Date: 2018-12-13
 Tags: en
 Category: Coding
 ---
+EDIT 2021-06-01: In Firefox 89+, there's a default option "Hide Toolbar" in the fullscreen mode that automatically hides the toolbar. So the customization is no longer needed.
 
 Firefox fullscreen on macOS by default contains the address bar and the tab bar. I usually don't really need the full vertical space for web page, so those bars aren't a problem. But when I access a RStudio Server on Firefox, I always want to have more vertical space. As shown in the screenshot below, the address bar and the tab bar of Firefox are unnecessary, and they may be quite distracting. If those bars are hidden and only show up upon request when Firefox enters fullscreen, the vertical space can be saved and the interface will remain clean.
 
