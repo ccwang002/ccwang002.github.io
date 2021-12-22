@@ -6,7 +6,7 @@
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 <meta name="author" content="Liang-Bo Wang" />
-<meta name="description" content="為了實驗室的專題生而寫。 目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先操作比較簡單的才好上手。所以這邊講的並不是 best practice，但使用最少（底層）的知識與工具。如果一開始讓太多套件（像 SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。 本篇文章非常長，應該沒辦法幾分鐘內讀完。對象是初學者學習簡單網站架設。 這個專案的目標：因為大家 meeting 的時候都不問問題，教授需要一個抽籤點人問問題的工具。我們實驗室有分成幾個組別，所以抽籤的時候也要能針對單個組別抽。 以下使用 LoveLive! 還有 K-ON! 的成員來當例子。先聲明我兩個動畫都沒有看過，如果有什麼名字打錯請告訴我，絕對不是故意的。（2016-06-14 更新：我把兩個動畫都看完了！） 資料設計 網站架構規劃 實作環境設定 Python 環境 安裝 Flask、Jinja2 等套件 SQLite …" />
+<meta name="description" content="為了實驗室的專題生而寫。 目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先操作比較簡單的才好上手。所以這邊講 …" />
 <meta name="keywords" content="zh, flask, sqlite, jinja2, python">
 	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
 	<title>用 Flask 與 SQLite 架抽籤網站</title>
@@ -15,12 +15,12 @@
 <meta property="og:locale" content="zh_TW"/>
 <meta property="og:site_name" content="Liang-Bo Wang's Blog"/>
 <meta property="og:title" content="用 Flask 與 SQLite 架抽籤網站"/>
-<meta property="og:description" content="為了實驗室的專題生而寫。 目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先操作比較簡單的才好上手。所以這邊講的並不是 best practice，但使用最少（底層）的知識與工具。如果一開始讓太多套件（像 SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。 本篇文章非常長，應該沒辦法幾分鐘內讀完。對象是初學者學習簡單網站架設。 這個專案的目標：因為大家 meeting 的時候都不問問題，教授需要一個抽籤點人問問題的工具。我們實驗室有分成幾個組別，所以抽籤的時候也要能針對單個組別抽。 以下使用 LoveLive! 還有 K-ON! 的成員來當例子。先聲明我兩個動畫都沒有看過，如果有什麼名字打錯請告訴我，絕對不是故意的。（2016-06-14 更新：我把兩個動畫都看完了！） 資料設計 網站架構規劃 實作環境設定 Python 環境 安裝 Flask、Jinja2 等套件 SQLite …"/>
+<meta property="og:description" content="為了實驗室的專題生而寫。 目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先操作比較簡單的才好上手。所以這邊講 …"/>
 <meta property="og:locale" content=""/>
 <meta property="og:url" content="https://blog.liang2.tw/posts/2015/09/flask-draw-member/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2015-09-28 12:00:00-05:00"/>
-<meta property="article:modified_time" content="2015-09-28 12:00:00-05:00"/>
+<meta property="article:modified_time" content="2021-03-01 20:49:49.087393-06:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="zh"/>
@@ -31,7 +31,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@ccwang002">
 <meta name="twitter:title" content="用 Flask 與 SQLite 架抽籤網站">
-<meta name="twitter:description" content="為了實驗室的專題生而寫。 目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先操作比較簡單的才好上手。所以這邊講的並不是 best practice，但使用最少（底層）的知識與工具。如果一開始讓太多套件（像 SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。 本篇文章非常長，應該沒辦法幾分鐘內讀完。對象是初學者學習簡單網站架設。 這個專案的目標：因為大家 meeting 的時候都不問問題，教授需要一個抽籤點人問問題的工具。我們實驗室有分成幾個組別，所以抽籤的時候也要能針對單個組別抽。 以下使用 LoveLive! 還有 K-ON! 的成員來當例子。先聲明我兩個動畫都沒有看過，如果有什麼名字打錯請告訴我，絕對不是故意的。（2016-06-14 更新：我把兩個動畫都看完了！） 資料設計 網站架構規劃 實作環境設定 Python 環境 安裝 Flask、Jinja2 等套件 SQLite …">
+<meta name="twitter:description" content="為了實驗室的專題生而寫。 目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先操作比較簡單的才好上手。所以這邊講 …">
 
 	<!-- Feeds -->
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"

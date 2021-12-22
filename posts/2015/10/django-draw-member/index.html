@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2015/10/django-draw-member/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2015-10-04 14:55:00-05:00"/>
-<meta property="article:modified_time" content="2015-10-04 14:55:00-05:00"/>
+<meta property="article:modified_time" content="2021-03-01 20:49:49.098133-06:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="zh"/>
@@ -148,7 +148,7 @@
 <p>一個 Django 由一個 project 和很多個 apps 所組成。每個 app 就專注在網站的某個功能上，各自包著各自需要的 database schema、template、view logics。這樣的好處是同樣的功能就不用重寫，同時在很大的網站時這樣的結構有助於管理運作的邏輯。</p>
 <h4 id="django-server">Django server</h4>
 <p>先把 Django 跑起來看看吧。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$</span> python manage.py runserver
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py runserver
 <span class="go">...</span>
 <span class="go">Django version 1.8.5, using settings &#39;draw_site.settings&#39;</span>
 <span class="go">Starting development server at http://127.0.0.1:8000/</span>
@@ -227,7 +227,7 @@
 <p>在之前的例子可以知道，我們會先設計一個資料庫該存什麼東西，整個網站流程會怎麼用這些資料，這些形成 table schema。但是隨著時間，可能網站有新的功能，很難說完全不去更動 schema。</p>
 <p>更動 schema 不是件簡單的事，如果是上 production 的網站，資料庫會有運作以來累積的資料，總不能 schema 改了這些資料就丟掉吧？而且在網站開發的時候，在不同版本的（或不同人開發的）code 就可能有不同的 schema。要怎麼確保 code 與 database 的狀態就要靠 migration。</p>
 <p>……一開始就這麼複雜？好啦我們的例子沒有用到 migration 大多數的功能，只有用它 initiate database。內建的 app 都有自己的 database schema，可以用它把資料庫的 table 建出來。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$</span> python manage.py migrate
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py migrate
 <span class="go">Operations to perform:</span>
 <span class="go">  Synchronize unmigrated apps: messages, staticfiles</span>
 <span class="go">  Apply all migrations: sessions, auth, contenttypes, admin</span>
@@ -292,7 +292,7 @@
 
 <p>概念也很簡單，把要的 view function 從 app import 進來（所以 app 目錄是個 Python module，底下會 <code>__init__.py</code>），給一個 regex 表示的路徑，後面放上處理 function 以及一個 optional 的名字，這個名字就代表了這個 URL 路徑，之後可以反查。</p>
 <p>測一下確認設定都是正確的。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$</span> curl -XGET <span class="s2">&quot;localhost:8000&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>curl -XGET <span class="s2">&quot;localhost:8000&quot;</span>
 <span class="go">&lt;p&gt;Hello World!&lt;/p&gt;</span>
 </code></pre></div>
 
@@ -375,7 +375,7 @@ urlpatterns = [
 <h4 id="migration-the-tracker-of-model-changes">Migration the tracker of model changes</h4>
 <p>多說無用，馬上來試一試。</p>
 <p>……等等，想到 migration 了嗎？每次更動 database model 都要跑 migration，確保 code 與資料庫狀態一致。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$</span> python manage.py makemigrations draw_member
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py makemigrations draw_member
 <span class="go">python manage.py makemigrations draw_member</span>
 <span class="go">Migrations for &#39;draw_member&#39;:</span>
 <span class="go">  0001_initial.py:</span>
@@ -419,7 +419,7 @@ urlpatterns = [
 
 <p>注意到 Django ORM 自動幫我們加了 <code>id</code> 這個 primary key，等等就會用到。Migration 裡面的細節等對 Django 更熟了之後就能慢慢了解了。</p>
 <p>有了新的 migration 就要同步資料庫的狀態，</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$</span> python manage.py migrate
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py migrate
 <span class="go">...</span>
 <span class="go">Running migrations:</span>
 <span class="go">  Rendering model states... DONE</span>
@@ -524,7 +524,7 @@ In [9]: h1.save()
 
 
 <p>當然一開始我們可以暴力把 <code>db.sqlite3</code> 整個刪掉再重新 <code>python manage.py migrate</code> 一次就可以讓 database 對應的 table 都建立好，不過只適用於 SQLite 而已。或者，正確的「清空資料庫」做法是用 <code>flush</code> 指令，</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$</span> python manage.py flush
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py flush
 <span class="go">You have requested a flush of the database.</span>
 <span class="go">This will IRREVERSIBLY DESTROY all data currently in the &#39;draw_site/db.sqlite3&#39; database,</span>
 <span class="go">and return each table to an empty state.</span>
@@ -594,7 +594,7 @@ In [4]: for m in members:
 
 
 <p>我們可以用 <code>python manage.py flush</code> 把資料庫清掉，模擬資料的讀入。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$</span> python manage.py loaddata anime_members.yaml
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py loaddata anime_members.yaml
 <span class="go">Installed 14 object(s) from 1 fixture(s)</span>
 </code></pre></div>
 
@@ -752,7 +752,7 @@ In [4]: for m in members:
 
 <p>用 ORM 寫起來比 raw SQL 乾淨多了，不過一開始要把對應的 function 都記起來就是。
 馬上測試一下，一樣偷懶先不去寫 template。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$</span> curl -XGET <span class="s2">&quot;localhost:8000/draw/?group=ALL&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>curl -XGET <span class="s2">&quot;localhost:8000/draw/?group=ALL&quot;</span>
 <span class="go">&lt;p&gt;小泉 花陽（團體：μ&#39;s）&lt;/p&gt;</span>
 </code></pre></div>
 

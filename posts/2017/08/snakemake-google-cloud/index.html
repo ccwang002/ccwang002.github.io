@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2017/08/snakemake-google-cloud/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2017-08-10 00:00:00-05:00"/>
-<meta property="article:modified_time" content="2017-08-10 00:00:00-05:00"/>
+<meta property="article:modified_time" content="2021-03-01 20:49:49.124108-06:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Bioinfo"/>
 <meta property="article:tag" content="en"/>
@@ -106,9 +106,9 @@
 <p>(From the wiki page <a href="[griffith-lab-data]">&ldquo;RNA-seq Data&rdquo;</a> of the tutorial)</p>
 </blockquote>
 <p>Our RNA-seq raw data are the 10% downsampled FASTQ files for these samples. For the human genome reference, only the chromosome 22 from GRCh38 is used. The gene annotation is from <a href="http://dec2016.archive.ensembl.org/Homo_sapiens/Info/Index">Ensembl Version 87</a>.  Let&rsquo;s download all the samples and annotations.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$</span> <span class="nb">cd</span> ~/snakemake_example
-<span class="gp">$</span> wget https://storage.googleapis.com/lbwang-playground/snakemake_rnaseq/griffithlab_brain_vs_uhr.tar.gz
-<span class="gp">$</span> tar xf griffithlab_brain_vs_uhr.tar.gz
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">cd</span> ~/snakemake_example
+<span class="gp">$ </span>wget https://storage.googleapis.com/lbwang-playground/snakemake_rnaseq/griffithlab_brain_vs_uhr.tar.gz
+<span class="gp">$ </span>tar xf griffithlab_brain_vs_uhr.tar.gz
 </code></pre></div>
 
 
@@ -130,14 +130,14 @@
 
 <h2 id="installation-of-snakemake-and-all-related-tools">Installation of snakemake and all related tools</h2>
 <p>After installing <a href="https://conda.io/miniconda.html">conda</a> and setting up <a href="https://bioconda.github.io/">bioconda</a>, the installation is simple. All the dependencies are kept in a conda environment called <code>new_tuxedo</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$</span> conda create -n new_tuxedo <span class="se">\</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>conda create -n new_tuxedo <span class="se">\</span>
     <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6 snakemake hisat2 stringtie samtools
-<span class="gp">$</span> <span class="nb">source</span> activate new_tuxedo        <span class="c1"># Use the conda env</span>
-<span class="gp gp-VirtualEnv">(new_tuxedo)</span> <span class="gp">$</span> hisat2 --version     <span class="c1"># Tools are available in the env</span>
+<span class="gp">$ </span><span class="nb">source</span> activate new_tuxedo        <span class="c1"># Use the conda env</span>
+<span class="gp gp-VirtualEnv">(new_tuxedo)</span> <span class="gp">$ </span>hisat2 --version     <span class="c1"># Tools are available in the env</span>
 <span class="go">/Users/liang/miniconda3/envs/new_tuxedo/bin/hisat2-align-s version 2.1.0</span>
 <span class="go">...</span>
-<span class="gp gp-VirtualEnv">(new_tuxedo)</span> <span class="gp">$</span> deactivate           <span class="c1"># Exit the env</span>
-<span class="gp">$</span> hisat2 --version                  <span class="c1"># Tools are isolated in the env</span>
+<span class="gp gp-VirtualEnv">(new_tuxedo)</span> <span class="gp">$ </span>deactivate           <span class="c1"># Exit the env</span>
+<span class="gp">$ </span>hisat2 --version                  <span class="c1"># Tools are isolated in the env</span>
 <span class="go">bash: hisat2: command not found</span>
 </code></pre></div>
 
@@ -206,7 +206,7 @@
 <p>For the rest of the entries such as <code>threads</code>, and <code>log</code>, one can find more information at <a href="https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html">the Snakemake documentation about Rules</a>.</p>
 <h3 id="run-snakemake">Run Snakemake</h3>
 <p>Let&rsquo;s build the genome reference index.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$</span> snakemake -j <span class="m">8</span> -p build_hisat_index
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>snakemake -j <span class="m">8</span> -p build_hisat_index
 <span class="go">Provided cores: 8</span>
 <span class="go">Rules claiming more threads will be scaled down.</span>
 <span class="go">Job counts:</span>
@@ -234,7 +234,7 @@
 <li><code>build_hisat_index</code>: The rule or certain output to be generated</li>
 </ul>
 <p>If one runs it again, one will find that snakemake won&rsquo;t do anything since all the output are present and updated.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$</span> snakemake -j <span class="m">8</span> -p build_hisat_index
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>snakemake -j <span class="m">8</span> -p build_hisat_index
 <span class="go">Nothing to be done.</span>
 </code></pre></div>
 

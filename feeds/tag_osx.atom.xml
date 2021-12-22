@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - osx</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_osx.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2016-01-25T17:00:00-06:00</updated><entry><title>安裝 PostgreSQL 9 於 Debian Jessie / OSX</title><link href="https://blog.liang2.tw/posts/2016/01/postgresql-install/" rel="alternate"></link><published>2016-01-25T17:00:00-06:00</published><updated>2016-01-25T17:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-25:/posts/2016/01/postgresql-install/</id><summary type="html">&lt;p&gt;平常用最多的是 &lt;a href="https://www.sqlite.org/"&gt;SQLite&lt;/a&gt;，但 &lt;a href="http://www.postgresql.org/"&gt;PostgreSQL&lt;/a&gt; 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。&lt;/p&gt;
-&lt;p&gt;用 &lt;a href="https://www.debian.org/releases/stable/"&gt;Debian Jessie&lt;/a&gt; (Debian 8.3) 與 OSX &lt;a href="http://brew.sh/"&gt;Homebrew&lt;/a&gt; 舉例。不過 OSX 大概也不會沒事把 PostgreSQL 開著，主要是著重在 Debian 的環境設定上。目前 PostgreSQL 出到 9.5 但 Debian stable 是 9.4。基本設定應該完全沒差別。&lt;/p&gt;
-&lt;div class="toc"&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="#postgresql"&gt;安裝 PostgreSQL&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#osx"&gt;安裝在 OSX&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#debian-jessie"&gt;安裝在 Debian Jessie&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href="#database"&gt;初始個人的 Database&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#postgresql_1"&gt;建立同使用者名稱的 PostgreSQL 帳號&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#database_1"&gt;建立與帳號同名稱的 …&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;平常用最多的是 &lt;a href="https://www.sqlite.org/"&gt;SQLite&lt;/a&gt;，但 &lt;a href="http://www.postgresql.org/"&gt;PostgreSQL&lt;/a&gt; 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - osx</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_osx.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2021-03-01T20:49:49-06:00</updated><entry><title>安裝 PostgreSQL 9 於 Debian Jessie / OSX</title><link href="https://blog.liang2.tw/posts/2016/01/postgresql-install/" rel="alternate"></link><published>2016-01-25T17:00:00-06:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-25:/posts/2016/01/postgresql-install/</id><summary type="html">&lt;p&gt;平常用最多的是 &lt;a href="https://www.sqlite.org/"&gt;SQLite&lt;/a&gt;，但 &lt;a href="http://www.postgresql.org/"&gt;PostgreSQL&lt;/a&gt; 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。&lt;/p&gt;
+&lt;p&gt;用 &lt;a href="https://www.debian.org/releases/stable/"&gt;Debian Jessie&lt;/a&gt; (Debian 8.3) 與 OSX …&lt;/p&gt;</summary><content type="html">&lt;p&gt;平常用最多的是 &lt;a href="https://www.sqlite.org/"&gt;SQLite&lt;/a&gt;，但 &lt;a href="http://www.postgresql.org/"&gt;PostgreSQL&lt;/a&gt; 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。&lt;/p&gt;
 &lt;p&gt;用 &lt;a href="https://www.debian.org/releases/stable/"&gt;Debian Jessie&lt;/a&gt; (Debian 8.3) 與 OSX &lt;a href="http://brew.sh/"&gt;Homebrew&lt;/a&gt; 舉例。不過 OSX 大概也不會沒事把 PostgreSQL 開著，主要是著重在 Debian 的環境設定上。目前 PostgreSQL 出到 9.5 但 Debian stable 是 9.4。基本設定應該完全沒差別。&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
@@ -52,12 +42,12 @@
 
 &lt;p&gt;PostgreSQL 的設定參考 Debian 的版本。&lt;/p&gt;
 &lt;h3 id="debian-jessie"&gt;安裝在 Debian Jessie&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo apt-get install postgresql-9.4
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo apt-get install postgresql-9.4
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;現在系統服務都由 &lt;a href="http://freedesktop.org/wiki/Software/systemd/"&gt;Systemd&lt;/a&gt; 管理了，檢查 PostgreSQL 有沒有跑起來透過 &lt;code&gt;systemctl&lt;/code&gt; 這指令就可以。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;#&lt;/span&gt; systemctl status postgresql.service
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;# &lt;/span&gt;systemctl status postgresql.service
 &lt;span class="go"&gt;● postgresql.service - PostgreSQL RDBMS&lt;/span&gt;
 &lt;span class="go"&gt;   Loaded: loaded (/lib/systemd/system/postgresql.service; enabled)&lt;/span&gt;
 &lt;span class="go"&gt;   Active: inactive (dead) since Mon 2016-01-25 17:26:08 CST; 4s ago&lt;/span&gt;
@@ -67,7 +57,7 @@
 
 
 &lt;p&gt;不過這 service 看不太到什麼運行的資訊，其實是個 dummy service，它會 trigger 可能很多個 PostgreSQL database cluster 什麼的。預設只有一個 &lt;code&gt;main&lt;/code&gt; 的 cluster。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;#&lt;/span&gt; systemctl status postgresql@9.4-main.service
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;# &lt;/span&gt;systemctl status postgresql@9.4-main.service
 &lt;span class="go"&gt;● postgresql@9.4-main.service - PostgreSQL Cluster 9.4-main&lt;/span&gt;
 &lt;span class="go"&gt;   Loaded: loaded (/lib/systemd/system/postgresql@.service; disabled)&lt;/span&gt;
 &lt;span class="go"&gt;   Active: active (running) since Mon 2016-01-25 17:26:30 CST; 4min 7s ago&lt;/span&gt;
@@ -87,13 +77,13 @@
 &lt;h2 id="database"&gt;初始個人的 Database&lt;/h2&gt;
 &lt;p&gt;在 OSX 上用 homebrew 安裝 PostgreSQL 的使用者會有 superuser 的權限，反正是本地開發也沒差，建 database 等設定都比較簡單。&lt;/p&gt;
 &lt;p&gt;在 Debian 上的話，有這 superuser 權限的使用者為 &lt;code&gt;postgres&lt;/code&gt;。所以預設使用者（這邊以 &lt;code&gt;vm&lt;/code&gt; 為例）會無法連線。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; psql
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;psql
 &lt;span class="go"&gt;psql: FATAL:  role &amp;quot;vm&amp;quot; does not exist&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;切到 root 再切到 postgres 身份就能用 &lt;code&gt;psql&lt;/code&gt; （PostgreSQL 的 REPL shell）連到 database。用 &lt;code&gt;\q&lt;/code&gt; 就可以退出 psql。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo -u postgres psql
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo -u postgres psql
 &lt;span class="go"&gt;[sudo] password for vm:&lt;/span&gt;
 &lt;span class="go"&gt;psql (9.4.5)&lt;/span&gt;
 &lt;span class="go"&gt;Type &amp;quot;help&amp;quot; for help.&lt;/span&gt;
@@ -113,13 +103,13 @@
 &lt;p&gt;擔心的話就直接在有 &lt;code&gt;$USER&lt;/code&gt; 的地方打出帳號即可。先確認一下，&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;vm@vm-debian:~$ echo $&lt;/span&gt;USER
 &lt;span class="go"&gt;vm&lt;/span&gt;
-&lt;span class="gp"&gt;vm@vm-debian:~$&lt;/span&gt; sudo -u postgres &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$USER&lt;/span&gt;
+&lt;span class="gp"&gt;vm@vm-debian:~$ &lt;/span&gt;sudo -u postgres &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$USER&lt;/span&gt;
 &lt;span class="go"&gt;vm&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;建立使用者是透過 &lt;code&gt;createuser&lt;/code&gt; 這指令。這是使用者帳號就不給太多權限。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo -u postgres createuser --interactive &lt;span class="nv"&gt;$USER&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo -u postgres createuser --interactive &lt;span class="nv"&gt;$USER&lt;/span&gt;
 &lt;span class="go"&gt;Shall the new role be a superuser? (y/n) n&lt;/span&gt;
 &lt;span class="go"&gt;Shall the new role be allowed to create databases? (y/n) n&lt;/span&gt;
 &lt;span class="go"&gt;Shall the new role be allowed to create more new roles? (y/n) n&lt;/span&gt;
@@ -139,18 +129,18 @@
 
 &lt;h3 id="database_1"&gt;建立與帳號同名稱的 database&lt;/h3&gt;
 &lt;p&gt;透過 &lt;code&gt;createdb&lt;/code&gt; 這指令。把與帳號同名 database 的 owner 設定成該帳號。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo -u postgres createdb --owner&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$USER&lt;/span&gt; &lt;span class="nv"&gt;$USER&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo -u postgres createdb --owner&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$USER&lt;/span&gt; &lt;span class="nv"&gt;$USER&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;要多建別的 database 給這帳號也沒問題，例如名為 &lt;code&gt;vm_database&lt;/code&gt; 的 database，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo -u postgres createdb --owner&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$USER&lt;/span&gt; vm_database
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo -u postgres createdb --owner&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$USER&lt;/span&gt; vm_database
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3 id="psql"&gt;用使用者帳號連接 psql&lt;/h3&gt;
 &lt;p&gt;這時候打 &lt;code&gt;psql&lt;/code&gt; 就沒問題了。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; psql
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;psql
 &lt;span class="go"&gt;psql (9.4.5)&lt;/span&gt;
 &lt;span class="go"&gt;Type &amp;quot;help&amp;quot; for help.&lt;/span&gt;
 
@@ -176,7 +166,7 @@
 
 
 &lt;p&gt;連另一個 database &lt;code&gt;vm_database&lt;/code&gt; 也很簡單，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; psql -d vm_database
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;psql -d vm_database
 &lt;span class="go"&gt;psql (9.4.5)&lt;/span&gt;
 &lt;span class="go"&gt;Type &amp;quot;help&amp;quot; for help.&lt;/span&gt;
 
@@ -197,8 +187,8 @@ help        # print a hub message for all kinds of help
 
 &lt;h2 id="database_2"&gt;刪除使用者、Database&lt;/h2&gt;
 &lt;p&gt;各有一個指令對應。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; dropuser &amp;lt;usr&amp;gt;
-&lt;span class="gp"&gt;$&lt;/span&gt; dropdb &amp;lt;db&amp;gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;dropuser &amp;lt;usr&amp;gt;
+&lt;span class="gp"&gt;$ &lt;/span&gt;dropdb &amp;lt;db&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -240,7 +230,7 @@ help        # print a hub message for all kinds of help
 
 
 &lt;p&gt;這時候重啟服務，再看 &lt;code&gt;systemctl status&lt;/code&gt; 就能看到最近的 log 了。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;#&lt;/span&gt; systemctl status postgresql@9.4-main
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;# &lt;/span&gt;systemctl status postgresql@9.4-main
 &lt;span class="go"&gt;● postgresql@9.4-main.service - PostgreSQL Cluster 9.4-main&lt;/span&gt;
 &lt;span class="go"&gt;   Loaded: loaded (/lib/systemd/system/postgresql@.service; disabled)&lt;/span&gt;
 &lt;span class="go"&gt;   Active: active (running) since Mon 2016-01-25 17:52:02 CST; 1min 13s ago&lt;/span&gt;
@@ -268,7 +258,7 @@ help        # print a hub message for all kinds of help
 
 
 &lt;p&gt;或用 systemd 標準看 log 的方式 &lt;code&gt;journalctl&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;#&lt;/span&gt; journalctl -u postgresql@9.4-main 
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;# &lt;/span&gt;journalctl -u postgresql@9.4-main 
 &lt;span class="go"&gt;-- Logs begin at Mon 2016-01-25 16:46:25 CST, end at Mon 2016-01-25 19:22:07 CST. --&lt;/span&gt;
 &lt;span class="go"&gt;Jan 25 17:47:06 vm-debian postgres[13699]: [1-1] 2016-01-25 17:47:06 CST [13699-1] LOG:  redirecting log output to logging collector process&lt;/span&gt;
 &lt;span class="go"&gt;Jan 25 17:47:06 vm-debian postgres[13699]: [1-2] 2016-01-25 17:47:06 CST [13699-2] HINT:  Future log output will appear in directory &amp;quot;pg_log&amp;quot;.&lt;/span&gt;

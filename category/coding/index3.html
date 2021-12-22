@@ -53,16 +53,7 @@
         </header>
         <section class="post-excerpt">
             <p>簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。</p>
-<p>Blog 本來就是架在 <a href="https://github.com/ccwang002/ccwang002.github.io">GitHub Pages</a> 上，其實預設有 https，但在網址改成自訂 domain 之後 https 自然就失效了。在 GitHub 上有開 issue 請他們加入 <a href="https://github.com/isaacs/github/issues/156">HTTPS support for custom domain</a> 這功能，不過目前還是需要自己想辦法。隨著 <a href="https://letsencrypt.org/">Let&rsquo;s Encrypt</a> 這種服務的流行，GitHub 才會去積極尋找比較合適的解決方案吧。</p>
-<div class="toc">
-<ul>
-<li><a href="#cloudflare-ssl-and-cdn">CloudFlare SSL and CDN</a></li>
-<li><a href="#disqus">Disqus</a></li>
-<li><a href="#justfont">justfont</a></li>
-<li><a href="#hinet">Hinet 轉址服務</a></li>
-</ul>
-</div>
-<h2 id="cloudflare-ssl-and-cdn">CloudFlare SSL …</h2>
+<p>Blog 本來就是架在 <a href="https://github.com/ccwang002/ccwang002.github.io">GitHub Pages</a> 上，其實預設有 https，但在網址改成自訂 domain 之後 …</p>
         </section>
     </article>
     <article class="post">
@@ -82,12 +73,7 @@
             <p>Django 帳號的欄位定義在 <code>django.contrib.auth</code> 的 <a href="https://docs.djangoproject.com/en/1.8/ref/contrib/auth/#fields">User</a> 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有：</p>
 <ul>
 <li>指定 Group 和 Permission</li>
-<li>是否為 staff、superuser</li>
-<li>帳號開通、最後一次登入時間</li>
-</ul>
-<p>內建的帳號功能應該很實用，安全性也很好。所以一般來說都不會去改它。</p>
-<p>如果只是想要幫 User 加個 profile，例如生日、來自哪個星球等欄位，也不需要改寫 User。參考官網 <a href="https://docs.djangoproject.com/en/1.8/topics/auth/customizing/#extending-the-existing-user-model">Extending the existing User model</a>，只需要建一個 one-to-one relationship 指到 User 就好了：</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">django …</span></code></pre></div>
+<li>是否為 staff …</li></ul>
         </section>
     </article>
     <article class="post">
@@ -144,18 +130,7 @@
         </header>
         <section class="post-excerpt">
             <p>為了實驗室的專題生而寫。</p>
-<p>目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先操作比較簡單的才好上手。所以這邊講的並不是 best practice，但使用最少（底層）的知識與工具。如果一開始讓太多套件（像 SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。</p>
-<p><strong>本篇文章非常長，應該沒辦法幾分鐘內讀完。對象是初學者學習簡單網站架設。</strong></p>
-<p>這個專案的目標：因為大家 meeting 的時候都不問問題，教授需要一個抽籤點人問問題的工具。我們實驗室有分成幾個組別，所以抽籤的時候也要能針對單個組別抽。</p>
-<p>以下使用 <a href="https://zh.wikipedia.org/wiki/LoveLive!">LoveLive!</a> 還有 <a href="https://zh.wikipedia.org/wiki/K-ON！輕音部">K-ON!</a> 的成員來當例子。<strong>先聲明我兩個動畫都沒有看過，如果有什麼名字打錯請告訴我，絕對不是故意的。</strong>（2016-06-14 更新：我把兩個動畫都看完了！）</p>
-<div class="toc">
-<ul>
-<li><a href="#_1">資料設計</a></li>
-<li><a href="#_2">網站架構規劃</a></li>
-<li><a href="#_3">實作環境設定</a><ul>
-<li><a href="#python">Python 環境</a></li>
-<li><a href="#flaskjinja2">安裝 Flask、Jinja2 等套件</a></li>
-<li><a href="#sqlite-database">SQLite …</a></li></ul></li></ul></div>
+<p>目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先操作比較簡單的才好上手。所以這邊講 …</p>
         </section>
     </article>
     <article class="post">
@@ -170,20 +145,7 @@
             </span>
         </header>
         <section class="post-excerpt">
-            <p>中文輸入我用嘸蝦米，在打中英文切換時候，很容易打出 <code>\x08</code> 這東西，在 vim 就會顯示成 <code>^H</code>，功能是 <kbd>Backspace</kbd>，但在一般 GUI 環境裡，可能就會因為它而把前面的字吃掉。</p>
-<p>因此今天寫了個小腳本可以把清掉當目錄底下的文字檔的 <code>^H</code>：</p>
-<div class="highlight"><pre><span></span><code>ag -l <span class="s1">&#39;\x08&#39;</span> <span class="p">|</span> xargs sed -i <span class="s1">&#39;&#39;</span> <span class="s1">&#39;s/\x08//&#39;</span>
-</code></pre></div>
-
-
-<p><a href="https://github.com/ggreer/the_silver_searcher">ag</a> 能夠換成比較慢但內建就有的 grep，參數兩者是相容的。</p>
-<p>如果要順便印出改了哪些檔案的話：</p>
-<div class="highlight"><pre><span></span><code><span class="nb">echo</span> <span class="s1">&#39;Found ^H in the following files:&#39;</span>
-ag -l <span class="s1">&#39;\x08&#39;</span> <span class="p">|</span> tee /dev/fd/2 <span class="p">|</span> xargs sed -i <span class="s1">&#39;&#39;</span> <span class="s1">&#39;s/\x08//&#39;</span>
-</code></pre></div>
-
-
-<p>用 …</p>
+            <p>中文輸入我用嘸蝦米，在打中英文切換時候，很容易打出 <code>\x08</code> 這東西，在 vim 就會顯示成 <code>^H</code>，功能是 <kbd>Backspace</kbd>，但在一般 GUI 環境裡，可能就 …</p>
         </section>
     </article>
     <article class="post">
@@ -200,24 +162,7 @@ ag -l <span class="s1">&#39;\x08&#39;</span> <span class="p">|</span> tee /dev/f
         </header>
         <section class="post-excerpt">
             <p><strong>TL;DR</strong> Use Zotero to sync references, webpages, and everything.</p>
-<p>一開始會想要收集 reference 無非是做研究。寫論文、平常報告進度需要放上 citation，而在學術界最常就是 cite 別人的期刊。期刊 citation 有它一定的格式，而且每個期刊用的格式不同，手打容易錯，也很難維護。所以最好的方式就是把期刊完整的資訊存在資料庫，然後引用的時候再插到文件裡面。</p>
-<p>整個問題就變成怎麼管理這些期刊資訊。</p>
-<div class="toc">
-<ul>
-<li><a href="#bibtex-is-for-latex">BibTex is for LaTeX</a><ul>
-<li><a href="#bibdesk">BibDesk</a></li>
-</ul>
-</li>
-<li><a href="#endnote-is-for-word">EndNote is for Word</a></li>
-<li><a href="#zotero-bridges-the-both-world">Zotero bridges the both world</a><ul>
-<li><a href="#zotfile">Zotfile</a></li>
-<li><a href="#how-to-sync-data-storage">How to sync data storage</a></li>
-</ul>
-</li>
-<li><a href="#_1">總結</a></li>
-</ul>
-</div>
-<h3 id="bibtex-is-for-latex">BibTex …</h3>
+<p>一開始會想要收集 reference 無非是做研究。寫論文、平常報告進度需要放上 citation，而在學術界最常就是 cite 別 …</p>
         </section>
     </article>
     <article class="post">
@@ -233,17 +178,7 @@ ag -l <span class="s1">&#39;\x08&#39;</span> <span class="p">|</span> tee /dev/f
             </span>
         </header>
         <section class="post-excerpt">
-            <p>部落格剛成立總是特別興奮，測了一下瀏覽像這樣的網站要用多少頻寬。首頁能壓在 600KB 左右，因為文章 summary 裡面暫時還沒圖。不過像部落格設定這篇文章，裡面有幾張螢幕截圖的就要花快 2MB 傳。</p>
-<p>就想了一下圖檔有什麼壓縮方式。如果是 JPG 的話，<a href="https://github.com/tjko/jpegoptim">jpegoptim</a> 簡單又有效；如果是 PNG 的話，以前都是用 <a href="http://optipng.sourceforge.net/">OptiPNG</a>，但效果有限，而且是無損壓縮。在螢幕截圖的情況，我倒不介意幾個像素的顏色稍微不一樣（其實人眼無法分辨）</p>
-<p>於是，需要比較看看市面找得到的幾種 PNG 壓縮方式。很碰巧找到 <a href="http://css-ig.net/png-tools-overview.html">http://css-ig.net/png-tools-overview.html</a> 專講 PNG 優化的比較，就挑了幾款來試。</p>
-<p>直接把結果整理成下表：</p>
-<table>
-<thead>
-<tr>
-<th align="left">Filename</th>
-<th align="right">Original size</th>
-<th align="right"><a href="http://optipng.sourceforge.net/">OptiPNG</a> (lossless)</th>
-<th align="right"><a href="https://github.com/google/zopfli">Zopfli</a> (lossless …</th></tr></thead></table>
+            <p>部落格剛成立總是特別興奮，測了一下瀏覽像這樣的網站要用多少頻寬。首頁能壓在 600KB 左右，因為文章 summary 裡面暫時還沒圖 …</p>
         </section>
     </article>
     <article class="post">
@@ -262,14 +197,7 @@ ag -l <span class="s1">&#39;\x08&#39;</span> <span class="p">|</span> tee /dev/f
         </header>
         <section class="post-excerpt">
             <p>Blog 對我來說，最重要的就是書寫的舒適度。</p>
-<p>一開始在設定 github CNAME 的時候就訂為 <code>blog.liang2.tw</code>，但一直以來都只是個一頁式的自我介紹<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>，用 <a href="http://semantic-ui.com/">SemanticUI</a> 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。</p>
-<p>整理了一下有幾個目標：</p>
-<ul>
-<li>只考慮用 static site 因為不想維護 server，而且 blog 也沒什要炫的，現在光用前端就可以做到很多互動功能</li>
-<li>最好 site generator 是用 Python 實作，這樣想要調整它的功能時，比較懂怎麼改 </li>
-<li>能支援 markdown 和 reStructuredText 最好</li>
-</ul>
-<p>篩完之後選項也沒幾個：<a href="http://docs.getpelican.com/">Pelican</a>、<a href="http://sphinx-doc.org/">Sphinx</a>，但 Sphinx 可能對 blog 開發的功能比較少，最多人用的大概就 Pelican …</p>
+<p>一開始在設定 github CNAME 的時候就訂為 <code>blog.liang2.tw</code>，但一直以來都只是個一頁式的自我介 …</p>
         </section>
     </article>
 <nav class="pagination" role="navigation">

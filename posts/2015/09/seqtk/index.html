@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2015/09/seqtk/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2015-09-27 14:11:00-05:00"/>
-<meta property="article:modified_time" content="2015-09-27 14:11:00-05:00"/>
+<meta property="article:modified_time" content="2021-03-01 20:49:49.087023-06:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Bioinfo"/>
 <meta property="article:tag" content="en"/>
@@ -108,12 +108,12 @@ Command: seq       common transformation of FASTA/Q
 
 <h3 id="fastq-fasta">FASTQ → FASTA</h3>
 <p>Read (gzip&rsquo;d) FASTQ and write out as FASTA,</p>
-<div class="highlight"><pre><span></span><code>$ seqtk seq -A in.fq<span class="o">[</span>.gz<span class="o">]</span> &gt; out.fa
+<div class="highlight"><pre><span></span><code>$ seqtk seq -A <span class="k">in</span>.fq<span class="o">[</span>.gz<span class="o">]</span> &gt; out.fa
 </code></pre></div>
 
 
 <p>To make the output gzip&rsquo;d again, piped with gzip,</p>
-<div class="highlight"><pre><span></span><code>$ seqtk seq -A in.fq<span class="o">[</span>.gz<span class="o">]</span> <span class="p">|</span> gzip &gt; out.fa.gz
+<div class="highlight"><pre><span></span><code>$ seqtk seq -A <span class="k">in</span>.fq<span class="o">[</span>.gz<span class="o">]</span> <span class="p">|</span> gzip &gt; out.fa.gz
 </code></pre></div>
 
 

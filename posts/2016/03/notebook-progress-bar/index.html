@@ -6,7 +6,7 @@
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 <meta name="author" content="Liang-Bo Wang" />
-<meta name="description" content="相信很多人都已經在使用 Jupyter (IPython) Notebook 跑分析。隨著分析的資料越跑越多，有時候刷下去就是幾十分鐘甚至數小時。此時沒有個進度條還蠻無聊的，而且能讓自己感覺很有進度，何樂不為呢？ 例如我去年介紹 aiohttp 時就有用到 notebook 和 console 底下的進度條 (progress bar)。不過，這幾個月 Jupyter Notebook 4+ 架構上的調整，可能 code 都不能用了。剛好昨天的 Taipei.py 有人提到這事，就來整理一下吧。 IPywidgets 介紹 安裝 使用進度條 Progress bar example in action Misc. 螢幕截圖 FFmpeg 轉檔 IPywidgets 介紹 …" />
+<meta name="description" content="相信很多人都已經在使用 Jupyter (IPython) Notebook 跑分析。隨著分析的資料越跑越多，有時候刷下去就是幾十分鐘甚至數小時。此時沒有個 …" />
 <meta name="keywords" content="zh, jupyter, notebook">
 	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
 	<title>Jupyter Notebook Progress Bar</title>
@@ -15,12 +15,12 @@
 <meta property="og:locale" content="zh_TW"/>
 <meta property="og:site_name" content="Liang-Bo Wang's Blog"/>
 <meta property="og:title" content="Jupyter Notebook Progress Bar"/>
-<meta property="og:description" content="相信很多人都已經在使用 Jupyter (IPython) Notebook 跑分析。隨著分析的資料越跑越多，有時候刷下去就是幾十分鐘甚至數小時。此時沒有個進度條還蠻無聊的，而且能讓自己感覺很有進度，何樂不為呢？ 例如我去年介紹 aiohttp 時就有用到 notebook 和 console 底下的進度條 (progress bar)。不過，這幾個月 Jupyter Notebook 4+ 架構上的調整，可能 code 都不能用了。剛好昨天的 Taipei.py 有人提到這事，就來整理一下吧。 IPywidgets 介紹 安裝 使用進度條 Progress bar example in action Misc. 螢幕截圖 FFmpeg 轉檔 IPywidgets 介紹 …"/>
+<meta property="og:description" content="相信很多人都已經在使用 Jupyter (IPython) Notebook 跑分析。隨著分析的資料越跑越多，有時候刷下去就是幾十分鐘甚至數小時。此時沒有個 …"/>
 <meta property="og:locale" content=""/>
 <meta property="og:url" content="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2016-03-23 02:00:00-05:00"/>
-<meta property="article:modified_time" content="2016-03-23 02:00:00-05:00"/>
+<meta property="article:modified_time" content="2021-03-01 20:49:49.110968-06:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="zh"/>
@@ -29,7 +29,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@ccwang002">
 <meta name="twitter:title" content="Jupyter Notebook Progress Bar">
-<meta name="twitter:description" content="相信很多人都已經在使用 Jupyter (IPython) Notebook 跑分析。隨著分析的資料越跑越多，有時候刷下去就是幾十分鐘甚至數小時。此時沒有個進度條還蠻無聊的，而且能讓自己感覺很有進度，何樂不為呢？ 例如我去年介紹 aiohttp 時就有用到 notebook 和 console 底下的進度條 (progress bar)。不過，這幾個月 Jupyter Notebook 4+ 架構上的調整，可能 code 都不能用了。剛好昨天的 Taipei.py 有人提到這事，就來整理一下吧。 IPywidgets 介紹 安裝 使用進度條 Progress bar example in action Misc. 螢幕截圖 FFmpeg 轉檔 IPywidgets 介紹 …">
+<meta name="twitter:description" content="相信很多人都已經在使用 Jupyter (IPython) Notebook 跑分析。隨著分析的資料越跑越多，有時候刷下去就是幾十分鐘甚至數小時。此時沒有個 …">
 <meta property="og:image" content="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_demo.webm">
 <meta name="twitter:image" content="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_demo.webm">
 
@@ -220,7 +220,7 @@ ffmpeg -i Untitled.mov <span class="se">\</span>
 
 
 <p>4s 的檔案最後大約 60KB，相當不錯。我很多 PNG 截圖都大多了。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$</span> du -sh ./* <span class="p">|</span> gsort -rh
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>du -sh ./* <span class="p">|</span> gsort -rh
 <span class="go">744K    ./Untitled.mov</span>
 <span class="go"> 60K    ./out.mp4</span>
 <span class="go"> 52K    ./out.webm</span>

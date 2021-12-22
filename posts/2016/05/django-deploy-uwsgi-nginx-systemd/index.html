@@ -6,7 +6,7 @@
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 <meta name="author" content="Liang-Bo Wang" />
-<meta name="description" content="上一次很認真的 Django 部署記錄在《設定 Python 官方文件中文化自動更新 Server》一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。 這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下： nginx -- unix socket -- uWSGI -- Django 寫一個名為 PROJ.service 的 systemd unit 來管理這網站的啟動與否。之後 PROJ 就換成自己的專案名稱；USER 就換成執行網站的帳號。 作業系統 PostgreSQL Django PROJ tmpfiles.d nginx uWSGI systemd 確認、總結 作業系統 使用 …" />
+<meta name="description" content="上一次很認真的 Django 部署記錄在《設定 Python 官方文件中文化自動更新 Server》一文。很巧地自己畢業的題目也要架個 Django 網站，所以就 …" />
 <meta name="keywords" content="zh, python, django, postgresql, deploy, debian, systemd, nginx, uwsgi">
 	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
 	<title>使用 uWSGI、nginx、systemd 部署 Django</title>
@@ -15,12 +15,12 @@
 <meta property="og:locale" content="zh_TW"/>
 <meta property="og:site_name" content="Liang-Bo Wang's Blog"/>
 <meta property="og:title" content="使用 uWSGI、nginx、systemd 部署 Django"/>
-<meta property="og:description" content="上一次很認真的 Django 部署記錄在《設定 Python 官方文件中文化自動更新 Server》一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。 這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下： nginx -- unix socket -- uWSGI -- Django 寫一個名為 PROJ.service 的 systemd unit 來管理這網站的啟動與否。之後 PROJ 就換成自己的專案名稱；USER 就換成執行網站的帳號。 作業系統 PostgreSQL Django PROJ tmpfiles.d nginx uWSGI systemd 確認、總結 作業系統 使用 …"/>
+<meta property="og:description" content="上一次很認真的 Django 部署記錄在《設定 Python 官方文件中文化自動更新 Server》一文。很巧地自己畢業的題目也要架個 Django 網站，所以就 …"/>
 <meta property="og:locale" content=""/>
 <meta property="og:url" content="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2016-05-19 00:00:00-05:00"/>
-<meta property="article:modified_time" content="2016-05-19 00:00:00-05:00"/>
+<meta property="article:modified_time" content="2021-03-01 20:49:49.112481-06:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="zh"/>
@@ -35,7 +35,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@ccwang002">
 <meta name="twitter:title" content="使用 uWSGI、nginx、systemd 部署 Django">
-<meta name="twitter:description" content="上一次很認真的 Django 部署記錄在《設定 Python 官方文件中文化自動更新 Server》一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。 這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下： nginx -- unix socket -- uWSGI -- Django 寫一個名為 PROJ.service 的 systemd unit 來管理這網站的啟動與否。之後 PROJ 就換成自己的專案名稱；USER 就換成執行網站的帳號。 作業系統 PostgreSQL Django PROJ tmpfiles.d nginx uWSGI systemd 確認、總結 作業系統 使用 …">
+<meta name="twitter:description" content="上一次很認真的 Django 部署記錄在《設定 Python 官方文件中文化自動更新 Server》一文。很巧地自己畢業的題目也要架個 Django 網站，所以就 …">
 
 	<!-- Feeds -->
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"

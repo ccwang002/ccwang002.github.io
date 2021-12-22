@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - zh</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_zh.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2017-06-20T00:00:00-05:00</updated><entry><title>Variants、eQTL、MPRA</title><link href="https://blog.liang2.tw/posts/2017/06/variants-eqtl-mpra/" rel="alternate"></link><published>2017-06-20T00:00:00-05:00</published><updated>2017-06-20T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2017-06-20:/posts/2017/06/variants-eqtl-mpra/</id><summary type="html">&lt;p&gt;本文內容主要來自 Barak Cohen 教授給的數堂課的筆記，以 Systems Biology 的角度來看 coding/noncoding variant modeling 和相關實驗 MPRA。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Computational Biology 和 Bioinformatics 在現在可能區分不大，本文也不打算深究兩定義，但他們大致能代表兩大類將電腦科學、程式運用在生物上的研究。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - zh</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_zh.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2021-03-01T20:49:49-06:00</updated><entry><title>Variants、eQTL、MPRA</title><link href="https://blog.liang2.tw/posts/2017/06/variants-eqtl-mpra/" rel="alternate"></link><published>2017-06-20T00:00:00-05:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2017-06-20:/posts/2017/06/variants-eqtl-mpra/</id><summary type="html">&lt;p&gt;本文內容主要來自 Barak Cohen 教授給的數堂課的筆記，以 Systems Biology 的角度來看 coding/noncoding variant modeling 和相關實驗 MPRA。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Computational Biology 和 Bioinformatics 在現在可能區分不大，本文也不打算深究兩定義，但他們大致能代表兩大類將電腦科學、程式運用在生物上的研究。&lt;/p&gt;
 &lt;p&gt;在碩班，我的實驗室一直鼓勵我們去想新的演算法，把某種預測做得更好或者快，或者運用更多來源的數據；做新的工具；整合出新的資料庫。這些應用都有他們的研究價值，也需要大量的技術投入，即便在發表上並不會放入這些細節。這類研究比較偏向 Bioinformatics。&lt;/p&gt;
 &lt;p&gt;來 WashU 前，我期許自己繼續往 Bioinformatics 深入。然而，在過去的數月裡，即便我仍投入在這些數據分析與工具開發上，另一大部份的時間，我經歷了許多關於模型，或者，關於「如何回答重要的生物問題」上的討論，有了較碩班訓練不同的啟發。這另一類研究比較偏向 Computational Biology。&lt;/p&gt;
 &lt;p&gt;本文想用另一個角度來看所謂的「modeling」。內容主要來自 &lt;a href="http://genetics.wustl.edu/bclab/"&gt;Barak Cohen&lt;/a&gt; 教授給的數堂課的筆記，主題為 &lt;em&gt;Coding and Noncoding Variant&lt;/em&gt;。我生物背景不足，如果筆記有任何錯誤，煩請告知。&lt;/p&gt;
@@ -100,15 +100,7 @@ Adrian and Suhas &lt;em&gt;el al.&lt;/em&gt;, &lt;a href="http://www.pnas.org/co
 &lt;p&gt;針對 ENCODE 所謂 80% genome are functional 非常有名的戰文：&lt;br&gt;Dan &lt;em&gt;et al.&lt;/em&gt;, &lt;a href="https://academic.oup.com/gbe/article-lookup/doi/10.1093/gbe/evt028"&gt;&lt;em&gt;On the Immortality of Television Sets: “Function” in the Human Genome According to the Evolution-Free Gospel of ENCODE&lt;/em&gt;&lt;/a&gt;, Genome Biol Evol, 2013.&amp;#160;&lt;a class="footnote-backref" href="#fnref:ENCODE paper" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Bioinfo"></category><category term="zh"></category><category term="bio"></category></entry><entry><title>St. Louis PhD 生活</title><link href="https://blog.liang2.tw/posts/2016/10/phd-life-in-st-louis/" rel="alternate"></link><published>2016-10-02T00:00:00-05:00</published><updated>2016-10-02T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-10-02:/posts/2016/10/phd-life-in-st-louis/</id><summary type="html">&lt;p&gt;不知不覺，距離上篇文章已經 4 個月。這 4 個月裡，擔任 &lt;a href="https://tw.pycon.org/2016/"&gt;PyCon TW 2016&lt;/a&gt; 工作人員、寫完&lt;a href="https://github.com/ccwang002/master-thesis"&gt;碩士論文&lt;/a&gt;、從一個讀了 7 年的學校&lt;a href="https://www.facebook.com/photo.php?fbid=1388036924547016&amp;amp;set=a.181592455191475.49590.100000221666201&amp;amp;type=3&amp;amp;theater"&gt;畢業&lt;/a&gt;、然後前往美國的 &lt;a href="https://wustl.edu/"&gt;Washington University in St. Louis&lt;/a&gt;  就讀 &lt;a href="http://dbbs.wustl.edu/divprograms/compbio/Pages/default.aspx"&gt;Bioinformatics&lt;/a&gt; PhD。&lt;/p&gt;
-&lt;p&gt;如今除了繼續認識新環境與新朋友之外，生活大抵安定。因為開學有各種學校或私下學生間的活動，以及適應新的課程與實驗室，其實手上的專案沒什麼進度。不過還是簡單的更新一下近況。&lt;/p&gt;
-&lt;h2 id="_1"&gt;關於我的學校與城市&lt;/h2&gt;
-&lt;div class="figure"&gt;
-  &lt;img src="https://blog.liang2.tw/posts/2016/10/phd-life-in-st-louis/pics/STL_map.png"/&gt;
-  &lt;p class="caption"&gt;St. Louis 城市位置。&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;我想大多數的人並不認識 &lt;a href="https://en.wikipedia.org/wiki/St._Louis"&gt;St. Louis&lt;/a&gt; (STL) 這城市與 Washington University in St. Louis (WashU or WUSTL …&lt;/p&gt;</summary><content type="html">&lt;p&gt;不知不覺，距離上篇文章已經 4 個月。這 4 個月裡，擔任 &lt;a href="https://tw.pycon.org/2016/"&gt;PyCon TW 2016&lt;/a&gt; 工作人員、寫完&lt;a href="https://github.com/ccwang002/master-thesis"&gt;碩士論文&lt;/a&gt;、從一個讀了 7 年的學校&lt;a href="https://www.facebook.com/photo.php?fbid=1388036924547016&amp;amp;set=a.181592455191475.49590.100000221666201&amp;amp;type=3&amp;amp;theater"&gt;畢業&lt;/a&gt;、然後前往美國的 &lt;a href="https://wustl.edu/"&gt;Washington University in St. Louis&lt;/a&gt;  就讀 &lt;a href="http://dbbs.wustl.edu/divprograms/compbio/Pages/default.aspx"&gt;Bioinformatics&lt;/a&gt; PhD。&lt;/p&gt;
+&lt;/div&gt;</content><category term="Bioinfo"></category><category term="zh"></category><category term="bio"></category></entry><entry><title>St. Louis PhD 生活</title><link href="https://blog.liang2.tw/posts/2016/10/phd-life-in-st-louis/" rel="alternate"></link><published>2016-10-02T00:00:00-05:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-10-02:/posts/2016/10/phd-life-in-st-louis/</id><summary type="html">&lt;p&gt;不知不覺，距離上篇文章已經 4 個月。這 4 個月裡，擔任 &lt;a href="https://tw.pycon.org/2016/"&gt;PyCon TW 2016&lt;/a&gt; 工作人員、寫完&lt;a href="https://github.com/ccwang002/master-thesis"&gt;碩士論文&lt;/a&gt;、從一個讀了 7 年的學校&lt;a href="https://www.facebook.com/photo.php?fbid=1388036924547016&amp;amp;set=a.181592455191475.49590.100000221666201&amp;amp;type=3&amp;amp;theater"&gt;畢業&lt;/a&gt;、然後前 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;不知不覺，距離上篇文章已經 4 個月。這 4 個月裡，擔任 &lt;a href="https://tw.pycon.org/2016/"&gt;PyCon TW 2016&lt;/a&gt; 工作人員、寫完&lt;a href="https://github.com/ccwang002/master-thesis"&gt;碩士論文&lt;/a&gt;、從一個讀了 7 年的學校&lt;a href="https://www.facebook.com/photo.php?fbid=1388036924547016&amp;amp;set=a.181592455191475.49590.100000221666201&amp;amp;type=3&amp;amp;theater"&gt;畢業&lt;/a&gt;、然後前往美國的 &lt;a href="https://wustl.edu/"&gt;Washington University in St. Louis&lt;/a&gt;  就讀 &lt;a href="http://dbbs.wustl.edu/divprograms/compbio/Pages/default.aspx"&gt;Bioinformatics&lt;/a&gt; PhD。&lt;/p&gt;
 &lt;p&gt;如今除了繼續認識新環境與新朋友之外，生活大抵安定。因為開學有各種學校或私下學生間的活動，以及適應新的課程與實驗室，其實手上的專案沒什麼進度。不過還是簡單的更新一下近況。&lt;/p&gt;
 &lt;h2 id="_1"&gt;關於我的學校與城市&lt;/h2&gt;
 &lt;div class="figure"&gt;
@@ -153,22 +145,12 @@ Adrian and Suhas &lt;em&gt;el al.&lt;/em&gt;, &lt;a href="http://www.pnas.org/co
 &lt;h2 id="whats-next"&gt;What’s Next?&lt;/h2&gt;
 &lt;p&gt;花了一點時間安頓，現在這邊的生活其實有相當多的個人時間，除了一年級有課跟作業要準備外，還是有一些自己的時間。目前我已經累積了 6 篇草稿，大部份是關於 Django，但碩班畢業之後，就不太有機會再寫網站，直到最近幫實驗室做了個 proposal review system 才又碰了一下。有機會會整理它們。&lt;/p&gt;
 &lt;p&gt;在台灣還有 Python 文件翻譯這個專案，很可惜沒辦法在離開前完成，但這個是我今年的目標。目前是個擺著讓它自由發展的狀態，但我想在年底 &lt;a href="https://www.python.org/dev/peps/pep-0494/"&gt;Python 3.6 新版本釋出&lt;/a&gt;之前把 tutorial 部份告一段落。除了這專案之外，重新學習 C，以及看了些 Rust 的東西，多練習基本功。還沒有加入當地實體的開源社群，加上晚上活動也比在台灣危險一點。不過在美國時區，不論 IRC 或 mail list 都能輕鬆跟到討論，倒也不會覺得沒辦法接受新知。目標參加明年的 PyCon US。&lt;/p&gt;
-&lt;p&gt;順帶一提，部落格也換了新的主題，風格比較像 Medium，應該比較好閱讀。不過我還沒空把細節調整好，目前維持著只要還不會很不順眼，就維持現狀的做法。希望不久後又能恢復定期發文。&lt;/p&gt;</content><category term="misc"></category><category term="zh"></category></entry><entry><title>使用 conda env 部署 Django</title><link href="https://blog.liang2.tw/posts/2016/05/django-deploy-conda/" rel="alternate"></link><published>2016-05-24T00:00:00-05:00</published><updated>2016-05-24T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-05-24:/posts/2016/05/django-deploy-conda/</id><summary type="html">&lt;p&gt;沒幾天前剛部署一次 Django，記錄在&lt;a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/"&gt;《使用 uWSGI、nginx、systemd 部署 Django》&lt;/a&gt;。今天又部署了另一個專案。部署的設定跟上次一樣：&lt;/p&gt;
+&lt;p&gt;順帶一提，部落格也換了新的主題，風格比較像 Medium，應該比較好閱讀。不過我還沒空把細節調整好，目前維持著只要還不會很不順眼，就維持現狀的做法。希望不久後又能恢復定期發文。&lt;/p&gt;</content><category term="misc"></category><category term="zh"></category></entry><entry><title>使用 conda env 部署 Django</title><link href="https://blog.liang2.tw/posts/2016/05/django-deploy-conda/" rel="alternate"></link><published>2016-05-24T00:00:00-05:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-05-24:/posts/2016/05/django-deploy-conda/</id><summary type="html">&lt;p&gt;沒幾天前剛部署一次 Django，記錄在&lt;a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/"&gt;《使用 uWSGI、nginx、systemd 部署 Django》&lt;/a&gt;。今天又部署了另一個專案。部署的設定跟上次一樣：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;nginx -- unix socket -- uWSGI -- Django
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;一樣寫一個 &lt;code&gt;PROJ.service&lt;/code&gt; 的 systemd unit 來管理網站的啟動 (uWSGI)。之後提到 &lt;code&gt;PROJ&lt;/code&gt; 時就換成自己的專案名稱；&lt;code&gt;USER&lt;/code&gt; 就換成執行網站的帳號。&lt;/p&gt;
-&lt;div class="toc"&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="#conda"&gt;conda&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#uwsgi-path"&gt;uWSGI 和 $PATH&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#sysmted-unit"&gt;在 sysmted unit 使用環境變數&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#_1"&gt;結論&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;h3 id="conda"&gt;conda&lt;/h3&gt;
-&lt;p&gt;&lt;a href="http://conda.pydata.org/"&gt;conda&lt;/a&gt; 是一個 Python 套件的管理系統，他的好處是，遇到要使用外部 library 時，會這些套件相依的 library 都一併安裝管理 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;沒幾天前剛部署一次 Django，記錄在&lt;a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/"&gt;《使用 uWSGI、nginx、systemd 部署 Django》&lt;/a&gt;。今天又部署了另一個專案。部署的設定跟上次一樣：&lt;/p&gt;
+&lt;p&gt;一樣寫 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;沒幾天前剛部署一次 Django，記錄在&lt;a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/"&gt;《使用 uWSGI、nginx、systemd 部署 Django》&lt;/a&gt;。今天又部署了另一個專案。部署的設定跟上次一樣：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;nginx -- unix socket -- uWSGI -- Django
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -229,11 +211,11 @@ $ &lt;span class="nb"&gt;source&lt;/span&gt; activate VENV
 &lt;p&gt;但因為步驟實在太簡單，想不出來哪裡有錯，查網路也沒什麼相關的結果。在這邊卡了很久。&lt;/p&gt;
 &lt;p&gt;結果後來才發現，Traceback 那邊 uWSGi 跑去讀到 &lt;code&gt;/usr/lib/python3.5/site.py&lt;/code&gt;，這表示一定有環境設錯才讓它找到這個不是我們要的 python 環境，理論上應該是找到 &lt;code&gt;/home/USER/miniconda3/envs/VENV/lib/python3.5/site.py&lt;/code&gt; 才對。&lt;/p&gt;
 &lt;p&gt;經過一陣嘗試，發現只要修改 &lt;code&gt;$PATH&lt;/code&gt; 環境變數就能運作了。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo -i
-&lt;span class="gp"&gt;#&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$PATH&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo -i
+&lt;span class="gp"&gt;# &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$PATH&lt;/span&gt;
 &lt;span class="go"&gt;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin&lt;/span&gt;
-&lt;span class="gp"&gt;#&lt;/span&gt; &lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/home/USER/miniconda3/envs/VENV/bin:&lt;span class="nv"&gt;$PATH&lt;/span&gt;
-&lt;span class="gp"&gt;#&lt;/span&gt; /home/USER/miniconda3/envs/VENV/bin/uwsgi --ini PROJ.ini
+&lt;span class="gp"&gt;# &lt;/span&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/home/USER/miniconda3/envs/VENV/bin:&lt;span class="nv"&gt;$PATH&lt;/span&gt;
+&lt;span class="gp"&gt;# &lt;/span&gt;/home/USER/miniconda3/envs/VENV/bin/uwsgi --ini PROJ.ini
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -262,27 +244,7 @@ WantedBy=multi-user.target
 
 
 &lt;h3 id="_1"&gt;結論&lt;/h3&gt;
-&lt;p&gt;如果要改用 conda 管理套件的話，只要在 systemd unit 那邊多加一行修改 $PATH，加入虛擬環境放執行檔的路徑，其餘的設定都與一般 Python 虛擬環境相同。這樣就搞定了。但這個問題花了我 1 個多小時……&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="python"></category><category term="django"></category><category term="postgresql"></category><category term="deploy"></category><category term="debian"></category><category term="systemd"></category><category term="nginx"></category><category term="uwsgi"></category><category term="conda"></category></entry><entry><title>使用 uWSGI、nginx、systemd 部署 Django</title><link href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/" rel="alternate"></link><published>2016-05-19T00:00:00-05:00</published><updated>2016-05-19T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-05-19:/posts/2016/05/django-deploy-uwsgi-nginx-systemd/</id><summary type="html">&lt;p&gt;上一次很認真的 Django 部署記錄在&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;《設定 Python 官方文件中文化自動更新 Server》&lt;/a&gt;一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。&lt;/p&gt;
-&lt;p&gt;這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;nginx -- unix socket -- uWSGI -- Django
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;寫一個名為 &lt;code&gt;PROJ.service&lt;/code&gt; 的 systemd unit 來管理這網站的啟動與否。之後 &lt;code&gt;PROJ&lt;/code&gt; 就換成自己的專案名稱；&lt;code&gt;USER&lt;/code&gt; 就換成執行網站的帳號。&lt;/p&gt;
-&lt;div class="toc"&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="#_1"&gt;作業系統&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#postgresql"&gt;PostgreSQL&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#django-proj"&gt;Django PROJ&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#tmpfilesd"&gt;tmpfiles.d&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#nginx"&gt;nginx&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#uwsgi"&gt;uWSGI&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#systemd"&gt;systemd&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#_2"&gt;確認、總結&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;h3 id="_1"&gt;作業系統&lt;/h3&gt;
-&lt;p&gt;使用 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;上一次很認真的 Django 部署記錄在&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;《設定 Python 官方文件中文化自動更新 Server》&lt;/a&gt;一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。&lt;/p&gt;
+&lt;p&gt;如果要改用 conda 管理套件的話，只要在 systemd unit 那邊多加一行修改 $PATH，加入虛擬環境放執行檔的路徑，其餘的設定都與一般 Python 虛擬環境相同。這樣就搞定了。但這個問題花了我 1 個多小時……&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="python"></category><category term="django"></category><category term="postgresql"></category><category term="deploy"></category><category term="debian"></category><category term="systemd"></category><category term="nginx"></category><category term="uwsgi"></category><category term="conda"></category></entry><entry><title>使用 uWSGI、nginx、systemd 部署 Django</title><link href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/" rel="alternate"></link><published>2016-05-19T00:00:00-05:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-05-19:/posts/2016/05/django-deploy-uwsgi-nginx-systemd/</id><summary type="html">&lt;p&gt;上一次很認真的 Django 部署記錄在&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;《設定 Python 官方文件中文化自動更新 Server》&lt;/a&gt;一文。很巧地自己畢業的題目也要架個 Django 網站，所以就 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;上一次很認真的 Django 部署記錄在&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;《設定 Python 官方文件中文化自動更新 Server》&lt;/a&gt;一文。很巧地自己畢業的題目也要架個 Django 網站，所以就再跑了一次部署設定。舊文還提了有的沒的，這篇僅針對 Django 的部署。&lt;/p&gt;
 &lt;p&gt;這邊的部署設定都儘量不使用 root 權限，整個連線的流程圖如下：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;nginx -- unix socket -- uWSGI -- Django
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -425,23 +387,7 @@ sudo systemctl status PROJ
 &lt;p&gt;也可以用 &lt;a href="https://www.freedesktop.org/software/systemd/man/systemd.exec.html"&gt;systemd.exec(5)&lt;/a&gt; 提到的 &lt;code&gt;RuntimeDirectory=PROJ&lt;/code&gt; 來建立執行用目錄。但因為 &lt;code&gt;PROJ.service&lt;/code&gt; 的 USER 必須是 root，這種情況 man page 就建議改用 tmpfiles.d。我覺得應該能解決使用 root 權限的問題，但太懶了就先這樣……&amp;#160;&lt;a class="footnote-backref" href="#fnref:systemd-runtimedir" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="python"></category><category term="django"></category><category term="postgresql"></category><category term="deploy"></category><category term="debian"></category><category term="systemd"></category><category term="nginx"></category><category term="uwsgi"></category></entry><entry><title>Jupyter Notebook Progress Bar</title><link href="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/" rel="alternate"></link><published>2016-03-23T02:00:00-05:00</published><updated>2016-03-23T02:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-03-23:/posts/2016/03/notebook-progress-bar/</id><summary type="html">&lt;p&gt;相信很多人都已經在使用 &lt;a href="https://jupyter.org/"&gt;Jupyter (IPython) Notebook&lt;/a&gt; 跑分析。隨著分析的資料越跑越多，有時候刷下去就是幾十分鐘甚至數小時。此時沒有個進度條還蠻無聊的，而且能讓自己感覺&lt;strong&gt;很有進度&lt;/strong&gt;，何樂不為呢？&lt;/p&gt;
-&lt;p&gt;例如我&lt;a href="https://blog.liang2.tw/play_aiohttp/?full#asyncio-progressbar-cover"&gt;去年介紹 aiohttp&lt;/a&gt; 時就有用到 notebook 和 console 底下的進度條 (progress bar)。不過，這幾個月 Jupyter Notebook 4+ 架構上的調整，可能 code 都不能用了。剛好昨天的 Taipei.py 有人提到這事，就來整理一下吧。&lt;/p&gt;
-&lt;div class="toc"&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="#ipywidgets"&gt;IPywidgets 介紹&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#_1"&gt;安裝&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href="#_2"&gt;使用進度條&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#progress-bar-example-in-action"&gt;Progress bar example in action&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#misc"&gt;Misc. 螢幕截圖&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#ffmpeg"&gt;FFmpeg 轉檔&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;h3 id="ipywidgets"&gt;IPywidgets 介紹 …&lt;/h3&gt;</summary><content type="html">&lt;p&gt;相信很多人都已經在使用 &lt;a href="https://jupyter.org/"&gt;Jupyter (IPython) Notebook&lt;/a&gt; 跑分析。隨著分析的資料越跑越多，有時候刷下去就是幾十分鐘甚至數小時。此時沒有個進度條還蠻無聊的，而且能讓自己感覺&lt;strong&gt;很有進度&lt;/strong&gt;，何樂不為呢？&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="python"></category><category term="django"></category><category term="postgresql"></category><category term="deploy"></category><category term="debian"></category><category term="systemd"></category><category term="nginx"></category><category term="uwsgi"></category></entry><entry><title>Jupyter Notebook Progress Bar</title><link href="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/" rel="alternate"></link><published>2016-03-23T02:00:00-05:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-03-23:/posts/2016/03/notebook-progress-bar/</id><summary type="html">&lt;p&gt;相信很多人都已經在使用 &lt;a href="https://jupyter.org/"&gt;Jupyter (IPython) Notebook&lt;/a&gt; 跑分析。隨著分析的資料越跑越多，有時候刷下去就是幾十分鐘甚至數小時。此時沒有個 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;相信很多人都已經在使用 &lt;a href="https://jupyter.org/"&gt;Jupyter (IPython) Notebook&lt;/a&gt; 跑分析。隨著分析的資料越跑越多，有時候刷下去就是幾十分鐘甚至數小時。此時沒有個進度條還蠻無聊的，而且能讓自己感覺&lt;strong&gt;很有進度&lt;/strong&gt;，何樂不為呢？&lt;/p&gt;
 &lt;p&gt;例如我&lt;a href="https://blog.liang2.tw/play_aiohttp/?full#asyncio-progressbar-cover"&gt;去年介紹 aiohttp&lt;/a&gt; 時就有用到 notebook 和 console 底下的進度條 (progress bar)。不過，這幾個月 Jupyter Notebook 4+ 架構上的調整，可能 code 都不能用了。剛好昨天的 Taipei.py 有人提到這事，就來整理一下吧。&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
@@ -596,7 +542,7 @@ ffmpeg -i Untitled.mov &lt;span class="se"&gt;\&lt;/span&gt;
 
 
 &lt;p&gt;4s 的檔案最後大約 60KB，相當不錯。我很多 PNG 截圖都大多了。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; du -sh ./* &lt;span class="p"&gt;|&lt;/span&gt; gsort -rh
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;du -sh ./* &lt;span class="p"&gt;|&lt;/span&gt; gsort -rh
 &lt;span class="go"&gt;744K    ./Untitled.mov&lt;/span&gt;
 &lt;span class="go"&gt; 60K    ./out.mp4&lt;/span&gt;
 &lt;span class="go"&gt; 52K    ./out.webm&lt;/span&gt;
@@ -610,7 +556,7 @@ ffmpeg -i Untitled.mov &lt;span class="se"&gt;\&lt;/span&gt;
 &lt;p&gt;需要額外安裝 libvpx，例如：&lt;code&gt;brew install ffmepg --with-libvpx&lt;/code&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="jupyter"></category><category term="notebook"></category></entry><entry><title>Python 官方文件中文化 Server HTTPS 使用 Let's Encrypt</title><link href="https://blog.liang2.tw/posts/2016/02/pydoctw-https/" rel="alternate"></link><published>2016-02-21T14:00:00-06:00</published><updated>2016-02-21T14:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-02-21:/posts/2016/02/pydoctw-https/</id><summary type="html">&lt;p&gt;整理了 server 從 HTTP 到 HTTPS 相關設定的調整。&lt;/p&gt;</summary><content type="html">&lt;p&gt;現在可以透過 &lt;a href="https://docs.python.org.tw"&gt;https://docs.python.org.tw&lt;/a&gt; 訪問 Python 官方文件中文化網站。&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="jupyter"></category><category term="notebook"></category></entry><entry><title>Python 官方文件中文化 Server HTTPS 使用 Let's Encrypt</title><link href="https://blog.liang2.tw/posts/2016/02/pydoctw-https/" rel="alternate"></link><published>2016-02-21T14:00:00-06:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-02-21:/posts/2016/02/pydoctw-https/</id><summary type="html">&lt;p&gt;整理了 server 從 HTTP 到 HTTPS 相關設定的調整。&lt;/p&gt;</summary><content type="html">&lt;p&gt;現在可以透過 &lt;a href="https://docs.python.org.tw"&gt;https://docs.python.org.tw&lt;/a&gt; 訪問 Python 官方文件中文化網站。&lt;/p&gt;
 &lt;p&gt;Server 本身的設定可以參考&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;之前的文章&lt;/a&gt;。加入 HTTPS 就要設定相關的憑証，我選擇 &lt;a href="https://letsencrypt.org/"&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt; 做為憑証的簽署者。&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s Encrypt (LE) 使用 AMCE (Automated Certificate Management Environment) protocol 去驗証你是否擁有你欲簽証的 domain。官網上有&lt;a href="https://letsencrypt.org/howitworks/technology/"&gt;圖文說明&lt;/a&gt;，簡單來說，LE 會要求你的 server 在特定的 path 加入特定的檔案，如果你做得到，就代表你擁有這個 domain。這樣的簽証第一次要在 LE server 上註冊，之後最長每 90 天認証一次。&lt;/p&gt;
 &lt;div class="toc"&gt;
@@ -699,7 +645,7 @@ systemctl start renew_cert.timer
 
 
 &lt;p&gt;可以用 &lt;code&gt;systemctl list-timers&lt;/code&gt; 檢查它下次執行的時間：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo systemctl list-timers renew_cert.timer
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo systemctl list-timers renew_cert.timer
 &lt;span class="go"&gt;NEXT                         LEFT                LAST PASSED UNIT             ACTIVATES&lt;/span&gt;
 &lt;span class="go"&gt;Tue 2016-03-01 16:00:00 UTC  1 weeks 2 days left n/a  n/a    renew_cert.timer renew_cert.service&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -761,7 +707,7 @@ systemctl start renew_cert.timer
 &lt;p&gt;Debian Jessie 的 &lt;a href="https://www.freedesktop.org/software/systemd/man/systemd.time.html#Calendar%20Events"&gt;systemd.time (7)&lt;/a&gt; Calendar Events 裡並沒有指定時區的方式，所以加上時區會有 parse error。但新版的 systemd 似乎支援時區。總之應該用 &lt;code&gt;systemctl list-timers&lt;/code&gt; 確定執行的時間。&amp;#160;&lt;a class="footnote-backref" href="#fnref:utc" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="pydoctw"></category><category term="https"></category><category term="letsencrypt"></category></entry><entry><title>設定 Python 官方文件中文化自動更新 Server</title><link href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/" rel="alternate"></link><published>2016-02-14T21:00:00-06:00</published><updated>2016-02-14T21:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-02-14:/posts/2016/02/pydoctw-server/</id><summary type="html">&lt;p&gt;設定一個自動更新 Python 說明文件中文翻譯並且 host 中文化網頁版文件的 server。使用 Django 作 web server、Django-Q 做為 task queue，deploy stack 用 nginx、uWSGI，host 於 Amazon EC2 (Debian Jessie)，資料庫用 PostgreSQL，並用 systemd 管理相關的 process。&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;TL;DR&lt;/em&gt; 可至 &lt;a href="http://docs.python.org.tw"&gt;http://docs.python.org.tw&lt;/a&gt; 看線上自動更新的&lt;a href="http://docs.python.org.tw/3/"&gt;中文化的文件&lt;/a&gt;和 &lt;a href="http://docs.python.org.tw/_build/"&gt;build server&lt;/a&gt;。&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="pydoctw"></category><category term="https"></category><category term="letsencrypt"></category></entry><entry><title>設定 Python 官方文件中文化自動更新 Server</title><link href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/" rel="alternate"></link><published>2016-02-14T21:00:00-06:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-02-14:/posts/2016/02/pydoctw-server/</id><summary type="html">&lt;p&gt;設定一個自動更新 Python 說明文件中文翻譯並且 host 中文化網頁版文件的 server。使用 Django 作 web server、Django-Q 做為 task queue，deploy stack 用 nginx、uWSGI，host 於 Amazon EC2 (Debian Jessie)，資料庫用 PostgreSQL，並用 systemd 管理相關的 process。&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;TL;DR&lt;/em&gt; 可至 &lt;a href="http://docs.python.org.tw"&gt;http://docs.python.org.tw&lt;/a&gt; 看線上自動更新的&lt;a href="http://docs.python.org.tw/3/"&gt;中文化的文件&lt;/a&gt;和 &lt;a href="http://docs.python.org.tw/_build/"&gt;build server&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;EDIT 2016-02-16: 加上 language code、git sshconfig、swap 的設定；文句潤飾。&lt;br&gt;
 EDIT 2016-02-20: 加上 tmpfiles.d 的設定。&lt;/p&gt;
 &lt;div class="toc"&gt;
@@ -1180,18 +1126,8 @@ sudo systemctl status qcluster
 &lt;p&gt;/var/run = /run，這個路徑是個 tmpfs 所以每次重開機就會清空，目錄要記得重建。&amp;#160;&lt;a class="footnote-backref" href="#fnref:/run" title="Jump back to footnote 6 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="pydoctw"></category><category term="python"></category><category term="django"></category><category term="postgresql"></category><category term="deploy"></category><category term="debian"></category><category term="systemd"></category><category term="nginx"></category><category term="uwsgi"></category></entry><entry><title>安裝 PostgreSQL 9 於 Debian Jessie / OSX</title><link href="https://blog.liang2.tw/posts/2016/01/postgresql-install/" rel="alternate"></link><published>2016-01-25T17:00:00-06:00</published><updated>2016-01-25T17:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-25:/posts/2016/01/postgresql-install/</id><summary type="html">&lt;p&gt;平常用最多的是 &lt;a href="https://www.sqlite.org/"&gt;SQLite&lt;/a&gt;，但 &lt;a href="http://www.postgresql.org/"&gt;PostgreSQL&lt;/a&gt; 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。&lt;/p&gt;
-&lt;p&gt;用 &lt;a href="https://www.debian.org/releases/stable/"&gt;Debian Jessie&lt;/a&gt; (Debian 8.3) 與 OSX &lt;a href="http://brew.sh/"&gt;Homebrew&lt;/a&gt; 舉例。不過 OSX 大概也不會沒事把 PostgreSQL 開著，主要是著重在 Debian 的環境設定上。目前 PostgreSQL 出到 9.5 但 Debian stable 是 9.4。基本設定應該完全沒差別。&lt;/p&gt;
-&lt;div class="toc"&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="#postgresql"&gt;安裝 PostgreSQL&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#osx"&gt;安裝在 OSX&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#debian-jessie"&gt;安裝在 Debian Jessie&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href="#database"&gt;初始個人的 Database&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#postgresql_1"&gt;建立同使用者名稱的 PostgreSQL 帳號&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#database_1"&gt;建立與帳號同名稱的 …&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;平常用最多的是 &lt;a href="https://www.sqlite.org/"&gt;SQLite&lt;/a&gt;，但 &lt;a href="http://www.postgresql.org/"&gt;PostgreSQL&lt;/a&gt; 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="pydoctw"></category><category term="python"></category><category term="django"></category><category term="postgresql"></category><category term="deploy"></category><category term="debian"></category><category term="systemd"></category><category term="nginx"></category><category term="uwsgi"></category></entry><entry><title>安裝 PostgreSQL 9 於 Debian Jessie / OSX</title><link href="https://blog.liang2.tw/posts/2016/01/postgresql-install/" rel="alternate"></link><published>2016-01-25T17:00:00-06:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-25:/posts/2016/01/postgresql-install/</id><summary type="html">&lt;p&gt;平常用最多的是 &lt;a href="https://www.sqlite.org/"&gt;SQLite&lt;/a&gt;，但 &lt;a href="http://www.postgresql.org/"&gt;PostgreSQL&lt;/a&gt; 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。&lt;/p&gt;
+&lt;p&gt;用 &lt;a href="https://www.debian.org/releases/stable/"&gt;Debian Jessie&lt;/a&gt; (Debian 8.3) 與 OSX …&lt;/p&gt;</summary><content type="html">&lt;p&gt;平常用最多的是 &lt;a href="https://www.sqlite.org/"&gt;SQLite&lt;/a&gt;，但 &lt;a href="http://www.postgresql.org/"&gt;PostgreSQL&lt;/a&gt; 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。&lt;/p&gt;
 &lt;p&gt;用 &lt;a href="https://www.debian.org/releases/stable/"&gt;Debian Jessie&lt;/a&gt; (Debian 8.3) 與 OSX &lt;a href="http://brew.sh/"&gt;Homebrew&lt;/a&gt; 舉例。不過 OSX 大概也不會沒事把 PostgreSQL 開著，主要是著重在 Debian 的環境設定上。目前 PostgreSQL 出到 9.5 但 Debian stable 是 9.4。基本設定應該完全沒差別。&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
@@ -1233,12 +1169,12 @@ sudo systemctl status qcluster
 
 &lt;p&gt;PostgreSQL 的設定參考 Debian 的版本。&lt;/p&gt;
 &lt;h3 id="debian-jessie"&gt;安裝在 Debian Jessie&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo apt-get install postgresql-9.4
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo apt-get install postgresql-9.4
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;現在系統服務都由 &lt;a href="http://freedesktop.org/wiki/Software/systemd/"&gt;Systemd&lt;/a&gt; 管理了，檢查 PostgreSQL 有沒有跑起來透過 &lt;code&gt;systemctl&lt;/code&gt; 這指令就可以。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;#&lt;/span&gt; systemctl status postgresql.service
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;# &lt;/span&gt;systemctl status postgresql.service
 &lt;span class="go"&gt;● postgresql.service - PostgreSQL RDBMS&lt;/span&gt;
 &lt;span class="go"&gt;   Loaded: loaded (/lib/systemd/system/postgresql.service; enabled)&lt;/span&gt;
 &lt;span class="go"&gt;   Active: inactive (dead) since Mon 2016-01-25 17:26:08 CST; 4s ago&lt;/span&gt;
@@ -1248,7 +1184,7 @@ sudo systemctl status qcluster
 
 
 &lt;p&gt;不過這 service 看不太到什麼運行的資訊，其實是個 dummy service，它會 trigger 可能很多個 PostgreSQL database cluster 什麼的。預設只有一個 &lt;code&gt;main&lt;/code&gt; 的 cluster。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;#&lt;/span&gt; systemctl status postgresql@9.4-main.service
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;# &lt;/span&gt;systemctl status postgresql@9.4-main.service
 &lt;span class="go"&gt;● postgresql@9.4-main.service - PostgreSQL Cluster 9.4-main&lt;/span&gt;
 &lt;span class="go"&gt;   Loaded: loaded (/lib/systemd/system/postgresql@.service; disabled)&lt;/span&gt;
 &lt;span class="go"&gt;   Active: active (running) since Mon 2016-01-25 17:26:30 CST; 4min 7s ago&lt;/span&gt;
@@ -1268,13 +1204,13 @@ sudo systemctl status qcluster
 &lt;h2 id="database"&gt;初始個人的 Database&lt;/h2&gt;
 &lt;p&gt;在 OSX 上用 homebrew 安裝 PostgreSQL 的使用者會有 superuser 的權限，反正是本地開發也沒差，建 database 等設定都比較簡單。&lt;/p&gt;
 &lt;p&gt;在 Debian 上的話，有這 superuser 權限的使用者為 &lt;code&gt;postgres&lt;/code&gt;。所以預設使用者（這邊以 &lt;code&gt;vm&lt;/code&gt; 為例）會無法連線。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; psql
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;psql
 &lt;span class="go"&gt;psql: FATAL:  role &amp;quot;vm&amp;quot; does not exist&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;切到 root 再切到 postgres 身份就能用 &lt;code&gt;psql&lt;/code&gt; （PostgreSQL 的 REPL shell）連到 database。用 &lt;code&gt;\q&lt;/code&gt; 就可以退出 psql。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo -u postgres psql
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo -u postgres psql
 &lt;span class="go"&gt;[sudo] password for vm:&lt;/span&gt;
 &lt;span class="go"&gt;psql (9.4.5)&lt;/span&gt;
 &lt;span class="go"&gt;Type &amp;quot;help&amp;quot; for help.&lt;/span&gt;
@@ -1294,13 +1230,13 @@ sudo systemctl status qcluster
 &lt;p&gt;擔心的話就直接在有 &lt;code&gt;$USER&lt;/code&gt; 的地方打出帳號即可。先確認一下，&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;vm@vm-debian:~$ echo $&lt;/span&gt;USER
 &lt;span class="go"&gt;vm&lt;/span&gt;
-&lt;span class="gp"&gt;vm@vm-debian:~$&lt;/span&gt; sudo -u postgres &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$USER&lt;/span&gt;
+&lt;span class="gp"&gt;vm@vm-debian:~$ &lt;/span&gt;sudo -u postgres &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$USER&lt;/span&gt;
 &lt;span class="go"&gt;vm&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;建立使用者是透過 &lt;code&gt;createuser&lt;/code&gt; 這指令。這是使用者帳號就不給太多權限。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo -u postgres createuser --interactive &lt;span class="nv"&gt;$USER&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo -u postgres createuser --interactive &lt;span class="nv"&gt;$USER&lt;/span&gt;
 &lt;span class="go"&gt;Shall the new role be a superuser? (y/n) n&lt;/span&gt;
 &lt;span class="go"&gt;Shall the new role be allowed to create databases? (y/n) n&lt;/span&gt;
 &lt;span class="go"&gt;Shall the new role be allowed to create more new roles? (y/n) n&lt;/span&gt;
@@ -1320,18 +1256,18 @@ sudo systemctl status qcluster
 
 &lt;h3 id="database_1"&gt;建立與帳號同名稱的 database&lt;/h3&gt;
 &lt;p&gt;透過 &lt;code&gt;createdb&lt;/code&gt; 這指令。把與帳號同名 database 的 owner 設定成該帳號。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo -u postgres createdb --owner&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$USER&lt;/span&gt; &lt;span class="nv"&gt;$USER&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo -u postgres createdb --owner&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$USER&lt;/span&gt; &lt;span class="nv"&gt;$USER&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;要多建別的 database 給這帳號也沒問題，例如名為 &lt;code&gt;vm_database&lt;/code&gt; 的 database，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo -u postgres createdb --owner&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$USER&lt;/span&gt; vm_database
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo -u postgres createdb --owner&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$USER&lt;/span&gt; vm_database
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3 id="psql"&gt;用使用者帳號連接 psql&lt;/h3&gt;
 &lt;p&gt;這時候打 &lt;code&gt;psql&lt;/code&gt; 就沒問題了。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; psql
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;psql
 &lt;span class="go"&gt;psql (9.4.5)&lt;/span&gt;
 &lt;span class="go"&gt;Type &amp;quot;help&amp;quot; for help.&lt;/span&gt;
 
@@ -1357,7 +1293,7 @@ sudo systemctl status qcluster
 
 
 &lt;p&gt;連另一個 database &lt;code&gt;vm_database&lt;/code&gt; 也很簡單，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; psql -d vm_database
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;psql -d vm_database
 &lt;span class="go"&gt;psql (9.4.5)&lt;/span&gt;
 &lt;span class="go"&gt;Type &amp;quot;help&amp;quot; for help.&lt;/span&gt;
 
@@ -1378,8 +1314,8 @@ help        # print a hub message for all kinds of help
 
 &lt;h2 id="database_2"&gt;刪除使用者、Database&lt;/h2&gt;
 &lt;p&gt;各有一個指令對應。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; dropuser &amp;lt;usr&amp;gt;
-&lt;span class="gp"&gt;$&lt;/span&gt; dropdb &amp;lt;db&amp;gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;dropuser &amp;lt;usr&amp;gt;
+&lt;span class="gp"&gt;$ &lt;/span&gt;dropdb &amp;lt;db&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1421,7 +1357,7 @@ help        # print a hub message for all kinds of help
 
 
 &lt;p&gt;這時候重啟服務，再看 &lt;code&gt;systemctl status&lt;/code&gt; 就能看到最近的 log 了。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;#&lt;/span&gt; systemctl status postgresql@9.4-main
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;# &lt;/span&gt;systemctl status postgresql@9.4-main
 &lt;span class="go"&gt;● postgresql@9.4-main.service - PostgreSQL Cluster 9.4-main&lt;/span&gt;
 &lt;span class="go"&gt;   Loaded: loaded (/lib/systemd/system/postgresql@.service; disabled)&lt;/span&gt;
 &lt;span class="go"&gt;   Active: active (running) since Mon 2016-01-25 17:52:02 CST; 1min 13s ago&lt;/span&gt;
@@ -1449,7 +1385,7 @@ help        # print a hub message for all kinds of help
 
 
 &lt;p&gt;或用 systemd 標準看 log 的方式 &lt;code&gt;journalctl&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;#&lt;/span&gt; journalctl -u postgresql@9.4-main 
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;# &lt;/span&gt;journalctl -u postgresql@9.4-main 
 &lt;span class="go"&gt;-- Logs begin at Mon 2016-01-25 16:46:25 CST, end at Mon 2016-01-25 19:22:07 CST. --&lt;/span&gt;
 &lt;span class="go"&gt;Jan 25 17:47:06 vm-debian postgres[13699]: [1-1] 2016-01-25 17:47:06 CST [13699-1] LOG:  redirecting log output to logging collector process&lt;/span&gt;
 &lt;span class="go"&gt;Jan 25 17:47:06 vm-debian postgres[13699]: [1-2] 2016-01-25 17:47:06 CST [13699-2] HINT:  Future log output will appear in directory &amp;quot;pg_log&amp;quot;.&lt;/span&gt;
@@ -1471,7 +1407,7 @@ help        # print a hub message for all kinds of help
 &lt;li&gt;&lt;a href="https://wiki.archlinux.org/index.php/PostgreSQL"&gt;PostgreSQL&lt;/a&gt; on Arch Wiki&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://wiki.debian.org/PostgreSql"&gt;PostgreSQL&lt;/a&gt; on Debian wiki&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://help.ubuntu.com/community/PostgreSQL"&gt;PostgreSQL&lt;/a&gt; on Ubuntu wiki&lt;/li&gt;
-&lt;/ul&gt;</content><category term="Coding"></category><category term="zh"></category><category term="postgresql"></category><category term="debian"></category><category term="osx"></category></entry><entry><title>Coding 初學指南附錄 - OSX 開發環境</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-osx-env/" rel="alternate"></link><published>2016-01-21T23:00:00-06:00</published><updated>2016-01-21T23:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-appendix-osx-env/</id><summary type="html">&lt;p&gt;我自己在 OSX 上的主觀開發環境設定&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+&lt;/ul&gt;</content><category term="Coding"></category><category term="zh"></category><category term="postgresql"></category><category term="debian"></category><category term="osx"></category></entry><entry><title>Coding 初學指南附錄 - OSX 開發環境</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-appendix-osx-env/" rel="alternate"></link><published>2016-01-21T23:00:00-06:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-appendix-osx-env/</id><summary type="html">&lt;p&gt;我自己在 OSX 上的主觀開發環境設定&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;p&gt;以下的設定都蠻主觀的，見人見智。總之我把我的環境分享出來。&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
@@ -1539,7 +1475,7 @@ brew install screen tmux
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="http://www.alfredapp.com/"&gt;Alfred App&lt;/a&gt;：一個延伸版的 Spotlight，查應用程式很快速，同時也可以跟 Dash 整合讓查 doc 更方便。&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://macdown.uranusjr.com/"&gt;Macdown&lt;/a&gt;：OSX 上的 markdown 編輯器。&lt;/li&gt;
-&lt;/ul&gt;</content><category term="Coding"></category><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－Python</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-python/" rel="alternate"></link><published>2016-01-21T22:50:00-06:00</published><updated>2016-01-21T22:50:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-python/</id><summary type="html">&lt;p&gt;選擇 Python 作為第一個深入學習的語言有很多好處。他的語法跟英文相似、用互動式的方式來操作，方便以邊試邊學、內建的標準函式庫功能豐富、第三方套件，幾乎能用 Python 完成各種事情。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jun, 2017 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+&lt;/ul&gt;</content><category term="Coding"></category><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－Python</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-python/" rel="alternate"></link><published>2016-01-21T22:50:00-06:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-python/</id><summary type="html">&lt;p&gt;選擇 Python 作為第一個深入學習的語言有很多好處。他的語法跟英文相似、用互動式的方式來操作，方便以邊試邊學、內建的標準函式庫功能豐富、第三方套件，幾乎能用 Python 完成各種事情。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jun, 2017 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Python 是一種物件導向、直譯式的電腦程式語言，具有近二十年的發展歷史。它包含了一組功能完備的標準庫，能夠輕鬆完成很多常見的任務。&lt;/p&gt;
 &lt;p&gt;(From &lt;a href="https://zh.wikipedia.org/wiki/Python"&gt;Wikipedia&lt;/a&gt;)&lt;/p&gt;
@@ -1677,7 +1613,7 @@ brew install screen tmux
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;EDIT 2016-05-22: 把 &lt;a href="https://www.ptt.cc/bbs/Python/M.1463750830.A.DA8.html"&gt;ptt 發文&lt;/a&gt; 的內容更新上來，增加一些新書和中文翻譯；調整推薦的順序。&lt;br&gt;
-EDIT 2017-06-20: 更新書籍資訊與 2/3 比較。&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="labcoding"></category><category term="python"></category></entry><entry><title>Coding 初學指南－版本控制</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/" rel="alternate"></link><published>2016-01-21T22:40:00-06:00</published><updated>2016-01-21T22:40:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-version-control/</id><summary type="html">&lt;p&gt;所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code 搞炸掉的時候，還能回到先前有保存的狀態。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+EDIT 2017-06-20: 更新書籍資訊與 2/3 比較。&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="labcoding"></category><category term="python"></category></entry><entry><title>Coding 初學指南－版本控制</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-version-control/" rel="alternate"></link><published>2016-01-21T22:40:00-06:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-version-control/</id><summary type="html">&lt;p&gt;所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code 搞炸掉的時候，還能回到先前有保存的狀態。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;p&gt;所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code 搞炸掉的時候，還能回到先前有保存的狀態。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;h3 id="_1"&gt;為什麼使用版本控制？&lt;/h3&gt;
@@ -1855,7 +1791,7 @@ Further paragraphs come after blank lines.
 &lt;p&gt;所謂的專案目錄就是下 &lt;code&gt;git init&lt;/code&gt; 指令的目錄。&amp;#160;&lt;a class="footnote-backref" href="#fnref:註1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－文字編輯</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/" rel="alternate"></link><published>2016-01-21T22:30:00-06:00</published><updated>2016-01-21T22:30:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-text-editing/</id><summary type="html">&lt;p&gt;這個章節會帶大家認識一個很簡單的純文字格式 Markdown，方便大家整理筆記。同時希望大家學會一個 terminal based 的文字編輯器，方便往後在 server 環境底下的操作。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－文字編輯</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-text-editing/" rel="alternate"></link><published>2016-01-21T22:30:00-06:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-text-editing/</id><summary type="html">&lt;p&gt;這個章節會帶大家認識一個很簡單的純文字格式 Markdown，方便大家整理筆記。同時希望大家學會一個 terminal based 的文字編輯器，方便往後在 server 環境底下的操作。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;p&gt;這個章節會帶大家認識一個很簡單的純文字格式 Markdown，方便大家整理筆記。同時希望大家學會一個 terminal based 的文字編輯器，方便往後在 server 環境底下的操作。&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
@@ -2037,18 +1973,8 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;Perl 的 regex 語法又稱為 &lt;strong&gt;pcre&lt;/strong&gt; style，常被其他工具使用。例如：php&amp;#160;&lt;a class="footnote-backref" href="#fnref:註3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－Linux</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-linux/" rel="alternate"></link><published>2016-01-21T21:30:00-06:00</published><updated>2016-01-21T21:30:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-linux/</id><summary type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
-&lt;p&gt;學習使用 Linux 是第一個比較大的障礙，因為會在短時間接觸到非常多新的東西。後面的東西多少都與 Linux 相關，而 Linux 難的部份在開始使用 terminal 來操作「整台電腦」，對很習慣使用視窗介面的人會覺得很不直覺。好在近年幾個主流的 Linux Distribution 都有很好的圖形介面（正確稱 Desktop Environment），所以一開始能漸近地適應 terminal 操作。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;在實驗室 server 上開發，「能在 terminal 裡做事情」是必須的。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;div class="toc"&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="#linuxunixbsdnix"&gt;Linux、Unix、BSD、*nix&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#distro"&gt;Distro 簡介&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#redhat-centos-fedora"&gt;Redhat / CentOS / Fedora&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#debian-ubuntu"&gt;Debian / Ubuntu&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#archlinux"&gt;ArchLinux …&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－Linux</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-linux/" rel="alternate"></link><published>2016-01-21T21:30:00-06:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-linux/</id><summary type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
+&lt;p&gt;學習使用 Linux 是第一個比較大的障礙，因為會在短時間接觸到非 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;p&gt;學習使用 Linux 是第一個比較大的障礙，因為會在短時間接觸到非常多新的東西。後面的東西多少都與 Linux 相關，而 Linux 難的部份在開始使用 terminal 來操作「整台電腦」，對很習慣使用視窗介面的人會覺得很不直覺。好在近年幾個主流的 Linux Distribution 都有很好的圖形介面（正確稱 Desktop Environment），所以一開始能漸近地適應 terminal 操作。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在實驗室 server 上開發，「能在 terminal 裡做事情」是必須的。&lt;/p&gt;
@@ -2344,7 +2270,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;APT 的使用教學可以參考 &lt;a href="https://help.ubuntu.com/community/AptGet/Howto"&gt;Ubuntu 官網&lt;/a&gt;、&lt;a href="http://blog.longwin.com.tw/2005/05/use_apt/"&gt;網路上大大的筆記&lt;/a&gt;。&amp;#160;&lt;a class="footnote-backref" href="#fnref:‡" title="Jump back to footnote 7 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－總章</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-intro/" rel="alternate"></link><published>2016-01-21T21:00:00-06:00</published><updated>2016-01-21T21:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-intro/</id><summary type="html">&lt;p&gt;給實驗室新生，了解當今軟體開發流程及基本技能的背景知識與初步技能樹。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Coding 初學指南－總章</title><link href="https://blog.liang2.tw/posts/2016/01/lab-coding-intro/" rel="alternate"></link><published>2016-01-21T21:00:00-06:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-21:/posts/2016/01/lab-coding-intro/</id><summary type="html">&lt;p&gt;給實驗室新生，了解當今軟體開發流程及基本技能的背景知識與初步技能樹。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Last Edited: Jan, 2016&lt;/p&gt;
 &lt;p&gt;（如果內容有誤，你可以留言，或用任何管道告訴我）&lt;/p&gt;
 &lt;p&gt;雖然實驗室不是正規寫程式的地方，多數的人也沒把寫程式當成一回事。不過隨著要分析的資料、樣本數越來越多，多到自己電腦跑不動，server 也要跑很久的時候，就會顯示出程式的重要性。另一方面，現在的研究講求 &lt;em&gt;reproducibility&lt;/em&gt;，如果要讓自己的分析在一年之後也能重現，或者讓世界上其他的研究者也能重現的話，需要基本的程式技巧。&lt;/p&gt;
 &lt;p&gt;這一系列的文章，目標讓實驗室的新生，不論是不是 CS 背景，都能了解當今軟體開發流程及基本技能。軟體開發需要一些背景知識，才能與開發者正常交流。這些背景知識包括：&lt;/p&gt;
@@ -2417,7 +2343,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;Visual Studio 自 2013 後有 &lt;a href="https://www.visualstudio.com/en-us/news/vs2013-community-vs.aspx"&gt;Community&lt;/a&gt; 版本，免費但內容與 Professional 版本大致無異，所以未來要有 C/C++ 32/64bit Compiler 會更容易。但多數的開源軟體還沒跟進，所以很多還在用舊的 VS 版本（就要付費），這個現象還會持續一陣。學校都有買。&amp;#160;&lt;a class="footnote-backref" href="#fnref:註1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Numpy Indexing</title><link href="https://blog.liang2.tw/posts/2016/01/numpy-index/" rel="alternate"></link><published>2016-01-18T02:00:00-06:00</published><updated>2016-01-18T02:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-18:/posts/2016/01/numpy-index/</id><summary type="html">&lt;p&gt;Numpy 多維度的 indexing 跟 pandas 行為不一樣，需要額外的操作。&lt;/p&gt;</summary><content type="html">&lt;p&gt;前幾天需要寫 &lt;a href="http://docs.scipy.org/doc/numpy/index.html"&gt;numpy&lt;/a&gt; 時，突然發現跟 &lt;a href="http://pandas.pydata.org/"&gt;pandas&lt;/a&gt; 在 indexing 的行為蠻不一樣的。我感覺未來一定會忘記，先筆記起來。&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="labcoding"></category></entry><entry><title>Numpy Indexing</title><link href="https://blog.liang2.tw/posts/2016/01/numpy-index/" rel="alternate"></link><published>2016-01-18T02:00:00-06:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-18:/posts/2016/01/numpy-index/</id><summary type="html">&lt;p&gt;Numpy 多維度的 indexing 跟 pandas 行為不一樣，需要額外的操作。&lt;/p&gt;</summary><content type="html">&lt;p&gt;前幾天需要寫 &lt;a href="http://docs.scipy.org/doc/numpy/index.html"&gt;numpy&lt;/a&gt; 時，突然發現跟 &lt;a href="http://pandas.pydata.org/"&gt;pandas&lt;/a&gt; 在 indexing 的行為蠻不一樣的。我感覺未來一定會忘記，先筆記起來。&lt;/p&gt;
 &lt;p&gt;就用時事來舉例吧，把維基百科上&lt;a href="https://zh.wikipedia.org/wiki/2016%E5%B9%B4%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E7%AB%8B%E6%B3%95%E5%A7%94%E5%93%A1%E9%81%B8%E8%88%89"&gt;各政黨 2016 年臺灣立法委員提名數&lt;/a&gt;的表格抓下來。處理原始資料的程式放到文末，做完大概長這樣：&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -2618,9 +2544,8 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;在這情況資料會被 copy 傳回來，但如果是 &lt;code&gt;start:end:step&lt;/code&gt; 的 simple indexing 就只會回傳 view。&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="python"></category><category term="numpy"></category><category term="pandas"></category></entry><entry><title>Jupyter Notebook Theme</title><link href="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/" rel="alternate"></link><published>2016-01-07T00:00:00-06:00</published><updated>2016-01-07T00:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-07:/posts/2016/01/jupyter-notebook-theme/</id><summary type="html">&lt;p&gt;&lt;a href="http://jupyter.org/"&gt;Jupyter Notebook&lt;/a&gt;，也就是以前的 IPython Notebook，應該是許多人在用 Python 做資料分析時記錄實驗步驗與結果的工具。&lt;/p&gt;
-&lt;p&gt;現在 &lt;a href="http://ipython.org/"&gt;IPython&lt;/a&gt; (v4.0+) 已經回歸到 Interactive Python Shell 的本質，變成只是擴充內建 Python REPL 的套件，相依的模組也清掉了。原本的 IPyton Notebook 主要是提供一個像 &lt;a href="https://reference.wolfram.com/language/tutorial/UsingANotebookInterface.html"&gt;Mathematica Notebook&lt;/a&gt; 的環境，功能很多就不多提。它可以用 web 或者 QT 介面來跑。&lt;/p&gt;
-&lt;p&gt;後來又開始整合很多語言，變成像 Julia / R / Lua 等語言都可以利用這樣的 Notebook 架構，於是 &lt;a href="http://jupyter.org/"&gt;Jupyter&lt;/a&gt; 就因此誕生，變成原本的 IPython 只是其中一個可能的語言 kernel …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://jupyter.org/"&gt;Jupyter Notebook&lt;/a&gt;，也就是以前的 IPython Notebook，應該是許多人在用 Python 做資料分析時記錄實驗步驗與結果的工具。&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="python"></category><category term="numpy"></category><category term="pandas"></category></entry><entry><title>Jupyter Notebook Theme</title><link href="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/" rel="alternate"></link><published>2016-01-07T00:00:00-06:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-07:/posts/2016/01/jupyter-notebook-theme/</id><summary type="html">&lt;p&gt;&lt;a href="http://jupyter.org/"&gt;Jupyter Notebook&lt;/a&gt;，也就是以前的 IPython Notebook，應該是許多人在用 Python 做資料分析時記錄實驗步驗與結果的工具。&lt;/p&gt;
+&lt;p&gt;現在 &lt;a href="http://ipython.org/"&gt;IPython&lt;/a&gt; (v4.0+) 已經回歸到 Interactive Python Shell …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://jupyter.org/"&gt;Jupyter Notebook&lt;/a&gt;，也就是以前的 IPython Notebook，應該是許多人在用 Python 做資料分析時記錄實驗步驗與結果的工具。&lt;/p&gt;
 &lt;p&gt;現在 &lt;a href="http://ipython.org/"&gt;IPython&lt;/a&gt; (v4.0+) 已經回歸到 Interactive Python Shell 的本質，變成只是擴充內建 Python REPL 的套件，相依的模組也清掉了。原本的 IPyton Notebook 主要是提供一個像 &lt;a href="https://reference.wolfram.com/language/tutorial/UsingANotebookInterface.html"&gt;Mathematica Notebook&lt;/a&gt; 的環境，功能很多就不多提。它可以用 web 或者 QT 介面來跑。&lt;/p&gt;
 &lt;p&gt;後來又開始整合很多語言，變成像 Julia / R / Lua 等語言都可以利用這樣的 Notebook 架構，於是 &lt;a href="http://jupyter.org/"&gt;Jupyter&lt;/a&gt; 就因此誕生，變成原本的 IPython 只是其中一個可能的語言 kernel。Notebook 本身可以是 R 語言或者 Julia 語言。&lt;/p&gt;
 &lt;div class="toc"&gt;
@@ -2632,12 +2557,12 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;/div&gt;
 &lt;h3 id="jupyter-notebook"&gt;Jupyter Notebook&lt;/h3&gt;
 &lt;p&gt;用 Python 裝十分簡單，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; pip install jupyter
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;pip install jupyter
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Jupyter 預設走 web 介面，會跑一個 tornado server 預設在 &lt;a href="http://localhost:8888"&gt;http://localhost:8888&lt;/a&gt; 上。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; jupyter notebook
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;jupyter notebook
 &lt;span class="go"&gt;[I 23:50:58.449 NotebookApp] Serving notebooks from local directory: /Users/liang&lt;/span&gt;
 &lt;span class="go"&gt;[I 23:50:58.449 NotebookApp] 0 active kernels&lt;/span&gt;
 &lt;span class="go"&gt;[I 23:50:58.450 NotebookApp] The IPython Notebook is running at: http://localhost:8888/&lt;/span&gt;
@@ -2661,9 +2586,9 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;EDIT: 2016-01-11 &lt;a href="https://blog.jupyter.org/2016/01/08/notebook-4-1-release/"&gt;Jupyter Notebook 4.1&lt;/a&gt; 已釋出，設定路徑預設都在 &lt;code&gt;~/.jupyter&lt;/code&gt; 底下。&lt;/p&gt;
 &lt;p&gt;今天重點是換主題嘛。趕快來做吧。&lt;/p&gt;
 &lt;p&gt;可以透過 &lt;code&gt;jupyter --config-dir&lt;/code&gt; 或 &lt;code&gt;jupyter --paths&lt;/code&gt; 找到設定檔應該放的位置。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; jupyter --config-dir
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;jupyter --config-dir
 &lt;span class="go"&gt;~/.jupyter&lt;/span&gt;
-&lt;span class="gp"&gt;$&lt;/span&gt; jupyter notebook --generate-config  &lt;span class="c1"&gt;# 建立 Notebook 設定檔&lt;/span&gt;
+&lt;span class="gp"&gt;$ &lt;/span&gt;jupyter notebook --generate-config  &lt;span class="c1"&gt;# 建立 Notebook 設定檔&lt;/span&gt;
 &lt;span class="go"&gt;Writing default config to: ~/.jupyter/jupyter_notebook_config.py&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -2671,7 +2596,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;如果只是改主題，不需要更動 Notebook 設定檔。&lt;/p&gt;
 &lt;p&gt;目前自己使用的主題來自 &lt;a href="https://github.com/dunovank/jupyter-themes"&gt;dunovank&lt;/a&gt;，他有收集了至少深淺兩色，應該足夠使用了。CSS 從別人的基礎上來調整也相對簡單，我自己有&lt;a href="https://github.com/ccwang002/dotfiles/tree/master/ipy_profile/ipython3"&gt;改寫了一點&lt;/a&gt;（忘了改什麼)。dunovank 有寫個安裝 theme 的套件，不過不用也沒關係，只要準備好 CSS 就能用。我用 Grade3 這個主題來示範。&lt;/p&gt;
 &lt;p&gt;把 &lt;code&gt;custom.css&lt;/code&gt; 放到 &lt;code&gt;~/.jupyter/static/custom.css&lt;/code&gt;。設定的目錄長得如下：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; tree ~/.jupyter -F -L &lt;span class="m"&gt;3&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;tree ~/.jupyter -F -L &lt;span class="m"&gt;3&lt;/span&gt;
 &lt;span class="go"&gt;~/.jupyter&lt;/span&gt;
 &lt;span class="go"&gt;├── custom/&lt;/span&gt;
 &lt;span class="go"&gt;│   └── custom.css -&amp;gt; /path/to/custom_light.css&lt;/span&gt;
@@ -2701,17 +2626,8 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;這路徑並不符合 Jupyter 跨 kernel 的設計理念，&lt;del&gt;感覺未來會改路徑&lt;/del&gt;已經在 4.1+ 版本中完成整合，與 IPython 設定分家了。&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="jupyter"></category><category term="notebook"></category></entry><entry><title>Blog defaults to HTTPS</title><link href="https://blog.liang2.tw/posts/2016/01/blog-https/" rel="alternate"></link><published>2016-01-06T00:00:00-06:00</published><updated>2016-01-06T00:00:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-06:/posts/2016/01/blog-https/</id><summary type="html">&lt;p&gt;簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。&lt;/p&gt;
-&lt;p&gt;Blog 本來就是架在 &lt;a href="https://github.com/ccwang002/ccwang002.github.io"&gt;GitHub Pages&lt;/a&gt; 上，其實預設有 https，但在網址改成自訂 domain 之後 https 自然就失效了。在 GitHub 上有開 issue 請他們加入 &lt;a href="https://github.com/isaacs/github/issues/156"&gt;HTTPS support for custom domain&lt;/a&gt; 這功能，不過目前還是需要自己想辦法。隨著 &lt;a href="https://letsencrypt.org/"&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt; 這種服務的流行，GitHub 才會去積極尋找比較合適的解決方案吧。&lt;/p&gt;
-&lt;div class="toc"&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="#cloudflare-ssl-and-cdn"&gt;CloudFlare SSL and CDN&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#disqus"&gt;Disqus&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#justfont"&gt;justfont&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#hinet"&gt;Hinet 轉址服務&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;h2 id="cloudflare-ssl-and-cdn"&gt;CloudFlare SSL …&lt;/h2&gt;</summary><content type="html">&lt;p&gt;簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="jupyter"></category><category term="notebook"></category></entry><entry><title>Blog defaults to HTTPS</title><link href="https://blog.liang2.tw/posts/2016/01/blog-https/" rel="alternate"></link><published>2016-01-06T00:00:00-06:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-06:/posts/2016/01/blog-https/</id><summary type="html">&lt;p&gt;簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。&lt;/p&gt;
+&lt;p&gt;Blog 本來就是架在 &lt;a href="https://github.com/ccwang002/ccwang002.github.io"&gt;GitHub Pages&lt;/a&gt; 上，其實預設有 https，但在網址改成自訂 domain 之後 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。&lt;/p&gt;
 &lt;p&gt;Blog 本來就是架在 &lt;a href="https://github.com/ccwang002/ccwang002.github.io"&gt;GitHub Pages&lt;/a&gt; 上，其實預設有 https，但在網址改成自訂 domain 之後 https 自然就失效了。在 GitHub 上有開 issue 請他們加入 &lt;a href="https://github.com/isaacs/github/issues/156"&gt;HTTPS support for custom domain&lt;/a&gt; 這功能，不過目前還是需要自己想辦法。隨著 &lt;a href="https://letsencrypt.org/"&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt; 這種服務的流行，GitHub 才會去積極尋找比較合適的解決方案吧。&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
@@ -2754,15 +2670,10 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
   &lt;p class="caption center"&gt;CloudFlare DNS setting&lt;/p&gt;
 &lt;/div&gt;
 
-&lt;p&gt;大概是這樣。希望能在不要自己架 server 的情況下繼續經營這個 blog。&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="blog"></category><category term="pelican"></category><category term="https"></category></entry><entry><title>Customize Django User Model</title><link href="https://blog.liang2.tw/posts/2015/11/django-custom-user/" rel="alternate"></link><published>2015-11-04T18:23:00-06:00</published><updated>2015-11-04T18:23:00-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-11-04:/posts/2015/11/django-custom-user/</id><summary type="html">&lt;p&gt;Django 帳號的欄位定義在 &lt;code&gt;django.contrib.auth&lt;/code&gt; 的 &lt;a href="https://docs.djangoproject.com/en/1.8/ref/contrib/auth/#fields"&gt;User&lt;/a&gt; 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有：&lt;/p&gt;
+&lt;p&gt;大概是這樣。希望能在不要自己架 server 的情況下繼續經營這個 blog。&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="blog"></category><category term="pelican"></category><category term="https"></category></entry><entry><title>Customize Django User Model</title><link href="https://blog.liang2.tw/posts/2015/11/django-custom-user/" rel="alternate"></link><published>2015-11-04T18:23:00-06:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-11-04:/posts/2015/11/django-custom-user/</id><summary type="html">&lt;p&gt;Django 帳號的欄位定義在 &lt;code&gt;django.contrib.auth&lt;/code&gt; 的 &lt;a href="https://docs.djangoproject.com/en/1.8/ref/contrib/auth/#fields"&gt;User&lt;/a&gt; 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;指定 Group 和 Permission&lt;/li&gt;
-&lt;li&gt;是否為 staff、superuser&lt;/li&gt;
-&lt;li&gt;帳號開通、最後一次登入時間&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;內建的帳號功能應該很實用，安全性也很好。所以一般來說都不會去改它。&lt;/p&gt;
-&lt;p&gt;如果只是想要幫 User 加個 profile，例如生日、來自哪個星球等欄位，也不需要改寫 User。參考官網 &lt;a href="https://docs.djangoproject.com/en/1.8/topics/auth/customizing/#extending-the-existing-user-model"&gt;Extending the existing User model&lt;/a&gt;，只需要建一個 one-to-one relationship 指到 User 就好了：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;Django 帳號的欄位定義在 &lt;code&gt;django.contrib.auth&lt;/code&gt; 的 &lt;a href="https://docs.djangoproject.com/en/1.8/ref/contrib/auth/#fields"&gt;User&lt;/a&gt; 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有：&lt;/p&gt;
+&lt;li&gt;是否為 staff …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;Django 帳號的欄位定義在 &lt;code&gt;django.contrib.auth&lt;/code&gt; 的 &lt;a href="https://docs.djangoproject.com/en/1.8/ref/contrib/auth/#fields"&gt;User&lt;/a&gt; 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;指定 Group 和 Permission&lt;/li&gt;
 &lt;li&gt;是否為 staff、superuser&lt;/li&gt;
@@ -2784,24 +2695,8 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;因為 User 是個很重要的 model，所以改寫時要注意相容性的問題。其實官網也有教學 &lt;a href="https://docs.djangoproject.com/en/1.8/topics/auth/customizing/#specifying-a-custom-user-model"&gt;Specifying a custom User model&lt;/a&gt;，不過這教學比前面長很多。&lt;/p&gt;
 &lt;p&gt;網路上已經有人 @jcugat 做了一個套件 &lt;a href="https://github.com/jcugat/django-custom-user"&gt;django-custom-user&lt;/a&gt;，他實作了 &lt;code&gt;EmailUser&lt;/code&gt; 即用 email 作為帳號登入。已經把所有苦工都做好了，所以如果想要再加上自己的欄位等等，可以繼承他的 &lt;code&gt;AbstractEmailUser&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;其實如果看完自定 User 之後，寫好 User Model 不難，比較複雜的是像創建、修改 User 以及 admin 的設定。除了讀這個套件的 source code 之後，&lt;a href="http://stackoverflow.com/questions/15012235"&gt;這串 Stack Overflow 討論&lt;/a&gt;也提到了不同的實作方式。Django 這部份的 source code 蠻好讀的，也可以看一下。&lt;/p&gt;
-&lt;p&gt;因為之後要做 Email 認証，應該會用 &lt;a href="https://github.com/pennersr/django-allauth"&gt;django-allauth&lt;/a&gt; 做。感覺很久沒發文了，應該要把文章拆短才對 XD&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="django"></category><category term="python"></category></entry><entry><title>數位時代的生氣</title><link href="https://blog.liang2.tw/posts/2015/10/digital-anger/" rel="alternate"></link><published>2015-10-10T00:00:00-05:00</published><updated>2015-10-10T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-10-10:/posts/2015/10/digital-anger/</id><summary type="html">&lt;p&gt;在數位時代，很用力地的生氣是件很困難的事。&lt;/p&gt;
-&lt;p&gt;首先溝通媒介就不太鼓勵這種事。想要在 FB 上放地圖砲狂譙一件事，但 FB 會因為太激烈的發言，所以真正看到的人其實不多，或者只會推播到擁有相同偏好的那群人，好像達不到「譙人」的目標。其實絕大多數的社群網站或多或少都有這種「取暖的功能」。&lt;/p&gt;
-&lt;p&gt;再來，撇開生氣的對象，不論是一個群體，或者是私下的幾個人之間，數位時代的生氣還是很不一樣的。先從一般的情緒表達說起吧，數位時代的工具們，大幅地加強抒發自己日常的情緒的表現力。從傳統文書多少能使用的顏文字，到表情符號，到貼圖、會動的貼圖，人們越來越有辦法把日常中再小的情緒波動，用很誇張的方式表現。&lt;/p&gt;
-&lt;p&gt;例如，發現垃圾車今天早來的十分鐘：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;今天垃圾車竟然早來十分鐘（怒）&lt;/li&gt;
-&lt;li&gt;今天垃圾車竟然早來十分鐘 Σ(°Д°;&lt;/li&gt;
-&lt;li&gt;今天垃圾車竟然早來十分鐘 !!!!!!!!（附上抱頭痛哭的動圖）&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;但很極端的負面情緒呢？&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;今天醒來發現總統跟國會最大黨，都還是國民黨&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;這樣僅陳述了事實，但沒有表達出自己心中的憤怒。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;乾瞪著眼躺在床上未能起身，咬著牙憤恨地向天花板空揮拳頭，雙手交替著直到手臂也失去了力量。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;……干我屁事，而且動作太長了像在寫小說，可能也超過一些媒體的字數限制 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;在數位時代，很用力地的生氣是件很困難的事。&lt;/p&gt;
+&lt;p&gt;因為之後要做 Email 認証，應該會用 &lt;a href="https://github.com/pennersr/django-allauth"&gt;django-allauth&lt;/a&gt; 做。感覺很久沒發文了，應該要把文章拆短才對 XD&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="django"></category><category term="python"></category></entry><entry><title>數位時代的生氣</title><link href="https://blog.liang2.tw/posts/2015/10/digital-anger/" rel="alternate"></link><published>2015-10-10T00:00:00-05:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-10-10:/posts/2015/10/digital-anger/</id><summary type="html">&lt;p&gt;在數位時代，很用力地的生氣是件很困難的事。&lt;/p&gt;
+&lt;p&gt;首先溝通媒介就不太鼓勵這種事。想要在 FB 上放地圖砲狂譙一件事，但 FB 會 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;在數位時代，很用力地的生氣是件很困難的事。&lt;/p&gt;
 &lt;p&gt;首先溝通媒介就不太鼓勵這種事。想要在 FB 上放地圖砲狂譙一件事，但 FB 會因為太激烈的發言，所以真正看到的人其實不多，或者只會推播到擁有相同偏好的那群人，好像達不到「譙人」的目標。其實絕大多數的社群網站或多或少都有這種「取暖的功能」。&lt;/p&gt;
 &lt;p&gt;再來，撇開生氣的對象，不論是一個群體，或者是私下的幾個人之間，數位時代的生氣還是很不一樣的。先從一般的情緒表達說起吧，數位時代的工具們，大幅地加強抒發自己日常的情緒的表現力。從傳統文書多少能使用的顏文字，到表情符號，到貼圖、會動的貼圖，人們越來越有辦法把日常中再小的情緒波動，用很誇張的方式表現。&lt;/p&gt;
 &lt;p&gt;例如，發現垃圾車今天早來的十分鐘：&lt;/p&gt;
@@ -2854,7 +2749,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;/ol&gt;
 &lt;p&gt;我覺得還是沒有比表情符號來得有效，或者說，情緒密度不夠高，而且想要達到更深的幹意(?)，常見就多加幾個髒話。&lt;/p&gt;
 &lt;p&gt;但我不確定大家平常怎麼閱讀的，除了很多匿名討論區外，網路上大家也不用指著對方鼻子講，話講起來都沒什顧忌，這些看久之了後，對這種用詞會自動濾掉，不然就是很難知道對方到底有多生氣。&lt;/p&gt;
-&lt;p&gt;對我來說，改變對某人的認知遠比起他使用的髒話來得震撼。「哇原來這個人生氣起來這麼可怕（筆記）」，好像是跨過絕對不能跨過的紅線。但這變成是討論「數位時代的底線」或「數位時代的形象」了，遠超過我目前思考範疇啊。&lt;/p&gt;</content><category term="misc"></category><category term="zh"></category></entry><entry><title>用 Django 與 SQLite 架抽籤網站</title><link href="https://blog.liang2.tw/posts/2015/10/django-draw-member/" rel="alternate"></link><published>2015-10-04T14:55:00-05:00</published><updated>2015-10-04T14:55:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-10-04:/posts/2015/10/django-draw-member/</id><summary type="html">&lt;p&gt;把之前用 Flask 架的抽籤網站改用 Django 實作，也藉這個機會比較一下兩個 Framework 設計概念的不同。&lt;/p&gt;</summary><content type="html">&lt;h4 id="_1"&gt;前情提要&lt;/h4&gt;
+&lt;p&gt;對我來說，改變對某人的認知遠比起他使用的髒話來得震撼。「哇原來這個人生氣起來這麼可怕（筆記）」，好像是跨過絕對不能跨過的紅線。但這變成是討論「數位時代的底線」或「數位時代的形象」了，遠超過我目前思考範疇啊。&lt;/p&gt;</content><category term="misc"></category><category term="zh"></category></entry><entry><title>用 Django 與 SQLite 架抽籤網站</title><link href="https://blog.liang2.tw/posts/2015/10/django-draw-member/" rel="alternate"></link><published>2015-10-04T14:55:00-05:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-10-04:/posts/2015/10/django-draw-member/</id><summary type="html">&lt;p&gt;把之前用 Flask 架的抽籤網站改用 Django 實作，也藉這個機會比較一下兩個 Framework 設計概念的不同。&lt;/p&gt;</summary><content type="html">&lt;h4 id="_1"&gt;前情提要&lt;/h4&gt;
 &lt;p&gt;我把 LoveLive! 兩季看完了！μ&amp;rsquo;s 在第一季的成長充滿感動啊。&lt;strong&gt;\真姫最高/&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;……呃好啦，之前講了&lt;a href="../../09/flask-draw-member"&gt;用 Flask 去架一個抽籤網站&lt;/a&gt;。不過我們最終的目標是用 Django 嘛，所以接下來就要改寫。也藉這個機會比較一下兩個 Framework 設計概念的不同（&lt;del&gt;例如 Django 一開始寫有多冗&lt;/del&gt;、&lt;del&gt;Flask 寫到最後有多冗&lt;/del&gt;）。&lt;/p&gt;
 &lt;h3 id="from-flask-to-django"&gt;From Flask to Django&lt;/h3&gt;
@@ -2937,7 +2832,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;一個 Django 由一個 project 和很多個 apps 所組成。每個 app 就專注在網站的某個功能上，各自包著各自需要的 database schema、template、view logics。這樣的好處是同樣的功能就不用重寫，同時在很大的網站時這樣的結構有助於管理運作的邏輯。&lt;/p&gt;
 &lt;h4 id="django-server"&gt;Django server&lt;/h4&gt;
 &lt;p&gt;先把 Django 跑起來看看吧。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python manage.py runserver
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;python manage.py runserver
 &lt;span class="go"&gt;...&lt;/span&gt;
 &lt;span class="go"&gt;Django version 1.8.5, using settings &amp;#39;draw_site.settings&amp;#39;&lt;/span&gt;
 &lt;span class="go"&gt;Starting development server at http://127.0.0.1:8000/&lt;/span&gt;
@@ -3016,7 +2911,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;在之前的例子可以知道，我們會先設計一個資料庫該存什麼東西，整個網站流程會怎麼用這些資料，這些形成 table schema。但是隨著時間，可能網站有新的功能，很難說完全不去更動 schema。&lt;/p&gt;
 &lt;p&gt;更動 schema 不是件簡單的事，如果是上 production 的網站，資料庫會有運作以來累積的資料，總不能 schema 改了這些資料就丟掉吧？而且在網站開發的時候，在不同版本的（或不同人開發的）code 就可能有不同的 schema。要怎麼確保 code 與 database 的狀態就要靠 migration。&lt;/p&gt;
 &lt;p&gt;……一開始就這麼複雜？好啦我們的例子沒有用到 migration 大多數的功能，只有用它 initiate database。內建的 app 都有自己的 database schema，可以用它把資料庫的 table 建出來。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python manage.py migrate
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;python manage.py migrate
 &lt;span class="go"&gt;Operations to perform:&lt;/span&gt;
 &lt;span class="go"&gt;  Synchronize unmigrated apps: messages, staticfiles&lt;/span&gt;
 &lt;span class="go"&gt;  Apply all migrations: sessions, auth, contenttypes, admin&lt;/span&gt;
@@ -3081,7 +2976,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 
 &lt;p&gt;概念也很簡單，把要的 view function 從 app import 進來（所以 app 目錄是個 Python module，底下會 &lt;code&gt;__init__.py&lt;/code&gt;），給一個 regex 表示的路徑，後面放上處理 function 以及一個 optional 的名字，這個名字就代表了這個 URL 路徑，之後可以反查。&lt;/p&gt;
 &lt;p&gt;測一下確認設定都是正確的。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; curl -XGET &lt;span class="s2"&gt;&amp;quot;localhost:8000&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;curl -XGET &lt;span class="s2"&gt;&amp;quot;localhost:8000&amp;quot;&lt;/span&gt;
 &lt;span class="go"&gt;&amp;lt;p&amp;gt;Hello World!&amp;lt;/p&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -3164,7 +3059,7 @@ urlpatterns = [
 &lt;h4 id="migration-the-tracker-of-model-changes"&gt;Migration the tracker of model changes&lt;/h4&gt;
 &lt;p&gt;多說無用，馬上來試一試。&lt;/p&gt;
 &lt;p&gt;……等等，想到 migration 了嗎？每次更動 database model 都要跑 migration，確保 code 與資料庫狀態一致。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python manage.py makemigrations draw_member
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;python manage.py makemigrations draw_member
 &lt;span class="go"&gt;python manage.py makemigrations draw_member&lt;/span&gt;
 &lt;span class="go"&gt;Migrations for &amp;#39;draw_member&amp;#39;:&lt;/span&gt;
 &lt;span class="go"&gt;  0001_initial.py:&lt;/span&gt;
@@ -3208,7 +3103,7 @@ urlpatterns = [
 
 &lt;p&gt;注意到 Django ORM 自動幫我們加了 &lt;code&gt;id&lt;/code&gt; 這個 primary key，等等就會用到。Migration 裡面的細節等對 Django 更熟了之後就能慢慢了解了。&lt;/p&gt;
 &lt;p&gt;有了新的 migration 就要同步資料庫的狀態，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python manage.py migrate
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;python manage.py migrate
 &lt;span class="go"&gt;...&lt;/span&gt;
 &lt;span class="go"&gt;Running migrations:&lt;/span&gt;
 &lt;span class="go"&gt;  Rendering model states... DONE&lt;/span&gt;
@@ -3313,7 +3208,7 @@ In [9]: h1.save()
 
 
 &lt;p&gt;當然一開始我們可以暴力把 &lt;code&gt;db.sqlite3&lt;/code&gt; 整個刪掉再重新 &lt;code&gt;python manage.py migrate&lt;/code&gt; 一次就可以讓 database 對應的 table 都建立好，不過只適用於 SQLite 而已。或者，正確的「清空資料庫」做法是用 &lt;code&gt;flush&lt;/code&gt; 指令，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python manage.py flush
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;python manage.py flush
 &lt;span class="go"&gt;You have requested a flush of the database.&lt;/span&gt;
 &lt;span class="go"&gt;This will IRREVERSIBLY DESTROY all data currently in the &amp;#39;draw_site/db.sqlite3&amp;#39; database,&lt;/span&gt;
 &lt;span class="go"&gt;and return each table to an empty state.&lt;/span&gt;
@@ -3383,7 +3278,7 @@ In [4]: for m in members:
 
 
 &lt;p&gt;我們可以用 &lt;code&gt;python manage.py flush&lt;/code&gt; 把資料庫清掉，模擬資料的讀入。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; python manage.py loaddata anime_members.yaml
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;python manage.py loaddata anime_members.yaml
 &lt;span class="go"&gt;Installed 14 object(s) from 1 fixture(s)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -3541,7 +3436,7 @@ In [4]: for m in members:
 
 &lt;p&gt;用 ORM 寫起來比 raw SQL 乾淨多了，不過一開始要把對應的 function 都記起來就是。
 馬上測試一下，一樣偷懶先不去寫 template。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; curl -XGET &lt;span class="s2"&gt;&amp;quot;localhost:8000/draw/?group=ALL&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;curl -XGET &lt;span class="s2"&gt;&amp;quot;localhost:8000/draw/?group=ALL&amp;quot;&lt;/span&gt;
 &lt;span class="go"&gt;&amp;lt;p&amp;gt;小泉 花陽（團體：μ&amp;#39;s）&amp;lt;/p&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -3896,7 +3791,7 @@ class DrawForm(forms.Form):
     &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;csrf_token&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
     &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;input&lt;/span&gt; &lt;span class="na"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;submit&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;value&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Submit&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
   &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;form&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="django"></category><category term="sqlite"></category><category term="python"></category></entry><entry><title>Datetime in SQLite and Python</title><link href="https://blog.liang2.tw/posts/2015/09/datetime-sqlite/" rel="alternate"></link><published>2015-09-28T12:00:00-05:00</published><updated>2015-09-28T12:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-09-28:/posts/2015/09/datetime-sqlite/</id><summary type="html">&lt;p&gt;整理在 Python 中處理時區的問題，並如何自 SQLite 存取考慮時區的時間&lt;/p&gt;</summary><content type="html">&lt;p&gt;要正確處理時間並不容易。承接&lt;a href="../flask-draw-member"&gt;我們先前的例子&lt;/a&gt;，其實是直接把時間轉換出來的字串存在 SQLite 裡。這有幾個問題。&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="django"></category><category term="sqlite"></category><category term="python"></category></entry><entry><title>Datetime in SQLite and Python</title><link href="https://blog.liang2.tw/posts/2015/09/datetime-sqlite/" rel="alternate"></link><published>2015-09-28T12:00:00-05:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-09-28:/posts/2015/09/datetime-sqlite/</id><summary type="html">&lt;p&gt;整理在 Python 中處理時區的問題，並如何自 SQLite 存取考慮時區的時間&lt;/p&gt;</summary><content type="html">&lt;p&gt;要正確處理時間並不容易。承接&lt;a href="../flask-draw-member"&gt;我們先前的例子&lt;/a&gt;，其實是直接把時間轉換出來的字串存在 SQLite 裡。這有幾個問題。&lt;/p&gt;
 &lt;p&gt;首先是時區的問題。我們直接把 server 所在時區的時間存到資料庫去，台北的時區為 &lt;a href="https://en.wikipedia.org/wiki/Asia/Taipei"&gt;Asia/Taipei&lt;/a&gt; (UTC+8)。如果今天 server 跑到另一個時區，例如東京 Asia/Tokyo (UTC+9) 好了，這時候資料庫裡就包含了兩個時區的時間，但因為是字串是完全看不出差異的。&lt;/p&gt;
 &lt;p&gt;再來用字串存時間也有一些問題。首先是排序，雖然我們的例子是能正確的排序，但如果時間格式換了（像 &lt;code&gt;%H:%M:%S %Y-%m-%d&lt;/code&gt;）那就不一定。再來可以看到後續想處理時間就會比較複雜。不過這一部份是因為 SQLite 沒有專門處理日期時間的資料型態，像 PostgreSQL 就能看得懂。&lt;/p&gt;
 &lt;p&gt;所以想要正確處理時間有幾個要點：&lt;/p&gt;
@@ -4193,19 +4088,8 @@ class DrawForm(forms.Form):
 &lt;h3 id="_1"&gt;總結&lt;/h3&gt;
 &lt;p&gt;時區真的很煩，尤其是很多地方不一定都完整支援時區，最好的情況還是用 UTC 溝通，只有在真的需要時再轉換成當地時間。&lt;/p&gt;
 &lt;p&gt;如果大家對時區很有興趣，不久前 &lt;a href="https://www.python.org/dev/peps/pep-0495/"&gt;PEP 495&lt;/a&gt; 已經被接受，沒有意外應該會出現在 Python 3.6 裡面，它處理的是日光節約時間的問題。（感覺在臺灣對日光節約時間完全沒有概念啊）&lt;/p&gt;
-&lt;p&gt;不得不說要正確處理時間…很麻煩啊。&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="datetime"></category><category term="pytz"></category><category term="sqlite"></category><category term="python"></category></entry><entry><title>用 Flask 與 SQLite 架抽籤網站</title><link href="https://blog.liang2.tw/posts/2015/09/flask-draw-member/" rel="alternate"></link><published>2015-09-28T12:00:00-05:00</published><updated>2015-09-28T12:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-09-28:/posts/2015/09/flask-draw-member/</id><summary type="html">&lt;p&gt;為了實驗室的專題生而寫。&lt;/p&gt;
-&lt;p&gt;目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先操作比較簡單的才好上手。所以這邊講的並不是 best practice，但使用最少（底層）的知識與工具。如果一開始讓太多套件（像 SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;本篇文章非常長，應該沒辦法幾分鐘內讀完。對象是初學者學習簡單網站架設。&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;這個專案的目標：因為大家 meeting 的時候都不問問題，教授需要一個抽籤點人問問題的工具。我們實驗室有分成幾個組別，所以抽籤的時候也要能針對單個組別抽。&lt;/p&gt;
-&lt;p&gt;以下使用 &lt;a href="https://zh.wikipedia.org/wiki/LoveLive!"&gt;LoveLive!&lt;/a&gt; 還有 &lt;a href="https://zh.wikipedia.org/wiki/K-ON！輕音部"&gt;K-ON!&lt;/a&gt; 的成員來當例子。&lt;strong&gt;先聲明我兩個動畫都沒有看過，如果有什麼名字打錯請告訴我，絕對不是故意的。&lt;/strong&gt;（2016-06-14 更新：我把兩個動畫都看完了！）&lt;/p&gt;
-&lt;div class="toc"&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="#_1"&gt;資料設計&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#_2"&gt;網站架構規劃&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#_3"&gt;實作環境設定&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#python"&gt;Python 環境&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#flaskjinja2"&gt;安裝 Flask、Jinja2 等套件&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#sqlite-database"&gt;SQLite …&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;為了實驗室的專題生而寫。&lt;/p&gt;
+&lt;p&gt;不得不說要正確處理時間…很麻煩啊。&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="datetime"></category><category term="pytz"></category><category term="sqlite"></category><category term="python"></category></entry><entry><title>用 Flask 與 SQLite 架抽籤網站</title><link href="https://blog.liang2.tw/posts/2015/09/flask-draw-member/" rel="alternate"></link><published>2015-09-28T12:00:00-05:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-09-28:/posts/2015/09/flask-draw-member/</id><summary type="html">&lt;p&gt;為了實驗室的專題生而寫。&lt;/p&gt;
+&lt;p&gt;目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先操作比較簡單的才好上手。所以這邊講 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;為了實驗室的專題生而寫。&lt;/p&gt;
 &lt;p&gt;目標其實是 Django + Django ORM + PostgreSQL，不過一次接觸太多會有反效果，先操作比較簡單的才好上手。所以這邊講的並不是 best practice，但使用最少（底層）的知識與工具。如果一開始讓太多套件（像 SQLAlchemy）做掉了細節部份，反而不太能掌握到重要的概念以及為什麼需要這些套件。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;本篇文章非常長，應該沒辦法幾分鐘內讀完。對象是初學者學習簡單網站架設。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;這個專案的目標：因為大家 meeting 的時候都不問問題，教授需要一個抽籤點人問問題的工具。我們實驗室有分成幾個組別，所以抽籤的時候也要能針對單個組別抽。&lt;/p&gt;
@@ -5052,7 +4936,7 @@ $  &lt;span class="c1"&gt;# 前面的 (VENV) 會消失&lt;/span&gt;
 &lt;p&gt;其實 Flask 相關的設定通常放在 &lt;code&gt;app.config&lt;/code&gt; 裡面，不過我們的例子沒差。&amp;#160;&lt;a class="footnote-backref" href="#fnref:flask-config" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="flask"></category><category term="sqlite"></category><category term="jinja2"></category><category term="python"></category></entry><entry><title>清除 ^H</title><link href="https://blog.liang2.tw/posts/2015/09/remove-%5EH/" rel="alternate"></link><published>2015-09-27T02:28:00-05:00</published><updated>2015-09-27T02:28:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-09-27:/posts/2015/09/remove-^H/</id><summary type="html">&lt;p&gt;中文輸入我用嘸蝦米，在打中英文切換時候，很容易打出 &lt;code&gt;\x08&lt;/code&gt; 這東西，在 vim 就會顯示成 &lt;code&gt;^H&lt;/code&gt;，功能是 &lt;kbd&gt;Backspace&lt;/kbd&gt;，但在一般 GUI 環境裡，可能就會因為它而把前面的字吃掉。&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="flask"></category><category term="sqlite"></category><category term="jinja2"></category><category term="python"></category></entry><entry><title>清除 ^H</title><link href="https://blog.liang2.tw/posts/2015/09/remove-%5EH/" rel="alternate"></link><published>2015-09-27T02:28:00-05:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-09-27:/posts/2015/09/remove-^H/</id><summary type="html">&lt;p&gt;中文輸入我用嘸蝦米，在打中英文切換時候，很容易打出 &lt;code&gt;\x08&lt;/code&gt; 這東西，在 vim 就會顯示成 &lt;code&gt;^H&lt;/code&gt;，功能是 &lt;kbd&gt;Backspace&lt;/kbd&gt;，但在一般 GUI 環境裡，可能就 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;中文輸入我用嘸蝦米，在打中英文切換時候，很容易打出 &lt;code&gt;\x08&lt;/code&gt; 這東西，在 vim 就會顯示成 &lt;code&gt;^H&lt;/code&gt;，功能是 &lt;kbd&gt;Backspace&lt;/kbd&gt;，但在一般 GUI 環境裡，可能就會因為它而把前面的字吃掉。&lt;/p&gt;
 &lt;p&gt;因此今天寫了個小腳本可以把清掉當目錄底下的文字檔的 &lt;code&gt;^H&lt;/code&gt;：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ag -l &lt;span class="s1"&gt;&amp;#39;\x08&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; xargs sed -i &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;s/\x08//&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -5065,38 +4949,8 @@ ag -l &lt;span class="s1"&gt;&amp;#39;\x08&amp;#39;&lt;/span&gt; &lt;span class=
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;用 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;中文輸入我用嘸蝦米，在打中英文切換時候，很容易打出 &lt;code&gt;\x08&lt;/code&gt; 這東西，在 vim 就會顯示成 &lt;code&gt;^H&lt;/code&gt;，功能是 &lt;kbd&gt;Backspace&lt;/kbd&gt;，但在一般 GUI 環境裡，可能就會因為它而把前面的字吃掉。&lt;/p&gt;
-&lt;p&gt;因此今天寫了個小腳本可以把清掉當目錄底下的文字檔的 &lt;code&gt;^H&lt;/code&gt;：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ag -l &lt;span class="s1"&gt;&amp;#39;\x08&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; xargs sed -i &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;s/\x08//&amp;#39;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&lt;a href="https://github.com/ggreer/the_silver_searcher"&gt;ag&lt;/a&gt; 能夠換成比較慢但內建就有的 grep，參數兩者是相容的。&lt;/p&gt;
-&lt;p&gt;如果要順便印出改了哪些檔案的話：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Found ^H in the following files:&amp;#39;&lt;/span&gt;
-ag -l &lt;span class="s1"&gt;&amp;#39;\x08&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; tee /dev/fd/2 &lt;span class="p"&gt;|&lt;/span&gt; xargs sed -i &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;s/\x08//&amp;#39;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;用 tee 把 stdout 導向到 stderr 還蠻有趣的，以前都不知道這樣用。&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category></entry><entry><title>使用 Zotero 管理文獻書目</title><link href="https://blog.liang2.tw/posts/2015/09/ref-management-zotero/" rel="alternate"></link><published>2015-09-26T00:00:00-05:00</published><updated>2015-09-26T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-09-26:/posts/2015/09/ref-management-zotero/</id><summary type="html">&lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; Use Zotero to sync references, webpages, and everything.&lt;/p&gt;
-&lt;p&gt;一開始會想要收集 reference 無非是做研究。寫論文、平常報告進度需要放上 citation，而在學術界最常就是 cite 別人的期刊。期刊 citation 有它一定的格式，而且每個期刊用的格式不同，手打容易錯，也很難維護。所以最好的方式就是把期刊完整的資訊存在資料庫，然後引用的時候再插到文件裡面。&lt;/p&gt;
-&lt;p&gt;整個問題就變成怎麼管理這些期刊資訊。&lt;/p&gt;
-&lt;div class="toc"&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="#bibtex-is-for-latex"&gt;BibTex is for LaTeX&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#bibdesk"&gt;BibDesk&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href="#endnote-is-for-word"&gt;EndNote is for Word&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#zotero-bridges-the-both-world"&gt;Zotero bridges the both world&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#zotfile"&gt;Zotfile&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#how-to-sync-data-storage"&gt;How to sync data storage&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href="#_1"&gt;總結&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;h3 id="bibtex-is-for-latex"&gt;BibTex …&lt;/h3&gt;</summary><content type="html">&lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; Use Zotero to sync references, webpages, and everything.&lt;/p&gt;
+&lt;p&gt;用 tee 把 stdout 導向到 stderr 還蠻有趣的，以前都不知道這樣用。&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category></entry><entry><title>使用 Zotero 管理文獻書目</title><link href="https://blog.liang2.tw/posts/2015/09/ref-management-zotero/" rel="alternate"></link><published>2015-09-26T00:00:00-05:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-09-26:/posts/2015/09/ref-management-zotero/</id><summary type="html">&lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; Use Zotero to sync references, webpages, and everything.&lt;/p&gt;
+&lt;p&gt;一開始會想要收集 reference 無非是做研究。寫論文、平常報告進度需要放上 citation，而在學術界最常就是 cite 別 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; Use Zotero to sync references, webpages, and everything.&lt;/p&gt;
 &lt;p&gt;一開始會想要收集 reference 無非是做研究。寫論文、平常報告進度需要放上 citation，而在學術界最常就是 cite 別人的期刊。期刊 citation 有它一定的格式，而且每個期刊用的格式不同，手打容易錯，也很難維護。所以最好的方式就是把期刊完整的資訊存在資料庫，然後引用的時候再插到文件裡面。&lt;/p&gt;
 &lt;p&gt;整個問題就變成怎麼管理這些期刊資訊。&lt;/p&gt;
 &lt;div class="toc"&gt;
@@ -5198,17 +5052,7 @@ ag -l &lt;span class="s1"&gt;&amp;#39;\x08&amp;#39;&lt;/span&gt; &lt;span class=
 &lt;p&gt;其中 data storage 就在底下的 &lt;code&gt;storage&lt;/code&gt; 資料夾。官網建議不要把 Zotero 的 SQLite database 等都同步在 Dropbox 上，所以只要把這個資料移到 Dropbox 再 soft link 回來就可以了。&lt;/p&gt;
 &lt;h3 id="_1"&gt;總結&lt;/h3&gt;
 &lt;p&gt;&lt;a href="https://www.zotero.org/"&gt;Zotero&lt;/a&gt; 是個實用並且跟瀏覽器整合的文獻（書目）管理工具。但它也能處理像網頁等其他網路上也很常見的格式，也能與既有的工具、文件編輯軟體結合，並有同步功能，非常適合作為外部記憶庫。&lt;/p&gt;
-&lt;p&gt;（應該要用英文寫的，什麼時候才會有第一篇英文 blog post QAQ）&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="zotero"></category></entry><entry><title>PNG Optimizer</title><link href="https://blog.liang2.tw/posts/2015/09/png-optim/" rel="alternate"></link><published>2015-09-22T00:00:00-05:00</published><updated>2015-09-22T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-09-22:/posts/2015/09/png-optim/</id><summary type="html">&lt;p&gt;部落格剛成立總是特別興奮，測了一下瀏覽像這樣的網站要用多少頻寬。首頁能壓在 600KB 左右，因為文章 summary 裡面暫時還沒圖。不過像部落格設定這篇文章，裡面有幾張螢幕截圖的就要花快 2MB 傳。&lt;/p&gt;
-&lt;p&gt;就想了一下圖檔有什麼壓縮方式。如果是 JPG 的話，&lt;a href="https://github.com/tjko/jpegoptim"&gt;jpegoptim&lt;/a&gt; 簡單又有效；如果是 PNG 的話，以前都是用 &lt;a href="http://optipng.sourceforge.net/"&gt;OptiPNG&lt;/a&gt;，但效果有限，而且是無損壓縮。在螢幕截圖的情況，我倒不介意幾個像素的顏色稍微不一樣（其實人眼無法分辨）&lt;/p&gt;
-&lt;p&gt;於是，需要比較看看市面找得到的幾種 PNG 壓縮方式。很碰巧找到 &lt;a href="http://css-ig.net/png-tools-overview.html"&gt;http://css-ig.net/png-tools-overview.html&lt;/a&gt; 專講 PNG 優化的比較，就挑了幾款來試。&lt;/p&gt;
-&lt;p&gt;直接把結果整理成下表：&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align="left"&gt;Filename&lt;/th&gt;
-&lt;th align="right"&gt;Original size&lt;/th&gt;
-&lt;th align="right"&gt;&lt;a href="http://optipng.sourceforge.net/"&gt;OptiPNG&lt;/a&gt; (lossless)&lt;/th&gt;
-&lt;th align="right"&gt;&lt;a href="https://github.com/google/zopfli"&gt;Zopfli&lt;/a&gt; (lossless …&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;/table&gt;</summary><content type="html">&lt;p&gt;部落格剛成立總是特別興奮，測了一下瀏覽像這樣的網站要用多少頻寬。首頁能壓在 600KB 左右，因為文章 summary 裡面暫時還沒圖。不過像部落格設定這篇文章，裡面有幾張螢幕截圖的就要花快 2MB 傳。&lt;/p&gt;
+&lt;p&gt;（應該要用英文寫的，什麼時候才會有第一篇英文 blog post QAQ）&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="zotero"></category></entry><entry><title>PNG Optimizer</title><link href="https://blog.liang2.tw/posts/2015/09/png-optim/" rel="alternate"></link><published>2015-09-22T00:00:00-05:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-09-22:/posts/2015/09/png-optim/</id><summary type="html">&lt;p&gt;部落格剛成立總是特別興奮，測了一下瀏覽像這樣的網站要用多少頻寬。首頁能壓在 600KB 左右，因為文章 summary 裡面暫時還沒圖 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;部落格剛成立總是特別興奮，測了一下瀏覽像這樣的網站要用多少頻寬。首頁能壓在 600KB 左右，因為文章 summary 裡面暫時還沒圖。不過像部落格設定這篇文章，裡面有幾張螢幕截圖的就要花快 2MB 傳。&lt;/p&gt;
 &lt;p&gt;就想了一下圖檔有什麼壓縮方式。如果是 JPG 的話，&lt;a href="https://github.com/tjko/jpegoptim"&gt;jpegoptim&lt;/a&gt; 簡單又有效；如果是 PNG 的話，以前都是用 &lt;a href="http://optipng.sourceforge.net/"&gt;OptiPNG&lt;/a&gt;，但效果有限，而且是無損壓縮。在螢幕截圖的情況，我倒不介意幾個像素的顏色稍微不一樣（其實人眼無法分辨）&lt;/p&gt;
 &lt;p&gt;於是，需要比較看看市面找得到的幾種 PNG 壓縮方式。很碰巧找到 &lt;a href="http://css-ig.net/png-tools-overview.html"&gt;http://css-ig.net/png-tools-overview.html&lt;/a&gt; 專講 PNG 優化的比較，就挑了幾款來試。&lt;/p&gt;
 &lt;p&gt;直接把結果整理成下表：&lt;/p&gt;
@@ -5341,15 +5185,8 @@ make zopflipng
 &lt;h3 id="truepng"&gt;沒有測的 TruePNG&lt;/h3&gt;
 &lt;p&gt;在原始網站中有提到 &lt;a href="http://css-ig.net/articles/truepng"&gt;TruePNG&lt;/a&gt; 表現很好，但它不是 open source 而且好像只能在 Windows 上跑，那就算了。&lt;/p&gt;
 &lt;h3 id="_1"&gt;結論&lt;/h3&gt;
-&lt;p&gt;以後沒事截圖都會用 pngquant 壓縮一下，完全不能有色差的考慮從 OptiPNG 改為 Zopfli。&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="png"></category></entry><entry><title>設定部落格筆記</title><link href="https://blog.liang2.tw/posts/2015/09/blog-internals/" rel="alternate"></link><published>2015-09-21T00:00:00-05:00</published><updated>2015-09-21T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-09-21:/posts/2015/09/blog-internals/</id><summary type="html">&lt;p&gt;Blog 對我來說，最重要的就是書寫的舒適度。&lt;/p&gt;
-&lt;p&gt;一開始在設定 github CNAME 的時候就訂為 &lt;code&gt;blog.liang2.tw&lt;/code&gt;，但一直以來都只是個一頁式的自我介紹&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;，用 &lt;a href="http://semantic-ui.com/"&gt;SemanticUI&lt;/a&gt; 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。&lt;/p&gt;
-&lt;p&gt;整理了一下有幾個目標：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;只考慮用 static site 因為不想維護 server，而且 blog 也沒什要炫的，現在光用前端就可以做到很多互動功能&lt;/li&gt;
-&lt;li&gt;最好 site generator 是用 Python 實作，這樣想要調整它的功能時，比較懂怎麼改 &lt;/li&gt;
-&lt;li&gt;能支援 markdown 和 reStructuredText 最好&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;篩完之後選項也沒幾個：&lt;a href="http://docs.getpelican.com/"&gt;Pelican&lt;/a&gt;、&lt;a href="http://sphinx-doc.org/"&gt;Sphinx&lt;/a&gt;，但 Sphinx 可能對 blog 開發的功能比較少，最多人用的大概就 Pelican …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Blog 對我來說，最重要的就是書寫的舒適度。&lt;/p&gt;
+&lt;p&gt;以後沒事截圖都會用 pngquant 壓縮一下，完全不能有色差的考慮從 OptiPNG 改為 Zopfli。&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="png"></category></entry><entry><title>設定部落格筆記</title><link href="https://blog.liang2.tw/posts/2015/09/blog-internals/" rel="alternate"></link><published>2015-09-21T00:00:00-05:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-09-21:/posts/2015/09/blog-internals/</id><summary type="html">&lt;p&gt;Blog 對我來說，最重要的就是書寫的舒適度。&lt;/p&gt;
+&lt;p&gt;一開始在設定 github CNAME 的時候就訂為 &lt;code&gt;blog.liang2.tw&lt;/code&gt;，但一直以來都只是個一頁式的自我介 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Blog 對我來說，最重要的就是書寫的舒適度。&lt;/p&gt;
 &lt;p&gt;一開始在設定 github CNAME 的時候就訂為 &lt;code&gt;blog.liang2.tw&lt;/code&gt;，但一直以來都只是個一頁式的自我介紹&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;，用 &lt;a href="http://semantic-ui.com/"&gt;SemanticUI&lt;/a&gt; 手刻而成。不過部落格如果每篇文章都還要手刻的話，大概就不會有力氣再寫內容了。&lt;/p&gt;
 &lt;p&gt;整理了一下有幾個目標：&lt;/p&gt;
 &lt;ul&gt;
@@ -5403,12 +5240,12 @@ Title: Hello World
 Date: 2016-01-16 18:00
 Tags: world, programming
 Category: test
-Slug: hello-world
----
+&lt;span class="gu"&gt;Slug: hello-world&lt;/span&gt;
+&lt;span class="gu"&gt;---&lt;/span&gt;
 
 Hello [World]
 
-[World]: https://en.wikipedia.org/wiki/World
+[&lt;span class="nl"&gt;World&lt;/span&gt;]: &lt;span class="na"&gt;https://en.wikipedia.org/wiki/World&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -5528,24 +5365,9 @@ Hello World_
 &lt;/div&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="pelican"></category><category term="blog"></category><category term="python"></category></entry><entry><title>部落格第一篇</title><link href="https://blog.liang2.tw/posts/2015/09/blog-first-post/" rel="alternate"></link><published>2015-09-20T00:00:00-05:00</published><updated>2015-09-20T00:00:00-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-09-20:/posts/2015/09/blog-first-post/</id><summary type="html">&lt;p&gt;所以呢，這就是我新的部落格。&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="pelican"></category><category term="blog"></category><category term="python"></category></entry><entry><title>部落格第一篇</title><link href="https://blog.liang2.tw/posts/2015/09/blog-first-post/" rel="alternate"></link><published>2015-09-20T00:00:00-05:00</published><updated>2021-03-01T20:49:49-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-09-20:/posts/2015/09/blog-first-post/</id><summary type="html">&lt;p&gt;所以呢，這就是我新的部落格。&lt;/p&gt;
 &lt;p&gt;我一直都有記錄自己的習慣。國中有週記；高中有週記；大一的時候有 Facebook，大二之後則有個版。
-記錄自己其實只要純文字就夠了。所以，這個部落格暫時也不會拿來做這件事。&lt;/p&gt;
-&lt;p&gt;不過純文字有時候還是蠻麻煩的，像程式的筆記，或一些圖多的文章（例如：宅物），
-用純文字記就很麻煩，可讀性非常差，再來自己編輯、排版上也很困難，多個面向加在一起就成為很大的問題。&lt;/p&gt;
-&lt;p&gt;於是有了建自己部落格的想法。&lt;/p&gt;
-&lt;h3 id="_1"&gt;會有什麼內容？&lt;/h3&gt;
-&lt;p&gt;目前至少有這些東西：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;程式開發心得&lt;/li&gt;
-&lt;li&gt;研究的筆記&lt;/li&gt;
-&lt;li&gt;社群（Ex PyCon）的記錄&lt;/li&gt;
-&lt;li&gt;宅物，主要是動畫&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;另外可能會有一些的英文文章，因為我也要申請學校。這應該可以用 Tag 或者 Category 來篩選。不過主要應該是個技術性的部落格。&lt;/p&gt;
-&lt;h3 id="_2"&gt;部落格之從前種種譬如黑歷史&lt;/h3&gt;
-&lt;p&gt;我目前記憶中，第一個部落格是國中用的 MSN/Hotmail。但在我無法登入 hotmail 信箱帳號被凍結的同時，它應該也消失在這個世界上了。&lt;/p&gt;
-&lt;p&gt;第二個部落格應該是剛上高中的 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;所以呢，這就是我新的部落格。&lt;/p&gt;
+記 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;所以呢，這就是我新的部落格。&lt;/p&gt;
 &lt;p&gt;我一直都有記錄自己的習慣。國中有週記；高中有週記；大一的時候有 Facebook，大二之後則有個版。
 記錄自己其實只要純文字就夠了。所以，這個部落格暫時也不會拿來做這件事。&lt;/p&gt;
 &lt;p&gt;不過純文字有時候還是蠻麻煩的，像程式的筆記，或一些圖多的文章（例如：宅物），
