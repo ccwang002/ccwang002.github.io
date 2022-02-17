@@ -23,10 +23,12 @@
   src: local('FiraSans Bold'), local('FiraSans-Bold'), url(../fonts/FiraSans-Bold.woff) format('woff');
 }
 @font-face {
-  font-family: 'FiraMono';
+  font-family: 'Fira Code';
   font-style: normal;
-  font-weight: 400;
-  src: local('FiraMono'), local('FiraMono-Regular'), url(../fonts/FiraMono-Regular.woff) format('woff');
+  font-weight: 300 700;
+  src: local('Fira Code VF'), local('Fira Code-VF'),
+    url(../fonts/FiraCode-VF.woff) format('woff-variations'),
+    url(../fonts/FiraCode-VF.woff2) format('woff2-variations');
 }
 
 @font-face {
@@ -69,7 +71,10 @@ hr {
 }
 mark { background: #ff0; color: #000; }
 code, kbd, pre,
-samp { font-family: FiraMono, monospace, serif; font-size: 1em; }
+samp, tt {
+    font-family: 'Fira Code', monospace, sans-serif;
+    font-feature-settings: "calt", "ss01", "ss03", "ss05", "ss08";
+}
 pre {
     font-size: 0.85em;
     line-height: 1.6em;
@@ -348,7 +353,6 @@ mark {
 
 code, tt {
     padding: 1px 3px;
-    font-family: 'FiraMono', Inconsolata, monospace, sans-serif;
     font-size: 0.85em;
     white-space: pre-wrap;
     word-break: break-all;
