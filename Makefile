@@ -86,7 +86,9 @@ create_current_blog_dir:
 	test -d $(CURRENT_BLOG_DIR) || mkdir -p $(CURRENT_BLOG_DIR)
 
 post: create_current_blog_dir
-	touch $(CURRENT_BLOG_DIR)/new_post.md
+	sed s/'$$TODAY_DATE'/$(shell date +"%Y-%m-%d")/g \
+		< ./blog_post_template.md \
+		> $(CURRENT_BLOG_DIR)/new_post.md
 	open $(CURRENT_BLOG_DIR)/new_post.md
 
 open: create_current_blog_dir
