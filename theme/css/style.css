@@ -130,51 +130,6 @@ table { border-collapse: collapse; border-spacing: 0; }
    1. Icons - Sets up the icon font and respective classes
    ========================================================================== */
 
-/* Import the font file with the icons in it */
-@font-face {
-    font-family: 'icons';
-    src:url('../fonts/icons.eot');
-    src:url('../fonts/icons.eot?#iefix') format('embedded-opentype'),
-        url('../fonts/icons.woff') format('woff'),
-        url('../fonts/icons.ttf') format('truetype'),
-        url('../fonts/icons.svg#icons') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-
-/* Apply these base styles to all icons */
-.icon-feed:before,
-.icon-twitter:before,
-.icon-google-plus:before,
-.icon-facebook:before {
-    font-family: 'icons';
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    text-decoration: none;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-size: 1.6em;
-}
-
-/* Each icon is created by inserting the corret character into the
-   content of the :before pseudo element. Like a boss. */
-.icon-feed:before {
-    content: "\e001";
-}
-.icon-twitter:before {
-    content: "\e002";
-    font-size: 1.8em;
-}
-.icon-google-plus:before {
-    content: "\e003";
-}
-.icon-facebook:before {
-    content: "\e004";
-}
 
 
 /* ==========================================================================
@@ -725,35 +680,19 @@ margin on the iframe, cause it breaks stuff. */
     max-width: 100vw;
 }
 
-/* The author credit area after the post */
+/* Comment section (utterances) */
 .post-footer {
-    position: relative;
     margin: 4rem 0 0 0;
-    padding: 4rem 0 0 0;
+    padding: 2rem 0 0 0;
     border-top: #EBF2F6 1px solid;
 }
 
-.post-footer h4 {
-    font-size: 1.8rem;
+.utterances {
+    max-width: 100%;
+}
+
+.utterances-frame {
     margin: 0;
-}
-
-.post-footer p {
-    margin: 1rem 0;
-    font-size: 1.4rem;
-    line-height: 1.6em;
-}
-
-.post-footer .share a {
-    font-size: 1.8rem;
-    display: inline-block;
-    margin: 1rem 1.6rem 1.6rem 0;
-    color: #BBC7CC;
-    text-decoration: none;
-}
-
-.post-footer .share a:hover {
-    color: #50585D;
 }
 
 
@@ -852,7 +791,6 @@ margin on the iframe, cause it breaks stuff. */
     margin-left: -15px;
     border: #EBF2F6 1px solid;
     text-align: center;
-    line-height: 2.4rem;
     border-radius: 50px;
     background: #fff;
     transition: box-shadow 0.5s;
@@ -864,7 +802,6 @@ margin on the iframe, cause it breaks stuff. */
     position: absolute;
     top: 6px;
     left: 6px;
-    font-weight: bold;
     transition: color 0.5s ease;
 }
 
@@ -875,47 +812,26 @@ margin on the iframe, cause it breaks stuff. */
 }
 
 .subscribe:hover:before {
-    color: #50585D;
-}
-
-/* CSS tooltip saying "Subscribe!" - initially hidden */
-.tooltip {
-    opacity:0;
+    color: #eeeeee;
     display: inline-block;
-    padding: 4px 8px 5px 8px;
-    position:absolute;
-    top: -23px;
-    left: -21px;
-    color: rgba(255,255,255,0.9);
-    font-size: 1.1rem;
-    line-height: 1em;
+}
+
+.subscribe::before {
+    content: attr(data-tooltip);
+    position: absolute;
     text-align: center;
-    background: #50585D;
-    border-radius:20px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-    transition: opacity 0.3s ease, top 0.3s ease;
-}
-
-/* The little chiclet arrow under the tooltip, pointing down */
-.tooltip:after {
-    content:"";
-    border-width:5px 5px 0 5px;
-    border-style:solid;
-    border-color: #50585D transparent;
-    display:block;
-    position:absolute;
-    bottom:-4px;
-    left:50%;
-    margin-left:-5px;
-    z-index: 220;
-    width:0;
-}
-
-/* On hover, show the tooltip! */
-.subscribe:hover .tooltip {
-    opacity: 1;
-    top: -33px;
-}
+    white-space: nowrap;
+    max-width: none;
+    top: -2.75rem;
+    left: -2rem;
+    font-size: 1rem;
+    padding: 4px 10px;
+    display: none;
+    background: #50585dd0;
+    border-radius: 5px;
+    transition: opacity 0.1s ease-out;
+    z-index: 1;
+  }
 
 
 /* ==========================================================================
@@ -996,23 +912,8 @@ margin on the iframe, cause it breaks stuff. */
     }
 
     .post-footer {
-        padding: 4rem 0;
+        padding: 1rem 0;
         text-align: center;
-    }
-
-    .post-footer .author {
-        margin: 0 0 2rem 0;
-        padding: 0 0 1.6rem 0;
-        border-bottom: #EBF2F6 1px dashed;
-    }
-
-    .post-footer .share {
-        position: static;
-        width: auto;
-    }
-
-    .post-footer .share a {
-        margin: 1.4rem 0.8rem 0 0.8rem;
     }
 
     .older-posts,

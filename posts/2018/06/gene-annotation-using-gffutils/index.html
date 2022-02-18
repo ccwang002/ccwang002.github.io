@@ -214,25 +214,26 @@
 <p>gffutils provides a SQLite-based gene annotation storage in Python. Though it may not be as feature complete as what user may get in R, it is highly customizable and can be easily integrated with other Python functions. Like the Bioconductor packages GenomicFeatures and EnsDb, they all use a SQLite database under the hood. As shown in <a href="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/">another post</a>, we can actually connect to those databases built by R packages directly, so user can access information from other sources such as UniProt isoforms and gene names.</p>
 <p>In my opinion, all the approaches mentioned above are always better than trying to bake one&rsquo;s own from scratch. Those packages are backed by numerous tests and are built from reliable or the original data sources. Besides multiple existing solutions in R and Python, one can always access the databases built by those packages from different languages, so it is quite unlikely to build something from scratch anyway.</p></section>
     <footer class="post-footer">
-    <section>
-        <h2>Discuss</h2>
-        <div id="disqus_thread"></div>
-        <script type="text/javascript">
-          var disqus_shortname = 'liang2';
-          var disqus_identifier = '/posts/2018/06/gene-annotation-using-gffutils/';
-          var disqus_url = 'https://blog.liang2.tw/posts/2018/06/gene-annotation-using-gffutils/';
-          (function() {
-              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
-              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-          })();
-      </script>
-    </section>
-    <footer>
+	<section>
+		<script src="https://utteranc.es/client.js"
+		repo="ccwang002/ccwang002.github.io"
+		issue-term="pathname"
+		label="Comment"
+		theme="github-light"
+		crossorigin="anonymous"
+		async>
+		</script>
+	</section>
+	</footer>
 </article>
 	</main>
 	<footer class="site-footer">
-		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
+		<a class="subscribe"
+			href="https://blog.liang2.tw/feeds/all.atom.xml"
+			data-tooltip="Atom feed"
+		>
+			<img src="https://blog.liang2.tw/theme/icons/feed.svg" alt="Atom feed">
+		</a>
 		<div class="inner">
 			<section>
 				Browse articles by
