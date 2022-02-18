@@ -87,26 +87,25 @@
 <p>其實如果看完自定 User 之後，寫好 User Model 不難，比較複雜的是像創建、修改 User 以及 admin 的設定。除了讀這個套件的 source code 之後，<a href="http://stackoverflow.com/questions/15012235">這串 Stack Overflow 討論</a>也提到了不同的實作方式。Django 這部份的 source code 蠻好讀的，也可以看一下。</p>
 <p>因為之後要做 Email 認証，應該會用 <a href="https://github.com/pennersr/django-allauth">django-allauth</a> 做。感覺很久沒發文了，應該要把文章拆短才對 XD</p></section>
     <footer class="post-footer">
-	<section>
-		<script src="https://utteranc.es/client.js"
-		repo="ccwang002/ccwang002.github.io"
-		issue-term="pathname"
-		label="Comment"
-		theme="github-light"
-		crossorigin="anonymous"
-		async>
-		</script>
-	</section>
-	</footer>
+    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2015/11/django-custom-user/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2015/11/django-custom-user/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
+    <footer>
 </article>
 	</main>
 	<footer class="site-footer">
-		<a class="subscribe"
-			href="https://blog.liang2.tw/feeds/all.atom.xml"
-			data-tooltip="Atom feed"
-		>
-			<img src="https://blog.liang2.tw/theme/icons/feed.svg" alt="Atom feed">
-		</a>
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
 		<div class="inner">
 			<section>
 				Browse articles by

@@ -173,26 +173,25 @@ WantedBy=multi-user.target
 <h3 id="_1">結論</h3>
 <p>如果要改用 conda 管理套件的話，只要在 systemd unit 那邊多加一行修改 $PATH，加入虛擬環境放執行檔的路徑，其餘的設定都與一般 Python 虛擬環境相同。這樣就搞定了。但這個問題花了我 1 個多小時……</p></section>
     <footer class="post-footer">
-	<section>
-		<script src="https://utteranc.es/client.js"
-		repo="ccwang002/ccwang002.github.io"
-		issue-term="pathname"
-		label="Comment"
-		theme="github-light"
-		crossorigin="anonymous"
-		async>
-		</script>
-	</section>
-	</footer>
+    <section>
+        <h2>Discuss</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'liang2';
+          var disqus_identifier = '/posts/2016/05/django-deploy-conda/';
+          var disqus_url = 'https://blog.liang2.tw/posts/2016/05/django-deploy-conda/';
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+    </section>
+    <footer>
 </article>
 	</main>
 	<footer class="site-footer">
-		<a class="subscribe"
-			href="https://blog.liang2.tw/feeds/all.atom.xml"
-			data-tooltip="Atom feed"
-		>
-			<img src="https://blog.liang2.tw/theme/icons/feed.svg" alt="Atom feed">
-		</a>
+		<a class="subscribe icon-feed" href="https://blog.liang2.tw/feeds/all.atom.xml"><span class="tooltip">Atom</span></a>
 		<div class="inner">
 			<section>
 				Browse articles by
