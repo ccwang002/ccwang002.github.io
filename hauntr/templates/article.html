@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block html_tag %}lang="{% if 'zh' in article.tags %}zh-Hant{% else %}{{ article.lang }}{% endif %}"{% endblock %}
+{% block html_tag %}lang="{% if 'zh' in article.tags and 'en' not in article.tags %}zh-Hant{% else %}{{ article.lang }}{% endif %}"{% endblock %}
 
 {% block title %}{{ article.title }}{% endblock %}
 
@@ -11,7 +11,7 @@
 {% endblock meta %}
 
 {% block og_locale %}
-<meta property="og:locale" content="{% if 'zh' in article.tags %}zh_TW{% elif 'en' in article.tags %}en_US{% else %}{{ article.lang }}{% endif %}"/>
+<meta property="og:locale" content="{% if 'zh' in article.tags and 'en' not in article.tags %}zh_TW{% elif 'en' in article.tags %}en_US{% else %}{{ article.lang }}{% endif %}"/>
 {% endblock og_locale %}
 
 {% block og %}
