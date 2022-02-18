@@ -17,6 +17,11 @@ Launch a local web server to serve the blog content at <http://localhost:8000>:
 
     make devserver
 
+Depoly the updates:
+
+    make github
+
+
 ### License
 The blog content is licensed under [Creative Commons Attribution 4.0 International License][CC BY 4.0]. In addition, the source code of this blog site is also licensed under MIT License. See the file `LICENSE` for details.
 

@@ -21,5 +21,12 @@ DELETE_OUTPUT_DIRECTORY = True
 
 # Following items are often useful when publishing
 
-DISQUS_SITENAME = "liang2"
+# utterances, comment system built on GitHub issues
+# https://utteranc.es/
+UTTERANCES_REPO = "ccwang002/ccwang002.github.io"
+UTTERANCES_ISSUE_TERM = "pathname"
+UTTERANCES_LABEL = "Comment"
+UTTERANCES_THEME = "github-light"
+
+
 # GOOGLE_ANALYTICS = ""

@@ -25,7 +25,7 @@ It is named after the Pokemon 'Haunter' because it is a modified version
 Features
 ========
 
-- Disqus
+- Utterances
 - Pygments
 - CSS minifying using webassets
 - Share buttons

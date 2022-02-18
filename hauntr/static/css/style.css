@@ -680,35 +680,19 @@ margin on the iframe, cause it breaks stuff. */
     max-width: 100vw;
 }
 
-/* The author credit area after the post */
+/* Comment section (utterances) */
 .post-footer {
-    position: relative;
     margin: 4rem 0 0 0;
-    padding: 4rem 0 0 0;
+    padding: 2rem 0 0 0;
     border-top: #EBF2F6 1px solid;
 }
 
-.post-footer h4 {
-    font-size: 1.8rem;
+.utterances {
+    max-width: 100%;
+}
+
+.utterances-frame {
     margin: 0;
-}
-
-.post-footer p {
-    margin: 1rem 0;
-    font-size: 1.4rem;
-    line-height: 1.6em;
-}
-
-.post-footer .share a {
-    font-size: 1.8rem;
-    display: inline-block;
-    margin: 1rem 1.6rem 1.6rem 0;
-    color: #BBC7CC;
-    text-decoration: none;
-}
-
-.post-footer .share a:hover {
-    color: #50585D;
 }
 
 
@@ -928,23 +912,8 @@ margin on the iframe, cause it breaks stuff. */
     }
 
     .post-footer {
-        padding: 4rem 0;
+        padding: 1rem 0;
         text-align: center;
-    }
-
-    .post-footer .author {
-        margin: 0 0 2rem 0;
-        padding: 0 0 1.6rem 0;
-        border-bottom: #EBF2F6 1px dashed;
-    }
-
-    .post-footer .share {
-        position: static;
-        width: auto;
-    }
-
-    .post-footer .share a {
-        margin: 1.4rem 0.8rem 0 0.8rem;
     }
 
     .older-posts,

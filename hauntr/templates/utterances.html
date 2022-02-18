@@ -1,0 +1,12 @@
+{% if UTTERANCES_REPO %}
+	<section>
+		<script src="https://utteranc.es/client.js"
+		repo="{{ UTTERANCES_REPO }}"
+		issue-term="{{ UTTERANCES_ISSUE_TERM }}"
+		label="{{ UTTERANCES_LABEL }}"
+		theme="{{ UTTERANCES_THEME }}"
+		crossorigin="anonymous"
+		async>
+		</script>
+	</section>
+{% endif %}
