@@ -89,7 +89,7 @@ post: create_current_blog_dir
 	sed s/'$$TODAY_DATE'/$(shell date +"%Y-%m-%d")/g \
 		< ./blog_post_template.md \
 		> $(CURRENT_BLOG_DIR)/new_post.md
-	open $(CURRENT_BLOG_DIR)/new_post.md
+	echo "New post is created at $(CURRENT_BLOG_DIR)/new_post.md"
 
 open: create_current_blog_dir
 	open $(CURRENT_BLOG_DIR)
