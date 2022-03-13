@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="author" content="Liang-Bo Wang" />
+<meta name="description" content="A few months ago, I finished my PhD thesis in LaTeX. The WUSTL LaTeX template I could find has a long history1, which has a relative lengthy implementation and includes unnecessary code. I didn’t feel comfortable to build on top of it. I ended up rewriting the template …" />
+<meta name="keywords" content="en, latex">
+	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<title>Thesis in LaTeX</title>
+
+	<!-- og -->
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Liang-Bo Wang's Blog"/>
+<meta property="og:title" content="Thesis in LaTeX"/>
+<meta property="og:description" content="A few months ago, I finished my PhD thesis in LaTeX. The WUSTL LaTeX template I could find has a long history1, which has a relative lengthy implementation and includes unnecessary code. I didn’t feel comfortable to build on top of it. I ended up rewriting the template …"/>
+<meta property="og:locale" content=""/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2022/03/thesis-latex/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2022-03-12 00:00:00-06:00"/>
+<meta property="article:modified_time" content="2022-03-13 21:26:34.808566-05:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
+<meta property="article:section" content="Coding"/>
+<meta property="article:tag" content="en"/>
+<meta property="article:tag" content="latex"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Thesis in LaTeX">
+<meta name="twitter:description" content="A few months ago, I finished my PhD thesis in LaTeX. The WUSTL LaTeX template I could find has a long history1, which has a relative lengthy implementation and includes unnecessary code. I didn’t feel comfortable to build on top of it. I ended up rewriting the template …">
+
+	<!-- Feeds -->
+	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
+		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
+
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.11.1/katex.min.css">
+</head>
+
+<body class="post-template">
+	<header class="site-head">
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang-Bo Wang's Blog</a></h1>
+		<h2 class="blog-description">
+			<a href="https://blog.liang2.tw/about-me/">About</a> |
+			<a href="https://blog.liang2.tw/talks/">Talks</a> |
+			<a href="https://blog.liang2.tw/archives.html">Archives</a>
+		</h2>
+	</header>
+	<main id="content" class="content" role="main">
+<article class="post en-post">
+    <span class="post-meta">
+        <time datetime="Mar 12, 2022">Mar 12, 2022</time>
+        in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2022/03/thesis-latex/" rel="bookmark" title="Permalink to Thesis in LaTeX">Thesis in LaTeX</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/en/">en</a>
+                <a href="https://blog.liang2.tw/tag/latex/">latex</a>
+    </span>
+    <section class="post-content"><!-- cSpell:words zotero WUSTL -->
+
+<p>A few months ago, I finished <a href="https://github.com/ccwang002/phd-thesis">my PhD thesis</a> in LaTeX.
+The WUSTL LaTeX template I could find has a long history<sup id="fnref:note-template-history"><a class="footnote-ref" href="#fn:note-template-history">1</a></sup>, which has a relative lengthy implementation and includes unnecessary code.
+I didn&rsquo;t feel comfortable to build on top of it.</p>
+<p>I ended up rewriting the template based on the <a href="https://www.ctan.org/pkg/memoir">memoir</a> package, which is designed for long documents like book and thesis.
+Overall I enjoyed my experience writing in LaTeX, so I wanted to share my LaTeX setup and my experience of editing a long document.</p>
+<div class="toc">
+<ul>
+<li><a href="#writing-thesis-in-latex-is-easy-and-rewarding-once-its-set-up">Writing thesis in LaTeX is easy and rewarding (once it&rsquo;s set up)</a></li>
+<li><a href="#my-latex-setup">My LaTeX setup</a><ul>
+<li><a href="#bibliography-management-with-zotero-and-better-bibtex">Bibliography management with Zotero and Better BibTeX</a></li>
+<li><a href="#overflowing-legend-of-large-figures">Overflowing legend of large figures</a></li>
+<li><a href="#folder-structure">Folder structure</a></li>
+<li><a href="#github-online-editing-workflow">GitHub online editing workflow</a></li>
+</ul>
+</li>
+<li><a href="#package-recommendation-to-start-a-new-latex-template">Package recommendation to start a new LaTeX template</a></li>
+<li><a href="#why-i-didnt-use-latex-a-lot-during-my-phd">Why I didn&rsquo;t use LaTeX a lot during my PhD</a></li>
+<li><a href="#types-of-documents-i-will-write-in-latex-in-future">Types of documents I will write in LaTeX in future</a></li>
+</ul>
+</div>
+<h2 id="writing-thesis-in-latex-is-easy-and-rewarding-once-its-set-up">Writing thesis in LaTeX is easy and rewarding (once it&rsquo;s set up)</h2>
+<p>The advantages of LaTeX and its ecosystem<sup id="fnref:latex-advantages"><a class="footnote-ref" href="#fn:latex-advantages">2</a></sup> over WYSIWYG editors (e.g., Word and Google Doc) are more obvious when the document gets longer, as WYSIWYG editors start to slow down, say, to change the figure style across the whole document, or to swap some figures and sections.
+On the other hand, the LaTeX workflow remains the same.
+While the compilation takes longer, it usually runs in the background and I have adapted to only check the output periodically.
+I appreciate its reliability and modularity when my document gets really long.
+I can just focus on the writing.</p>
+<p>The hardest part is the setup of a LaTeX document.</p>
+<p>What are the &ldquo;recommended&rdquo; packages? What are all these parameters of the packages and commands? How to set up the folder structure? How do I make a figure block whose caption overflows to the next page (and any other visual components)? Finally, not to mention the time I spent fixing the errors and the debugging when the code doesn&rsquo;t work as expected.</p>
+<p>Now, after some time going over the documentations, I wanted to write down my setup for future usage.</p>
+<h2 id="my-latex-setup">My LaTeX setup</h2>
+<p>I prefer the combination of LuaLaTeX (XeLaTeX) and BibLaTeX/Biber.
+Both LaTeX engines can utilize system fonts and support Unicode.
+As for the bibliography management, BibLaTeX is more customizable.</p>
+<h3 id="bibliography-management-with-zotero-and-better-bibtex">Bibliography management with Zotero and Better BibTeX</h3>
+<p>I manage all my reference in <a href="https://www.zotero.org/">Zotero</a>.
+<a href="https://blog.liang2.tw/posts/2015/09/ref-management-zotero/">My Zotero setup</a> (Zotero + <a href="https://github.com/jlegewie/zotfile">Zotfile</a>) has been the same over the past 6 years, which is surprisingly stable in the software world.
+Zotero has builtin support to export the reference in BibTeX and BibLaTeX formats.</p>
+<p>To further integrate Zotero to the LaTeX workflow, <a href="https://retorque.re/zotero-better-bibtex/">Better BibTeX for Zotero</a> plugin comes in handy.
+The plugin can customize the citation key generation, and it can automatically export the <code>.bib</code> file when the reference changes.</p>
+<p>I currently have the following rule for the citation key generation:</p>
+<div class="highlight"><pre><span></span><code>[auth+initials:lower]_[authorLast+initials:lower][&gt;1]:[shorttitle2_2][year]
+|[Auth+initials:lower:(unknown)]:[Title:capitalize:substring=1,64][year]
+</code></pre></div>
+
+
+<p>The key will try to extract the first and last author of the paper, the first two words of the title, and the publication year.
+If the reference is not a article (mostly websites), it will try to use the author, title, and year when available.</p>
+<p>Under this rule, for example, the citation key of the famous CRISPR paper (<a href="https://pubmed.ncbi.nlm.nih.gov/22745249/">doi:10.1126/science.1225829</a>):</p>
+<blockquote>
+<p>Jinek, M., Chylinski, K., Fonfara, I., Hauer, M., Doudna, J.A., and Charpentier, E. (2012). A programmable dual-RNA-guided DNA endonuclease in adaptive bacterial immunity. Science 337, 816–821.</p>
+</blockquote>
+<p>becomes <code>jinekm_charpentiere:ProgrammableDualRNAguided2012</code>.</p>
+<p>Better BibTeX also allows fixing the citation key, which is useful to keep a nickname of some commonly referred publications, or to maintain backward compatibility.</p>
+<h3 id="overflowing-legend-of-large-figures">Overflowing legend of large figures</h3>
+<p>A feature I found very useful is to allow figure caption/legend to overflow to the next page, which is common in many journals.
+Usually the figure is large, taking up the full page, and has multiple panels combined into one file.
+And the remaining figure legend need to be put at the next page.
+Here&rsquo;s an example of the desired behavior:</p>
+<div class="figure">
+    <img src="https://blog.liang2.tw/posts/2022/03/thesis-latex/pics/fig_legend_first_half.png">
+    <img src="https://blog.liang2.tw/posts/2022/03/thesis-latex/pics/fig_legend_second_half.png">
+    <p class="caption">Example of the figure legend overflow.</p>
+</div>
+
+<p>To create &ldquo;fake&rdquo; panels for <a href="https://www.ctan.org/pkg/subcaption">subcaption</a> to keep track of the reference, I followed <a href="https://tex.stackexchange.com/a/255790">the suggestion on LaTeX Stack Exchange</a> to create a hidden anchor for the label using <code>\phantomsubcaption</code>.</p>
+<p>To allow the figure legend/caption to overflow, two figure environments are constructed side by side.
+Then I used a quotation helper function <code>\sourceatright</code> by memoir to place the &ldquo;(legend continued on next page)&rdquo; right aligned to the end of legend.</p>
+<p>Here&rsquo;s the final helper functions in the permeable:</p>
+<div class="highlight"><pre><span></span><code><span class="c">% Allowing subcaptions when all figure panels are combined</span>
+<span class="c">% into one source image. Require subcaption package.</span>
+<span class="c">% Based on https://tex.stackexchange.com/a/255790</span>
+<span class="k">\newcommand</span><span class="nb">{</span><span class="k">\phantomlabel</span><span class="nb">}</span>[1]<span class="nb">{</span><span class="c">%</span>
+    <span class="k">\parbox</span><span class="nb">{</span>0pt<span class="nb">}{</span><span class="k">\phantomsubcaption\label</span><span class="nb">{</span>#1<span class="nb">}}</span><span class="c">%</span>
+<span class="nb">}</span>
+
+<span class="c">% Note for figure caption spanning multiple pages</span>
+<span class="k">\newcommand</span><span class="nb">{</span><span class="k">\legendcontdnote</span><span class="nb">}{</span><span class="k">\sourceatright</span><span class="na">[2em]</span><span class="nb">{</span><span class="c">%</span>
+        <span class="k">\footnotesize\itshape</span>(legend continued on next page)<span class="c">%</span>
+<span class="nb">}}</span>
+<span class="k">\newcommand</span><span class="nb">{</span><span class="k">\legendcontdref</span><span class="nb">}</span>[1]<span class="nb">{</span><span class="k">\emph</span><span class="nb">{</span>(<span class="k">\fref</span><span class="nb">{</span>#1<span class="nb">}</span> continued)<span class="nb">}}</span>
+</code></pre></div>
+
+
+<p>And the following shows an example usage:</p>
+<div class="highlight"><pre><span></span><code><span class="k">\begin</span><span class="nb">{</span>figure<span class="nb">}</span>[p]  <span class="c">% usually large and will need a full page</span>
+    <span class="k">\centering</span>
+    <span class="k">\phantomlabel</span><span class="nb">{</span>fig:panel-a<span class="nb">}</span>  <span class="c">% hidden label of each figure panel</span>
+    <span class="k">\phantomlabel</span><span class="nb">{</span>fig:panel-b<span class="nb">}</span>
+    <span class="k">\phantomlabel</span><span class="nb">{</span>fig:panel-c<span class="nb">}</span>
+    ...
+    <span class="k">\includegraphics</span><span class="nb">{</span>figures/myfigure.pdf<span class="nb">}</span>
+    <span class="k">\caption</span><span class="nb">{</span><span class="c">%</span>
+        Overview of the whole figure.
+        <span class="k">\subref</span><span class="nb">{</span>fig:panel-a<span class="nb">}</span>
+        Some description about panel A.
+        <span class="k">\legendcontdnote</span>
+    <span class="nb">}</span>
+    <span class="k">\label</span><span class="nb">{</span>fig:myfigure<span class="nb">}</span>
+<span class="k">\end</span><span class="nb">{</span>figure<span class="nb">}</span>
+<span class="k">\begin</span><span class="nb">{</span>figure<span class="nb">}</span>[t]  <span class="c">% place at the top of the very next page</span>
+    <span class="k">\centering</span>
+    <span class="k">\legend</span><span class="nb">{</span><span class="c">%</span>
+        <span class="k">\legendcontdref</span><span class="nb">{</span>fig:myfigure<span class="nb">}</span>
+        <span class="k">\subref</span><span class="nb">{</span>fig:panel-b<span class="nb">}</span>
+        Some description about panel B.
+        <span class="k">\subref</span><span class="nb">{</span>fig:panel-c<span class="nb">}</span>
+        Some description about panel C.
+        ...
+    <span class="nb">}</span>
+<span class="k">\end</span><span class="nb">{</span>figure<span class="nb">}</span>
+</code></pre></div>
+
+
+<h3 id="folder-structure">Folder structure</h3>
+<p>I have a very typical folder structure of a thesis:</p>
+<div class="highlight"><pre><span></span><code>wustlthesis.cls     # document class
+thesis.tex          # main file (structure and settings)
+abstract.tex
+acknowledgments.tex
+chapters/           # text per chapter
+  ├── XX_name.tex
+  └── ...
+figures/            # figures per chapter
+  ├── chapXX_name/
+  └── ...
+fonts/              # External fonts
+.github/workflows/  # Autobuild GitHub workflows
+README.md           # Instructions to build the file
+latexmkrc           # latexmk settings
+references.bib      # Bibliography in BibLaTex
+</code></pre></div>
+
+
+<p>The main goal of the folder structure is to organize the materials by chapters.
+I also keep all the related files together so the project is standalone and reproducible.</p>
+<h3 id="github-online-editing-workflow">GitHub online editing workflow</h3>
+<p>Another pain point of LaTeX setup is the installation of the toolchains (TexLive, MacTex, and etc).
+Sometimes I want to work on the document on other&rsquo;s laptop for just a while, to fix an obvious typo or to write down some ideas.
+Also a working LaTeX toolchain always read to use will help others to adapt the workflow much more easily.</p>
+<p>Turn out I can tap into the continuous integration and continuous delivery (CI/CD) service provided by the online code repositories.
+On GitHub, such service is <a href="https://docs.github.com/en/actions/using-workflows">GitHub Actions</a>, allowing user to provide custom Docker image and run arbitrary code.</p>
+<p>Luckily, someone has already laid out the ground work by preparing a TeXLive environment into a GitHub Action workflow: <a href="https://github.com/xu-cheng/latex-action">https://github.com/xu-cheng/latex-action</a>.
+Below is an example of creating an online workflow to build the document using LuaLaTeX:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># .github/workflows/build_latex.yml</span>
+<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Build LaTeX PDF</span>
+<span class="nt">on</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">push</span>
+<span class="nt">jobs</span><span class="p">:</span>
+  <span class="nt">build</span><span class="p">:</span>
+    <span class="nt">runs-on</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+    <span class="nt">steps</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Check out Git Repository</span>
+      <span class="nt">uses</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">actions/checkout@v2</span>
+
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Build LaTeX files</span>
+      <span class="nt">uses</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">xu-cheng/latex-action@v2</span>
+      <span class="nt">with</span><span class="p">:</span>
+        <span class="nt">root_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">thesis.tex</span>
+        <span class="nt">latexmk_use_lualatex</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Check if PDF file is generated</span>
+      <span class="nt">run</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+        <span class="no">file thesis.pdf | grep -q &#39; PDF &#39;</span>
+
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Upload PDF</span>
+      <span class="nt">uses</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">actions/upload-artifact@v2</span>
+      <span class="nt">with</span><span class="p">:</span>
+        <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">PDF</span>
+        <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">thesis.pdf</span>
+</code></pre></div>
+
+
+<p>The workflow is triggered on every git push. Here is an example of my WUSTL thesis template (<a href="https://github.com/ccwang002/wustl-latex-dissertation-template/actions/workflows/build_latex.yml">link</a>):</p>
+<div class="figure">
+    <img src="https://blog.liang2.tw/posts/2022/03/thesis-latex/pics/github_actions_overview.png">
+    <p class="caption">Overview of all the online LaTeX document compilation jobs using GitHub actions.</p>
+</div>
+
+<p>Not only the workflow records the output messages useful to debug, the final PDF output is stored as an artifact.
+I no longer need to install LaTeX locally.</p>
+<div class="figure">
+    <img src="https://blog.liang2.tw/posts/2022/03/thesis-latex/pics/github_actions_artifact.png">
+    <p class="caption">Auto-generated PDF output of the document.</p>
+</div>
+
+<p>By putting everything in a GitHub repo, I can also use <a href="https://docs.github.com/en/codespaces/the-githubdev-web-based-editor">GitHub&rsquo;s online editor</a> to work on my document in a web browser anywhere.
+Together with GitHub Actions, it can be an alternative to online LaTeX platform like Overleaf; hacky but more flexible.</p>
+<div class="figure">
+    <img src="https://blog.liang2.tw/posts/2022/03/thesis-latex/pics/github_online_editor.png">
+    <p class="caption">Online editor of a LaTeX project in a GitHub repository.</p>
+</div>
+
+<p>Currently, the online workflow is not fully optimized.
+My full thesis takes about 6&ndash;12 minutes to complete on GitHub, while locally, a full run without cache takes about 3&ndash;5 minutes.
+And incremental local builds can be much faster with caches.
+By caching the environment and the intermediate outputs, the online workflow can be faster.</p>
+<h2 id="package-recommendation-to-start-a-new-latex-template">Package recommendation to start a new LaTeX template</h2>
+<p>I look into a few package alternatives while updating the thesis template.</p>
+<p>For a new template/project, start with <a href="https://www.ctan.org/pkg/memoir">memoir</a>, seriously.</p>
+<p>Memoir is certainly a giant package and has a very lengthy documentation (~600 pages).
+But it pretty much covers &gt; 90% of the possible formatting I can possibly think of.
+The first few chapters of its documentation (up to &ldquo;Paragraphs and Lists&rdquo; chapter) are very useful to get the main components and structures in place.</p>
+<p>While memoir is powerful and covers everything, I do wish certain aspects of it can be better. The chapter title styling is complicated and difficult.
+My another issue is the lack of examples.
+I understand the current documentation is already crazily long.
+But memoir has <em>many many</em> options and features that I sometimes find it difficult to comprehend how to use a specific feature.
+Maybe more examples or code snippets can be added in a separate documentation.</p>
+<p>With memoir, very few additional packages are required.
+Here is a short list of packages:</p>
+<ul>
+<li><a href="https://ctan.org/pkg/microtype">microtype</a>: final touch on the typography. pure black magic in my view</li>
+<li><a href="https://ctan.org/pkg/enumitem">enumitem</a>: list environment customization</li>
+<li><a href="https://ctan.org/pkg/threeparttable">threeparttable</a>: pretty table styling and in-table notes</li>
+<li><a href="https://www.ctan.org/pkg/subcaption">subcaption</a>: subfloat references</li>
+<li><a href="https://ctan.org/pkg/hyperref">hyperref</a>: link and PDF metadata</li>
+<li><a href="https://ctan.org/pkg/graphicx">graphicx</a>: external graphics</li>
+<li><a href="https://ctan.org/pkg/fontspec">fontspec</a>: custom system fonts</li>
+<li><a href="https://ctan.org/pkg/csquotes">csquotes</a>: quotes</li>
+<li><a href="https://ctan.org/pkg/babel">babel</a>: localization</li>
+</ul>
+<p>Each package is powerful in their specific usage.
+Their documentations are worth reading to fully utilize the package.</p>
+<h2 id="why-i-didnt-use-latex-a-lot-during-my-phd">Why I didn&rsquo;t use LaTeX a lot during my PhD</h2>
+<p>I didn&rsquo;t really have many chances to use LaTeX during my PhD.
+It&rsquo;s usually not worth the effort to use LaTeX for documents less than 50 pages.</p>
+<p>The most common documents I need to produce are presentations and manuscripts, and I don&rsquo;t think LaTeX is useful here.
+My presentations are figure heavy.
+Many figures are clipped from webpages, tool outputs, and other papers.
+They are messy and require post-editing like croppings and overlays, which are easier to do interactively; PowerPoint wins.
+Moreover, I need to finish my slides in a short time.
+LaTeX is not the right tool.</p>
+<p>As for the manuscripts, the figures and text are managed separately, so there is no need to work on how to insert the figures at the right location in text.
+The main text editing is about citations.
+While LaTeX is good at them, Zotero can manage citations and bibliography easily on Google Docs, Word, and LibreOffice Writer.
+Another main hassle of manuscript editing is collaboration.
+While it&rsquo;s possible for LaTeX, the existing services have a high entry bar with little benefit.</p>
+<h2 id="types-of-documents-i-will-write-in-latex-in-future">Types of documents I will write in LaTeX in future</h2>
+<p>If I need to write a report longer than 50 pages, I will write in LaTeX and use my thesis setup.</p>
+<p>I also have been updating my CV in LaTeX.
+While I am playing with LaTeX for my thesis, I also applied the new things I learned to <a href="https://github.com/ccwang002/cv">my CV</a>.
+In fact, I applied a different theme and rewrote many parts of the theme to utilize the awesome packages.
+I like my new CV to be clean, minimalist, and easy to extend.
+I don&rsquo;t know yet if I want to create my one-page resume in LaTeX.</p>
+<p>So is LaTeX worth learning if I am not going to write a book or a long report in future?</p>
+<p>It&rsquo;s a bad investment in time for sure, since I have been putting hours in learning LaTeX.
+But I have since been paying more attention to typography and layout of my documents in general.
+I appreciate certain aesthetics of the printings.
+And by trying to fulfill the desired look and feel in my documents, I&rsquo;ve also improved my editing skills in all WYSIWYG editors (even Adobe InDesign) and webpages (CSS).
+It&rsquo;s hard to beat that artistic satisfaction of getting the style right.</p>
+<p>I am glad that I learned LaTeX.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:note-template-history">
+<p>The history of the existing template goes way back to 1995.
+I tried to summarize the history I can be find from the file comments <a href="https://github.com/ccwang002/wustl-latex-dissertation-template/#origin-of-this-template">here</a>.&#160;<a class="footnote-backref" href="#fnref:note-template-history" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:latex-advantages">
+<p>Here are the advantages LaTeX I appreciate the most:</p>
+<ul>
+<li>Precise control of the layout</li>
+<li>Automatic positioning of float objects (figures and tables)</li>
+<li>Programmable and reusable visual components, especially those provided by the packages</li>
+<li>Excellent bibliography management</li>
+<li>Excellent equation display</li>
+</ul>
+<p><a class="footnote-backref" href="#fnref:latex-advantages" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div></section>
+    <footer class="post-footer">
+	<section>
+		<script src="https://utteranc.es/client.js"
+		repo="ccwang002/ccwang002.github.io"
+		issue-term="pathname"
+		label="Comment"
+		theme="github-light"
+		crossorigin="anonymous"
+		async>
+		</script>
+	</section>
+	</footer>
+</article>
+	</main>
+	<footer class="site-footer">
+		<a class="subscribe"
+			href="https://blog.liang2.tw/feeds/all.atom.xml"
+			data-tooltip="Atom feed"
+		>
+			<img src="https://blog.liang2.tw/theme/icons/feed.svg" alt="Atom feed">
+		</a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags.html">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/lbwang2">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">
+				Built using <a href="https://getpelican.com/">Pelican</a>.
+				Powered by the <a href="https://kura.github.io/hauntr/">Hauntr</a> theme.
+			</section>
+		</div>
+	</footer>
+</body>
+</html>
