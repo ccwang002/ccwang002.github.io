@@ -26,6 +26,24 @@ I tried to summarize the history I can be find from the file comments [here][tem
 [old post about zotero][zotero-post]
 
 
+## Writing thesis in LaTeX is easy and rewarding (once it's set up)
+LaTeX and its ecosystem, in my opinion, has the following advantages over WYSIWYG editors (e.g., Word and Google Doc):
+
+- Precise control of the layout
+- Automatic positioning of float objects (figures and tables)
+- Programmable and reusable visual components, especially powered by some packages
+- Excellent bibliography management
+- Excellent equation display
+
+The advantages above are stronger when the document gets longer, as WYSIWYG editors start to slow down and become difficult to make big changes across the document, say, to change the figure style across the whole document, or to swap some figures and sections.
+
+On the other hand, in LaTeX, the workflow is the same.
+While the compilation time becomes longer, it is usually running in the background and I have adapted to check the output only periodically.
+I appreciate its reliability when my document reaches 100 pages.
+With the correct syntax, it will work.
+I can just focus on the writing and leave everything else to LaTeX.
+
+
 ## Why I didn't use LaTeX much during my PhD
 I didn't really have many chances to use LaTeX during my PhD.
 It's usually not worth the effort to use LaTeX for documents less than 50 pages.
@@ -45,20 +63,23 @@ While it's possible for LaTeX, the existing services have a high entry bar with 
 
 
 ## Types of documents I will write in LaTeX in future
-I think LaTeX (and its ecosystem) has the following advantages over WYSIWYG editors:
+If I need to write a report longer than 50 pages, I will write in LaTeX and use my thesis setup.
 
-- Precise control of the layout
-- Automatic positioning of float objects (figures and tables)
-- Programmable and reusable visual components, especially powered by some packages
-- Excellent bibliography management
-- Excellent equation display
+I also have been updating my CV in LaTeX.
+While I am playing with LaTeX for my thesis, I also applied the new things I learned to [my CV][my-CV].
+In fact, I applied a different theme and rewrote many parts of the theme to utilize the awesome packages.
+I like my new CV to be clean, minimalist, and easy to extend.
+I don't know yet if I want to create my one-page résumé in LaTeX.
 
-The advantages above are stronger for a longer document, as WYSIWYG editors start to slow down and become difficult to manage, say, to change the figure style across the whole document.
-On the other hand, for LaTeX, while the compilation time becomes longer, it is usually running in the background.
-So if I need to write a report longer than 50 pages, I will definitely start with LaTeX based on my thesis setup.
+So is LaTeX worth learning if I am not going to write a book or a long report in future?
 
-I also updated [my LaTeX based CV][my-CV] while I am playing with LaTeX for my thesis.
-In fact, I changed it with a different theme and rewrote many parts of the theme to utilize awesome packages.
+It's a bad investment in time for sure, since I have been putting hours in learning LaTeX.
+But I have since been paying more attention to typography and layout of my documents in general.
+I appreciate certain aesthetics of the printings.
+And by trying to fulfill the desired look and feel in my documents, I've also improved my editing skills in all WYSIWYG editors (even Adobe InDesign) and webpages (CSS).
+It's hard to beat that artistic satisfaction of getting the style right.
+
+I am glad that I learned LaTeX.
 
 
 [my-phd-thesis]: https://github.com/ccwang002/phd-thesis
