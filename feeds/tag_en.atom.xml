@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - en</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_en.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-03-14T10:44:31-05:00</updated><entry><title>Thesis in LaTeX</title><link href="https://blog.liang2.tw/posts/2022/03/thesis-latex/" rel="alternate"></link><published>2022-03-12T00:00:00-06:00</published><updated>2022-03-13T21:26:34-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2022-03-12:/posts/2022/03/thesis-latex/</id><summary type="html">&lt;!-- cSpell:words zotero WUSTL --&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - en</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_en.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-03-14T10:50:20-05:00</updated><entry><title>Thesis in LaTeX</title><link href="https://blog.liang2.tw/posts/2022/03/thesis-latex/" rel="alternate"></link><published>2022-03-12T00:00:00-06:00</published><updated>2022-03-13T21:26:34-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2022-03-12:/posts/2022/03/thesis-latex/</id><summary type="html">&lt;!-- cSpell:words zotero WUSTL --&gt;
 
 &lt;p&gt;A few months ago, I finished &lt;a href="https://github.com/ccwang002/phd-thesis"&gt;my PhD thesis&lt;/a&gt; in LaTeX.
 The WUSTL LaTeX template I could find has a long history&lt;sup id="fnref:note-template-history"&gt;&lt;a class="footnote-ref" href="#fn:note-template-history"&gt;1&lt;/a&gt;&lt;/sup&gt;, which has a relative lengthy implementation and includes unnecessary code.
@@ -274,7 +274,7 @@ I tried to summarize the history I can be find from the file comments &lt;a href
 &lt;p&gt;&lt;a class="footnote-backref" href="#fnref:latex-advantages" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Coding"></category><category term="en"></category><category term="latex"></category></entry><entry><title>Fix Fira Code font ligatures and features</title><link href="https://blog.liang2.tw/posts/2022/03/fix-fira-code-font-features/" rel="alternate"></link><published>2022-03-01T00:00:00-06:00</published><updated>2022-03-14T10:44:31-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2022-03-01:/posts/2022/03/fix-fira-code-font-features/</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/tonsky/FiraCode"&gt;Fira Code&lt;/a&gt; has been my choice of the programming font for a while. It&amp;rsquo;s also the default monospace font of my blog.
+&lt;/div&gt;</content><category term="Coding"></category><category term="en"></category><category term="latex"></category></entry><entry><title>Fix Fira Code font ligatures and features</title><link href="https://blog.liang2.tw/posts/2022/03/fix-fira-code-font-features/" rel="alternate"></link><published>2022-03-01T00:00:00-06:00</published><updated>2022-03-14T10:50:20-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2022-03-01:/posts/2022/03/fix-fira-code-font-features/</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/tonsky/FiraCode"&gt;Fira Code&lt;/a&gt; has been my choice of the programming font for a while. It&amp;rsquo;s also the default monospace font of my blog.
 I like its ligatures such as &lt;code&gt;&amp;gt;=&lt;/code&gt; and connected lines &lt;code&gt;======&lt;/code&gt; &lt;code&gt;------&lt;/code&gt;.
 It evens renders the progress bar nicely &lt;code&gt;&lt;/code&gt;.
 It makes my plain text documents look neat.&lt;/p&gt;
@@ -302,7 +302,7 @@ As mentioned by &lt;a href="https://github.com/tonsky/FiraCode/issues/869#issuec
 &lt;p&gt;There is probably a simpler approach to patching the font, just concat whatever code there is in ssXX and add it to the end of calt feature.
 That should work on the current version of the font, but you’ll need to do your own research on which scripts to use for that&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;And that&amp;rsquo;s exactly &lt;a href="https://github.com/ccwang002/FiraCode/commit/02f5976631826314e4d0cdad988467862b8f8843"&gt;my patch&lt;/a&gt; for &lt;code&gt;FiraCode.glyphs&lt;/code&gt;.
+&lt;p&gt;And that&amp;rsquo;s exactly &lt;a href="https://github.com/ccwang002/FiraCode/commit/cdc30ce57a8654cb88a6fa03db1dc5425f42fda7"&gt;my patch&lt;/a&gt; for &lt;code&gt;FiraCode.glyphs&lt;/code&gt;.
 Copy all the content of the features (say, ss01, ss03, ss05, and ss08) to &lt;code&gt;calt&lt;/code&gt;. So the original code:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# FiraCode.glyphs
 {
