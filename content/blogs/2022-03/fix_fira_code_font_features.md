@@ -87,4 +87,4 @@ parallel \
 [opentype-features-mdn]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Fonts/OpenType_fonts_guide
 [pyftfeatfreeze]: https://twardoch.github.io/fonttools-opentype-feature-freezer/
 [tonsky-comment]: https://github.com/tonsky/FiraCode/issues/869#issuecomment-548006778
-[feature-fix-patch]: https://github.com/ccwang002/FiraCode/commit/02f5976631826314e4d0cdad988467862b8f8843
+[feature-fix-patch]: https://github.com/ccwang002/FiraCode/commit/cdc30ce57a8654cb88a6fa03db1dc5425f42fda7
