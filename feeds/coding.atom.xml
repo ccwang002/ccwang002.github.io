@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - Coding</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/coding.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-03-13T21:26:34-05:00</updated><entry><title>Thesis in LaTeX</title><link href="https://blog.liang2.tw/posts/2022/03/thesis-latex/" rel="alternate"></link><published>2022-03-12T00:00:00-06:00</published><updated>2022-03-13T21:26:34-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2022-03-12:/posts/2022/03/thesis-latex/</id><summary type="html">&lt;!-- cSpell:words zotero WUSTL --&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - Coding</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/coding.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-03-14T10:44:31-05:00</updated><entry><title>Thesis in LaTeX</title><link href="https://blog.liang2.tw/posts/2022/03/thesis-latex/" rel="alternate"></link><published>2022-03-12T00:00:00-06:00</published><updated>2022-03-13T21:26:34-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2022-03-12:/posts/2022/03/thesis-latex/</id><summary type="html">&lt;!-- cSpell:words zotero WUSTL --&gt;
 
 &lt;p&gt;A few months ago, I finished &lt;a href="https://github.com/ccwang002/phd-thesis"&gt;my PhD thesis&lt;/a&gt; in LaTeX.
 The WUSTL LaTeX template I could find has a long history&lt;sup id="fnref:note-template-history"&gt;&lt;a class="footnote-ref" href="#fn:note-template-history"&gt;1&lt;/a&gt;&lt;/sup&gt;, which has a relative lengthy implementation and includes unnecessary code.
@@ -274,7 +274,74 @@ I tried to summarize the history I can be find from the file comments &lt;a href
 &lt;p&gt;&lt;a class="footnote-backref" href="#fnref:latex-advantages" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Coding"></category><category term="en"></category><category term="latex"></category></entry><entry><title>Change the blog commenting system to utterances</title><link href="https://blog.liang2.tw/posts/2022/02/blog-comment-utterances/" rel="alternate"></link><published>2022-02-20T00:00:00-06:00</published><updated>2022-02-20T23:37:53-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2022-02-20:/posts/2022/02/blog-comment-utterances/</id><summary type="html">&lt;p&gt;My blog is statically generated, so it needs an external service for commenting. I chose &lt;a href="https://disqus.com/"&gt;Disqus&lt;/a&gt; when I started my blog because it was a popular choice, and it is free and easy to setup. However, there&amp;rsquo;s been increasing concern about its extensive user tracking, ads, and therefore a …&lt;/p&gt;</summary><content type="html">&lt;p&gt;My blog is statically generated, so it needs an external service for commenting. I chose &lt;a href="https://disqus.com/"&gt;Disqus&lt;/a&gt; when I started my blog because it was a popular choice, and it is free and easy to setup. However, there&amp;rsquo;s been increasing concern about its extensive user tracking, ads, and therefore a toll on the page loading performance&lt;sup id="fnref:disqus downsides"&gt;&lt;a class="footnote-ref" href="#fn:disqus downsides"&gt;1&lt;/a&gt;&lt;/sup&gt;. Heck, I don&amp;rsquo;t even load Disqus myself when I check my own blog:&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="en"></category><category term="latex"></category></entry><entry><title>Fix Fira Code font ligatures and features</title><link href="https://blog.liang2.tw/posts/2022/03/fix-fira-code-font-features/" rel="alternate"></link><published>2022-03-01T00:00:00-06:00</published><updated>2022-03-14T10:44:31-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2022-03-01:/posts/2022/03/fix-fira-code-font-features/</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/tonsky/FiraCode"&gt;Fira Code&lt;/a&gt; has been my choice of the programming font for a while. It&amp;rsquo;s also the default monospace font of my blog.
+I like its ligatures such as &lt;code&gt;&amp;gt;=&lt;/code&gt; and connected lines &lt;code&gt;======&lt;/code&gt; &lt;code&gt;------&lt;/code&gt;.
+It evens renders the progress bar nicely &lt;code&gt;&lt;/code&gt;.
+It makes my plain text documents look neat.&lt;/p&gt;
+&lt;p&gt;That said, I …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="https://github.com/tonsky/FiraCode"&gt;Fira Code&lt;/a&gt; has been my choice of the programming font for a while. It&amp;rsquo;s also the default monospace font of my blog.
+I like its ligatures such as &lt;code&gt;&amp;gt;=&lt;/code&gt; and connected lines &lt;code&gt;======&lt;/code&gt; &lt;code&gt;------&lt;/code&gt;.
+It evens renders the progress bar nicely &lt;code&gt;&lt;/code&gt;.
+It makes my plain text documents look neat.&lt;/p&gt;
+&lt;p&gt;That said, I don&amp;rsquo;t like the default ampersands &lt;code&gt;&amp;amp;&lt;/code&gt; and the at signs &lt;code&gt;@&lt;/code&gt;.
+I find them harder to read than their traditional looks.
+To change their looks, we can enable the alternative ligatures and features of the font using &lt;a href="https://ilovetypography.com/OpenType/opentype-features.html"&gt;different OpenType features&lt;/a&gt; (see also &lt;a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Fonts/OpenType_fonts_guide"&gt;the guide on MDN&lt;/a&gt;).
+In this case, &lt;code&gt;ss05&lt;/code&gt; and &lt;code&gt;ss08&lt;/code&gt; enable the traditional looks of ampersands and at signs, respectively.
+Most modern editors and word processors are able to configure the feature sets in use.&lt;/p&gt;
+&lt;div class="figure"&gt;
+    &lt;img src="https://blog.liang2.tw/posts/2022/03/fix-fira-code-font-features/pics/fira_code_comparison.png"&gt;
+    &lt;p class="caption"&gt;Comparison of the Fira Code rendering with and without the features fixed (ss01, ss03, ss05, and ss08).&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Unfortunately, I encounter programs that are unable to configure the font features.
+While tools like &lt;a href="https://twardoch.github.io/fonttools-opentype-feature-freezer/"&gt;pyftfeatfreeze (OpenType Feature Freezer)&lt;/a&gt; are able to swap specific glyphs by directly editing the font file, ligatures of those glyphs may fail.
+For example, &lt;code&gt;ss08&lt;/code&gt; feature (e.g., &lt;code&gt;==&lt;/code&gt;, &lt;code&gt;!=&lt;/code&gt;, and &lt;code&gt;===&lt;/code&gt;) won&amp;rsquo;t be permanently enabled using this approach.&lt;/p&gt;
+&lt;h2 id="permanently-fix-the-font-features"&gt;Permanently fix the font features&lt;/h2&gt;
+&lt;p&gt;By changing the source code of the font generation, it should be possible to permanently fix any font features (aka patching).
+As mentioned by &lt;a href="https://github.com/tonsky/FiraCode/issues/869#issuecomment-548006778"&gt;the original author (&lt;code&gt;@tonsky&lt;/code&gt;)&lt;/a&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;There is probably a simpler approach to patching the font, just concat whatever code there is in ssXX and add it to the end of calt feature.
+That should work on the current version of the font, but you’ll need to do your own research on which scripts to use for that&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;And that&amp;rsquo;s exactly &lt;a href="https://github.com/ccwang002/FiraCode/commit/02f5976631826314e4d0cdad988467862b8f8843"&gt;my patch&lt;/a&gt; for &lt;code&gt;FiraCode.glyphs&lt;/code&gt;.
+Copy all the content of the features (say, ss01, ss03, ss05, and ss08) to &lt;code&gt;calt&lt;/code&gt;. So the original code:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# FiraCode.glyphs
+{
+code = &amp;quot;lookup less_bar_greater ...
+... underscores;\012&amp;quot;;
+name = calt;
+},
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;becomes:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;{
+code = &amp;quot;lookup less_bar_greater ...
+... underscores;\012
+# ss01\012  sub r by r.ss01;
+# ss03\012  sub ampersand by ampersand.ss03;...
+# ss05\012  sub at by at.ss05;\012sub asciitilde.spacer&amp;#39;; ...
+# ss08\012  sub equal_equal.liga by equal_equal.ss08;...
+&amp;quot;;
+name = calt;
+},
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then build the font from the &lt;code&gt;.glyphs&lt;/code&gt; file using the Docker image:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;docker run -it --rm &lt;span class="se"&gt;\&lt;/span&gt;
+    -v &lt;span class="nv"&gt;$PWD&lt;/span&gt;:/opt/FiraCode &lt;span class="se"&gt;\&lt;/span&gt;
+    tonsky/firacode ./FiraCode/script/build.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To set a different font name for the feature fixed fonts, I use &lt;a href="https://twardoch.github.io/fonttools-opentype-feature-freezer/"&gt;pyftfeatfreeze&lt;/a&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;parallel &lt;span class="se"&gt;\&lt;/span&gt;
+    pyftfeatfreeze &lt;span class="se"&gt;\&lt;/span&gt;
+        --suffix --usesuffix&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;#39;ss01 ss03 ss05 ss08&amp;#39;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+        -v -n &lt;span class="se"&gt;\&lt;/span&gt;
+        &lt;span class="s1"&gt;&amp;#39;{}&amp;#39;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;features_enabled/{/.}.ss1358_enabled.ttf&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+        ::: ttf/*.ttf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Coding"></category><category term="en"></category><category term="font"></category></entry><entry><title>Change the blog commenting system to utterances</title><link href="https://blog.liang2.tw/posts/2022/02/blog-comment-utterances/" rel="alternate"></link><published>2022-02-20T00:00:00-06:00</published><updated>2022-02-20T23:37:53-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2022-02-20:/posts/2022/02/blog-comment-utterances/</id><summary type="html">&lt;p&gt;My blog is statically generated, so it needs an external service for commenting. I chose &lt;a href="https://disqus.com/"&gt;Disqus&lt;/a&gt; when I started my blog because it was a popular choice, and it is free and easy to setup. However, there&amp;rsquo;s been increasing concern about its extensive user tracking, ads, and therefore a …&lt;/p&gt;</summary><content type="html">&lt;p&gt;My blog is statically generated, so it needs an external service for commenting. I chose &lt;a href="https://disqus.com/"&gt;Disqus&lt;/a&gt; when I started my blog because it was a popular choice, and it is free and easy to setup. However, there&amp;rsquo;s been increasing concern about its extensive user tracking, ads, and therefore a toll on the page loading performance&lt;sup id="fnref:disqus downsides"&gt;&lt;a class="footnote-ref" href="#fn:disqus downsides"&gt;1&lt;/a&gt;&lt;/sup&gt;. Heck, I don&amp;rsquo;t even load Disqus myself when I check my own blog:&lt;/p&gt;
 &lt;div class="figure"&gt;
     &lt;img src="https://blog.liang2.tw/posts/2022/02/blog-comment-utterances/pics/disqus_blocked_by_privacy_badger_screenshot.png"&gt;
     &lt;p class="caption"&gt;What my blog looks like from my end, where Disqus is blocked by &lt;a href="https://privacybadger.org/Privacy"&gt;Privacy Badger&lt;/a&gt; by default.&lt;/p&gt;

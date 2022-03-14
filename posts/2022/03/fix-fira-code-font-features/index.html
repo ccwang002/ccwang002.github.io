@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="author" content="Liang-Bo Wang" />
+<meta name="description" content="Fira Code has been my choice of the programming font for a while. It’s also the default monospace font of my blog. I like its ligatures such as >= and connected lines ====== ------. It evens renders the progress bar nicely . It makes my plain text documents look neat. That said, I …" />
+<meta name="keywords" content="en, font">
+	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<title>Fix Fira Code font ligatures and features</title>
+
+	<!-- og -->
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Liang-Bo Wang's Blog"/>
+<meta property="og:title" content="Fix Fira Code font ligatures and features"/>
+<meta property="og:description" content="Fira Code has been my choice of the programming font for a while. It’s also the default monospace font of my blog. I like its ligatures such as >= and connected lines ====== ------. It evens renders the progress bar nicely . It makes my plain text documents look neat. That said, I …"/>
+<meta property="og:locale" content=""/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2022/03/fix-fira-code-font-features/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2022-03-01 00:00:00-06:00"/>
+<meta property="article:modified_time" content="2022-03-14 10:44:31.563180-05:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
+<meta property="article:section" content="Coding"/>
+<meta property="article:tag" content="en"/>
+<meta property="article:tag" content="font"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Fix Fira Code font ligatures and features">
+<meta name="twitter:description" content="Fira Code has been my choice of the programming font for a while. It’s also the default monospace font of my blog. I like its ligatures such as >= and connected lines ====== ------. It evens renders the progress bar nicely . It makes my plain text documents look neat. That said, I …">
+
+	<!-- Feeds -->
+	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
+		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
+
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.11.1/katex.min.css">
+</head>
+
+<body class="post-template">
+	<header class="site-head">
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang-Bo Wang's Blog</a></h1>
+		<h2 class="blog-description">
+			<a href="https://blog.liang2.tw/about-me/">About</a> |
+			<a href="https://blog.liang2.tw/talks/">Talks</a> |
+			<a href="https://blog.liang2.tw/archives.html">Archives</a>
+		</h2>
+	</header>
+	<main id="content" class="content" role="main">
+<article class="post en-post">
+    <span class="post-meta">
+        <time datetime="Mar 01, 2022">Mar 01, 2022</time>
+        in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2022/03/fix-fira-code-font-features/" rel="bookmark" title="Permalink to Fix Fira Code font ligatures and features">Fix Fira Code font ligatures and features</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/en/">en</a>
+                <a href="https://blog.liang2.tw/tag/font/">font</a>
+    </span>
+    <section class="post-content"><p><a href="https://github.com/tonsky/FiraCode">Fira Code</a> has been my choice of the programming font for a while. It&rsquo;s also the default monospace font of my blog.
+I like its ligatures such as <code>&gt;=</code> and connected lines <code>======</code> <code>------</code>.
+It evens renders the progress bar nicely <code></code>.
+It makes my plain text documents look neat.</p>
+<p>That said, I don&rsquo;t like the default ampersands <code>&amp;</code> and the at signs <code>@</code>.
+I find them harder to read than their traditional looks.
+To change their looks, we can enable the alternative ligatures and features of the font using <a href="https://ilovetypography.com/OpenType/opentype-features.html">different OpenType features</a> (see also <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Fonts/OpenType_fonts_guide">the guide on MDN</a>).
+In this case, <code>ss05</code> and <code>ss08</code> enable the traditional looks of ampersands and at signs, respectively.
+Most modern editors and word processors are able to configure the feature sets in use.</p>
+<div class="figure">
+    <img src="https://blog.liang2.tw/posts/2022/03/fix-fira-code-font-features/pics/fira_code_comparison.png">
+    <p class="caption">Comparison of the Fira Code rendering with and without the features fixed (ss01, ss03, ss05, and ss08).</p>
+</div>
+
+<p>Unfortunately, I encounter programs that are unable to configure the font features.
+While tools like <a href="https://twardoch.github.io/fonttools-opentype-feature-freezer/">pyftfeatfreeze (OpenType Feature Freezer)</a> are able to swap specific glyphs by directly editing the font file, ligatures of those glyphs may fail.
+For example, <code>ss08</code> feature (e.g., <code>==</code>, <code>!=</code>, and <code>===</code>) won&rsquo;t be permanently enabled using this approach.</p>
+<h2 id="permanently-fix-the-font-features">Permanently fix the font features</h2>
+<p>By changing the source code of the font generation, it should be possible to permanently fix any font features (aka patching).
+As mentioned by <a href="https://github.com/tonsky/FiraCode/issues/869#issuecomment-548006778">the original author (<code>@tonsky</code>)</a>:</p>
+<blockquote>
+<p>There is probably a simpler approach to patching the font, just concat whatever code there is in ssXX and add it to the end of calt feature.
+That should work on the current version of the font, but you’ll need to do your own research on which scripts to use for that</p>
+</blockquote>
+<p>And that&rsquo;s exactly <a href="https://github.com/ccwang002/FiraCode/commit/02f5976631826314e4d0cdad988467862b8f8843">my patch</a> for <code>FiraCode.glyphs</code>.
+Copy all the content of the features (say, ss01, ss03, ss05, and ss08) to <code>calt</code>. So the original code:</p>
+<div class="highlight"><pre><span></span><code># FiraCode.glyphs
+{
+code = &quot;lookup less_bar_greater ...
+... underscores;\012&quot;;
+name = calt;
+},
+</code></pre></div>
+
+
+<p>becomes:</p>
+<div class="highlight"><pre><span></span><code>{
+code = &quot;lookup less_bar_greater ...
+... underscores;\012
+# ss01\012  sub r by r.ss01;
+# ss03\012  sub ampersand by ampersand.ss03;...
+# ss05\012  sub at by at.ss05;\012sub asciitilde.spacer&#39;; ...
+# ss08\012  sub equal_equal.liga by equal_equal.ss08;...
+&quot;;
+name = calt;
+},
+</code></pre></div>
+
+
+<p>Then build the font from the <code>.glyphs</code> file using the Docker image:</p>
+<div class="highlight"><pre><span></span><code>docker run -it --rm <span class="se">\</span>
+    -v <span class="nv">$PWD</span>:/opt/FiraCode <span class="se">\</span>
+    tonsky/firacode ./FiraCode/script/build.sh
+</code></pre></div>
+
+
+<p>To set a different font name for the feature fixed fonts, I use <a href="https://twardoch.github.io/fonttools-opentype-feature-freezer/">pyftfeatfreeze</a>:</p>
+<div class="highlight"><pre><span></span><code>parallel <span class="se">\</span>
+    pyftfeatfreeze <span class="se">\</span>
+        --suffix --usesuffix<span class="o">=</span><span class="s2">&quot;&#39;ss01 ss03 ss05 ss08&#39;&quot;</span> <span class="se">\</span>
+        -v -n <span class="se">\</span>
+        <span class="s1">&#39;{}&#39;</span> <span class="s1">&#39;features_enabled/{/.}.ss1358_enabled.ttf&#39;</span> <span class="se">\</span>
+        ::: ttf/*.ttf
+</code></pre></div></section>
+    <footer class="post-footer">
+	<section>
+		<script src="https://utteranc.es/client.js"
+		repo="ccwang002/ccwang002.github.io"
+		issue-term="pathname"
+		label="Comment"
+		theme="github-light"
+		crossorigin="anonymous"
+		async>
+		</script>
+	</section>
+	</footer>
+</article>
+	</main>
+	<footer class="site-footer">
+		<a class="subscribe"
+			href="https://blog.liang2.tw/feeds/all.atom.xml"
+			data-tooltip="Atom feed"
+		>
+			<img src="https://blog.liang2.tw/theme/icons/feed.svg" alt="Atom feed">
+		</a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags.html">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/lbwang2">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">
+				Built using <a href="https://getpelican.com/">Pelican</a>.
+				Powered by the <a href="https://kura.github.io/hauntr/">Hauntr</a> theme.
+			</section>
+		</div>
+	</footer>
+</body>
+</html>
