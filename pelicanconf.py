@@ -103,3 +103,6 @@ PLUGINS = [
     'pelican_katex.plugin',
 ]
 
+# Pelican KaTeX plugin settings
+# Use newer KaTeX version
+KATEX_PATH = Path(THEME, 'static/katex-0.15.3/katex.js').resolve()
