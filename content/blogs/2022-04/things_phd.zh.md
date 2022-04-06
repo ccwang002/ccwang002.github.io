@@ -1,6 +1,6 @@
 ---
-Title: 我博士班學到的東西
-Slug: things-i-learn-during-phd
+Title: 我博士班學到的專案管理
+Slug: project-management-lessons-during-phd
 Date: 2022-04-05
 Tags: en, zh
 Category: misc
