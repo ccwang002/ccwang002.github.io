@@ -37,26 +37,45 @@ A clear end goal exists for both activities, being either a publication or a pro
 And resources to accomplish the goal are limited (time, people, equipments, and money).
 
 [Agile management][agile-software-dev] has been adopted ubiquitously by startups, particularly in software development.
-Relevant rules of an agile management include:
+Actually, the classic book on agile management for software development, [*The Mythical Man-Month*][man-month-book], greatly influenced me regarding how I planned and carried out research projects with large collaborations.
+In my experience, relevant rules of an agile management include:
 
 1. Make incremental and iterative builds
 2. Keep short and direct feedback cycles
 3. Implement easy (automatic) way to ensure things are going as expected
 
 These rules can be applied to research well.
-Instead of targeting for publications or developing all the features of a tool (end goal), set up milestones and minimal viable products (MVP).
+For rule #1, instead of targeting for publications or developing all the features of a tool (end goal), set up milestones and minimal viable products (MVP).
 For example, to develop a tool that classify genomic variants, implement a *simpler* tool, a MVP, that checks only one basic rule of the classification (even a dummy rule) but it takes in the inputs and produces outputs in the desired format.
 For analysis, subaims are good milestones because their outcomes are well defined and natural steps toward the completion of the aim.
 
-Actually, the classic book on agile management for software development, [*The Mythical Man-Month*][man-month-book], greatly influenced me regarding how I planned and carried out research projects with large collaborations.
-I was aware of the inevitable complexity when the team grows and the increasing time spent on communications.
-So I prepared for the complexity and beware of my role to keep everyone on the same page and not only spend time in analysis or things *productive*.
+For rule #2, set up regular feedback on the results, and the key here is short and direct.
+No one likes a lengthy and boring meeting (conference call).
+And there are many many meetings in a large collaboration on different things, so I want to save time on my analysis and tool development.
+An asynchronous feedback (email or message) can save even more time when it make senses.
+There are a few aspects of being direct: make direct/measurable suggestions and go to direct person involved.
 
-There are some posts that going into this idea in detail.
+
+If the feedback can be done automatically, say unit/behavior tests for code, or positive/negative control for analysis, it's better.
+
+
+
+The rules above definitely are used widely outside of running an agile management.
+They are reasonable and helpful guidelines.
+So I don't believe there can only be agile or non-agile.
+Hence the *agile-ish* style.
+I just think that agile bundles the rules together as a framework and creates the mindset.
+They are not fixed instructions.
+We should feel free to relax some rules whichever fit the situation.
+
+There are already good articles that talk about implementing agile management in an academic setting.
 For example, [this blog post][pm-academia-101] compares the traditional (waterfall) project management with the agile project management in academia.
-*Nature* publishes a few column articles ([1][nature-six-tip], [2][nature-agile], [3][nature-scrum]) covering from the broad concept to the actual methods of being agile.
+*Nature* publishes a few columns ([1][nature-six-tip], [2][nature-agile], [3][nature-scrum]) covering this subject from the broad concept to the actual methods of running agile methods (scrum).
 Though I never tried to implement the fixed 2-week lab scrum for my research projects, as I find it very intrusive (might face huge pushbacks) and unnecessary (timeline is more flexible in academia).
-More on this in the lesson I learned below.
+More on this in the lesson I learned later.
+
+I was aware of the inevitable complexity when the team grows and the increasing time spent on communications.
+So I prepared for the complexity and beware of my role to keep everyone on the same page, rather than spending all of my time on analysis or things "productive".
 
 
 [agile-software-dev]: https://en.wikipedia.org/wiki/Agile_software_development
