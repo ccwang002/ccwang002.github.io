@@ -44,7 +44,7 @@
 
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.11.1/katex.min.css">
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
 <body class="post-template">
@@ -309,40 +309,40 @@ ssh-keygen -t rsa -f ~/.ssh/id_rsa.cpython_tw
 <p>對本網站而言，/static 導到 Django staticfiles；/3/、/3.5/ 導到 pydoc build HTML 的路徑；其餘路徑再交給 Django 處理。其中，/3.5/* 的連結將重新導向到 /3/* 上。</p>
 <p>整理上述的需求，寫個 nginx 設定檔在 <code>/etc/nginx/sites-available/pydoc_autobuild.conf</code>：</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Upstream Django setting; the socket nginx connects to</span>
-<span class="k">upstream</span> <span class="s">django</span> <span class="p">{</span>
-    <span class="kn">server</span> <span class="s">unix:///run/django/pydoc_autobuild.sock</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="k">upstream</span><span class="w"> </span><span class="s">django</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kn">server</span><span class="w"> </span><span class="s">unix:///run/django/pydoc_autobuild.sock</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="k">server</span> <span class="p">{</span>
-    <span class="kn">listen</span>      <span class="mi">80</span><span class="p">;</span>
-    <span class="kn">listen</span>      <span class="mi">443</span> <span class="s">default</span> <span class="s">ssl</span><span class="p">;</span>
+<span class="k">server</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kn">listen</span><span class="w">      </span><span class="mi">80</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kn">listen</span><span class="w">      </span><span class="mi">443</span><span class="w"> </span><span class="s">default</span><span class="w"> </span><span class="s">ssl</span><span class="p">;</span><span class="w"></span>
 
-    <span class="kn">server_name</span> <span class="s">docs.python.org.tw</span>
-                <span class="mi">52</span><span class="s">.69.170.26</span>
-                <span class="p">;</span>
-    <span class="kn">charset</span>     <span class="s">utf-8</span><span class="p">;</span>
+<span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">docs.python.org.tw</span><span class="w"></span>
+<span class="w">                </span><span class="mi">52</span><span class="s">.69.170.26</span><span class="w"></span>
+<span class="w">                </span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kn">charset</span><span class="w">     </span><span class="s">utf-8</span><span class="p">;</span><span class="w"></span>
 
-    <span class="kn">client_max_body_size</span> <span class="s">10M</span><span class="p">;</span>  <span class="c1"># max upload size</span>
-    <span class="kn">keepalive_timeout</span> <span class="mi">15</span><span class="p">;</span>
+<span class="w">    </span><span class="kn">client_max_body_size</span><span class="w"> </span><span class="s">10M</span><span class="p">;</span><span class="w">  </span><span class="c1"># max upload size</span>
+<span class="w">    </span><span class="kn">keepalive_timeout</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span><span class="w"></span>
 
-    <span class="kn">location</span> <span class="s">/static</span> <span class="p">{</span>
-        <span class="kn">alias</span> <span class="s">/path/to/code/pydoc_autobuild/assets</span><span class="p">;</span>
-    <span class="p">}</span>
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/static</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kn">alias</span><span class="w"> </span><span class="s">/path/to/code/pydoc_autobuild/assets</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
 
-    <span class="kn">location</span> <span class="s">/3</span> <span class="p">{</span>
-        <span class="kn">alias</span> <span class="s">/path/to/code/cpython-tw/Doc/build/html</span><span class="p">;</span>
-    <span class="p">}</span>
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/3</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kn">alias</span><span class="w"> </span><span class="s">/path/to/code/cpython-tw/Doc/build/html</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
 
-    <span class="kn">location</span> <span class="p">~</span> <span class="sr">/3\.5/(.*)</span> <span class="p">{</span>
-        <span class="kn">return</span> <span class="mi">302</span> <span class="s">/3/</span><span class="nv">$1</span><span class="p">;</span>
-    <span class="p">}</span>
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="p">~</span><span class="w"> </span><span class="sr">/3\.5/(.*)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kn">return</span><span class="w"> </span><span class="mi">302</span><span class="w"> </span><span class="s">/3/</span><span class="nv">$1</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
 
-    <span class="c1"># Finally, send all non-media requests to the Django server.</span>
-    <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
-        <span class="kn">uwsgi_pass</span>  <span class="s">django</span><span class="p">;</span>
-        <span class="kn">include</span>     <span class="s">/etc/nginx/uwsgi_params</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<span class="w">    </span><span class="c1"># Finally, send all non-media requests to the Django server.</span>
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kn">uwsgi_pass</span><span class="w">  </span><span class="s">django</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kn">include</span><span class="w">     </span><span class="s">/etc/nginx/uwsgi_params</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 

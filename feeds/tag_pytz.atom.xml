@@ -119,12 +119,12 @@
 &lt;p&gt;存了兩個時間，一個是 UTC 的現在時間，另一個是以 UTC 表示的台北 2016 元旦。注意兩個時間都把 UTC 時區去掉了，因為在某些情況底下 SQLite 與 python 的 datetime adapter 會看不懂時區（這是個 &lt;a href="https://bugs.python.org/issue19065"&gt;bug #19065&lt;/a&gt;）。&lt;/p&gt;
 &lt;p&gt;如果用 SQLite 可以看到時間都是以 UTC 呈現。仍可以用它內建的 &lt;code&gt;datetime('&amp;lt;UTC time&amp;gt;', 'localtime')&lt;/code&gt; 把 UTC 時間字串轉換成電腦的當地時間。這樣處理是容易與其他應用程式相容的。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="go"&gt;-- sqlite3 test.db&lt;/span&gt;
-&lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;schema&lt;/span&gt;
+&lt;span class="gp"&gt;sqlite&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;schema&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="go"&gt;CREATE TABLE test(dt timestamp);&lt;/span&gt;
-&lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt; &lt;span class="n"&gt;dt&lt;/span&gt; &lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="gp"&gt;sqlite&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;dt&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="go"&gt;2015-09-29 12:48:16.671538&lt;/span&gt;
 &lt;span class="go"&gt;2015-12-31 16:00:00&lt;/span&gt;
-&lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt; &lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dt&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;localtime&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="gp"&gt;sqlite&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dt&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;localtime&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="go"&gt;2015-09-29 20:48:16&lt;/span&gt;
 &lt;span class="go"&gt;2016-01-01 00:00:00&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -248,12 +248,12 @@
 
 
 &lt;p&gt;存了兩個帶有時區的時間（兩個時間是相同的）。先從 SQLite 來讀讀看。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt; &lt;span class="n"&gt;dt&lt;/span&gt; &lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;sqlite&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;dt&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="go"&gt;2015-09-29 12:48:16.671538&lt;/span&gt;
 &lt;span class="go"&gt;2015-12-31 16:00:00&lt;/span&gt;
 &lt;span class="go"&gt;2016-06-03 08:00:00+08:00&lt;/span&gt;
 &lt;span class="go"&gt;2016-06-03 00:00:00+00:00&lt;/span&gt;
-&lt;span class="gp"&gt;sqlite&amp;gt; &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt; &lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dt&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;localtime&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="gp"&gt;sqlite&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dt&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;localtime&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="go"&gt;2015-09-29 20:48:16&lt;/span&gt;
 &lt;span class="go"&gt;2016-01-01 00:00:00&lt;/span&gt;
 &lt;span class="go"&gt;2016-06-03 08:00:00&lt;/span&gt;

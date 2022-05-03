@@ -118,12 +118,12 @@
 
 &lt;p&gt;這時候透過 &lt;code&gt;psql&lt;/code&gt; 看就會多一個使用者。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;-- Run with command `sudo -u postgres psql`&lt;/span&gt;
-&lt;span class="gp"&gt;postgres=#&lt;/span&gt; &lt;span class="kp"&gt;\du&lt;/span&gt;
-                             &lt;span class="n"&gt;List&lt;/span&gt; &lt;span class="k"&gt;of&lt;/span&gt; &lt;span class="n"&gt;roles&lt;/span&gt;
- &lt;span class="k"&gt;Role&lt;/span&gt; &lt;span class="k"&gt;name&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;                   &lt;span class="n"&gt;Attributes&lt;/span&gt;                   &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt; &lt;span class="k"&gt;of&lt;/span&gt;
+&lt;span class="gp"&gt;postgres=#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kp"&gt;\du&lt;/span&gt;
+&lt;span class="w"&gt;                             &lt;/span&gt;&lt;span class="n"&gt;List&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;of&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;roles&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;Role&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt;                   &lt;/span&gt;&lt;span class="n"&gt;Attributes&lt;/span&gt;&lt;span class="w"&gt;                   &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;of&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="c1"&gt;-----------+------------------------------------------------+-----------&lt;/span&gt;
- &lt;span class="n"&gt;postgres&lt;/span&gt;  &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;Superuser&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;Create&lt;/span&gt; &lt;span class="k"&gt;role&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;Create&lt;/span&gt; &lt;span class="n"&gt;DB&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Replication&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="p"&gt;{}&lt;/span&gt;
- &lt;span class="n"&gt;vm&lt;/span&gt;        &lt;span class="o"&gt;|&lt;/span&gt;                                                &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="p"&gt;{}&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;postgres&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Superuser&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;Create&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;role&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;Create&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;DB&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Replication&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt;                                                &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -150,7 +150,7 @@
 
 
 &lt;p&gt;Prompt 從 &lt;code&gt;#=&lt;/code&gt; 變成 &lt;code&gt;=&amp;gt;&lt;/code&gt; 表示現在連線的使用者不是 superuser。透過 psql 的指令 &lt;code&gt;\l&lt;/code&gt; 或 &lt;code&gt;\l+&lt;/code&gt; 可以看現在所有的 database：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;vm=&amp;gt;&lt;/span&gt; &lt;span class="kp"&gt;\l&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;vm=&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kp"&gt;\l&lt;/span&gt;
 &lt;span class="go"&gt;                                   List of databases&lt;/span&gt;
 &lt;span class="go"&gt;    Name     |  Owner   | Encoding |   Collate   |    Ctype    |   Access privileges&lt;/span&gt;
 &lt;span class="go"&gt;-------------+----------+----------+-------------+-------------+-----------------------&lt;/span&gt;
@@ -196,9 +196,9 @@ help        # print a hub message for all kinds of help
 &lt;h3 id="psql_2"&gt;透過 psql 創建使用者帳號、資料庫&lt;/h3&gt;
 &lt;p&gt;Ref: &lt;a href="http://www.cyberciti.biz/faq/howto-add-postgresql-user-account/"&gt;http://www.cyberciti.biz/faq/howto-add-postgresql-user-account/&lt;/a&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;-- Run with command `sudo -u postgres psql -d template1`&lt;/span&gt;
-&lt;span class="gp"&gt;template1=#&lt;/span&gt; &lt;span class="k"&gt;CREATE&lt;/span&gt; &lt;span class="k"&gt;USER&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;WITH&lt;/span&gt; &lt;span class="k"&gt;PASSWORD&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;lt;pwd&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="gp"&gt;template1=#&lt;/span&gt; &lt;span class="k"&gt;CREATE&lt;/span&gt; &lt;span class="k"&gt;DATABASE&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="gp"&gt;template1=#&lt;/span&gt; &lt;span class="k"&gt;GRANT&lt;/span&gt; &lt;span class="k"&gt;ALL&lt;/span&gt; &lt;span class="k"&gt;PRIVILEGES&lt;/span&gt; &lt;span class="k"&gt;ON&lt;/span&gt; &lt;span class="k"&gt;DATABASE&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;TO&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="gp"&gt;template1=#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;CREATE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;USER&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;WITH&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;PASSWORD&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;lt;pwd&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gp"&gt;template1=#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;CREATE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;DATABASE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gp"&gt;template1=#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;GRANT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;ALL&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;PRIVILEGES&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;ON&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;DATABASE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;TO&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -214,18 +214,18 @@ help        # print a hub message for all kinds of help
 
 
 &lt;h4 id="logging-postgresql"&gt;Logging 讓 PostgreSQL 自己管&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# At /etc/postgresql/9.4/main/postgresql.conf&lt;/span&gt;
-&lt;span class="na"&gt;log_destination&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;stderr&amp;#39; &lt;/span&gt;
-&lt;span class="na"&gt;logging_collector&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;on                              &lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# At /etc/postgresql/9.4/main/postgresql.conf&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;log_destination&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;#39;stderr&amp;#39; &lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;logging_collector&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;on                              &lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Log files 預設寫在 &lt;code&gt;/var/lib/postgresql/9.4/main/pg_log/&lt;/code&gt;。&lt;/p&gt;
 &lt;h4 id="logging-systemd"&gt;Logging 透過 Systemd&lt;/h4&gt;
 &lt;p&gt;我覺得 systemd 的優點之一就是能把 log 都集中管理，只要照它的規則，就能用一樣的方法管理 logging 是蠻方便的。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# At /etc/postgresql/9.4/main/postgresql.conf&lt;/span&gt;
-&lt;span class="na"&gt;log_destination&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;syslog&amp;#39;  &lt;/span&gt;
-&lt;span class="na"&gt;logging_collector&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;off   # on 也只會說被導向到 syslog 了                             &lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# At /etc/postgresql/9.4/main/postgresql.conf&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;log_destination&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;#39;syslog&amp;#39;  &lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;logging_collector&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;off   # on 也只會說被導向到 syslog 了                             &lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 

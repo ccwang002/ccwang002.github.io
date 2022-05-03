@@ -385,8 +385,8 @@
 &lt;h2 id="dockerize-the-environment"&gt;Dockerize the environment&lt;/h2&gt;
 &lt;p&gt;Although bioconda has made the package installation very easy, it would be easier to just isolate the whole environment at the operating system level. One common approach is to use &lt;a href="https://www.docker.com/"&gt;Docker&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;A minimal working Dockerfile would be:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="s"&gt;continuumio/miniconda3&lt;/span&gt;
-&lt;span class="k"&gt;RUN&lt;/span&gt; conda install -y &lt;span class="nv"&gt;python&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;.6 nomkl &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;continuumio/miniconda3&lt;/span&gt;
+&lt;span class="k"&gt;RUN&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;conda install -y &lt;span class="nv"&gt;python&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;.6 nomkl &lt;span class="se"&gt;\&lt;/span&gt;
         stringtie samtools hisat2 snakemake google-cloud-storage &lt;span class="se"&gt;\&lt;/span&gt;
     &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; conda clean -y --all
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;

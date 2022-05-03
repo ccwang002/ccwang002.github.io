@@ -35,7 +35,7 @@
 
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.11.1/katex.min.css">
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
 <body class="post-template">
@@ -68,27 +68,27 @@
 
 <p>It turns out that Firefox controls its user interface styling using CSS. So we can set the shape of the window tabs, the height of the address bar, and more by adding a CSS file at <code>~/Library/Application Support/Firefox/Profiles/&lt;profile&gt;/chrome/userChrome.css</code>. In Firefox 69+, we need to set <code>toolkit.legacyUserProfileCustomizations.stylesheets=true</code> in <code>about:config</code> to enable the CSS styling (<a href="https://www.userchrome.org/how-create-userchrome-css.html">more details here</a>).</p>
 <p>My modification was based on <a href="https://apple.stackexchange.com/a/313241">this answer on Stack Exchange</a>:</p>
-<div class="highlight"><pre><span></span><code><span class="p">#</span><span class="nn">navigator-toolbox</span><span class="o">[</span><span class="nt">inFullscreen</span><span class="o">]</span> <span class="p">{</span>
-    <span class="k">height</span><span class="p">:</span> <span class="mf">0.5</span><span class="kt">rem</span><span class="p">;</span>
-    <span class="k">margin-bottom</span><span class="p">:</span> <span class="mf">-0.5</span><span class="kt">rem</span><span class="p">;</span>
-    <span class="k">opacity</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="k">overflow</span><span class="p">:</span> <span class="kc">hidden</span><span class="p">;</span>
-    <span class="k">z-index</span><span class="p">:</span> <span class="mi">1</span><span class="p">;</span>
-<span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="p">#</span><span class="nn">navigator-toolbox</span><span class="o">[</span><span class="nt">inFullscreen</span><span class="o">]</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">height</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="kt">rem</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">margin-bottom</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.5</span><span class="kt">rem</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">opacity</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">overflow</span><span class="p">:</span><span class="w"> </span><span class="kc">hidden</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">z-index</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="p">#</span><span class="nn">navigator-toolbox</span><span class="o">[</span><span class="nt">inFullscreen</span><span class="o">]</span><span class="p">:</span><span class="nd">hover</span><span class="o">,</span>
-<span class="p">#</span><span class="nn">navigator-toolbox</span><span class="o">[</span><span class="nt">inFullscreen</span><span class="o">]</span><span class="p">:</span><span class="nd">focus-within</span> <span class="p">{</span>
-    <span class="c">/*</span>
+<span class="p">#</span><span class="nn">navigator-toolbox</span><span class="o">[</span><span class="nt">inFullscreen</span><span class="o">]</span><span class="p">:</span><span class="nd">hover</span><span class="o">,</span><span class="w"></span>
+<span class="p">#</span><span class="nn">navigator-toolbox</span><span class="o">[</span><span class="nt">inFullscreen</span><span class="o">]</span><span class="p">:</span><span class="nd">focus-within</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c">/*</span>
 <span class="c">     * Add some padding between the navbar and the top screen edge</span>
 <span class="c">     * to be more visible while the macOS hidden menu bar shows up.</span>
 <span class="c">     * The macOS menubar will hide after a few seconds.</span>
-<span class="c">     */</span>
-    <span class="k">padding-top</span><span class="p">:</span> <span class="mf">1.5</span><span class="kt">rem</span><span class="p">;</span>
-    <span class="k">height</span><span class="p">:</span> <span class="kc">auto</span><span class="p">;</span>
-    <span class="k">margin-bottom</span><span class="p">:</span> <span class="mi">0</span><span class="kt">rem</span><span class="p">;</span>
-    <span class="k">opacity</span><span class="p">:</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="k">overflow</span><span class="p">:</span> <span class="kc">visible</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="c">     */</span><span class="w"></span>
+<span class="w">    </span><span class="k">padding-top</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5</span><span class="kt">rem</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">height</span><span class="p">:</span><span class="w"> </span><span class="kc">auto</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">margin-bottom</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="kt">rem</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">opacity</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">overflow</span><span class="p">:</span><span class="w"> </span><span class="kc">visible</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 

@@ -43,7 +43,7 @@
 
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.11.1/katex.min.css">
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
 <body class="post-template">
@@ -107,7 +107,7 @@
 
 <p>有關部署的設定（即 <code>settings.py</code>），利用 <a href="https://github.com/joke2k/django-environ">django-environ</a> 把 secret key、database 連線資訊、寄信 SMTP server 等設定寫在獨立的檔案，就可以讓 local 和 production 環境讀到各自的設定。具體的做法可以參考 <a href="https://github.com/pycontw/pycontw2016/blob/master/src/pycontw2016/settings/production.py">PyCon Taiwan 2016 網站管理設定</a> 的寫法。</p>
 <p>在連 PostgreSQL 時使用 local connection (Unix-domain socket)，即使用者同名的身份。</p>
-<div class="highlight"><pre><span></span><code><span class="na">DATABASE_URL</span><span class="o">=</span><span class="s">postgres:///TABLE_NAME</span>
+<div class="highlight"><pre><span></span><code><span class="na">DATABASE_URL</span><span class="o">=</span><span class="s">postgres:///TABLE_NAME</span><span class="w"></span>
 </code></pre></div>
 
 
@@ -116,31 +116,31 @@
 <h3 id="nginx">nginx</h3>
 <p>nginx 設定跟<a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/">舊文</a>一樣。放在 <code>/etc/nginx/sites-available/PROJ.conf</code></p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Upstream Django setting; the socket nginx connects to</span>
-<span class="k">upstream</span> <span class="s">django</span> <span class="p">{</span>
-    <span class="kn">server</span> <span class="s">unix:///run/PROJ/django.sock</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="k">upstream</span><span class="w"> </span><span class="s">django</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kn">server</span><span class="w"> </span><span class="s">unix:///run/PROJ/django.sock</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="k">server</span> <span class="p">{</span>
-    <span class="kn">listen</span>      <span class="mi">80</span><span class="p">;</span>
-    <span class="kn">listen</span>      <span class="mi">443</span> <span class="s">default</span> <span class="s">ssl</span><span class="p">;</span>
+<span class="k">server</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kn">listen</span><span class="w">      </span><span class="mi">80</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kn">listen</span><span class="w">      </span><span class="mi">443</span><span class="w"> </span><span class="s">default</span><span class="w"> </span><span class="s">ssl</span><span class="p">;</span><span class="w"></span>
 
-    <span class="kn">server_name</span> <span class="mi">123</span><span class="s">.123.123.123</span>
-                <span class="p">;</span>
-    <span class="kn">charset</span>     <span class="s">utf-8</span><span class="p">;</span>
+<span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="mi">123</span><span class="s">.123.123.123</span><span class="w"></span>
+<span class="w">                </span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kn">charset</span><span class="w">     </span><span class="s">utf-8</span><span class="p">;</span><span class="w"></span>
 
-    <span class="kn">client_max_body_size</span> <span class="s">10M</span><span class="p">;</span>  <span class="c1"># max upload size</span>
-    <span class="kn">keepalive_timeout</span> <span class="mi">15</span><span class="p">;</span>
+<span class="w">    </span><span class="kn">client_max_body_size</span><span class="w"> </span><span class="s">10M</span><span class="p">;</span><span class="w">  </span><span class="c1"># max upload size</span>
+<span class="w">    </span><span class="kn">keepalive_timeout</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span><span class="w"></span>
 
-    <span class="kn">location</span> <span class="s">/static</span> <span class="p">{</span>
-        <span class="kn">alias</span> <span class="s">/path/to/PROJ/assets</span><span class="p">;</span>
-    <span class="p">}</span>
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/static</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kn">alias</span><span class="w"> </span><span class="s">/path/to/PROJ/assets</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
 
-    <span class="c1"># Finally, send all non-media requests to the Django server.</span>
-    <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
-        <span class="kn">uwsgi_pass</span>  <span class="s">django</span><span class="p">;</span>
-        <span class="kn">include</span>     <span class="s">/etc/nginx/uwsgi_params</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<span class="w">    </span><span class="c1"># Finally, send all non-media requests to the Django server.</span>
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kn">uwsgi_pass</span><span class="w">  </span><span class="s">django</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kn">include</span><span class="w">     </span><span class="s">/etc/nginx/uwsgi_params</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 
@@ -154,27 +154,27 @@ sudo systemctl reload nginx
 
 <h3 id="uwsgi">uWSGI</h3>
 <p>跟舊文最大的差別，只要裝在 VENV 裡面就好了；然後也不使用 emperor mode。寫一個 <code>/etc/uwsgi/vassals/PROJ.ini</code> 放設定：</p>
-<div class="highlight"><pre><span></span><code><span class="k">[uwsgi]</span>
-<span class="na">chdir</span>        <span class="o">=</span> <span class="s">/path/to/PROJ</span>
-<span class="c1"># Django&#39;s wsgi file</span>
-<span class="na">module</span>       <span class="o">=</span> <span class="s">PROJ.wsgi:application</span>
-<span class="na">env</span>          <span class="o">=</span> <span class="s">DJANGO_SETTINGS_MODULE=PROJ.settings.production</span>
-<span class="c1"># the virtualenv (full path)</span>
-<span class="na">home</span>         <span class="o">=</span> <span class="s">/path/to/VENV</span>
+<div class="highlight"><pre><span></span><code><span class="k">[uwsgi]</span><span class="w"></span>
+<span class="na">chdir</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s">/path/to/PROJ</span><span class="w"></span>
+<span class="c1"># Django&#39;s wsgi file</span><span class="w"></span>
+<span class="na">module</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s">PROJ.wsgi:application</span><span class="w"></span>
+<span class="na">env</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="s">DJANGO_SETTINGS_MODULE=PROJ.settings.production</span><span class="w"></span>
+<span class="c1"># the virtualenv (full path)</span><span class="w"></span>
+<span class="na">home</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="s">/path/to/VENV</span><span class="w"></span>
 
-<span class="c1"># process-related settings</span>
-<span class="c1"># master</span>
-<span class="na">master</span>       <span class="o">=</span> <span class="s">true</span>
-<span class="c1"># maximum number of worker processes</span>
-<span class="na">processes</span>    <span class="o">=</span> <span class="s">4</span>
-<span class="c1"># the socket (use the full path to be safe</span>
-<span class="na">socket</span>       <span class="o">=</span> <span class="s">/run/PROJ/django.sock</span>
-<span class="c1"># ... with appropriate permissions - may be needed</span>
-<span class="na">chmod-socket</span> <span class="o">=</span> <span class="s">664</span>
-<span class="na">uid</span>          <span class="o">=</span> <span class="s">USER</span>
-<span class="na">gid</span>          <span class="o">=</span> <span class="s">www-data</span>
-<span class="c1"># clear environment on exit</span>
-<span class="na">vacuum</span>       <span class="o">=</span> <span class="s">true</span>
+<span class="c1"># process-related settings</span><span class="w"></span>
+<span class="c1"># master</span><span class="w"></span>
+<span class="na">master</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s">true</span><span class="w"></span>
+<span class="c1"># maximum number of worker processes</span><span class="w"></span>
+<span class="na">processes</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s">4</span><span class="w"></span>
+<span class="c1"># the socket (use the full path to be safe</span><span class="w"></span>
+<span class="na">socket</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s">/run/PROJ/django.sock</span><span class="w"></span>
+<span class="c1"># ... with appropriate permissions - may be needed</span><span class="w"></span>
+<span class="na">chmod-socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">664</span><span class="w"></span>
+<span class="na">uid</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="s">USER</span><span class="w"></span>
+<span class="na">gid</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="s">www-data</span><span class="w"></span>
+<span class="c1"># clear environment on exit</span><span class="w"></span>
+<span class="na">vacuum</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s">true</span><span class="w"></span>
 </code></pre></div>
 
 

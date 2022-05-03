@@ -38,7 +38,7 @@
 
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.11.1/katex.min.css">
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
 <body class="post-template">
@@ -104,19 +104,19 @@
 <p>更新 certificate 的指令寫在 <code>/etc/letsencrypt/renew_cert.sh</code>。Shell script 的內容與參考文章一樣。</p>
 <h4 id="systemd-service">Systemd service</h4>
 <p>首先建立一個 renew_cert，以 Debian 為例放在 <code>/etc/systemd/system/renew_cert.service</code>，</p>
-<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
-<span class="na">Description</span><span class="o">=</span><span class="s">Renew Let&#39;s Encrypt cert</span>
-<span class="na">After</span><span class="o">=</span><span class="s">syslog.target</span>
+<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span><span class="w"></span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Renew Let&#39;s Encrypt cert</span><span class="w"></span>
+<span class="na">After</span><span class="o">=</span><span class="s">syslog.target</span><span class="w"></span>
 
-<span class="k">[Service]</span>
-<span class="na">User</span><span class="o">=</span><span class="s">letsencrypt</span>
-<span class="na">Group</span><span class="o">=</span><span class="s">letsencrypt</span>
-<span class="na">ExecStart</span><span class="o">=</span><span class="s">/etc/letsencrypt/renew_cert.sh</span>
-<span class="na">Type</span><span class="o">=</span><span class="s">simple</span>
-<span class="na">StandardError</span><span class="o">=</span><span class="s">syslog</span>
+<span class="k">[Service]</span><span class="w"></span>
+<span class="na">User</span><span class="o">=</span><span class="s">letsencrypt</span><span class="w"></span>
+<span class="na">Group</span><span class="o">=</span><span class="s">letsencrypt</span><span class="w"></span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/etc/letsencrypt/renew_cert.sh</span><span class="w"></span>
+<span class="na">Type</span><span class="o">=</span><span class="s">simple</span><span class="w"></span>
+<span class="na">StandardError</span><span class="o">=</span><span class="s">syslog</span><span class="w"></span>
 
-<span class="k">[Install]</span>
-<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+<span class="k">[Install]</span><span class="w"></span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span><span class="w"></span>
 </code></pre></div>
 
 
@@ -133,15 +133,15 @@ journalctl -e -u renew_cert
 
 <h4 id="systemd-timer">Systemd Timer</h4>
 <p>建立一個 <code>/etc/systemd/system/renew_cert.timer</code></p>
-<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
-<span class="na">Description</span><span class="o">=</span><span class="s">Update Let&#39;s Encrypt certificate every two months</span>
+<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span><span class="w"></span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Update Let&#39;s Encrypt certificate every two months</span><span class="w"></span>
 
-<span class="k">[Timer]</span>
-<span class="na">OnCalendar</span><span class="o">=</span><span class="s">*-1/2-1 16:00:00</span>
-<span class="na">Unit</span><span class="o">=</span><span class="s">renew_cert.service</span>
+<span class="k">[Timer]</span><span class="w"></span>
+<span class="na">OnCalendar</span><span class="o">=</span><span class="s">*-1/2-1 16:00:00</span><span class="w"></span>
+<span class="na">Unit</span><span class="o">=</span><span class="s">renew_cert.service</span><span class="w"></span>
 
-<span class="k">[Install]</span>
-<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+<span class="k">[Install]</span><span class="w"></span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span><span class="w"></span>
 </code></pre></div>
 
 
@@ -164,20 +164,20 @@ systemctl start renew_cert.timer
 <p>（這邊設定我沒信心，有更好的設定方法歡迎告訴我 &gt; &lt;）</p>
 <p>要解決的問題為，ACME challenge 是透過 HTTP，其餘的連線都轉到 HTTPS。</p>
 <p>在 nginx 中把主要的設定檔中拿掉 <code>listen 80;</code> 與 ACM challenge 的部份。把它們移成新的 server block： </p>
-<div class="highlight"><pre><span></span><code><span class="k">server</span> <span class="p">{</span>
-    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
-    <span class="kn">server_name</span> <span class="s">docs.python.org.tw</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><span class="k">server</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">docs.python.org.tw</span><span class="p">;</span><span class="w"></span>
 
-    <span class="c1"># For Let&#39;s Encrypt ACME challenge files</span>
-    <span class="kn">location</span> <span class="s">/.well-known/acme-challenge/</span> <span class="p">{</span>
-        <span class="kn">alias</span> <span class="s">/var/www/challenges/</span><span class="p">;</span>
-        <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="p">=</span><span class="mi">404</span><span class="p">;</span>
-    <span class="p">}</span>
+<span class="w">    </span><span class="c1"># For Let&#39;s Encrypt ACME challenge files</span>
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/.well-known/acme-challenge/</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kn">alias</span><span class="w"> </span><span class="s">/var/www/challenges/</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kn">try_files</span><span class="w"> </span><span class="nv">$uri</span><span class="w"> </span><span class="p">=</span><span class="mi">404</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
 
-    <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
-        <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://</span><span class="nv">$host$request_uri</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kn">return</span><span class="w"> </span><span class="mi">301</span><span class="w"> </span><span class="s">https://</span><span class="nv">$host$request_uri</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 

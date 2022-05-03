@@ -38,7 +38,7 @@
 
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.11.1/katex.min.css">
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
 <body class="post-template">
@@ -183,12 +183,12 @@
 
 <p>這時候透過 <code>psql</code> 看就會多一個使用者。</p>
 <div class="highlight"><pre><span></span><code><span class="c1">-- Run with command `sudo -u postgres psql`</span>
-<span class="gp">postgres=#</span> <span class="kp">\du</span>
-                             <span class="n">List</span> <span class="k">of</span> <span class="n">roles</span>
- <span class="k">Role</span> <span class="k">name</span> <span class="o">|</span>                   <span class="n">Attributes</span>                   <span class="o">|</span> <span class="n">Member</span> <span class="k">of</span>
+<span class="gp">postgres=#</span><span class="w"> </span><span class="kp">\du</span>
+<span class="w">                             </span><span class="n">List</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">roles</span><span class="w"></span>
+<span class="w"> </span><span class="k">Role</span><span class="w"> </span><span class="k">name</span><span class="w"> </span><span class="o">|</span><span class="w">                   </span><span class="n">Attributes</span><span class="w">                   </span><span class="o">|</span><span class="w"> </span><span class="n">Member</span><span class="w"> </span><span class="k">of</span><span class="w"></span>
 <span class="c1">-----------+------------------------------------------------+-----------</span>
- <span class="n">postgres</span>  <span class="o">|</span> <span class="n">Superuser</span><span class="p">,</span> <span class="k">Create</span> <span class="k">role</span><span class="p">,</span> <span class="k">Create</span> <span class="n">DB</span><span class="p">,</span> <span class="n">Replication</span> <span class="o">|</span> <span class="p">{}</span>
- <span class="n">vm</span>        <span class="o">|</span>                                                <span class="o">|</span> <span class="p">{}</span>
+<span class="w"> </span><span class="n">postgres</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">Superuser</span><span class="p">,</span><span class="w"> </span><span class="k">Create</span><span class="w"> </span><span class="k">role</span><span class="p">,</span><span class="w"> </span><span class="k">Create</span><span class="w"> </span><span class="n">DB</span><span class="p">,</span><span class="w"> </span><span class="n">Replication</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="w"> </span><span class="n">vm</span><span class="w">        </span><span class="o">|</span><span class="w">                                                </span><span class="o">|</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
 </code></pre></div>
 
 
@@ -215,7 +215,7 @@
 
 
 <p>Prompt 從 <code>#=</code> 變成 <code>=&gt;</code> 表示現在連線的使用者不是 superuser。透過 psql 的指令 <code>\l</code> 或 <code>\l+</code> 可以看現在所有的 database：</p>
-<div class="highlight"><pre><span></span><code><span class="gp">vm=&gt;</span> <span class="kp">\l</span>
+<div class="highlight"><pre><span></span><code><span class="gp">vm=&gt;</span><span class="w"> </span><span class="kp">\l</span>
 <span class="go">                                   List of databases</span>
 <span class="go">    Name     |  Owner   | Encoding |   Collate   |    Ctype    |   Access privileges</span>
 <span class="go">-------------+----------+----------+-------------+-------------+-----------------------</span>
@@ -261,9 +261,9 @@ help        # print a hub message for all kinds of help
 <h3 id="psql_2">透過 psql 創建使用者帳號、資料庫</h3>
 <p>Ref: <a href="http://www.cyberciti.biz/faq/howto-add-postgresql-user-account/">http://www.cyberciti.biz/faq/howto-add-postgresql-user-account/</a></p>
 <div class="highlight"><pre><span></span><code><span class="c1">-- Run with command `sudo -u postgres psql -d template1`</span>
-<span class="gp">template1=#</span> <span class="k">CREATE</span> <span class="k">USER</span> <span class="o">&lt;</span><span class="n">usr</span><span class="o">&gt;</span> <span class="k">WITH</span> <span class="k">PASSWORD</span> <span class="s1">&#39;&lt;pwd&gt;&#39;</span><span class="p">;</span>
-<span class="gp">template1=#</span> <span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="o">&lt;</span><span class="n">db</span><span class="o">&gt;</span><span class="p">;</span>
-<span class="gp">template1=#</span> <span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span> <span class="k">DATABASE</span> <span class="o">&lt;</span><span class="n">db</span><span class="o">&gt;</span> <span class="k">TO</span> <span class="o">&lt;</span><span class="n">usr</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="gp">template1=#</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="o">&lt;</span><span class="n">usr</span><span class="o">&gt;</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="k">PASSWORD</span><span class="w"> </span><span class="s1">&#39;&lt;pwd&gt;&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="gp">template1=#</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">db</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="gp">template1=#</span><span class="w"> </span><span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">db</span><span class="o">&gt;</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="o">&lt;</span><span class="n">usr</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 
 
@@ -279,18 +279,18 @@ help        # print a hub message for all kinds of help
 
 
 <h4 id="logging-postgresql">Logging 讓 PostgreSQL 自己管</h4>
-<div class="highlight"><pre><span></span><code><span class="c1"># At /etc/postgresql/9.4/main/postgresql.conf</span>
-<span class="na">log_destination</span> <span class="o">=</span> <span class="s">&#39;stderr&#39; </span>
-<span class="na">logging_collector</span> <span class="o">=</span> <span class="s">on                              </span>
+<div class="highlight"><pre><span></span><code><span class="c1"># At /etc/postgresql/9.4/main/postgresql.conf</span><span class="w"></span>
+<span class="na">log_destination</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;stderr&#39; </span><span class="w"></span>
+<span class="na">logging_collector</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">on                              </span><span class="w"></span>
 </code></pre></div>
 
 
 <p>Log files 預設寫在 <code>/var/lib/postgresql/9.4/main/pg_log/</code>。</p>
 <h4 id="logging-systemd">Logging 透過 Systemd</h4>
 <p>我覺得 systemd 的優點之一就是能把 log 都集中管理，只要照它的規則，就能用一樣的方法管理 logging 是蠻方便的。</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># At /etc/postgresql/9.4/main/postgresql.conf</span>
-<span class="na">log_destination</span> <span class="o">=</span> <span class="s">&#39;syslog&#39;  </span>
-<span class="na">logging_collector</span> <span class="o">=</span> <span class="s">off   # on 也只會說被導向到 syslog 了                             </span>
+<div class="highlight"><pre><span></span><code><span class="c1"># At /etc/postgresql/9.4/main/postgresql.conf</span><span class="w"></span>
+<span class="na">log_destination</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;syslog&#39;  </span><span class="w"></span>
+<span class="na">logging_collector</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">off   # on 也只會說被導向到 syslog 了                             </span><span class="w"></span>
 </code></pre></div>
 
 

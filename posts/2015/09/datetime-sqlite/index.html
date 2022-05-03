@@ -39,7 +39,7 @@
 
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.11.1/katex.min.css">
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
 <body class="post-template">
@@ -187,12 +187,12 @@
 <p>存了兩個時間，一個是 UTC 的現在時間，另一個是以 UTC 表示的台北 2016 元旦。注意兩個時間都把 UTC 時區去掉了，因為在某些情況底下 SQLite 與 python 的 datetime adapter 會看不懂時區（這是個 <a href="https://bugs.python.org/issue19065">bug #19065</a>）。</p>
 <p>如果用 SQLite 可以看到時間都是以 UTC 呈現。仍可以用它內建的 <code>datetime('&lt;UTC time&gt;', 'localtime')</code> 把 UTC 時間字串轉換成電腦的當地時間。這樣處理是容易與其他應用程式相容的。</p>
 <div class="highlight"><pre><span></span><code><span class="go">-- sqlite3 test.db</span>
-<span class="gp">sqlite&gt; </span><span class="p">.</span><span class="k">schema</span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="k">schema</span><span class="w"></span>
 <span class="go">CREATE TABLE test(dt timestamp);</span>
-<span class="gp">sqlite&gt; </span><span class="k">SELECT</span> <span class="n">dt</span> <span class="k">FROM</span> <span class="n">test</span><span class="p">;</span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="p">;</span><span class="w"></span>
 <span class="go">2015-09-29 12:48:16.671538</span>
 <span class="go">2015-12-31 16:00:00</span>
-<span class="gp">sqlite&gt; </span><span class="k">SELECT</span> <span class="n">datetime</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="s1">&#39;localtime&#39;</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">test</span><span class="p">;</span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">datetime</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;localtime&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="p">;</span><span class="w"></span>
 <span class="go">2015-09-29 20:48:16</span>
 <span class="go">2016-01-01 00:00:00</span>
 </code></pre></div>
@@ -316,12 +316,12 @@
 
 
 <p>存了兩個帶有時區的時間（兩個時間是相同的）。先從 SQLite 來讀讀看。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt; </span><span class="k">SELECT</span> <span class="n">dt</span> <span class="k">FROM</span> <span class="n">test</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="p">;</span><span class="w"></span>
 <span class="go">2015-09-29 12:48:16.671538</span>
 <span class="go">2015-12-31 16:00:00</span>
 <span class="go">2016-06-03 08:00:00+08:00</span>
 <span class="go">2016-06-03 00:00:00+00:00</span>
-<span class="gp">sqlite&gt; </span><span class="k">SELECT</span> <span class="n">datetime</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="s1">&#39;localtime&#39;</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">test</span><span class="p">;</span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">datetime</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;localtime&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test</span><span class="p">;</span><span class="w"></span>
 <span class="go">2015-09-29 20:48:16</span>
 <span class="go">2016-01-01 00:00:00</span>
 <span class="go">2016-06-03 08:00:00</span>

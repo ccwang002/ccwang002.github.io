@@ -130,7 +130,7 @@ WantedBy=multi-user.target
 
 &lt;p&gt;有關部署的設定（即 &lt;code&gt;settings.py&lt;/code&gt;），利用 &lt;a href="https://github.com/joke2k/django-environ"&gt;django-environ&lt;/a&gt; 把 secret key、database 連線資訊、寄信 SMTP server 等設定寫在獨立的檔案，就可以讓 local 和 production 環境讀到各自的設定。具體的做法可以參考 &lt;a href="https://github.com/pycontw/pycontw2016/blob/master/src/pycontw2016/settings/production.py"&gt;PyCon Taiwan 2016 網站管理設定&lt;/a&gt; 的寫法。&lt;/p&gt;
 &lt;p&gt;在連 PostgreSQL 時使用 local connection (Unix-domain socket)，即使用者同名的身份。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="na"&gt;DATABASE_URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;postgres:///TABLE_NAME&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="na"&gt;DATABASE_URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;postgres:///TABLE_NAME&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -139,31 +139,31 @@ WantedBy=multi-user.target
 &lt;h3 id="nginx"&gt;nginx&lt;/h3&gt;
 &lt;p&gt;nginx 設定跟&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;舊文&lt;/a&gt;一樣。放在 &lt;code&gt;/etc/nginx/sites-available/PROJ.conf&lt;/code&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Upstream Django setting; the socket nginx connects to&lt;/span&gt;
-&lt;span class="k"&gt;upstream&lt;/span&gt; &lt;span class="s"&gt;django&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="kn"&gt;server&lt;/span&gt; &lt;span class="s"&gt;unix:///run/PROJ/django.sock&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;upstream&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;django&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;server&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;unix:///run/PROJ/django.sock&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-&lt;span class="k"&gt;server&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="kn"&gt;listen&lt;/span&gt;      &lt;span class="mi"&gt;80&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="kn"&gt;listen&lt;/span&gt;      &lt;span class="mi"&gt;443&lt;/span&gt; &lt;span class="s"&gt;default&lt;/span&gt; &lt;span class="s"&gt;ssl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;server&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;listen&lt;/span&gt;&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="mi"&gt;80&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;listen&lt;/span&gt;&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="mi"&gt;443&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;default&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;ssl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-    &lt;span class="kn"&gt;server_name&lt;/span&gt; &lt;span class="mi"&gt;123&lt;/span&gt;&lt;span class="s"&gt;.123.123.123&lt;/span&gt;
-                &lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="kn"&gt;charset&lt;/span&gt;     &lt;span class="s"&gt;utf-8&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;server_name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;123&lt;/span&gt;&lt;span class="s"&gt;.123.123.123&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;                &lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;charset&lt;/span&gt;&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="s"&gt;utf-8&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-    &lt;span class="kn"&gt;client_max_body_size&lt;/span&gt; &lt;span class="s"&gt;10M&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;# max upload size&lt;/span&gt;
-    &lt;span class="kn"&gt;keepalive_timeout&lt;/span&gt; &lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;client_max_body_size&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;10M&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# max upload size&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;keepalive_timeout&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-    &lt;span class="kn"&gt;location&lt;/span&gt; &lt;span class="s"&gt;/static&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="kn"&gt;alias&lt;/span&gt; &lt;span class="s"&gt;/path/to/PROJ/assets&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;location&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;/static&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="kn"&gt;alias&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;/path/to/PROJ/assets&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-    &lt;span class="c1"&gt;# Finally, send all non-media requests to the Django server.&lt;/span&gt;
-    &lt;span class="kn"&gt;location&lt;/span&gt; &lt;span class="s"&gt;/&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="kn"&gt;uwsgi_pass&lt;/span&gt;  &lt;span class="s"&gt;django&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="kn"&gt;include&lt;/span&gt;     &lt;span class="s"&gt;/etc/nginx/uwsgi_params&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="c1"&gt;# Finally, send all non-media requests to the Django server.&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;location&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;/&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="kn"&gt;uwsgi_pass&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;django&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="kn"&gt;include&lt;/span&gt;&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="s"&gt;/etc/nginx/uwsgi_params&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -177,27 +177,27 @@ sudo systemctl reload nginx
 
 &lt;h3 id="uwsgi"&gt;uWSGI&lt;/h3&gt;
 &lt;p&gt;跟舊文最大的差別，只要裝在 VENV 裡面就好了；然後也不使用 emperor mode。寫一個 &lt;code&gt;/etc/uwsgi/vassals/PROJ.ini&lt;/code&gt; 放設定：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[uwsgi]&lt;/span&gt;
-&lt;span class="na"&gt;chdir&lt;/span&gt;        &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;/path/to/PROJ&lt;/span&gt;
-&lt;span class="c1"&gt;# Django&amp;#39;s wsgi file&lt;/span&gt;
-&lt;span class="na"&gt;module&lt;/span&gt;       &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;PROJ.wsgi:application&lt;/span&gt;
-&lt;span class="na"&gt;env&lt;/span&gt;          &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;DJANGO_SETTINGS_MODULE=PROJ.settings.production&lt;/span&gt;
-&lt;span class="c1"&gt;# the virtualenv (full path)&lt;/span&gt;
-&lt;span class="na"&gt;home&lt;/span&gt;         &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;/path/to/VENV&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[uwsgi]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;chdir&lt;/span&gt;&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;/path/to/PROJ&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="c1"&gt;# Django&amp;#39;s wsgi file&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;module&lt;/span&gt;&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;PROJ.wsgi:application&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;env&lt;/span&gt;&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;DJANGO_SETTINGS_MODULE=PROJ.settings.production&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="c1"&gt;# the virtualenv (full path)&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;home&lt;/span&gt;&lt;span class="w"&gt;         &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;/path/to/VENV&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-&lt;span class="c1"&gt;# process-related settings&lt;/span&gt;
-&lt;span class="c1"&gt;# master&lt;/span&gt;
-&lt;span class="na"&gt;master&lt;/span&gt;       &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;true&lt;/span&gt;
-&lt;span class="c1"&gt;# maximum number of worker processes&lt;/span&gt;
-&lt;span class="na"&gt;processes&lt;/span&gt;    &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;4&lt;/span&gt;
-&lt;span class="c1"&gt;# the socket (use the full path to be safe&lt;/span&gt;
-&lt;span class="na"&gt;socket&lt;/span&gt;       &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;/run/PROJ/django.sock&lt;/span&gt;
-&lt;span class="c1"&gt;# ... with appropriate permissions - may be needed&lt;/span&gt;
-&lt;span class="na"&gt;chmod-socket&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;664&lt;/span&gt;
-&lt;span class="na"&gt;uid&lt;/span&gt;          &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;USER&lt;/span&gt;
-&lt;span class="na"&gt;gid&lt;/span&gt;          &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;www-data&lt;/span&gt;
-&lt;span class="c1"&gt;# clear environment on exit&lt;/span&gt;
-&lt;span class="na"&gt;vacuum&lt;/span&gt;       &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;true&lt;/span&gt;
+&lt;span class="c1"&gt;# process-related settings&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="c1"&gt;# master&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;master&lt;/span&gt;&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;true&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="c1"&gt;# maximum number of worker processes&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;processes&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;4&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="c1"&gt;# the socket (use the full path to be safe&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;socket&lt;/span&gt;&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;/run/PROJ/django.sock&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="c1"&gt;# ... with appropriate permissions - may be needed&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;chmod-socket&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;664&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;uid&lt;/span&gt;&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;USER&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;gid&lt;/span&gt;&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;www-data&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="c1"&gt;# clear environment on exit&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;vacuum&lt;/span&gt;&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;true&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -473,40 +473,40 @@ ssh-keygen -t rsa -f ~/.ssh/id_rsa.cpython_tw
 &lt;p&gt;對本網站而言，/static 導到 Django staticfiles；/3/、/3.5/ 導到 pydoc build HTML 的路徑；其餘路徑再交給 Django 處理。其中，/3.5/* 的連結將重新導向到 /3/* 上。&lt;/p&gt;
 &lt;p&gt;整理上述的需求，寫個 nginx 設定檔在 &lt;code&gt;/etc/nginx/sites-available/pydoc_autobuild.conf&lt;/code&gt;：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Upstream Django setting; the socket nginx connects to&lt;/span&gt;
-&lt;span class="k"&gt;upstream&lt;/span&gt; &lt;span class="s"&gt;django&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="kn"&gt;server&lt;/span&gt; &lt;span class="s"&gt;unix:///run/django/pydoc_autobuild.sock&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;upstream&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;django&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;server&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;unix:///run/django/pydoc_autobuild.sock&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-&lt;span class="k"&gt;server&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="kn"&gt;listen&lt;/span&gt;      &lt;span class="mi"&gt;80&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="kn"&gt;listen&lt;/span&gt;      &lt;span class="mi"&gt;443&lt;/span&gt; &lt;span class="s"&gt;default&lt;/span&gt; &lt;span class="s"&gt;ssl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;server&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;listen&lt;/span&gt;&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="mi"&gt;80&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;listen&lt;/span&gt;&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="mi"&gt;443&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;default&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;ssl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-    &lt;span class="kn"&gt;server_name&lt;/span&gt; &lt;span class="s"&gt;docs.python.org.tw&lt;/span&gt;
-                &lt;span class="mi"&gt;52&lt;/span&gt;&lt;span class="s"&gt;.69.170.26&lt;/span&gt;
-                &lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="kn"&gt;charset&lt;/span&gt;     &lt;span class="s"&gt;utf-8&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;server_name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;docs.python.org.tw&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;                &lt;/span&gt;&lt;span class="mi"&gt;52&lt;/span&gt;&lt;span class="s"&gt;.69.170.26&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;                &lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;charset&lt;/span&gt;&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="s"&gt;utf-8&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-    &lt;span class="kn"&gt;client_max_body_size&lt;/span&gt; &lt;span class="s"&gt;10M&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;# max upload size&lt;/span&gt;
-    &lt;span class="kn"&gt;keepalive_timeout&lt;/span&gt; &lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;client_max_body_size&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;10M&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# max upload size&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;keepalive_timeout&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-    &lt;span class="kn"&gt;location&lt;/span&gt; &lt;span class="s"&gt;/static&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="kn"&gt;alias&lt;/span&gt; &lt;span class="s"&gt;/path/to/code/pydoc_autobuild/assets&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;location&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;/static&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="kn"&gt;alias&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;/path/to/code/pydoc_autobuild/assets&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-    &lt;span class="kn"&gt;location&lt;/span&gt; &lt;span class="s"&gt;/3&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="kn"&gt;alias&lt;/span&gt; &lt;span class="s"&gt;/path/to/code/cpython-tw/Doc/build/html&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;location&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;/3&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="kn"&gt;alias&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;/path/to/code/cpython-tw/Doc/build/html&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-    &lt;span class="kn"&gt;location&lt;/span&gt; &lt;span class="p"&gt;~&lt;/span&gt; &lt;span class="sr"&gt;/3\.5/(.*)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="kn"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;302&lt;/span&gt; &lt;span class="s"&gt;/3/&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;location&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;~&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="sr"&gt;/3\.5/(.*)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="kn"&gt;return&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;302&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;/3/&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-    &lt;span class="c1"&gt;# Finally, send all non-media requests to the Django server.&lt;/span&gt;
-    &lt;span class="kn"&gt;location&lt;/span&gt; &lt;span class="s"&gt;/&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="kn"&gt;uwsgi_pass&lt;/span&gt;  &lt;span class="s"&gt;django&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="kn"&gt;include&lt;/span&gt;     &lt;span class="s"&gt;/etc/nginx/uwsgi_params&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="c1"&gt;# Finally, send all non-media requests to the Django server.&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;location&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;/&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="kn"&gt;uwsgi_pass&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;django&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="kn"&gt;include&lt;/span&gt;&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="s"&gt;/etc/nginx/uwsgi_params&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -779,12 +779,12 @@ sudo systemctl status qcluster
 
 &lt;p&gt;這時候透過 &lt;code&gt;psql&lt;/code&gt; 看就會多一個使用者。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;-- Run with command `sudo -u postgres psql`&lt;/span&gt;
-&lt;span class="gp"&gt;postgres=#&lt;/span&gt; &lt;span class="kp"&gt;\du&lt;/span&gt;
-                             &lt;span class="n"&gt;List&lt;/span&gt; &lt;span class="k"&gt;of&lt;/span&gt; &lt;span class="n"&gt;roles&lt;/span&gt;
- &lt;span class="k"&gt;Role&lt;/span&gt; &lt;span class="k"&gt;name&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;                   &lt;span class="n"&gt;Attributes&lt;/span&gt;                   &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;Member&lt;/span&gt; &lt;span class="k"&gt;of&lt;/span&gt;
+&lt;span class="gp"&gt;postgres=#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kp"&gt;\du&lt;/span&gt;
+&lt;span class="w"&gt;                             &lt;/span&gt;&lt;span class="n"&gt;List&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;of&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;roles&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;Role&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt;                   &lt;/span&gt;&lt;span class="n"&gt;Attributes&lt;/span&gt;&lt;span class="w"&gt;                   &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;of&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="c1"&gt;-----------+------------------------------------------------+-----------&lt;/span&gt;
- &lt;span class="n"&gt;postgres&lt;/span&gt;  &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;Superuser&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;Create&lt;/span&gt; &lt;span class="k"&gt;role&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;Create&lt;/span&gt; &lt;span class="n"&gt;DB&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Replication&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="p"&gt;{}&lt;/span&gt;
- &lt;span class="n"&gt;vm&lt;/span&gt;        &lt;span class="o"&gt;|&lt;/span&gt;                                                &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="p"&gt;{}&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;postgres&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Superuser&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;Create&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;role&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;Create&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;DB&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Replication&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt;                                                &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -811,7 +811,7 @@ sudo systemctl status qcluster
 
 
 &lt;p&gt;Prompt 從 &lt;code&gt;#=&lt;/code&gt; 變成 &lt;code&gt;=&amp;gt;&lt;/code&gt; 表示現在連線的使用者不是 superuser。透過 psql 的指令 &lt;code&gt;\l&lt;/code&gt; 或 &lt;code&gt;\l+&lt;/code&gt; 可以看現在所有的 database：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;vm=&amp;gt;&lt;/span&gt; &lt;span class="kp"&gt;\l&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;vm=&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kp"&gt;\l&lt;/span&gt;
 &lt;span class="go"&gt;                                   List of databases&lt;/span&gt;
 &lt;span class="go"&gt;    Name     |  Owner   | Encoding |   Collate   |    Ctype    |   Access privileges&lt;/span&gt;
 &lt;span class="go"&gt;-------------+----------+----------+-------------+-------------+-----------------------&lt;/span&gt;
@@ -857,9 +857,9 @@ help        # print a hub message for all kinds of help
 &lt;h3 id="psql_2"&gt;透過 psql 創建使用者帳號、資料庫&lt;/h3&gt;
 &lt;p&gt;Ref: &lt;a href="http://www.cyberciti.biz/faq/howto-add-postgresql-user-account/"&gt;http://www.cyberciti.biz/faq/howto-add-postgresql-user-account/&lt;/a&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;-- Run with command `sudo -u postgres psql -d template1`&lt;/span&gt;
-&lt;span class="gp"&gt;template1=#&lt;/span&gt; &lt;span class="k"&gt;CREATE&lt;/span&gt; &lt;span class="k"&gt;USER&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;WITH&lt;/span&gt; &lt;span class="k"&gt;PASSWORD&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;lt;pwd&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="gp"&gt;template1=#&lt;/span&gt; &lt;span class="k"&gt;CREATE&lt;/span&gt; &lt;span class="k"&gt;DATABASE&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="gp"&gt;template1=#&lt;/span&gt; &lt;span class="k"&gt;GRANT&lt;/span&gt; &lt;span class="k"&gt;ALL&lt;/span&gt; &lt;span class="k"&gt;PRIVILEGES&lt;/span&gt; &lt;span class="k"&gt;ON&lt;/span&gt; &lt;span class="k"&gt;DATABASE&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;TO&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="gp"&gt;template1=#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;CREATE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;USER&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;WITH&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;PASSWORD&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;lt;pwd&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gp"&gt;template1=#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;CREATE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;DATABASE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gp"&gt;template1=#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;GRANT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;ALL&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;PRIVILEGES&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;ON&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;DATABASE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;TO&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -875,18 +875,18 @@ help        # print a hub message for all kinds of help
 
 
 &lt;h4 id="logging-postgresql"&gt;Logging 讓 PostgreSQL 自己管&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# At /etc/postgresql/9.4/main/postgresql.conf&lt;/span&gt;
-&lt;span class="na"&gt;log_destination&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;stderr&amp;#39; &lt;/span&gt;
-&lt;span class="na"&gt;logging_collector&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;on                              &lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# At /etc/postgresql/9.4/main/postgresql.conf&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;log_destination&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;#39;stderr&amp;#39; &lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;logging_collector&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;on                              &lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Log files 預設寫在 &lt;code&gt;/var/lib/postgresql/9.4/main/pg_log/&lt;/code&gt;。&lt;/p&gt;
 &lt;h4 id="logging-systemd"&gt;Logging 透過 Systemd&lt;/h4&gt;
 &lt;p&gt;我覺得 systemd 的優點之一就是能把 log 都集中管理，只要照它的規則，就能用一樣的方法管理 logging 是蠻方便的。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# At /etc/postgresql/9.4/main/postgresql.conf&lt;/span&gt;
-&lt;span class="na"&gt;log_destination&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;syslog&amp;#39;  &lt;/span&gt;
-&lt;span class="na"&gt;logging_collector&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;off   # on 也只會說被導向到 syslog 了                             &lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# At /etc/postgresql/9.4/main/postgresql.conf&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;log_destination&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;#39;syslog&amp;#39;  &lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;logging_collector&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;off   # on 也只會說被導向到 syslog 了                             &lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 

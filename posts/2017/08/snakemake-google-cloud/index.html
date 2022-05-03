@@ -39,7 +39,7 @@
 
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.11.1/katex.min.css">
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
 <body class="post-template">
@@ -452,8 +452,8 @@
 <h2 id="dockerize-the-environment">Dockerize the environment</h2>
 <p>Although bioconda has made the package installation very easy, it would be easier to just isolate the whole environment at the operating system level. One common approach is to use <a href="https://www.docker.com/">Docker</a>.</p>
 <p>A minimal working Dockerfile would be:</p>
-<div class="highlight"><pre><span></span><code><span class="k">FROM</span> <span class="s">continuumio/miniconda3</span>
-<span class="k">RUN</span> conda install -y <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6 nomkl <span class="se">\</span>
+<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">continuumio/miniconda3</span>
+<span class="k">RUN</span><span class="w"> </span>conda install -y <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6 nomkl <span class="se">\</span>
         stringtie samtools hisat2 snakemake google-cloud-storage <span class="se">\</span>
     <span class="o">&amp;&amp;</span> conda clean -y --all
 </code></pre></div>

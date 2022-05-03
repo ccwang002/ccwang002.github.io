@@ -38,7 +38,7 @@
 
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.11.1/katex.min.css">
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
 <body class="post-template">
@@ -221,9 +221,9 @@ Hello World_
 <p>最後內文寬 738px (41em) 或 828px (46em)，實際一行最大為 612px (34em)。一行最多 34 個中文字、大約 14 個英文字（80 個字元）；程式碼一行最多只能放 74 個字元，短了一點點但還可以接受。</p>
 <p>意外的小發現，在內文變窄之後，還可以加上右側的 sidenote，像是 <a href="http://www.daveliepmann.com/tufte-css/">Tufte CSS</a> 這樣，有時會比 footnote 好用，但可能又變回內容太擠的狀態。</p>
 <p>最後是在段落前後距離調整，把標題接內文的間距變小了，但段落間的間距調大。學到了一些以前不會的 CSS 語法，像</p>
-<div class="highlight"><pre><span></span><code><span class="nt">p</span> <span class="o">+</span> <span class="nt">p</span> <span class="p">{</span>
-  <span class="k">margin-top</span><span class="p">:</span> <span class="mf">1.5</span><span class="kt">em</span><span class="p">;</span>
-<span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="nt">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nt">p</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">margin-top</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5</span><span class="kt">em</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 

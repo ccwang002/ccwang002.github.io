@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2022/03/fix-fira-code-font-features/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2022-03-01 00:00:00-06:00"/>
-<meta property="article:modified_time" content="2022-03-14 10:50:20.203913-05:00"/>
+<meta property="article:modified_time" content="2022-05-03 09:55:20.397405-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="en"/>
@@ -36,7 +36,7 @@
 
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.11.1/katex.min.css">
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
 <body class="post-template">
@@ -78,6 +78,24 @@ Most modern editors and word processors are able to configure the feature sets i
 <p>Unfortunately, I encounter programs that are unable to configure the font features.
 While tools like <a href="https://twardoch.github.io/fonttools-opentype-feature-freezer/">pyftfeatfreeze (OpenType Feature Freezer)</a> are able to swap specific glyphs by directly editing the font file, ligatures of those glyphs may fail.
 For example, <code>ss08</code> feature (e.g., <code>==</code>, <code>!=</code>, and <code>===</code>) won&rsquo;t be permanently enabled using this approach.</p>
+<h2 id="permanently-fix-the-font-features-using-the-official-build-script-update-in-2022-03">Permanently fix the font features using the official build script (update in 2022-03)</h2>
+<p>Thanks to the <a href="https://github.com/tonsky/FiraCode/pull/1387">pull request by <code>@Daxtorim</code></a> a few days after this post was published, we now are able to permanently fix the font features using the official build script:</p>
+<div class="highlight"><pre><span></span><code>docker run -it --rm <span class="se">\</span>
+    -v <span class="nv">$PWD</span>:/opt/FiraCode <span class="se">\</span>
+    tonsky/firacode:latest <span class="se">\</span>
+    ./FiraCode/script/build.sh <span class="se">\</span>
+    -f <span class="s2">&quot;ss01,ss03,ss05,ss08&quot;</span> <span class="se">\</span>
+    -n <span class="s2">&quot;Fira Code ss01 ss03 ss05 ss08&quot;</span>
+
+<span class="c1"># Rename the generated TTFs</span>
+parallel <span class="s1">&#39;mv {} {.}.ss1358_enabled.ttf&#39;</span> ::: distr/ttf/<span class="s1">&#39;Fira Code ss01 ss03 ss05 ss08&#39;</span>/*.ttf
+</code></pre></div>
+
+
+<p>And that&rsquo;s it!
+This is the easiest solution and it works straight out of the box.
+Praise the open source community :)
+I still kept the original instructions below to manually create the patches since that&rsquo;s what happens behind the scene.</p>
 <h2 id="permanently-fix-the-font-features">Permanently fix the font features</h2>
 <p>By changing the source code of the font generation, it should be possible to permanently fix any font features (aka patching).
 As mentioned by <a href="https://github.com/tonsky/FiraCode/issues/869#issuecomment-548006778">the original author (<code>@tonsky</code>)</a>:</p>
@@ -85,7 +103,7 @@ As mentioned by <a href="https://github.com/tonsky/FiraCode/issues/869#issuecomm
 <p>There is probably a simpler approach to patching the font, just concat whatever code there is in ssXX and add it to the end of calt feature.
 That should work on the current version of the font, but you’ll need to do your own research on which scripts to use for that</p>
 </blockquote>
-<p>And that&rsquo;s exactly <a href="https://github.com/ccwang002/FiraCode/commit/cdc30ce57a8654cb88a6fa03db1dc5425f42fda7">my patch</a> for <code>FiraCode.glyphs</code>.
+<p>And that&rsquo;s exactly my patch for <code>FiraCode.glyphs</code>.
 Copy all the content of the features (say, ss01, ss03, ss05, and ss08) to <code>calt</code>. So the original code:</p>
 <div class="highlight"><pre><span></span><code># FiraCode.glyphs
 {

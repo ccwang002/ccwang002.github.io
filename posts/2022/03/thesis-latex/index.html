@@ -36,7 +36,7 @@
 
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.11.1/katex.min.css">
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
 <body class="post-template">
@@ -206,31 +206,31 @@ Also a working LaTeX toolchain always read to use will help others to adapt the 
 On GitHub, such service is <a href="https://docs.github.com/en/actions/using-workflows">GitHub Actions</a>, allowing user to provide custom Docker image and run arbitrary code.</p>
 <p>Luckily, someone has already laid out the ground work by preparing a TeXLive environment into a GitHub Action workflow: <a href="https://github.com/xu-cheng/latex-action">https://github.com/xu-cheng/latex-action</a>.
 Below is an example of creating an online workflow to build the document using LuaLaTeX:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># .github/workflows/build_latex.yml</span>
-<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Build LaTeX PDF</span>
-<span class="nt">on</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">push</span>
-<span class="nt">jobs</span><span class="p">:</span>
-  <span class="nt">build</span><span class="p">:</span>
-    <span class="nt">runs-on</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
-    <span class="nt">steps</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Check out Git Repository</span>
-      <span class="nt">uses</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">actions/checkout@v2</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># .github/workflows/build_latex.yml</span><span class="w"></span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build LaTeX PDF</span><span class="w"></span>
+<span class="nt">on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">push</span><span class="w"></span>
+<span class="nt">jobs</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">build</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span><span class="w"></span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Check out Git Repository</span><span class="w"></span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v2</span><span class="w"></span>
 
-    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Build LaTeX files</span>
-      <span class="nt">uses</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">xu-cheng/latex-action@v2</span>
-      <span class="nt">with</span><span class="p">:</span>
-        <span class="nt">root_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">thesis.tex</span>
-        <span class="nt">latexmk_use_lualatex</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build LaTeX files</span><span class="w"></span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">xu-cheng/latex-action@v2</span><span class="w"></span>
+<span class="w">      </span><span class="nt">with</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">root_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">thesis.tex</span><span class="w"></span>
+<span class="w">        </span><span class="nt">latexmk_use_lualatex</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
 
-    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Check if PDF file is generated</span>
-      <span class="nt">run</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-        <span class="no">file thesis.pdf | grep -q &#39; PDF &#39;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Check if PDF file is generated</span><span class="w"></span>
+<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">        </span><span class="no">file thesis.pdf | grep -q &#39; PDF &#39;</span><span class="w"></span>
 
-    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Upload PDF</span>
-      <span class="nt">uses</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">actions/upload-artifact@v2</span>
-      <span class="nt">with</span><span class="p">:</span>
-        <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">PDF</span>
-        <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">thesis.pdf</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Upload PDF</span><span class="w"></span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/upload-artifact@v2</span><span class="w"></span>
+<span class="w">      </span><span class="nt">with</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PDF</span><span class="w"></span>
+<span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">thesis.pdf</span><span class="w"></span>
 </code></pre></div>
 
 

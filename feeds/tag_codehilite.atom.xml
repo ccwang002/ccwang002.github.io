@@ -29,7 +29,7 @@
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;highlight-python3&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
     &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;highlight&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
         &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;pre&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
-            &lt;span class="c"&gt;&amp;lt;!-- ... --&amp;gt;&lt;/span&gt;
+            &lt;span class="cm"&gt;&amp;lt;!-- ... --&amp;gt;&lt;/span&gt;
         &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;pre&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
     &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
@@ -39,7 +39,7 @@
 &lt;p&gt;but the actual output was&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;highlight&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
     &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;pre&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
-        &lt;span class="c"&gt;&amp;lt;!-- ... --&amp;gt;&lt;/span&gt;
+        &lt;span class="cm"&gt;&amp;lt;!-- ... --&amp;gt;&lt;/span&gt;
     &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;pre&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -47,52 +47,52 @@
 
 &lt;p&gt;So no way to find the language name the code block used, nor the lexer aliases Pygments guessed when no language name was specified.&lt;/p&gt;
 &lt;p&gt;A quick dig into the &lt;a href="https://github.com/waylan/Python-Markdown/blob/master/markdown/extensions/codehilite.py#L106-L123"&gt;source code&lt;/a&gt; showed that it is relatively easy to fix. Here is the diff:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gh"&gt;diff --git a/extensions/codehilite.py b/extensions/codehilite_updated.py&lt;/span&gt;
-&lt;span class="gh"&gt;index 0657c37..4fad7c5 100644&lt;/span&gt;
-&lt;span class="gd"&gt;--- a/extensions/codehilite.py&lt;/span&gt;
-&lt;span class="gi"&gt;+++ b/extensions/codehilite_updated.py&lt;/span&gt;
-&lt;span class="gu"&gt;@@ -75,7 +75,8 @@ class CodeHilite(object):&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gh"&gt;diff --git a/extensions/codehilite.py b/extensions/codehilite_updated.py&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gh"&gt;index 0657c37..4fad7c5 100644&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gd"&gt;--- a/extensions/codehilite.py&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+++ b/extensions/codehilite_updated.py&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gu"&gt;@@ -75,7 +75,8 @@ class CodeHilite(object):&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-     def __init__(self, src=None, linenums=None, guess_lang=True,
-                  css_class=&amp;quot;codehilite&amp;quot;, lang=None, style=&amp;#39;default&amp;#39;,
-&lt;span class="gd"&gt;-                 noclasses=False, tab_length=4, hl_lines=None, use_pygments=True):&lt;/span&gt;
-&lt;span class="gi"&gt;+                 noclasses=False, tab_length=4, hl_lines=None, use_pygments=True, &lt;/span&gt;
-&lt;span class="gi"&gt;+                 wrap_by_lang=True):&lt;/span&gt;
-         self.src = src
-         self.lang = lang
-         self.linenums = linenums
-&lt;span class="gu"&gt;@@ -86,6 +87,7 @@ class CodeHilite(object):&lt;/span&gt;
-         self.tab_length = tab_length
-         self.hl_lines = hl_lines or []
-         self.use_pygments = use_pygments
-&lt;span class="gi"&gt;+        self.wrap_by_lang = wrap_by_lang&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;    def __init__(self, src=None, linenums=None, guess_lang=True,&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;                 css_class=&amp;quot;codehilite&amp;quot;, lang=None, style=&amp;#39;default&amp;#39;,&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gd"&gt;-                 noclasses=False, tab_length=4, hl_lines=None, use_pygments=True):&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+                 noclasses=False, tab_length=4, hl_lines=None, use_pygments=True, &lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+                 wrap_by_lang=True):&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;        self.src = src&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;        self.lang = lang&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;        self.linenums = linenums&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gu"&gt;@@ -86,6 +87,7 @@ class CodeHilite(object):&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;        self.tab_length = tab_length&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;        self.hl_lines = hl_lines or []&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;        self.use_pygments = use_pygments&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+        self.wrap_by_lang = wrap_by_lang&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-     def hilite(self):
-         &amp;quot;&amp;quot;&amp;quot;
-&lt;span class="gu"&gt;@@ -114,13 +116,22 @@ class CodeHilite(object):&lt;/span&gt;
-                         lexer = get_lexer_by_name(&amp;#39;text&amp;#39;)
-                 except ValueError:
-                     lexer = get_lexer_by_name(&amp;#39;text&amp;#39;)
-&lt;span class="gi"&gt;+            lang = lexer.aliases[0]&lt;/span&gt;
-             formatter = get_formatter_by_name(&amp;#39;html&amp;#39;,
-                                               linenos=self.linenums,
-                                               cssclass=self.css_class,
-                                               style=self.style,
-                                               noclasses=self.noclasses,
-                                               hl_lines=self.hl_lines)
-&lt;span class="gd"&gt;-            return highlight(self.src, lexer, formatter)&lt;/span&gt;
-&lt;span class="gi"&gt;+            hilited_html = highlight(self.src, lexer, formatter)&lt;/span&gt;
-&lt;span class="gi"&gt;+            if self.wrap_by_lang and self.lang:&lt;/span&gt;
-&lt;span class="gi"&gt;+                return &amp;#39;&amp;lt;div class=&amp;quot;%(class)s-%(lang)s&amp;quot;&amp;gt;%(html)s&amp;lt;/div&amp;gt;\n&amp;#39; % {&lt;/span&gt;
-&lt;span class="gi"&gt;+                    &amp;#39;class&amp;#39;: self.css_class,&lt;/span&gt;
-&lt;span class="gi"&gt;+                    &amp;#39;lang&amp;#39;: lang.replace(&amp;#39;+&amp;#39;, &amp;#39;-&amp;#39;),&lt;/span&gt;
-&lt;span class="gi"&gt;+                    &amp;#39;html&amp;#39;: hilited_html,&lt;/span&gt;
-&lt;span class="gi"&gt;+                }&lt;/span&gt;
-&lt;span class="gi"&gt;+            else:&lt;/span&gt;
-&lt;span class="gi"&gt;+                return hilited_html&lt;/span&gt;
-         else:
-             # just escape and build markup usable by JS highlighting libs
-             txt = self.src.replace(&amp;#39;&amp;amp;&amp;#39;, &amp;#39;&amp;amp;amp;&amp;#39;)
+&lt;span class="w"&gt; &lt;/span&gt;    def hilite(self):&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;        &amp;quot;&amp;quot;&amp;quot;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gu"&gt;@@ -114,13 +116,22 @@ class CodeHilite(object):&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;                        lexer = get_lexer_by_name(&amp;#39;text&amp;#39;)&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;                except ValueError:&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;                    lexer = get_lexer_by_name(&amp;#39;text&amp;#39;)&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+            lang = lexer.aliases[0]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;            formatter = get_formatter_by_name(&amp;#39;html&amp;#39;,&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;                                              linenos=self.linenums,&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;                                              cssclass=self.css_class,&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;                                              style=self.style,&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;                                              noclasses=self.noclasses,&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;                                              hl_lines=self.hl_lines)&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gd"&gt;-            return highlight(self.src, lexer, formatter)&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+            hilited_html = highlight(self.src, lexer, formatter)&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+            if self.wrap_by_lang and self.lang:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+                return &amp;#39;&amp;lt;div class=&amp;quot;%(class)s-%(lang)s&amp;quot;&amp;gt;%(html)s&amp;lt;/div&amp;gt;\n&amp;#39; % {&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+                    &amp;#39;class&amp;#39;: self.css_class,&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+                    &amp;#39;lang&amp;#39;: lang.replace(&amp;#39;+&amp;#39;, &amp;#39;-&amp;#39;),&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+                    &amp;#39;html&amp;#39;: hilited_html,&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+                }&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+            else:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+                return hilited_html&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;        else:&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;            # just escape and build markup usable by JS highlighting libs&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;            txt = self.src.replace(&amp;#39;&amp;amp;&amp;#39;, &amp;#39;&amp;amp;amp;&amp;#39;)&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
