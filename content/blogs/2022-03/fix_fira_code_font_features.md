@@ -28,6 +28,28 @@ While tools like [pyftfeatfreeze (OpenType Feature Freezer)][pyftfeatfreeze] are
 For example, `ss08` feature (e.g., `==`, `!=`, and `===`) won't be permanently enabled using this approach.
 
 
+## Permanently fix the font features using the official build script (update in 2022-03)
+
+Thanks to the [pull request by `@Daxtorim`][pr-1387] a few days after this post was published, we now are able to permanently fix the font features using the official build script:
+
+```bash
+docker run -it --rm \
+    -v $PWD:/opt/FiraCode \
+    tonsky/firacode:latest \
+    ./FiraCode/script/build.sh \
+    -f "ss01,ss03,ss05,ss08" \
+    -n "Fira Code ss01 ss03 ss05 ss08"
+
+# Rename the generated TTFs
+parallel 'mv {} {.}.ss1358_enabled.ttf' ::: distr/ttf/'Fira Code ss01 ss03 ss05 ss08'/*.ttf
+```
+
+And that's it!
+This is the easiest solution and it works straight out of the box.
+Praise the open source community :)
+I still kept the original instructions below to manually create the patches since that's what happens behind the scene.
+
+
 ## Permanently fix the font features
 By changing the source code of the font generation, it should be possible to permanently fix any font features (aka patching).
 As mentioned by [the original author (`@tonsky`)][tonsky-comment]:
@@ -35,7 +57,7 @@ As mentioned by [the original author (`@tonsky`)][tonsky-comment]:
 > There is probably a simpler approach to patching the font, just concat whatever code there is in ssXX and add it to the end of calt feature.
 > That should work on the current version of the font, but you’ll need to do your own research on which scripts to use for that
 
-And that's exactly [my patch][feature-fix-patch] for `FiraCode.glyphs`.
+And that's exactly my patch for `FiraCode.glyphs`.
 Copy all the content of the features (say, ss01, ss03, ss05, and ss08) to `calt`. So the original code:
 
 ```text
@@ -87,4 +109,4 @@ parallel \
 [opentype-features-mdn]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Fonts/OpenType_fonts_guide
 [pyftfeatfreeze]: https://twardoch.github.io/fonttools-opentype-feature-freezer/
 [tonsky-comment]: https://github.com/tonsky/FiraCode/issues/869#issuecomment-548006778
-[feature-fix-patch]: https://github.com/ccwang002/FiraCode/commit/cdc30ce57a8654cb88a6fa03db1dc5425f42fda7
+[pr-1387]: https://github.com/tonsky/FiraCode/pull/1387
