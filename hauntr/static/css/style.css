@@ -26,18 +26,22 @@
   font-family: 'Fira Code';
   font-style: normal;
   font-weight: 300 700;
-  src: local('Fira Code VF'), local('Fira Code-VF'),
-    url(../fonts/FiraCode-VF.woff) format('woff-variations'),
-    url(../fonts/FiraCode-VF.woff2) format('woff2-variations');
+  src:
+    local('Fira Code VF'),
+    local('Fira Code-VF'),
+    url(../fonts/FiraCode-VF.woff2) format('woff2-variations'),
+    url(../fonts/FiraCode-VF.woff) format('woff-variations');
 }
 
 @font-face {
   font-family: 'Noto Sans TC';
   font-style: normal;
   font-weight: 400;
-  src: local('Noto Sans TC Regular'), local('NotoSansTC-Regular'),
-       url('../fonts/noto-sans-tc-v10-latin_chinese-traditional-regular.woff2') format('woff2'), /* Super Modern Browsers */
-       url('../fonts/noto-sans-tc-v10-latin_chinese-traditional-regular.woff') format('woff'); /* Modern Browsers */
+  src:
+    local('Noto Sans TC Regular'),
+    local('NotoSansTC-Regular'),
+    url('../fonts/noto-sans-tc-v10-latin_chinese-traditional-regular.woff2') format('woff2'),
+    url('../fonts/noto-sans-tc-v10-latin_chinese-traditional-regular.woff') format('woff');
 }
 
 @font-face {
