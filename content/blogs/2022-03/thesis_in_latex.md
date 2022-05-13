@@ -85,7 +85,7 @@ Usually the figure is large, taking up the full page, and has multiple panels co
 And the remaining figure legend need to be put at the next page.
 Here's an example of the desired behavior:
 
-<figure>
+<figure class="full-img">
     <img src="{attach}pics/fig_legend_first_half.png">
     <img src="{attach}pics/fig_legend_second_half.png">
     <figcaption>Example of the figure legend overflow.</figcaption>
@@ -227,7 +227,7 @@ I no longer need to install LaTeX locally.
 By putting everything in a GitHub repo, I can also use [GitHub's online editor][github-online-editor] to work on my document in a web browser anywhere.
 Together with GitHub Actions, it can be an alternative to online LaTeX platform like Overleaf; hacky but more flexible.
 
-<figure>
+<figure class="full-img">
     <img src="{attach}pics/github_online_editor.png">
     <figcaption>Online editor of a LaTeX project in a GitHub repository.</figcaption>
 </figure>
@@ -256,15 +256,15 @@ Maybe more examples or code snippets can be added in a separate documentation.
 With memoir, very few additional packages are required.
 Here is a short list of packages:
 
-- [microtype]: final touch on the typography. pure black magic in my view
-- [enumitem]: list environment customization
-- [threeparttable]: pretty table styling and in-table notes
-- [subcaption]: subfloat references
-- [hyperref]: link and PDF metadata
-- [graphicx]: external graphics
-- [fontspec]: custom system fonts
-- [csquotes]: quotes
-- [babel]: localization
+- [microtype][microtype]: final touch on the typography. pure black magic in my view
+- [enumitem][enumitem]: list environment customization
+- [threeparttable][threeparttable]: pretty table styling and in-table notes
+- [subcaption][subcaption]: subfloat references
+- [hyperref][hyperref]: link and PDF metadata
+- [graphicx][graphicx]: external graphics
+- [fontspec][fontspec]: custom system fonts
+- [csquotes][csquotes]: quotes
+- [babel][babel]: localization
 
 Each package is powerful in their specific usage.
 Their documentations are worth reading to fully utilize the package.
