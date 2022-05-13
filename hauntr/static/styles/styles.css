@@ -1,6 +1,7 @@
 @import 'fonts.css';
-@import 'elements/table.css';
 @import 'elements/blockquote.css';
+@import 'elements/figure.css';
+@import 'elements/table.css';
 
 article, aside, details,
 figcaption, figure,
@@ -391,45 +392,6 @@ details p {
     margin: 0.75em 0;
 }
 
-/* Keep images centred and within the bounds of the post-width */
-.post-content img,
-.post-content video {
-    display: block;
-    max-width: 100%;
-    padding: 0.6em 0;
-}
-
-.figure {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    align-content: center;
-    margin: 3em 0;
-}
-
-.figure img {
-    padding: 0;
-    max-width: 100%;
-}
-
-.figure .caption {
-    color: #999;
-    line-height: 1.2em;
-    margin: 0.5em 0;
-}
-
-.figure .caption a {
-    color: #999;
-}
-
-.figure a:hover {
-    color: #57A3E8;
-}
-
-.full-img img {
-    width: calc(100% + 30rem); /* expand with to image + margins */
-    max-width: 100vw;
-}
 
 /* Comment section (utterances) */
 .post-footer {
@@ -437,11 +399,6 @@ details p {
     padding: 2rem 0 0 0;
     border-top: #EBF2F6 1px solid;
 }
-
-
-/* ==========================================================================
-   7. Third Party Elements - Embeds from other services
-   ========================================================================== */
 
 /* utterances GitHub issue based comments widget
  * https://utteranc.es/ */
