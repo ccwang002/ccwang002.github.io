@@ -33,7 +33,6 @@ pre {
 small { font-size: 80%; }
 
 sub, sup {
-    font-size: 75%;
     line-height: 0;
     position: relative;
     vertical-align: baseline;
@@ -43,6 +42,10 @@ sub { bottom: -0.25em; }
 img { border: 0; }
 svg:not(:root) { overflow: hidden; }
 
+/* no underline for the footnote hyperlinks */
+sup a.footnote-ref {
+    text-decoration: none;
+}
 
 /* ==========================================================================
    2. General - Setting up some base styles
@@ -56,11 +59,14 @@ html {
 body {
     --color-text: #3a4145;
     --color-header-footer-background: #f7fafb;
+    --main-en-font: 'Source Sans 3 VF';
+    --main-zh-font: 'Noto Sans TC';
+    --font-size: 18px;
 
     height: 100%;
     max-height: 100%;
-    font-size: 1rem;
-    font-family: 'Source Sans 3 VF', 'Noto Sans TC', sans-serif;
+    font-size: var(--font-size);
+    font-family: var(--main-en-font), var(--main-zh-font), sans-serif;
     line-height: 1.5em;
     color: var(--color-text);
     margin: 0;
@@ -101,7 +107,7 @@ h4 {
 }
 
 h5 {
-    font-size: 1.2rem;
+    font-size: 1.2em;
     margin-top: 1.5em;
 }
 
@@ -230,19 +236,6 @@ details p {
 
 
 /* ==========================================================================
-   3. Utilities - These things get used a lot
-   ========================================================================== */
-
-/* Creates a responsive wrapper that makes our content scale nicely */
-
-.inner {
-    position: relative;
-    max-width: 80%;
-    margin: 0 auto;
-}
-
-
-/* ==========================================================================
    4. General - The main styles for the the theme
    ========================================================================== */
 
@@ -281,7 +274,7 @@ details p {
 
 .blog-description {
     margin: 0;
-    font-size: 1rem;
+    font-size: var(--font-size);
     font-weight: normal;
 }
 
@@ -289,8 +282,8 @@ details p {
 
 .post {
     position: relative;
-    width: 80%;
-    max-width: 800px;
+    width: 80ch;
+    max-width: 80vw;
     margin: 1.5rem auto;
     word-break: normal;
     hyphens: auto;
@@ -387,12 +380,6 @@ details p {
     padding-bottom: 0;
 }
 
-/* Kill that stylish little circle that was on the border, too */
-
-.post-template .post::after {
-    display: none;
-}
-
 
 /* Give post-header some top padding */
 
@@ -445,9 +432,8 @@ html[lang="zh"] details p {
     position: relative;
     width: 80%;
     max-width: 700px;
-    margin: 4rem auto;
-    font-family: 'FiraSans', 'Open Sans', sans-serif;
-    font-size: 1rem;
+    margin: 4em auto;
+    font-family: var(--main-en-font), sans-serif;
     color: #9eabb3;
     text-align: center;
 }
@@ -497,8 +483,7 @@ html[lang="zh"] details p {
     margin: 2rem 0 0 0;
     padding: 4rem 0;
     border-top: #ebf2f6 1px solid;
-    font-family: 'FiraSans', 'Noto Sans TC', 'Open Sans', sans-serif;
-    font-size: 1rem;
+    font-family: var(--main-en-font), sans-serif;
     line-height: 1.7em;
     color: #555555;
     text-align: center;
@@ -529,8 +514,8 @@ html[lang="zh"] details p {
     .pagination,
     .post {
         width: auto;
-        margin-left: 1rem;
-        margin-right: 1rem;
+        margin-left: 1.5rem;
+        margin-right: 1.5rem;
     }
 
     .site-head {
@@ -584,6 +569,5 @@ html[lang="zh"] details p {
 
     .site-footer {
         margin-top: 6rem;
-        font-size: 1.1rem;
     }
 }
