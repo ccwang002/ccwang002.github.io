@@ -94,10 +94,10 @@ Django version 1.8.5, using settings 'draw_site.settings'
 Starting development server at http://127.0.0.1:8000/
 ```
 
-<div class="figure align-center">
+<figure class="align-center">
   <img src="{attach}pics/django_initial.png"/>
-  <p class="caption">Django Hello World</p>
-</div>
+  <figcaption>Django Hello World</figcaption>
+</figure>
 
 這是 Django 內建在什麼 URL 都沒設定時的歡迎畫面。看到這個至少表示基本的 settings 正常。Django 跟 Flask 一樣，內建的 server 會在 source code 有改變的時候 reload，所以一直開著跑也可以。
 
@@ -743,10 +743,10 @@ def home(request):
     return render(request, 'draw_member/home.html')
 ```
 
-<div class="figure align-center">
+<figure class="align-center">
   <img src="{attach}pics/django_home.png"/>
-  <p class="caption">加上 template 的首頁</p>
-</div>
+  <figcaption>加上 template 的首頁</figcaption>
+</figure>
 
 Template 更多的說明可以參考[官網 template layer](https://docs.djangoproject.com/en/1.8/#the-template-layer) 的說明。
 
@@ -840,9 +840,9 @@ def history(request):
     })
 ```
 
-<div class="figure align-center">
+<figure class="align-center">
   <img src="{attach}pics/django_history.png"/>
-</div>
+</figure>
 
 可以看到預設用的是 UTC 時區，時區的轉換細節放到文末吧。我們可以在 view 裡更改要呈現的時區，
 
@@ -854,9 +854,9 @@ def history(request):
     # ...
 ```
 
-<div class="figure align-center">
+<figure class="align-center">
   <img src="{attach}pics/django_history_tz.png"/>
-</div>
+</figure>
 
 這樣基本功能就搞定啦！細節一樣參考[官網 view layer](https://docs.djangoproject.com/en/1.8/#the-view-layer) 的說明。
 
@@ -917,9 +917,9 @@ def home(request):
 {% endblock content %}
 ```
 
-<div class="figure align-center">
+<figure class="align-center">
   <img src="{attach}pics/django_form.png"/>
-</div>
+</figure>
 
 不過這個長得跟我們原本的 form 不一樣嘛。好在 Django form 是很彈性的，form 在被 render 成 HTML 時可以提供細節的調整，大家可以參考[官網 Form rendering options](https://docs.djangoproject.com/en/1.8/topics/forms/#form-rendering-options) 調整。我直接給調好的結果吧。
 
@@ -1197,10 +1197,10 @@ def draw(request):
 
 馬上來試試看。
 
-<div class="figure align-center">
+<figure class="align-center">
   <img src="{attach}pics/django_csrf_failed.png"/>
-  <p class="caption">POST form without CSRF token</p>
-</div>
+  <figcaption>POST form without CSRF token</figcaption>
+</figure>
 
 拿到了一個 403 Forbidden "CSRF verification failed."。CSRF (Cross Site Request Forgery) 在 [wiki](https://zh.wikipedia.org/wiki/%E8%B7%A8%E7%AB%99%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0) 有比較完整的介紹，這是一種攻擊手法，在使用者登入網站之後（session 為登入狀態），偽造一個跟網站上一樣的 form 來偽裝使用者的行為。例如購票系統買票，如果沒檢查的話，我可以拿使用者的 session 去網站上隨便買票，網站都會認為是使用者在操作。
 

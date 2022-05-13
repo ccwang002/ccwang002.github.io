@@ -39,12 +39,12 @@ In Bioconductor, most annotations are built against NCBI and UCSC naming systems
 
 I particularly enjoy the Ensembl genome browser. The information is well organized and structured. For example, take a look at the description page of [gene MAPK1],
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/gene_MAPK1_ensembl_browser.png">
   <p class="caption center">Gene information page of MAP1 on Ensembl Genome Browser release 84 (<a href="http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000100030">link</a>)</p>
-</div>
+</figure>
 
-The [gene tree](http://www.ensembl.org/Homo_sapiens/Gene/Compara_Tree?db=core;g=ENSG00000100030) tab shows its homologs and paralogs. The [variant table](http://www.ensembl.org/Homo_sapiens/Gene/Variation_Gene/Table?db=core;g=ENSG00000100030) tab shows various kinds of SNPs within MAPK1's transcript region. SNPs are annotated with their sources, different levels of supporting evidence, and SIFT/PolyPhen prediction on protein function change. Finally, there is a [external references](http://www.ensembl.org/Homo_sapiens/Gene/Matches?db=core;g=ENSG00000100030) tab which links the Ensembl IDs with [NCBI CCDS] and [NCBI RefSeq] IDs. There are many ways to explore different aspects of this gene, and it seems everything at multiple biological levels is simply connected. 
+The [gene tree](http://www.ensembl.org/Homo_sapiens/Gene/Compara_Tree?db=core;g=ENSG00000100030) tab shows its homologs and paralogs. The [variant table](http://www.ensembl.org/Homo_sapiens/Gene/Variation_Gene/Table?db=core;g=ENSG00000100030) tab shows various kinds of SNPs within MAPK1's transcript region. SNPs are annotated with their sources, different levels of supporting evidence, and SIFT/PolyPhen prediction on protein function change. Finally, there is a [external references](http://www.ensembl.org/Homo_sapiens/Gene/Matches?db=core;g=ENSG00000100030) tab which links the Ensembl IDs with [NCBI CCDS] and [NCBI RefSeq] IDs. There are many ways to explore different aspects of this gene, and it seems everything at multiple biological levels is simply connected.
 
 
 I always think of the Ensembl ecosystem as a decent learning portal, so it is a pity if one cannot easily use its information in R/Bioconductor. After a quick research, I found using Ensembl annotations are quite straightforward even though the required files does not ship with Bioconductor. Also, there were some topics I failed to mention in the talk, such as AnnotationHub and genomic coordinate system conversion (e.g., from hg19 to hg38). I am going to cover these topics in the talk.
@@ -218,7 +218,7 @@ listMarts()
 # 4    ENSEMBL_MART_VEGA               Vega 64
 ```
 
-Here we will use Ensembl's biomart. Each mart contains multiple datasets, usually separated by different organisms. In our case, human's dataset is `hsapiens_gene_ensembl`. For other organisms, you can find their dataset by `listDatasets(ensembl)`. 
+Here we will use Ensembl's biomart. Each mart contains multiple datasets, usually separated by different organisms. In our case, human's dataset is `hsapiens_gene_ensembl`. For other organisms, you can find their dataset by `listDatasets(ensembl)`.
 
 ```r
 ensembl <- useMart("ensembl")

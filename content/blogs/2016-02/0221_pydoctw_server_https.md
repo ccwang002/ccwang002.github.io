@@ -3,7 +3,7 @@ Title: Python 官方文件中文化 Server HTTPS 使用 Let's Encrypt
 Slug: pydoctw-https
 Date: 2016-02-21 14:00
 Tags: zh, pydoctw, https, letsencrypt
-Category: Coding 
+Category: Coding
 Summary: 整理了 server 從 HTTP 到 HTTPS 相關設定的調整。
 ---
 
@@ -125,7 +125,7 @@ Tue 2016-03-01 16:00:00 UTC  1 weeks 2 days left n/a  n/a    renew_cert.timer re
 
 要解決的問題為，ACME challenge 是透過 HTTP，其餘的連線都轉到 HTTPS。
 
-在 nginx 中把主要的設定檔中拿掉 `listen 80;` 與 ACM challenge 的部份。把它們移成新的 server block： 
+在 nginx 中把主要的設定檔中拿掉 `listen 80;` 與 ACM challenge 的部份。把它們移成新的 server block：
 
 ```nginx
 server {
@@ -142,22 +142,22 @@ server {
         return 301 https://$host$request_uri;
     }
 }
-``` 
+```
 
 
 ### 測試 HTTPS 設定
 
 用了 [securityheaders.io](https://securityheaders.io/) 和 [SSL Labs](https://www.ssllabs.com/index.html) 測試了一下，應該還可以：
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/pydoctw_securityheaders_report.png"/>
   <p class="caption center">Report from securityheaders.io (<a href="https://securityheaders.io/?q=https%3A%2F%2Fdocs.python.org.tw%2F3%2F">Live Report</a>)</p>
-</div>
+</figure>
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/pydoctw_ssllabs_report.png"/>
   <p class="caption center">Report from SSL Labs (<a href="https://www.ssllabs.com/ssltest/analyze.html?d=docs.python.org.tw">Live Report</a>)</p>
-</div>
+</figure>
 
 
 ### 心得

@@ -3,7 +3,7 @@ Title: Jupyter Notebook Progress Bar
 Slug: notebook-progress-bar
 Date: 2016-03-23 02:00
 Tags: zh, jupyter, notebook
-Category: Coding 
+Category: Coding
 Cover: https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_demo.webm
 ---
 
@@ -21,7 +21,7 @@ Cover: https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressb
 
 Notebook 進度條使用 [ipywidgets] 中的元件實作。這件元件規範了 notebook client <-> server 間雙向的溝通，並且能把相關的 CSS / JS 包裝在一起。在 ipywidgets 範例的 [*Widgets Basics*] 中就有提到可能的用途：
 
-> You can use widgets to **build interactive GUIs** for your notebooks. <br> 
+> You can use widgets to **build interactive GUIs** for your notebooks. <br>
 > You can also use widgets to **synchronize stateful and stateless information** between Python and JavaScript.
 
 所以除了像進度條這樣單向的從 python code 傳訊息到 notebook (HTML) front-end 之外，也可以做一些介面把 front-end 的值傳回 python code。
@@ -55,9 +55,9 @@ p = IntProgress()
 display(p)
 ```
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/progressbar_default.png">
-</div>
+</figure>
 
 預設是進度條有 100 個單位，初始值為 0。進度條的值與最大值的狀態分別存在 `.value`、`.max` 屬性裡：
 
@@ -72,17 +72,17 @@ display(p)
 p.value = 50
 ```
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/progressbar_50.png">
-</div>
+</figure>
 
 ```python
 p.value = 100
 ```
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/progressbar_100.png">
-</div>
+</figure>
 
 當然，最大值調整也會即時更新。此外，還可以透過 `.description` 給進度條一個 label。重新做一個完整的例子：
 
@@ -93,9 +93,9 @@ p2.description = 'Running'
 display(p2)
 ```
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/progressbar_full.png">
-</div>
+</figure>
 
 完整的 code 就這樣，用起來非常方便。
 
@@ -133,14 +133,14 @@ for task in todo_tasks:
 progress.description = '(Done)'
 ```
 
-<div class="figure">
+<figure>
   <video loop auto autoplay>
     <source src="{attach}pics/progressbar_demo.webm" type="video/webm">
     <source src="{attach}pics/progressbar_demo.mp4" type="video/mp4">
     Your browser doesn't support HTML5 video in WebM with VP8 or MP4 with H.264. You can still download the <a href="{attach}pics/progressbar_demo.mp4">screencast</a> and view it locally.
   </video>
   <p class="caption center">Progressbar in action</p>
-</div>
+</figure>
 
 非常方便吧！
 
@@ -163,7 +163,7 @@ progress.description = '(Done)'
     <source src="vid.webm" type="video/webm">
     <source src="vid.mp4" type="video/mp4">
     Your browser doesn't support HTML5 video in WebM with VP8
-    or MP4 with H.264. You can still download the 
+    or MP4 with H.264. You can still download the
     <a href="vid.mp4">screencast</a> and view it locally.
 </video>
 ```
@@ -184,14 +184,14 @@ ffmpeg -i Untitled.mov \
     -strict -2 -crf 22 -preset slow -r 24 \
     -vf "crop=iw:ih-52:0:10, scale=-1:480" \
     out.mp4
-    
+
 # VP9 WebM
 ffmpeg -i Untitled.mov \
     -vcodec libvpx-vp9 \
     -b:v 150K -r 24 \
     -vf "crop=iw:ih-52:0:10, scale=-1:480" \
     out.webm
-``` 
+```
 
 4s 的檔案最後大約 60KB，相當不錯。我很多 PNG 截圖都大多了。
 

@@ -18,10 +18,10 @@ To change their looks, we can enable the alternative ligatures and features of t
 In this case, `ss05` and `ss08` enable the traditional looks of ampersands and at signs, respectively.
 Most modern editors and word processors are able to configure the feature sets in use.
 
-<div class="figure">
+<figure>
     <img src="{attach}pics/fira_code_comparison.png">
-    <p class="caption">Comparison of the Fira Code rendering with and without the features fixed (ss01, ss03, ss05, and ss08).</p>
-</div>
+    <figcaption>Comparison of the Fira Code rendering with and without the features fixed (ss01, ss03, ss05, and ss08).</figcaption>
+</figure>
 
 Unfortunately, I encounter programs that are unable to configure the font features.
 While tools like [pyftfeatfreeze (OpenType Feature Freezer)][pyftfeatfreeze] are able to swap specific glyphs by directly editing the font file, ligatures of those glyphs may fail.

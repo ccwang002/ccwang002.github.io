@@ -17,10 +17,10 @@ I got the chance trying new tricks today when I and other lab members were analy
 
 We want to see how was the sequencing depth and the coverage of all exons designed to be sequenced. Roughly, this can be done in the genome viewer such as [IGV].
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/seqdepth_IGV.png"/>
   <p class="caption center">Visualize sequencing depth in IGV</p>
-</div>
+</figure>
 
 IGV is good for daily research, but when it comes to customization, there aren't many options. And if the visualization is aimed for publishing, one might want the figure to be vectorized and, more importantly, *reproducible*.
 
@@ -46,7 +46,7 @@ After a quick search, Gviz's [DataTrack] accepts BedGraph format. This format ca
 | chr1       | 10,093 | 10,104 |     5 |
 | ...        | ...    | ...    |   ... |
 
-So we need to convert the alignment result as BedGraph format, which can be done by [BEDTools' genomecov] command. On BEDTools' documentation, it notes that the BAM file should be sorted. 
+So we need to convert the alignment result as BedGraph format, which can be done by [BEDTools' genomecov] command. On BEDTools' documentation, it notes that the BAM file should be sorted.
 
 ```bash
 bedtools genomecov -bg -ibam myseq.bam > myseq.bedGraph
@@ -71,7 +71,7 @@ R packages of human genome annotations ([Homo.sapiens]) and [Gviz] itself are re
 [data.table]: https://cran.r-project.org/web/packages/data.table/index.html
 
 
-### First Gviz track 
+### First Gviz track
 
 We should first start at reading our sequencing depth as BedGraph format and plot it.
 
@@ -104,13 +104,13 @@ plotTracks(
 
 So we read the sequencing depth data, create a Gviz `DataTrack` holding the subset of our data on chr17, then plot Gviz tracks by `plotTracks` (though we only made one here) within a given chromosome region. Here is what we got.
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/seqdepth_one_track.png"/>
-</div>
+</figure>
 
 ### Add genome axis
 
-The figure is a bit weird and lack of information without the genomic location. 
+The figure is a bit weird and lack of information without the genomic location.
 
 Adding genomic location can be done automatically by Gviz through a new track `GenomeAxisTrack`. Also, we'd like to show which region of chromosome we are at. This can be done by adding another track, `IdeogramTrack`, to show the chromosome ideogram. Note that the latter track will download cytoband data from UCSC so the given genome must have a valid name.
 
@@ -126,15 +126,15 @@ plotTracks(
 )
 ```
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/seqdepth_with_loc.png"/>
-</div>
+</figure>
 
 Better now :)
 
 ### Add annotation
 
-Since we are using exome sequencing, the curve of sequencing depth only makes senses when combined with the transcript annotations. 
+Since we are using exome sequencing, the curve of sequencing depth only makes senses when combined with the transcript annotations.
 
 Gviz has `GeneRegionTrack` to extract annotation from the R annotation packages. Package Homo.sapiens includes the gene annotation package using UCSC knownGene database. Adding this new track and we will have annotation on our plot.
 
@@ -155,11 +155,11 @@ plotTracks(
 )
 ```
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/seqdepth_with_annotation.png"/>
-</div>
+</figure>
 
-The plot should now be as informative as what we can get from the IGV. In fact, Gviz can plot the alignment result too. It can read the BAM file directly and show a more detailed coverage that matches what IGV can do. I'll leave that part at the end of this post. 
+The plot should now be as informative as what we can get from the IGV. In fact, Gviz can plot the alignment result too. It can read the BAM file directly and show a more detailed coverage that matches what IGV can do. I'll leave that part at the end of this post.
 
 So far we've shown the sequencing depth of some chromosome region with annotation. However, there still leave something to be desired, mostly about the annotation:
 
@@ -245,7 +245,7 @@ st <- min(start(BRCA1_txs)) - 2e4
 en <- max(end(BRCA1_txs)) + 1e3
 ```
 
-Some space are added at both ends so the plot won't tightly fit all transcripts and leave some room for the transcript names. 
+Some space are added at both ends so the plot won't tightly fit all transcripts and leave some room for the transcript names.
 
 ```rout
 > c(thechr, st, en)
@@ -254,7 +254,7 @@ Some space are added at both ends so the plot won't tightly fit all transcripts 
 
 #### via `exonsBy()`
 
-Another way to obtain the genomic range is getting the exact range of CDS (e.g. exons and UTRs) for each transcript via `exonsBy()`. 
+Another way to obtain the genomic range is getting the exact range of CDS (e.g. exons and UTRs) for each transcript via `exonsBy()`.
 
 ```r
 BRCA1_cds_by_tx <- exonsBy(
@@ -267,7 +267,7 @@ The function returns a `GRangesList` object, a list of `GRanges` that each `GRan
 ```rout
 > BRCA1_cds_by_tx
 GRangesList object of length 20:
-$uc010whl.2 
+$uc010whl.2
 GRanges object with 22 ranges and 3 metadata columns:
        seqnames               ranges strand   |   exon_id   exon_name exon_rank
           <Rle>            <IRanges>  <Rle>   | <integer> <character> <integer>
@@ -373,16 +373,16 @@ plotTracks(
 )
 ```
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/seqdepth_BRCA1_only.png"/>
-</div>
+</figure>
 
 
 ### Display gene symbols at annotation track
 
 It's more obvious now about how Gviz stores the annotation. All we need is to replace the symbol name with whatever we desire.
 
-First, we extract the metadata of the `GeneRegionTrack`, and query for their gene symbols. Using either the transcript ID or Entrez ID will do. 
+First, we extract the metadata of the `GeneRegionTrack`, and query for their gene symbols. Using either the transcript ID or Entrez ID will do.
 
 ```r
 grtrack_range <- grtrack@range
@@ -437,9 +437,9 @@ plotTracks(
 )
 ```
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/seqdepth_gene_symbol.png"/>
-</div>
+</figure>
 
 [stringr]: https://cran.r-project.org/web/packages/stringr/index.html
 
@@ -447,7 +447,7 @@ plotTracks(
 
 ## Summary
 
-So we've learnt how to plot using Gviz. You should go explore other data tracks or try to combine sequencing depth of multiple samples. I found the design of Gviz is clean and easy to modify. I think I'll use Gviz whenever genome-related plots are needed. 
+So we've learnt how to plot using Gviz. You should go explore other data tracks or try to combine sequencing depth of multiple samples. I found the design of Gviz is clean and easy to modify. I think I'll use Gviz whenever genome-related plots are needed.
 
 Really glad I've tried it :)
 
@@ -469,9 +469,9 @@ plotTracks(
 )
 ```
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/seqdepth_BAM_default.png"/>
-</div>
+</figure>
 
 To plot only the coverage, set the type as `coverage`.
 
@@ -481,14 +481,14 @@ altrack <- AlignmentsTrack(
 )
 ```
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/seqdepth_BAM_coverage_only.png"/>
-</div>
+</figure>
 
 
-### Fancier alignment display 
+### Fancier alignment display
 
-Spend some time reading the documentation, the alignment can be much more fancier. 
+Spend some time reading the documentation, the alignment can be much more fancier.
 
 For example, when looking at a much smaller genome region, we many want to see the sequence and read mismatches. It could be done by adding a new track `SequenceTrack` to include the genome sequence,
 
@@ -525,8 +525,8 @@ plotTracks(
 )
 ```
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/seqdepth_BAM_small_region.png"/>
-</div>
+</figure>
 
 We found a C>T SNP here!

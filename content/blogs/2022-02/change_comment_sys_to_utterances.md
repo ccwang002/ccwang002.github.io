@@ -9,10 +9,10 @@ Lang: en
 
 My blog is statically generated, so it needs an external service for commenting. I chose [Disqus] when I started my blog because it was a popular choice, and it is free and easy to setup. However, there's been increasing concern about its extensive user tracking, ads, and therefore a toll on the page loading performance[^disqus downsides]. Heck, I don't even load Disqus myself when I check my own blog:
 
-<div class="figure">
+<figure>
     <img src="{attach}pics/disqus_blocked_by_privacy_badger_screenshot.png">
-    <p class="caption">What my blog looks like from my end, where Disqus is blocked by <a href="https://privacybadger.org/Privacy">Privacy Badger</a> by default.</p>
-</div>
+    <figcaption>What my blog looks like from my end, where Disqus is blocked by <a href="https://privacybadger.org/Privacy">Privacy Badger</a> by default.</figcaption>
+</figure>
 
 [Disqus]: https://disqus.com/
 [^disqus downsides]:
@@ -29,14 +29,14 @@ Recently, I was finally able to look into the alternatives to Disqus. I landed o
 
 Switch to a new commenting systems can be hard due to the loss of the old comments. But since there are only a total of 75 comments on my blog, I don't have a lot to miss :) I did back up the old comments because I enjoyed the discussions, and they are one of the main motiviations to keep me going. Disqus offers a way to export all the comments, and here is the frequency of all the comments over time:
 
-<div class="figure">
+<figure>
     <img src="{attach}pics/number_comments_per_post.png">
-    <p class="caption">Number of comments on my blog over time</p>
-</div>
+    <figcaption>Number of comments on my blog over time</figcaption>
+</figure>
 
 Since this post, my blog will be using the new utterances comment widget. For comparison, I attached a screenshot of the old interface using Disqus below:
 
-<div class="figure">
+<figure>
     <img src="{attach}pics/disqus_screenshot.png">
-    <p class="caption">Old commenting widget using Disqus on my blog.</p>
-</div>
+    <figcaption>Old commenting widget using Disqus on my blog.</figcaption>
+</figure>

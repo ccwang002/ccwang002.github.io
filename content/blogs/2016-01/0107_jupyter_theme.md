@@ -34,17 +34,17 @@ $ jupyter notebook
 
 有裝 browser 的話就會自動開一個視窗。
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/jupyter_default_frontpage.png"/>
   <p class="caption center">Jupyter Notebook Hub</p>
-</div>
+</figure>
 
 Notebook 預設是 `.ipynb` 的檔案。常見的內容像這樣：
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/jupyter_default_notebook.png"/>
   <p class="caption center">Jupyter Notebook Example</p>
-</div>
+</figure>
 
 ### Custom Theme on v4.1+
 
@@ -81,16 +81,16 @@ $ tree ~/.jupyter -F -L 3
 
 只要把這個 CSS 放到 `~/.ipython/profile_default/custom.css` 再重開 Jupyter Notebook 就可以了[^1]。效果如下：
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/jupyter_grade3_frontpage.png"/>
   <img src="{attach}pics/jupyter_grade3_notebook1.png"/>
   <p class="caption center">Jupyter Notebook Theme Grade3 Demo</p>
-</div>
+</figure>
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/jupyter_grade3_notebook2.png"/>
   <p class="caption center">把 Toolbar 全部 toggle 起來，以及表格的樣子。</p>
-</div>
+</figure>
 
 個人覺得長時間使用下來，對比度低一點對眼睛比較好。黑底也不錯，不過畫圖常常會自己帶白底，整體感覺就不是很漂亮，可能要連 matplotlib theme 一起改吧 XD
 

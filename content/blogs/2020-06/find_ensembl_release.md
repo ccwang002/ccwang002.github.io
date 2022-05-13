@@ -12,10 +12,10 @@ It could be the Ensembl IDs in a gene expression matrix, a VEP annotated MAF fil
 
 It's possible to pinpoint the Ensembl release using the ID versions. For example, ENSG00000119772.15 (DNMT3A) only existed in Ensembl releases 79 and 80; ENST00000275493.7 (EGFR) remains alive since release 96. By checking the ID history on <https://ensembl.org>, I can identify the possible Ensembl releases my data uses. A handy URL shortcut to accompany the investigation is `ensembl.org/id/<ensembl_id>`, which can redirect to the different page tabs depends on the ID types (e.g., ENSG to genes and ENST to transcript).
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/ensembl_r100_dnmt3A_id_history.png">
-  <p class="caption">ID history of ENSG00000119772 (DNMT3A) (<a href="https://www.ensembl.org/Homo_sapiens/Gene/Idhistory?g=ENSG00000119772">source</a>)</p>
-</div>
+  <figcaption>ID history of ENSG00000119772 (DNMT3A) (<a href="https://www.ensembl.org/Homo_sapiens/Gene/Idhistory?g=ENSG00000119772">source</a>)</figcaption>
+</figure>
 
 With [Ensembl Tark][tark], I wrote [a Python script][gist] to automate the query. Given a list of versioned Ensembl IDs[^versioned-id], the script will identify the possible Ensembl releases. The IDs can be genes, transcripts, or proteins. Based on my testing, the script can identify Ensembl release range with less than 30 IDs.
 
@@ -49,7 +49,7 @@ Possible Ensembl releases are: 79, 80
 
 In this case, Ensembl releases 79 and 80 have the same gene model.
 
-The script basically uses Tark's REST APIs to get the release range for each ID, and find the intersection of all the ranges. It runs on Python 3.8 and uses aiohttp 3.6 for concurrent API calls. Tark currently has records from release 75 (2014) to 99 (2020), so this approach will fail if the IDs are too old (or too new, but I think it will include the latest r100 soon). I limited the maximal concurrent calls ≤ 5 so I don't overwhelm the Tark service. 
+The script basically uses Tark's REST APIs to get the release range for each ID, and find the intersection of all the ranges. It runs on Python 3.8 and uses aiohttp 3.6 for concurrent API calls. Tark currently has records from release 75 (2014) to 99 (2020), so this approach will fail if the IDs are too old (or too new, but I think it will include the latest r100 soon). I limited the maximal concurrent calls ≤ 5 so I don't overwhelm the Tark service.
 
 [Tark][tark] is a great website/service that compares the transcripts between different versions or even different sources (Ensembl vs RefSeq)! It can tell you what exon or UTR was changed, something quick tricky to set up because one has to import databases for every Ensembl release and even RefSeq releases. Tark is currently in beta, but I hope it can be stable and remained updated.
 

@@ -15,14 +15,14 @@ So I made [an Observable Notebook][nb-link] that allows me to interactively modi
 
 Here is the screenshot of the diagram drawing interface (see it live on [the notebook][nb-link]):
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/venn_nb.png">
-  <p class="caption">Screenshot of the Observable Notebook</p>
-</div>
+  <figcaption>Screenshot of the Observable Notebook</figcaption>
+</figure>
 
 The set sizes can be easily tweaked by editing the `sets` variable. The colors of the two sets can be configured by clicking on the color blocks. There is a button to download the generated Venn diagram. Finally, everything changes will interactively reflect on the diagram.
 
-What's more cool about the Observable Notebook is I can simply modify the code to change the output. If I want to a new set to have a three-way Venn diagram, I just need to update the `sets`. For example, copy paste the following to the notebook: 
+What's more cool about the Observable Notebook is I can simply modify the code to change the output. If I want to a new set to have a three-way Venn diagram, I just need to update the `sets`. For example, copy paste the following to the notebook:
 
 ```js
 sets = [
@@ -38,8 +38,8 @@ sets = [
 
 And I will get the following new Venn diagram in SVG:
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/threeway_venn.svg">
-</div>
+</figure>
 
 I hope now I will spend less time figuring out how to draw a Venn diagram.

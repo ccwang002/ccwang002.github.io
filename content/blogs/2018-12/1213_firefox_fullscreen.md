@@ -9,10 +9,10 @@ EDIT 2021-06-01: In Firefox 89+, there's a default option "Hide Toolbar" in the 
 
 Firefox fullscreen on macOS by default contains the address bar and the tab bar. I usually don't really need the full vertical space for web page, so those bars aren't a problem. But when I access a RStudio Server on Firefox, I always want to have more vertical space. As shown in the screenshot below, the address bar and the tab bar of Firefox are unnecessary, and they may be quite distracting. If those bars are hidden and only show up upon request when Firefox enters fullscreen, the vertical space can be saved and the interface will remain clean.
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/rstudio_fullscreen.png">
   <p class="caption"></p>
-</div>
+</figure>
 
 It turns out that Firefox controls its user interface styling using CSS. So we can set the shape of the window tabs, the height of the address bar, and more by adding a CSS file at `~/Library/Application Support/Firefox/Profiles/<profile>/chrome/userChrome.css`. In Firefox 69+, we need to set `toolkit.legacyUserProfileCustomizations.stylesheets=true` in `about:config` to enable the CSS styling ([more details here][enable-firefox-css]).
 
@@ -47,41 +47,41 @@ My modification was based on [this answer on Stack Exchange][ext-sol]:
 
 Note that the Firefox needs to be restarted to get the styling in effect. Here is how the Firefox fullscreen looks like after applying the `userChrome.css` above.
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/rstudio_fullscreen.modified.png">
-</div>
+</figure>
 
 Now the RStudio Server web page feels like a native app, similar to what RStudio Desktop offers. Both address and tab bars are hidden by default, and when the mouse hovers to the top, they get visible again.
 
-<div class="figure">
+<figure>
   <video auto autoplay loop>
     <source src="{attach}pics/fullscreen_switch_tabs.webm" type="video/webm">
     <source src="{attach}pics/fullscreen_switch_tabs.mp4" type="video/mp4">
     Your browser doesn't support HTML5 video. You can still download the <a href="{attach}pics/fullscreen_switch_tabs.mp4">screencast</a> and view it locally.
   </video>
-  <p class="caption">Switch tabs in the borderless fullscreen of Firefox.</p>
-</div>
+  <figcaption>Switch tabs in the borderless fullscreen of Firefox.</figcaption>
+</figure>
 
 Those top bars will show up as well when they are in focus by shortkeys. For example, ⌘ + L will get focus on the address bar. It is useful when I want to launch a quick search in a new tab.
 
-<div class="figure">
+<figure>
   <video controls>
     <source src="{attach}pics/fullscreen_focus.webm" type="video/webm">
     <source src="{attach}pics/fullscreen_focus.mp4" type="video/mp4">
     Your browser doesn't support HTML5 video. You can still download the <a href="{attach}pics/fullscreen_focus.mp4">screencast</a> and view it locally.
   </video>
-  <p class="caption">Address bar is shown automatically when it is focused using shortkey.</p>
-</div>
+  <figcaption>Address bar is shown automatically when it is focused using shortkey.</figcaption>
+</figure>
 
 In `userChrome.css`, I added a small padding between the bars and the top border to make them more accessible by mouse. When the mouse moves to the top, macOS's menu bar will pop up as well, and both Firefox and macOS will overlap. The macOS one will go away first, but the mouse has to stay on the Firefox bars so they don't disappear either.
 
-<div class="figure">
+<figure>
   <video controls>
     <source src="{attach}pics/fullscreen_hover_for_menubar.webm" type="video/webm">
     <source src="{attach}pics/fullscreen_hover_for_menubar.mp4" type="video/mp4">
     Your browser doesn't support HTML5 video. You can still download the <a href="{attach}pics/fullscreen_hover_for_menubar.mp4">screencast</a> and view it locally.
   </video>
-</div>
+</figure>
 
 The overlapping of Firefox bars and macOS menubar is still a bit annoying, which will require some practice to navigate between them by mouse. I will probably rely more on the shortkeys instead. Anyway, I now have more vertical space and the modification of `userChrome.css` works fine for now.
 

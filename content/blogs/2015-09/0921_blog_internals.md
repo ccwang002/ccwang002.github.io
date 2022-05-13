@@ -13,7 +13,7 @@ Blog 對我來說，最重要的就是書寫的舒適度。
 整理了一下有幾個目標：
 
 - 只考慮用 static site 因為不想維護 server，而且 blog 也沒什要炫的，現在光用前端就可以做到很多互動功能
-- 最好 site generator 是用 Python 實作，這樣想要調整它的功能時，比較懂怎麼改 
+- 最好 site generator 是用 Python 實作，這樣想要調整它的功能時，比較懂怎麼改
 - 能支援 markdown 和 reStructuredText 最好
 
 篩完之後選項也沒幾個：[Pelican]、[Sphinx]，但 Sphinx 可能對 blog 開發的功能比較少，最多人用的大概就 Pelican，所以就決定用它了。
@@ -88,7 +88,7 @@ Hello World_
 最後調整了一下 static file 的路徑。我把文章按年月分開，每個子資料夾裡有當月的圖、檔案等等。URL 也是以年月為單位。其實最理想的應該是有個 hash 之類的東西 `/posts/2015/09/abcd/` 等同於 `/posts/2015/09/abcd-my-post/` 比較好分享。找了一下好像沒這功能，不過沒有它影響也不嚴重，暫且不理。
 
 
-### All is about the theme 
+### All is about the theme
 
 一開始最花時間就是找個好主題了。內建的主題實用性不差，但初次看結構太複雜，再來我喜歡更簡潔的版面，也希望有寫好 responsive layout。
 
@@ -115,10 +115,10 @@ Flex 內建用 Google webfont 來處理英文字體，為了引言還有完整�
 
 麻煩的就是中文字型。直接放棄系統內建，但最後有把 Noto Sans CJK 和 Source Hans Sans 加進來當備用。一直都有想嘗試 [justfont] 推出的 webfont 功能。它運作時會嵌入一個 javascript，看這頁網頁用到哪些中文字，才去要這些中文字的字型來加速載入。使用上就跟 Google webfont 一樣，官網教學考慮了很多使用情況，其實沒做什麼設定就好了，我以為要調很多東西才看得到效果，最後只改了 `font-family` 就完工。他的設定也能保留原本英文字的字型。
 
-<div class="figure align-center">
+<figure>
   <img src="{attach}pics/justfont_setting.png"/>
   <p class="caption center"><span class="fig">Justfont 設定</span></p>
-</div>
+</figure>
 
 免費的試用沒問題之後就刷下去了。說真的免費只能綁兩個字型，設定好內文以及內文粗體 quota 就用完了，現在 100,000 page views/year 大約 NTD 350/year 也不貴。既然付費了當然要試試信黑體，電腦版的到現在還買不起啊。設了兩個字重，一樣加了一套楷體當引言用。楷體也選了比較秀氣的 cwTeX 楷。
 
@@ -134,19 +134,19 @@ Flex 內建用 Google webfont 來處理英文字體，為了引言還有完整�
 
 段落首行縮排最後也沒有放，主因是文句都蠻短的，有點怪；再來 markdown parser 會把我的全形空白吃掉，難以理解（但 rst 不會），真要加只能用`&#x3000;`硬加。中英交雜的段落中文字會無法對齊，不過就暫時算了，現在中英文的字重能一樣已經很感動了。
 
-300 的中文字的確有點細，我把字調大了成 18px，還特別拿給我爸媽看，確定他們看得到這些字 XD 
+300 的中文字的確有點細，我把字調大了成 18px，還特別拿給我爸媽看，確定他們看得到這些字 XD
 
 做到這裡其實還蠻滿意了，長得像這樣：
 
-<div class="figure align-center" style="width: 250px">
+<figure class="align-center" style="width: 250px">
   <img src="{attach}pics/blog_mobile.png"/>
   <p class="caption center"><span class="fig">手機上的樣子</span></p>
-</div>
+</figure>
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/blog_desktop.png"/>
   <p class="caption center"><span class="fig">電腦螢幕的樣子</span></p>
-</div>
+</figure>
 
 [Crimson Text]: https://www.google.com/fonts/specimen/Crimson+Text
 [justfont]: http://justfont.com
@@ -172,7 +172,7 @@ Flex 內建用 Google webfont 來處理英文字體，為了引言還有完整�
 ~~~html
 <div class="figure align-center">
   <img alt="" src="{filename}pics.jpg">
-  <p class="caption"><span class="fig">Figure 1:</span> The figure caption</p>
+  <figcaption><span class="fig">Figure 1:</span> The figure caption</figcaption>
   <div class="legend">The legend consists of all elements after the caption.</div>
 </div>
 ~~~
@@ -234,13 +234,11 @@ p + p {
 
 也把表格的格式加上，仿造 bootstrap 表格 overflow 時會變成 block 可以滑動著看。
 
-
-[Pelican plugin]: (https://github.com/getpelican/pelican-plugins)
+[Pelican plugin]: https://github.com/getpelican/pelican-plugins
 [Macdown]: http://macdown.uranusjr.com/
 [Tufte CSS]: http://www.daveliepmann.com/tufte-css/
 
-
 [^1]: 以前部落格的長相：
-<div class="figure align-center">
-  <img src="{attach}pics/oldsite.png"/>
-</div>
+    <figure>
+    <img src="{attach}pics/oldsite.png"/>
+    </figure>

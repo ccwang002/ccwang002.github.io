@@ -3,12 +3,12 @@ Title: Add code block language name into CSS classes in Pelican Markdown
 Slug: markdown-codehilite-lang
 Date: 2016-02-19 15:00
 Tags: en, blog, pelican, codehilite, pygment
-Category: Coding 
+Category: Coding
 ---
 
-I used [Pelican] and its [Markdown] plugin to render blog post. 
+I used [Pelican] and its [Markdown] plugin to render blog post.
 
-Recently I was playing with the [Python Official Documentation], which has a decent code syntax highlighter powered by [Pygments]. 
+Recently I was playing with the [Python Official Documentation], which has a decent code syntax highlighter powered by [Pygments].
 
 What's more, the output of code examples can be toggled. That is, a code example:
 
@@ -17,7 +17,7 @@ What's more, the output of code examples can be toggled. That is, a code example
 Hello World
 >>> 6 * 7
 42
-```  
+```
 
 can be toggled to:
 
@@ -39,9 +39,9 @@ which is very convenient for code copy-pasting.
 
 
 
-### Code output toggle in Pelican 
+### Code output toggle in Pelican
 
-After I fixed the copybutton.js, I wished to add this functionality to my blog. 
+After I fixed the copybutton.js, I wished to add this functionality to my blog.
 
 Code highlighting in Pelican markdown files is handled by its [CodeHilite](https://pythonhosted.org/Markdown/extensions/code_hilite.html) extension. To my surprise, I found CodeHilite does not express the language name specified for each code block.
 
@@ -81,7 +81,7 @@ index 0657c37..4fad7c5 100644
      def __init__(self, src=None, linenums=None, guess_lang=True,
                   css_class="codehilite", lang=None, style='default',
 -                 noclasses=False, tab_length=4, hl_lines=None, use_pygments=True):
-+                 noclasses=False, tab_length=4, hl_lines=None, use_pygments=True, 
++                 noclasses=False, tab_length=4, hl_lines=None, use_pygments=True,
 +                 wrap_by_lang=True):
          self.src = src
          self.lang = lang
@@ -120,8 +120,8 @@ index 0657c37..4fad7c5 100644
              txt = self.src.replace('&', '&amp;')
 ```
 
-I'm happy with the patched codehilite output. I am now able to give code toggle function to specific code languages. 
+I'm happy with the patched codehilite output. I am now able to give code toggle function to specific code languages.
 
 However it's quite busy these days, so it may take a while to submit a proper pull request (e.g. fix any broken unit tests, write new tests, and tune the API as well as the new behavior). Moerover, **currently my site does not use jQuery** so I am missing a huge dependency. Rewriting it using vanilla JS seems to require considerable work, and the very thing I don't have at hand is time :(
 
-I've decided to leave this improvement in future development. But if your site use Pelican Markdown and imports jQuery, the diff will add the code language back. 
+I've decided to leave this improvement in future development. But if your site use Pelican Markdown and imports jQuery, the diff will add the code language back.

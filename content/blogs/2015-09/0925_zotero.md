@@ -15,7 +15,7 @@ Cover: http://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotero.png
 
 [TOC]
 
-### BibTex is for LaTeX 
+### BibTex is for LaTeX
 
 在 [LaTeX] 當中可以利用 [BibTeX]（或更新的 [BibLaTeX]）提供的流程處理 citation 與管理 reference（即 [Bibliography 管理]）。他把所有 reference 集中在一個純文字的檔案，
 
@@ -39,10 +39,10 @@ Cover: http://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotero.png
 
 [BibDesk] 是個 OSX 的應用程式，包含在 [MacTex] distribution 裡面。除了能自動從匯入來自網站或不同格式的 citation 之外，還有檔案附件的功能，能把例如論文的 PDF、Supplementary files 自動跟對應的條目做連接，重新命名並放在一個架構化的資料夾。重新命名跟歸檔的方式都能自訂，例如可以照 期刊名稱/年份 去分類，然後把這個資料夾放在 Dropbox 上就完成了自動同步。
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/bibdesk_usage.png"/>
   <p class="caption center"><span class="fig">BibDesk 使用畫面</span></p>
-</div>
+</figure>
 
 這樣解決了幾乎所有寫 paper 會碰到的問題。
 
@@ -76,20 +76,20 @@ BibDesk (BibTeX) 真的很方便，讓我有時候想要管理一些很經典的
 
 基本畫面蠻簡單的，大概所有的書目管理軟體都差不多，只是它是整合在 Browser 當中，
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/zotero.png"/>
   <p class="caption center"><span class="fig">Zotero 使用畫面</span></p>
-</div>
+</figure>
 
 使用很簡單，就兩個按鈕 <img src="{attach}pics/zotero_icon.png" style="height: 1.6em;"/>，左邊打開 Zotero 視窗，右邊把當前網頁存進自己的 library 裡，它右下角就會出現處理的訊息，如果是期刊網站而且有 full text PDF 的權限，就會一起把 PDF 都存起來。
 
-<div class="figure align-center">
+<figure class="align-center">
   <img src="{attach}pics/zotero_saving.png"/>
-</div>
+</figure>
 
-<div class="figure align-center">
+<figure class="align-center">
   <img src="{attach}pics/zotero_citation.png"/>
-</div>
+</figure>
 
 平常要放到論文裡時，我還是會先匯出到 BibTeX 或 EndNote。不過它額外還有好用的功能，能把 citation 輸出成 RTF/HTML 的 bibliography，這可以直接貼在 Powerpoint 做投影片很方便。
 
@@ -106,22 +106,22 @@ PS: Zotero 採用 AGPL v3 授權，原始碼在 [Github][Zotero src] 上。
 
 Zotero 內建的 PDF attachment 功能不如 BibDesk 這麼完整，因此有 [Zotfile] 來額外管理 PDF 檔案的功能。再者 Zotero 的空間有限，會想把 PDF 等大的檔案放在像 Dropbox 的地方，不要都用 Zotero 同步。
 
-<div class="figure align-center">
+<figure class="align-center">
   <img src="{attach}pics/zotfile_file_location.png"/>
   <p class="caption left">自訂 (PDF) 檔案存放路徑，底下可以再設定子目錄。在這邊是會按照<code>期刊名/年分</code>去分目錄。</p>
-</div>
+</figure>
 
-<div class="figure align-center">
+<figure class="align-center">
   <img src="{attach}pics/zotfile_rename_setting.png"/>
-  <p class="caption">自訂檔案命名規則</p>
-</div>
+  <figcaption>自訂檔案命名規則</figcaption>
+</figure>
 
 不過如果是同步到 Dropbox 的話，可能每台電腦的路徑都不一樣，例如 OSX 可能是 `/Users/me/Dropbox`，但 Debian 可能是 `/home/me/Dropbox`，這時候存放的路徑就要改成相對路徑。
 
-<div class="figure align-center">
+<figure class="align-center">
   <img src="{attach}pics/zotero_file_location.png"/>
-  <p class="caption">Zotero Advanced 設定裡修改 library 相關檔案的路徑。</p>
-</div>
+  <figcaption>Zotero Advanced 設定裡修改 library 相關檔案的路徑。</figcaption>
+</figure>
 
 這邊要額外說明一下 Linked Attachment Base Directory 以及 Data Directory 的差異。像 PDF 這類如果被 Zotfile 所管理的檔案，或是自己手動選「Attach Link ...」的檔案，他使用的是 linked attachment，icon 會有個連結的符號 <img src="{attach}pics/zotfile_fileicon.png" style="height: 1.6em;"/>。其他像 Webpage Snapshot 或是預設的 PDF 檔都是放在 Data Directory。
 

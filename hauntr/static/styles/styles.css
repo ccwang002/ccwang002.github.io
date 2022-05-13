@@ -5,7 +5,6 @@
 @import 'elements/table.css';
 
 article, aside, details,
-figcaption, figure,
 footer, header, hgroup,
 main, nav, section { display: block; }
 a:focus { outline: thin dotted; }
@@ -503,7 +502,6 @@ details p {
    11. Media Queries - Smaller than 500px
    ========================================================================== */
 
-
 @media only screen and (max-width: 500px) {
 
     .inner,
@@ -529,18 +527,6 @@ details p {
 
     .post-template .site-footer {
         margin-top: 0;
-    }
-
-    .post-content img {
-        padding: 0;
-    }
-
-    .post-content .full-img {
-        width: auto;
-        width: calc(100% + 2rem); /* expand with to image + margins */
-        margin: 0 -1rem; /* get rid of margins */
-        min-width: 0;
-        max-width: 112%; /* fallback when calc doesn't work */
     }
 
     .post-header {

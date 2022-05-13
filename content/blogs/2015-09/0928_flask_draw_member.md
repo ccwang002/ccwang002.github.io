@@ -500,10 +500,10 @@ def index():
 
 打開瀏覽器訪問 <http://localhost:5000> 應該會出現底下的畫面。
 
-<div class="figure align-center">
+<figure class="align-center">
   <img src="{attach}pics/flask_helloworld.png"/>
-  <p class="caption">Flask Hello World</p>
-</div>
+  <figcaption>Flask Hello World</figcaption>
+</figure>
 
 
 ### 抽籤功能
@@ -608,17 +608,17 @@ Flask 會把使用者發給 server 的 request 存在 `request` 裡面，其實�
 
 重新整理首頁，可以看到多了一個表單（廢話）。Flask 的 web server 很聰明，不用重新啟動它，會自動看到檔案有更新做 reload。可以回去比對一下自己寫在 `index.html` 裡 HTML 在瀏覽器上呈現的對應關係。
 
-<div class="figure align-center">
+<figure class="align-center">
   <img src="{attach}pics/flask_index_form.png"/>
-  <p class="caption">新的首頁，多了一個表單</p>
-</div>
+  <figcaption>新的首頁，多了一個表單</figcaption>
+</figure>
 
 按下 Submit 之後就會跳到抽籤結果（注意 URL 的變化）
 
-<div class="figure align-center">
+<figure class="align-center">
   <img src="{attach}pics/flask_draw_result.png"/>
-  <p class="caption">抽籤結果</p>
-</div>
+  <figcaption>抽籤結果</figcaption>
+</figure>
 
 預計是抽全部，你也可以回到上一頁，選自己想要的團體。
 
@@ -711,9 +711,9 @@ def draw():
 
 這時候才重新抽籤可以看到新的 template 的輸出結果，功能表也出現了。
 
-<div class="figure align-center">
+<figure class="align-center">
   <img src="{attach}pics/flask_new_draw_result.png"/>
-</div>
+</figure>
 
 
 ### 歷史記錄
@@ -790,9 +790,9 @@ for history in recent_histories:
 
 Flask 用的 Jinja2 template 功能很多，現在各位已經比較理解 server 的運作了，可以去閱讀一下 [Jinja2 官網文件][jinja2-tpl-design]看完整的使用方式。
 
-<div class="figure align-center">
+<figure class="align-center">
   <img src="{attach}pics/flask_history.png"/>
-</div>
+</figure>
 
 #### 時間處理用 datetime
 
@@ -833,9 +833,9 @@ def history():
 
 可以看到 for loop 不再使用 0, 1, 2 去拿每筆歷史各欄位的值，而是用欄位名稱，相當於 `history['name']`。這樣的做法比較好，因為用數字一下就忘了，隨便調整一下 view 的內容順序就不一定是這樣了；單獨讀 template 也能懂每個欄位的意思。
 
-<div class="figure align-center">
+<figure class="align-center">
   <img src="{attach}pics/flask_history_zh.png"/>
-</div>
+</figure>
 
 ### What's Next
 

@@ -16,10 +16,10 @@ Blog 本來就是架在 [GitHub Pages][blog-src] 上，其實預設有 https，�
 
 在看那個 [issue][GitHub https issue] 就可以找到其他人用 CloudFlare 的解法。概念上就再用一層 CloudFlare CDN，然後它的 CDN 有提供 https 簽章。直接看 CloudFlare 在 Crypto 頁的介紹比較快：
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/cloudflare_ssl.png"/>
   <p class="caption center">source: <a href="https://www.cloudflare.com/ssl/"> CloudFlare one-click SSL</a></p>
-</div>
+</figure>
 
 所以 CloudFlare 去 cache GitHub 頁面時用的是 https，再到使用者時也是用 https。剩下就是你要不要相信 CloudFlare 了。
 
@@ -40,7 +40,7 @@ Pelican 發佈設定 `publishconf.py` 管網址的 `SITE_URL` 能設成 `//blog.
 
 ## Disqus
 
-似乎解法只有全部導向到 https。這還不能直接改 Disqus 設定，要用它的 [URL Mapper](https://help.disqus.com/customer/portal/articles/912757-url-mapper) 下載所有留言版出現連結的 CSV 手動修改。 
+似乎解法只有全部導向到 https。這還不能直接改 Disqus 設定，要用它的 [URL Mapper](https://help.disqus.com/customer/portal/articles/912757-url-mapper) 下載所有留言版出現連結的 CSV 手動修改。
 
 感覺很土砲。不過站上的留言不多，也不用改多少留言，很快就同步到新的位置上。
 
@@ -52,10 +52,10 @@ Pelican 發佈設定 `publishconf.py` 管網址的 `SITE_URL` 能設成 `//blog.
 
 我沒有自己架任何 server，懶得維護。不過也很懶得打字。在其他 subdomain 都沒用的情況下，有透過 Hinet 設定 <http://liang2.tw> 會導向至 <http://blog.liang2.tw> 再被導向到 https。
 
-<div class="figure">
+<figure>
   <img src="{attach}pics/cloudflare_dns_setting.png"/>
   <p class="caption center">CloudFlare DNS setting</p>
-</div>
+</figure>
 
 大概是這樣。希望能在不要自己架 server 的情況下繼續經營這個 blog。
 

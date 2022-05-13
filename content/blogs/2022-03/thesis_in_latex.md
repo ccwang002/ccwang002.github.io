@@ -85,11 +85,11 @@ Usually the figure is large, taking up the full page, and has multiple panels co
 And the remaining figure legend need to be put at the next page.
 Here's an example of the desired behavior:
 
-<div class="figure">
+<figure>
     <img src="{attach}pics/fig_legend_first_half.png">
     <img src="{attach}pics/fig_legend_second_half.png">
-    <p class="caption">Example of the figure legend overflow.</p>
-</div>
+    <figcaption>Example of the figure legend overflow.</figcaption>
+</figure>
 
 To create "fake" panels for [subcaption] to keep track of the reference, I followed [the suggestion on LaTeX Stack Exchange](https://tex.stackexchange.com/a/255790) to create a hidden anchor for the label using `\phantomsubcaption`.
 
@@ -211,26 +211,26 @@ jobs:
 
 The workflow is triggered on every git push. Here is an example of my WUSTL thesis template ([link][wustl-tpl-github-actions-overview]):
 
-<div class="figure">
+<figure>
     <img src="{attach}pics/github_actions_overview.png">
-    <p class="caption">Overview of all the online LaTeX document compilation jobs using GitHub actions.</p>
-</div>
+    <figcaption>Overview of all the online LaTeX document compilation jobs using GitHub actions.</figcaption>
+</figure>
 
 Not only the workflow records the output messages useful to debug, the final PDF output is stored as an artifact.
 I no longer need to install LaTeX locally.
 
-<div class="figure">
+<figure>
     <img src="{attach}pics/github_actions_artifact.png">
-    <p class="caption">Auto-generated PDF output of the document.</p>
-</div>
+    <figcaption>Auto-generated PDF output of the document.</figcaption>
+</figure>
 
 By putting everything in a GitHub repo, I can also use [GitHub's online editor][github-online-editor] to work on my document in a web browser anywhere.
 Together with GitHub Actions, it can be an alternative to online LaTeX platform like Overleaf; hacky but more flexible.
 
-<div class="figure">
+<figure>
     <img src="{attach}pics/github_online_editor.png">
-    <p class="caption">Online editor of a LaTeX project in a GitHub repository.</p>
-</div>
+    <figcaption>Online editor of a LaTeX project in a GitHub repository.</figcaption>
+</figure>
 
 Currently, the online workflow is not fully optimized.
 My full thesis takes about 6--12 minutes to complete on GitHub, while locally, a full run without cache takes about 3--5 minutes.

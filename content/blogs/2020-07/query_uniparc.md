@@ -18,10 +18,10 @@ There are a few "camps" of biological IDs that are used by many (human) database
 
 To get a sense of these "ID camps" and how information is connected through them and across them, this great illustration from [bioDBnet][bioDBnet graph] sums it all (it's huge):
 
-<div class="figure">
+<figure>
     <img src="{attach}pics/bioDBnet.jpg">
-    <p class="caption">Best illustration of the complex ID crossref: bioDBnet Network Diagram (<a href="https://biodbnet-abcc.ncifcrf.gov/dbInfo/netGraph.php">source</a>)</p>
-</div>
+    <figcaption>Best illustration of the complex ID crossref: bioDBnet Network Diagram (<a href="https://biodbnet-abcc.ncifcrf.gov/dbInfo/netGraph.php">source</a>)</figcaption>
+</figure>
 
 
 ### Challenges to map IDs with exact sequence identity
@@ -90,10 +90,10 @@ Then calculate the CRC64 checksum (there are a few packages capable, or use [EBI
 
 Search `checksum:37E8BFC7ECA2D03F` on UniParc gives an unique entry[^checksum-collision] `UPI000041C017`: <https://www.uniprot.org/uniparc/?query=checksum%3A37E8BFC7ECA2D03F&sort=score&direct=yes>.
 
-<div class="figure full-img">
+<figure class="full-img">
     <img src="{attach}pics/uniparc_UPI000041C017.png">
-    <p class="caption">UniParc entry <a href="https://www.uniprot.org/uniparc/UPI000041C017">UPI000041C017</a> and all of its human ID cross references with exact sequence identity.</p>
-</div>
+    <figcaption>UniParc entry <a href="https://www.uniprot.org/uniparc/UPI000041C017">UPI000041C017</a> and all of its human ID cross references with exact sequence identity.</figcaption>
+</figure>
 
 All the external IDs listed here have the identical protein sequence to `NP_001317366.1`, which of course includes itself. UniParc also marks the IDs inactive if they are superseded by a newer version or become obsolete, which is quite useful for data forensics.
 
