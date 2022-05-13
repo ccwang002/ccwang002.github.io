@@ -1,6 +1,7 @@
 @import 'fonts.css';
 @import 'elements/blockquote.css';
 @import 'elements/figure.css';
+@import 'elements/subscribe.css';
 @import 'elements/table.css';
 
 article, aside, details,
@@ -480,57 +481,6 @@ details p {
     background: var(--color-header-footer-background);
 }
 
-/* The subscribe icon on the footer */
-.subscribe {
-    width: 28px;
-    height: 28px;
-    position: absolute;
-    top: -14px;
-    left: 50%;
-    margin-left: -15px;
-    border: #EBF2F6 1px solid;
-    text-align: center;
-    border-radius: 50px;
-    background: #fff;
-    transition: box-shadow 0.5s;
-}
-
-/* The RSS icon, inserted via icon font */
-.subscribe:before {
-    font-size: 16px;
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    transition: color 0.5s ease;
-}
-
-/* Add a box shadow to on hover */
-.subscribe:hover {
-    box-shadow: rgba(0,0,0,0.05) 0 0 0 3px;
-    transition: box-shadow 0.25s;
-}
-
-.subscribe:hover:before {
-    color: #eeeeee;
-    display: inline-block;
-}
-
-.subscribe::before {
-    content: attr(data-tooltip);
-    position: absolute;
-    text-align: center;
-    white-space: nowrap;
-    max-width: none;
-    top: -2.75rem;
-    left: -2rem;
-    font-size: 1rem;
-    padding: 4px 10px;
-    display: none;
-    background: #50585dd0;
-    border-radius: 5px;
-    transition: opacity 0.1s ease-out;
-    z-index: 1;
-  }
 
 
 /* ==========================================================================
