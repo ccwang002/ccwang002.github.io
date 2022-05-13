@@ -41,7 +41,7 @@
 
 
 {% block content %}
-<article class="post {% if 'zh' in article.tags %}zh-post{% elif 'en' in article.tags %}en-post{% endif %}">
+<article class="post">
     <span class="post-meta">
         <time datetime="{{ article.locale_date }}">{{ article.locale_date }}</time>
         in <a href="{{ SITEURL }}/{{ article.category.url }}/">{{ article.category }}</a>

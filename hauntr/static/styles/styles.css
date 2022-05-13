@@ -411,12 +411,15 @@ details p {
 
 /* Language specific line height */
 
-.zh-post p {
+html[lang="zh"] p,
+html[lang="zh"] ul,
+html[lang="zh"] ol,
+html[lang="zh"] dl {
     line-height: 2em;
     margin: 1.5em 0;
 }
 
-.zh-post details p {
+html[lang="zh"] details p {
     margin: 0.75em 0;
 }
 
