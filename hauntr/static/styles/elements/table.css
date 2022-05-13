@@ -1,11 +1,14 @@
 /* Table */
 
 table {
-    box-sizing: border-box;
     margin: 1.6em 0;
-    width:100%;
+    width: 100%;
     max-width: 100%;
-    background-color: transparent;
+    box-sizing: border-box;
+
+    border-collapse: collapse;
+    border-spacing: 0;
+    background-color: none;
 }
 
 table th,
@@ -17,7 +20,7 @@ table td {
     border-top: 1px solid #efefef;
 }
 
-table th { color: #000; }
+table th { color: #000000; }
 
 table caption + thead tr:first-child th,
 table caption + thead tr:first-child td,
@@ -30,7 +33,7 @@ table thead:first-child tr:first-child td {
 
 table tbody + tbody { border-top: 2px solid #efefef; }
 
-table table table { background-color: #fff; }
+table table table { background-color: #ffffff; }
 
 table tbody > tr:nth-child(odd) > td,
 table tbody > tr:nth-child(odd) > th {
@@ -39,5 +42,5 @@ table tbody > tr:nth-child(odd) > th {
 
 table.plain tbody > tr:nth-child(odd) > td,
 table.plain tbody > tr:nth-child(odd) > th {
-   background: transparent;
+    background: none;
 }

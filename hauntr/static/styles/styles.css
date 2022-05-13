@@ -4,15 +4,26 @@
 @import 'elements/subscribe.css';
 @import 'elements/table.css';
 
-article, aside, details,
-footer, header, hgroup,
-main, nav, section { display: block; }
+article,
+aside,
+details,
+footer,
+header,
+hgroup,
+main,
+nav,
+section { display: block; }
 a:focus { outline: thin dotted; }
-code, kbd, pre,
-samp, tt {
-    font-family: 'Fira Code', monospace, sans-serif;
-    font-feature-settings: "calt", "ss01", "ss03", "ss05", "ss08";
+
+code,
+kbd,
+pre,
+samp,
+tt {
+    font-family: 'Fira Code', monospace;
+    font-feature-settings: 'calt', 'ss01', 'ss03', 'ss05', 'ss08';
 }
+
 pre {
     font-size: 0.85em;
     line-height: 1.6em;
@@ -20,18 +31,17 @@ pre {
 }
 
 small { font-size: 80%; }
+
 sub, sup {
-   font-size: 75%;
-   line-height: 0;
-   position: relative;
-   vertical-align: baseline;
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
 }
 sup { top: -0.5em; }
 sub { bottom: -0.25em; }
 img { border: 0; }
 svg:not(:root) { overflow: hidden; }
-figure { margin: 0; }
-table { border-collapse: collapse; border-spacing: 0; }
 
 
 /* ==========================================================================
@@ -44,8 +54,8 @@ html {
 }
 
 body {
-    --color-text: #3A4145;
-    --color-header-footer-background: #F7FAFB;
+    --color-text: #3a4145;
+    --color-header-footer-background: #f7fafb;
 
     height: 100%;
     max-height: 100%;
@@ -57,13 +67,17 @@ body {
 }
 
 ::selection {
-    color: #222;
-    background: #D6EDFF;
+    color: #222222;
+    background: #d6edff;
     text-shadow: none;
 }
 
-h1, h2, h3,
-h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     line-height: 1.2em;
 }
 
@@ -104,20 +118,27 @@ a {
 }
 
 a:hover {
-    color: #57A3E8;
+    color: #57a3e8;
 }
 
-h1 a, h2 a, h3 a,
-h4 a, h5 a, h6 a {
-    color: #50585D;
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+    color: #50585d;
     text-decoration: none;
     transition: color 0.3s ease 0s;
 }
 
-h1 a:hover, h2 a:hover,
-h3 a:hover, h4 a:hover,
-h5 a:hover, h6 a:hover {
-    color: #57A3E8;
+h1 a:hover,
+h2 a:hover,
+h3 a:hover,
+h4 a:hover,
+h5 a:hover,
+h6 a:hover {
+    color: #57a3e8;
 }
 
 p, ul, ol, dl {
@@ -125,8 +146,10 @@ p, ul, ol, dl {
     line-height: 1.75em;
 }
 
-ol ol, ul ul,
-ul ol, ol ul {
+ol ol,
+ul ul,
+ul ol,
+ol ul {
     margin: 0.4em 0;
 }
 
@@ -139,12 +162,12 @@ dl dt {
     text-overflow: ellipsis;
     white-space: nowrap;
     font-weight: bold;
-    margin-bottom: 1em
+    margin-bottom: 1em;
 }
 
 dl dd {
     margin-left: 200px;
-    margin-bottom: 1em
+    margin-bottom: 1em;
 }
 
 hr {
@@ -165,7 +188,7 @@ code, tt {
     font-size: 0.85em;
     white-space: pre-wrap;
     word-break: break-all;
-    border: 1px solid #E3EDF3;
+    border: 1px solid #e3edf3;
     background: var(--color-header-footer-background);
     border-radius: 2px;
 }
@@ -175,7 +198,7 @@ pre {
     box-sizing: border-box;
     margin: 1.6em 0 1.6em -2.2em;
     padding: 0 0 0 1.6em;
-    border-left: #9EABB3 0.4em solid;
+    border-left: #9eabb3 0.4em solid;
 }
 
 pre code,
@@ -190,8 +213,8 @@ pre tt {
 kbd {
     display: inline-block;
     padding: 1px 8px;
-    border: #ccc 1px solid;
-    color: #666;
+    border: #cccccc 1px solid;
+    color: #666666;
     font-size: 0.8em;
     font-weight: bold;
     line-height: 1.5em;
@@ -199,7 +222,7 @@ kbd {
     border-radius: 4px;
     box-shadow:
         0 1px 0 rgba(0, 0, 0, 0.2),
-        0 1px 0 0 #fff inset;
+        0 1px 0 0 #ffffff inset;
 }
 
 
@@ -213,6 +236,7 @@ details p {
    ========================================================================== */
 
 /* Creates a responsive wrapper that makes our content scale nicely */
+
 .inner {
     position: relative;
     max-width: 80%;
@@ -220,12 +244,12 @@ details p {
 }
 
 
-
 /* ==========================================================================
    4. General - The main styles for the the theme
    ========================================================================== */
 
 /* Big cover image on the home page */
+
 .site-head {
     position: relative;
     display: table;
@@ -234,7 +258,7 @@ details p {
     padding: 2.5rem 0;
     text-align: center;
     background: none repeat scroll 0 0 var(--color-header-footer-background);
-    border-bottom: 1px solid #EBF2F6;
+    border-bottom: 1px solid #ebf2f6;
 }
 
 .blog-logo {
@@ -254,7 +278,7 @@ details p {
 }
 
 .blog-title a:hover {
-    color: #57A3E8;
+    color: #57a3e8;
 }
 
 .blog-description {
@@ -264,13 +288,14 @@ details p {
 }
 
 /* Every post, on every page, gets this style on its <article> tag */
+
 .post {
     position: relative;
     width: 80%;
     max-width: 800px;
     margin: 1.5rem auto;
     padding-bottom: 5rem;
-    border-bottom: #EBF2F6 1px solid;
+    border-bottom: #ebf2f6 1px solid;
     word-break: normal;
     hyphens: auto;
 }
@@ -284,18 +309,18 @@ details p {
 .post-title {
     margin: 0;
     font-size: 1.75em;
-    color: #222;
+    color: #222222;
 }
 
 .post-title a {
     transition: color 0.3s ease 0s;
     text-decoration: none;
-    color: #222;
+    color: #222222;
 }
 
 .post-title a:hover,
 .post-title::before:hover {
-    color: #57A3E8;
+    color: #57a3e8;
 }
 
 .post-excerpt p {
@@ -321,11 +346,11 @@ details p {
 .post-meta {
     display: inline-block;
     margin: 0 0 5px 0;
-    color: #9EABB3;
+    color: #9eabb3;
 }
 
 .post-meta a {
-    color: #9EABB3;
+    color: #9eabb3;
     text-decoration: none;
 }
 
@@ -335,23 +360,23 @@ details p {
 
 
 /* For /tags.html */
+
 #tags-columns {
-  column-count: 2;
-  -moz-column-count: 2;
-  -webkit-column-count: 2;
-  padding: 1em 0px;
+    column-count: 2;
+    -moz-column-count: 2;
+    -webkit-column-count: 2;
+    padding: 1em 0;
 }
 
 #tags-columns ul {
-    padding: 0px;
+    padding: 0;
     margin: 0;
     list-style-type: none;
 }
 
 #tags-columns .tag-feed-link {
-    margin-right: .5em;
+    margin-right: 0.5em;
 }
-
 
 
 /* ==========================================================================
@@ -360,11 +385,13 @@ details p {
 
 /* Stop .full-img from creating horizontal scroll - slight hack due to
    imperfections with browser width % calculations and rounding */
+
 .post-template .content {
     overflow: hidden;
 }
 
 /* Tweak the .post wrapper style */
+
 .post-template .post {
     margin-top: 0;
     border-bottom: none;
@@ -372,17 +399,20 @@ details p {
 }
 
 /* Kill that stylish little circle that was on the border, too */
-.post-template .post:after {
+
+.post-template .post::after {
     display: none;
 }
 
 
 /* Give post-header some top padding */
+
 .post-template article:not(:first-child) .post-header {
     padding-top: 40px;
 }
 
 /* Language specific line height */
+
 .zh-post p {
     line-height: 2em;
     margin: 1.5em 0;
@@ -394,10 +424,11 @@ details p {
 
 
 /* Comment section (utterances) */
+
 .post-footer {
     margin: 4rem 0 0 0;
     padding: 2rem 0 0 0;
-    border-top: #EBF2F6 1px solid;
+    border-top: #ebf2f6 1px solid;
 }
 
 /* utterances GitHub issue based comments widget
@@ -417,28 +448,30 @@ details p {
    ========================================================================== */
 
 /* The main wrapper for our pagination links */
+
 .pagination {
     position: relative;
     width: 80%;
     max-width: 700px;
     margin: 4rem auto;
-    font-family: FiraSans, 'Open Sans', sans-serif;
+    font-family: 'FiraSans', 'Open Sans', sans-serif;
     font-size: 1rem;
-    color: #9EABB3;
+    color: #9eabb3;
     text-align: center;
 }
 
 .pagination a {
-    color: #9EABB3;
+    color: #9eabb3;
 }
 
 /* Push the previous/next links out to the left/right */
+
 .older-posts,
 .newer-posts {
     position: absolute;
     display: inline-block;
     padding: 0 15px;
-    border: #EBF2F6 2px solid;
+    border: #ebf2f6 2px solid;
     text-decoration: none;
     border-radius: 30px;
     transition: border ease 0.3s;
@@ -459,7 +492,7 @@ details p {
 
 .older-posts:hover,
 .newer-posts:hover {
-    border-color: #9EABB3;
+    border-color: #9eabb3;
 }
 
 
@@ -471,15 +504,14 @@ details p {
     position: relative;
     margin: 2rem 0 0 0;
     padding: 4rem 0;
-    border-top: #EBF2F6 1px solid;
-    font-family: FiraSans, 'Noto Sans TC', 'Open Sans', sans-serif;
+    border-top: #ebf2f6 1px solid;
+    font-family: 'FiraSans', 'Noto Sans TC', 'Open Sans', sans-serif;
     font-size: 1rem;
     line-height: 1.7em;
-    color: #555;
+    color: #555555;
     text-align: center;
     background: var(--color-header-footer-background);
 }
-
 
 
 /* ==========================================================================
@@ -487,7 +519,6 @@ details p {
    ========================================================================== */
 
 @media only screen and (max-width: 900px) {
-
     blockquote {
         margin-left: 0;
     }
@@ -495,7 +526,6 @@ details p {
     .post-template .post {
         padding-bottom: 1rem;
     }
-
 }
 
 /* ==========================================================================
@@ -503,7 +533,6 @@ details p {
    ========================================================================== */
 
 @media only screen and (max-width: 500px) {
-
     .inner,
     .pagination,
     .post {
@@ -565,5 +594,4 @@ details p {
         margin-top: 6rem;
         font-size: 1.1rem;
     }
-
 }
