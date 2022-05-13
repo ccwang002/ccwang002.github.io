@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="我自己在 OSX 上的主觀開發環境設定" />
 <meta name="keywords" content="zh, labcoding">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>Coding 初學指南附錄 - OSX 開發環境</title>
 
 	<!-- og -->
@@ -34,8 +34,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -49,7 +49,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post zh-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Jan 21, 2016">Jan 21, 2016</time>
         in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
@@ -92,33 +92,29 @@
 <h2 id="homebrew-git-and-python">Homebrew, Git and Python</h2>
 <p>OSX 上官方沒有一個管理套件的工具，所以社群自行開發了一個叫做 Homebrew。你可以按照<a href="http://djangogirlstaipei.herokuapp.com/tutorials/installation/">這篇教學</a>安裝 Homebrew。</p>
 <p>裝好了之後你可以以下指令去看它該怎麼操作</p>
-<div class="highlight"><pre><span></span><code>$ brew --help
+<div class="highlight"><pre><span></span><code class="language-bash">$ brew --help
 $ man brew    <span class="c1"># for full documentation</span>
 </code></pre></div>
 
-
 <p>OSX 雖然內建有 git 與 python，但我們可以用 homebrew 安裝比較標準（新）的版本，</p>
-<div class="highlight"><pre><span></span><code>$ brew install git python3
+<div class="highlight"><pre><span></span><code class="language-bash">$ brew install git python3
 </code></pre></div>
-
 
 <p>如果 homebrew 有問題可以用 <code>brew doctor</code> 來檢測。把錯誤訊息問 google 通常就能找到解決方式。</p>
 <h2 id="text-editors">Text Editors</h2>
 <p>我最常用的是 Vim。OSX 有內建，但也可以用 homebrew 安裝。</p>
 <p>除了 console based 的 Vim，OSX 上也有像 gVim 的 MacVim。一樣能用 homebrew 安裝。</p>
-<div class="highlight"><pre><span></span><code>$ brew info macvim  <span class="c1"># 看 MacVim 在安裝有什麼選項可以調整</span>
+<div class="highlight"><pre><span></span><code class="language-bash">$ brew info macvim  <span class="c1"># 看 MacVim 在安裝有什麼選項可以調整</span>
 $ brew install macvim --override-system-vim --custom-icons
 $ brew linkapps macvim
 </code></pre></div>
 
-
 <p>使用 Macvim 的時候除了 vim 之外，也可以呼叫 <code>mvim</code> 打開 MacVim。</p>
 <h2 id="terminal-multiplexers">Terminal Multiplexers</h2>
 <p>你有可能有聽過 screen 或者 tmux。前者在 osx 上有內建但版本很舊，在顯示顏色上會有問題，因此可以透過 homebrew 再安裝新的。但因為 screen 跟系統提供的重覆到了，所以預設不在 homebrew 的 repo 中，要先新增 repo 清單：</p>
-<div class="highlight"><pre><span></span><code>brew tap homebrew/dupes
+<div class="highlight"><pre><span></span><code class="language-bash">brew tap homebrew/dupes
 brew install screen tmux
 </code></pre></div>
-
 
 <h2 id="git-gui">Git GUI</h2>
 <p>初學 Git 可能會不熟那些指令、常常不知道自己在 git log 哪個位置。這時候有個圖形化的工具會更方便了解。Git 有內建一個 gitk，但比較陽春。</p>

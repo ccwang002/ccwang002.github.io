@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="Jupyter Notebook，也就是以前的 IPython Notebook，應該是許多人在用 Python 做資料分析時記錄實驗步驗與結果的工具。 現在 IPython (v4.0+) 已經回歸到 Interactive Python Shell …" />
 <meta name="keywords" content="zh, jupyter, notebook">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>Jupyter Notebook Theme</title>
 
 	<!-- og -->
@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2016-01-07 00:00:00-06:00"/>
-<meta property="article:modified_time" content="2022-02-20 20:07:45.273609-06:00"/>
+<meta property="article:modified_time" content="2022-05-13 12:58:27.687720-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="zh"/>
@@ -35,8 +35,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -50,7 +50,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post zh-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Jan 07, 2016">Jan 07, 2016</time>
         in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
@@ -75,66 +75,62 @@
 </div>
 <h3 id="jupyter-notebook">Jupyter Notebook</h3>
 <p>用 Python 裝十分簡單，</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>pip install jupyter
+<div class="highlight"><pre><span></span><code class="language-console"><span class="gp">$ </span>pip install jupyter
 </code></pre></div>
 
-
 <p>Jupyter 預設走 web 介面，會跑一個 tornado server 預設在 <a href="http://localhost:8888">http://localhost:8888</a> 上。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>jupyter notebook
+<div class="highlight"><pre><span></span><code class="language-console"><span class="gp">$ </span>jupyter notebook
 <span class="go">[I 23:50:58.449 NotebookApp] Serving notebooks from local directory: /Users/liang</span>
 <span class="go">[I 23:50:58.449 NotebookApp] 0 active kernels</span>
 <span class="go">[I 23:50:58.450 NotebookApp] The IPython Notebook is running at: http://localhost:8888/</span>
 <span class="go">[I 23:50:58.450 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).</span>
 </code></pre></div>
 
-
 <p>有裝 browser 的話就會自動開一個視窗。</p>
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/pics/jupyter_default_frontpage.png"/>
   <p class="caption center">Jupyter Notebook Hub</p>
-</div>
+</figure>
 
 <p>Notebook 預設是 <code>.ipynb</code> 的檔案。常見的內容像這樣：</p>
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/pics/jupyter_default_notebook.png"/>
   <p class="caption center">Jupyter Notebook Example</p>
-</div>
+</figure>
 
 <h3 id="custom-theme-on-v41">Custom Theme on v4.1+</h3>
 <p>EDIT: 2016-01-11 <a href="https://blog.jupyter.org/2016/01/08/notebook-4-1-release/">Jupyter Notebook 4.1</a> 已釋出，設定路徑預設都在 <code>~/.jupyter</code> 底下。</p>
 <p>今天重點是換主題嘛。趕快來做吧。</p>
 <p>可以透過 <code>jupyter --config-dir</code> 或 <code>jupyter --paths</code> 找到設定檔應該放的位置。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>jupyter --config-dir
+<div class="highlight"><pre><span></span><code class="language-console"><span class="gp">$ </span>jupyter --config-dir
 <span class="go">~/.jupyter</span>
 <span class="gp">$ </span>jupyter notebook --generate-config  <span class="c1"># 建立 Notebook 設定檔</span>
 <span class="go">Writing default config to: ~/.jupyter/jupyter_notebook_config.py</span>
 </code></pre></div>
 
-
 <p>如果只是改主題，不需要更動 Notebook 設定檔。</p>
 <p>目前自己使用的主題來自 <a href="https://github.com/dunovank/jupyter-themes">dunovank</a>，他有收集了至少深淺兩色，應該足夠使用了。CSS 從別人的基礎上來調整也相對簡單，我自己有<a href="https://github.com/ccwang002/dotfiles/tree/master/ipy_profile/ipython3">改寫了一點</a>（忘了改什麼)。dunovank 有寫個安裝 theme 的套件，不過不用也沒關係，只要準備好 CSS 就能用。我用 Grade3 這個主題來示範。</p>
 <p>把 <code>custom.css</code> 放到 <code>~/.jupyter/static/custom.css</code>。設定的目錄長得如下：</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>tree ~/.jupyter -F -L <span class="m">3</span>
+<div class="highlight"><pre><span></span><code class="language-console"><span class="gp">$ </span>tree ~/.jupyter -F -L <span class="m">3</span>
 <span class="go">~/.jupyter</span>
 <span class="go">├── custom/</span>
 <span class="go">│   └── custom.css -&gt; /path/to/custom_light.css</span>
 <span class="go">└── jupyter_notebook_config.py</span>
 </code></pre></div>
 
-
 <h3 id="custom-theme-before-v41">Custom Theme Before v4.1</h3>
 <p>現在因為歷經 IPython 到 Jupyter 的過程，設定還蠻分散的。以往的設定會在 <code>~/.ipython</code>，而到了 Jupyter 之後，相關設定會在 <code>~/.jupyter</code>。有時候設定怪怪的話就兩個路徑都檢查一下吧。</p>
 <p>只要把這個 CSS 放到 <code>~/.ipython/profile_default/custom.css</code> 再重開 Jupyter Notebook 就可以了<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>。效果如下：</p>
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/pics/jupyter_grade3_frontpage.png"/>
   <img src="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/pics/jupyter_grade3_notebook1.png"/>
   <p class="caption center">Jupyter Notebook Theme Grade3 Demo</p>
-</div>
+</figure>
 
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/pics/jupyter_grade3_notebook2.png"/>
   <p class="caption center">把 Toolbar 全部 toggle 起來，以及表格的樣子。</p>
-</div>
+</figure>
 
 <p>個人覺得長時間使用下來，對比度低一點對眼睛比較好。黑底也不錯，不過畫圖常常會自己帶白底，整體感覺就不是很漂亮，可能要連 matplotlib theme 一起改吧 XD</p>
 <div class="footnote">

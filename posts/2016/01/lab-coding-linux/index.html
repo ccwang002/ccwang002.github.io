@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="Last Edited: Jan, 2016 （如果內容有誤，你可以留言，或用任何管道告訴我） 學習使用 Linux 是第一個比較大的障礙，因為會在短時間接觸到非 …" />
 <meta name="keywords" content="zh, labcoding">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>Coding 初學指南－Linux</title>
 
 	<!-- og -->
@@ -34,8 +34,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -49,7 +49,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post zh-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Jan 21, 2016">Jan 21, 2016</time>
         in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
@@ -134,9 +134,8 @@
 <p>圖形化介面（GUI），除了使用者的應用程式外，還需要系統輔助、管理等核心套件。一系列的 GUI 套件就稱之為桌面環境。</p>
 <p>Windows、OSX 在安裝系統時都會自動安裝， 即桌面環境只有一種選擇。但在 Linux 上，GUI 的安裝是選擇性的，系統能在只有單純的 terminal 介面便能完整使用（例如選擇安裝 Ubuntu Server 時），不少 server 為了效能、安全性的考量都不會裝桌面環境。</p>
 <p>對 Linux 來說桌面環境是能之後再選擇安裝上去的，而且還有「不同口味」可以選擇，使用者也可以自由的移除它們（但很有可能會炸掉），常見就有 GNOME、KDE、XFCE、LXDE<sup id="fnref:註4"><a class="footnote-ref" href="#fn:註4">3</a></sup> 幾種系統能使用。例如選擇安裝 Ubuntu Server 後，想要再加上 GNOME 列圖形化介面時，</p>
-<div class="highlight"><pre><span></span><code>sudo apt-get install ubuntu-gnome-desktop
+<div class="highlight"><pre><span></span><code class="language-bash">sudo apt-get install ubuntu-gnome-desktop
 </code></pre></div>
-
 
 <p>這邊不會去細講這些實作方式的不同。簡單而言，GNOME 最流行。XFCE 使用的系統資源較少，在實驗室上的 server 常會裝這個。在 Ubuntu 上，預設是用 Unity，它是從 GNOME 沿伸出來的。</p>
 <p>第一次安裝時，就使用預設的模式吧。裝好之後要換到不同的桌面環境時，需要對套件管理系統（例 apt、yum）、調整系統設定有足夠了解。</p>

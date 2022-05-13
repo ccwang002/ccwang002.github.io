@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="TL;DR Use Zotero to sync references, webpages, and everything. 一開始會想要收集 reference 無非是做研究。寫論文、平常報告進度需要放上 citation，而在學術界最常就是 cite 別 …" />
 <meta name="keywords" content="zh, zotero">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>使用 Zotero 管理文獻書目</title>
 
 	<!-- og -->
@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2015/09/ref-management-zotero/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2015-09-26 00:00:00-05:00"/>
-<meta property="article:modified_time" content="2022-02-20 20:07:45.261029-06:00"/>
+<meta property="article:modified_time" content="2022-05-13 13:06:27.268664-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="zh"/>
@@ -36,8 +36,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -51,7 +51,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post zh-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Sep 26, 2015">Sep 26, 2015</time>
         in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
@@ -83,7 +83,7 @@
 </div>
 <h3 id="bibtex-is-for-latex">BibTex is for LaTeX</h3>
 <p>在 <a href="https://www.latex-project.org/">LaTeX</a> 當中可以利用 <a href="http://www.bibtex.org/">BibTeX</a>（或更新的 <a href="https://www.ctan.org/pkg/biblatex">BibLaTeX</a>）提供的流程處理 citation 與管理 reference（即 <a href="https://en.wikibooks.org/wiki/LaTeX/Bibliography_Management">Bibliography 管理</a>）。他把所有 reference 集中在一個純文字的檔案，</p>
-<div class="highlight"><pre><span></span><code>@article<span class="nb">{</span>Calin:2006aa,
+<div class="highlight"><pre><span></span><code class="language-tex">@article<span class="nb">{</span>Calin:2006aa,
     Author = <span class="nb">{</span>Calin, George A. and Croce, Carlo M.<span class="nb">}</span>,
     Journal = <span class="nb">{</span>Nat Rev Cancer<span class="nb">}</span>,
     Month = <span class="nb">{</span>11<span class="nb">}</span>,
@@ -94,15 +94,14 @@
     Year = <span class="nb">{</span>2006<span class="nb">}}</span>
 </code></pre></div>
 
-
 <p>每篇文章會有一個 cite key，在內文用到的時候就可以引用，而 BibTeX 就會根據現在定義的 style 去放 citation 以及在文末加上對應的 reference。</p>
 <h4 id="bibdesk">BibDesk</h4>
 <p>真正讓 BibTeX 能在日常生活中很好使用，有一部份要歸功於像 <a href="http://bibdesk.sourceforge.net/">BibDesk</a> 這樣的圖形工具。</p>
 <p><a href="http://bibdesk.sourceforge.net/">BibDesk</a> 是個 OSX 的應用程式，包含在 <a href="https://tug.org/mactex/">MacTex</a> distribution 裡面。除了能自動從匯入來自網站或不同格式的 citation 之外，還有檔案附件的功能，能把例如論文的 PDF、Supplementary files 自動跟對應的條目做連接，重新命名並放在一個架構化的資料夾。重新命名跟歸檔的方式都能自訂，例如可以照 期刊名稱/年份 去分類，然後把這個資料夾放在 Dropbox 上就完成了自動同步。</p>
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/bibdesk_usage.png"/>
   <p class="caption center"><span class="fig">BibDesk 使用畫面</span></p>
-</div>
+</figure>
 
 <p>這樣解決了幾乎所有寫 paper 會碰到的問題。</p>
 <p>平常會有個超級大的 BibTeX 檔，裡面有所有各式各樣的 reference。要寫 paper 的時候就把相關的 paper 拿出來 export 成一個小的檔案，然後把一些條目裡不相關的資訊拿掉，就不用再去想文獻引用的部份。我有好幾年都是這樣管理 reference 的。</p>
@@ -115,19 +114,19 @@
 <p>另一方面，現在查資料都是用瀏覽器，看到一篇論文，如果要 Export citation、打開 BibDesk、Import citation、Download PDF(s)、Link PDF(s) 這一連串動作也很麻煩。</p>
 <p>所以就有了 <a href="https://www.zotero.org/">Zotero</a> [zoh-TAIR-oh] 這整合在瀏覽器的工具。目前支援 Firefox、Chrome、Safari，也有提供 Plugin 給 Word 或 LibreOffice 使用。所以它應該足夠取代前面的工具，雖然我並沒有結合 Word 使用過。</p>
 <p>基本畫面蠻簡單的，大概所有的書目管理軟體都差不多，只是它是整合在 Browser 當中，</p>
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotero.png"/>
   <p class="caption center"><span class="fig">Zotero 使用畫面</span></p>
-</div>
+</figure>
 
 <p>使用很簡單，就兩個按鈕 <img src="https://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotero_icon.png" style="height: 1.6em;"/>，左邊打開 Zotero 視窗，右邊把當前網頁存進自己的 library 裡，它右下角就會出現處理的訊息，如果是期刊網站而且有 full text PDF 的權限，就會一起把 PDF 都存起來。</p>
-<div class="figure align-center">
+<figure class="align-center">
   <img src="https://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotero_saving.png"/>
-</div>
+</figure>
 
-<div class="figure align-center">
+<figure class="align-center">
   <img src="https://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotero_citation.png"/>
-</div>
+</figure>
 
 <p>平常要放到論文裡時，我還是會先匯出到 BibTeX 或 EndNote。不過它額外還有好用的功能，能把 citation 輸出成 RTF/HTML 的 bibliography，這可以直接貼在 Powerpoint 做投影片很方便。</p>
 <blockquote>
@@ -139,28 +138,27 @@
 <p>PS: Zotero 採用 AGPL v3 授權，原始碼在 <a href="https://github.com/zotero/zotero">Github</a> 上。</p>
 <h4 id="zotfile">Zotfile</h4>
 <p>Zotero 內建的 PDF attachment 功能不如 BibDesk 這麼完整，因此有 <a href="http://zotfile.com/">Zotfile</a> 來額外管理 PDF 檔案的功能。再者 Zotero 的空間有限，會想把 PDF 等大的檔案放在像 Dropbox 的地方，不要都用 Zotero 同步。</p>
-<div class="figure align-center">
+<figure class="align-center">
   <img src="https://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotfile_file_location.png"/>
   <p class="caption left">自訂 (PDF) 檔案存放路徑，底下可以再設定子目錄。在這邊是會按照<code>期刊名/年分</code>去分目錄。</p>
-</div>
+</figure>
 
-<div class="figure align-center">
+<figure class="align-center">
   <img src="https://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotfile_rename_setting.png"/>
-  <p class="caption">自訂檔案命名規則</p>
-</div>
+  <figcaption>自訂檔案命名規則</figcaption>
+</figure>
 
 <p>不過如果是同步到 Dropbox 的話，可能每台電腦的路徑都不一樣，例如 OSX 可能是 <code>/Users/me/Dropbox</code>，但 Debian 可能是 <code>/home/me/Dropbox</code>，這時候存放的路徑就要改成相對路徑。</p>
-<div class="figure align-center">
+<figure class="align-center">
   <img src="https://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotero_file_location.png"/>
-  <p class="caption">Zotero Advanced 設定裡修改 library 相關檔案的路徑。</p>
-</div>
+  <figcaption>Zotero Advanced 設定裡修改 library 相關檔案的路徑。</figcaption>
+</figure>
 
 <p>這邊要額外說明一下 Linked Attachment Base Directory 以及 Data Directory 的差異。像 PDF 這類如果被 Zotfile 所管理的檔案，或是自己手動選「Attach Link &hellip;」的檔案，他使用的是 linked attachment，icon 會有個連結的符號 <img src="https://blog.liang2.tw/posts/2015/09/ref-management-zotero/pics/zotfile_fileicon.png" style="height: 1.6em;"/>。其他像 Webpage Snapshot 或是預設的 PDF 檔都是放在 Data Directory。</p>
 <h4 id="how-to-sync-data-storage">How to sync data storage</h4>
 <p>如果要進一步讓 data storage 也用 Dropbox 同步的話，參考官網關於 <a href="https://www.zotero.org/support/sync">sync 的介紹</a>，OSX 上 Zotero Firefox 的資料會存放在</p>
-<div class="highlight"><pre><span></span><code>~/Library/Application Support/Firefox/Profiles/xxxxxxxx.default/zotero
+<div class="highlight"><pre><span></span><code class="language-text">~/Library/Application Support/Firefox/Profiles/xxxxxxxx.default/zotero
 </code></pre></div>
-
 
 <p>其中 data storage 就在底下的 <code>storage</code> 資料夾。官網建議不要把 Zotero 的 SQLite database 等都同步在 Dropbox 上，所以只要把這個資料移到 Dropbox 再 soft link 回來就可以了。</p>
 <h3 id="_1">總結</h3>

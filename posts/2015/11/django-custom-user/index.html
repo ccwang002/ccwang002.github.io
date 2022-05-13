@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="Django 帳號的欄位定義在 django.contrib.auth 的 User 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有： 指定 Group 和 Permission 是否為 staff …" />
 <meta name="keywords" content="zh, django, python">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>Customize Django User Model</title>
 
 	<!-- og -->
@@ -35,8 +35,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -50,7 +50,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post zh-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Nov 04, 2015">Nov 04, 2015</time>
         in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
@@ -71,14 +71,13 @@
 </ul>
 <p>內建的帳號功能應該很實用，安全性也很好。所以一般來說都不會去改它。</p>
 <p>如果只是想要幫 User 加個 profile，例如生日、來自哪個星球等欄位，也不需要改寫 User。參考官網 <a href="https://docs.djangoproject.com/en/1.8/topics/auth/customizing/#extending-the-existing-user-model">Extending the existing User model</a>，只需要建一個 one-to-one relationship 指到 User 就好了：</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<div class="highlight"><pre><span></span><code class="language-python"><span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
 
 <span class="k">class</span> <span class="nc">UserProfile</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">AUTH_USER_MODEL</span><span class="p">)</span>
     <span class="n">birth</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">()</span>
     <span class="n">orig_planet</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
 </code></pre></div>
-
 
 <p>但 Django 預設用 username 來登入，如果要改用 email 登入要怎麼做？</p>
 <h3 id="email">改用 Email 做帳號登入</h3>

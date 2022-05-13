@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="Genomic Data Commons (GDC) hosted by NCI is the place to harmonize past and future genomic data, such as TCGA, TARGET, and CPTAC projects. GDC has its own genome reference, GRCh38.d1.vd1, which has 2,779 “chromosomes” including decoys and virus sequences. That said, the canonical chromosomes of GRCh38 …" />
 <meta name="keywords" content="en, r, bioconductor">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>Store GDC genome as a Seqinfo object</title>
 
 	<!-- og -->
@@ -35,8 +35,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -50,7 +50,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post en-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Feb 26, 2019">Feb 26, 2019</time>
         in <a href="https://blog.liang2.tw/category/bioinfo/">Bioinfo</a>
@@ -67,7 +67,7 @@
 <p>Anyway, I was trying to correctly store the full GRCh38.d1.vd1 genome information in the <code>GRanges</code> and <code>GRangesList</code> R objects, which can be done by creating a <code>Seqinfo</code> object representing all its chromosomes. It was also fun to get familiar with the genomic data structures in R. </p>
 <h3 id="build-gdcs-seqinfo">Build GDC&rsquo;s Seqinfo</h3>
 <p>First, we need the length and the name of all chromosomes in GRCh38.d1.vd1.  I used samtools to extract the information as a <code>.dict</code> file from the genome reference FASTA file.</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">GDC_REF_FA_URL</span><span class="o">=</span><span class="s1">&#39;https://api.gdc.cancer.gov/data/254f697d-310d-4d7d-a27b-27fbf767a834&#39;</span>
+<div class="highlight"><pre><span></span><code class="language-bash"><span class="nb">export</span> <span class="nv">GDC_REF_FA_URL</span><span class="o">=</span><span class="s1">&#39;https://api.gdc.cancer.gov/data/254f697d-310d-4d7d-a27b-27fbf767a834&#39;</span>
 curl -Lo GRCh38.d1.vd1.fa.tar.gz <span class="nv">$GDC_REF_FA_URL</span>
 samtools dict <span class="se">\</span>
     -a <span class="s1">&#39;GRCh38.d1.vd1&#39;</span> -s <span class="s1">&#39;Homo sapiens&#39;</span> <span class="se">\</span>
@@ -80,9 +80,8 @@ head -n <span class="m">3</span> GRCh38.d1.vd1.dict
 <span class="c1"># @SQ   SN:chr2 LN:242193529    M5:f98db672eb0993dcfdabafe2a882905c UR:https://api.gdc.cancer.gov/data/254f697d-310d-4d7d-a27b-27fbf767a834 AS:GRCh38.d1.vd1    SP:Homo sapiens</span>
 </code></pre></div>
 
-
 <p>Seqinfo also requires the information of whether a chromosome is circular. In GDC&rsquo;s case,  mitochondria chromosome and all viruses sequences are circular. Combining all the information together, we can construct the Seqinfo object describing the genome GRCh38.d1.vd1.</p>
-<div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code class="language-splus"><span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">GenomeInfoDb</span><span class="p">)</span>
 
 <span class="n">gdc_simple_tbl</span> <span class="o">&lt;-</span> <span class="nf">read_tsv</span><span class="p">(</span>
@@ -108,9 +107,8 @@ head -n <span class="m">3</span> GRCh38.d1.vd1.dict
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>Now we can supply it to any <code>GRanges</code> object coming out from any GDC&rsquo;s sequencing data.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">&gt; </span><span class="n">gdc_seqinfo</span>
+<div class="highlight"><pre><span></span><code class="language-rconsole"><span class="gp">&gt; </span><span class="n">gdc_seqinfo</span>
 <span class="go">Seqinfo object with 2779 sequences (191 circular) from GRCh38.d1.vd1 genome:</span>
 <span class="go">  seqnames   seqlengths isCircular        genome</span>
 <span class="go">  chr1        248956422      FALSE GRCh38.d1.vd1</span>
@@ -126,9 +124,8 @@ head -n <span class="m">3</span> GRCh38.d1.vd1.dict
 <span class="go">  HPV-mSD2         7300       TRUE GRCh38.d1.vd1</span>
 </code></pre></div>
 
-
 <p>I store the <code>gdc_seqinfo</code> as a RDS file (<a href="https://blog.liang2.tw/posts/2019/02/gdc-seqinfo/results/seqinfo_GRCh38.d1.vd1.rds">link</a> here) so I can re-use it easily.</p>
-<div class="highlight"><pre><span></span><code><span class="n">gdc_seqinfo</span> <span class="o">&lt;-</span> <span class="nf">readRDS</span><span class="p">(</span><span class="s">&#39;seqinfo_GRCh38.d1.vd1.rds&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code class="language-splus"><span class="n">gdc_seqinfo</span> <span class="o">&lt;-</span> <span class="nf">readRDS</span><span class="p">(</span><span class="s">&#39;seqinfo_GRCh38.d1.vd1.rds&#39;</span><span class="p">)</span>
 </code></pre></div></section>
     <footer class="post-footer">
 	<section>

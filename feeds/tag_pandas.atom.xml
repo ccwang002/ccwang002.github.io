@@ -37,23 +37,20 @@
 &lt;h2 id="tabular-data-io-in-database"&gt;Tabular data IO in database&lt;/h2&gt;
 &lt;h3 id="sqlite"&gt;SQLite&lt;/h3&gt;
 &lt;p&gt;For SQLite, use &lt;code&gt;.mode csv&lt;/code&gt; with &lt;a href="https://www.sqlite.org/cli.html#csv"&gt;&lt;code&gt;.import&lt;/code&gt; statement&lt;/a&gt; to load in data. SQLite will create the table automatically by using the first row as the column names if the table doesn&amp;rsquo;t exist. One can create the table before the loading to define each column&amp;rsquo;s data type, otherwise, columns are just &lt;code&gt;TEXT&lt;/code&gt; type. &lt;code&gt;.separator&lt;/code&gt; controls the delimiter character SQLite uses between columns.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;mode&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;csv&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-sql"&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;mode&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;csv&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;separator&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="c1"&gt;-- For TSV files&lt;/span&gt;
 &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/path/to/tsv&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;table_name&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;To export data, use &lt;code&gt;.once&lt;/code&gt; statement followed by the query:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;header&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;on&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;-- Export columns name&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-sql"&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;header&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;on&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;-- Export columns name&lt;/span&gt;
 &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;once&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/path/to/output.tsv&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;table_name&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;-- Export all data in the table&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Commands above can be scripted into SQLite like:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sqlite3 mydb.sqlite &amp;lt; load_data.sql
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;sqlite3 mydb.sqlite &amp;lt; load_data.sql
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;h3 id="postgresql"&gt;PostgreSQL&lt;/h3&gt;
 &lt;p&gt;For PostgreSQL, the built-in solution is to use the &lt;a href="https://www.postgresql.org/docs/current/static/sql-copy.html"&gt;&lt;code&gt;COPY&lt;/code&gt; statement&lt;/a&gt; or the &lt;a href="https://www.postgresql.org/docs/current/static/app-psql.html#APP-PSQL-META-COMMANDS-COPY"&gt;&lt;code&gt;\copy&lt;/code&gt; metacommand&lt;/a&gt; to import or export data. &lt;code&gt;COPY&lt;/code&gt; runs faster than the equivalent &lt;code&gt;INSERT&lt;/code&gt; statements. Besides built-in commands, an external tool &lt;a href="https://pgloader.io/"&gt;pgloader&lt;/a&gt; has been very helpful for the data loading, whose loading process is more flexible.&lt;/p&gt;
@@ -61,15 +58,13 @@
 &lt;h3 id="loading-compressed-data-with-named-pipe"&gt;Loading compressed data with named pipe&lt;/h3&gt;
 &lt;p&gt;Many tabular data are compressed by gzip or bgzip to save the disk space. To decompress the file and load into the database without storing the uncompressed file somewhere first, one can consider using &lt;a href="https://www.linuxjournal.com/article/2156"&gt;named pipe&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;The idea is to decompress the file to a named pipe and read the data in a database from the named pipe. A named pipe can be created by &lt;code&gt;mkfifo&lt;/code&gt;.  For example,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mkfifo mypipe
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;mkfifo mypipe
 gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;The trailing &lt;code&gt;&amp;amp;&lt;/code&gt; makes the decompress command running in the background to keep everything in one shell session. Then read the data in SQLite as if it were a file like:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;.import mypipe mytable
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;.import mypipe mytable
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;The trick here can be further expanded to any preprocessing in any language. One can simply preprocess the file and write the output to a named pipe. The database can read from the named pipe without storing the full intermediate output on disk. Plus, by piping between commands more CPU cores are utilized.&lt;/p&gt;
 &lt;h2 id="benchmark"&gt;Benchmark&lt;/h2&gt;
@@ -109,7 +104,7 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 &lt;p&gt;I used three methods to load and group the variants: pandas, SQLite, and PostgreSQL. Their code is shown below.&lt;/p&gt;
 &lt;h3 id="pandas-python"&gt;pandas (Python)&lt;/h3&gt;
 &lt;p&gt;Standard pandas IO code.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-python"&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pd&lt;/span&gt;
 
 
@@ -134,10 +129,9 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 &lt;span class="n"&gt;grp_df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;out.pandas.tsv&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sep&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;&lt;span class="se"&gt;\t&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;h3 id="sqlite_1"&gt;SQLite&lt;/h3&gt;
 &lt;p&gt;I set some &lt;code&gt;PRAGMA ...&lt;/code&gt; statements at the beginning to control some of the SQLite settings. It tells SQLite to use more cache, create temporary tables in memory and disable all the transaction recovery settings. SQLite by default writes everything to the disk first before changing the actual database content so if the program fails or any exception occurs, it can recover all the transactions properly. In our case, we don&amp;rsquo;t care about the integrity of the database.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;PRAGMA&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;cache_size&lt;/span&gt;&lt;span class="o"&gt;=-&lt;/span&gt;&lt;span class="mi"&gt;4192000&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;-- Use 2GB RAM as cache&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-sql"&gt;&lt;span class="n"&gt;PRAGMA&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;cache_size&lt;/span&gt;&lt;span class="o"&gt;=-&lt;/span&gt;&lt;span class="mi"&gt;4192000&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;-- Use 2GB RAM as cache&lt;/span&gt;
 &lt;span class="n"&gt;PRAGMA&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;temp_store&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;MEMORY&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="n"&gt;PRAGMA&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;synchronous&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;OFF&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="n"&gt;PRAGMA&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;journal_mode&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;OFF&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
@@ -174,10 +168,9 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 &lt;span class="k"&gt;GROUP&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;BY&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;transcript_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;mutation_type&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;h3 id="postgresql_1"&gt;PostgreSQL&lt;/h3&gt;
 &lt;p&gt;I used &lt;a href="https://pgloader.io/"&gt;pgloader&lt;/a&gt; to load the data into a local PostgreSQL database &lt;code&gt;test_mc3&lt;/code&gt;. pgloader can take a script of its own mini-language.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;LOAD CSV
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;LOAD CSV
     FROM &amp;#39;mc3_filtered.tsv&amp;#39;
     INTO postgresql:///test_mc3?mc3
     WITH fields terminated by &amp;#39;\t&amp;#39;,
@@ -208,15 +201,13 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 ;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;To do the grouping analysis, I used the built-in &lt;code&gt;COPY&lt;/code&gt; command:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;COPY&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-psql"&gt;&lt;span class="k"&gt;COPY&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;transcript_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;mutation_type&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;COUNT&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;alt_allele&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;mc3&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;GROUP&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;BY&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;transcript_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;mutation_type&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;TO&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/private/tmp/mc3/MC3/out.psql.tsv&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;WITH&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;FORMAT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;TEXT&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;h3 id="result"&gt;Result&lt;/h3&gt;
 &lt;p&gt;I didn&amp;rsquo;t run it systematically but a few repeats showed the similar numbers.&lt;/p&gt;
@@ -333,7 +324,7 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 &lt;h3 id="pandas-indexing"&gt;Pandas indexing&lt;/h3&gt;
 &lt;p&gt;Pandas indexing 花俏到用&lt;a href="http://pandas.pydata.org/pandas-docs/stable/indexing.html"&gt;一&lt;/a&gt;、&lt;a href="http://pandas.pydata.org/pandas-docs/stable/advanced.html"&gt;兩&lt;/a&gt;頁也介紹不完。&lt;/p&gt;
 &lt;p&gt;不過今天只想說有關兩個維度以上的 indexing，例如想看國民黨、民進黨、時代力量區域與不分區的提名好了，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;iloc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-python"&gt;&lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;iloc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
     &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
@@ -341,7 +332,6 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
     &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;區域&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;不分區&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;上述兩個方法都能拿到一部份的表格。&lt;/p&gt;
 &lt;table&gt;
@@ -372,7 +362,7 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 &lt;/table&gt;
 &lt;h3 id="numpy-indexing"&gt;Numpy indexing&lt;/h3&gt;
 &lt;p&gt;下意識地以為 &lt;a href="http://docs.scipy.org/doc/numpy/reference/arrays.indexing.html#arrays-indexing"&gt;numpy indexing&lt;/a&gt; 會是一樣的，畢竟 pandas 底層就是一個 numpy array。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;arr&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-pycon"&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;arr&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="go"&gt;array([[72,  5, 33],&lt;/span&gt;
 &lt;span class="go"&gt;       [60,  2, 34],&lt;/span&gt;
@@ -385,26 +375,22 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 &lt;span class="go"&gt;together with shapes (3,) (2,) &lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;回去看&lt;a href="http://docs.scipy.org/doc/numpy/reference/arrays.indexing.html#arrays-indexing"&gt;官方文件&lt;/a&gt;才想起來， numpy 這時候是如同給定 (x, y) 座標這樣，一個個把元素選出來。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-pycon"&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
 &lt;span class="go"&gt;[72, 2, 6]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;簡單的方式是分兩次選，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;:][:,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-python"&gt;&lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;:][:,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;但這樣 numpy 會傳兩次 copy&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt; 回來，資料很大的時候就沒效率。所以要怎麼做呢？&lt;/p&gt;
 &lt;p&gt;參考 &lt;a href="http://stackoverflow.com/a/30918530"&gt;Stack Overflow&lt;/a&gt; 上的回答，底下幾種方式都可以。最簡單的方法就是透過 &lt;a href="http://docs.scipy.org/doc/numpy-1.10.1/reference/generated/numpy.ix_.html#numpy.ix_"&gt;numpy.ix_()&lt;/a&gt;，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ix_&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;])]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-python"&gt;&lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ix_&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;])]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;如果了解 numpy broadcasting 機制的話，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# index must be numpy array&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-python"&gt;&lt;span class="c1"&gt;# index must be numpy array&lt;/span&gt;
 &lt;span class="n"&gt;cols&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
 &lt;span class="n"&gt;rows&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
 &lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;cols&lt;/span&gt;&lt;span class="p"&gt;[:,&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;newaxis&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;rows&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
@@ -413,20 +399,18 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 &lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;cols&lt;/span&gt;&lt;span class="p"&gt;[:,&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;rows&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;或者直接把所有包含的 index 值都做出來，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;indices&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;meshgrid&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-python"&gt;&lt;span class="n"&gt;indices&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;meshgrid&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; 
     &lt;span class="n"&gt;indexing&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;ij&amp;#39;&lt;/span&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;indices&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;整理一下，這只要一段時間沒用就常會忘記。&lt;/p&gt;
 &lt;h3 id="_1"&gt;維基原始資料處理&lt;/h3&gt;
 &lt;p&gt;Wikipedia 原始資料從&lt;a href="https://zh.wikipedia.org/wiki/2016%E5%B9%B4%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E7%AB%8B%E6%B3%95%E5%A7%94%E5%93%A1%E9%81%B8%E8%88%89"&gt;這裡&lt;/a&gt;取得，這就是展現 pandas 處理能力的時候了。新版本對字串處理提供更多功能，都讓我忘了底下的 numpy 對 unicode 支援其實不怎麼樣 XD&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pd&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-python"&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pd&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;urllib.parse&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;quote_plus&lt;/span&gt;
 
@@ -448,7 +432,6 @@ gunzip -c mydata.tsv.gz &amp;gt; mypipe &lt;span class="p"&gt;&amp;amp;&lt;/span
 &lt;span class="n"&gt;df&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;replace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;－&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;df&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;iloc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;astype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;div class="footnote"&gt;
 &lt;hr&gt;

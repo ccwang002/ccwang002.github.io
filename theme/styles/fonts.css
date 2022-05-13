@@ -1,0 +1,63 @@
+/* Source Sans 3 VF */
+
+@font-face{
+    font-family: 'Source Sans 3 VF';
+    font-weight: 200 900;
+    font-style: normal;
+    font-stretch: normal;
+    src:
+        local('Source Sans 3 VF'),
+        url('../fonts/source-sans/SourceSans3VF-Roman.ttf.woff2') format('woff2'),
+        url('../fonts/source-sans/SourceSans3VF-Roman.ttf.woff') format('woff');
+}
+
+@font-face{
+    font-family: 'Source Sans 3 VF';
+    font-weight: 200 900;
+    font-style: italic;
+    font-stretch: normal;
+    font-display: fallback;
+    src:
+        local('Source Sans 3 VF'),
+        url('../fonts/source-sans/SourceSans3VF-Italic.ttf.woff2') format('woff2-variations'),
+        url('../fonts/source-sans/SourceSans3VF-Italic.ttf.woff') format('woff-variations');
+}
+
+
+/* Noto Sans TC */
+
+@font-face {
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-weight: 400;
+    src:
+        local('Noto Sans TC Regular'),
+        local('NotoSansTC-Regular'),
+        url('../fonts/noto-sans-tc-v10-latin_chinese-traditional-regular.woff2') format('woff2'),
+        url('../fonts/noto-sans-tc-v10-latin_chinese-traditional-regular.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-weight: 700;
+    src:
+        local('Noto Sans TC Bold'),
+        local('NotoSansTC-Bold'),
+        url('../fonts/noto-sans-tc-v10-latin_chinese-traditional-700.woff2') format('woff2'),
+        url('../fonts/noto-sans-tc-v10-latin_chinese-traditional-700.woff') format('woff');
+}
+
+
+/* Fira Code */
+
+@font-face {
+    font-family: 'Fira Code';
+    font-style: normal;
+    font-weight: 300 700;
+    src:
+        local('Fira Code VF'),
+        local('Fira Code-VF'),
+        url('../fonts/fira-code/FiraCode-VF.woff2') format('woff2-variations'),
+        url('../fonts/fira-code/FiraCode-VF.woff') format('woff-variations');
+}

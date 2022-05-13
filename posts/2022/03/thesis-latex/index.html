@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="A few months ago, I finished my PhD thesis in LaTeX. The WUSTL LaTeX template I could find has a long history1, which has a relative lengthy implementation and includes unnecessary code. I didn’t feel comfortable to build on top of it. I ended up rewriting the template …" />
 <meta name="keywords" content="en, latex">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>Thesis in LaTeX</title>
 
 	<!-- og -->
@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2022/03/thesis-latex/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2022-03-12 00:00:00-06:00"/>
-<meta property="article:modified_time" content="2022-03-13 21:26:34.808566-05:00"/>
+<meta property="article:modified_time" content="2022-05-13 18:33:58.404681-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="en"/>
@@ -34,8 +34,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -49,7 +49,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post en-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Mar 12, 2022">Mar 12, 2022</time>
         in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
@@ -103,10 +103,9 @@ Zotero has builtin support to export the reference in BibTeX and BibLaTeX format
 <p>To further integrate Zotero to the LaTeX workflow, <a href="https://retorque.re/zotero-better-bibtex/">Better BibTeX for Zotero</a> plugin comes in handy.
 The plugin can customize the citation key generation, and it can automatically export the <code>.bib</code> file when the reference changes.</p>
 <p>I currently have the following rule for the citation key generation:</p>
-<div class="highlight"><pre><span></span><code>[auth+initials:lower]_[authorLast+initials:lower][&gt;1]:[shorttitle2_2][year]
+<div class="highlight"><pre><span></span><code class="language-text">[auth+initials:lower]_[authorLast+initials:lower][&gt;1]:[shorttitle2_2][year]
 |[Auth+initials:lower:(unknown)]:[Title:capitalize:substring=1,64][year]
 </code></pre></div>
-
 
 <p>The key will try to extract the first and last author of the paper, the first two words of the title, and the publication year.
 If the reference is not a article (mostly websites), it will try to use the author, title, and year when available.</p>
@@ -121,17 +120,17 @@ If the reference is not a article (mostly websites), it will try to use the auth
 Usually the figure is large, taking up the full page, and has multiple panels combined into one file.
 And the remaining figure legend need to be put at the next page.
 Here&rsquo;s an example of the desired behavior:</p>
-<div class="figure">
+<figure class="full-img">
     <img src="https://blog.liang2.tw/posts/2022/03/thesis-latex/pics/fig_legend_first_half.png">
     <img src="https://blog.liang2.tw/posts/2022/03/thesis-latex/pics/fig_legend_second_half.png">
-    <p class="caption">Example of the figure legend overflow.</p>
-</div>
+    <figcaption>Example of the figure legend overflow.</figcaption>
+</figure>
 
 <p>To create &ldquo;fake&rdquo; panels for <a href="https://www.ctan.org/pkg/subcaption">subcaption</a> to keep track of the reference, I followed <a href="https://tex.stackexchange.com/a/255790">the suggestion on LaTeX Stack Exchange</a> to create a hidden anchor for the label using <code>\phantomsubcaption</code>.</p>
 <p>To allow the figure legend/caption to overflow, two figure environments are constructed side by side.
 Then I used a quotation helper function <code>\sourceatright</code> by memoir to place the &ldquo;(legend continued on next page)&rdquo; right aligned to the end of legend.</p>
 <p>Here&rsquo;s the final helper functions in the permeable:</p>
-<div class="highlight"><pre><span></span><code><span class="c">% Allowing subcaptions when all figure panels are combined</span>
+<div class="highlight"><pre><span></span><code class="language-tex"><span class="c">% Allowing subcaptions when all figure panels are combined</span>
 <span class="c">% into one source image. Require subcaption package.</span>
 <span class="c">% Based on https://tex.stackexchange.com/a/255790</span>
 <span class="k">\newcommand</span><span class="nb">{</span><span class="k">\phantomlabel</span><span class="nb">}</span>[1]<span class="nb">{</span><span class="c">%</span>
@@ -145,9 +144,8 @@ Then I used a quotation helper function <code>\sourceatright</code> by memoir to
 <span class="k">\newcommand</span><span class="nb">{</span><span class="k">\legendcontdref</span><span class="nb">}</span>[1]<span class="nb">{</span><span class="k">\emph</span><span class="nb">{</span>(<span class="k">\fref</span><span class="nb">{</span>#1<span class="nb">}</span> continued)<span class="nb">}}</span>
 </code></pre></div>
 
-
 <p>And the following shows an example usage:</p>
-<div class="highlight"><pre><span></span><code><span class="k">\begin</span><span class="nb">{</span>figure<span class="nb">}</span>[p]  <span class="c">% usually large and will need a full page</span>
+<div class="highlight"><pre><span></span><code class="language-tex"><span class="k">\begin</span><span class="nb">{</span>figure<span class="nb">}</span>[p]  <span class="c">% usually large and will need a full page</span>
     <span class="k">\centering</span>
     <span class="k">\phantomlabel</span><span class="nb">{</span>fig:panel-a<span class="nb">}</span>  <span class="c">% hidden label of each figure panel</span>
     <span class="k">\phantomlabel</span><span class="nb">{</span>fig:panel-b<span class="nb">}</span>
@@ -175,10 +173,9 @@ Then I used a quotation helper function <code>\sourceatright</code> by memoir to
 <span class="k">\end</span><span class="nb">{</span>figure<span class="nb">}</span>
 </code></pre></div>
 
-
 <h3 id="folder-structure">Folder structure</h3>
 <p>I have a very typical folder structure of a thesis:</p>
-<div class="highlight"><pre><span></span><code>wustlthesis.cls     # document class
+<div class="highlight"><pre><span></span><code class="language-text">wustlthesis.cls     # document class
 thesis.tex          # main file (structure and settings)
 abstract.tex
 acknowledgments.tex
@@ -195,7 +192,6 @@ latexmkrc           # latexmk settings
 references.bib      # Bibliography in BibLaTex
 </code></pre></div>
 
-
 <p>The main goal of the folder structure is to organize the materials by chapters.
 I also keep all the related files together so the project is standalone and reproducible.</p>
 <h3 id="github-online-editing-workflow">GitHub online editing workflow</h3>
@@ -206,7 +202,7 @@ Also a working LaTeX toolchain always read to use will help others to adapt the 
 On GitHub, such service is <a href="https://docs.github.com/en/actions/using-workflows">GitHub Actions</a>, allowing user to provide custom Docker image and run arbitrary code.</p>
 <p>Luckily, someone has already laid out the ground work by preparing a TeXLive environment into a GitHub Action workflow: <a href="https://github.com/xu-cheng/latex-action">https://github.com/xu-cheng/latex-action</a>.
 Below is an example of creating an online workflow to build the document using LuaLaTeX:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># .github/workflows/build_latex.yml</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code class="language-yaml"><span class="c1"># .github/workflows/build_latex.yml</span><span class="w"></span>
 <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build LaTeX PDF</span><span class="w"></span>
 <span class="nt">on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">push</span><span class="w"></span>
 <span class="nt">jobs</span><span class="p">:</span><span class="w"></span>
@@ -233,26 +229,25 @@ Below is an example of creating an online workflow to build the document using L
 <span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">thesis.pdf</span><span class="w"></span>
 </code></pre></div>
 
-
 <p>The workflow is triggered on every git push. Here is an example of my WUSTL thesis template (<a href="https://github.com/ccwang002/wustl-latex-dissertation-template/actions/workflows/build_latex.yml">link</a>):</p>
-<div class="figure">
+<figure>
     <img src="https://blog.liang2.tw/posts/2022/03/thesis-latex/pics/github_actions_overview.png">
-    <p class="caption">Overview of all the online LaTeX document compilation jobs using GitHub actions.</p>
-</div>
+    <figcaption>Overview of all the online LaTeX document compilation jobs using GitHub actions.</figcaption>
+</figure>
 
 <p>Not only the workflow records the output messages useful to debug, the final PDF output is stored as an artifact.
 I no longer need to install LaTeX locally.</p>
-<div class="figure">
+<figure>
     <img src="https://blog.liang2.tw/posts/2022/03/thesis-latex/pics/github_actions_artifact.png">
-    <p class="caption">Auto-generated PDF output of the document.</p>
-</div>
+    <figcaption>Auto-generated PDF output of the document.</figcaption>
+</figure>
 
 <p>By putting everything in a GitHub repo, I can also use <a href="https://docs.github.com/en/codespaces/the-githubdev-web-based-editor">GitHub&rsquo;s online editor</a> to work on my document in a web browser anywhere.
 Together with GitHub Actions, it can be an alternative to online LaTeX platform like Overleaf; hacky but more flexible.</p>
-<div class="figure">
+<figure class="full-img">
     <img src="https://blog.liang2.tw/posts/2022/03/thesis-latex/pics/github_online_editor.png">
-    <p class="caption">Online editor of a LaTeX project in a GitHub repository.</p>
-</div>
+    <figcaption>Online editor of a LaTeX project in a GitHub repository.</figcaption>
+</figure>
 
 <p>Currently, the online workflow is not fully optimized.
 My full thesis takes about 6&ndash;12 minutes to complete on GitHub, while locally, a full run without cache takes about 3&ndash;5 minutes.

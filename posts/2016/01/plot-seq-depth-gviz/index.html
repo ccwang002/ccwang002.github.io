@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="TL;DR Plot exome sequencing depth and coverage with genome annotation using Gviz in R. Then apply detail control on Gviz annotation track displaying. This is an extending post from Genomic Data Processing in Bioconductor, though I haven’t finished reading all the reference in that post. The background knowledge …" />
 <meta name="keywords" content="en, r, bioconductor, gviz, NGS">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>Plot Sequencing Depth with Gviz</title>
 
 	<!-- og -->
@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2016-01-15 23:50:00-06:00"/>
-<meta property="article:modified_time" content="2022-02-20 20:07:45.273775-06:00"/>
+<meta property="article:modified_time" content="2022-05-13 12:58:36.321881-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Bioinfo"/>
 <meta property="article:tag" content="en"/>
@@ -39,8 +39,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -54,7 +54,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post en-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Jan 15, 2016">Jan 15, 2016</time>
         in <a href="https://blog.liang2.tw/category/bioinfo/">Bioinfo</a>
@@ -99,10 +99,10 @@
 </div>
 <p>I got the chance trying new tricks today when I and other lab members were analyzing our human cancer exome sequencing data. The results were a bunch of BAM files aligned by <a href="https://github.com/lh3/bwa">BWA-MEM</a> using reference hg19.</p>
 <p>We want to see how was the sequencing depth and the coverage of all exons designed to be sequenced. Roughly, this can be done in the genome viewer such as <a href="https://www.broadinstitute.org/igv/">IGV</a>.</p>
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_IGV.png"/>
   <p class="caption center">Visualize sequencing depth in IGV</p>
-</div>
+</figure>
 
 <p>IGV is good for daily research, but when it comes to customization, there aren&rsquo;t many options. And if the visualization is aimed for publishing, one might want the figure to be vectorized and, more importantly, <em>reproducible</em>.</p>
 <p>Therefore, combining with what I learnt in <a href="https://blog.liang2.tw/posts/2015/12/biocondutor-genomic-data/">Genomic Data Processing in Bioconductor</a>, I tried to plot the sequencing depth in R with <a href="https://bioconductor.org/packages/release/bioc/html/Gviz.html">Gviz</a>. I thought learning Gviz will be demanding, since its vignette has 80 pages and the function documentation are <a href="http://rpackages.ianhowson.com/bioc/Gviz/man/GeneRegionTrack-class.html">scarily long spells</a>. But both of them turned out to be <em>really</em> helpful and informative, especially when trying to tune its behavior. Figures produced by Gviz are aesthetically pleasing, and Gviz has many features as well (still trying). I&rsquo;m glad that I gave it a shot.</p>
@@ -139,21 +139,19 @@
 </tr>
 </tbody>
 </table>
-<p>So we need to convert the alignment result as BedGraph format, which can be done by <a href="http://bedtools.readthedocs.org/en/latest/content/tools/genomecov.html">BEDTools&rsquo; genomecov</a> command. On BEDTools&rsquo; documentation, it notes that the BAM file should be sorted. </p>
-<div class="highlight"><pre><span></span><code>bedtools genomecov -bg -ibam myseq.bam &gt; myseq.bedGraph
+<p>So we need to convert the alignment result as BedGraph format, which can be done by <a href="http://bedtools.readthedocs.org/en/latest/content/tools/genomecov.html">BEDTools&rsquo; genomecov</a> command. On BEDTools&rsquo; documentation, it notes that the BAM file should be sorted.</p>
+<div class="highlight"><pre><span></span><code class="language-bash">bedtools genomecov -bg -ibam myseq.bam &gt; myseq.bedGraph
 </code></pre></div>
-
 
 <p>The plain text BedGraph can be huge, pipe&rsquo;d with gzip will reduce file size to around 30% of the original.</p>
-<div class="highlight"><pre><span></span><code>bedtools genomecov -bg -ibam myseq.bam <span class="p">|</span> gzip &gt; myseq.bedGraph.gz
+<div class="highlight"><pre><span></span><code class="language-bash">bedtools genomecov -bg -ibam myseq.bam <span class="p">|</span> gzip &gt; myseq.bedGraph.gz
 </code></pre></div>
-
 
 <h2 id="plot-depth-in-gviz">Plot depth in Gviz</h2>
 <p>R packages of human genome annotations (<a href="http://bioconductor.org/packages/release/data/annotation/html/Homo.sapiens.html">Homo.sapiens</a>) and <a href="https://bioconductor.org/packages/release/bioc/html/Gviz.html">Gviz</a> itself are required. Also, <a href="https://cran.r-project.org/web/packages/data.table/index.html">data.table</a> gives an impressed speed at reading text tables so is recommended to use. During the analysis, I happened to know that data.table supports <a href="https://github.com/Rdatatable/data.table/issues/717">reading gzip&rsquo;d file through pipe</a>, which makes it more awesome.</p>
 <h3 id="first-gviz-track">First Gviz track</h3>
 <p>We should first start at reading our sequencing depth as BedGraph format and plot it.</p>
-<div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">data.table</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code class="language-splus"><span class="nf">library</span><span class="p">(</span><span class="n">data.table</span><span class="p">)</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">Gviz</span><span class="p">)</span>
 
 <span class="n">bedgraph_dt</span> <span class="o">&lt;-</span> <span class="nf">fread</span><span class="p">(</span>
@@ -179,16 +177,15 @@
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>So we read the sequencing depth data, create a Gviz <code>DataTrack</code> holding the subset of our data on chr17, then plot Gviz tracks by <code>plotTracks</code> (though we only made one here) within a given chromosome region. Here is what we got.</p>
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_one_track.png"/>
-</div>
+</figure>
 
 <h3 id="add-genome-axis">Add genome axis</h3>
-<p>The figure is a bit weird and lack of information without the genomic location. </p>
+<p>The figure is a bit weird and lack of information without the genomic location.</p>
 <p>Adding genomic location can be done automatically by Gviz through a new track <code>GenomeAxisTrack</code>. Also, we&rsquo;d like to show which region of chromosome we are at. This can be done by adding another track, <code>IdeogramTrack</code>, to show the chromosome ideogram. Note that the latter track will download cytoband data from UCSC so the given genome must have a valid name.</p>
-<div class="highlight"><pre><span></span><code><span class="n">itrack</span> <span class="o">&lt;-</span> <span class="nf">IdeogramTrack</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code class="language-splus"><span class="n">itrack</span> <span class="o">&lt;-</span> <span class="nf">IdeogramTrack</span><span class="p">(</span>
     <span class="n">genome</span> <span class="o">=</span> <span class="s">&quot;hg19&quot;</span><span class="p">,</span> <span class="n">chromosome</span> <span class="o">=</span> <span class="n">thechr</span>
 <span class="p">)</span>
 <span class="n">gtrack</span> <span class="o">&lt;-</span> <span class="nf">GenomeAxisTrack</span><span class="p">()</span>
@@ -199,16 +196,15 @@
 <span class="p">)</span>
 </code></pre></div>
 
-
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_with_loc.png"/>
-</div>
+</figure>
 
 <p>Better now :)</p>
 <h3 id="add-annotation">Add annotation</h3>
-<p>Since we are using exome sequencing, the curve of sequencing depth only makes senses when combined with the transcript annotations. </p>
+<p>Since we are using exome sequencing, the curve of sequencing depth only makes senses when combined with the transcript annotations.</p>
 <p>Gviz has <code>GeneRegionTrack</code> to extract annotation from the R annotation packages. Package Homo.sapiens includes the gene annotation package using UCSC knownGene database. Adding this new track and we will have annotation on our plot.</p>
-<div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">TxDb.Hsapiens.UCSC.hg19.knownGene</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code class="language-splus"><span class="nf">library</span><span class="p">(</span><span class="n">TxDb.Hsapiens.UCSC.hg19.knownGene</span><span class="p">)</span>
 <span class="n">txdb</span> <span class="o">&lt;-</span> <span class="n">TxDb.Hsapiens.UCSC.hg19.knownGene</span>
 
 <span class="n">grtrack</span> <span class="o">&lt;-</span> <span class="nf">GeneRegionTrack</span><span class="p">(</span>
@@ -224,12 +220,11 @@
 <span class="p">)</span>
 </code></pre></div>
 
-
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_with_annotation.png"/>
-</div>
+</figure>
 
-<p>The plot should now be as informative as what we can get from the IGV. In fact, Gviz can plot the alignment result too. It can read the BAM file directly and show a more detailed coverage that matches what IGV can do. I&rsquo;ll leave that part at the end of this post. </p>
+<p>The plot should now be as informative as what we can get from the IGV. In fact, Gviz can plot the alignment result too. It can read the BAM file directly and show a more detailed coverage that matches what IGV can do. I&rsquo;ll leave that part at the end of this post.</p>
 <p>So far we&rsquo;ve shown the sequencing depth of some chromosome region with annotation. However, there still leave something to be desired, mostly about the annotation:</p>
 <ul>
 <li>Can we show only the annotation of certain genes?</li>
@@ -245,7 +240,7 @@
 <li>Query the transcript locations by their IDs</li>
 </ol>
 <p>Getting transcript IDs given their gene symbol is a <code>select()</code> on OrganismDb object,</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Get all transcript IDs of gene BRCA1</span>
+<div class="highlight"><pre><span></span><code class="language-splus"><span class="c1"># Get all transcript IDs of gene BRCA1</span>
 <span class="n">BRCA1_txnames</span> <span class="o">&lt;-</span> <span class="nf">select</span><span class="p">(</span>
     <span class="n">Homo.sapiens</span><span class="p">,</span>
     <span class="n">keys</span> <span class="o">=</span> <span class="s">&quot;BRCA1&quot;</span><span class="p">,</span> <span class="n">keytype</span> <span class="o">=</span> <span class="s">&quot;SYMBOL&quot;</span><span class="p">,</span>
@@ -253,8 +248,7 @@
 <span class="p">)</span><span class="o">$</span><span class="n">TXNAME</span>
 </code></pre></div>
 
-
-<div class="highlight"><pre><span></span><code><span class="gp">&gt; </span><span class="n">BRCA1_txnames</span>
+<div class="highlight"><pre><span></span><code class="language-rconsole"><span class="gp">&gt; </span><span class="n">BRCA1_txnames</span>
 <span class="go"> [1] &quot;uc010whl.2&quot; &quot;uc002icp.4&quot; &quot;uc010whm.2&quot; &quot;uc002icu.3&quot;</span>
 <span class="go"> [5] &quot;uc010cyx.3&quot; &quot;uc002icq.3&quot; &quot;uc002ict.3&quot; &quot;uc010whn.2&quot;</span>
 <span class="go"> [9] &quot;uc010who.3&quot; &quot;uc010whp.2&quot; &quot;uc010whq.1&quot; &quot;uc002idc.1&quot;</span>
@@ -262,19 +256,17 @@
 <span class="go">[17] &quot;uc010whs.1&quot; &quot;uc010cyz.2&quot; &quot;uc010cza.2&quot; &quot;uc010wht.1&quot;</span>
 </code></pre></div>
 
-
 <p>Look like it has plenty of isoforms!</p>
 <h4 id="via-transcripts">via <code>transcripts()</code></h4>
 <p>For the transcript location, the easiest way will be querying the txDb via <code>transcript()</code>,</p>
-<div class="highlight"><pre><span></span><code><span class="n">BRCA1_txs</span> <span class="o">&lt;-</span> <span class="nf">transcripts</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code class="language-splus"><span class="n">BRCA1_txs</span> <span class="o">&lt;-</span> <span class="nf">transcripts</span><span class="p">(</span>
     <span class="n">Homo.sapiens</span><span class="p">,</span>
     <span class="n">vals</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="n">tx_name</span> <span class="o">=</span> <span class="n">BRCA1_txnames</span><span class="p">),</span>
     <span class="n">columns</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;TXNAME&quot;</span><span class="p">,</span><span class="s">&quot;SYMBOL&quot;</span><span class="p">,</span> <span class="s">&quot;EXONID&quot;</span><span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
 
-
-<div class="highlight"><pre><span></span><code><span class="gp">&gt; </span><span class="n">BRCA1_txs</span>
+<div class="highlight"><pre><span></span><code class="language-rconsole"><span class="gp">&gt; </span><span class="n">BRCA1_txs</span>
 <span class="go">GRanges object with 20 ranges and 3 metadata columns:</span>
 <span class="go">       seqnames               ranges strand   |                   EXONID          TXNAME          SYMBOL</span>
 <span class="go">          &lt;Rle&gt;            &lt;IRanges&gt;  &lt;Rle&gt;   |            &lt;IntegerList&gt; &lt;CharacterList&gt; &lt;CharacterList&gt;</span>
@@ -293,34 +285,30 @@
 <span class="go">  seqinfo: 93 sequences (1 circular) from hg19 genome</span>
 </code></pre></div>
 
-
 <p>Then get the genomic range of these transcripts by <code>seqnames()</code>, <code>start()</code> and <code>end()</code> functions on the <code>GRanages</code> object,</p>
-<div class="highlight"><pre><span></span><code>thechr &lt;- as.character(unique(
+<div class="highlight"><pre><span></span><code class="language-text">thechr &lt;- as.character(unique(
     seqnames(BRCA1_txs)
 ))
 st &lt;- min(start(BRCA1_txs)) - 2e4
 en &lt;- max(end(BRCA1_txs)) + 1e3
 </code></pre></div>
 
-
-<p>Some space are added at both ends so the plot won&rsquo;t tightly fit all transcripts and leave some room for the transcript names. </p>
-<div class="highlight"><pre><span></span><code><span class="gp">&gt; </span><span class="nf">c</span><span class="p">(</span><span class="n">thechr</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">en</span><span class="p">)</span>
+<p>Some space are added at both ends so the plot won&rsquo;t tightly fit all transcripts and leave some room for the transcript names.</p>
+<div class="highlight"><pre><span></span><code class="language-rconsole"><span class="gp">&gt; </span><span class="nf">c</span><span class="p">(</span><span class="n">thechr</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">en</span><span class="p">)</span>
 <span class="go">[1] &quot;chr17&quot;    &quot;41176312&quot; &quot;41323420&quot;</span>
 </code></pre></div>
 
-
 <h4 id="via-exonsby">via <code>exonsBy()</code></h4>
-<p>Another way to obtain the genomic range is getting the exact range of CDS (e.g. exons and UTRs) for each transcript via <code>exonsBy()</code>. </p>
-<div class="highlight"><pre><span></span><code><span class="n">BRCA1_cds_by_tx</span> <span class="o">&lt;-</span> <span class="nf">exonsBy</span><span class="p">(</span>
+<p>Another way to obtain the genomic range is getting the exact range of CDS (e.g. exons and UTRs) for each transcript via <code>exonsBy()</code>.</p>
+<div class="highlight"><pre><span></span><code class="language-splus"><span class="n">BRCA1_cds_by_tx</span> <span class="o">&lt;-</span> <span class="nf">exonsBy</span><span class="p">(</span>
     <span class="n">Homo.sapiens</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s">&quot;tx&quot;</span><span class="p">,</span> <span class="n">use.names</span><span class="o">=</span><span class="kc">TRUE</span>
 <span class="p">)[</span><span class="n">BRCA1_txnames</span><span class="p">]</span>
 </code></pre></div>
 
-
 <p>The function returns a <code>GRangesList</code> object, a list of <code>GRanges</code> that each <code>GRanges</code> object corresponds to a transcript respectively.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">&gt; </span><span class="n">BRCA1_cds_by_tx</span>
+<div class="highlight"><pre><span></span><code class="language-rconsole"><span class="gp">&gt; </span><span class="n">BRCA1_cds_by_tx</span>
 <span class="go">GRangesList object of length 20:</span>
-<span class="go">$uc010whl.2 </span>
+<span class="go">$uc010whl.2</span>
 <span class="go">GRanges object with 22 ranges and 3 metadata columns:</span>
 <span class="go">       seqnames               ranges strand   |   exon_id   exon_name exon_rank</span>
 <span class="go">          &lt;Rle&gt;            &lt;IRanges&gt;  &lt;Rle&gt;   | &lt;integer&gt; &lt;character&gt; &lt;integer&gt;</span>
@@ -342,18 +330,16 @@ en &lt;- max(end(BRCA1_txs)) + 1e3
 <span class="go">seqinfo: 93 sequences (1 circular) from hg19 genome</span>
 </code></pre></div>
 
-
 <p><code>GRangesList</code> is not merely a R list structure, which can correctly propagate the GRanges-related functions to all the GRanges it contain.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">&gt; </span><span class="nf">start</span><span class="p">(</span><span class="n">BRCA1_cds_by_tx</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code class="language-rconsole"><span class="gp">&gt; </span><span class="nf">start</span><span class="p">(</span><span class="n">BRCA1_cds_by_tx</span><span class="p">)</span>
 <span class="go">IntegerList of length 20</span>
 <span class="go">[[&quot;uc010whl.2&quot;]] 41276034 41267743 41258473 ... 41201138 41199660 41196312</span>
 <span class="go">[[&quot;uc002icp.4&quot;]] 41277199 41276034 41267743 ... 41201138 41199660 41196312</span>
 <span class="go">...</span>
 </code></pre></div>
 
-
 <p>Here we only cares about the widest range, so the hierarchical structure is not useful. It would be better to flatten the <code>GRangesList</code> first,</p>
-<div class="highlight"><pre><span></span><code><span class="gp">&gt; </span><span class="n">BRCA1_cds_flatten</span> <span class="o">&lt;-</span> <span class="nf">unlist</span><span class="p">(</span><span class="n">BRCA1_cds_by_tx</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code class="language-rconsole"><span class="gp">&gt; </span><span class="n">BRCA1_cds_flatten</span> <span class="o">&lt;-</span> <span class="nf">unlist</span><span class="p">(</span><span class="n">BRCA1_cds_by_tx</span><span class="p">)</span>
 <span class="gp">&gt; </span><span class="n">BRCA1_cds_flatten</span>
 <span class="go">GRanges object with 284 ranges and 3 metadata columns:</span>
 <span class="go">             seqnames               ranges strand   |   exon_id   exon_name exon_rank</span>
@@ -373,11 +359,10 @@ en &lt;- max(end(BRCA1_txs)) + 1e3
 <span class="go">  seqinfo: 93 sequences (1 circular) from hg19 genome</span>
 </code></pre></div>
 
-
 <p>We have the BRCA1 genomic region, rest of the plotting is the same.</p>
 <h3 id="show-only-the-annotations-of-certain-genes">Show only the annotations of certain genes</h3>
 <p>Before we start to create our own annotation subset, we first take a look at what Gviz generated. The <code>GeneRegionTrack</code> track store its annotation data at slot <code>range</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">&gt; </span><span class="n">grtrack</span><span class="o">@</span><span class="n">range</span>
+<div class="highlight"><pre><span></span><code class="language-rconsole"><span class="gp">&gt; </span><span class="n">grtrack</span><span class="o">@</span><span class="n">range</span>
 <span class="go">GRanges object with 459 ranges and 7 metadata columns:</span>
 <span class="go">        seqnames               ranges strand   |     feature          id         exon  transcript        gene      symbol   density</span>
 <span class="go">           &lt;Rle&gt;            &lt;IRanges&gt;  &lt;Rle&gt;   | &lt;character&gt; &lt;character&gt;  &lt;character&gt; &lt;character&gt; &lt;character&gt; &lt;character&gt; &lt;numeric&gt;</span>
@@ -396,17 +381,15 @@ en &lt;- max(end(BRCA1_txs)) + 1e3
 <span class="go">  seqinfo: 1 sequence from hg19 genome; no seqlengths</span>
 </code></pre></div>
 
-
 <p>So we filter out unrelated ranges by checking if the value of metadata column <code>transcript</code> is one of <em>BRCA1</em>&lsquo;s transcript IDs,</p>
-<div class="highlight"><pre><span></span><code><span class="n">BRCA_only_range</span> <span class="o">&lt;-</span> <span class="n">grtrack</span><span class="o">@</span><span class="n">range</span><span class="p">[</span>
+<div class="highlight"><pre><span></span><code class="language-splus"><span class="n">BRCA_only_range</span> <span class="o">&lt;-</span> <span class="n">grtrack</span><span class="o">@</span><span class="n">range</span><span class="p">[</span>
     <span class="nf">mcols</span><span class="p">(</span><span class="n">grtrack</span><span class="o">@</span><span class="n">range</span><span class="p">)</span><span class="o">$</span><span class="n">transcript</span> <span class="o">%in%</span> <span class="n">BRCA1_txnames</span>
 <span class="p">]</span>
 <span class="n">grtrack</span><span class="o">@</span><span class="n">range</span> <span class="o">&lt;-</span> <span class="n">BRCA_only_range</span>
 </code></pre></div>
 
-
 <p>or by less hacky way that use the new range to construct another <code>GeneRegionTrack</code>,</p>
-<div class="highlight"><pre><span></span><code><span class="n">grtrack_BRCA_only</span> <span class="o">&lt;-</span> <span class="nf">GeneRegionTrack</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code class="language-splus"><span class="n">grtrack_BRCA_only</span> <span class="o">&lt;-</span> <span class="nf">GeneRegionTrack</span><span class="p">(</span>
     <span class="n">BRCA_only_range</span><span class="p">,</span>
     <span class="n">chromosome</span> <span class="o">=</span> <span class="n">thechr</span><span class="p">,</span> <span class="n">start</span> <span class="o">=</span> <span class="n">st</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">en</span><span class="p">,</span>
     <span class="n">showId</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span>
@@ -418,15 +401,14 @@ en &lt;- max(end(BRCA1_txs)) + 1e3
 <span class="p">)</span>
 </code></pre></div>
 
-
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_BRCA1_only.png"/>
-</div>
+</figure>
 
 <h3 id="display-gene-symbols-at-annotation-track">Display gene symbols at annotation track</h3>
 <p>It&rsquo;s more obvious now about how Gviz stores the annotation. All we need is to replace the symbol name with whatever we desire.</p>
-<p>First, we extract the metadata of the <code>GeneRegionTrack</code>, and query for their gene symbols. Using either the transcript ID or Entrez ID will do. </p>
-<div class="highlight"><pre><span></span><code><span class="n">grtrack_range</span> <span class="o">&lt;-</span> <span class="n">grtrack</span><span class="o">@</span><span class="n">range</span>
+<p>First, we extract the metadata of the <code>GeneRegionTrack</code>, and query for their gene symbols. Using either the transcript ID or Entrez ID will do.</p>
+<div class="highlight"><pre><span></span><code class="language-splus"><span class="n">grtrack_range</span> <span class="o">&lt;-</span> <span class="n">grtrack</span><span class="o">@</span><span class="n">range</span>
 <span class="n">range_mapping</span> <span class="o">&lt;-</span> <span class="nf">select</span><span class="p">(</span>
     <span class="n">Homo.sapiens</span><span class="p">,</span>
     <span class="n">keys</span> <span class="o">=</span> <span class="nf">mcols</span><span class="p">(</span><span class="n">grtrack_range</span><span class="p">)</span><span class="o">$</span><span class="n">symbol</span><span class="p">,</span>
@@ -435,8 +417,7 @@ en &lt;- max(end(BRCA1_txs)) + 1e3
 <span class="p">)</span>
 </code></pre></div>
 
-
-<div class="highlight"><pre><span></span><code><span class="gp">&gt; </span><span class="nf">head</span><span class="p">(</span><span class="n">range_mapping</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code class="language-rconsole"><span class="gp">&gt; </span><span class="nf">head</span><span class="p">(</span><span class="n">range_mapping</span><span class="p">)</span>
 <span class="go">      TXNAME SYMBOL ENTREZID</span>
 <span class="go">1 uc002icn.3   RND2     8153</span>
 <span class="go">2 uc002icn.3   RND2     8153</span>
@@ -446,24 +427,21 @@ en &lt;- max(end(BRCA1_txs)) + 1e3
 <span class="go">6 uc002icn.3   RND2     8153</span>
 </code></pre></div>
 
-
 <p>Then we concatenate the information of transcript ID and gene symbol using <a href="https://cran.r-project.org/web/packages/stringr/index.html">stringr</a>.</p>
-<div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">stringr</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code class="language-splus"><span class="nf">library</span><span class="p">(</span><span class="n">stringr</span><span class="p">)</span>
 <span class="n">new_symbols</span> <span class="o">&lt;-</span> <span class="nf">with</span><span class="p">(</span>
     <span class="n">range_mapping</span><span class="p">,</span>
     <span class="nf">str_c</span><span class="p">(</span><span class="n">SYMBOL</span><span class="p">,</span> <span class="s">&quot; (&quot;</span><span class="p">,</span> <span class="n">TXNAME</span><span class="p">,</span> <span class="s">&quot;)&quot;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
 
-
-<div class="highlight"><pre><span></span><code><span class="gp">&gt; </span><span class="nf">head</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">new_symbols</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code class="language-rconsole"><span class="gp">&gt; </span><span class="nf">head</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">new_symbols</span><span class="p">))</span>
 <span class="go">[1] &quot;RND2 (uc002icn.3)&quot; &quot;NBR2 (uc002idf.3)&quot; &quot;NBR2 (uc010czb.2)&quot;</span>
 <span class="go">[4] &quot;NBR2 (uc002idg.3)&quot; &quot;NBR2 (uc002idh.3)&quot; &quot;NBR1 (uc010czd.3)&quot;</span>
 </code></pre></div>
 
-
 <p>Like how we extract <em>BRCA1</em>-only annotations, we construct a new <code>GeneRegionTrack</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="n">grtrack_symbol</span> <span class="o">&lt;-</span> <span class="nf">GeneRegionTrack</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code class="language-splus"><span class="n">grtrack_symbol</span> <span class="o">&lt;-</span> <span class="nf">GeneRegionTrack</span><span class="p">(</span>
     <span class="n">grtrack</span><span class="o">@</span><span class="n">range</span><span class="p">,</span>
     <span class="n">chromosome</span> <span class="o">=</span> <span class="n">thechr</span><span class="p">,</span> <span class="n">start</span> <span class="o">=</span> <span class="n">st</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">en</span><span class="p">,</span>
     <span class="n">showId</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span>
@@ -476,17 +454,16 @@ en &lt;- max(end(BRCA1_txs)) + 1e3
 <span class="p">)</span>
 </code></pre></div>
 
-
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_gene_symbol.png"/>
-</div>
+</figure>
 
 <h2 id="summary">Summary</h2>
-<p>So we&rsquo;ve learnt how to plot using Gviz. You should go explore other data tracks or try to combine sequencing depth of multiple samples. I found the design of Gviz is clean and easy to modify. I think I&rsquo;ll use Gviz whenever genome-related plots are needed. </p>
+<p>So we&rsquo;ve learnt how to plot using Gviz. You should go explore other data tracks or try to combine sequencing depth of multiple samples. I found the design of Gviz is clean and easy to modify. I think I&rsquo;ll use Gviz whenever genome-related plots are needed.</p>
 <p>Really glad I&rsquo;ve tried it :)</p>
 <h2 id="supplementary-plot-bam-files-directly">Supplementary - Plot BAM files directly</h2>
 <p>We will start by replacing <code>DataTrack</code> with <code>AlignmentsTrack</code>. Also we select a smaller region this time so the read mapping can be clearly seen.</p>
-<div class="highlight"><pre><span></span><code><span class="n">st</span> <span class="o">&lt;-</span> <span class="m">41.196e6L</span>
+<div class="highlight"><pre><span></span><code class="language-splus"><span class="n">st</span> <span class="o">&lt;-</span> <span class="m">41.196e6L</span>
 <span class="n">en</span> <span class="o">&lt;-</span> <span class="m">41.202e6L</span>
 <span class="n">gtrack</span> <span class="o">&lt;-</span> <span class="nf">GenomeAxisTrack</span><span class="p">(</span><span class="n">cex</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span>  <span class="c1"># set the font size larger</span>
 <span class="n">altrack</span> <span class="o">&lt;-</span> <span class="nf">AlignmentsTrack</span><span class="p">(</span>
@@ -498,26 +475,24 @@ en &lt;- max(end(BRCA1_txs)) + 1e3
 <span class="p">)</span>
 </code></pre></div>
 
-
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_BAM_default.png"/>
-</div>
+</figure>
 
 <p>To plot only the coverage, set the type as <code>coverage</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="n">altrack</span> <span class="o">&lt;-</span> <span class="nf">AlignmentsTrack</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code class="language-splus"><span class="n">altrack</span> <span class="o">&lt;-</span> <span class="nf">AlignmentsTrack</span><span class="p">(</span>
     <span class="s">&quot;myseq.bam&quot;</span><span class="p">,</span> <span class="n">type</span> <span class="o">=</span> <span class="s">&quot;coverage&quot;</span>
 <span class="p">)</span>
 </code></pre></div>
 
-
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_BAM_coverage_only.png"/>
-</div>
+</figure>
 
 <h3 id="fancier-alignment-display">Fancier alignment display</h3>
-<p>Spend some time reading the documentation, the alignment can be much more fancier. </p>
+<p>Spend some time reading the documentation, the alignment can be much more fancier.</p>
 <p>For example, when looking at a much smaller genome region, we many want to see the sequence and read mismatches. It could be done by adding a new track <code>SequenceTrack</code> to include the genome sequence,</p>
-<div class="highlight"><pre><span></span><code><span class="n">small_st</span> <span class="o">&lt;-</span> <span class="m">41267.735e3L</span>
+<div class="highlight"><pre><span></span><code class="language-splus"><span class="n">small_st</span> <span class="o">&lt;-</span> <span class="m">41267.735e3L</span>
 <span class="n">small_en</span> <span class="o">&lt;-</span> <span class="m">41267.805e3L</span>
 
 <span class="nf">library</span><span class="p">(</span><span class="n">BSgenome.Hsapiens.UCSC.hg19</span><span class="p">)</span>
@@ -528,9 +503,8 @@ en &lt;- max(end(BRCA1_txs)) + 1e3
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p>We tweak other tracks as well to make sure the figure won&rsquo;t explode by too much information. Gene annotations are collapsed down to one liner. Also, aligned read&rsquo;s height is increased to fit in individual letters (e.g., ATCG).</p>
-<div class="highlight"><pre><span></span><code><span class="n">grtrack_small</span> <span class="o">&lt;-</span> <span class="nf">GeneRegionTrack</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code class="language-splus"><span class="n">grtrack_small</span> <span class="o">&lt;-</span> <span class="nf">GeneRegionTrack</span><span class="p">(</span>
    <span class="n">grtrack</span><span class="o">@</span><span class="n">range</span><span class="p">,</span>
    <span class="n">chromosome</span> <span class="o">=</span> <span class="n">thechr</span><span class="p">,</span>
    <span class="n">start</span> <span class="o">=</span> <span class="n">small_st</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">small_en</span><span class="p">,</span>
@@ -548,10 +522,9 @@ en &lt;- max(end(BRCA1_txs)) + 1e3
 <span class="p">)</span>
 </code></pre></div>
 
-
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_BAM_small_region.png"/>
-</div>
+</figure>
 
 <p>We found a C&gt;T SNP here!</p></section>
     <footer class="post-footer">

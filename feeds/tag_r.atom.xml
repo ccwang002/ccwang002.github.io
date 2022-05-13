@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - r</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_r.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-02-20T20:07:45-06:00</updated><entry><title>Store GDC genome as a Seqinfo object</title><link href="https://blog.liang2.tw/posts/2019/02/gdc-seqinfo/" rel="alternate"></link><published>2019-02-26T00:00:00-06:00</published><updated>2022-02-20T20:07:45-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2019-02-26:/posts/2019/02/gdc-seqinfo/</id><summary type="html">&lt;p&gt;Genomic Data Commons (GDC) hosted by NCI is the place to harmonize past and future genomic data, such as TCGA, TARGET, and CPTAC projects. GDC has its own genome reference, &lt;a href="https://gdc.cancer.gov/about-data/data-harmonization-and-generation/gdc-reference-files"&gt;&lt;code&gt;GRCh38.d1.vd1&lt;/code&gt;&lt;/a&gt;, which has 2,779 &amp;ldquo;chromosomes&amp;rdquo; including decoys and virus sequences. That said, the canonical chromosomes of GRCh38 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Genomic Data Commons (GDC) hosted by NCI is the place to harmonize past and future genomic data, such as TCGA, TARGET, and CPTAC projects. GDC has its own genome reference, &lt;a href="https://gdc.cancer.gov/about-data/data-harmonization-and-generation/gdc-reference-files"&gt;&lt;code&gt;GRCh38.d1.vd1&lt;/code&gt;&lt;/a&gt;, which has 2,779 &amp;ldquo;chromosomes&amp;rdquo; including decoys and virus sequences. That said, the canonical chromosomes of GRCh38.d1.vd1 (e.g., chr1 to chr22, chrM, chrX, and chrY) are identical to that of hg38 and GRCh38. So all these three genome references can be used interchangeably.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - r</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_r.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-05-13T12:58:36-05:00</updated><entry><title>Store GDC genome as a Seqinfo object</title><link href="https://blog.liang2.tw/posts/2019/02/gdc-seqinfo/" rel="alternate"></link><published>2019-02-26T00:00:00-06:00</published><updated>2022-02-20T20:07:45-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2019-02-26:/posts/2019/02/gdc-seqinfo/</id><summary type="html">&lt;p&gt;Genomic Data Commons (GDC) hosted by NCI is the place to harmonize past and future genomic data, such as TCGA, TARGET, and CPTAC projects. GDC has its own genome reference, &lt;a href="https://gdc.cancer.gov/about-data/data-harmonization-and-generation/gdc-reference-files"&gt;&lt;code&gt;GRCh38.d1.vd1&lt;/code&gt;&lt;/a&gt;, which has 2,779 &amp;ldquo;chromosomes&amp;rdquo; including decoys and virus sequences. That said, the canonical chromosomes of GRCh38 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Genomic Data Commons (GDC) hosted by NCI is the place to harmonize past and future genomic data, such as TCGA, TARGET, and CPTAC projects. GDC has its own genome reference, &lt;a href="https://gdc.cancer.gov/about-data/data-harmonization-and-generation/gdc-reference-files"&gt;&lt;code&gt;GRCh38.d1.vd1&lt;/code&gt;&lt;/a&gt;, which has 2,779 &amp;ldquo;chromosomes&amp;rdquo; including decoys and virus sequences. That said, the canonical chromosomes of GRCh38.d1.vd1 (e.g., chr1 to chr22, chrM, chrX, and chrY) are identical to that of hg38 and GRCh38. So all these three genome references can be used interchangeably.&lt;/p&gt;
 &lt;p&gt;Anyway, I was trying to correctly store the full GRCh38.d1.vd1 genome information in the &lt;code&gt;GRanges&lt;/code&gt; and &lt;code&gt;GRangesList&lt;/code&gt; R objects, which can be done by creating a &lt;code&gt;Seqinfo&lt;/code&gt; object representing all its chromosomes. It was also fun to get familiar with the genomic data structures in R. &lt;/p&gt;
 &lt;h3 id="build-gdcs-seqinfo"&gt;Build GDC&amp;rsquo;s Seqinfo&lt;/h3&gt;
 &lt;p&gt;First, we need the length and the name of all chromosomes in GRCh38.d1.vd1.  I used samtools to extract the information as a &lt;code&gt;.dict&lt;/code&gt; file from the genome reference FASTA file.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;GDC_REF_FA_URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;https://api.gdc.cancer.gov/data/254f697d-310d-4d7d-a27b-27fbf767a834&amp;#39;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;GDC_REF_FA_URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;https://api.gdc.cancer.gov/data/254f697d-310d-4d7d-a27b-27fbf767a834&amp;#39;&lt;/span&gt;
 curl -Lo GRCh38.d1.vd1.fa.tar.gz &lt;span class="nv"&gt;$GDC_REF_FA_URL&lt;/span&gt;
 samtools dict &lt;span class="se"&gt;\&lt;/span&gt;
     -a &lt;span class="s1"&gt;&amp;#39;GRCh38.d1.vd1&amp;#39;&lt;/span&gt; -s &lt;span class="s1"&gt;&amp;#39;Homo sapiens&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
@@ -16,9 +16,8 @@ head -n &lt;span class="m"&gt;3&lt;/span&gt; GRCh38.d1.vd1.dict
 &lt;span class="c1"&gt;# @SQ   SN:chr2 LN:242193529    M5:f98db672eb0993dcfdabafe2a882905c UR:https://api.gdc.cancer.gov/data/254f697d-310d-4d7d-a27b-27fbf767a834 AS:GRCh38.d1.vd1    SP:Homo sapiens&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Seqinfo also requires the information of whether a chromosome is circular. In GDC&amp;rsquo;s case,  mitochondria chromosome and all viruses sequences are circular. Combining all the information together, we can construct the Seqinfo object describing the genome GRCh38.d1.vd1.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tidyverse&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tidyverse&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;GenomeInfoDb&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 &lt;span class="n"&gt;gdc_simple_tbl&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;read_tsv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
@@ -44,9 +43,8 @@ head -n &lt;span class="m"&gt;3&lt;/span&gt; GRCh38.d1.vd1.dict
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Now we can supply it to any &lt;code&gt;GRanges&lt;/code&gt; object coming out from any GDC&amp;rsquo;s sequencing data.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;gdc_seqinfo&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-rconsole"&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;gdc_seqinfo&lt;/span&gt;
 &lt;span class="go"&gt;Seqinfo object with 2779 sequences (191 circular) from GRCh38.d1.vd1 genome:&lt;/span&gt;
 &lt;span class="go"&gt;  seqnames   seqlengths isCircular        genome&lt;/span&gt;
 &lt;span class="go"&gt;  chr1        248956422      FALSE GRCh38.d1.vd1&lt;/span&gt;
@@ -62,9 +60,8 @@ head -n &lt;span class="m"&gt;3&lt;/span&gt; GRCh38.d1.vd1.dict
 &lt;span class="go"&gt;  HPV-mSD2         7300       TRUE GRCh38.d1.vd1&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;I store the &lt;code&gt;gdc_seqinfo&lt;/code&gt; as a RDS file (&lt;a href="https://blog.liang2.tw/posts/2019/02/gdc-seqinfo/results/seqinfo_GRCh38.d1.vd1.rds"&gt;link&lt;/a&gt; here) so I can re-use it easily.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;gdc_seqinfo&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;readRDS&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;seqinfo_GRCh38.d1.vd1.rds&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="n"&gt;gdc_seqinfo&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;readRDS&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;seqinfo_GRCh38.d1.vd1.rds&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Bioinfo"></category><category term="en"></category><category term="r"></category><category term="bioconductor"></category></entry><entry><title>Build EnsDb from a local Ensembl MySQL database</title><link href="https://blog.liang2.tw/posts/2019/01/build-ensdb-from-local-mysql/" rel="alternate"></link><published>2019-01-08T00:00:00-06:00</published><updated>2022-02-20T20:07:45-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2019-01-08:/posts/2019/01/build-ensdb-from-local-mysql/</id><summary type="html">&lt;p&gt;In some occasions, I need to access the older version of Ensembl human transcripts. For example, the mutation calls generated by the &lt;a href="https://gdc.cancer.gov/"&gt;NCI&amp;rsquo;s Genomic Data Common&lt;/a&gt; pipeline are annotated by Ensembl v84. To programmatically query the Ensembl annotations, I use the EnsDb SQLite database created by &lt;a href="https://bioconductor.org/packages/release/bioc/html/ensembldb.html"&gt;ensembldb&lt;/a&gt;, which is …&lt;/p&gt;</summary><content type="html">&lt;p&gt;In some occasions, I need to access the older version of Ensembl human transcripts. For example, the mutation calls generated by the &lt;a href="https://gdc.cancer.gov/"&gt;NCI&amp;rsquo;s Genomic Data Common&lt;/a&gt; pipeline are annotated by Ensembl v84. To programmatically query the Ensembl annotations, I use the EnsDb SQLite database created by &lt;a href="https://bioconductor.org/packages/release/bioc/html/ensembldb.html"&gt;ensembldb&lt;/a&gt;, which is a R package I enjoy using (see &lt;a href="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/"&gt;my previous post&lt;/a&gt; for its usage).&lt;/p&gt;
 &lt;p&gt;The EnsDbs of the recent versions of Ensembl (v87+) are available on AnnotationHub. However, the older versions are not available, and they don&amp;rsquo;t get updated when ensembldb introduces a new feature. For example, now newer EnsDbs include the transcript and gene ID version (&lt;a href="https://github.com/jotsetung/ensembldb/issues/89"&gt;github issue&lt;/a&gt;).&lt;/p&gt;
 &lt;p&gt;In my case, I need to build a EnsDb of Ensembl v84. &lt;a href="https://bioconductor.org/packages/release/bioc/vignettes/ensembldb/inst/doc/ensembldb.html#10_getting_or_building_ensdb_databasespackages"&gt;The ensembldb&amp;rsquo;s documentation&lt;/a&gt; describes how to build one from the public Ensembl MySQL server. However, this method will take more than a day to complete. I started to look for other methods. After some trial and error, I managed to create my EnsDb fast by connecting to a local Ensembl database that I built. Surprisingly the setup wasn&amp;rsquo;t difficult at all, and it only took about an hour to build the EnsDb.&lt;/p&gt;
@@ -81,7 +78,7 @@ head -n &lt;span class="m"&gt;3&lt;/span&gt; GRCh38.d1.vd1.dict
 &lt;p&gt;To create a EnsDB from a Ensembl MySQL database, we need to the Ensembl Perl APIs. And the easiest setup is by a &lt;a href="http://www.ensembl.org/info/data/virtual_machine.html"&gt;Ensembl virtual machine&lt;/a&gt;. We just need to import the VM image using VirtualBox and install the ensembldb R package inside the      VM, then it is ready to build the EnsDb. I recommend the VM to have more memory than the default 1GB since a larger memory helps build the R packages and EnsDb.&lt;/p&gt;
 &lt;h3 id="build-a-local-ensembl-v84-mysql-database"&gt;Build a local Ensembl v84 MySQL database&lt;/h3&gt;
 &lt;p&gt;Ensembl provides &lt;a href="https://www.ensembl.org/info/docs/webcode/mirror/install/ensembl-data.html"&gt;the MySQL database dump&lt;/a&gt; to allow easy import of their data of any version. Assuming the working directory is &lt;code&gt;~/Documents/Ensembl_MySQL_mirror/&lt;/code&gt;, we first copy the database dump by:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ~/Documents/Ensembl_MySQL_mirror
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ~/Documents/Ensembl_MySQL_mirror
 
 &lt;span class="c1"&gt;# Download the db dump&lt;/span&gt;
 rsync -a rsync://ftp.ensembl.org/ensembl/pub/release-84/mysql/homo_sapiens_core_84_38 .
@@ -90,21 +87,18 @@ rsync -a rsync://ftp.ensembl.org/ensembl/pub/release-84/mysql/homo_sapiens_core_
 gunzip *.txt.gz
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;While downloading the data, we also need to install the MySQL server. I install &lt;a href="http://www.ensembl.org/info/data/mysql.html"&gt;the same or similar version of MySQL&lt;/a&gt; Ensembl is currently using, which is 5.6 at the time of writing. On macOS, Homebrew can specify the version of MySQL to be installed:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;brew install mysql@5.6
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;brew install mysql@5.6
 &lt;span class="c1"&gt;# And launch the MySQL server&lt;/span&gt;
 /usr/local/opt/mysql@5.6/bin/mysql.server start
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;First we create a database whose name matches the Ensembl version (v84):&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;CREATE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;DATABASE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;homo_sapiens_core_84_38&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-sql"&gt;&lt;span class="k"&gt;CREATE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;DATABASE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;homo_sapiens_core_84_38&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Then we load the table schema and Ensembl data:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;/usr/local/opt/mysql@5.6/bin/mysql -u root &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;/usr/local/opt/mysql@5.6/bin/mysql -u root &lt;span class="se"&gt;\&lt;/span&gt;
     homo_sapiens_core_84_38 &amp;lt; homo_sapiens_core_84_38.sql
 
 /usr/local/opt/mysql@5.6/bin/mysqlimport &lt;span class="se"&gt;\&lt;/span&gt;
@@ -113,22 +107,19 @@ gunzip *.txt.gz
     homo_sapiens_core_84_38 -L *.txt
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Finally, we modify the MySQL config at &lt;code&gt;/usr/local/etc/my.cnf&lt;/code&gt; to accept remote database connection, so our VM can access the database on the host machine. I don&amp;rsquo;t use MySQL for anything else, so I simply let MySQL binds to all the possible IP addresses my machine has:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;[mysqld]
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;[mysqld]
 bind-address = *
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Note that this is not a secure configuration. To be secure, there should be a designated MySQL user with limited permission and a stricter connection setting. Restart MySQL to load the new config:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;/usr/local/opt/mysql@5.6/bin/mysql.server restart
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;/usr/local/opt/mysql@5.6/bin/mysql.server restart
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;Write down an (local) IP address of our host machine.&lt;/p&gt;
 &lt;h3 id="build-ensdb-from-the-local-mysql-database"&gt;Build EnsDB from the local MySQL database&lt;/h3&gt;
 &lt;p&gt;Now we can come back to the vm and build the EnsDb v84. Run the following R script to build the EnsDb:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ensembldb&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ensembldb&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="nf"&gt;fetchTablesFromEnsembl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="m"&gt;84&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;species&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;human&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;user&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;root&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;host&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;lt;our host IP&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;port&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;3306&lt;/span&gt;
@@ -136,20 +127,18 @@ bind-address = *
 &lt;span class="n"&gt;DBFile&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;makeEnsemblSQLiteFromTables&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;The EnsDb SQLite database will be availabe under the working directory. We can test the new EnsDb by:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;edb&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;EnsDb&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;DBFile&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="n"&gt;edb&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;EnsDb&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;DBFile&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;h3 id="remove-mysql"&gt;Remove MySQL&lt;/h3&gt;
 &lt;p&gt;If there is no other need of MySQL, we can uninstall it and remove all its databases by:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;brew remove mysql@5.6
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;brew remove mysql@5.6
 rm -rf /usr/local/var/mysql
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Bioinfo"></category><category term="en"></category><category term="r"></category><category term="bioconductor"></category><category term="sqlite"></category><category term="ensembldb"></category></entry><entry><title>Using EnsDb's annotation database in Python</title><link href="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/" rel="alternate"></link><published>2017-11-17T00:00:00-06:00</published><updated>2022-02-20T20:07:45-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2017-11-17:/posts/2017/11/use-ensdb-database-in-python/</id><summary type="html">&lt;p&gt;How to find and download the EnsDb, the Ensembl genomic annotation in SQLite database made by R package ensembldb, and use it in Python application.&lt;/p&gt;</summary><content type="html">&lt;p&gt;I found that there isn&amp;rsquo;t a systematic way to query and convert genomic annotation IDs in Python. At least there isn&amp;rsquo;t one as good as &lt;a href="https://www.bioconductor.org/help/workflows/annotation/annotation/"&gt;what R/Bioconductor currently has&lt;/a&gt;. If you&amp;rsquo;ve never heard of R/Bioconductor annotation tool stack before, check out &lt;a href="https://www.bioconductor.org/help/workflows/annotation/annotation/"&gt;the official workflow&lt;/a&gt; or &lt;a href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/"&gt;my post in 2016&lt;/a&gt; specific for querying Ensembl annotations.&lt;/p&gt;
-&lt;p&gt;Although I enjoy using R for genomic annotation conversion, a few days ago I wanted to do the same thing inside my text processing script in Python. I might be able to re-write the script in R but I feel like R is not really the right tool for this task and on top of it, I don&amp;rsquo;t know how to write an efficent text processing in R&lt;sup id="fnref:r-text-processing"&gt;&lt;a class="footnote-ref" href="#fn:r-text-processing"&gt;1&lt;/a&gt;&lt;/sup&gt;. &lt;/p&gt;
-&lt;p&gt;Knowing the fact that all annotations in R are stored in single-file SQLite databases, I should be able to connect the database directly Python or any other language and wirte SQL query to retrieve the same information. So my question now becomes to how to extract or find the path to the databases. Turn out that many new Bioconductor annotation packages are hosted via &lt;a href="https://bioconductor.org/packages/release/bioc/html/AnnotationHub.html"&gt;AnnotationHub&lt;/a&gt;, and user can search for the annotation package and retrieve them locally by their ID. For example, all the recent Ensembl releases, e.g., &lt;code&gt;EnsDb.Hsapiens.vXX&lt;/code&gt;, are available on AnnotationHub. &lt;/p&gt;
-&lt;p&gt;After digging around a bit, I am able to query the AnnotationHub, download the correct EnsDB SQLite database file, and make SQL queries for the annotation ID conversion without any R package. I will share the details in the rest of the post. &lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Bioinfo"></category><category term="en"></category><category term="r"></category><category term="bioconductor"></category><category term="sqlite"></category><category term="ensembldb"></category></entry><entry><title>Using EnsDb's annotation database in Python</title><link href="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/" rel="alternate"></link><published>2017-11-17T00:00:00-06:00</published><updated>2022-05-13T12:53:21-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2017-11-17:/posts/2017/11/use-ensdb-database-in-python/</id><summary type="html">&lt;p&gt;How to find and download the EnsDb, the Ensembl genomic annotation in SQLite database made by R package ensembldb, and use it in Python application.&lt;/p&gt;</summary><content type="html">&lt;p&gt;I found that there isn&amp;rsquo;t a systematic way to query and convert genomic annotation IDs in Python. At least there isn&amp;rsquo;t one as good as &lt;a href="https://www.bioconductor.org/help/workflows/annotation/annotation/"&gt;what R/Bioconductor currently has&lt;/a&gt;. If you&amp;rsquo;ve never heard of R/Bioconductor annotation tool stack before, check out &lt;a href="https://www.bioconductor.org/help/workflows/annotation/annotation/"&gt;the official workflow&lt;/a&gt; or &lt;a href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/"&gt;my post in 2016&lt;/a&gt; specific for querying Ensembl annotations.&lt;/p&gt;
+&lt;p&gt;Although I enjoy using R for genomic annotation conversion, a few days ago I wanted to do the same thing inside my text processing script in Python. I might be able to re-write the script in R but I feel like R is not really the right tool for this task and on top of it, I don&amp;rsquo;t know how to write an efficent text processing in R&lt;sup id="fnref:r-text-processing"&gt;&lt;a class="footnote-ref" href="#fn:r-text-processing"&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;Knowing the fact that all annotations in R are stored in single-file SQLite databases, I should be able to connect the database directly Python or any other language and wirte SQL query to retrieve the same information. So my question now becomes to how to extract or find the path to the databases. Turn out that many new Bioconductor annotation packages are hosted via &lt;a href="https://bioconductor.org/packages/release/bioc/html/AnnotationHub.html"&gt;AnnotationHub&lt;/a&gt;, and user can search for the annotation package and retrieve them locally by their ID. For example, all the recent Ensembl releases, e.g., &lt;code&gt;EnsDb.Hsapiens.vXX&lt;/code&gt;, are available on AnnotationHub.&lt;/p&gt;
+&lt;p&gt;After digging around a bit, I am able to query the AnnotationHub, download the correct EnsDB SQLite database file, and make SQL queries for the annotation ID conversion without any R package. I will share the details in the rest of the post.&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="#annotationhub-web-interface"&gt;AnnotationHub web interface&lt;/a&gt;&lt;/li&gt;
@@ -162,21 +151,20 @@ rm -rf /usr/local/var/mysql
 &lt;h2 id="annotationhub-web-interface"&gt;AnnotationHub web interface&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;EDIT 2019-01-29&lt;/strong&gt;&lt;br&gt;
 Now AnnotationHub has a nice &lt;a href="https://annotationhub.bioconductor.org/"&gt;web interface&lt;/a&gt;. With the new API, we can search and download all the EnsDb annotation objects on AnnotationHub by visiting &lt;a href="https://annotationhub.bioconductor.org/package2/AHEnsDbs"&gt;https://annotationhub.bioconductor.org/package2/AHEnsDbs&lt;/a&gt;:&lt;/p&gt;
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/pics/annotataionhub_web_interface.png"/&gt;
-  &lt;p class="caption"&gt;The web query interface of AnnotationHub&lt;/p&gt;
-&lt;/div&gt;
+  &lt;figcaption&gt;The web query interface of AnnotationHub&lt;/figcaption&gt;
+&lt;/figure&gt;
 
 &lt;p&gt;The following section is the old way to navigate through AnnotationHub&amp;rsquo;s database.&lt;/p&gt;
 &lt;h2 id="manual-query-in-annotationhub"&gt;Manual query in AnnotationHub&lt;/h2&gt;
-&lt;p&gt;When one wants to use the R package AnnotationHub, the common usage is &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;AnnotationHub&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;p&gt;When one wants to use the R package AnnotationHub, the common usage is&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;AnnotationHub&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;ah&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;AnnotationHub&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="c1"&gt;## snapshotDate(): 2017-10-27&lt;/span&gt;
 
 &lt;span class="nf"&gt;query&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ah&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nf"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;EnsDb&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Homo sapiens&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;The function call &lt;code&gt;AnnotationHub()&lt;/code&gt; will download the latest version of the metadata of all available annotation object. The subsequent &lt;code&gt;query(...)&lt;/code&gt; function will talk to the local metadata database.&lt;/p&gt;
 &lt;p&gt;Now let&amp;rsquo;s do it manually without any R function calls.&lt;/p&gt;
@@ -187,30 +175,28 @@ Now AnnotationHub has a nice &lt;a href="https://annotationhub.bioconductor.org/
 &lt;/ul&gt;
 &lt;p&gt;So as long as we get the &lt;code&gt;rdatapaths.id&lt;/code&gt; of the EnsDb using the metadata, we can download it via the &lt;code&gt;/fetch/:id&lt;/code&gt; endpoint.&lt;/p&gt;
 &lt;p&gt;After downloading the metadata database &lt;code&gt;https://annotationhub.bioconductor.org/metadata/annotationhub.sqlite3&lt;/code&gt;, we can inspect it in SQLite3 by connecting it directly:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sqlite3 annotationhub.sqlite3
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;sqlite3 annotationhub.sqlite3
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
-&lt;p&gt;Some useful commands to inspect a foreign database (or the ultimate help command &lt;code&gt;.help&lt;/code&gt;): &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;sqlite&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;header&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;on&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;
+&lt;p&gt;Some useful commands to inspect a foreign database (or the ultimate help command &lt;code&gt;.help&lt;/code&gt;):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-sqlite3"&gt;&lt;span class="gp"&gt;sqlite&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;header&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;on&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="gp"&gt;sqlite&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;mode&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;column&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="gp"&gt;sqlite&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tables&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="go"&gt;biocversions       rdatapaths         schema_info        test             &lt;/span&gt;
-&lt;span class="go"&gt;input_sources      recipes            statuses           timestamp        &lt;/span&gt;
+&lt;span class="go"&gt;biocversions       rdatapaths         schema_info        test&lt;/span&gt;
+&lt;span class="go"&gt;input_sources      recipes            statuses           timestamp&lt;/span&gt;
 &lt;span class="go"&gt;location_prefixes  resources          tags&lt;/span&gt;
 &lt;span class="gp"&gt;sqlite&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;schema&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;rdatapaths&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="go"&gt;CREATE TABLE `rdatapaths`(`id` integer DEFAULT (NULL) NOT NULL PRIMARY KEY , `rdatapath` varchar(255) DEFAULT (NULL) NULL, `rdataclass` varchar(255) DEFAULT (NULL) NULL, `resource_id` integer DEFAULT (NULL) NULL, `dispatchclass` varchar(255) DEFAULT (NULL) NULL, CONSTRAINT `rdatapaths_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources`(`id`));&lt;/span&gt;
 &lt;span class="go"&gt;CREATE INDEX `rdatapaths_resource_id` ON `rdatapaths` (`resource_id`);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;So let&amp;rsquo;s make a SQL query to find all Human&amp;rsquo;s EnsDb:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ah_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;rdp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;rdatapaths_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;rdp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rdatapath&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;title&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-sql"&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ah_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;rdp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;rdatapaths_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;rdp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rdatapath&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;title&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;resources&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="k"&gt;JOIN&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;rdatapaths&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;rdp&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="k"&gt;ON&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;rdp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;resource_id&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="k"&gt;WHERE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;title&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;LIKE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;%EnsDb for Homo Sapiens%&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="c1"&gt;-- ah_id       rdatapaths_id  rdatapath                               title                            &lt;/span&gt;
+&lt;span class="c1"&gt;-- ah_id       rdatapaths_id  rdatapath                               title&lt;/span&gt;
 &lt;span class="c1"&gt;-- ----------  -------------  --------------------------------------  -- ---------------------------------&lt;/span&gt;
 &lt;span class="c1"&gt;-- AH53211     59949          AHEnsDbs/v87/EnsDb.Hsapiens.v87.sqlite  Ensembl 87 EnsDb for Homo Sapiens&lt;/span&gt;
 &lt;span class="c1"&gt;-- AH53715     60453          AHEnsDbs/v88/EnsDb.Hsapiens.v88.sqlite  Ensembl 88 EnsDb for Homo Sapiens&lt;/span&gt;
@@ -218,25 +204,22 @@ Now AnnotationHub has a nice &lt;a href="https://annotationhub.bioconductor.org/
 &lt;span class="c1"&gt;-- AH57757     64495          AHEnsDbs/v90/EnsDb.Hsapiens.v90.sqlite  Ensembl 90 EnsDb for Homo Sapiens&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;All the Ensembl releases 87+ are available! I will use the release 90 for example. we can download it by its rdatapaths id:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;wget -O EnsDb.Hsapiens.v90.sqlite https://annotationhub.bioconductor.org/fetch/64495
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;wget -O EnsDb.Hsapiens.v90.sqlite https://annotationhub.bioconductor.org/fetch/64495
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;For older Ensembl release, one may need to &lt;a href="https://bioconductor.org/packages/release/bioc/vignettes/ensembldb/inst/doc/ensembldb.html#102_building_annotation_packages"&gt;build the SQLite database based by the instructions from ensembldb&lt;/a&gt;.  For the last GRCh37 release, Ensembl release 75, one can download the source of the Bioconductor annotation package &lt;a href="https://bioconductor.org/packages/release/data/annotation/html/EnsDb.Hsapiens.v75.html"&gt;&lt;code&gt;EnsDb.Hsapiens.v75&lt;/code&gt;&lt;/a&gt; and extract it. The database will be under &lt;code&gt;inst/extdata&lt;/code&gt;.&lt;/p&gt;
 &lt;h2 id="manual-query-in-ensdb"&gt;Manual query in EnsDB&lt;/h2&gt;
 &lt;p&gt;EnsDb SQLite database are Ensembl annotation databases created by the R package &lt;a href="https://bioconductor.org/packages/release/bioc/html/ensembldb.html"&gt;ensembldb&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Here I will show how to find a transcript&amp;rsquo;s gene name, its genomic location, and all its exon locations given its Ensembl transcript ID.&lt;/p&gt;
 &lt;p&gt;First connect the database by &lt;code&gt;sqlite3 EnsDb.Hsapiens.v90.sqlite&lt;/code&gt;. Its table design is very straightforward:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;sqlite&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tables&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-sqlite3"&gt;&lt;span class="gp"&gt;sqlite&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tables&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="go"&gt;chromosome      exon            metadata        protein_domain  tx2exon&lt;/span&gt;
 &lt;span class="go"&gt;entrezgene      gene            protein         tx              uniprot&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;So it didn&amp;rsquo;t take me long to figure out how to join the transcript and gene information:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;tx&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tx_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;tx&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gene_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;gene&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gene_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;seq_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;seq_strand&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-sql"&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;tx&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tx_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;tx&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gene_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;gene&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gene_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;seq_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;seq_strand&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;tx&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;JOIN&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;gene&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;ON&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;tx&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gene_id&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;gene&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gene_id&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="k"&gt;WHERE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;tx_id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;ENST00000358731&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="c1"&gt;-- tx_id            gene_id          gene_name   seq_name    seq_strand&lt;/span&gt;
@@ -244,21 +227,19 @@ Now AnnotationHub has a nice &lt;a href="https://annotationhub.bioconductor.org/
 &lt;span class="c1"&gt;-- ENST00000358731  ENSG00000145734  BDP1        5           1&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;And for the genomic ranges of its exon:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;tx_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;exon_idx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;exon_seq_start&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;exon_seq_end&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-sql"&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;tx_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;exon_idx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;exon_seq_start&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;exon_seq_end&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;tx2exon&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;JOIN&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;exon&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;ON&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;tx2exon&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exon_id&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;exon&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exon_id&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="k"&gt;WHERE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;tx_id&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;ENST00000380139&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="k"&gt;ORDER&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;BY&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;exon_idx&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="c1"&gt;-- tx_id            exon_idx    exon_seq_start  exon_seq_end&lt;/span&gt;
 &lt;span class="c1"&gt;-- ---------------  ----------  --------------  ------------&lt;/span&gt;
-&lt;span class="c1"&gt;-- ENST00000380139  1           32427904        32428133    &lt;/span&gt;
-&lt;span class="c1"&gt;-- ENST00000380139  2           32407645        32407772    &lt;/span&gt;
-&lt;span class="c1"&gt;-- ENST00000380139  3           32407250        32407338    &lt;/span&gt;
-&lt;span class="c1"&gt;-- ENST00000380139  4           32404203        32404271    &lt;/span&gt;
-&lt;span class="c1"&gt;-- ENST00000380139  5           32400723        32403200  &lt;/span&gt;
+&lt;span class="c1"&gt;-- ENST00000380139  1           32427904        32428133&lt;/span&gt;
+&lt;span class="c1"&gt;-- ENST00000380139  2           32407645        32407772&lt;/span&gt;
+&lt;span class="c1"&gt;-- ENST00000380139  3           32407250        32407338&lt;/span&gt;
+&lt;span class="c1"&gt;-- ENST00000380139  4           32404203        32404271&lt;/span&gt;
+&lt;span class="c1"&gt;-- ENST00000380139  5           32400723        32403200&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;All the coordinates are 1-based and the ranges are inclusive.&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
@@ -273,7 +254,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;p&gt;Based on my impression, my R expert friends would probably recommend me to write it with R-cpp, which I think would be over-kill for such a small task. But my impression can be wrong. Feel free to share your thoughts!&amp;#160;&lt;a class="footnote-backref" href="#fnref:r-text-processing" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Bioinfo"></category><category term="en"></category><category term="python"></category><category term="r"></category><category term="bioconductor"></category><category term="ensembldb"></category></entry><entry><title>Ensembl Genomic Reference in Bioconductor</title><link href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/" rel="alternate"></link><published>2016-05-21T18:00:00-05:00</published><updated>2022-02-20T20:07:45-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-05-21:/posts/2016/05/biocondutor-ensembl-reference/</id><summary type="html">&lt;p&gt;Using fundamental R/Biocondcutor packages (e.g. AnnotationHub, ensembldb and biomaRt) to query Ensembl genomic references or annotations.&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; I gave a talk &lt;a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/"&gt;Genomics in R&lt;/a&gt; about querying genomic annotations and references in R/Bioconductor. In this post, we re-visit all the operations in my talk using Ensembl references instead of UCSC/NCBI ones.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;</content><category term="Bioinfo"></category><category term="en"></category><category term="python"></category><category term="r"></category><category term="bioconductor"></category><category term="ensembldb"></category></entry><entry><title>Ensembl Genomic Reference in Bioconductor</title><link href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/" rel="alternate"></link><published>2016-05-21T18:00:00-05:00</published><updated>2022-05-13T12:53:46-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-05-21:/posts/2016/05/biocondutor-ensembl-reference/</id><summary type="html">&lt;p&gt;Using fundamental R/Biocondcutor packages (e.g. AnnotationHub, ensembldb and biomaRt) to query Ensembl genomic references or annotations.&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; I gave a talk &lt;a href="https://blog.liang2.tw/2016Talk-Genomics-in-R/"&gt;Genomics in R&lt;/a&gt; about querying genomic annotations and references in R/Bioconductor. In this post, we re-visit all the operations in my talk using Ensembl references instead of UCSC/NCBI ones.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;This post is part of the &amp;ldquo;&lt;a href="https://blog.liang2.tw/posts/2015/12/biocondutor-genomic-data/"&gt;Genomic Data Processing in Bioconductor&lt;/a&gt;&amp;rdquo; series. In that post, I mentioned several topics critical for genomic data analysis in Bioconductor:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Annotation and genome reference (OrgDb, TxDb, OrganismDb, BSgenome)&lt;/li&gt;
@@ -317,12 +298,12 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;h3 id="ensembl-genome-browser-and-its-ecosystem"&gt;Ensembl genome browser and its ecosystem&lt;/h3&gt;
 &lt;p&gt;In Bioconductor, most annotations are built against NCBI and UCSC naming systems, which are also used in my talk. However, there is another naming system maintained by &lt;a href="http://www.ensembl.org/index.html"&gt;Ensembl&lt;/a&gt;, whose IDs are very recognizable with suffix &amp;ldquo;ENSG&amp;rdquo; and &amp;ldquo;ENST&amp;rdquo; for gene and transcript respectively.&lt;/p&gt;
 &lt;p&gt;I particularly enjoy the Ensembl genome browser. The information is well organized and structured. For example, take a look at the description page of &lt;a href="http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000100030"&gt;gene MAPK1&lt;/a&gt;,&lt;/p&gt;
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/pics/gene_MAPK1_ensembl_browser.png"&gt;
   &lt;p class="caption center"&gt;Gene information page of MAP1 on Ensembl Genome Browser release 84 (&lt;a href="http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000100030"&gt;link&lt;/a&gt;)&lt;/p&gt;
-&lt;/div&gt;
+&lt;/figure&gt;
 
-&lt;p&gt;The &lt;a href="http://www.ensembl.org/Homo_sapiens/Gene/Compara_Tree?db=core;g=ENSG00000100030"&gt;gene tree&lt;/a&gt; tab shows its homologs and paralogs. The &lt;a href="http://www.ensembl.org/Homo_sapiens/Gene/Variation_Gene/Table?db=core;g=ENSG00000100030"&gt;variant table&lt;/a&gt; tab shows various kinds of SNPs within MAPK1&amp;rsquo;s transcript region. SNPs are annotated with their sources, different levels of supporting evidence, and SIFT/PolyPhen prediction on protein function change. Finally, there is a &lt;a href="http://www.ensembl.org/Homo_sapiens/Gene/Matches?db=core;g=ENSG00000100030"&gt;external references&lt;/a&gt; tab which links the Ensembl IDs with &lt;a href="https://www.ncbi.nlm.nih.gov/CCDS/CcdsBrowse.cgi"&gt;NCBI CCDS&lt;/a&gt; and &lt;a href="http://www.ncbi.nlm.nih.gov/refseq/"&gt;NCBI RefSeq&lt;/a&gt; IDs. There are many ways to explore different aspects of this gene, and it seems everything at multiple biological levels is simply connected. &lt;/p&gt;
+&lt;p&gt;The &lt;a href="http://www.ensembl.org/Homo_sapiens/Gene/Compara_Tree?db=core;g=ENSG00000100030"&gt;gene tree&lt;/a&gt; tab shows its homologs and paralogs. The &lt;a href="http://www.ensembl.org/Homo_sapiens/Gene/Variation_Gene/Table?db=core;g=ENSG00000100030"&gt;variant table&lt;/a&gt; tab shows various kinds of SNPs within MAPK1&amp;rsquo;s transcript region. SNPs are annotated with their sources, different levels of supporting evidence, and SIFT/PolyPhen prediction on protein function change. Finally, there is a &lt;a href="http://www.ensembl.org/Homo_sapiens/Gene/Matches?db=core;g=ENSG00000100030"&gt;external references&lt;/a&gt; tab which links the Ensembl IDs with &lt;a href="https://www.ncbi.nlm.nih.gov/CCDS/CcdsBrowse.cgi"&gt;NCBI CCDS&lt;/a&gt; and &lt;a href="http://www.ncbi.nlm.nih.gov/refseq/"&gt;NCBI RefSeq&lt;/a&gt; IDs. There are many ways to explore different aspects of this gene, and it seems everything at multiple biological levels is simply connected.&lt;/p&gt;
 &lt;p&gt;I always think of the Ensembl ecosystem as a decent learning portal, so it is a pity if one cannot easily use its information in R/Bioconductor. After a quick research, I found using Ensembl annotations are quite straightforward even though the required files does not ship with Bioconductor. Also, there were some topics I failed to mention in the talk, such as AnnotationHub and genomic coordinate system conversion (e.g., from hg19 to hg38). I am going to cover these topics in the talk.&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
@@ -342,7 +323,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;/div&gt;
 &lt;h2 id="orgdb"&gt;OrgDb&lt;/h2&gt;
 &lt;p&gt;The same OrgDb object for human (&lt;code&gt;org.Hs.eg.db&lt;/code&gt;) can be used. It relates different gene IDs, including Entrez and Ensembl gene ID. From its metadata, human&amp;rsquo;s OrgDb gets updated frequently. Most of its data source were fetched during this March. So one should be able to use it for both hg19 and hg38 human reference.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;org.Hs.eg.db&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;org.Hs.eg.db&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;human&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;org.Hs.eg.db&lt;/span&gt;
 
 &lt;span class="n"&gt;mapk_gene_family_info&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;select&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
@@ -353,7 +334,6 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;mapk_gene_family_info&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;table&gt;
 &lt;thead&gt;
@@ -386,7 +366,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;Here comes a small pitfall for Ensembl annotation. We cannot sufficiently map Ensembl&amp;rsquo;s gene ID to its transcript ID,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;select&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="nf"&gt;select&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;human&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;keys&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mapk_gene_family_info&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;ENSEMBL&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]],&lt;/span&gt;
     &lt;span class="n"&gt;keytype&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;ENSEMBL&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -397,13 +377,12 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="c1"&gt;# 1 ENSG00000100030         &amp;lt;NA&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;We got &lt;em&gt;no&lt;/em&gt; Ensembl transcript ID for MAPK1, which is impossible. Therefore, to find the real Ensembl transcript IDs, we need to find other references.&lt;/p&gt;
 &lt;h2 id="txdb"&gt;TxDb&lt;/h2&gt;
 &lt;p&gt;There is no pre-built Ensembl TxDb object available on Bioconductor. But with the help of &lt;a href="http://bioconductor.org/packages/release/bioc/html/ensembldb.html"&gt;ensembldb&lt;/a&gt;, we can easily build the TxDb ourselves.&lt;/p&gt;
 &lt;p&gt;Following the instructions in ensembldb&amp;rsquo;s &lt;a href="http://bioconductor.org/packages/release/bioc/vignettes/ensembldb/inst/doc/ensembldb.html"&gt;vignette file&lt;/a&gt;, we can build the TxDb object from the Ensembl latest release, which is release 84 (Mar, 2016) at the time of writing. Ensembl releases all human transcript records as GTF file, which can be found here &lt;a href="ftp://ftp.ensembl.org/pub/release-84/gtf/homo_sapiens/Homo_sapiens.GRCh38.84.gtf.gz"&gt;ftp://ftp.ensembl.org/pub/release-84/gtf/homo_sapiens/Homo_sapiens.GRCh38.84.gtf.gz&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;After processing GTF file via &lt;code&gt;ensDbFromGtf()&lt;/code&gt;, the generated data for creating the TxDb object will be stored in a SQLite3 database file &lt;code&gt;Homo_sapiens.GRCh38.84.sqlite&lt;/code&gt; at the R working directory. Building TxDB is just one command away, &lt;code&gt;EnsDb()&lt;/code&gt;. Putting two commands together, the script for building Ensembl TxDb is listed below. To prevent from rebuilding the TxDb every time the script is executed, we first check if the sqlite file exists,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# xxx_DB in the vignette is just a string to the SQLite db file path&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="c1"&gt;# xxx_DB in the vignette is just a string to the SQLite db file path&lt;/span&gt;
 &lt;span class="n"&gt;ens84_txdb_pth&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;./Homo_sapiens.GRCh38.84.sqlite&amp;#39;&lt;/span&gt;
 &lt;span class="nf"&gt;if &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="nf"&gt;file.exists&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ens84_human_txdb_pth&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="n"&gt;ens84_txdb_pth&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;ensDbFromGtf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;gtf&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Homo_sapiens.GRCh38.84.gtf.gz&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -412,9 +391,8 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="n"&gt;txdb_ens84&lt;/span&gt;  &lt;span class="c1"&gt;# Preview the metadata&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;The filtering syntax for finding desired genes or transcripts is different to the built-in TxDb object,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;transcripts&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="nf"&gt;transcripts&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;txdb_ens84&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nf"&gt;GeneidFilter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mapk_gene_family_info&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;ENSEMBL&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]])&lt;/span&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
@@ -435,9 +413,8 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="c1"&gt;#   seqinfo: 1 sequence from GRCh38 genome&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;So filtering is done by passing special filter functions to &lt;code&gt;filter=&lt;/code&gt;. Likewise, there are &lt;code&gt;TxidFilter&lt;/code&gt;, &lt;code&gt;TxbiotypeFilter&lt;/code&gt;, and &lt;code&gt;GRangesFilter&lt;/code&gt; for filtering on the respective columns.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;tx_gr&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;transcripts&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="n"&gt;tx_gr&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;transcripts&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;txdb_ens84&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nf"&gt;TxidFilter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ENST00000215832&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
@@ -450,12 +427,11 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="c1"&gt;#   seqinfo: 1 sequence from GRCh38 genome&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Check the result with the online Ensembl genome browser. Note that Ensembl release 84 use hg38.&lt;/p&gt;
 &lt;h2 id="bsgenome-and-annotationhub"&gt;BSgenome and AnnotationHub&lt;/h2&gt;
 &lt;p&gt;We can load the sequence from &lt;code&gt;BSgenome.Hsapiens.UCSC.hg38&lt;/code&gt;, however, we can obtain the genome (chromosome) sequence of Ensembl using &lt;a href="https://bioconductor.org/packages/release/bioc/html/AnnotationHub.html"&gt;AnnotationHub&lt;/a&gt;. References of non-model organisms can be found on AnnotationHub, many of which are extracted from Ensembl. But they can be downloaded as Bioconductor objects directly so it should be easier to use.&lt;/p&gt;
 &lt;p&gt;First we create a AnnotationHub instance, it cached the metadata all available annotations locally for us to query.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;ah&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;AnnotationHub&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="n"&gt;ah&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;AnnotationHub&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="nf"&gt;query&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ah&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nf"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Homo sapiens&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;release-84&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;span class="c1"&gt;# AnnotationHub with 5 records&lt;/span&gt;
 &lt;span class="c1"&gt;# # snapshotDate(): 2016-05-12&lt;/span&gt;
@@ -473,29 +449,26 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="c1"&gt;#   AH50562 | Homo_sapiens.GRCh38.ncrna.2bit&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;From the search results, human hg38 genome sequences are available as &lt;a href="https://genome.ucsc.edu/goldenpath/help/twoBit.html"&gt;TwoBit&lt;/a&gt; format. But having multiple results is confusing at first. After checking the Ensembl&amp;rsquo;s &lt;a href="ftp://ftp.ensembl.org/pub/release-84/fasta/homo_sapiens/dna/README"&gt;gnome DNA assembly readme&lt;/a&gt;, what we should use here is the full DNA assembly without any masking (or you can decide it based on your application).&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# There are a plenty of query hits. Description of different file suffix:&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="c1"&gt;# There are a plenty of query hits. Description of different file suffix:&lt;/span&gt;
 &lt;span class="c1"&gt;# GRCh38.dna.*.2bit     genome sequence&lt;/span&gt;
 &lt;span class="c1"&gt;# GRCh38.dna_rm.*.2bit  hard-masked genome sequence (masked regions are replaced with N&amp;#39;s)&lt;/span&gt;
 &lt;span class="c1"&gt;# GRCh38.dna_sm.*.2bit  soft-masked genome sequence (.............. are lower cased)&lt;/span&gt;
 &lt;span class="n"&gt;ens84_human_dna&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;ah&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;AH50559&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Then we can use it to obtain the DNA sequence of desired genomic range (in &lt;code&gt;GRagnes&lt;/code&gt;).&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;getSeq&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ens84_human_dna&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tx_gr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="nf"&gt;getSeq&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ens84_human_dna&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tx_gr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 &lt;span class="c1"&gt;#   A DNAStringSet instance of length 1&lt;/span&gt;
 &lt;span class="c1"&gt;#      width seq                              names&lt;/span&gt;
 &lt;span class="c1"&gt;# [1] 113130 TTTATAGAGAAAA...CTCGGACCGATTGCCT ENST00000215832&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;h2 id="biomart"&gt;biomaRt&lt;/h2&gt;
 &lt;p&gt;&lt;a href="http://www.ensembl.org/biomart/martview"&gt;BioMart&lt;/a&gt; are a collections of database that can be accessed by the same API, including Ensembl, Uniprot and HapMap. &lt;a href="https://bioconductor.org/packages/release/bioc/html/biomaRt.html"&gt;biomaRt&lt;/a&gt; provides an R interface to these database resources. We will use BioMart for ID conversion between Ensembl and RefSeq. Its &lt;a href="https://bioconductor.org/packages/release/bioc/vignettes/biomaRt/inst/doc/biomaRt.pdf"&gt;vignette&lt;/a&gt; contains solutions to common scenarios so should be a good starting point to get familiar with it.&lt;/p&gt;
 &lt;p&gt;You could first explore which Marts are currently available by &lt;code&gt;listMarts()&lt;/code&gt;,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;biomaRt&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;biomaRt&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="nf"&gt;listMarts&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="c1"&gt;#                biomart               version&lt;/span&gt;
 &lt;span class="c1"&gt;# 1 ENSEMBL_MART_ENSEMBL      Ensembl Genes 84&lt;/span&gt;
@@ -504,19 +477,17 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="c1"&gt;# 4    ENSEMBL_MART_VEGA               Vega 64&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
-&lt;p&gt;Here we will use Ensembl&amp;rsquo;s biomart. Each mart contains multiple datasets, usually separated by different organisms. In our case, human&amp;rsquo;s dataset is &lt;code&gt;hsapiens_gene_ensembl&lt;/code&gt;. For other organisms, you can find their dataset by &lt;code&gt;listDatasets(ensembl)&lt;/code&gt;. &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;ensembl&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;useMart&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ensembl&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;p&gt;Here we will use Ensembl&amp;rsquo;s biomart. Each mart contains multiple datasets, usually separated by different organisms. In our case, human&amp;rsquo;s dataset is &lt;code&gt;hsapiens_gene_ensembl&lt;/code&gt;. For other organisms, you can find their dataset by &lt;code&gt;listDatasets(ensembl)&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="n"&gt;ensembl&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;useMart&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ensembl&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;ensembl&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;useDataset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;hsapiens_gene_ensembl&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;ensembl&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="c1"&gt;# or equivalently&lt;/span&gt;
 &lt;span class="n"&gt;ensembl&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;useMart&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ensembl&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dataset&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;hsapiens_gene_ensembl&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;h3 id="compatibility-with-annotationdbs-interface"&gt;Compatibility with AnnotationDb&amp;rsquo;s interface&lt;/h3&gt;
 &lt;p&gt;The way to query the &lt;code&gt;ensembl&lt;/code&gt; Mart object is slightly different to how we query a AnnotationDb object. The major difference is the terminology. Luckily, Mart object provides a compatibility layer so we can still call functions such as &lt;code&gt;select(db, ...)&lt;/code&gt;, &lt;code&gt;keytypes(db)&lt;/code&gt;, &lt;code&gt;keys(db)&lt;/code&gt; and &lt;code&gt;columns(db)&lt;/code&gt;, which we frequently do&lt;sup id="fnref:select-compat"&gt;&lt;a class="footnote-ref" href="#fn:select-compat"&gt;1&lt;/a&gt;&lt;/sup&gt; when using NCBI/UCSC references.&lt;/p&gt;
 &lt;p&gt;A Mart can have hundreds of keys and columns. So we select a part of them out by &lt;code&gt;grep()&lt;/code&gt;,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;grep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;^refseq&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nf"&gt;keytypes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ensembl&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="nf"&gt;grep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;^refseq&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nf"&gt;keytypes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ensembl&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="c1"&gt;# [1] &amp;quot;refseq_mrna&amp;quot; &amp;quot;refseq_mrna_predicted&amp;quot; ...&lt;/span&gt;
 &lt;span class="nf"&gt;grep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;^ensembl&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nf"&gt;keytypes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ensembl&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="c1"&gt;# [1] &amp;quot;ensembl_exon_id&amp;quot; &amp;quot;ensembl_gene_id&amp;quot; ...&lt;/span&gt;
@@ -527,9 +498,8 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="c1"&gt;# ...&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;We start by finding the MAPK1&amp;rsquo;s RefSeq transcript IDs and their corresponding Ensembl transcript IDs, which is something we cannot do by our locally built Ensembl TxDb nor the human OrgDb.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;select&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="nf"&gt;select&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;ensembl&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;keys&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;MAPK1&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
     &lt;span class="n"&gt;keytype&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;hgnc_symbol&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -552,10 +522,9 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="c1"&gt;# 4              22         21769204       21867440     -1&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;So some of the MAPK1 Ensembl transcripts does not have RefSeq identifiers. This is common to see since RefSeq is more conservative about including new transcripts. Anyway, we can now translate our analysis result between a wider range of naming systems.&lt;/p&gt;
 &lt;p&gt;Moreover, what&amp;rsquo;s awesome about BioMart is that almost all the information on the Ensembl genome browser can be retreived by BioMart. For example, getting the paralog and the mouse homolog of MAPK1,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Get paralog of MAPK1&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="c1"&gt;# Get paralog of MAPK1&lt;/span&gt;
 &lt;span class="nf"&gt;select&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;ensembl&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;keys&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ENSG00000100030&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
@@ -588,17 +557,15 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="c1"&gt;# 1                                  Mapk1                 ortholog_one2one                ENSMUSP00000065983&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;h3 id="biomarts-original-interface"&gt;biomaRt&amp;rsquo;s original interface&lt;/h3&gt;
 &lt;p&gt;The &lt;code&gt;select()&lt;/code&gt; function we use is not the original biomaRt&amp;rsquo;s interface. In fact, keys and columns are interpreted as BioMart&amp;rsquo;s &lt;strong&gt;filters&lt;/strong&gt; and &lt;strong&gt;attributes&lt;/strong&gt; respectively. To find all available filters and attributes,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;filters&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;listFilters&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ensembl&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="n"&gt;filters&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;listFilters&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ensembl&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;attributes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;listAttributes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ensembl&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;each of the command return a data.frame that contains each filter&amp;rsquo;s or attribute&amp;rsquo;s name and description.&lt;/p&gt;
 &lt;p&gt;Behind the scene, arguments of &lt;code&gt;select(db, ...)&lt;/code&gt; is converted to &lt;code&gt;getBM(mart, ...)&lt;/code&gt;. For the same example of finding RefSeq and Ensembl transcript IDs, it can be re-written as&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;getBM&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="nf"&gt;getBM&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;attributes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
         &lt;span class="s"&gt;&amp;quot;refseq_mrna&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;ensembl_transcript_id&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
         &lt;span class="s"&gt;&amp;quot;chromosome_name&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -611,7 +578,6 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;h2 id="conversion-between-genomic-coordinate-systems"&gt;Conversion between genomic coordinate systems&lt;/h2&gt;
 &lt;p&gt;Somethings we need to convert between different verions of the reference. For example, today we&amp;rsquo;d like to convert a batch of genomic locations of reference hg38 to that of hg19, so we can compare our new research with previous studies. It is a non-trivial task that can be currently handled by the following tools:&lt;/p&gt;
 &lt;ul&gt;
@@ -620,7 +586,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;Frankly I don&amp;rsquo;t have experience for such conversion in real study (the converted result still gives the sense of unease), but anyway here I follow &lt;a href="http://genomicsclass.github.io/book/pages/bioc1_liftOver.html"&gt;the guide on PH525x series&lt;/a&gt;. In Bioconductor, we can use UCSC&amp;rsquo;s Chain file to apply the &lt;code&gt;liftOver()&lt;/code&gt; method provided by package &lt;code&gt;rtracklayer&lt;/code&gt;. To convert regions from hg38 to hg19, we need the &lt;code&gt;hg38ToHg19.over.chain&lt;/code&gt; file, which can be found at &lt;a href="ftp://hgdownload.cse.ucsc.edu/goldenPath/hg38/liftOver/"&gt;ftp://hgdownload.cse.ucsc.edu/goldenPath/hg38/liftOver/&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;We still use MAPK1 as an example of conversion. First extract MAPK1&amp;rsquo;s genomic ranges in hg38 and hg19 respectively,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TxDb.Hsapiens.UCSC.hg38.knownGene&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TxDb.Hsapiens.UCSC.hg38.knownGene&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TxDb.Hsapiens.UCSC.hg19.knownGene&lt;/span&gt;
 &lt;span class="n"&gt;tx38&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;TxDb.Hsapiens.UCSC.hg38.knownGene&lt;/span&gt;
 &lt;span class="n"&gt;tx19&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;TxDb.Hsapiens.UCSC.hg19.knownGene&lt;/span&gt;
@@ -628,9 +594,8 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="n"&gt;MAPK1_hg19&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;genes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tx19&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nf"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;gene_id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;5594&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Then we convert &lt;code&gt;MAPK1_hg38&lt;/code&gt; to use the hg19 coordinate system.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rtracklayer&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rtracklayer&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;ch&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;import.chain&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;./hg38ToHg19.over.chain&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;MAPK1_hg19_lifted&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;liftOver&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;MAPK1_hg38&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ch&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
@@ -655,7 +620,6 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="c1"&gt;# seqinfo: 1 sequence from an unspecified genome; no seqlengths&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;So the conversion worked as expected, though it created a gap in the range (missing a base at 22216653). I haven&amp;rsquo;t looked into the results. To ensure the correctness of the conversion, maybe a comparison with CrossMap is needed.&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
 &lt;p&gt;We skimmed through OrgDb and TxDb again using the Ensembl references, including how to build the TxDb for Ensembl locally and obtain external annotations from AnnotationHub.&lt;/p&gt;
@@ -669,7 +633,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;p&gt;Note that the &lt;code&gt;select(mart, ...)&lt;/code&gt; compatibility does not apply to all existed filters (keys) and attributes (columns) of the given Mart.&amp;#160;&lt;a class="footnote-backref" href="#fnref:select-compat" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Bioinfo"></category><category term="en"></category><category term="r"></category><category term="bioconductor"></category></entry><entry><title>Plot Sequencing Depth with Gviz</title><link href="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/" rel="alternate"></link><published>2016-01-15T23:50:00-06:00</published><updated>2022-02-20T20:07:45-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-15:/posts/2016/01/plot-seq-depth-gviz/</id><summary type="html">&lt;p&gt;&lt;em&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; Plot exome sequencing depth and coverage with genome annotation using Gviz in R. Then apply detail control on Gviz annotation track displaying.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;</content><category term="Bioinfo"></category><category term="en"></category><category term="r"></category><category term="bioconductor"></category></entry><entry><title>Plot Sequencing Depth with Gviz</title><link href="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/" rel="alternate"></link><published>2016-01-15T23:50:00-06:00</published><updated>2022-05-13T12:58:36-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-15:/posts/2016/01/plot-seq-depth-gviz/</id><summary type="html">&lt;p&gt;&lt;em&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; Plot exome sequencing depth and coverage with genome annotation using Gviz in R. Then apply detail control on Gviz annotation track displaying.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;This is an extending post from &lt;a href="https://blog.liang2.tw/posts/2015/12/biocondutor-genomic-data/"&gt;Genomic Data Processing in Bioconductor&lt;/a&gt;, though I haven&amp;rsquo;t finished reading all the reference in that post. The background knowledge …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; Plot exome sequencing depth and coverage with genome annotation using Gviz in R. Then apply detail control on Gviz annotation track displaying.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;This is an extending post from &lt;a href="https://blog.liang2.tw/posts/2015/12/biocondutor-genomic-data/"&gt;Genomic Data Processing in Bioconductor&lt;/a&gt;, though I haven&amp;rsquo;t finished reading all the reference in that post. The background knowledge of this post is basic understanding of how to deal with annotation and genome reference in Bioconductor/R. If you don&amp;rsquo;t deal with genome annotations in R before, you should find some time learning it anyway, a truly life saver.&lt;/p&gt;
 &lt;div class="toc"&gt;
@@ -700,10 +664,10 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;/div&gt;
 &lt;p&gt;I got the chance trying new tricks today when I and other lab members were analyzing our human cancer exome sequencing data. The results were a bunch of BAM files aligned by &lt;a href="https://github.com/lh3/bwa"&gt;BWA-MEM&lt;/a&gt; using reference hg19.&lt;/p&gt;
 &lt;p&gt;We want to see how was the sequencing depth and the coverage of all exons designed to be sequenced. Roughly, this can be done in the genome viewer such as &lt;a href="https://www.broadinstitute.org/igv/"&gt;IGV&lt;/a&gt;.&lt;/p&gt;
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_IGV.png"/&gt;
   &lt;p class="caption center"&gt;Visualize sequencing depth in IGV&lt;/p&gt;
-&lt;/div&gt;
+&lt;/figure&gt;
 
 &lt;p&gt;IGV is good for daily research, but when it comes to customization, there aren&amp;rsquo;t many options. And if the visualization is aimed for publishing, one might want the figure to be vectorized and, more importantly, &lt;em&gt;reproducible&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;Therefore, combining with what I learnt in &lt;a href="https://blog.liang2.tw/posts/2015/12/biocondutor-genomic-data/"&gt;Genomic Data Processing in Bioconductor&lt;/a&gt;, I tried to plot the sequencing depth in R with &lt;a href="https://bioconductor.org/packages/release/bioc/html/Gviz.html"&gt;Gviz&lt;/a&gt;. I thought learning Gviz will be demanding, since its vignette has 80 pages and the function documentation are &lt;a href="http://rpackages.ianhowson.com/bioc/Gviz/man/GeneRegionTrack-class.html"&gt;scarily long spells&lt;/a&gt;. But both of them turned out to be &lt;em&gt;really&lt;/em&gt; helpful and informative, especially when trying to tune its behavior. Figures produced by Gviz are aesthetically pleasing, and Gviz has many features as well (still trying). I&amp;rsquo;m glad that I gave it a shot.&lt;/p&gt;
@@ -740,21 +704,19 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;So we need to convert the alignment result as BedGraph format, which can be done by &lt;a href="http://bedtools.readthedocs.org/en/latest/content/tools/genomecov.html"&gt;BEDTools&amp;rsquo; genomecov&lt;/a&gt; command. On BEDTools&amp;rsquo; documentation, it notes that the BAM file should be sorted. &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;bedtools genomecov -bg -ibam myseq.bam &amp;gt; myseq.bedGraph
+&lt;p&gt;So we need to convert the alignment result as BedGraph format, which can be done by &lt;a href="http://bedtools.readthedocs.org/en/latest/content/tools/genomecov.html"&gt;BEDTools&amp;rsquo; genomecov&lt;/a&gt; command. On BEDTools&amp;rsquo; documentation, it notes that the BAM file should be sorted.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;bedtools genomecov -bg -ibam myseq.bam &amp;gt; myseq.bedGraph
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;The plain text BedGraph can be huge, pipe&amp;rsquo;d with gzip will reduce file size to around 30% of the original.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;bedtools genomecov -bg -ibam myseq.bam &lt;span class="p"&gt;|&lt;/span&gt; gzip &amp;gt; myseq.bedGraph.gz
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;bedtools genomecov -bg -ibam myseq.bam &lt;span class="p"&gt;|&lt;/span&gt; gzip &amp;gt; myseq.bedGraph.gz
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;h2 id="plot-depth-in-gviz"&gt;Plot depth in Gviz&lt;/h2&gt;
 &lt;p&gt;R packages of human genome annotations (&lt;a href="http://bioconductor.org/packages/release/data/annotation/html/Homo.sapiens.html"&gt;Homo.sapiens&lt;/a&gt;) and &lt;a href="https://bioconductor.org/packages/release/bioc/html/Gviz.html"&gt;Gviz&lt;/a&gt; itself are required. Also, &lt;a href="https://cran.r-project.org/web/packages/data.table/index.html"&gt;data.table&lt;/a&gt; gives an impressed speed at reading text tables so is recommended to use. During the analysis, I happened to know that data.table supports &lt;a href="https://github.com/Rdatatable/data.table/issues/717"&gt;reading gzip&amp;rsquo;d file through pipe&lt;/a&gt;, which makes it more awesome.&lt;/p&gt;
 &lt;h3 id="first-gviz-track"&gt;First Gviz track&lt;/h3&gt;
 &lt;p&gt;We should first start at reading our sequencing depth as BedGraph format and plot it.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data.table&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data.table&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Gviz&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 &lt;span class="n"&gt;bedgraph_dt&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;fread&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
@@ -780,16 +742,15 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;So we read the sequencing depth data, create a Gviz &lt;code&gt;DataTrack&lt;/code&gt; holding the subset of our data on chr17, then plot Gviz tracks by &lt;code&gt;plotTracks&lt;/code&gt; (though we only made one here) within a given chromosome region. Here is what we got.&lt;/p&gt;
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_one_track.png"/&gt;
-&lt;/div&gt;
+&lt;/figure&gt;
 
 &lt;h3 id="add-genome-axis"&gt;Add genome axis&lt;/h3&gt;
-&lt;p&gt;The figure is a bit weird and lack of information without the genomic location. &lt;/p&gt;
+&lt;p&gt;The figure is a bit weird and lack of information without the genomic location.&lt;/p&gt;
 &lt;p&gt;Adding genomic location can be done automatically by Gviz through a new track &lt;code&gt;GenomeAxisTrack&lt;/code&gt;. Also, we&amp;rsquo;d like to show which region of chromosome we are at. This can be done by adding another track, &lt;code&gt;IdeogramTrack&lt;/code&gt;, to show the chromosome ideogram. Note that the latter track will download cytoband data from UCSC so the given genome must have a valid name.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;itrack&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;IdeogramTrack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="n"&gt;itrack&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;IdeogramTrack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;genome&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;hg19&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;chromosome&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;thechr&lt;/span&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;gtrack&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;GenomeAxisTrack&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
@@ -800,16 +761,15 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_with_loc.png"/&gt;
-&lt;/div&gt;
+&lt;/figure&gt;
 
 &lt;p&gt;Better now :)&lt;/p&gt;
 &lt;h3 id="add-annotation"&gt;Add annotation&lt;/h3&gt;
-&lt;p&gt;Since we are using exome sequencing, the curve of sequencing depth only makes senses when combined with the transcript annotations. &lt;/p&gt;
+&lt;p&gt;Since we are using exome sequencing, the curve of sequencing depth only makes senses when combined with the transcript annotations.&lt;/p&gt;
 &lt;p&gt;Gviz has &lt;code&gt;GeneRegionTrack&lt;/code&gt; to extract annotation from the R annotation packages. Package Homo.sapiens includes the gene annotation package using UCSC knownGene database. Adding this new track and we will have annotation on our plot.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TxDb.Hsapiens.UCSC.hg19.knownGene&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TxDb.Hsapiens.UCSC.hg19.knownGene&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;txdb&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;TxDb.Hsapiens.UCSC.hg19.knownGene&lt;/span&gt;
 
 &lt;span class="n"&gt;grtrack&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;GeneRegionTrack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
@@ -825,12 +785,11 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_with_annotation.png"/&gt;
-&lt;/div&gt;
+&lt;/figure&gt;
 
-&lt;p&gt;The plot should now be as informative as what we can get from the IGV. In fact, Gviz can plot the alignment result too. It can read the BAM file directly and show a more detailed coverage that matches what IGV can do. I&amp;rsquo;ll leave that part at the end of this post. &lt;/p&gt;
+&lt;p&gt;The plot should now be as informative as what we can get from the IGV. In fact, Gviz can plot the alignment result too. It can read the BAM file directly and show a more detailed coverage that matches what IGV can do. I&amp;rsquo;ll leave that part at the end of this post.&lt;/p&gt;
 &lt;p&gt;So far we&amp;rsquo;ve shown the sequencing depth of some chromosome region with annotation. However, there still leave something to be desired, mostly about the annotation:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Can we show only the annotation of certain genes?&lt;/li&gt;
@@ -846,7 +805,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;li&gt;Query the transcript locations by their IDs&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;Getting transcript IDs given their gene symbol is a &lt;code&gt;select()&lt;/code&gt; on OrganismDb object,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Get all transcript IDs of gene BRCA1&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="c1"&gt;# Get all transcript IDs of gene BRCA1&lt;/span&gt;
 &lt;span class="n"&gt;BRCA1_txnames&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;select&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;Homo.sapiens&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;keys&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;BRCA1&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;keytype&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;SYMBOL&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -854,8 +813,7 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;TXNAME&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;BRCA1_txnames&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-rconsole"&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;BRCA1_txnames&lt;/span&gt;
 &lt;span class="go"&gt; [1] &amp;quot;uc010whl.2&amp;quot; &amp;quot;uc002icp.4&amp;quot; &amp;quot;uc010whm.2&amp;quot; &amp;quot;uc002icu.3&amp;quot;&lt;/span&gt;
 &lt;span class="go"&gt; [5] &amp;quot;uc010cyx.3&amp;quot; &amp;quot;uc002icq.3&amp;quot; &amp;quot;uc002ict.3&amp;quot; &amp;quot;uc010whn.2&amp;quot;&lt;/span&gt;
 &lt;span class="go"&gt; [9] &amp;quot;uc010who.3&amp;quot; &amp;quot;uc010whp.2&amp;quot; &amp;quot;uc010whq.1&amp;quot; &amp;quot;uc002idc.1&amp;quot;&lt;/span&gt;
@@ -863,19 +821,17 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="go"&gt;[17] &amp;quot;uc010whs.1&amp;quot; &amp;quot;uc010cyz.2&amp;quot; &amp;quot;uc010cza.2&amp;quot; &amp;quot;uc010wht.1&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Look like it has plenty of isoforms!&lt;/p&gt;
 &lt;h4 id="via-transcripts"&gt;via &lt;code&gt;transcripts()&lt;/code&gt;&lt;/h4&gt;
 &lt;p&gt;For the transcript location, the easiest way will be querying the txDb via &lt;code&gt;transcript()&lt;/code&gt;,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;BRCA1_txs&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;transcripts&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="n"&gt;BRCA1_txs&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;transcripts&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;Homo.sapiens&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;vals&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nf"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tx_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;BRCA1_txnames&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
     &lt;span class="n"&gt;columns&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nf"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;TXNAME&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;SYMBOL&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;EXONID&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;BRCA1_txs&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-rconsole"&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;BRCA1_txs&lt;/span&gt;
 &lt;span class="go"&gt;GRanges object with 20 ranges and 3 metadata columns:&lt;/span&gt;
 &lt;span class="go"&gt;       seqnames               ranges strand   |                   EXONID          TXNAME          SYMBOL&lt;/span&gt;
 &lt;span class="go"&gt;          &amp;lt;Rle&amp;gt;            &amp;lt;IRanges&amp;gt;  &amp;lt;Rle&amp;gt;   |            &amp;lt;IntegerList&amp;gt; &amp;lt;CharacterList&amp;gt; &amp;lt;CharacterList&amp;gt;&lt;/span&gt;
@@ -894,34 +850,30 @@ EDIT 2019-01-29: Add the web interface of AnnotationHub.&lt;/p&gt;
 &lt;span class="go"&gt;  seqinfo: 93 sequences (1 circular) from hg19 genome&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Then get the genomic range of these transcripts by &lt;code&gt;seqnames()&lt;/code&gt;, &lt;code&gt;start()&lt;/code&gt; and &lt;code&gt;end()&lt;/code&gt; functions on the &lt;code&gt;GRanages&lt;/code&gt; object,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;thechr &amp;lt;- as.character(unique(
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;thechr &amp;lt;- as.character(unique(
     seqnames(BRCA1_txs)
 ))
 st &amp;lt;- min(start(BRCA1_txs)) - 2e4
 en &amp;lt;- max(end(BRCA1_txs)) + 1e3
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
-&lt;p&gt;Some space are added at both ends so the plot won&amp;rsquo;t tightly fit all transcripts and leave some room for the transcript names. &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="nf"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;thechr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;st&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;en&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;p&gt;Some space are added at both ends so the plot won&amp;rsquo;t tightly fit all transcripts and leave some room for the transcript names.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-rconsole"&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="nf"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;thechr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;st&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;en&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="go"&gt;[1] &amp;quot;chr17&amp;quot;    &amp;quot;41176312&amp;quot; &amp;quot;41323420&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;h4 id="via-exonsby"&gt;via &lt;code&gt;exonsBy()&lt;/code&gt;&lt;/h4&gt;
-&lt;p&gt;Another way to obtain the genomic range is getting the exact range of CDS (e.g. exons and UTRs) for each transcript via &lt;code&gt;exonsBy()&lt;/code&gt;. &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;BRCA1_cds_by_tx&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;exonsBy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;p&gt;Another way to obtain the genomic range is getting the exact range of CDS (e.g. exons and UTRs) for each transcript via &lt;code&gt;exonsBy()&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="n"&gt;BRCA1_cds_by_tx&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;exonsBy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;Homo.sapiens&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;by&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;tx&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;use.names&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;
 &lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="n"&gt;BRCA1_txnames&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;The function returns a &lt;code&gt;GRangesList&lt;/code&gt; object, a list of &lt;code&gt;GRanges&lt;/code&gt; that each &lt;code&gt;GRanges&lt;/code&gt; object corresponds to a transcript respectively.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;BRCA1_cds_by_tx&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-rconsole"&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;BRCA1_cds_by_tx&lt;/span&gt;
 &lt;span class="go"&gt;GRangesList object of length 20:&lt;/span&gt;
-&lt;span class="go"&gt;$uc010whl.2 &lt;/span&gt;
+&lt;span class="go"&gt;$uc010whl.2&lt;/span&gt;
 &lt;span class="go"&gt;GRanges object with 22 ranges and 3 metadata columns:&lt;/span&gt;
 &lt;span class="go"&gt;       seqnames               ranges strand   |   exon_id   exon_name exon_rank&lt;/span&gt;
 &lt;span class="go"&gt;          &amp;lt;Rle&amp;gt;            &amp;lt;IRanges&amp;gt;  &amp;lt;Rle&amp;gt;   | &amp;lt;integer&amp;gt; &amp;lt;character&amp;gt; &amp;lt;integer&amp;gt;&lt;/span&gt;
@@ -943,18 +895,16 @@ en &amp;lt;- max(end(BRCA1_txs)) + 1e3
 &lt;span class="go"&gt;seqinfo: 93 sequences (1 circular) from hg19 genome&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;&lt;code&gt;GRangesList&lt;/code&gt; is not merely a R list structure, which can correctly propagate the GRanges-related functions to all the GRanges it contain.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="nf"&gt;start&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BRCA1_cds_by_tx&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-rconsole"&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="nf"&gt;start&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BRCA1_cds_by_tx&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="go"&gt;IntegerList of length 20&lt;/span&gt;
 &lt;span class="go"&gt;[[&amp;quot;uc010whl.2&amp;quot;]] 41276034 41267743 41258473 ... 41201138 41199660 41196312&lt;/span&gt;
 &lt;span class="go"&gt;[[&amp;quot;uc002icp.4&amp;quot;]] 41277199 41276034 41267743 ... 41201138 41199660 41196312&lt;/span&gt;
 &lt;span class="go"&gt;...&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Here we only cares about the widest range, so the hierarchical structure is not useful. It would be better to flatten the &lt;code&gt;GRangesList&lt;/code&gt; first,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;BRCA1_cds_flatten&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;unlist&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BRCA1_cds_by_tx&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-rconsole"&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;BRCA1_cds_flatten&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;unlist&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BRCA1_cds_by_tx&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;BRCA1_cds_flatten&lt;/span&gt;
 &lt;span class="go"&gt;GRanges object with 284 ranges and 3 metadata columns:&lt;/span&gt;
 &lt;span class="go"&gt;             seqnames               ranges strand   |   exon_id   exon_name exon_rank&lt;/span&gt;
@@ -974,11 +924,10 @@ en &amp;lt;- max(end(BRCA1_txs)) + 1e3
 &lt;span class="go"&gt;  seqinfo: 93 sequences (1 circular) from hg19 genome&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;We have the BRCA1 genomic region, rest of the plotting is the same.&lt;/p&gt;
 &lt;h3 id="show-only-the-annotations-of-certain-genes"&gt;Show only the annotations of certain genes&lt;/h3&gt;
 &lt;p&gt;Before we start to create our own annotation subset, we first take a look at what Gviz generated. The &lt;code&gt;GeneRegionTrack&lt;/code&gt; track store its annotation data at slot &lt;code&gt;range&lt;/code&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;grtrack&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;range&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-rconsole"&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;grtrack&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;range&lt;/span&gt;
 &lt;span class="go"&gt;GRanges object with 459 ranges and 7 metadata columns:&lt;/span&gt;
 &lt;span class="go"&gt;        seqnames               ranges strand   |     feature          id         exon  transcript        gene      symbol   density&lt;/span&gt;
 &lt;span class="go"&gt;           &amp;lt;Rle&amp;gt;            &amp;lt;IRanges&amp;gt;  &amp;lt;Rle&amp;gt;   | &amp;lt;character&amp;gt; &amp;lt;character&amp;gt;  &amp;lt;character&amp;gt; &amp;lt;character&amp;gt; &amp;lt;character&amp;gt; &amp;lt;character&amp;gt; &amp;lt;numeric&amp;gt;&lt;/span&gt;
@@ -997,17 +946,15 @@ en &amp;lt;- max(end(BRCA1_txs)) + 1e3
 &lt;span class="go"&gt;  seqinfo: 1 sequence from hg19 genome; no seqlengths&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;So we filter out unrelated ranges by checking if the value of metadata column &lt;code&gt;transcript&lt;/code&gt; is one of &lt;em&gt;BRCA1&lt;/em&gt;&amp;lsquo;s transcript IDs,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;BRCA_only_range&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;grtrack&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;range&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="n"&gt;BRCA_only_range&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;grtrack&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;range&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
     &lt;span class="nf"&gt;mcols&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;grtrack&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;range&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;transcript&lt;/span&gt; &lt;span class="o"&gt;%in%&lt;/span&gt; &lt;span class="n"&gt;BRCA1_txnames&lt;/span&gt;
 &lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="n"&gt;grtrack&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;range&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;BRCA_only_range&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;or by less hacky way that use the new range to construct another &lt;code&gt;GeneRegionTrack&lt;/code&gt;,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;grtrack_BRCA_only&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;GeneRegionTrack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="n"&gt;grtrack_BRCA_only&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;GeneRegionTrack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;BRCA_only_range&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;chromosome&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;thechr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;start&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;st&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;end&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;en&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;showId&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -1019,15 +966,14 @@ en &amp;lt;- max(end(BRCA1_txs)) + 1e3
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_BRCA1_only.png"/&gt;
-&lt;/div&gt;
+&lt;/figure&gt;
 
 &lt;h3 id="display-gene-symbols-at-annotation-track"&gt;Display gene symbols at annotation track&lt;/h3&gt;
 &lt;p&gt;It&amp;rsquo;s more obvious now about how Gviz stores the annotation. All we need is to replace the symbol name with whatever we desire.&lt;/p&gt;
-&lt;p&gt;First, we extract the metadata of the &lt;code&gt;GeneRegionTrack&lt;/code&gt;, and query for their gene symbols. Using either the transcript ID or Entrez ID will do. &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;grtrack_range&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;grtrack&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;range&lt;/span&gt;
+&lt;p&gt;First, we extract the metadata of the &lt;code&gt;GeneRegionTrack&lt;/code&gt;, and query for their gene symbols. Using either the transcript ID or Entrez ID will do.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="n"&gt;grtrack_range&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;grtrack&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;range&lt;/span&gt;
 &lt;span class="n"&gt;range_mapping&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;select&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;Homo.sapiens&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;keys&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;mcols&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;grtrack_range&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;symbol&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -1036,8 +982,7 @@ en &amp;lt;- max(end(BRCA1_txs)) + 1e3
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="nf"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;range_mapping&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-rconsole"&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="nf"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;range_mapping&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="go"&gt;      TXNAME SYMBOL ENTREZID&lt;/span&gt;
 &lt;span class="go"&gt;1 uc002icn.3   RND2     8153&lt;/span&gt;
 &lt;span class="go"&gt;2 uc002icn.3   RND2     8153&lt;/span&gt;
@@ -1047,24 +992,21 @@ en &amp;lt;- max(end(BRCA1_txs)) + 1e3
 &lt;span class="go"&gt;6 uc002icn.3   RND2     8153&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Then we concatenate the information of transcript ID and gene symbol using &lt;a href="https://cran.r-project.org/web/packages/stringr/index.html"&gt;stringr&lt;/a&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;stringr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;stringr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;new_symbols&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;with&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;range_mapping&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="nf"&gt;str_c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SYMBOL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot; (&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;TXNAME&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;)&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sep&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="nf"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;unique&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;new_symbols&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-rconsole"&gt;&lt;span class="gp"&gt;&amp;gt; &lt;/span&gt;&lt;span class="nf"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;unique&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;new_symbols&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;span class="go"&gt;[1] &amp;quot;RND2 (uc002icn.3)&amp;quot; &amp;quot;NBR2 (uc002idf.3)&amp;quot; &amp;quot;NBR2 (uc010czb.2)&amp;quot;&lt;/span&gt;
 &lt;span class="go"&gt;[4] &amp;quot;NBR2 (uc002idg.3)&amp;quot; &amp;quot;NBR2 (uc002idh.3)&amp;quot; &amp;quot;NBR1 (uc010czd.3)&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Like how we extract &lt;em&gt;BRCA1&lt;/em&gt;-only annotations, we construct a new &lt;code&gt;GeneRegionTrack&lt;/code&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;grtrack_symbol&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;GeneRegionTrack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="n"&gt;grtrack_symbol&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;GeneRegionTrack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;grtrack&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;range&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;chromosome&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;thechr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;start&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;st&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;end&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;en&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;showId&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -1077,17 +1019,16 @@ en &amp;lt;- max(end(BRCA1_txs)) + 1e3
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_gene_symbol.png"/&gt;
-&lt;/div&gt;
+&lt;/figure&gt;
 
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
-&lt;p&gt;So we&amp;rsquo;ve learnt how to plot using Gviz. You should go explore other data tracks or try to combine sequencing depth of multiple samples. I found the design of Gviz is clean and easy to modify. I think I&amp;rsquo;ll use Gviz whenever genome-related plots are needed. &lt;/p&gt;
+&lt;p&gt;So we&amp;rsquo;ve learnt how to plot using Gviz. You should go explore other data tracks or try to combine sequencing depth of multiple samples. I found the design of Gviz is clean and easy to modify. I think I&amp;rsquo;ll use Gviz whenever genome-related plots are needed.&lt;/p&gt;
 &lt;p&gt;Really glad I&amp;rsquo;ve tried it :)&lt;/p&gt;
 &lt;h2 id="supplementary-plot-bam-files-directly"&gt;Supplementary - Plot BAM files directly&lt;/h2&gt;
 &lt;p&gt;We will start by replacing &lt;code&gt;DataTrack&lt;/code&gt; with &lt;code&gt;AlignmentsTrack&lt;/code&gt;. Also we select a smaller region this time so the read mapping can be clearly seen.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;st&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;41.196e6L&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="n"&gt;st&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;41.196e6L&lt;/span&gt;
 &lt;span class="n"&gt;en&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;41.202e6L&lt;/span&gt;
 &lt;span class="n"&gt;gtrack&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;GenomeAxisTrack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cex&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  &lt;span class="c1"&gt;# set the font size larger&lt;/span&gt;
 &lt;span class="n"&gt;altrack&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;AlignmentsTrack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
@@ -1099,26 +1040,24 @@ en &amp;lt;- max(end(BRCA1_txs)) + 1e3
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_BAM_default.png"/&gt;
-&lt;/div&gt;
+&lt;/figure&gt;
 
 &lt;p&gt;To plot only the coverage, set the type as &lt;code&gt;coverage&lt;/code&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;altrack&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;AlignmentsTrack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="n"&gt;altrack&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;AlignmentsTrack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="s"&gt;&amp;quot;myseq.bam&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;type&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;coverage&amp;quot;&lt;/span&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_BAM_coverage_only.png"/&gt;
-&lt;/div&gt;
+&lt;/figure&gt;
 
 &lt;h3 id="fancier-alignment-display"&gt;Fancier alignment display&lt;/h3&gt;
-&lt;p&gt;Spend some time reading the documentation, the alignment can be much more fancier. &lt;/p&gt;
+&lt;p&gt;Spend some time reading the documentation, the alignment can be much more fancier.&lt;/p&gt;
 &lt;p&gt;For example, when looking at a much smaller genome region, we many want to see the sequence and read mismatches. It could be done by adding a new track &lt;code&gt;SequenceTrack&lt;/code&gt; to include the genome sequence,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;small_st&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;41267.735e3L&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="n"&gt;small_st&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;41267.735e3L&lt;/span&gt;
 &lt;span class="n"&gt;small_en&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;41267.805e3L&lt;/span&gt;
 
 &lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BSgenome.Hsapiens.UCSC.hg19&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -1129,9 +1068,8 @@ en &amp;lt;- max(end(BRCA1_txs)) + 1e3
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;We tweak other tracks as well to make sure the figure won&amp;rsquo;t explode by too much information. Gene annotations are collapsed down to one liner. Also, aligned read&amp;rsquo;s height is increased to fit in individual letters (e.g., ATCG).&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;grtrack_small&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;GeneRegionTrack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-splus"&gt;&lt;span class="n"&gt;grtrack_small&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;GeneRegionTrack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
    &lt;span class="n"&gt;grtrack&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;range&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
    &lt;span class="n"&gt;chromosome&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;thechr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
    &lt;span class="n"&gt;start&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;small_st&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;end&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;small_en&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -1149,10 +1087,9 @@ en &amp;lt;- max(end(BRCA1_txs)) + 1e3
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/pics/seqdepth_BAM_small_region.png"/&gt;
-&lt;/div&gt;
+&lt;/figure&gt;
 
 &lt;p&gt;We found a C&amp;gt;T SNP here!&lt;/p&gt;</content><category term="Bioinfo"></category><category term="en"></category><category term="r"></category><category term="bioconductor"></category><category term="gviz"></category><category term="NGS"></category></entry><entry><title>Overview of Genomic Data Processing in Bioconductor</title><link href="https://blog.liang2.tw/posts/2015/12/biocondutor-genomic-data/" rel="alternate"></link><published>2015-12-29T20:28:00-06:00</published><updated>2022-02-20T20:07:45-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-12-29:/posts/2015/12/biocondutor-genomic-data/</id><summary type="html">&lt;p&gt;Notes of fundamental tools and learning resources for handling genomic data in R with Bioconductor.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Sorry for the late update. In the past two months, I finished my Ph.D. applications (hope to hear good news in the next two months) and was busy preparing the PyCon Taiwan 2016. Also, a year-long website development finally came to the end.&lt;/p&gt;
 &lt;p&gt;Now most things are set so I can back to writing my blog.&lt;/p&gt;

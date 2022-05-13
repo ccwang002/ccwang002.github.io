@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="My blog is statically generated, so it needs an external service for commenting. I chose Disqus when I started my blog because it was a popular choice, and it is free and easy to setup. However, there’s been increasing concern about its extensive user tracking, ads, and therefore a …" />
 <meta name="keywords" content="en">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>Change the blog commenting system to utterances</title>
 
 	<!-- og -->
@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2022/02/blog-comment-utterances/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2022-02-20 00:00:00-06:00"/>
-<meta property="article:modified_time" content="2022-02-20 23:37:53.806982-06:00"/>
+<meta property="article:modified_time" content="2022-05-13 12:52:11.223298-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="en"/>
@@ -33,8 +33,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -48,7 +48,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post en-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Feb 20, 2022">Feb 20, 2022</time>
         in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
@@ -60,10 +60,10 @@
                 <a href="https://blog.liang2.tw/tag/en/">en</a>
     </span>
     <section class="post-content"><p>My blog is statically generated, so it needs an external service for commenting. I chose <a href="https://disqus.com/">Disqus</a> when I started my blog because it was a popular choice, and it is free and easy to setup. However, there&rsquo;s been increasing concern about its extensive user tracking, ads, and therefore a toll on the page loading performance<sup id="fnref:disqus downsides"><a class="footnote-ref" href="#fn:disqus downsides">1</a></sup>. Heck, I don&rsquo;t even load Disqus myself when I check my own blog:</p>
-<div class="figure">
+<figure>
     <img src="https://blog.liang2.tw/posts/2022/02/blog-comment-utterances/pics/disqus_blocked_by_privacy_badger_screenshot.png">
-    <p class="caption">What my blog looks like from my end, where Disqus is blocked by <a href="https://privacybadger.org/Privacy">Privacy Badger</a> by default.</p>
-</div>
+    <figcaption>What my blog looks like from my end, where Disqus is blocked by <a href="https://privacybadger.org/Privacy">Privacy Badger</a> by default.</figcaption>
+</figure>
 
 <p>Recently, I was finally able to look into the alternatives to Disqus. I landed on <a href="https://utteranc.es/">utterances</a>, a commenting widget based on GitHub Issues. I like it for a few reasons:</p>
 <ul>
@@ -73,16 +73,16 @@
 <li>Moderation using existing GitHub tools/interface</li>
 </ul>
 <p>Switch to a new commenting systems can be hard due to the loss of the old comments. But since there are only a total of 75 comments on my blog, I don&rsquo;t have a lot to miss :) I did back up the old comments because I enjoyed the discussions, and they are one of the main motiviations to keep me going. Disqus offers a way to export all the comments, and here is the frequency of all the comments over time:</p>
-<div class="figure">
+<figure>
     <img src="https://blog.liang2.tw/posts/2022/02/blog-comment-utterances/pics/number_comments_per_post.png">
-    <p class="caption">Number of comments on my blog over time</p>
-</div>
+    <figcaption>Number of comments on my blog over time</figcaption>
+</figure>
 
 <p>Since this post, my blog will be using the new utterances comment widget. For comparison, I attached a screenshot of the old interface using Disqus below:</p>
-<div class="figure">
+<figure>
     <img src="https://blog.liang2.tw/posts/2022/02/blog-comment-utterances/pics/disqus_screenshot.png">
-    <p class="caption">Old commenting widget using Disqus on my blog.</p>
-</div>
+    <figcaption>Old commenting widget using Disqus on my blog.</figcaption>
+</figure>
 
 <div class="footnote">
 <hr>

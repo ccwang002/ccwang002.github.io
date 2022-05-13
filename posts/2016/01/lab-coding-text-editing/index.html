@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="這個章節會帶大家認識一個很簡單的純文字格式 Markdown，方便大家整理筆記。同時希望大家學會一個 terminal based 的文字編輯器，方便往後在 server 環境底下的操作。" />
 <meta name="keywords" content="zh, labcoding">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>Coding 初學指南－文字編輯</title>
 
 	<!-- og -->
@@ -34,8 +34,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -49,7 +49,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post zh-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Jan 21, 2016">Jan 21, 2016</time>
         in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
@@ -126,10 +126,9 @@
 </ol>
 <h1 id="text-editor">Text Editor</h1>
 <p>在 Linux 的世界很多都是純文字檔案，再加上一些規定的語法成為新的格式。前面的 markdown 就是個例子。甚至許多可以執行的程式都只是個腳本檔，能用一般的編輯器（editor）打開就能讀懂。你可以試試</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># cd is a shell script</span>
+<div class="highlight"><pre><span></span><code class="language-bash"><span class="c1"># cd is a shell script</span>
 nano <span class="sb">`</span>which <span class="nb">cd</span><span class="sb">`</span>       <span class="c1"># thanks TP&#39;s idea</span>
 </code></pre></div>
-
 
 <p>常見的 editor 有：nano、vi、vim、emacs。到底什麼是最好用的文字編輯器，這是一場永無止盡的戰爭，近年來又有 Notepad++(GUI)、Sublime Text (GUI)、Neovim 的加入，這話題將不會有結論。對初學者而言，至少學會一個 editor 是必要的。</p>
 <blockquote>

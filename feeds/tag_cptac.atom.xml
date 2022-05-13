@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - cptac</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_cptac.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-02-20T20:07:45-06:00</updated><entry><title>ID cross reference with exact protein sequence identity using UniParc</title><link href="https://blog.liang2.tw/posts/2020/07/id-crossref-exact-protein-uniparc/" rel="alternate"></link><published>2020-07-24T00:00:00-05:00</published><updated>2022-02-20T20:07:45-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2020-07-24:/posts/2020/07/id-crossref-exact-protein-uniparc/</id><summary type="html">&lt;p&gt;&lt;em&gt;TL;DR: Many existing ID mappings between different biological ID systems (RefSeq/Ensembl/UniProt) don&amp;rsquo;t consider if the IDs have the same exact protein sequence. When the exact sequence is needed, UniParc can be used to cross-reference the IDs. I will demonstrate how to use UniParc to map RefSeq …&lt;/em&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;TL;DR: Many existing ID mappings between different biological ID systems (RefSeq/Ensembl/UniProt) don&amp;rsquo;t consider if the IDs have the same exact protein sequence. When the exact sequence is needed, UniParc can be used to cross-reference the IDs. I will demonstrate how to use UniParc to map RefSeq human proteins to UniProt and Ensembl at scale.&lt;/em&gt;&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - cptac</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_cptac.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-05-13T12:52:49-05:00</updated><entry><title>ID cross reference with exact protein sequence identity using UniParc</title><link href="https://blog.liang2.tw/posts/2020/07/id-crossref-exact-protein-uniparc/" rel="alternate"></link><published>2020-07-24T00:00:00-05:00</published><updated>2022-05-13T12:52:49-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2020-07-24:/posts/2020/07/id-crossref-exact-protein-uniparc/</id><summary type="html">&lt;p&gt;&lt;em&gt;TL;DR: Many existing ID mappings between different biological ID systems (RefSeq/Ensembl/UniProt) don&amp;rsquo;t consider if the IDs have the same exact protein sequence. When the exact sequence is needed, UniParc can be used to cross-reference the IDs. I will demonstrate how to use UniParc to map RefSeq …&lt;/em&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;TL;DR: Many existing ID mappings between different biological ID systems (RefSeq/Ensembl/UniProt) don&amp;rsquo;t consider if the IDs have the same exact protein sequence. When the exact sequence is needed, UniParc can be used to cross-reference the IDs. I will demonstrate how to use UniParc to map RefSeq human proteins to UniProt and Ensembl at scale.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;You can skip to the solution if you already know what&amp;rsquo;s the problem I want to tackle.&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
@@ -14,10 +14,10 @@
 &lt;h3 id="camps-of-biological-ids"&gt;Camps of biological IDs&lt;/h3&gt;
 &lt;p&gt;There are a few &amp;ldquo;camps&amp;rdquo; of biological IDs that are used by many (human) databases and datasets: &lt;a href="https://ensembl.org/"&gt;Ensembl&lt;/a&gt;, &lt;a href="https://www.ncbi.nlm.nih.gov/refseq/"&gt;RefSeq&lt;/a&gt; (plus &lt;a href="https://www.ncbi.nlm.nih.gov/gene/"&gt;NCBI/Entrez Gene&lt;/a&gt;), and &lt;a href="https://www.uniprot.org/"&gt;UniProt&lt;/a&gt;. Each ID camp is comprehensive independently, containing gene-level, transcript-level, and protein-level information using their own systems of IDs. Unfortunately, all three ID systems/camps are useful in their own way, making the choice of the &amp;ldquo;favorite&amp;rdquo; ID system really divided for different databases and datasets.&lt;/p&gt;
 &lt;p&gt;To get a sense of these &amp;ldquo;ID camps&amp;rdquo; and how information is connected through them and across them, this great illustration from &lt;a href="https://biodbnet-abcc.ncifcrf.gov/dbInfo/netGraph.php"&gt;bioDBnet&lt;/a&gt; sums it all (it&amp;rsquo;s huge):&lt;/p&gt;
-&lt;div class="figure"&gt;
+&lt;figure&gt;
     &lt;img src="https://blog.liang2.tw/posts/2020/07/id-crossref-exact-protein-uniparc/pics/bioDBnet.jpg"&gt;
-    &lt;p class="caption"&gt;Best illustration of the complex ID crossref: bioDBnet Network Diagram (&lt;a href="https://biodbnet-abcc.ncifcrf.gov/dbInfo/netGraph.php"&gt;source&lt;/a&gt;)&lt;/p&gt;
-&lt;/div&gt;
+    &lt;figcaption&gt;Best illustration of the complex ID crossref: bioDBnet Network Diagram (&lt;a href="https://biodbnet-abcc.ncifcrf.gov/dbInfo/netGraph.php"&gt;source&lt;/a&gt;)&lt;/figcaption&gt;
+&lt;/figure&gt;
 
 &lt;h3 id="challenges-to-map-ids-with-exact-sequence-identity"&gt;Challenges to map IDs with exact sequence identity&lt;/h3&gt;
 &lt;p&gt;It&amp;rsquo;s usually straightforward to cross reference within each ID camp, as long as one has the versioned ID and a copy of that camp&amp;rsquo;s ID system. For example, to know the gene symbol of &lt;code&gt;ENSP00000368632.3&lt;/code&gt;, I can easily use &lt;a href="https://bioconductor.org/packages/release/bioc/html/ensembldb.html"&gt;ensembldb&lt;/a&gt;, a lite copy of Ensembl&amp;rsquo;s ID system, to find out it is translated from transcript &lt;code&gt;ENST00000379328.9&lt;/code&gt;, which is one of the transcripts of gene &lt;code&gt;ENSG00000107485.18&lt;/code&gt;, whose gene symbol is &lt;code&gt;GATA3&lt;/code&gt;. Easy peasy. The story goes the same for RefSeq and UniProt (albeit this one is more protein centric).&lt;/p&gt;
@@ -40,7 +40,7 @@
 &lt;/blockquote&gt;
 &lt;p&gt;UniParc is a collection of non-redundant protein sequence archive. The UniParc ID and sequence is permanently stable, but the cross-references associated to one UniParc entry may change over time. All of its properties make UniParc perfect to be the identifer to map across ID camps. UniParc IDs can be queried using the &lt;a href="https://en.wikipedia.org/wiki/Cyclic_redundancy_check"&gt;CRC64-ISO checksum&lt;/a&gt; of the protein sequence.&lt;/p&gt;
 &lt;p&gt;For example, let&amp;rsquo;s find the UniPrac ID of &lt;code&gt;NP_001317366.1&lt;/code&gt;. First, we obtain its protein sequence in FASTA from NCBI:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;refseq_id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;NP_001317366.1&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;refseq_id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;NP_001317366.1&amp;quot;&lt;/span&gt;
 &lt;span class="gp"&gt;$ &lt;/span&gt;curl -Lo &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$refseq_id&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;.fasta &lt;span class="se"&gt;\&lt;/span&gt;
     &lt;span class="s2"&gt;&amp;quot;https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=protein&amp;amp;id=&lt;/span&gt;&lt;span class="nv"&gt;$refseq_id&lt;/span&gt;&lt;span class="s2"&gt;&amp;amp;rettype=fasta&amp;amp;retmode=text&amp;quot;&lt;/span&gt;
 
@@ -50,9 +50,8 @@
 &lt;span class="go"&gt;FATLAELVQYYMEHHGQLKEKNGDVIELKYPLNCADPTSERWFHGHLSGKEAEKLLTEKGKHGSFLVRES&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Then calculate the CRC64 checksum (there are a few packages capable, or use &lt;a href="https://www.ebi.ac.uk/Tools/so/seqcksum/"&gt;EBI&amp;rsquo;s checksum calculator&lt;/a&gt;):&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;pysam&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;FastaFile&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-pycon"&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;pysam&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;FastaFile&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;crc64iso&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;crc64iso&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;fa&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;FastaFile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;NP_001317366.1.fasta&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;seq&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;fa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fetch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;references&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
@@ -60,18 +59,17 @@
 &lt;span class="go"&gt;&amp;#39;37E8BFC7ECA2D03F&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Search &lt;code&gt;checksum:37E8BFC7ECA2D03F&lt;/code&gt; on UniParc gives an unique entry&lt;sup id="fnref:checksum-collision"&gt;&lt;a class="footnote-ref" href="#fn:checksum-collision"&gt;1&lt;/a&gt;&lt;/sup&gt; &lt;code&gt;UPI000041C017&lt;/code&gt;: &lt;a href="https://www.uniprot.org/uniparc/?query=checksum%3A37E8BFC7ECA2D03F&amp;amp;sort=score&amp;amp;direct=yes"&gt;https://www.uniprot.org/uniparc/?query=checksum%3A37E8BFC7ECA2D03F&amp;amp;sort=score&amp;amp;direct=yes&lt;/a&gt;.&lt;/p&gt;
-&lt;div class="figure full-img"&gt;
+&lt;figure class="full-img"&gt;
     &lt;img src="https://blog.liang2.tw/posts/2020/07/id-crossref-exact-protein-uniparc/pics/uniparc_UPI000041C017.png"&gt;
-    &lt;p class="caption"&gt;UniParc entry &lt;a href="https://www.uniprot.org/uniparc/UPI000041C017"&gt;UPI000041C017&lt;/a&gt; and all of its human ID cross references with exact sequence identity.&lt;/p&gt;
-&lt;/div&gt;
+    &lt;figcaption&gt;UniParc entry &lt;a href="https://www.uniprot.org/uniparc/UPI000041C017"&gt;UPI000041C017&lt;/a&gt; and all of its human ID cross references with exact sequence identity.&lt;/figcaption&gt;
+&lt;/figure&gt;
 
 &lt;p&gt;All the external IDs listed here have the identical protein sequence to &lt;code&gt;NP_001317366.1&lt;/code&gt;, which of course includes itself. UniParc also marks the IDs inactive if they are superseded by a newer version or become obsolete, which is quite useful for data forensics.&lt;/p&gt;
 &lt;h3 id="programatic-uniparc-access-using-its-xml"&gt;Programatic UniParc access using its XML&lt;/h3&gt;
 &lt;p&gt;To extract UniParc&amp;rsquo;s cross reference, it&amp;rsquo;s easiest to parse its XML, which is also easy to download in bulk.
 Continue to use &lt;code&gt;UPI000041C017&lt;/code&gt; (&lt;code&gt;NP_001317366.1&lt;/code&gt;) as the example,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;curl -LO https://www.uniprot.org/uniparc/UPI000041C017.xml
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;curl -LO https://www.uniprot.org/uniparc/UPI000041C017.xml
 &lt;span class="gp"&gt;$ &lt;/span&gt;head -n &lt;span class="m"&gt;10&lt;/span&gt; UPI000041C017.xml
 &lt;span class="go"&gt;&amp;lt;?xml version=&amp;#39;1.0&amp;#39; encoding=&amp;#39;UTF-8&amp;#39;?&amp;gt;&lt;/span&gt;
 &lt;span class="go"&gt;&amp;lt;uniparc xmlns=&amp;quot;http://uniprot.org/uniparc&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://uniprot.org/uniparc http://www.uniprot.org/docs/uniparc.xsd&amp;quot; version=&amp;quot;2020_03&amp;quot;&amp;gt;&lt;/span&gt;
@@ -85,9 +83,8 @@ Continue to use &lt;code&gt;UPI000041C017&lt;/code&gt; (&lt;code&gt;NP_001317366
 &lt;span class="go"&gt;&amp;lt;/dbReference&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;While I don&amp;rsquo;t find XML easy to read, I&amp;rsquo;ve figured out &lt;a href="https://blog.liang2.tw/posts/2018/01/read-uniprotkb-xml/"&gt;a way&lt;/a&gt; before to parse XMLs as a JSON-like dictionary given its schema. Let&amp;rsquo;s define a function to flatten the nested structure and only select the information we want:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;parse_dbref&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;entry&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-python"&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;parse_dbref&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;entry&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
 &lt;span class="sd"&gt;    Parse Ensembl/UniProt/RefSeq IDs of an UniParc entry.&lt;/span&gt;
 
@@ -117,9 +114,8 @@ Continue to use &lt;code&gt;UPI000041C017&lt;/code&gt; (&lt;code&gt;NP_001317366
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;ref_ids&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;&lt;a href="https://pypi.org/project/xmlschema/"&gt;xmlschema&lt;/a&gt; makes it really easy to parse a XML with schema:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;xmlschema&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-pycon"&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;xmlschema&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;pprint&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;pprint&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;xs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;xmlschema&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;XMLSchema&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;https://www.uniprot.org/docs/uniparc.xsd&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;errors&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;xs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_dict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;UPI000041C017.xml&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;validation&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;lax&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -129,20 +125,17 @@ Continue to use &lt;code&gt;UPI000041C017&lt;/code&gt; (&lt;code&gt;NP_001317366
 &lt;span class="go"&gt; &amp;#39;UniProt&amp;#39;: [&amp;#39;Q06124-1.1&amp;#39;, &amp;#39;Q06124.2&amp;#39;]}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;&lt;em&gt;Voilà&lt;/em&gt;, we can now map across ID camps with confidence!&lt;/p&gt;
 &lt;p&gt;This method can be applied to a large number of queries efficiently. By reading in a FASTA of protein sequences of interest, we can build URLs to UniParc XML per protein entry using its checksum, and pass the URLs as an &lt;a href="https://aria2.github.io/"&gt;aria2&lt;/a&gt;'s input file &lt;code&gt;xml.links&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;https://www.uniprot.org/uniparc/?query=checksum%3A{crc64_checksum}&amp;amp;format=xml
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;https://www.uniprot.org/uniparc/?query=checksum%3A{crc64_checksum}&amp;amp;format=xml
     out={protein_id}.xml
 
 ...
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;And download all the links in batch:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;aria2c -c -j5 --max-overall-download-limit&lt;span class="o"&gt;=&lt;/span&gt;10M -i xml.links
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;aria2c -c -j5 --max-overall-download-limit&lt;span class="o"&gt;=&lt;/span&gt;10M -i xml.links
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;h3 id="summary"&gt;Summary&lt;/h3&gt;
 &lt;p&gt;We solve the ID mapping with exact protein sequence identity between Ensembl/RefSeq/UniProt camps through UniParc.&lt;/p&gt;

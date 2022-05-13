@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="相信很多人都已經在使用 Jupyter (IPython) Notebook 跑分析。隨著分析的資料越跑越多，有時候刷下去就是幾十分鐘甚至數小時。此時沒有個 …" />
 <meta name="keywords" content="zh, jupyter, notebook">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>Jupyter Notebook Progress Bar</title>
 
 	<!-- og -->
@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2016-03-23 02:00:00-05:00"/>
-<meta property="article:modified_time" content="2022-02-20 20:07:45.282902-06:00"/>
+<meta property="article:modified_time" content="2022-05-13 12:58:45.938118-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="zh"/>
@@ -37,8 +37,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -52,7 +52,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post zh-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Mar 23, 2016">Mar 23, 2016</time>
         in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
@@ -84,81 +84,73 @@
 <h3 id="ipywidgets">IPywidgets 介紹</h3>
 <p>Notebook 進度條使用 <a href="https://github.com/ipython/ipywidgets">ipywidgets</a> 中的元件實作。這件元件規範了 notebook client &lt;-&gt; server 間雙向的溝通，並且能把相關的 CSS / JS 包裝在一起。在 ipywidgets 範例的 <a href="http://nbviewer.jupyter.org/github/ipython/ipywidgets/blob/master/examples/Widget%20Basics.ipynb"><em>Widgets Basics</em></a> 中就有提到可能的用途：</p>
 <blockquote>
-<p>You can use widgets to <strong>build interactive GUIs</strong> for your notebooks. <br> 
+<p>You can use widgets to <strong>build interactive GUIs</strong> for your notebooks. <br>
 You can also use widgets to <strong>synchronize stateful and stateless information</strong> between Python and JavaScript.</p>
 </blockquote>
 <p>所以除了像進度條這樣單向的從 python code 傳訊息到 notebook (HTML) front-end 之外，也可以做一些介面把 front-end 的值傳回 python code。</p>
 <p>……只是要用個進度條而已，哪來這麼多背景知識。更多介紹可以參考 <a href="http://nbviewer.jupyter.org/github/ipython/ipywidgets/blob/master/examples/Index.ipynb">ipywidgets 官方範例</a>。</p>
 <h4 id="_1">安裝</h4>
 <p>使用 Python 3.5 示範。安裝除了 notebook 本身外，還要額外裝上 ipywidgets 這套件。</p>
-<div class="highlight"><pre><span></span><code>pip install notebook ipywidgets
+<div class="highlight"><pre><span></span><code class="language-text">pip install notebook ipywidgets
 </code></pre></div>
-
 
 <p>再用 <code>jupyter notebook</code> 即可啟用 notebook。</p>
 <h3 id="_2">使用進度條</h3>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">IntProgress</span>
+<div class="highlight"><pre><span></span><code class="language-python"><span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">IntProgress</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
 </code></pre></div>
 
-
 <p><code>IntProgress</code> 就是進度條，<code>display</code> 則是 IPython 顯示各種 Python 物件的函數，在這邊用它才能把 widget 以 HTML 顯示並與 python code 聯動。</p>
 <p>建立一個進度條的方式很簡單。建立 <code>IntProgress</code> widget object，然後顯示它：</p>
-<div class="highlight"><pre><span></span><code><span class="n">p</span> <span class="o">=</span> <span class="n">IntProgress</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code class="language-python"><span class="n">p</span> <span class="o">=</span> <span class="n">IntProgress</span><span class="p">()</span>
 <span class="n">display</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </code></pre></div>
 
-
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_default.png">
-</div>
+</figure>
 
 <p>預設是進度條有 100 個單位，初始值為 0。進度條的值與最大值的狀態分別存在 <code>.value</code>、<code>.max</code> 屬性裡：</p>
-<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">max</span>
+<div class="highlight"><pre><span></span><code class="language-pycon"><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">max</span>
 <span class="go">(0, 100)</span>
 </code></pre></div>
 
-
 <p>只要修改 <code>p.value</code> 前面的進度條的狀態就會自動更新（不用重跑 <code>display(p)</code>）：</p>
-<div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">50</span>
+<div class="highlight"><pre><span></span><code class="language-python"><span class="n">p</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">50</span>
 </code></pre></div>
 
-
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_50.png">
-</div>
+</figure>
 
-<div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">100</span>
+<div class="highlight"><pre><span></span><code class="language-python"><span class="n">p</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">100</span>
 </code></pre></div>
 
-
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_100.png">
-</div>
+</figure>
 
 <p>當然，最大值調整也會即時更新。此外，還可以透過 <code>.description</code> 給進度條一個 label。重新做一個完整的例子：</p>
-<div class="highlight"><pre><span></span><code><span class="n">p2</span> <span class="o">=</span> <span class="n">IntProgress</span><span class="p">(</span><span class="nb">max</span><span class="o">=</span><span class="mi">56</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code class="language-python"><span class="n">p2</span> <span class="o">=</span> <span class="n">IntProgress</span><span class="p">(</span><span class="nb">max</span><span class="o">=</span><span class="mi">56</span><span class="p">)</span>
 <span class="n">p2</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="mi">10</span>
 <span class="n">p2</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;Running&#39;</span>
 <span class="n">display</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
 </code></pre></div>
 
-
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_full.png">
-</div>
+</figure>
 
 <p>完整的 code 就這樣，用起來非常方便。</p>
 <h3 id="progress-bar-example-in-action">Progress bar example in action</h3>
 <p>模擬一下真實情況，我們通常有一堆待做的 task，在這邊叫 <code>todo_tasks</code> 好了。</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">time</span>
+<div class="highlight"><pre><span></span><code class="language-python"><span class="kn">import</span> <span class="nn">time</span>
 <span class="n">todo_tasks</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;task </span><span class="si">%02d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">)]</span>
 </code></pre></div>
 
-
 <p>只是個字串，但用 <code>time.sleep(sec)</code> 來模擬有在做事。</p>
 <p>搭配進度條的時候，把實際動態做成底下的動畫。</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Initialize a progess bar</span>
+<div class="highlight"><pre><span></span><code class="language-python"><span class="c1"># Initialize a progess bar</span>
 <span class="n">progress</span> <span class="o">=</span> <span class="n">IntProgress</span><span class="p">()</span>
 <span class="n">progress</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">todo_tasks</span><span class="p">)</span>
 <span class="n">progress</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;(Init)&#39;</span>
@@ -173,15 +165,14 @@ You can also use widgets to <strong>synchronize stateful and stateless informati
 <span class="n">progress</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;(Done)&#39;</span>
 </code></pre></div>
 
-
-<div class="figure">
+<figure>
   <video loop auto autoplay>
     <source src="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_demo.webm" type="video/webm">
     <source src="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_demo.mp4" type="video/mp4">
     Your browser doesn't support HTML5 video in WebM with VP8 or MP4 with H.264. You can still download the <a href="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_demo.mp4">screencast</a> and view it locally.
   </video>
   <p class="caption center">Progressbar in action</p>
-</div>
+</figure>
 
 <p>非常方便吧！</p>
 <h3 id="misc">Misc. 螢幕截圖</h3>
@@ -190,20 +181,19 @@ You can also use widgets to <strong>synchronize stateful and stateless informati
 <p>在最後動態的錄製花了不少時間。一開始想說是不是要用 GIF，但<a href="http://blog.imgur.com/2014/10/09/introducing-gifv/">都 2016 年了還用什麼 GIF 啊！</a>，雖然螢幕可以試著改 GIF palette 讓畫面不會很醜體積又小，但覺得用個 H.264 / VP9 簡單多了。</p>
 <p>使用 QuickTime Screen Capture，開始錄的時候能只選擇螢幕一部份區域。以我 13&rdquo; retina 螢幕為例，會得到 1636x736 H.264 .mov 檔。但我覺得解析度不用這麼高，所以最後輸出成 480p (1148x480)  就好，順便裁了一點白邊。</p>
 <p>透過 HTML5 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video"><code>&lt;video&gt;</code></a> 能把 MP4 / WebM 當成動畫來使用：</p>
-<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">video</span> <span class="na">loop</span> <span class="na">autoplay</span><span class="p">&gt;</span>
+<div class="highlight"><pre><span></span><code class="language-html"><span class="p">&lt;</span><span class="nt">video</span> <span class="na">loop</span> <span class="na">autoplay</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">source</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;vid.webm&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;video/webm&quot;</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">source</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;vid.mp4&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;video/mp4&quot;</span><span class="p">&gt;</span>
     Your browser doesn&#39;t support HTML5 video in WebM with VP8
-    or MP4 with H.264. You can still download the 
+    or MP4 with H.264. You can still download the
     <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;vid.mp4&quot;</span><span class="p">&gt;</span>screencast<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span> and view it locally.
 <span class="p">&lt;/</span><span class="nt">video</span><span class="p">&gt;</span>
 </code></pre></div>
 
-
 <p>各家 web browser 的支援度可參考 caniuse.com：<a href="http://caniuse.com/#feat=webm">WebM</a>、<a href="http://caniuse.com/#feat=mpeg4">MP4</a></p>
 <h4 id="ffmpeg">FFmpeg 轉檔</h4>
 <p>筆記而已，沒有認真調參數讓輸出檔案最小。VP9 的部份參考 <a href="https://trac.ffmpeg.org/wiki/Encode/VP9">FFmepg</a><sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>。</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># H.264 MP4</span>
+<div class="highlight"><pre><span></span><code class="language-bash"><span class="c1"># H.264 MP4</span>
 ffmpeg -i Untitled.mov <span class="se">\</span>
     -vcodec h264 <span class="se">\</span>
     -strict -2 -crf <span class="m">22</span> -preset slow -r <span class="m">24</span> <span class="se">\</span>
@@ -218,14 +208,12 @@ ffmpeg -i Untitled.mov <span class="se">\</span>
     out.webm
 </code></pre></div>
 
-
 <p>4s 的檔案最後大約 60KB，相當不錯。我很多 PNG 截圖都大多了。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>du -sh ./* <span class="p">|</span> gsort -rh
+<div class="highlight"><pre><span></span><code class="language-console"><span class="gp">$ </span>du -sh ./* <span class="p">|</span> gsort -rh
 <span class="go">744K    ./Untitled.mov</span>
 <span class="go"> 60K    ./out.mp4</span>
 <span class="go"> 52K    ./out.webm</span>
 </code></pre></div>
-
 
 <div class="footnote">
 <hr>

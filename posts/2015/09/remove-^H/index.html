@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="中文輸入我用嘸蝦米，在打中英文切換時候，很容易打出 \x08 這東西，在 vim 就會顯示成 ^H，功能是 Backspace，但在一般 GUI 環境裡，可能就 …" />
 <meta name="keywords" content="zh">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>清除 ^H</title>
 
 	<!-- og -->
@@ -33,8 +33,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -48,7 +48,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post zh-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Sep 27, 2015">Sep 27, 2015</time>
         in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
@@ -61,16 +61,14 @@
     </span>
     <section class="post-content"><p>中文輸入我用嘸蝦米，在打中英文切換時候，很容易打出 <code>\x08</code> 這東西，在 vim 就會顯示成 <code>^H</code>，功能是 <kbd>Backspace</kbd>，但在一般 GUI 環境裡，可能就會因為它而把前面的字吃掉。</p>
 <p>因此今天寫了個小腳本可以把清掉當目錄底下的文字檔的 <code>^H</code>：</p>
-<div class="highlight"><pre><span></span><code>ag -l <span class="s1">&#39;\x08&#39;</span> <span class="p">|</span> xargs sed -i <span class="s1">&#39;&#39;</span> <span class="s1">&#39;s/\x08//&#39;</span>
+<div class="highlight"><pre><span></span><code class="language-bash">ag -l <span class="s1">&#39;\x08&#39;</span> <span class="p">|</span> xargs sed -i <span class="s1">&#39;&#39;</span> <span class="s1">&#39;s/\x08//&#39;</span>
 </code></pre></div>
-
 
 <p><a href="https://github.com/ggreer/the_silver_searcher">ag</a> 能夠換成比較慢但內建就有的 grep，參數兩者是相容的。</p>
 <p>如果要順便印出改了哪些檔案的話：</p>
-<div class="highlight"><pre><span></span><code><span class="nb">echo</span> <span class="s1">&#39;Found ^H in the following files:&#39;</span>
+<div class="highlight"><pre><span></span><code class="language-bash"><span class="nb">echo</span> <span class="s1">&#39;Found ^H in the following files:&#39;</span>
 ag -l <span class="s1">&#39;\x08&#39;</span> <span class="p">|</span> tee /dev/fd/2 <span class="p">|</span> xargs sed -i <span class="s1">&#39;&#39;</span> <span class="s1">&#39;s/\x08//&#39;</span>
 </code></pre></div>
-
 
 <p>用 tee 把 stdout 導向到 stderr 還蠻有趣的，以前都不知道這樣用。</p></section>
     <footer class="post-footer">

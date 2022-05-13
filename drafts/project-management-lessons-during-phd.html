@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="author" content="Liang-Bo Wang" />
+<meta name="description" content="(Read this in Mandarin; 閱讀中文版) During my PhD in computational biology/bioinformatics, I had the opportunity to lead both independent and collaborative research projects, ranging from a few colleagues (less than 10) to a large list of people (100-ish people) across institutions. I admit that my …" />
+<meta name="keywords" content="en, zh">
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
+	<title>Project management lessons I learned during my PhD</title>
+
+	<!-- og -->
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Liang-Bo Wang's Blog"/>
+<meta property="og:title" content="Project management lessons I learned during my PhD"/>
+<meta property="og:description" content="(Read this in Mandarin; 閱讀中文版) During my PhD in computational biology/bioinformatics, I had the opportunity to lead both independent and collaborative research projects, ranging from a few colleagues (less than 10) to a large list of people (100-ish people) across institutions. I admit that my …"/>
+<meta property="og:locale" content=""/>
+<meta property="og:url" content="https://blog.liang2.tw/drafts/project-management-lessons-during-phd.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2022-05-05 00:00:00-05:00"/>
+<meta property="article:modified_time" content="2022-05-13 18:28:03.192977-05:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
+<meta property="article:section" content="misc"/>
+<meta property="article:tag" content="en"/>
+<meta property="article:tag" content="zh"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="Project management lessons I learned during my PhD">
+<meta name="twitter:description" content="(Read this in Mandarin; 閱讀中文版) During my PhD in computational biology/bioinformatics, I had the opportunity to lead both independent and collaborative research projects, ranging from a few colleagues (less than 10) to a large list of people (100-ish people) across institutions. I admit that my …">
+
+	<!-- Feeds -->
+	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
+		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
+
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
+</head>
+
+<body class="post-template">
+	<header class="site-head">
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang-Bo Wang's Blog</a></h1>
+		<h2 class="blog-description">
+			<a href="https://blog.liang2.tw/about-me/">About</a> |
+			<a href="https://blog.liang2.tw/talks/">Talks</a> |
+			<a href="https://blog.liang2.tw/archives.html">Archives</a>
+		</h2>
+	</header>
+	<main id="content" class="content" role="main">
+<article class="post">
+    <span class="post-meta">
+        <time datetime="May 05, 2022">May 05, 2022</time>
+        in <a href="https://blog.liang2.tw/category/misc/">misc</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/drafts/project-management-lessons-during-phd.html" rel="bookmark" title="Permalink to Project management lessons I learned during my PhD">Project management lessons I learned during my PhD</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/en/">en</a>
+                <a href="https://blog.liang2.tw/tag/zh/">zh</a>
+    </span>
+    <section class="post-content"><p>(Read this in <a href="https://blog.liang2.tw/drafts/project-management-lessons-during-phd-zh.html">Mandarin</a>; 閱讀<a href="https://blog.liang2.tw/drafts/project-management-lessons-during-phd-zh.html">中文版</a>)</p>
+<p>During my PhD in computational biology/bioinformatics, I had the opportunity to lead both independent and collaborative <a href="https://scholar.google.com/citations?user=-tdb3hcAAAAJ">research projects</a>, ranging from a few colleagues (less than 10) to a large list of people (100-ish people) across institutions.
+I admit that my projects didn&rsquo;t cover the full spectrum of the possible teamwork styles.
+Research can definitely be done by much fewer people, like <a href="https://doi.org/10.1101/gr.276025.121">my wife&rsquo;s phenomenal work</a>, which is done by just her and the PI.
+That said, I have experience of different collaboration styles due to the nature of the teamwork.
+And a significant proportion of my time went in to project management.</p>
+<p>Thus, this post is to document my project management setup and lessons I learned.
+Since my projects are mostly dry lab genomic data analysis in academia, I will be specific about the tools/services I use, which may not be useful to wet lab experiments, other research fields, or research in the private sector.
+Anyway, my post won&rsquo;t be generic.</p>
+<div class="toc">
+<ul>
+<li><a href="#manage-the-research-project-agile-ish">Manage the research project agile-ish</a><ul>
+<li><a href="#lesson-be-flexible-with-principles-sharing-the-same-vision-is-more-important">Lesson: Be flexible with principles; sharing the same vision is more important</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<!-- cSpell:words Toggl Todoist -->
+
+<h2 id="manage-the-research-project-agile-ish">Manage the research project <em>agile-ish</em></h2>
+<p>Research projects and startups share a lot of similarities, hence both can be benefited by an agile management.
+Research and startups reward innovations and novel discoveries.
+A clear end goal exists for both activities, being either a publication or a product.
+And resources to accomplish the goal are limited (time, people, equipments, and money).</p>
+<p><a href="https://en.wikipedia.org/wiki/Agile_software_development">Agile management</a> has been adopted ubiquitously by startups, particularly in software development.
+Actually, the classic book on agile management for software development, <a href="https://en.wikipedia.org/wiki/The_Mythical_Man-Month"><em>The Mythical Man-Month</em></a>, greatly influenced me regarding how I planned and carried out research projects with large collaborations.
+In my experience, relevant rules of an agile management include:</p>
+<ol>
+<li>Make incremental and iterative builds</li>
+<li>Keep short and direct feedback cycles</li>
+<li>Implement easy (automatic) way to ensure things are going as expected</li>
+</ol>
+<p>These rules can be applied to research well.
+For rule #1, instead of targeting for publications or developing all the features of a tool (end goal), set up milestones and minimal viable products (MVP).
+For example, to develop a tool that classify genomic variants, implement a <em>simpler</em> tool, a MVP, that checks only one basic rule of the classification (even a dummy rule) but it takes in the inputs and produces outputs in the desired format.
+For analysis, subaims are good milestones because their outcomes are well defined and natural steps toward the completion of the aim.</p>
+<p>For rule #2, set up regular feedback on the results, and the key here is short and direct.
+No one likes a lengthy and boring meeting (conference call).
+And there are many many meetings in a large collaboration on different things, so I want to save time on my analysis and tool development.
+An asynchronous feedback (email or message) can save even more time when it make senses.
+There are a few aspects of being direct: make direct/measurable suggestions and go to direct person involved.</p>
+<p>If the feedback can be done automatically, say unit/behavior tests for code, or positive/negative control for analysis, it&rsquo;s better.</p>
+<p>The rules above definitely are used widely outside of running an agile management.
+They are reasonable and helpful guidelines.
+So I don&rsquo;t believe there can only be agile or non-agile.
+Hence the <em>agile-ish</em> style.
+I just think that agile bundles the rules together as a framework and creates the mindset.
+They are not fixed instructions.
+We should feel free to relax some rules whichever fit the situation.</p>
+<p>There are already good articles that talk about implementing agile management in an academic setting.
+For example, <a href="https://thenewpi.blogspot.com/2018/04/project-management-for-academia-101.html">this blog post</a> compares the traditional (waterfall) project management with the agile project management in academia.
+<em>Nature</em> publishes a few columns (<a href="https://www.nature.com/articles/d41586-018-07860-6">1</a>, <a href="https://www.nature.com/articles/d41586-019-01184-9">2</a>, <a href="https://www.nature.com/articles/d41586-019-02620-6">3</a>) covering this subject from the broad concept to the actual methods of running agile methods (scrum).
+Though I never tried to implement the fixed 2-week lab scrum for my research projects, as I find it very intrusive (might face huge pushbacks) and unnecessary (timeline is more flexible in academia).
+More on this in the lesson I learned later.</p>
+<p>I was aware of the inevitable complexity when the team grows and the increasing time spent on communications.
+So I prepared for the complexity and beware of my role to keep everyone on the same page, rather than spending all of my time on analysis or things &ldquo;productive&rdquo;.</p>
+<h3 id="lesson-be-flexible-with-principles-sharing-the-same-vision-is-more-important">Lesson: Be flexible with principles; sharing the same vision is more important</h3>
+<p>Research is not like running a company.
+It&rsquo;s not trying to be efficient, just <em>efficient enough</em>.</p>
+<p>Stuff I want to talk about:</p>
+<ul>
+<li>Project management<ul>
+<li>Startup-ish agile<ul>
+<li>MVP</li>
+<li>Incremental builds</li>
+</ul>
+</li>
+<li>Trello</li>
+</ul>
+</li>
+<li>Wiki<ul>
+<li>Confluence</li>
+<li>Notion</li>
+</ul>
+</li>
+<li>Personal task management<ul>
+<li>Toggl</li>
+<li>Todoist</li>
+</ul>
+</li>
+<li>Dry lab notebook<ul>
+<li>Daily Markdown</li>
+<li>Later notion</li>
+<li>Periodic high level summary through slides</li>
+</ul>
+</li>
+<li>Mentoring<ul>
+<li>one on one</li>
+<li>page to keep track of their progress</li>
+</ul>
+</li>
+<li>
+<p>PhD toolchain/toolbox</p>
+<ul>
+<li>Raw/large data on the lab cluster and cloud</li>
+<li>Summarized local data as SummarizedExperiment objects<ul>
+<li>Single cell and imaging</li>
+</ul>
+</li>
+<li>Low level scripts on github</li>
+<li>Job running notifications through slack</li>
+<li>analysis scripts in the project folder</li>
+<li>project folder<ul>
+<li>reproducible analysis code (r markdown; not r notebook)</li>
+<li>why not workflow engines?</li>
+<li>ripgrep</li>
+<li>data processing and plotting</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Cloud based environment</p>
+<ul>
+<li>R Studio Server in a Docker image<ul>
+<li>Cons</li>
+</ul>
+</li>
+<li>VSCode remote session</li>
+<li>Shared cluster</li>
+</ul>
+</li>
+<li>
+<p>Things I would like to have</p>
+<ul>
+<li>Automatic snapshot of working folder (ZFS)</li>
+<li>Language agnostic SummarizedExperiment object (anndata)<ul>
+<li>Arrow</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Notification through Slack</p>
+<div class="highlight"><pre><span></span><code class="language-bash"><span class="k">function</span> slack-me --description <span class="s2">&quot;Slack myself a job&#39;s ended&quot;</span>
+    <span class="c1"># Capture the previous job status</span>
+    <span class="nb">set</span> -l prev_status <span class="nv">$status</span>
+
+    <span class="k">if</span> not <span class="nb">set</span> -q SLACK_BOT_TOKEN<span class="p">;</span> or not <span class="nb">set</span> -q SLACK_BOT_CHANNEL
+        <span class="nb">echo</span> -s <span class="s2">&quot;Error: Slack bot integration is not set up. &quot;</span> <span class="se">\</span>
+            <span class="s2">&quot;Configure the shell variables below:&quot;</span><span class="se">\n</span> <span class="se">\</span>
+            <span class="s2">&quot;  set -U SLACK_BOT_TOKEN &#39;xoxb-....&#39;&quot;</span><span class="se">\n</span> <span class="se">\</span>
+            <span class="s2">&quot;  set -U SLACK_BOT_CHANNEL &#39;channel_id&#39;&quot;</span> <span class="se">\</span>
+            <span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">2</span>
+        <span class="k">return</span> <span class="m">1</span>
+    end
+
+    /usr/bin/curl <span class="se">\</span>
+        -F <span class="nv">token</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$SLACK_BOT_TOKEN</span><span class="s2">&quot;</span> <span class="se">\</span>
+        -F <span class="nv">channel</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$SLACK_BOT_CHANNEL</span><span class="s2">&quot;</span> <span class="se">\</span>
+        -F <span class="nv">text</span><span class="o">=</span><span class="s2">&quot;A job on &quot;</span><span class="o">(</span>hostname<span class="o">)</span><span class="s2">&quot; has ended (exit </span><span class="nv">$prev_status</span><span class="s2">): </span><span class="nv">$argv</span><span class="s2">&quot;</span> <span class="se">\</span>
+        https://slack.com/api/chat.postMessage
+end
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code class="language-bash">cellranger xxx<span class="p">;</span> slack-me <span class="s1">&#39;10x multiome cellranger complete&#39;</span>
+</code></pre></div>
+
+<p>https://fortelabs.co/blog/para/
+https://dsebastien.net/blog/2022-04-03-25-years-of-personal-knowledge-management
+https://news.ycombinator.com/item?id=30903940</p></section>
+    <footer class="post-footer">
+	<section>
+		<script src="https://utteranc.es/client.js"
+		repo="ccwang002/ccwang002.github.io"
+		issue-term="pathname"
+		label="Comment"
+		theme="github-light"
+		crossorigin="anonymous"
+		async>
+		</script>
+	</section>
+	</footer>
+</article>
+	</main>
+	<footer class="site-footer">
+		<a class="subscribe"
+			href="https://blog.liang2.tw/feeds/all.atom.xml"
+			data-tooltip="Atom feed"
+		>
+			<img src="https://blog.liang2.tw/theme/icons/feed.svg" alt="Atom feed">
+		</a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags.html">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/lbwang2">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="poweredby">
+				Built using <a href="https://getpelican.com/">Pelican</a>.
+				Powered by the <a href="https://kura.github.io/hauntr/">Hauntr</a> theme.
+			</section>
+		</div>
+	</footer>
+</body>
+</html>

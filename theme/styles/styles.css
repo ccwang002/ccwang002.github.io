@@ -1,0 +1,573 @@
+@import 'fonts.css';
+@import 'elements/blockquote.css';
+@import 'elements/figure.css';
+@import 'elements/subscribe.css';
+@import 'elements/table.css';
+
+article,
+aside,
+details,
+footer,
+header,
+hgroup,
+main,
+nav,
+section { display: block; }
+a:focus { outline: thin dotted; }
+
+code,
+kbd,
+pre,
+samp,
+tt {
+    font-family: 'Fira Code', monospace;
+    font-feature-settings: 'calt', 'ss01', 'ss03', 'ss05', 'ss08';
+}
+
+pre {
+    font-size: 0.85em;
+    line-height: 1.6em;
+    overflow-x: auto;
+}
+
+small { font-size: 80%; }
+
+sub, sup {
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+sup { top: -0.5em; }
+sub { bottom: -0.25em; }
+img { border: 0; }
+svg:not(:root) { overflow: hidden; }
+
+/* no underline for the footnote hyperlinks */
+sup a.footnote-ref {
+    text-decoration: none;
+}
+
+/* ==========================================================================
+   2. General - Setting up some base styles
+   ========================================================================== */
+
+html {
+    height: 100%;
+    max-height: 100%;
+}
+
+body {
+    --color-text: #3a4145;
+    --color-header-footer-background: #f7fafb;
+    --main-en-font: 'Source Sans 3 VF';
+    --main-zh-font: 'Noto Sans TC';
+    --font-size: 18px;
+
+    height: 100%;
+    max-height: 100%;
+    font-size: var(--font-size);
+    font-family: var(--main-en-font), var(--main-zh-font), sans-serif;
+    line-height: 1.5em;
+    color: var(--color-text);
+    margin: 0;
+}
+
+::selection {
+    color: #222222;
+    background: #d6edff;
+    text-shadow: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    line-height: 1.2em;
+}
+
+h1 {
+    font-size: 1.75em;
+}
+
+h2 {
+    font-size: 1.6em;
+    margin-top: 2.5em;
+}
+
+h3 {
+    font-size: 1.5em;
+    margin-top: 2em;
+}
+
+h4 {
+    font-size: 1.3em;
+    margin-top: 2em;
+}
+
+h5 {
+    font-size: 1.2em;
+    margin-top: 1.5em;
+}
+
+h6 {
+    font-size: 1em;
+    margin-top: 1em;
+}
+
+a {
+    color: #4a4a4a;
+    transition: color ease 0.3s;
+}
+
+a:hover {
+    color: #57a3e8;
+}
+
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+    color: #50585d;
+    text-decoration: none;
+    transition: color 0.3s ease 0s;
+}
+
+h1 a:hover,
+h2 a:hover,
+h3 a:hover,
+h4 a:hover,
+h5 a:hover,
+h6 a:hover {
+    color: #57a3e8;
+}
+
+p, ul, ol, dl {
+    margin: 1.5em 0;
+    line-height: 1.75em;
+}
+
+ol ol,
+ul ul,
+ul ol,
+ol ul {
+    margin: 0.4em 0;
+}
+
+dl dt {
+    float: left;
+    width: 180px;
+    overflow: hidden;
+    clear: left;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: bold;
+    margin-bottom: 1em;
+}
+
+dl dd {
+    margin-left: 200px;
+    margin-bottom: 1em;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #efefef;
+    margin: 3.2em 0;
+    padding: 0;
+}
+
+mark {
+    background-color: #ffc336;
+}
+
+code, tt {
+    padding: 1px 3px;
+    font-size: 0.85em;
+    white-space: pre-wrap;
+    word-break: break-all;
+    border: 1px solid #e3edf3;
+    background: var(--color-header-footer-background);
+    border-radius: 2px;
+}
+
+pre {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 1.6em 0 1.6em -2.2em;
+    padding: 0 0 0 1.6em;
+    border-left: #9eabb3 0.4em solid;
+}
+
+pre code,
+pre tt {
+    font-size: inherit;
+    white-space: pre;
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+kbd {
+    display: inline-block;
+    padding: 1px 8px;
+    border: #cccccc 1px solid;
+    color: #666666;
+    font-size: 0.8em;
+    font-weight: bold;
+    line-height: 1.5em;
+    background: #f4f4f4;
+    border-radius: 4px;
+    box-shadow:
+        0 1px 0 rgba(0, 0, 0, 0.2),
+        0 1px 0 0 #ffffff inset;
+}
+
+
+details p {
+    margin: 0.5em 0;
+}
+
+
+/* ==========================================================================
+   4. General - The main styles for the the theme
+   ========================================================================== */
+
+/* Big cover image on the home page */
+
+.site-head {
+    position: relative;
+    display: table;
+    width: 100%;
+    margin: 0 0 4rem 0;
+    padding: 2.5rem 0;
+    text-align: center;
+    background: none repeat scroll 0 0 var(--color-header-footer-background);
+    border-bottom: 1px solid #ebf2f6;
+}
+
+.blog-logo {
+    text-decoration: none;
+}
+
+.blog-title {
+    padding: 0;
+    margin: 0 0 1rem 0;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.blog-title a {
+    transition: color 0.3s ease 0s;
+    text-decoration: none;
+}
+
+.blog-title a:hover {
+    color: #57a3e8;
+}
+
+.blog-description {
+    margin: 0;
+    font-size: var(--font-size);
+    font-weight: normal;
+}
+
+/* Every post, on every page, gets this style on its <article> tag */
+
+.post {
+    position: relative;
+    width: 80ch;
+    max-width: 80vw;
+    margin: 1.5rem auto;
+    word-break: normal;
+    hyphens: auto;
+}
+
+.post-title::before {
+    content: '§';
+    margin-left: -1em;
+    position: absolute;
+}
+
+.post-title {
+    margin: 0;
+    font-size: 1.75em;
+    color: #222222;
+}
+
+.post-title a {
+    transition: color 0.3s ease 0s;
+    text-decoration: none;
+    color: #222222;
+}
+
+.post-title a:hover,
+.post-title::before:hover {
+    color: #57a3e8;
+}
+
+.post-excerpt p {
+    margin: 1rem 0;
+}
+
+.post-excerpt h1,
+.post-excerpt h2,
+.post-excerpt h3,
+.post-excerpt h4,
+.post-excerpt h5,
+.post-excerpt h6,
+.post-excerpt h6,
+.post-excerpt .figure,
+.post-excerpt .toc {
+    display: none;
+}
+
+.read-more {
+    text-decoration: none;
+}
+
+.post-meta {
+    display: inline-block;
+    margin: 0 0 5px 0;
+    color: #9eabb3;
+}
+
+.post-meta a {
+    color: #9eabb3;
+    text-decoration: none;
+}
+
+.post-meta a:hover {
+    text-decoration: underline;
+}
+
+
+/* For /tags.html */
+
+#tags-columns {
+    column-count: 2;
+    -moz-column-count: 2;
+    -webkit-column-count: 2;
+    padding: 1em 0;
+}
+
+#tags-columns ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+#tags-columns .tag-feed-link {
+    margin-right: 0.5em;
+}
+
+
+/* ==========================================================================
+   5. Single Post - When you click on an individual post
+   ========================================================================== */
+
+/* Tweak the .post wrapper style */
+
+.post-template .post {
+    margin-top: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+
+/* Give post-header some top padding */
+
+.post-template article:not(:first-child) .post-header {
+    padding-top: 40px;
+}
+
+/* Language specific line height */
+
+html[lang="zh"] p,
+html[lang="zh"] ul,
+html[lang="zh"] ol,
+html[lang="zh"] dl {
+    line-height: 2em;
+    margin: 1.5em 0;
+}
+
+html[lang="zh"] details p {
+    margin: 0.75em 0;
+}
+
+
+/* Comment section (utterances) */
+
+.post-footer {
+    margin: 4rem 0 0 0;
+    padding: 2rem 0 0 0;
+    border-top: #ebf2f6 1px solid;
+}
+
+/* utterances GitHub issue based comments widget
+ * https://utteranc.es/ */
+
+.utterances {
+    max-width: 100%;
+}
+
+.utterances-frame {
+    margin: 0;
+}
+
+
+/* ==========================================================================
+   8. Pagination - Tools to let you flick between pages
+   ========================================================================== */
+
+/* The main wrapper for our pagination links */
+
+.pagination {
+    position: relative;
+    width: 80%;
+    max-width: 700px;
+    margin: 4em auto;
+    font-family: var(--main-en-font), sans-serif;
+    color: #9eabb3;
+    text-align: center;
+}
+
+.pagination a {
+    color: #9eabb3;
+}
+
+/* Push the previous/next links out to the left/right */
+
+.older-posts,
+.newer-posts {
+    position: absolute;
+    display: inline-block;
+    padding: 0 15px;
+    border: #ebf2f6 2px solid;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: border ease 0.3s;
+}
+
+.older-posts {
+    right: 0;
+}
+
+.page-number {
+    display: inline-block;
+    padding: 2px 0;
+}
+
+.newer-posts {
+    left: 0;
+}
+
+.older-posts:hover,
+.newer-posts:hover {
+    border-color: #9eabb3;
+}
+
+
+/* ==========================================================================
+   9. Footer - The bottom of every page
+   ========================================================================== */
+
+.site-footer {
+    position: relative;
+    margin: 2rem 0 0 0;
+    padding: 4rem 0;
+    border-top: #ebf2f6 1px solid;
+    font-family: var(--main-en-font), sans-serif;
+    line-height: 1.7em;
+    color: #555555;
+    text-align: center;
+    background: var(--color-header-footer-background);
+}
+
+
+/* ==========================================================================
+   10. Media Queries - Smaller than 900px
+   ========================================================================== */
+
+@media only screen and (max-width: 900px) {
+    blockquote {
+        margin-left: 0;
+    }
+
+    .post-template .post {
+        padding-bottom: 1rem;
+    }
+}
+
+/* ==========================================================================
+   11. Media Queries - Smaller than 500px
+   ========================================================================== */
+
+@media only screen and (max-width: 500px) {
+    .inner,
+    .pagination,
+    .post {
+        width: auto;
+        margin-left: 1.5rem;
+        margin-right: 1.5rem;
+    }
+
+    .site-head {
+        padding: 2rem 0;
+    }
+
+    .post-template .post {
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+
+    .post-template article:not(:first-child) .post-header {
+        padding-top: 60px;
+    }
+
+    .post-template .site-footer {
+        margin-top: 0;
+    }
+
+    .post-header {
+        font-size: 1em;
+    }
+
+    .post-meta {
+        font-size: 0.8rem;
+    }
+
+    .post-title {
+        font-size: 1.5rem;
+        text-indent: 0;
+    }
+
+    .post-title::before {
+        content: none;
+    }
+
+    .post-footer {
+        padding: 1rem 0;
+        text-align: center;
+    }
+
+    .older-posts,
+    .newer-posts {
+        position: static;
+        margin: 10px 0;
+    }
+
+    .page-number {
+        display: block;
+    }
+
+    .site-footer {
+        margin-top: 6rem;
+    }
+}

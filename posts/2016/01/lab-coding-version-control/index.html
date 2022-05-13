@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="所謂的版本控制就跟玩遊戲一樣可以存取「進度點」，破關前都會保存進度，這樣破關失敗的時候可以還成到保存進度的狀態，再重新打怪。版本控制用在管理程式碼時，就方便讓自己在把 code 搞炸掉的時候，還能回到先前有保存的狀態。" />
 <meta name="keywords" content="zh, labcoding">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>Coding 初學指南－版本控制</title>
 
 	<!-- og -->
@@ -34,8 +34,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -49,7 +49,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post zh-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Jan 21, 2016">Jan 21, 2016</time>
         in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
@@ -144,7 +144,7 @@
 <li>善用條列式說明</li>
 </ul>
 <p>以下是範例（From <a href="http://git-scm.com/book/ch5-2.html">Git Book</a>）：</p>
-<div class="highlight"><pre><span></span><code>Short (50 chars or less) summary of changes
+<div class="highlight"><pre><span></span><code class="language-text">Short (50 chars or less) summary of changes
 
 More detailed explanatory text, if necessary.  Wrap it to
 about 72 characters or so.  In some contexts, the first
@@ -162,7 +162,6 @@ Further paragraphs come after blank lines.
     preceded by a single space, with blank lines in
     between, but conventions vary here
 </code></pre></div>
-
 
 <p>ps 你可以找到很多有趣的 commit message。例如：<a href="http://www.commitlogsfromlastnight.com/">抱怨</a>。</p>
 <h2 id="_3">常見問題</h2>

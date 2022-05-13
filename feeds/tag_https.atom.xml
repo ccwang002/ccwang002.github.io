@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - https</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_https.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-02-20T20:07:45-06:00</updated><entry><title>Python 官方文件中文化 Server HTTPS 使用 Let's Encrypt</title><link href="https://blog.liang2.tw/posts/2016/02/pydoctw-https/" rel="alternate"></link><published>2016-02-21T14:00:00-06:00</published><updated>2022-02-20T20:07:45-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-02-21:/posts/2016/02/pydoctw-https/</id><summary type="html">&lt;p&gt;整理了 server 從 HTTP 到 HTTPS 相關設定的調整。&lt;/p&gt;</summary><content type="html">&lt;p&gt;現在可以透過 &lt;a href="https://docs.python.org.tw"&gt;https://docs.python.org.tw&lt;/a&gt; 訪問 Python 官方文件中文化網站。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - https</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_https.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-05-13T12:58:39-05:00</updated><entry><title>Python 官方文件中文化 Server HTTPS 使用 Let's Encrypt</title><link href="https://blog.liang2.tw/posts/2016/02/pydoctw-https/" rel="alternate"></link><published>2016-02-21T14:00:00-06:00</published><updated>2022-05-13T12:58:39-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-02-21:/posts/2016/02/pydoctw-https/</id><summary type="html">&lt;p&gt;整理了 server 從 HTTP 到 HTTPS 相關設定的調整。&lt;/p&gt;</summary><content type="html">&lt;p&gt;現在可以透過 &lt;a href="https://docs.python.org.tw"&gt;https://docs.python.org.tw&lt;/a&gt; 訪問 Python 官方文件中文化網站。&lt;/p&gt;
 &lt;p&gt;Server 本身的設定可以參考&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;之前的文章&lt;/a&gt;。加入 HTTPS 就要設定相關的憑証，我選擇 &lt;a href="https://letsencrypt.org/"&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt; 做為憑証的簽署者。&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s Encrypt (LE) 使用 AMCE (Automated Certificate Management Environment) protocol 去驗証你是否擁有你欲簽証的 domain。官網上有&lt;a href="https://letsencrypt.org/howitworks/technology/"&gt;圖文說明&lt;/a&gt;，簡單來說，LE 會要求你的 server 在特定的 path 加入特定的檔案，如果你做得到，就代表你擁有這個 domain。這樣的簽証第一次要在 LE server 上註冊，之後最長每 90 天認証一次。&lt;/p&gt;
 &lt;div class="toc"&gt;
@@ -38,7 +38,7 @@
 &lt;p&gt;更新 certificate 的指令寫在 &lt;code&gt;/etc/letsencrypt/renew_cert.sh&lt;/code&gt;。Shell script 的內容與參考文章一樣。&lt;/p&gt;
 &lt;h4 id="systemd-service"&gt;Systemd service&lt;/h4&gt;
 &lt;p&gt;首先建立一個 renew_cert，以 Debian 為例放在 &lt;code&gt;/etc/systemd/system/renew_cert.service&lt;/code&gt;，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-ini"&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;Renew Let&amp;#39;s Encrypt cert&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="na"&gt;After&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;syslog.target&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
@@ -53,21 +53,18 @@
 &lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;multi-user.target&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;要手動更新 certificate 的時候執行這個 service 即可，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;systemctl start renew_cert
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;systemctl start renew_cert
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;我們不需要 enable 它，不然每次開機都會執行一次。看結果或記錄，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;systemctl status renew_cert
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;systemctl status renew_cert
 journalctl -e -u renew_cert
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;h4 id="systemd-timer"&gt;Systemd Timer&lt;/h4&gt;
 &lt;p&gt;建立一個 &lt;code&gt;/etc/systemd/system/renew_cert.timer&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-ini"&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;Update Let&amp;#39;s Encrypt certificate every two months&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
 &lt;span class="k"&gt;[Timer]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
@@ -78,27 +75,24 @@ journalctl -e -u renew_cert
 &lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;multi-user.target&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;重點只有 &lt;code&gt;[Timer]&lt;/code&gt; 這 directive。&lt;code&gt;Unit=&lt;/code&gt; 表示要啟動的 service。&lt;code&gt;OnCalendar=&lt;/code&gt;&lt;sup id="fnref:calendar"&gt;&lt;a class="footnote-ref" href="#fn:calendar"&gt;1&lt;/a&gt;&lt;/sup&gt; 則是設定這 timer 根據指定的時間點 (UTC 時間&lt;sup id="fnref:utc"&gt;&lt;a class="footnote-ref" href="#fn:utc"&gt;2&lt;/a&gt;&lt;/sup&gt;) 啟動。&lt;/p&gt;
 &lt;p&gt;以這邊寫的時間 &lt;code&gt;*-1/2-1 16:00:00&lt;/code&gt; 為例，代表每年的 1+2n 月 1 日 16:00 UTC 更新 certificate，即臺灣時間 1、3、5、……月 2 日凌晨更新。&lt;/p&gt;
 &lt;p&gt;啟用 timer，它需要被 enable 確保重開機時被執行。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;systemctl enable renew_cert.timer
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;systemctl enable renew_cert.timer
 systemctl start renew_cert.timer
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;可以用 &lt;code&gt;systemctl list-timers&lt;/code&gt; 檢查它下次執行的時間：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo systemctl list-timers renew_cert.timer
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo systemctl list-timers renew_cert.timer
 &lt;span class="go"&gt;NEXT                         LEFT                LAST PASSED UNIT             ACTIVATES&lt;/span&gt;
 &lt;span class="go"&gt;Tue 2016-03-01 16:00:00 UTC  1 weeks 2 days left n/a  n/a    renew_cert.timer renew_cert.service&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;h3 id="nginx-http-redirect-to-https"&gt;nginx HTTP redirect to HTTPS&lt;/h3&gt;
 &lt;p&gt;（這邊設定我沒信心，有更好的設定方法歡迎告訴我 &amp;gt; &amp;lt;）&lt;/p&gt;
 &lt;p&gt;要解決的問題為，ACME challenge 是透過 HTTP，其餘的連線都轉到 HTTPS。&lt;/p&gt;
-&lt;p&gt;在 nginx 中把主要的設定檔中拿掉 &lt;code&gt;listen 80;&lt;/code&gt; 與 ACM challenge 的部份。把它們移成新的 server block： &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;server&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;p&gt;在 nginx 中把主要的設定檔中拿掉 &lt;code&gt;listen 80;&lt;/code&gt; 與 ACM challenge 的部份。把它們移成新的 server block：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-nginx"&gt;&lt;span class="k"&gt;server&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;listen&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;80&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;server_name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;docs.python.org.tw&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
@@ -114,18 +108,17 @@ systemctl start renew_cert.timer
 &lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;h3 id="https"&gt;測試 HTTPS 設定&lt;/h3&gt;
 &lt;p&gt;用了 &lt;a href="https://securityheaders.io/"&gt;securityheaders.io&lt;/a&gt; 和 &lt;a href="https://www.ssllabs.com/index.html"&gt;SSL Labs&lt;/a&gt; 測試了一下，應該還可以：&lt;/p&gt;
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/02/pydoctw-https/pics/pydoctw_securityheaders_report.png"/&gt;
   &lt;p class="caption center"&gt;Report from securityheaders.io (&lt;a href="https://securityheaders.io/?q=https%3A%2F%2Fdocs.python.org.tw%2F3%2F"&gt;Live Report&lt;/a&gt;)&lt;/p&gt;
-&lt;/div&gt;
+&lt;/figure&gt;
 
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/02/pydoctw-https/pics/pydoctw_ssllabs_report.png"/&gt;
   &lt;p class="caption center"&gt;Report from SSL Labs (&lt;a href="https://www.ssllabs.com/ssltest/analyze.html?d=docs.python.org.tw"&gt;Live Report&lt;/a&gt;)&lt;/p&gt;
-&lt;/div&gt;
+&lt;/figure&gt;
 
 &lt;h3 id="_2"&gt;心得&lt;/h3&gt;
 &lt;p&gt;總結來說，使用 &lt;a href="https://letsencrypt.org/"&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt; 不難，但也沒到非常簡單。&lt;/p&gt;
@@ -133,12 +126,11 @@ systemctl start renew_cert.timer
 &lt;p&gt;要注意目前 public beta 階段，相同 domain 在 7 天只能被簽署 5 次，測試的時候不要太衝動不然就要等一週了。&lt;/p&gt;
 &lt;h3 id="misc"&gt;Misc.&lt;/h3&gt;
 &lt;p&gt;建立 CSR (Certificate Signing Request) 檔時，可以加入自己的 email 地址，不然預設是 &lt;code&gt;webmaster@&amp;lt;domain&amp;gt;&lt;/code&gt;：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;openssl req -new -sha256 &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;openssl req -new -sha256 &lt;span class="se"&gt;\&lt;/span&gt;
     -key /etc/letsencrypt/private/domain.key &lt;span class="se"&gt;\&lt;/span&gt;
     -subj &lt;span class="s2"&gt;&amp;quot;/CN=docs.python.org.tw/emailAddress=me+pydoctw@liang2.tw&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
     &amp;gt; /etc/letsencrypt/private/domain.csr
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;div class="footnote"&gt;
 &lt;hr&gt;
@@ -150,7 +142,7 @@ systemctl start renew_cert.timer
 &lt;p&gt;Debian Jessie 的 &lt;a href="https://www.freedesktop.org/software/systemd/man/systemd.time.html#Calendar%20Events"&gt;systemd.time (7)&lt;/a&gt; Calendar Events 裡並沒有指定時區的方式，所以加上時區會有 parse error。但新版的 systemd 似乎支援時區。總之應該用 &lt;code&gt;systemctl list-timers&lt;/code&gt; 確定執行的時間。&amp;#160;&lt;a class="footnote-backref" href="#fnref:utc" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="pydoctw"></category><category term="https"></category><category term="letsencrypt"></category></entry><entry><title>Blog defaults to HTTPS</title><link href="https://blog.liang2.tw/posts/2016/01/blog-https/" rel="alternate"></link><published>2016-01-06T00:00:00-06:00</published><updated>2022-02-20T20:07:45-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-06:/posts/2016/01/blog-https/</id><summary type="html">&lt;p&gt;簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。&lt;/p&gt;
+&lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="pydoctw"></category><category term="https"></category><category term="letsencrypt"></category></entry><entry><title>Blog defaults to HTTPS</title><link href="https://blog.liang2.tw/posts/2016/01/blog-https/" rel="alternate"></link><published>2016-01-06T00:00:00-06:00</published><updated>2022-05-13T12:58:21-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-06:/posts/2016/01/blog-https/</id><summary type="html">&lt;p&gt;簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。&lt;/p&gt;
 &lt;p&gt;Blog 本來就是架在 &lt;a href="https://github.com/ccwang002/ccwang002.github.io"&gt;GitHub Pages&lt;/a&gt; 上，其實預設有 https，但在網址改成自訂 domain 之後 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。&lt;/p&gt;
 &lt;p&gt;Blog 本來就是架在 &lt;a href="https://github.com/ccwang002/ccwang002.github.io"&gt;GitHub Pages&lt;/a&gt; 上，其實預設有 https，但在網址改成自訂 domain 之後 https 自然就失效了。在 GitHub 上有開 issue 請他們加入 &lt;a href="https://github.com/isaacs/github/issues/156"&gt;HTTPS support for custom domain&lt;/a&gt; 這功能，不過目前還是需要自己想辦法。隨著 &lt;a href="https://letsencrypt.org/"&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt; 這種服務的流行，GitHub 才會去積極尋找比較合適的解決方案吧。&lt;/p&gt;
 &lt;div class="toc"&gt;
@@ -163,10 +155,10 @@ systemctl start renew_cert.timer
 &lt;/div&gt;
 &lt;h2 id="cloudflare-ssl-and-cdn"&gt;CloudFlare SSL and CDN&lt;/h2&gt;
 &lt;p&gt;在看那個 &lt;a href="https://github.com/isaacs/github/issues/156"&gt;issue&lt;/a&gt; 就可以找到其他人用 CloudFlare 的解法。概念上就再用一層 CloudFlare CDN，然後它的 CDN 有提供 https 簽章。直接看 CloudFlare 在 Crypto 頁的介紹比較快：&lt;/p&gt;
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/blog-https/pics/cloudflare_ssl.png"/&gt;
   &lt;p class="caption center"&gt;source: &lt;a href="https://www.cloudflare.com/ssl/"&gt; CloudFlare one-click SSL&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
+&lt;/figure&gt;
 
 &lt;p&gt;所以 CloudFlare 去 cache GitHub 頁面時用的是 https，再到使用者時也是用 https。剩下就是你要不要相信 CloudFlare 了。&lt;/p&gt;
 &lt;p&gt;CloudFlare 的設定可以參考 &lt;a href="https://blog.keanulee.com/2014/10/11/setting-up-ssl-on-github-pages.html"&gt;Keanu&amp;rsquo;s Blog&lt;/a&gt;。一些重點筆記：&lt;/p&gt;
@@ -183,15 +175,15 @@ systemctl start renew_cert.timer
 &lt;li&gt;留言系統 &lt;a href="https://disqus.com/"&gt;Disqus&lt;/a&gt; HTTP 和 HTTPS 竟然是當作&lt;a href="https://github.com/aspnet/Docs/issues/623"&gt;不同留言板&lt;/a&gt;來使用，而且要手動 merge。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id="disqus"&gt;Disqus&lt;/h2&gt;
-&lt;p&gt;似乎解法只有全部導向到 https。這還不能直接改 Disqus 設定，要用它的 &lt;a href="https://help.disqus.com/customer/portal/articles/912757-url-mapper"&gt;URL Mapper&lt;/a&gt; 下載所有留言版出現連結的 CSV 手動修改。 &lt;/p&gt;
+&lt;p&gt;似乎解法只有全部導向到 https。這還不能直接改 Disqus 設定，要用它的 &lt;a href="https://help.disqus.com/customer/portal/articles/912757-url-mapper"&gt;URL Mapper&lt;/a&gt; 下載所有留言版出現連結的 CSV 手動修改。&lt;/p&gt;
 &lt;p&gt;感覺很土砲。不過站上的留言不多，也不用改多少留言，很快就同步到新的位置上。&lt;/p&gt;
 &lt;h2 id="justfont"&gt;justfont&lt;/h2&gt;
 &lt;p&gt;之前有贊助金萱計畫，其實有拿到兩年的 Business Plan。寫信給客服一天就改好設定了。不過之後就要多付錢啦。&lt;/p&gt;
 &lt;h2 id="hinet"&gt;Hinet 轉址服務&lt;/h2&gt;
 &lt;p&gt;我沒有自己架任何 server，懶得維護。不過也很懶得打字。在其他 subdomain 都沒用的情況下，有透過 Hinet 設定 &lt;a href="http://liang2.tw"&gt;http://liang2.tw&lt;/a&gt; 會導向至 &lt;a href="http://blog.liang2.tw"&gt;http://blog.liang2.tw&lt;/a&gt; 再被導向到 https。&lt;/p&gt;
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/01/blog-https/pics/cloudflare_dns_setting.png"/&gt;
   &lt;p class="caption center"&gt;CloudFlare DNS setting&lt;/p&gt;
-&lt;/div&gt;
+&lt;/figure&gt;
 
 &lt;p&gt;大概是這樣。希望能在不要自己架 server 的情況下繼續經營這個 blog。&lt;/p&gt;</content><category term="Coding"></category><category term="zh"></category><category term="blog"></category><category term="pelican"></category><category term="https"></category></entry></feed>

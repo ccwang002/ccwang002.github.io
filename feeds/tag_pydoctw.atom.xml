@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - pydoctw</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_pydoctw.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-02-20T20:07:45-06:00</updated><entry><title>Python 官方文件中文化 Server HTTPS 使用 Let's Encrypt</title><link href="https://blog.liang2.tw/posts/2016/02/pydoctw-https/" rel="alternate"></link><published>2016-02-21T14:00:00-06:00</published><updated>2022-02-20T20:07:45-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-02-21:/posts/2016/02/pydoctw-https/</id><summary type="html">&lt;p&gt;整理了 server 從 HTTP 到 HTTPS 相關設定的調整。&lt;/p&gt;</summary><content type="html">&lt;p&gt;現在可以透過 &lt;a href="https://docs.python.org.tw"&gt;https://docs.python.org.tw&lt;/a&gt; 訪問 Python 官方文件中文化網站。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - pydoctw</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_pydoctw.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-05-13T12:58:39-05:00</updated><entry><title>Python 官方文件中文化 Server HTTPS 使用 Let's Encrypt</title><link href="https://blog.liang2.tw/posts/2016/02/pydoctw-https/" rel="alternate"></link><published>2016-02-21T14:00:00-06:00</published><updated>2022-05-13T12:58:39-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-02-21:/posts/2016/02/pydoctw-https/</id><summary type="html">&lt;p&gt;整理了 server 從 HTTP 到 HTTPS 相關設定的調整。&lt;/p&gt;</summary><content type="html">&lt;p&gt;現在可以透過 &lt;a href="https://docs.python.org.tw"&gt;https://docs.python.org.tw&lt;/a&gt; 訪問 Python 官方文件中文化網站。&lt;/p&gt;
 &lt;p&gt;Server 本身的設定可以參考&lt;a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"&gt;之前的文章&lt;/a&gt;。加入 HTTPS 就要設定相關的憑証，我選擇 &lt;a href="https://letsencrypt.org/"&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt; 做為憑証的簽署者。&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s Encrypt (LE) 使用 AMCE (Automated Certificate Management Environment) protocol 去驗証你是否擁有你欲簽証的 domain。官網上有&lt;a href="https://letsencrypt.org/howitworks/technology/"&gt;圖文說明&lt;/a&gt;，簡單來說，LE 會要求你的 server 在特定的 path 加入特定的檔案，如果你做得到，就代表你擁有這個 domain。這樣的簽証第一次要在 LE server 上註冊，之後最長每 90 天認証一次。&lt;/p&gt;
 &lt;div class="toc"&gt;
@@ -38,7 +38,7 @@
 &lt;p&gt;更新 certificate 的指令寫在 &lt;code&gt;/etc/letsencrypt/renew_cert.sh&lt;/code&gt;。Shell script 的內容與參考文章一樣。&lt;/p&gt;
 &lt;h4 id="systemd-service"&gt;Systemd service&lt;/h4&gt;
 &lt;p&gt;首先建立一個 renew_cert，以 Debian 為例放在 &lt;code&gt;/etc/systemd/system/renew_cert.service&lt;/code&gt;，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-ini"&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;Renew Let&amp;#39;s Encrypt cert&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="na"&gt;After&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;syslog.target&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
@@ -53,21 +53,18 @@
 &lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;multi-user.target&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;要手動更新 certificate 的時候執行這個 service 即可，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;systemctl start renew_cert
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;systemctl start renew_cert
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;我們不需要 enable 它，不然每次開機都會執行一次。看結果或記錄，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;systemctl status renew_cert
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;systemctl status renew_cert
 journalctl -e -u renew_cert
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;h4 id="systemd-timer"&gt;Systemd Timer&lt;/h4&gt;
 &lt;p&gt;建立一個 &lt;code&gt;/etc/systemd/system/renew_cert.timer&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-ini"&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;Update Let&amp;#39;s Encrypt certificate every two months&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
 &lt;span class="k"&gt;[Timer]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
@@ -78,27 +75,24 @@ journalctl -e -u renew_cert
 &lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;multi-user.target&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;重點只有 &lt;code&gt;[Timer]&lt;/code&gt; 這 directive。&lt;code&gt;Unit=&lt;/code&gt; 表示要啟動的 service。&lt;code&gt;OnCalendar=&lt;/code&gt;&lt;sup id="fnref:calendar"&gt;&lt;a class="footnote-ref" href="#fn:calendar"&gt;1&lt;/a&gt;&lt;/sup&gt; 則是設定這 timer 根據指定的時間點 (UTC 時間&lt;sup id="fnref:utc"&gt;&lt;a class="footnote-ref" href="#fn:utc"&gt;2&lt;/a&gt;&lt;/sup&gt;) 啟動。&lt;/p&gt;
 &lt;p&gt;以這邊寫的時間 &lt;code&gt;*-1/2-1 16:00:00&lt;/code&gt; 為例，代表每年的 1+2n 月 1 日 16:00 UTC 更新 certificate，即臺灣時間 1、3、5、……月 2 日凌晨更新。&lt;/p&gt;
 &lt;p&gt;啟用 timer，它需要被 enable 確保重開機時被執行。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;systemctl enable renew_cert.timer
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;systemctl enable renew_cert.timer
 systemctl start renew_cert.timer
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;可以用 &lt;code&gt;systemctl list-timers&lt;/code&gt; 檢查它下次執行的時間：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo systemctl list-timers renew_cert.timer
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo systemctl list-timers renew_cert.timer
 &lt;span class="go"&gt;NEXT                         LEFT                LAST PASSED UNIT             ACTIVATES&lt;/span&gt;
 &lt;span class="go"&gt;Tue 2016-03-01 16:00:00 UTC  1 weeks 2 days left n/a  n/a    renew_cert.timer renew_cert.service&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;h3 id="nginx-http-redirect-to-https"&gt;nginx HTTP redirect to HTTPS&lt;/h3&gt;
 &lt;p&gt;（這邊設定我沒信心，有更好的設定方法歡迎告訴我 &amp;gt; &amp;lt;）&lt;/p&gt;
 &lt;p&gt;要解決的問題為，ACME challenge 是透過 HTTP，其餘的連線都轉到 HTTPS。&lt;/p&gt;
-&lt;p&gt;在 nginx 中把主要的設定檔中拿掉 &lt;code&gt;listen 80;&lt;/code&gt; 與 ACM challenge 的部份。把它們移成新的 server block： &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;server&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;p&gt;在 nginx 中把主要的設定檔中拿掉 &lt;code&gt;listen 80;&lt;/code&gt; 與 ACM challenge 的部份。把它們移成新的 server block：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-nginx"&gt;&lt;span class="k"&gt;server&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;listen&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;80&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;server_name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;docs.python.org.tw&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
@@ -114,18 +108,17 @@ systemctl start renew_cert.timer
 &lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;h3 id="https"&gt;測試 HTTPS 設定&lt;/h3&gt;
 &lt;p&gt;用了 &lt;a href="https://securityheaders.io/"&gt;securityheaders.io&lt;/a&gt; 和 &lt;a href="https://www.ssllabs.com/index.html"&gt;SSL Labs&lt;/a&gt; 測試了一下，應該還可以：&lt;/p&gt;
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/02/pydoctw-https/pics/pydoctw_securityheaders_report.png"/&gt;
   &lt;p class="caption center"&gt;Report from securityheaders.io (&lt;a href="https://securityheaders.io/?q=https%3A%2F%2Fdocs.python.org.tw%2F3%2F"&gt;Live Report&lt;/a&gt;)&lt;/p&gt;
-&lt;/div&gt;
+&lt;/figure&gt;
 
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/02/pydoctw-https/pics/pydoctw_ssllabs_report.png"/&gt;
   &lt;p class="caption center"&gt;Report from SSL Labs (&lt;a href="https://www.ssllabs.com/ssltest/analyze.html?d=docs.python.org.tw"&gt;Live Report&lt;/a&gt;)&lt;/p&gt;
-&lt;/div&gt;
+&lt;/figure&gt;
 
 &lt;h3 id="_2"&gt;心得&lt;/h3&gt;
 &lt;p&gt;總結來說，使用 &lt;a href="https://letsencrypt.org/"&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt; 不難，但也沒到非常簡單。&lt;/p&gt;
@@ -133,12 +126,11 @@ systemctl start renew_cert.timer
 &lt;p&gt;要注意目前 public beta 階段，相同 domain 在 7 天只能被簽署 5 次，測試的時候不要太衝動不然就要等一週了。&lt;/p&gt;
 &lt;h3 id="misc"&gt;Misc.&lt;/h3&gt;
 &lt;p&gt;建立 CSR (Certificate Signing Request) 檔時，可以加入自己的 email 地址，不然預設是 &lt;code&gt;webmaster@&amp;lt;domain&amp;gt;&lt;/code&gt;：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;openssl req -new -sha256 &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;openssl req -new -sha256 &lt;span class="se"&gt;\&lt;/span&gt;
     -key /etc/letsencrypt/private/domain.key &lt;span class="se"&gt;\&lt;/span&gt;
     -subj &lt;span class="s2"&gt;&amp;quot;/CN=docs.python.org.tw/emailAddress=me+pydoctw@liang2.tw&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
     &amp;gt; /etc/letsencrypt/private/domain.csr
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;div class="footnote"&gt;
 &lt;hr&gt;
@@ -195,7 +187,7 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。&lt;/p&gt;
 &lt;p&gt;先簡介一下 &lt;a href="https://docs.python.org/3/"&gt;CPython Documentation&lt;/a&gt;（下稱 pydoc）的架構和翻譯方式。pydoc 是標準的 &lt;a href="http://www.sphinx-doc.org/en/stable/"&gt;Sphinx&lt;/a&gt; 文件，因此翻譯使用 Sphinx 自帶的 &lt;a href="http://www.sphinx-doc.org/en/stable/intl.html"&gt;internationalization&lt;/a&gt; (i18n or intl) 功能把文件的內容轉換到別的語言上。&lt;/p&gt;
 &lt;p&gt;如同 Django 等專案，i18n 都是透過 gettext，Sphinx 會按照 rst 檔案輸出同檔名的 po 檔。rst 檔案中的每個文字段落會對應到 po 檔一個 entry，不相干的程式碼範例等段落會被跳過。輸出的 po 檔放在對應的路徑例如 &lt;code&gt;locale/&amp;lt;lang&amp;gt;/LC_MESSAGES/xxx.po&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://en.wikipedia.org/wiki/Gettext"&gt;po 檔的格式&lt;/a&gt;很簡單，跳過有的沒的 header，實質內容長這樣：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kd"&gt;#: ../../tutorial/appetite.rst:50&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-pot"&gt;&lt;span class="kd"&gt;#: ../../tutorial/appetite.rst:50&lt;/span&gt;
 &lt;span class="nv"&gt;msgid&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&amp;quot;&lt;/span&gt;
 &lt;span class="s"&gt;&amp;quot;Python enables programs to be written compactly and readably.  Programs &amp;quot;&lt;/span&gt;
 &lt;span class="s"&gt;&amp;quot;written in Python are typically much shorter than equivalent C,  C++, or &amp;quot;&lt;/span&gt;
@@ -204,7 +196,6 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。&lt;/p&gt;
 &lt;span class="s"&gt;&amp;quot;Python 讓程式寫得精簡並易讀。用 Python 實作的程式長度往往遠比用 &amp;quot;&lt;/span&gt;
 &lt;span class="s"&gt;&amp;quot;C、C++、Java 實作的短。這有以下幾個原因：&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;實際上 Sphinx 會先輸出一份乾淨的 po 檔範本（稱為 pot 檔）到 &lt;code&gt;locale/pot/&lt;/code&gt;，基本上就是只有原文的 po 檔。每增加一個新語言就會從 pot 檔製作一份 po 檔到各自的 &lt;code&gt;locale/&amp;lt;lang&amp;gt;/&lt;/code&gt; 目錄下，翻譯時就修改那份 po 檔就可以。&lt;/p&gt;
 &lt;p&gt;翻譯完成後，首先 Sphinx 會先呼叫 gettext 把 po 檔編譯成 mo 檔加速搜尋翻譯字串速度。輸出翻譯後的文件只要設定不同語言，Sphinx 就會去找該語言的 mo 檔，並把原文字串換成 mo 檔裡的內容，就可以看到中文的文件。&lt;/p&gt;
@@ -234,12 +225,11 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。&lt;/p&gt;
 &lt;h4 id="sphinx_1"&gt;Sphinx 文件&lt;/h4&gt;
 &lt;p&gt;在 Sphinx 文件部份不想搞太複雜，就在每一頁加上一個自己的專屬連結，打這個網址就會加入一個更新該頁面的 task 到 autobuild server&lt;sup id="fnref:build-link"&gt;&lt;a class="footnote-ref" href="#fn:build-link"&gt;3&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
 &lt;p&gt;在 autobuild 時加入專屬連結只要修改 Sphinx doc template 即可。Sphinx 在 build doc 時可以透過 &lt;a href="http://www.sphinx-doc.org/en/stable/man/sphinx-build.html#options"&gt;&lt;code&gt;-A &amp;lt;name=value&amp;gt;&lt;/code&gt;&lt;/a&gt; 增加 Jinja2 template 的變數，就可控制 template render 行為：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;{# &amp;lt;cpython-src&amp;gt;/Doc/tools/templates/layout.html #}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-html+django"&gt;&lt;span class="c"&gt;{# &amp;lt;cpython-src&amp;gt;/Doc/tools/templates/layout.html #}&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt;- &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nv"&gt;autobuildi18n&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
 &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;a&lt;/span&gt; &lt;span class="na"&gt;href&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/_build/update/?source_path=&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;pagename&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;Update Translation&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;a&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt;- &lt;span class="k"&gt;endif&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;sphinx-build -A autobuildi18n=1&lt;/code&gt; 時就會包含這個 Jinja2 block，多這個 Update Translation 連結。&lt;/li&gt;
@@ -257,9 +247,8 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;扣掉不支援 Python 3 的套件&lt;sup id="fnref:python3"&gt;&lt;a class="footnote-ref" href="#fn:python3"&gt;4&lt;/a&gt;&lt;/sup&gt;後，就剩 django-celery、django-RQ、django-Q 可以選。這裡面最紅也最老牌的是 django-celery ，它與 &lt;a href="http://www.celeryproject.org/"&gt;Celery&lt;/a&gt; 整合，功能完整且穩定，我用過也覺得十分不錯，缺點是功能太多有點複雜，加上不同 message queue 時會有很多設定要調整，需要一段時間上手。一般 Celery 常見的搭配使用 &lt;a href="https://www.rabbitmq.com/"&gt;Rabbit-MQ&lt;/a&gt; 和 &lt;a href="http://redis.io/"&gt;Redis&lt;/a&gt;，的確在 task 很多時有必要，但我們這個 build doc 一天可能才十幾次，在不隔離 build doc 環境的情況同時間的 worker 只能有一個，不會有效能上的問題。因此我傾向只要使用與 Django 同一個 database 就好，不要再有額外非 Python 的 dependency，讓 local 開發簡單一點。&lt;/p&gt;
 &lt;p&gt;最後選擇 &lt;a href="https://django-q.readthedocs.org/"&gt;django-Q&lt;/a&gt;。雖然很新但作者維護得很勤，worker 可以只用 Python 內建的 multiprocessing 完成。功能簡單卻完整，包含 monitor，跟 django-admin 整合，還可以排程。所以要啟動 django-Q 的 cluster，只要多一個 &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;python manage.py qcluster
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;python manage.py qcluster
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;即可，十分方便。&lt;/p&gt;
 &lt;p&gt;怎麼使用 django-Q 就不在這篇 blog 討論範圍內了。我想我應該會投稿 PyCon TW 或 Taipei.py，到時候再整理成另一篇。Django-Q 的說明文件寫得很清楚，讀一讀應該就會了。&lt;/p&gt;
@@ -282,15 +271,14 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。&lt;/p&gt;
 &lt;p&gt;我的 code 裡用到了 &lt;a href="https://docs.python.org/3/library/subprocess.html#subprocess.run"&gt;&lt;code&gt;subprocess.run&lt;/code&gt;&lt;/a&gt;，這是 Python 3.5+ 才有的 API。但 Jessie 只有 Python 3.4，但我覺得很好用一點都不想改寫成相容舊版的 code。&lt;/p&gt;
 &lt;p&gt;因此需要安裝 Debian testing channel 上最新的 Python 3.5。這樣其實有安全上的疑慮，因為只有 stable channel 才有 security support，但自己編譯的問題更大，所以像 &lt;a href="https://github.com/yyuu/pyenv"&gt;pyenv&lt;/a&gt; 這種多 Python 版本的工具不在考慮內。&lt;/p&gt;
 &lt;p&gt;於是用 &lt;a href="https://wiki.debian.org/AptPreferences"&gt;Apt-Pinning&lt;/a&gt; 只讓 Python 3.5 相關的套件安裝 testing 的版本。首先把 testing channel 加到 &lt;code&gt;/etc/apt/source.list&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;deb http://cloudfront.debian.net/debian testing main
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;deb http://cloudfront.debian.net/debian testing main
 deb-src http://cloudfront.debian.net/debian testing main
 deb http://security.debian.org/ testing/updates main
 deb-src http://security.debian.org/ testing/updates main
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;然後修改 &lt;code&gt;/etc/apt/preferences&lt;/code&gt; 確定我們不會不小心裝到 testing 相關的套件，並把 Python 3.5 相關的套件設定權限 &amp;gt;= 990 讓它們能被自動安裝。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# Specify * rules first so later package-specfic rules can override them
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;# Specify * rules first so later package-specfic rules can override them
 Package: *
 Pin: release a=testing
 Pin-Priority: -10
@@ -300,12 +288,10 @@ Pin: release a=testing
 Pin-Priority: 990
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;可以用 &lt;code&gt;sudo apt-cache policy &amp;lt;pkg-name&amp;gt;&lt;/code&gt; 檢查目前的規則會裝到哪個版本。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ sudo apt-get update 
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;$ sudo apt-get update 
 $ sudo apt-get install python3.5 python3.5-venv python3.5-dev
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;這樣只有 Python 3.5 相關的套件才會裝到 testing。&lt;/p&gt;
 &lt;h4 id="postgresql"&gt;資料庫 PostgreSQL&lt;/h4&gt;
@@ -315,34 +301,30 @@ $ sudo apt-get install python3.5 python3.5-venv python3.5-dev
 &lt;p&gt;因為 Amazon EBS SSD I/O 數不會另外收錢（應該吧？），就建 swap file 在主硬碟裡。&lt;/p&gt;
 &lt;p&gt;Swap 設定的教學很多，這邊就參考 &lt;a href="https://wiki.archlinux.org/index.php/swap"&gt;Arch Wiki&lt;/a&gt; 上的做法，我選擇放在 &lt;code&gt;/var/swap.1&lt;/code&gt;。大小設定為 RAM 的 2 倍，即 1GB。&lt;/p&gt;
 &lt;p&gt;首先把這個檔案建出來，權限改為 600。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo /bin/dd &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/dev/zero &lt;span class="nv"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/var/swap.1 &lt;span class="nv"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1M &lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1024&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;sudo /bin/dd &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/dev/zero &lt;span class="nv"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/var/swap.1 &lt;span class="nv"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1M &lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1024&lt;/span&gt;
 &lt;span class="c1"&gt;# or faster with fallocate&lt;/span&gt;
 sudo fallocate -l 1G /var/swap.1
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo chmod &lt;span class="m"&gt;600&lt;/span&gt; /var/swap.1
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;sudo chmod &lt;span class="m"&gt;600&lt;/span&gt; /var/swap.1
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;再來把這個檔案改成 swap 格式並啟用它，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo /sbin/mkswap /var/swap.1
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;sudo /sbin/mkswap /var/swap.1
 sudo /sbin/swapon /var/swap.1
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;修改 fstab 讓每次開機都有這個 swap 設定，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# /etc/fstab
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;# /etc/fstab
 /var/swap.1 none swap defaults 0 0
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;用 &lt;code&gt;free -h&lt;/code&gt;、&lt;code&gt;cat /proc/meminfo&lt;/code&gt; 檢查此時應該有個 1GB swap 了。&lt;/p&gt;
 &lt;h4 id="git-repo-ssh-config"&gt;Git repo ssh config&lt;/h4&gt;
 &lt;p&gt;再來是 code 的同步與更新。autobuild server 只要更新 source code，但 cpython-tw source 需要定時 commit 新的翻譯，因此 deploy server 會有修改 git repo 的權限。&lt;/p&gt;
 &lt;p&gt;不應該使用自己的 SSH key，deploy server 上應該有專屬的 deploy key，其中 cpython-tw 的 deploy key 有寫入權限（即可以 commit）。&lt;/p&gt;
 &lt;p&gt;查了一下，要讓不同 git repo 使用不同的 SSH key 也不複雜。以這邊的例子，先修改 &lt;code&gt;~/.ssh/config&lt;/code&gt; 加入兩個新的 host，使用不同的 SSH key：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;Host github-pydoc_autobuild
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;Host github-pydoc_autobuild
   HostName github.com
   User git
   IdentityFile /home/pydoc/.ssh/id_rsa.pydoc_autobuild
@@ -353,24 +335,20 @@ Host github-cpython_tw
   IdentityFile /home/pydoc/.ssh/id_rsa.cpython_tw
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;建立對應的 SSH keypair，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh-keygen -t rsa -f ~/.ssh/id_rsa.pydoc_autobuild
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;ssh-keygen -t rsa -f ~/.ssh/id_rsa.pydoc_autobuild
 ssh-keygen -t rsa -f ~/.ssh/id_rsa.cpython_tw
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;把兩個 repo 的 URL host 換掉，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git remote set-url origin git@github-pydoc_autobuild:python-doc-tw/pydoc_autobuild.git
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;git remote set-url origin git@github-pydoc_autobuild:python-doc-tw/pydoc_autobuild.git
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;這樣兩個 repo 會透過給定的 ssh key 連線。GitHub 會顯示每個 key 最近使用的時間，檢查時間就能確認設定正確與否（而且改 host 沒設定對應該直接連不上）。&lt;/p&gt;
 &lt;h4 id="tmpfilesd"&gt;tmpfiles.d&lt;/h4&gt;
 &lt;p&gt;之後 nginx 和 uwsgi 溝通用的 socket 打算放在 &lt;code&gt;/run/django/xxxx.sock&lt;/code&gt; &lt;sup id="fnref:/run"&gt;&lt;a class="footnote-ref" href="#fn:/run"&gt;6&lt;/a&gt;&lt;/sup&gt;。因為只需要非 root 的權限，修改 &lt;a href="https://www.freedesktop.org/software/systemd/man/tmpfiles.d.html"&gt;tmpfiles.d&lt;/a&gt; 的設定，讓這個資料夾能在開機時自動建立。增加設定檔 &lt;code&gt;/etc/tmpfiles.d/pydoc_autobuild.conf&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;d /run/django 0755 pydoc www-data
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;d /run/django 0755 pydoc www-data
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;h3 id="django-stack-nginx-uwsgi"&gt;Django Stack &amp;ndash; nginx + uWSGI&lt;/h3&gt;
 &lt;p&gt;在本地開發都用 &lt;code&gt;python manage.py runserver&lt;/code&gt; 啟動 Django。但上線時內建的 runserver 就無法同時間服務太多人。因此需要像 nginx、uWSGI 等工具來協助。&lt;/p&gt;
@@ -381,7 +359,7 @@ ssh-keygen -t rsa -f ~/.ssh/id_rsa.cpython_tw
 &lt;p&gt;我們先假設 uWSGI 這段沒問題，首先設定 nginx 本身。由於 static files 在 nginx 就直接導到對應的檔案，不會經過 uWSGI ，所以設定好 nginx 之後 pydoc 文件本身就上線了。用這個來測試設定的正確性。&lt;/p&gt;
 &lt;p&gt;對本網站而言，/static 導到 Django staticfiles；/3/、/3.5/ 導到 pydoc build HTML 的路徑；其餘路徑再交給 Django 處理。其中，/3.5/* 的連結將重新導向到 /3/* 上。&lt;/p&gt;
 &lt;p&gt;整理上述的需求，寫個 nginx 設定檔在 &lt;code&gt;/etc/nginx/sites-available/pydoc_autobuild.conf&lt;/code&gt;：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Upstream Django setting; the socket nginx connects to&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-nginx"&gt;&lt;span class="c1"&gt;# Upstream Django setting; the socket nginx connects to&lt;/span&gt;
 &lt;span class="k"&gt;upstream&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;django&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kn"&gt;server&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;unix:///run/django/pydoc_autobuild.sock&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
@@ -418,28 +396,24 @@ ssh-keygen -t rsa -f ~/.ssh/id_rsa.cpython_tw
 &lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;再把檔案 soft link 到 &lt;code&gt;/etc/nginx/sites-enabled/&lt;/code&gt;，更新 nginx 設定：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /etc/nginx/sites-available/
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /etc/nginx/sites-available/
 sudo ln -s pydoc_autobuild.conf ../sites-enabled/
 sudo systemctl reload nginx
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;確定 pydoc 上線就可以專心處理 uWSGI 了。&lt;/p&gt;
 &lt;h4 id="uwsgi"&gt;uWSGI 設定&lt;/h4&gt;
 &lt;p&gt;uWSGI 在 VENV 外也要裝，我覺得還是用 pip 比較簡單，雖然這樣就要自己注意 uWSGI 的版本更新了：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo python3.5 -m pip install uwsgi
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;sudo python3.5 -m pip install uwsgi
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;把 uWSGI 設定存成 &lt;code&gt;pydoc_autobuild_uwsgi.ini&lt;/code&gt; 並且在測試時，都使用：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo uwsgi --ini pydoc_autobuild_uwsgi.ini
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;sudo uwsgi --ini pydoc_autobuild_uwsgi.ini
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;模擬實際上的執行方式，這樣之後改用 systemd 執行才不會又丟一堆權限的問題。設定檔的內容：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;[uwsgi]
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;[uwsgi]
 chdir        = /path/to/code/pydoc_autobuild
 # Django&amp;#39;s wsgi file
 module       = pydoc_autobuild.wsgi:application
@@ -462,25 +436,22 @@ gid          = www-data
 vacuum       = true
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;權限上的設定可能要花點時間處理一下，nginx 使用 www-data/www-data 的身份執行，socket 要確定 nginx 能讀寫，但我的 code 放在 pydoc 使用者路徑下，用 www-data 可能會有權限的問題。建議把 uid、gid 都設定好。&lt;/p&gt;
 &lt;p&gt;過程中，搭配 nginx 的錯誤訊息比較好 debug：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo less +F /var/log/nginx/error.log
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;sudo less +F /var/log/nginx/error.log
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;成功後，再用 uWSGI 的 Emperor mode，把設定檔丟到一個路徑底下（該路徑稱為 vassals）。uWSGI 在 Emperor mode 時會自動把 vassals 路徑內所有設定檔都讀進來並執行。&lt;/p&gt;
 &lt;p&gt;這裡 vassals 路徑使用 &lt;code&gt;/etc/uwsgi/vassals/&lt;/code&gt;。因為有設 uid、gid，跑的時候就不用再設了：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo uwsgi --emperor /etc/uwsgi/vassals
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;sudo uwsgi --emperor /etc/uwsgi/vassals
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;這樣應該 Django 相關的 view 都沒問題了。接下來，要把啟動 uWSGI 的步驟交給系統來管理。&lt;/p&gt;
 &lt;h3 id="systemd-services"&gt;Systemd services&lt;/h3&gt;
 &lt;p&gt;Autobuild server 包含兩個部份：Django Server 與 Django-Q cluster。所以寫成 systemd service 時會有兩個服務。&lt;/p&gt;
 &lt;p&gt;Debian system service 放在 &lt;code&gt;/etc/systemd/system/&lt;/code&gt; 底下，因此建立 &lt;code&gt;uwsgi.service&lt;/code&gt; 和 &lt;code&gt;qcluster.service&lt;/code&gt; 分別管理 uWSGI Emperor mode 和 Django-Q cluster。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;uwsgi.service&lt;/code&gt; 參考 uWSGI 官網 &lt;a href="http://uwsgi-docs.readthedocs.org/en/latest/Systemd.html"&gt;&lt;em&gt;Django and Systemd&lt;/em&gt;&lt;/a&gt; 一文的設定：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;[Unit]
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;[Unit]
 Description=uWSGI Emperor
 After=syslog.target
 
@@ -497,9 +468,8 @@ NotifyAccess=all
 WantedBy=multi-user.target
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;&lt;code&gt;qcluster.service&lt;/code&gt; 算是自己硬寫模擬 &lt;code&gt;python manage.py qcluster&lt;/code&gt; 行為。因此環境變數都要設定好（當然用絕對路徑就沒問題了，我只是覺得這樣 build log 內的執行檔路徑都很長會很醜 xd）&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;[Unit]
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;[Unit]
 Description=Django-Q Cluster for site pydoc_autobuild
 After=syslog.target
 Wants=uwsgi.service
@@ -522,25 +492,21 @@ StandardError=syslog
 WantedBy=multi-user.target
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;這樣的設定檔應該不是 systemd 的慣例，我還在想是不是應該要改寫到 user service 去（但我不會）。&lt;/p&gt;
 &lt;p&gt;加入到 systemd 之後管理就很簡單，啟動這兩個 service：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo systemctl enable uwsgi
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;sudo systemctl enable uwsgi
 sudo systemctl enable qcluster
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;查看他們的狀態：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo systemctl status uwsgi
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;sudo systemctl status uwsgi
 sudo systemctl status qcluster
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;查看它們的 log 也變得很簡單，因為有把它們的 stderr 抓起來。systemd 好處是 rotation 等等都會幫你注意，看 log 的功能也很多。&lt;/p&gt;
 &lt;p&gt;例如要查最近一小時 uWSGI 的連線記錄，並在有新連線時持續更新 log：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo journalctl -xef -u uwsgi --since &amp;#39;1 hour ago&amp;#39;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;sudo journalctl -xef -u uwsgi --since &amp;#39;1 hour ago&amp;#39;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;h2 id="_4"&gt;總結&lt;/h2&gt;
 &lt;p&gt;介紹了 &lt;a href="https://github.com/python-doc-tw/python-doc-tw"&gt;Python 說明文件翻譯計畫&lt;/a&gt;，線上文件autobuild server 基於 Django 與 Django-Q 的架構，以及在 Debian 上結合 nginx、uWSGI、systemd 的部署設定。&lt;/p&gt;

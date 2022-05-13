@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="沒幾天前剛部署一次 Django，記錄在《使用 uWSGI、nginx、systemd 部署 Django》。今天又部署了另一個專案。部署的設定跟上次一樣： nginx -- unix socket -- uWSGI -- Django 一樣寫 …" />
 <meta name="keywords" content="zh, python, django, postgresql, deploy, debian, systemd, nginx, uwsgi, conda">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>使用 conda env 部署 Django</title>
 
 	<!-- og -->
@@ -42,8 +42,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -57,7 +57,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post zh-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="May 24, 2016">May 24, 2016</time>
         in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
@@ -78,9 +78,8 @@
                 <a href="https://blog.liang2.tw/tag/conda/">conda</a>
     </span>
     <section class="post-content"><p>沒幾天前剛部署一次 Django，記錄在<a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/">《使用 uWSGI、nginx、systemd 部署 Django》</a>。今天又部署了另一個專案。部署的設定跟上次一樣：</p>
-<div class="highlight"><pre><span></span><code>nginx -- unix socket -- uWSGI -- Django
+<div class="highlight"><pre><span></span><code class="language-text">nginx -- unix socket -- uWSGI -- Django
 </code></pre></div>
-
 
 <p>一樣寫一個 <code>PROJ.service</code> 的 systemd unit 來管理網站的啟動 (uWSGI)。之後提到 <code>PROJ</code> 時就換成自己的專案名稱；<code>USER</code> 就換成執行網站的帳號。</p>
 <div class="toc">
@@ -94,16 +93,15 @@
 <h3 id="conda">conda</h3>
 <p><a href="http://conda.pydata.org/">conda</a> 是一個 Python 套件的管理系統，他的好處是，遇到要使用外部 library 時，會這些套件相依的 library 都一併安裝管理，也可以管理不同 Python 版本。可以想像是加強版的 pip + venv。conda 跟 pip 是相容的。</p>
 <p>這個 Django 專案就用到很多像 numpy、pandas 的套件。為了維護方便，我考慮用 conda 來安裝。我使用的是 <a href="http://conda.pydata.org/miniconda.html">miniconda3</a>，預設會安裝在 <code>~/miniconda3</code> 底下，虛擬環境會出現在 <code>~/miniconda3/envs/</code>。</p>
-<div class="highlight"><pre><span></span><code>$ conda create -n VENV <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.5 numpy pandas django
+<div class="highlight"><pre><span></span><code class="language-bash">$ conda create -n VENV <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.5 numpy pandas django
 $ <span class="nb">source</span> activate VENV
 <span class="o">(</span>VENV<span class="o">)</span> $ pip install uwsgi
 </code></pre></div>
 
-
 <p>uWSGI 沒有在 conda 裡面，所以就用 pip 裝。從<a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/">上次的文章</a>知道系統並不用安裝。</p>
 <h3 id="uwsgi-path">uWSGI 和 $PATH</h3>
 <p>理論上，之後就照著上次操作就好，但在 uWSGI 就碰到問題：</p>
-<div class="highlight"><pre><span></span><code><span class="go">$ sudo /home/USER/miniconda3/envs/VENV/bin/uwsgi --ini PROJ.ini</span>
+<div class="highlight"><pre><span></span><code class="language-pycon"><span class="go">$ sudo /home/USER/miniconda3/envs/VENV/bin/uwsgi --ini PROJ.ini</span>
 <span class="go">[uWSGI] getting INI configuration from PROJ.ini</span>
 <span class="go">*** Starting uWSGI 2.0.13.1 (64bit) on [Wed May 25 08:04:23 2016] ***</span>
 <span class="go">compiled with version: 5.3.1 20160413 on 25 May 2016 01:35:28</span>
@@ -134,17 +132,15 @@ $ <span class="nb">source</span> activate VENV
 <span class="gr">ImportError</span>: <span class="n">No module named &#39;_sysconfigdata_m&#39;</span>
 </code></pre></div>
 
-
 <p>但因為步驟實在太簡單，想不出來哪裡有錯，查網路也沒什麼相關的結果。在這邊卡了很久。</p>
 <p>結果後來才發現，Traceback 那邊 uWSGi 跑去讀到 <code>/usr/lib/python3.5/site.py</code>，這表示一定有環境設錯才讓它找到這個不是我們要的 python 環境，理論上應該是找到 <code>/home/USER/miniconda3/envs/VENV/lib/python3.5/site.py</code> 才對。</p>
 <p>經過一陣嘗試，發現只要修改 <code>$PATH</code> 環境變數就能運作了。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo -i
+<div class="highlight"><pre><span></span><code class="language-console"><span class="gp">$ </span>sudo -i
 <span class="gp"># </span><span class="nb">echo</span> <span class="nv">$PATH</span>
 <span class="go">/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin</span>
 <span class="gp"># </span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/home/USER/miniconda3/envs/VENV/bin:<span class="nv">$PATH</span>
 <span class="gp"># </span>/home/USER/miniconda3/envs/VENV/bin/uwsgi --ini PROJ.ini
 </code></pre></div>
-
 
 <h3 id="sysmted-unit">在 sysmted unit 使用環境變數</h3>
 <p>根據 <a href="https://www.freedesktop.org/software/systemd/man/systemd.exec.html#%24PATH">systemd.exec(5)</a> 關於 <code>$PATH</code> 環境變數的使用：</p>
@@ -152,7 +148,7 @@ $ <span class="nb">source</span> activate VENV
 <p>Colon-separated list of directories to use when launching executables. Systemd uses a fixed value of /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin. </p>
 </blockquote>
 <p>預設只有以上提到的路徑，如果要修改環境變數的話，就透過 <a href="https://www.freedesktop.org/software/systemd/man/systemd.exec.html#Environment="><code>Environment=</code></a>，因此多加了一行在 systemd unit 裡。其餘的設定都是相同的。</p>
-<div class="highlight"><pre><span></span><code>[Unit]
+<div class="highlight"><pre><span></span><code class="language-text">[Unit]
 Description=PROJ Django server by uWSGI
 After=syslog.target
 
@@ -168,7 +164,6 @@ NotifyAccess=all
 [Install]
 WantedBy=multi-user.target
 </code></pre></div>
-
 
 <h3 id="_1">結論</h3>
 <p>如果要改用 conda 管理套件的話，只要在 systemd unit 那邊多加一行修改 $PATH，加入虛擬環境放執行檔的路徑，其餘的設定都與一般 Python 虛擬環境相同。這樣就搞定了。但這個問題花了我 1 個多小時……</p></section>

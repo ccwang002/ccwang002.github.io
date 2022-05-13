@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="I find myself generating Venn diagrams quite often. While there are many available Venn diagram plotting libraries available, they don’t always fit my need. My inputs of the diagram are the set sizes rather than lists of observations. And after drawing the Venn diagram, I often edit them to …" />
 <meta name="keywords" content="en">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>Generate Venn diagrams easily</title>
 
 	<!-- og -->
@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2019/04/generate-venn-svg/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2019-04-20 00:00:00-05:00"/>
-<meta property="article:modified_time" content="2022-02-20 20:07:45.305917-06:00"/>
+<meta property="article:modified_time" content="2022-05-13 12:53:14.371021-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Bioinfo"/>
 <meta property="article:tag" content="en"/>
@@ -33,8 +33,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -48,7 +48,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post en-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Apr 20, 2019">Apr 20, 2019</time>
         in <a href="https://blog.liang2.tw/category/bioinfo/">Bioinfo</a>
@@ -62,14 +62,14 @@
     <section class="post-content"><p>I find myself generating Venn diagrams quite often.  While there are many available Venn diagram plotting libraries available, they don&rsquo;t always fit my need.  My inputs of the diagram are the set sizes rather than lists of observations.  And after drawing the Venn diagram, I often edit them to integrate with other figures, so I prefer a vector format like SVG, which not all the libraries offer.</p>
 <p>So I made <a href="https://observablehq.com/@ccwang002/simple-venn-diagram-generator">an Observable Notebook</a> that allows me to interactively modify the Venn diagram, and download the output as a SVG file. It&rsquo;s built on the <a href="https://github.com/benfred/venn.js/">venn.js</a> library, which does all the heavy lifting.</p>
 <p>Here is the screenshot of the diagram drawing interface (see it live on <a href="https://observablehq.com/@ccwang002/simple-venn-diagram-generator">the notebook</a>):</p>
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2019/04/generate-venn-svg/pics/venn_nb.png">
-  <p class="caption">Screenshot of the Observable Notebook</p>
-</div>
+  <figcaption>Screenshot of the Observable Notebook</figcaption>
+</figure>
 
 <p>The set sizes can be easily tweaked by editing the <code>sets</code> variable. The colors of the two sets can be configured by clicking on the color blocks. There is a button to download the generated Venn diagram. Finally, everything changes will interactively reflect on the diagram.</p>
-<p>What&rsquo;s more cool about the Observable Notebook is I can simply modify the code to change the output. If I want to a new set to have a three-way Venn diagram, I just need to update the <code>sets</code>. For example, copy paste the following to the notebook: </p>
-<div class="highlight"><pre><span></span><code><span class="nx">sets</span> <span class="o">=</span> <span class="p">[</span>
+<p>What&rsquo;s more cool about the Observable Notebook is I can simply modify the code to change the output. If I want to a new set to have a three-way Venn diagram, I just need to update the <code>sets</code>. For example, copy paste the following to the notebook:</p>
+<div class="highlight"><pre><span></span><code class="language-javascript"><span class="nx">sets</span> <span class="o">=</span> <span class="p">[</span>
   <span class="p">{</span><span class="nx">sets</span><span class="o">:</span> <span class="p">[</span><span class="mf">0</span><span class="p">],</span> <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="nx">size</span><span class="o">:</span> <span class="mf">1700</span><span class="p">,</span> <span class="nx">fill</span><span class="o">:</span> <span class="nx">set0_color</span><span class="p">},</span>
   <span class="p">{</span><span class="nx">sets</span><span class="o">:</span> <span class="p">[</span><span class="mf">1</span><span class="p">],</span> <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="nx">size</span><span class="o">:</span> <span class="mf">1350</span><span class="p">,</span> <span class="nx">fill</span><span class="o">:</span> <span class="nx">set1_color</span><span class="p">},</span>
   <span class="p">{</span><span class="nx">sets</span><span class="o">:</span> <span class="p">[</span><span class="mf">2</span><span class="p">],</span> <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="nx">size</span><span class="o">:</span> <span class="mf">700</span><span class="p">,</span> <span class="nx">fill</span><span class="o">:</span> <span class="s1">&#39;green&#39;</span><span class="p">},</span>
@@ -80,11 +80,10 @@
 <span class="p">]</span>
 </code></pre></div>
 
-
 <p>And I will get the following new Venn diagram in SVG:</p>
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2019/04/generate-venn-svg/pics/threeway_venn.svg">
-</div>
+</figure>
 
 <p>I hope now I will spend less time figuring out how to draw a Venn diagram.</p></section>
     <footer class="post-footer">

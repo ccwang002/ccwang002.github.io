@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - misc</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/misc.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-02-20T20:07:45-06:00</updated><entry><title>St. Louis PhD 生活</title><link href="https://blog.liang2.tw/posts/2016/10/phd-life-in-st-louis/" rel="alternate"></link><published>2016-10-02T00:00:00-05:00</published><updated>2022-02-20T20:07:45-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-10-02:/posts/2016/10/phd-life-in-st-louis/</id><summary type="html">&lt;p&gt;不知不覺，距離上篇文章已經 4 個月。這 4 個月裡，擔任 &lt;a href="https://tw.pycon.org/2016/"&gt;PyCon TW 2016&lt;/a&gt; 工作人員、寫完&lt;a href="https://github.com/ccwang002/master-thesis"&gt;碩士論文&lt;/a&gt;、從一個讀了 7 年的學校&lt;a href="https://www.facebook.com/photo.php?fbid=1388036924547016&amp;amp;set=a.181592455191475.49590.100000221666201&amp;amp;type=3&amp;amp;theater"&gt;畢業&lt;/a&gt;、然後前 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;不知不覺，距離上篇文章已經 4 個月。這 4 個月裡，擔任 &lt;a href="https://tw.pycon.org/2016/"&gt;PyCon TW 2016&lt;/a&gt; 工作人員、寫完&lt;a href="https://github.com/ccwang002/master-thesis"&gt;碩士論文&lt;/a&gt;、從一個讀了 7 年的學校&lt;a href="https://www.facebook.com/photo.php?fbid=1388036924547016&amp;amp;set=a.181592455191475.49590.100000221666201&amp;amp;type=3&amp;amp;theater"&gt;畢業&lt;/a&gt;、然後前往美國的 &lt;a href="https://wustl.edu/"&gt;Washington University in St. Louis&lt;/a&gt;  就讀 &lt;a href="http://dbbs.wustl.edu/divprograms/compbio/Pages/default.aspx"&gt;Bioinformatics&lt;/a&gt; PhD。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - misc</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/misc.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-05-13T13:06:48-05:00</updated><entry><title>St. Louis PhD 生活</title><link href="https://blog.liang2.tw/posts/2016/10/phd-life-in-st-louis/" rel="alternate"></link><published>2016-10-02T00:00:00-05:00</published><updated>2022-05-13T13:06:48-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-10-02:/posts/2016/10/phd-life-in-st-louis/</id><summary type="html">&lt;p&gt;不知不覺，距離上篇文章已經 4 個月。這 4 個月裡，擔任 &lt;a href="https://tw.pycon.org/2016/"&gt;PyCon TW 2016&lt;/a&gt; 工作人員、寫完&lt;a href="https://github.com/ccwang002/master-thesis"&gt;碩士論文&lt;/a&gt;、從一個讀了 7 年的學校&lt;a href="https://www.facebook.com/photo.php?fbid=1388036924547016&amp;amp;set=a.181592455191475.49590.100000221666201&amp;amp;type=3&amp;amp;theater"&gt;畢業&lt;/a&gt;、然後前 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;不知不覺，距離上篇文章已經 4 個月。這 4 個月裡，擔任 &lt;a href="https://tw.pycon.org/2016/"&gt;PyCon TW 2016&lt;/a&gt; 工作人員、寫完&lt;a href="https://github.com/ccwang002/master-thesis"&gt;碩士論文&lt;/a&gt;、從一個讀了 7 年的學校&lt;a href="https://www.facebook.com/photo.php?fbid=1388036924547016&amp;amp;set=a.181592455191475.49590.100000221666201&amp;amp;type=3&amp;amp;theater"&gt;畢業&lt;/a&gt;、然後前往美國的 &lt;a href="https://wustl.edu/"&gt;Washington University in St. Louis&lt;/a&gt;  就讀 &lt;a href="http://dbbs.wustl.edu/divprograms/compbio/Pages/default.aspx"&gt;Bioinformatics&lt;/a&gt; PhD。&lt;/p&gt;
 &lt;p&gt;如今除了繼續認識新環境與新朋友之外，生活大抵安定。因為開學有各種學校或私下學生間的活動，以及適應新的課程與實驗室，其實手上的專案沒什麼進度。不過還是簡單的更新一下近況。&lt;/p&gt;
 &lt;h2 id="_1"&gt;關於我的學校與城市&lt;/h2&gt;
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/10/phd-life-in-st-louis/pics/STL_map.png"/&gt;
-  &lt;p class="caption"&gt;St. Louis 城市位置。&lt;/p&gt;
-&lt;/div&gt;
+  &lt;figcaption&gt;St. Louis 城市位置。&lt;/figcaption&gt;
+&lt;/figure&gt;
 
 &lt;p&gt;我想大多數的人並不認識 &lt;a href="https://en.wikipedia.org/wiki/St._Louis"&gt;St. Louis&lt;/a&gt; (STL) 這城市與 Washington University in St. Louis (WashU or WUSTL) 這學校。首先關於 St. Louis，它是一個美國中西部的中型城市。與東西岸的城市相比來得鄉下，但學校附近也不會是一望無際的田野。曾經於 19 世紀美國西部拓荒時，作為西進的重要陸河交通埠口，城市的地標是一個很高的拱門。STL 舉辦過 1904 年夏季奧運與世界博覽會，因此城市很多建設都是在那時完成或更新，包含我們學校不少建築物與設施。&lt;/p&gt;
-&lt;div class="figure full-img"&gt;
+&lt;figure class="full-img"&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/10/phd-life-in-st-louis/pics/stl_cardinals.jpg"/&gt;
-  &lt;p class="caption"&gt;MLB 紅雀 (Cardinals) 棒球隊主場場地 Busch Stadium。背後的拱門即為 St. Louis 地標。&lt;/p&gt;
-&lt;/div&gt;
+  &lt;figcaption&gt;MLB 紅雀 (Cardinals) 棒球隊主場場地 Busch Stadium。背後的拱門即為 St. Louis 地標。&lt;/figcaption&gt;
+&lt;/figure&gt;
 
 &lt;p&gt;氣候四季分明。夏天可以到 37°C (100°F)。目前剛入秋季，早晚溫差大 (15 — 25°C)，緊接著的冬季會更加寒冷（-5 — 10°C)，下雪數天，但這可能等我經歷過冬天之後才能正確的描述。生活方面，基本上沒有什麼不便，但跟大城市可能一些娛樂休閒活動會少一點，在地的華人社區也比較小。不過反過來說，物價較低，房價親民。來之前曾經擔心網路速度不夠快，因為多數地方並沒有給住民使用的光纖網路，不過目前寬頻有 100MBps 而且實際傳輸能維持這個速度，偶爾能更快，因此暫時還可以接受。對一個阿宅來說，網路夠快就表示能連接到他的全世界了。&lt;/p&gt;
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/10/phd-life-in-st-louis/pics/stl_symphony_outdoor_concert.jpg"/&gt;
-  &lt;p class="caption"&gt;STL 交響樂團於 Forest Park 舉辦的戶外音樂會，在這邊是個闔家出遊的行程。坐在草地上野餐與聽表演。&lt;/p&gt;
-&lt;/div&gt;
+  &lt;figcaption&gt;STL 交響樂團於 Forest Park 舉辦的戶外音樂會，在這邊是個闔家出遊的行程。坐在草地上野餐與聽表演。&lt;/figcaption&gt;
+&lt;/figure&gt;
 
 &lt;p&gt;接下來談談我的學校，&lt;a href="https://en.wikipedia.org/wiki/Washington_University_in_St._Louis"&gt;Washington University in St. Louis&lt;/a&gt;，簡稱 WashU 或 WUSTL。因為太多學校都以 Washington 為名，例如 Seattle 有個公立學校 UW (University of Washington)，但彼此間並沒有任何關係。講 WashU 常常會誤會，因此常會寫 WUSTL 來區分，這也是學校的 domain name。底下就是我們學校的地理位置：&lt;/p&gt;
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/10/phd-life-in-st-louis/pics/WUSTL_map.png"/&gt;
   &lt;p class="caption"&gt;WUSTL 校區位置。
     Ref: &lt;a href="http://www.openstreetmap.org/#map=15/38.6373/-90.2829&amp;layers=T"&gt;OpenStreetMap&lt;/a&gt;
   &lt;/p&gt;
-&lt;/div&gt;
+&lt;/figure&gt;
 
 &lt;p&gt;學校被中間一個大公園切割成兩大校區。西邊的是主校區，大多數的學院都在此。東邊則是醫學院校區，包含諸多醫院，與生醫研究相關的科系。我就讀的科系即在東邊的醫學院校區。我的感覺台大公館校區與學校差不多大。中間的大公園 Forest Park 長寬 2.5 x 1.6 km，即是世博會的主場地，目前裡面有博物館、植物園、動物園等等，許多戶外活動舉辦於此，同時也是健身去處。&lt;/p&gt;
 &lt;p&gt;西邊的主校區建築物為學院歌德式 (Collegiate Gothic)，非常漂亮，如同概念中古老的大學有的模樣，實際上學校也已創立 160 多年。雖然說學校在台灣沒什麼知名度，但還算是個以研究為導向的私立「世界百大」學校，有 25 位諾貝爾獎得主。雖然看起來舊，但學校一直都在整修或建新的大樓，他們會維持現有建物的風格。&lt;/p&gt;
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/10/phd-life-in-st-louis/pics/wustl_campus.jpg"/&gt;
-  &lt;p class="caption"&gt;西邊主校區 (Danforth Campus) 校門入口建築 Brookings Hall。&lt;/p&gt;
-&lt;/div&gt;
+  &lt;figcaption&gt;西邊主校區 (Danforth Campus) 校門入口建築 Brookings Hall。&lt;/figcaption&gt;
+&lt;/figure&gt;
 
 &lt;p&gt;醫學院相較而言就是比較現代的校區，例如下圖就是我實驗室的所在建築。&lt;/p&gt;
-&lt;div class="figure"&gt;
+&lt;figure&gt;
   &lt;img src="https://blog.liang2.tw/posts/2016/10/phd-life-in-st-louis/pics/mckinley_building.jpg"/&gt;
-  &lt;p class="caption"&gt;McKinley Research Building，於 2015 年落成。&lt;/p&gt;
-&lt;/div&gt;
+  &lt;figcaption&gt;McKinley Research Building，於 2015 年落成。&lt;/figcaption&gt;
+&lt;/figure&gt;
 
 &lt;p&gt;關於研究的話，就不列在這邊了，也等之後更熟悉環境再來分享。如果你對申請 PhD 的過程有興趣的話，我有寫了一篇 &lt;a href="https://www.ptt.cc/bbs/studyabroad/M.1462818195.A.882.html"&gt;PhD 申請準備在 ptt&lt;/a&gt;。&lt;/p&gt;
 &lt;h2 id="whats-next"&gt;What’s Next?&lt;/h2&gt;

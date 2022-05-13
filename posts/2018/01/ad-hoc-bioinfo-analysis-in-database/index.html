@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="Recently I’ve found that bioinformatic analysis in a database is not hard at all and the database set up wasn’t as daunting as it sounds, especially when the data are tabular. I used to start my analysis with loading everything into R or Python, and then figuring out …" />
 <meta name="keywords" content="en, python, pandas, sqlite, postgresql">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>Ad hoc bioinformatic analysis in database</title>
 
 	<!-- og -->
@@ -37,8 +37,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -52,7 +52,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post en-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Jan 20, 2018">Jan 20, 2018</time>
         in <a href="https://blog.liang2.tw/category/bioinfo/">Bioinfo</a>
@@ -105,23 +105,20 @@
 <h2 id="tabular-data-io-in-database">Tabular data IO in database</h2>
 <h3 id="sqlite">SQLite</h3>
 <p>For SQLite, use <code>.mode csv</code> with <a href="https://www.sqlite.org/cli.html#csv"><code>.import</code> statement</a> to load in data. SQLite will create the table automatically by using the first row as the column names if the table doesn&rsquo;t exist. One can create the table before the loading to define each column&rsquo;s data type, otherwise, columns are just <code>TEXT</code> type. <code>.separator</code> controls the delimiter character SQLite uses between columns.</p>
-<div class="highlight"><pre><span></span><code><span class="p">.</span><span class="k">mode</span><span class="w"> </span><span class="n">csv</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code class="language-sql"><span class="p">.</span><span class="k">mode</span><span class="w"> </span><span class="n">csv</span><span class="w"></span>
 <span class="p">.</span><span class="n">separator</span><span class="w"> </span><span class="err">\</span><span class="n">t</span><span class="w">   </span><span class="c1">-- For TSV files</span>
 <span class="p">.</span><span class="n">import</span><span class="w"> </span><span class="s1">&#39;/path/to/tsv&#39;</span><span class="w"> </span><span class="k">table_name</span><span class="w"></span>
 </code></pre></div>
 
-
 <p>To export data, use <code>.once</code> statement followed by the query:</p>
-<div class="highlight"><pre><span></span><code><span class="p">.</span><span class="n">header</span><span class="w"> </span><span class="k">on</span><span class="w">  </span><span class="c1">-- Export columns name</span>
+<div class="highlight"><pre><span></span><code class="language-sql"><span class="p">.</span><span class="n">header</span><span class="w"> </span><span class="k">on</span><span class="w">  </span><span class="c1">-- Export columns name</span>
 <span class="p">.</span><span class="n">once</span><span class="w"> </span><span class="s1">&#39;/path/to/output.tsv&#39;</span><span class="w"></span>
 <span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="k">table_name</span><span class="p">;</span><span class="w">  </span><span class="c1">-- Export all data in the table</span>
 </code></pre></div>
 
-
 <p>Commands above can be scripted into SQLite like:</p>
-<div class="highlight"><pre><span></span><code>sqlite3 mydb.sqlite &lt; load_data.sql
+<div class="highlight"><pre><span></span><code class="language-text">sqlite3 mydb.sqlite &lt; load_data.sql
 </code></pre></div>
-
 
 <h3 id="postgresql">PostgreSQL</h3>
 <p>For PostgreSQL, the built-in solution is to use the <a href="https://www.postgresql.org/docs/current/static/sql-copy.html"><code>COPY</code> statement</a> or the <a href="https://www.postgresql.org/docs/current/static/app-psql.html#APP-PSQL-META-COMMANDS-COPY"><code>\copy</code> metacommand</a> to import or export data. <code>COPY</code> runs faster than the equivalent <code>INSERT</code> statements. Besides built-in commands, an external tool <a href="https://pgloader.io/">pgloader</a> has been very helpful for the data loading, whose loading process is more flexible.</p>
@@ -129,15 +126,13 @@
 <h3 id="loading-compressed-data-with-named-pipe">Loading compressed data with named pipe</h3>
 <p>Many tabular data are compressed by gzip or bgzip to save the disk space. To decompress the file and load into the database without storing the uncompressed file somewhere first, one can consider using <a href="https://www.linuxjournal.com/article/2156">named pipe</a>.</p>
 <p>The idea is to decompress the file to a named pipe and read the data in a database from the named pipe. A named pipe can be created by <code>mkfifo</code>.  For example,</p>
-<div class="highlight"><pre><span></span><code>mkfifo mypipe
+<div class="highlight"><pre><span></span><code class="language-bash">mkfifo mypipe
 gunzip -c mydata.tsv.gz &gt; mypipe <span class="p">&amp;</span>
 </code></pre></div>
 
-
 <p>The trailing <code>&amp;</code> makes the decompress command running in the background to keep everything in one shell session. Then read the data in SQLite as if it were a file like:</p>
-<div class="highlight"><pre><span></span><code>.import mypipe mytable
+<div class="highlight"><pre><span></span><code class="language-text">.import mypipe mytable
 </code></pre></div>
-
 
 <p>The trick here can be further expanded to any preprocessing in any language. One can simply preprocess the file and write the output to a named pipe. The database can read from the named pipe without storing the full intermediate output on disk. Plus, by piping between commands more CPU cores are utilized.</p>
 <h2 id="benchmark">Benchmark</h2>
@@ -177,7 +172,7 @@ gunzip -c mydata.tsv.gz &gt; mypipe <span class="p">&amp;</span>
 <p>I used three methods to load and group the variants: pandas, SQLite, and PostgreSQL. Their code is shown below.</p>
 <h3 id="pandas-python">pandas (Python)</h3>
 <p>Standard pandas IO code.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight"><pre><span></span><code class="language-python"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 
@@ -202,10 +197,9 @@ gunzip -c mydata.tsv.gz &gt; mypipe <span class="p">&amp;</span>
 <span class="n">grp_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;out.pandas.tsv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
 </code></pre></div>
 
-
 <h3 id="sqlite_1">SQLite</h3>
 <p>I set some <code>PRAGMA ...</code> statements at the beginning to control some of the SQLite settings. It tells SQLite to use more cache, create temporary tables in memory and disable all the transaction recovery settings. SQLite by default writes everything to the disk first before changing the actual database content so if the program fails or any exception occurs, it can recover all the transactions properly. In our case, we don&rsquo;t care about the integrity of the database.</p>
-<div class="highlight"><pre><span></span><code><span class="n">PRAGMA</span><span class="w"> </span><span class="n">cache_size</span><span class="o">=-</span><span class="mi">4192000</span><span class="p">;</span><span class="w">  </span><span class="c1">-- Use 2GB RAM as cache</span>
+<div class="highlight"><pre><span></span><code class="language-sql"><span class="n">PRAGMA</span><span class="w"> </span><span class="n">cache_size</span><span class="o">=-</span><span class="mi">4192000</span><span class="p">;</span><span class="w">  </span><span class="c1">-- Use 2GB RAM as cache</span>
 <span class="n">PRAGMA</span><span class="w"> </span><span class="n">temp_store</span><span class="o">=</span><span class="n">MEMORY</span><span class="p">;</span><span class="w"></span>
 <span class="n">PRAGMA</span><span class="w"> </span><span class="n">synchronous</span><span class="o">=</span><span class="k">OFF</span><span class="p">;</span><span class="w"></span>
 <span class="n">PRAGMA</span><span class="w"> </span><span class="n">journal_mode</span><span class="o">=</span><span class="k">OFF</span><span class="p">;</span><span class="w"></span>
@@ -242,10 +236,9 @@ gunzip -c mydata.tsv.gz &gt; mypipe <span class="p">&amp;</span>
 <span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">transcript_id</span><span class="p">,</span><span class="w"> </span><span class="n">mutation_type</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 
-
 <h3 id="postgresql_1">PostgreSQL</h3>
 <p>I used <a href="https://pgloader.io/">pgloader</a> to load the data into a local PostgreSQL database <code>test_mc3</code>. pgloader can take a script of its own mini-language.</p>
-<div class="highlight"><pre><span></span><code>LOAD CSV
+<div class="highlight"><pre><span></span><code class="language-text">LOAD CSV
     FROM &#39;mc3_filtered.tsv&#39;
     INTO postgresql:///test_mc3?mc3
     WITH fields terminated by &#39;\t&#39;,
@@ -276,15 +269,13 @@ gunzip -c mydata.tsv.gz &gt; mypipe <span class="p">&amp;</span>
 ;
 </code></pre></div>
 
-
 <p>To do the grouping analysis, I used the built-in <code>COPY</code> command:</p>
-<div class="highlight"><pre><span></span><code><span class="k">COPY</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code class="language-psql"><span class="k">COPY</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
 <span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">transcript_id</span><span class="p">,</span><span class="w"> </span><span class="n">mutation_type</span><span class="p">,</span><span class="w"> </span><span class="n">COUNT</span><span class="p">(</span><span class="n">alt_allele</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">c</span><span class="w"></span>
 <span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">mc3</span><span class="w"></span>
 <span class="w">    </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">transcript_id</span><span class="p">,</span><span class="w"> </span><span class="n">mutation_type</span><span class="w"></span>
 <span class="p">)</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;/private/tmp/mc3/MC3/out.psql.tsv&#39;</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="p">(</span><span class="n">FORMAT</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">);</span><span class="w"></span>
 </code></pre></div>
-
 
 <h3 id="result">Result</h3>
 <p>I didn&rsquo;t run it systematically but a few repeats showed the similar numbers.</p>

@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="Blog 對我來說，最重要的就是書寫的舒適度。 一開始在設定 github CNAME 的時候就訂為 blog.liang2.tw，但一直以來都只是個一頁式的自我介 …" />
 <meta name="keywords" content="zh, pelican, blog, python">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>設定部落格筆記</title>
 
 	<!-- og -->
@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2015/09/blog-internals/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2015-09-21 00:00:00-05:00"/>
-<meta property="article:modified_time" content="2022-02-20 20:07:45.260834-06:00"/>
+<meta property="article:modified_time" content="2022-05-13 13:10:13.413673-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="zh"/>
@@ -36,8 +36,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -51,7 +51,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post zh-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Sep 21, 2015">Sep 21, 2015</time>
         in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
@@ -70,7 +70,7 @@
 <p>整理了一下有幾個目標：</p>
 <ul>
 <li>只考慮用 static site 因為不想維護 server，而且 blog 也沒什要炫的，現在光用前端就可以做到很多互動功能</li>
-<li>最好 site generator 是用 Python 實作，這樣想要調整它的功能時，比較懂怎麼改 </li>
+<li>最好 site generator 是用 Python 實作，這樣想要調整它的功能時，比較懂怎麼改</li>
 <li>能支援 markdown 和 reStructuredText 最好</li>
 </ul>
 <p>篩完之後選項也沒幾個：<a href="http://docs.getpelican.com/">Pelican</a>、<a href="http://sphinx-doc.org/">Sphinx</a>，但 Sphinx 可能對 blog 開發的功能比較少，最多人用的大概就 Pelican，所以就決定用它了。</p>
@@ -93,7 +93,7 @@
 </div>
 <h3 id="pelican">Pelican 簡介</h3>
 <p><a href="http://docs.getpelican.com/">Pelican</a> 結論來說不難理解，而且要自訂 blog theme 也不會很複雜。首先跟 Sphinx 一樣，用內建的 <code>pelican-quickstart</code> 預設值就能架好一個可以動的。目錄大概長這樣</p>
-<div class="highlight"><pre><span></span><code>my_blog/
+<div class="highlight"><pre><span></span><code class="language-text">my_blog/
 ├── content/
 │   ├── blog_post_1.md
 │   └── blog_post_2.rst
@@ -106,15 +106,13 @@
 └── requirements.txt
 </code></pre></div>
 
-
 <p>Blog source 都放在 content 底下，設定檔分成 local 用的 <code>pelicanconf.py</code> 以及 deploy 用的 <code>publishconf.py</code>。並且提供了像 Fabric、Make、shell script 等自動化腳本把 source 用 theme template render 成一個靜態網站，</p>
-<div class="highlight"><pre><span></span><code>make html
+<div class="highlight"><pre><span></span><code class="language-bash">make html
 </code></pre></div>
-
 
 <p>預設會輸出到 <code>output/</code>，到時候 deploy 就把這個資料夾的內容丟到 server 上。</p>
 <p>每篇文章可以用 markdown 或者 reStructuredText(rst) 來寫，概念上像這樣：</p>
-<div class="highlight"><pre><span></span><code>---
+<div class="highlight"><pre><span></span><code class="language-markdown">---
 Title: Hello World
 Date: 2016-01-16 18:00
 Tags: world, programming
@@ -127,8 +125,7 @@ Hello [World]
 [<span class="nl">World</span>]: <span class="na">https://en.wikipedia.org/wiki/World</span>
 </code></pre></div>
 
-
-<div class="highlight"><pre><span></span><code><span class="gh">Hello World</span>
+<div class="highlight"><pre><span></span><code class="language-restructuredtext"><span class="gh">Hello World</span>
 <span class="gh">##############</span>
 
 <span class="nc">:date:</span> 2016-01-16 18:00
@@ -140,7 +137,6 @@ Hello World_
 
 <span class="p">..</span> <span class="nt">_World:</span> https://en.wikipedia.org/wiki/World
 </code></pre></div>
-
 
 <p>這樣已經設定好了標題、分類、標籤、發布日期還有 slug（有點像文章的 ID）算很完整了。最低要求至少有標題。</p>
 <p>最後調整了一下 static file 的路徑。我把文章按年月分開，每個子資料夾裡有當月的圖、檔案等等。URL 也是以年月為單位。其實最理想的應該是有個 hash 之類的東西 <code>/posts/2015/09/abcd/</code> 等同於 <code>/posts/2015/09/abcd-my-post/</code> 比較好分享。找了一下好像沒這功能，不過沒有它影響也不嚴重，暫且不理。</p>
@@ -155,10 +151,10 @@ Hello World_
 <p>Flex 內建用 Google webfont 來處理英文字體，為了引言還有完整性多加了一組 serif 字體 <a href="https://www.google.com/fonts/specimen/Crimson+Text">Crimson Text</a>。我喜歡這種 Garamond 類的古典襯線字。剛剛發現它是<a href="https://github.com/skosch/Crimson">開源的 (SIL 1.1)</a>，nice。（大陸網友表示：……）</p>
 <h4 id="webfont">中文 webfont</h4>
 <p>麻煩的就是中文字型。直接放棄系統內建，但最後有把 Noto Sans CJK 和 Source Hans Sans 加進來當備用。一直都有想嘗試 <a href="http://justfont.com">justfont</a> 推出的 webfont 功能。它運作時會嵌入一個 javascript，看這頁網頁用到哪些中文字，才去要這些中文字的字型來加速載入。使用上就跟 Google webfont 一樣，官網教學考慮了很多使用情況，其實沒做什麼設定就好了，我以為要調很多東西才看得到效果，最後只改了 <code>font-family</code> 就完工。他的設定也能保留原本英文字的字型。</p>
-<div class="figure align-center">
+<figure>
   <img src="https://blog.liang2.tw/posts/2015/09/blog-internals/pics/justfont_setting.png"/>
   <p class="caption center"><span class="fig">Justfont 設定</span></p>
-</div>
+</figure>
 
 <p>免費的試用沒問題之後就刷下去了。說真的免費只能綁兩個字型，設定好內文以及內文粗體 quota 就用完了，現在 100,000 page views/year 大約 NTD 350/year 也不貴。既然付費了當然要試試信黑體，電腦版的到現在還買不起啊。設了兩個字重，一樣加了一套楷體當引言用。楷體也選了比較秀氣的 cwTeX 楷。</p>
 <p>也許未來會試試看仿宋體，但我有點擔心螢幕顯示的效果（用 Retina 表示解析度無感），而且 justfont 提供的（仿）宋體也沒有比信黑體更喜歡，這實驗暫且擱置。</p>
@@ -167,21 +163,21 @@ Hello World_
 <p>但最後還是有所妥協啦（跪）。</p>
 <p>首先段落前後還是有留白，這主要是兼顧英文排版，因為不知道怎麼在不同語言套不同的版型，英文段落是前後留大間距。再來我在純文字的時候也很習慣段落前後空一行，感覺視覺上這樣比較舒適（也許是行高不夠……）。 <del><code>margin</code> 也是設為 <code>1em</code>。</del>（EDIT: 見文末）</p>
 <p>段落首行縮排最後也沒有放，主因是文句都蠻短的，有點怪；再來 markdown parser 會把我的全形空白吃掉，難以理解（但 rst 不會），真要加只能用<code>&amp;#x3000;</code>硬加。中英交雜的段落中文字會無法對齊，不過就暫時算了，現在中英文的字重能一樣已經很感動了。</p>
-<p>300 的中文字的確有點細，我把字調大了成 18px，還特別拿給我爸媽看，確定他們看得到這些字 XD </p>
+<p>300 的中文字的確有點細，我把字調大了成 18px，還特別拿給我爸媽看，確定他們看得到這些字 XD</p>
 <p>做到這裡其實還蠻滿意了，長得像這樣：</p>
-<div class="figure align-center" style="width: 250px">
+<figure class="align-center" style="width: 250px">
   <img src="https://blog.liang2.tw/posts/2015/09/blog-internals/pics/blog_mobile.png"/>
   <p class="caption center"><span class="fig">手機上的樣子</span></p>
-</div>
+</figure>
 
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2015/09/blog-internals/pics/blog_desktop.png"/>
   <p class="caption center"><span class="fig">電腦螢幕的樣子</span></p>
-</div>
+</figure>
 
 <h3 id="figure-caption">Figure caption</h3>
 <p>圖的下面還蠻常會放一些圖說、reference 之類。範例上面就有。在 markdown 不容易達成這效果，因為它的語法沒這麼複雜；但 rst 本來就有支援這樣的語法：</p>
-<div class="highlight"><pre><span></span><code><span class="p">..</span> <span class="ow">role</span><span class="p">::</span> fig
+<div class="highlight"><pre><span></span><code class="language-restructuredtext"><span class="p">..</span> <span class="ow">role</span><span class="p">::</span> fig
 
 <span class="p">..</span> <span class="ow">figure</span><span class="p">::</span> {filename}pics.jpg
     <span class="nc">:align:</span> center
@@ -191,15 +187,13 @@ Hello World_
     The legend consists of all elements after the caption.
 </code></pre></div>
 
-
 <p>這樣就會變成</p>
-<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;figure align-center&quot;</span><span class="p">&gt;</span>
+<div class="highlight"><pre><span></span><code class="language-html"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;figure align-center&quot;</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">img</span> <span class="na">alt</span><span class="o">=</span><span class="s">&quot;&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;{filename}pics.jpg&quot;</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;caption&quot;</span><span class="p">&gt;&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fig&quot;</span><span class="p">&gt;</span>Figure 1:<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span> The figure caption<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">figcaption</span><span class="p">&gt;&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fig&quot;</span><span class="p">&gt;</span>Figure 1:<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span> The figure caption<span class="p">&lt;/</span><span class="nt">figcaption</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;legend&quot;</span><span class="p">&gt;</span>The legend consists of all elements after the caption.<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 </code></pre></div>
-
 
 <p>在 markdown 基本上就手打上面那一串 HTML，其實也還好，只是醜了一點。真的寫得很煩時再想寫 plugin 來做這件事。</p>
 <h3 id="markdown-or-rst">Markdown or rst?</h3>
@@ -212,7 +206,7 @@ Hello World_
 <li>標題字重：本來是跟內文同字重，但感覺長文會抓不到段落，先改成粗體，希望短文不要因為這樣變得很混亂。</li>
 <li>Jupyter notebook include：還沒有試直接嵌入 nb 的功能，我想應該也是調整 CSS 那類的工（前端好累好難啊…）</li>
 </ul>
-<p><a href="(https://github.com/getpelican/pelican-plugins)">Pelican plugin</a> 裡面包含了很多樣的套件，我猜很多遇到的問題，前人都解掉了吧？……吧 xdd</p>
+<p><a href="https://github.com/getpelican/pelican-plugins">Pelican plugin</a> 裡面包含了很多樣的套件，我猜很多遇到的問題，前人都解掉了吧？……吧 xdd</p>
 <h3 id="edit-2015-09-22">EDIT (2015-09-22)</h3>
 <p>看來看去，又調整了很多東西。</p>
 <p>首先，字體大小調小成 16px 又調回 18px。會選擇 16px 是因為我發現在 13&#34; 筆電上閱讀會變得很擠。調回來是因為在大螢幕上看真的太小了，自己都需要放大來看。而且發現本來 13&#34; 上很擠的問題並不是字體，而是一行文字的字數。</p>
@@ -221,11 +215,10 @@ Hello World_
 <p>最後內文寬 738px (41em) 或 828px (46em)，實際一行最大為 612px (34em)。一行最多 34 個中文字、大約 14 個英文字（80 個字元）；程式碼一行最多只能放 74 個字元，短了一點點但還可以接受。</p>
 <p>意外的小發現，在內文變窄之後，還可以加上右側的 sidenote，像是 <a href="http://www.daveliepmann.com/tufte-css/">Tufte CSS</a> 這樣，有時會比 footnote 好用，但可能又變回內容太擠的狀態。</p>
 <p>最後是在段落前後距離調整，把標題接內文的間距變小了，但段落間的間距調大。學到了一些以前不會的 CSS 語法，像</p>
-<div class="highlight"><pre><span></span><code><span class="nt">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nt">p</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code class="language-css"><span class="nt">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nt">p</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">  </span><span class="k">margin-top</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5</span><span class="kt">em</span><span class="p">;</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
 </code></pre></div>
-
 
 <p>代表選取相鄰的 p 元素，這樣可以避免直接改 p 的 margin 讓 p 與 h<em>、ul、pre 等間距太寬的狀況。</em><em>前端真的太神妙了。</em>*</p>
 <h3 id="edit-2015-09-23">EDIT (2015-09-23)</h3>
@@ -239,9 +232,9 @@ Hello World_
 <ol>
 <li id="fn:1">
 <p>以前部落格的長相：
-<div class="figure align-center">
-  <img src="https://blog.liang2.tw/posts/2015/09/blog-internals/pics/oldsite.png"/>
-</div>&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<figure>
+<img src="https://blog.liang2.tw/posts/2015/09/blog-internals/pics/oldsite.png"/>
+</figure>&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div></section>

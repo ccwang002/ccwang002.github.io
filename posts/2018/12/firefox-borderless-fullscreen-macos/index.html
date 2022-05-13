@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="EDIT 2021-06-01: In Firefox 89+, there’s a default option “Hide Toolbar” in the fullscreen mode that automatically hides the toolbar. So the customization is no longer needed. Firefox fullscreen on macOS by default contains the address bar and the tab bar. I usually don’t really need the full …" />
 <meta name="keywords" content="en">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>Make Firefox fullscreen borderless on macOS</title>
 
 	<!-- og -->
@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2018-12-13 00:00:00-06:00"/>
-<meta property="article:modified_time" content="2022-02-20 20:07:45.299454-06:00"/>
+<meta property="article:modified_time" content="2022-05-13 12:59:01.820113-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="en"/>
@@ -33,8 +33,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -48,7 +48,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post en-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Dec 13, 2018">Dec 13, 2018</time>
         in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
@@ -61,14 +61,14 @@
     </span>
     <section class="post-content"><p>EDIT 2021-06-01: In Firefox 89+, there&rsquo;s a default option &ldquo;Hide Toolbar&rdquo; in the fullscreen mode that automatically hides the toolbar. So the customization is no longer needed.</p>
 <p>Firefox fullscreen on macOS by default contains the address bar and the tab bar. I usually don&rsquo;t really need the full vertical space for web page, so those bars aren&rsquo;t a problem. But when I access a RStudio Server on Firefox, I always want to have more vertical space. As shown in the screenshot below, the address bar and the tab bar of Firefox are unnecessary, and they may be quite distracting. If those bars are hidden and only show up upon request when Firefox enters fullscreen, the vertical space can be saved and the interface will remain clean.</p>
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/rstudio_fullscreen.png">
   <p class="caption"></p>
-</div>
+</figure>
 
 <p>It turns out that Firefox controls its user interface styling using CSS. So we can set the shape of the window tabs, the height of the address bar, and more by adding a CSS file at <code>~/Library/Application Support/Firefox/Profiles/&lt;profile&gt;/chrome/userChrome.css</code>. In Firefox 69+, we need to set <code>toolkit.legacyUserProfileCustomizations.stylesheets=true</code> in <code>about:config</code> to enable the CSS styling (<a href="https://www.userchrome.org/how-create-userchrome-css.html">more details here</a>).</p>
 <p>My modification was based on <a href="https://apple.stackexchange.com/a/313241">this answer on Stack Exchange</a>:</p>
-<div class="highlight"><pre><span></span><code><span class="p">#</span><span class="nn">navigator-toolbox</span><span class="o">[</span><span class="nt">inFullscreen</span><span class="o">]</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code class="language-css"><span class="p">#</span><span class="nn">navigator-toolbox</span><span class="o">[</span><span class="nt">inFullscreen</span><span class="o">]</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="k">height</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="kt">rem</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="k">margin-bottom</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.5</span><span class="kt">rem</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="k">opacity</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
@@ -91,46 +91,45 @@
 <span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
-
 <p>Note that the Firefox needs to be restarted to get the styling in effect. Here is how the Firefox fullscreen looks like after applying the <code>userChrome.css</code> above.</p>
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/rstudio_fullscreen.modified.png">
-</div>
+</figure>
 
 <p>Now the RStudio Server web page feels like a native app, similar to what RStudio Desktop offers. Both address and tab bars are hidden by default, and when the mouse hovers to the top, they get visible again.</p>
-<div class="figure">
+<figure>
   <video auto autoplay loop>
     <source src="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/fullscreen_switch_tabs.webm" type="video/webm">
     <source src="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/fullscreen_switch_tabs.mp4" type="video/mp4">
     Your browser doesn't support HTML5 video. You can still download the <a href="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/fullscreen_switch_tabs.mp4">screencast</a> and view it locally.
   </video>
-  <p class="caption">Switch tabs in the borderless fullscreen of Firefox.</p>
-</div>
+  <figcaption>Switch tabs in the borderless fullscreen of Firefox.</figcaption>
+</figure>
 
 <p>Those top bars will show up as well when they are in focus by shortkeys. For example, ⌘ + L will get focus on the address bar. It is useful when I want to launch a quick search in a new tab.</p>
-<div class="figure">
+<figure>
   <video controls>
     <source src="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/fullscreen_focus.webm" type="video/webm">
     <source src="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/fullscreen_focus.mp4" type="video/mp4">
     Your browser doesn't support HTML5 video. You can still download the <a href="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/fullscreen_focus.mp4">screencast</a> and view it locally.
   </video>
-  <p class="caption">Address bar is shown automatically when it is focused using shortkey.</p>
-</div>
+  <figcaption>Address bar is shown automatically when it is focused using shortkey.</figcaption>
+</figure>
 
 <p>In <code>userChrome.css</code>, I added a small padding between the bars and the top border to make them more accessible by mouse. When the mouse moves to the top, macOS&rsquo;s menu bar will pop up as well, and both Firefox and macOS will overlap. The macOS one will go away first, but the mouse has to stay on the Firefox bars so they don&rsquo;t disappear either.</p>
-<div class="figure">
+<figure>
   <video controls>
     <source src="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/fullscreen_hover_for_menubar.webm" type="video/webm">
     <source src="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/fullscreen_hover_for_menubar.mp4" type="video/mp4">
     Your browser doesn't support HTML5 video. You can still download the <a href="https://blog.liang2.tw/posts/2018/12/firefox-borderless-fullscreen-macos/pics/fullscreen_hover_for_menubar.mp4">screencast</a> and view it locally.
   </video>
-</div>
+</figure>
 
 <p>The overlapping of Firefox bars and macOS menubar is still a bit annoying, which will require some practice to navigate between them by mouse. I will probably rely more on the shortkeys instead. Anyway, I now have more vertical space and the modification of <code>userChrome.css</code> works fine for now.</p>
 <p>For more information about modifying the Firefox user interface, there is <a href="https://www.userchrome.org/">a website</a> that introduces <code>userChrome.css</code> in depth.</p>
 <h3 id="notes-for-screencast-encoding">Notes for screencast encoding</h3>
 <p>I modified the command from my <a href="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/">previous post</a> to shrink the file size of the original QuickTime screencasts using FFmpeg. More encoding parameters can be found at FFmpeg&rsquo;s wiki (<a href="https://trac.ffmpeg.org/wiki/Encode/VP9">VP9</a> and <a href="https://trac.ffmpeg.org/wiki/Encode/H.264">H.264</a>).</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># VP9 (WEBM)</span>
+<div class="highlight"><pre><span></span><code class="language-bash"><span class="c1"># VP9 (WEBM)</span>
 ffmpeg -i fullscreen_switch_tabs.mov <span class="se">\</span>
     -vcodec libvpx-vp9 -b:v 200K <span class="se">\</span>
     -pass <span class="m">1</span> -an -r <span class="m">24</span> -f webm /dev/null
@@ -144,7 +143,6 @@ ffmpeg -i fullscreen_switch_tabs.mov <span class="se">\</span>
     -strict -2 -crf <span class="m">40</span> -preset slow -r <span class="m">24</span> <span class="se">\</span>
     fullscreen_switch_tabs.mp4
 </code></pre></div>
-
 
 <p>EDIT 2020-06-13: Added extra <code>about:config</code> settings in Firefox 69+ and fixed the styling. I also increased the top margin since the new address bar is taller.</p></section>
     <footer class="post-footer">

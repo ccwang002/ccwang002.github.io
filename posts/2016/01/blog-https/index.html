@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="簡言之，現在 blog 使用 https。一般的 http 連線會被重新導向至 https。 Blog 本來就是架在 GitHub Pages 上，其實預設有 https，但在網址改成自訂 domain 之後 …" />
 <meta name="keywords" content="zh, blog, pelican, https">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>Blog defaults to HTTPS</title>
 
 	<!-- og -->
@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2016/01/blog-https/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2016-01-06 00:00:00-06:00"/>
-<meta property="article:modified_time" content="2022-02-20 20:07:45.273506-06:00"/>
+<meta property="article:modified_time" content="2022-05-13 12:58:21.338228-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="zh"/>
@@ -36,8 +36,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -51,7 +51,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post zh-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Jan 06, 2016">Jan 06, 2016</time>
         in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
@@ -77,10 +77,10 @@
 </div>
 <h2 id="cloudflare-ssl-and-cdn">CloudFlare SSL and CDN</h2>
 <p>在看那個 <a href="https://github.com/isaacs/github/issues/156">issue</a> 就可以找到其他人用 CloudFlare 的解法。概念上就再用一層 CloudFlare CDN，然後它的 CDN 有提供 https 簽章。直接看 CloudFlare 在 Crypto 頁的介紹比較快：</p>
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/01/blog-https/pics/cloudflare_ssl.png"/>
   <p class="caption center">source: <a href="https://www.cloudflare.com/ssl/"> CloudFlare one-click SSL</a></p>
-</div>
+</figure>
 
 <p>所以 CloudFlare 去 cache GitHub 頁面時用的是 https，再到使用者時也是用 https。剩下就是你要不要相信 CloudFlare 了。</p>
 <p>CloudFlare 的設定可以參考 <a href="https://blog.keanulee.com/2014/10/11/setting-up-ssl-on-github-pages.html">Keanu&rsquo;s Blog</a>。一些重點筆記：</p>
@@ -97,16 +97,16 @@
 <li>留言系統 <a href="https://disqus.com/">Disqus</a> HTTP 和 HTTPS 竟然是當作<a href="https://github.com/aspnet/Docs/issues/623">不同留言板</a>來使用，而且要手動 merge。</li>
 </ul>
 <h2 id="disqus">Disqus</h2>
-<p>似乎解法只有全部導向到 https。這還不能直接改 Disqus 設定，要用它的 <a href="https://help.disqus.com/customer/portal/articles/912757-url-mapper">URL Mapper</a> 下載所有留言版出現連結的 CSV 手動修改。 </p>
+<p>似乎解法只有全部導向到 https。這還不能直接改 Disqus 設定，要用它的 <a href="https://help.disqus.com/customer/portal/articles/912757-url-mapper">URL Mapper</a> 下載所有留言版出現連結的 CSV 手動修改。</p>
 <p>感覺很土砲。不過站上的留言不多，也不用改多少留言，很快就同步到新的位置上。</p>
 <h2 id="justfont">justfont</h2>
 <p>之前有贊助金萱計畫，其實有拿到兩年的 Business Plan。寫信給客服一天就改好設定了。不過之後就要多付錢啦。</p>
 <h2 id="hinet">Hinet 轉址服務</h2>
 <p>我沒有自己架任何 server，懶得維護。不過也很懶得打字。在其他 subdomain 都沒用的情況下，有透過 Hinet 設定 <a href="http://liang2.tw">http://liang2.tw</a> 會導向至 <a href="http://blog.liang2.tw">http://blog.liang2.tw</a> 再被導向到 https。</p>
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/01/blog-https/pics/cloudflare_dns_setting.png"/>
   <p class="caption center">CloudFlare DNS setting</p>
-</div>
+</figure>
 
 <p>大概是這樣。希望能在不要自己架 server 的情況下繼續經營這個 blog。</p></section>
     <footer class="post-footer">

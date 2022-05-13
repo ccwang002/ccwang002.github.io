@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - seqtk</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_seqtk.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-02-20T20:07:45-06:00</updated><entry><title>FASTA/Q sequence processing toolkit -- seqtk</title><link href="https://blog.liang2.tw/posts/2015/09/seqtk/" rel="alternate"></link><published>2015-09-27T14:11:00-05:00</published><updated>2022-02-20T20:07:45-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2015-09-27:/posts/2015/09/seqtk/</id><summary type="html">&lt;p&gt;This post demonstrates the FASTQ to FASTA conversion and sequence quality check using seqtk.&lt;/p&gt;</summary><content type="html">&lt;p&gt;This is the first post of the series of my common NGS processing workflows and notes.&lt;/p&gt;
 &lt;p&gt;Some of the most common operation in sequence processing is FASTQ → FASTA conversion. Tons of conversion scripts using either sed or awk can be found by search. For example,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# FASTQ to FASTA&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;&lt;span class="c1"&gt;# FASTQ to FASTA&lt;/span&gt;
 &lt;span class="c1"&gt;# Assume every read record takes exactly 4 line&lt;/span&gt;
 &lt;span class="c1"&gt;# Ref: http://stackoverflow.com/a/10359425&lt;/span&gt;
 $ sed -n &lt;span class="s1"&gt;&amp;#39;1~4s/^@/&amp;gt;/p;2~4p&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;The assumption of 4 lines per read usually holds for recent NGS sequencing data, so not a big deal.&lt;/p&gt;
 &lt;p&gt;In many case the sequence is gzip&amp;rsquo;d. It is still a piece of cake when combining with pipe editing,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gzcat myseq.fq.gz &lt;span class="p"&gt;|&lt;/span&gt; sed -n &lt;span class="s1"&gt;&amp;#39;1~4s/^@/&amp;gt;/p;2~4p&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; gzip &amp;gt; myseq.fa.gz
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;gzcat myseq.fq.gz &lt;span class="p"&gt;|&lt;/span&gt; sed -n &lt;span class="s1"&gt;&amp;#39;1~4s/^@/&amp;gt;/p;2~4p&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; gzip &amp;gt; myseq.fa.gz
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;However, things can get complex really fast when one wants to additionally do reverse complement, randomly sample a subset of reads, and many other types of sequence manipulation. Efficiency matters if those tasks are applied to tens of millions of reads. Even a few nanoseconds longer of computing time difference per read can make a difference at this scale of reads.&lt;/p&gt;
 &lt;h3 id="seqtk"&gt;Seqtk&lt;/h3&gt;
 &lt;p&gt;So &lt;a href="https://github.com/lh3/seqtk"&gt;seqtk&lt;/a&gt; comes into rescue. It is written in C and MIT licensed. &lt;a href="https://www.biostars.org/p/85929/#86082"&gt;A quick comparison&lt;/a&gt; shows it is generally faster than other UNIX-based solutions, let alone implementations based on scripting languages.&lt;/p&gt;
 &lt;p&gt;Seqtk bundles many other operations, but I&amp;rsquo;ll just mention those I frequently use.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;$seqtk&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;&lt;span class="nv"&gt;$seqtk&lt;/span&gt;
 
 Usage:   seqtk &amp;lt;command&amp;gt; &amp;lt;arguments&amp;gt;
 Version: &lt;span class="m"&gt;1&lt;/span&gt;.0-r77-dirty
@@ -41,21 +39,18 @@ Command: seq       common transformation of FASTA/Q
          listhet   extract the position of each het
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;h3 id="fastq-fasta"&gt;FASTQ → FASTA&lt;/h3&gt;
 &lt;p&gt;Read (gzip&amp;rsquo;d) FASTQ and write out as FASTA,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ seqtk seq -A &lt;span class="k"&gt;in&lt;/span&gt;.fq&lt;span class="o"&gt;[&lt;/span&gt;.gz&lt;span class="o"&gt;]&lt;/span&gt; &amp;gt; out.fa
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;$ seqtk seq -A &lt;span class="k"&gt;in&lt;/span&gt;.fq&lt;span class="o"&gt;[&lt;/span&gt;.gz&lt;span class="o"&gt;]&lt;/span&gt; &amp;gt; out.fa
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;To make the output gzip&amp;rsquo;d again, piped with gzip,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ seqtk seq -A &lt;span class="k"&gt;in&lt;/span&gt;.fq&lt;span class="o"&gt;[&lt;/span&gt;.gz&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; gzip &amp;gt; out.fa.gz
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;$ seqtk seq -A &lt;span class="k"&gt;in&lt;/span&gt;.fq&lt;span class="o"&gt;[&lt;/span&gt;.gz&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; gzip &amp;gt; out.fa.gz
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;h3 id="reverse-complement"&gt;Reverse complement&lt;/h3&gt;
 &lt;p&gt;If one wants to debug the R2 reads of pair-end sequencing (second read on forward strand), since they contain reverse complement sequence of the insert DNA, one needs to reverse complement R2 reads again to debug directly by bare human eyes.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ seqtk seq -r R2.fq &amp;gt; R2_rc.fq
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;$ seqtk seq -r R2.fq &amp;gt; R2_rc.fq
 
 $ &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;gt; Example R2 seq&lt;/span&gt;
 &lt;span class="s1"&gt;  GCATTGGTGGTTCAGTGGTAGAATTCT&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; seqtk seq -r
@@ -63,16 +58,14 @@ $ &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;
 &lt;span class="c1"&gt;# AGAATTCTACCACTGAACCACCAATGC&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;h3 id="quality-check"&gt;Quality check&lt;/h3&gt;
 &lt;p&gt;To be honest, &lt;a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/"&gt;FastQC&lt;/a&gt; is more frequently used for quality check because it generates &lt;a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/good_sequence_short_fastqc.html"&gt;reports with beautiful figures&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;But for a detail report on each read position, one should consider &lt;code&gt;seqtk fqchk&lt;/code&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ seqtk fqchk myseq.fq&lt;span class="o"&gt;[&lt;/span&gt;.gz&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;$ seqtk fqchk myseq.fq&lt;span class="o"&gt;[&lt;/span&gt;.gz&lt;span class="o"&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;By default it sets &lt;code&gt;-q 20&lt;/code&gt;. This quality threshold determines the threshold of counting a base as low or high quality, shown as &lt;code&gt;%low&lt;/code&gt; and &lt;code&gt;%high&lt;/code&gt; per read position. In the default case, quality score higher than 20 will be treated as high quality bases.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;min_len: 10; max_len: 174; avg_len: 28.92; 37 distinct quality values
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;min_len: 10; max_len: 174; avg_len: 28.92; 37 distinct quality values
 POS #bases    %A   %C   %G   %T   %N  avgQ errQ %low %high
 ALL 236344886 17.0 22.5 31.3 29.2 0.0 39.9 37.6 0.1  99.9
 1   8172342   8.9  12.4 57.0 21.7 0.0 39.6 29.0 0.5  99.5
@@ -82,7 +75,6 @@ ALL 236344886 17.0 22.5 31.3 29.2 0.0 39.9 37.6 0.1  99.9
 5   8172342   14.3 12.9 22.3 50.5 0.0 39.8 37.0 0.2  99.8
 # ... (trimmed)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;The following columns, &lt;code&gt;avgQ&lt;/code&gt; and &lt;code&gt;errQ&lt;/code&gt;, need more explanation. Average quality (&lt;code&gt;avgQ&lt;/code&gt;) is computed by weighted mean of each base&amp;rsquo;s quality,&lt;/p&gt;
 &lt;p&gt;&lt;span class="katex-display"&gt;&lt;span class="katex"&gt;&lt;span class="katex-mathml"&gt;&lt;math display="block" xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mrow&gt;&lt;mi mathvariant="normal"&gt;a&lt;/mi&gt;&lt;mi mathvariant="normal"&gt;v&lt;/mi&gt;&lt;mi mathvariant="normal"&gt;g&lt;/mi&gt;&lt;mi mathvariant="normal"&gt;Q&lt;/mi&gt;&lt;/mrow&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mfrac&gt;&lt;mrow&gt;&lt;munderover&gt;&lt;mo&gt;∑&lt;/mo&gt;&lt;mrow&gt;&lt;mi&gt;q&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;/mrow&gt;&lt;mn&gt;93&lt;/mn&gt;&lt;/munderover&gt;&lt;mi&gt;q&lt;/mi&gt;&lt;mo&gt;⋅&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;q&lt;/mi&gt;&lt;/msub&gt;&lt;/mrow&gt;&lt;mrow&gt;&lt;munderover&gt;&lt;mo&gt;∑&lt;/mo&gt;&lt;mrow&gt;&lt;mi&gt;q&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;/mrow&gt;&lt;mn&gt;93&lt;/mn&gt;&lt;/munderover&gt;&lt;msub&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;q&lt;/mi&gt;&lt;/msub&gt;&lt;/mrow&gt;&lt;/mfrac&gt;&lt;mo separator="true"&gt;,&lt;/mo&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt;

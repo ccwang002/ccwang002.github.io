@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="整理了 server 從 HTTP 到 HTTPS 相關設定的調整。" />
 <meta name="keywords" content="zh, pydoctw, https, letsencrypt">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>Python 官方文件中文化 Server HTTPS 使用 Let's Encrypt</title>
 
 	<!-- og -->
@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2016/02/pydoctw-https/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2016-02-21 14:00:00-06:00"/>
-<meta property="article:modified_time" content="2022-02-20 20:07:45.282101-06:00"/>
+<meta property="article:modified_time" content="2022-05-13 12:58:39.552851-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="zh"/>
@@ -36,8 +36,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -51,7 +51,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post zh-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Feb 21, 2016">Feb 21, 2016</time>
         in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
@@ -104,7 +104,7 @@
 <p>更新 certificate 的指令寫在 <code>/etc/letsencrypt/renew_cert.sh</code>。Shell script 的內容與參考文章一樣。</p>
 <h4 id="systemd-service">Systemd service</h4>
 <p>首先建立一個 renew_cert，以 Debian 為例放在 <code>/etc/systemd/system/renew_cert.service</code>，</p>
-<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code class="language-ini"><span class="k">[Unit]</span><span class="w"></span>
 <span class="na">Description</span><span class="o">=</span><span class="s">Renew Let&#39;s Encrypt cert</span><span class="w"></span>
 <span class="na">After</span><span class="o">=</span><span class="s">syslog.target</span><span class="w"></span>
 
@@ -119,21 +119,18 @@
 <span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span><span class="w"></span>
 </code></pre></div>
 
-
 <p>要手動更新 certificate 的時候執行這個 service 即可，</p>
-<div class="highlight"><pre><span></span><code>systemctl start renew_cert
+<div class="highlight"><pre><span></span><code class="language-text">systemctl start renew_cert
 </code></pre></div>
 
-
 <p>我們不需要 enable 它，不然每次開機都會執行一次。看結果或記錄，</p>
-<div class="highlight"><pre><span></span><code>systemctl status renew_cert
+<div class="highlight"><pre><span></span><code class="language-text">systemctl status renew_cert
 journalctl -e -u renew_cert
 </code></pre></div>
 
-
 <h4 id="systemd-timer">Systemd Timer</h4>
 <p>建立一個 <code>/etc/systemd/system/renew_cert.timer</code></p>
-<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code class="language-ini"><span class="k">[Unit]</span><span class="w"></span>
 <span class="na">Description</span><span class="o">=</span><span class="s">Update Let&#39;s Encrypt certificate every two months</span><span class="w"></span>
 
 <span class="k">[Timer]</span><span class="w"></span>
@@ -144,27 +141,24 @@ journalctl -e -u renew_cert
 <span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span><span class="w"></span>
 </code></pre></div>
 
-
 <p>重點只有 <code>[Timer]</code> 這 directive。<code>Unit=</code> 表示要啟動的 service。<code>OnCalendar=</code><sup id="fnref:calendar"><a class="footnote-ref" href="#fn:calendar">1</a></sup> 則是設定這 timer 根據指定的時間點 (UTC 時間<sup id="fnref:utc"><a class="footnote-ref" href="#fn:utc">2</a></sup>) 啟動。</p>
 <p>以這邊寫的時間 <code>*-1/2-1 16:00:00</code> 為例，代表每年的 1+2n 月 1 日 16:00 UTC 更新 certificate，即臺灣時間 1、3、5、……月 2 日凌晨更新。</p>
 <p>啟用 timer，它需要被 enable 確保重開機時被執行。</p>
-<div class="highlight"><pre><span></span><code>systemctl enable renew_cert.timer
+<div class="highlight"><pre><span></span><code class="language-text">systemctl enable renew_cert.timer
 systemctl start renew_cert.timer
 </code></pre></div>
 
-
 <p>可以用 <code>systemctl list-timers</code> 檢查它下次執行的時間：</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo systemctl list-timers renew_cert.timer
+<div class="highlight"><pre><span></span><code class="language-console"><span class="gp">$ </span>sudo systemctl list-timers renew_cert.timer
 <span class="go">NEXT                         LEFT                LAST PASSED UNIT             ACTIVATES</span>
 <span class="go">Tue 2016-03-01 16:00:00 UTC  1 weeks 2 days left n/a  n/a    renew_cert.timer renew_cert.service</span>
 </code></pre></div>
 
-
 <h3 id="nginx-http-redirect-to-https">nginx HTTP redirect to HTTPS</h3>
 <p>（這邊設定我沒信心，有更好的設定方法歡迎告訴我 &gt; &lt;）</p>
 <p>要解決的問題為，ACME challenge 是透過 HTTP，其餘的連線都轉到 HTTPS。</p>
-<p>在 nginx 中把主要的設定檔中拿掉 <code>listen 80;</code> 與 ACM challenge 的部份。把它們移成新的 server block： </p>
-<div class="highlight"><pre><span></span><code><span class="k">server</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<p>在 nginx 中把主要的設定檔中拿掉 <code>listen 80;</code> 與 ACM challenge 的部份。把它們移成新的 server block：</p>
+<div class="highlight"><pre><span></span><code class="language-nginx"><span class="k">server</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">docs.python.org.tw</span><span class="p">;</span><span class="w"></span>
 
@@ -180,18 +174,17 @@ systemctl start renew_cert.timer
 <span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
-
 <h3 id="https">測試 HTTPS 設定</h3>
 <p>用了 <a href="https://securityheaders.io/">securityheaders.io</a> 和 <a href="https://www.ssllabs.com/index.html">SSL Labs</a> 測試了一下，應該還可以：</p>
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/02/pydoctw-https/pics/pydoctw_securityheaders_report.png"/>
   <p class="caption center">Report from securityheaders.io (<a href="https://securityheaders.io/?q=https%3A%2F%2Fdocs.python.org.tw%2F3%2F">Live Report</a>)</p>
-</div>
+</figure>
 
-<div class="figure">
+<figure>
   <img src="https://blog.liang2.tw/posts/2016/02/pydoctw-https/pics/pydoctw_ssllabs_report.png"/>
   <p class="caption center">Report from SSL Labs (<a href="https://www.ssllabs.com/ssltest/analyze.html?d=docs.python.org.tw">Live Report</a>)</p>
-</div>
+</figure>
 
 <h3 id="_2">心得</h3>
 <p>總結來說，使用 <a href="https://letsencrypt.org/">Let&rsquo;s Encrypt</a> 不難，但也沒到非常簡單。</p>
@@ -199,12 +192,11 @@ systemctl start renew_cert.timer
 <p>要注意目前 public beta 階段，相同 domain 在 7 天只能被簽署 5 次，測試的時候不要太衝動不然就要等一週了。</p>
 <h3 id="misc">Misc.</h3>
 <p>建立 CSR (Certificate Signing Request) 檔時，可以加入自己的 email 地址，不然預設是 <code>webmaster@&lt;domain&gt;</code>：</p>
-<div class="highlight"><pre><span></span><code>openssl req -new -sha256 <span class="se">\</span>
+<div class="highlight"><pre><span></span><code class="language-bash">openssl req -new -sha256 <span class="se">\</span>
     -key /etc/letsencrypt/private/domain.key <span class="se">\</span>
     -subj <span class="s2">&quot;/CN=docs.python.org.tw/emailAddress=me+pydoctw@liang2.tw&quot;</span> <span class="se">\</span>
     &gt; /etc/letsencrypt/private/domain.csr
 </code></pre></div>
-
 
 <div class="footnote">
 <hr>

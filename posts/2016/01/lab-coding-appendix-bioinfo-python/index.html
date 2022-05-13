@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="A walk through of practices created by Rosalind Team." />
 <meta name="keywords" content="en, labcoding, python">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>Coding 初學指南附錄 - Bioinfo Practices using Python</title>
 
 	<!-- og -->
@@ -35,8 +35,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -50,7 +50,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post en-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Jan 21, 2016">Jan 21, 2016</time>
         in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
@@ -119,15 +119,14 @@
 <p><em>You should implement by yourself before looking my solution. Also I didn&rsquo;t see their official solution so my solution can differ a lot from theirs.</em></p>
 <p>Intuitively, we need to implement a FASTA file parser. FASTA contains a series of sequence reads with unique ID. From a object-oriented viewpoint, we create classes <code>Read</code> for reads and <code>Fasta</code> for fasta files.</p>
 <p><code>Read</code> is easy to design and understand,</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Read</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code class="language-python"><span class="k">class</span> <span class="nc">Read</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">seq</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seq</span> <span class="o">=</span> <span class="n">seq</span>
 </code></pre></div>
 
-
 <p>Since we need to compute their GC content, add a method for <code>Read</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Read</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code class="language-python"><span class="k">class</span> <span class="nc">Read</span><span class="p">:</span>
     <span class="c1"># ... skipped</span>
     <span class="k">def</span> <span class="nf">gc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the GC content (in %) of the read.&quot;&quot;&quot;</span>
@@ -136,9 +135,8 @@
         <span class="k">return</span> <span class="n">gc_percent</span>
 </code></pre></div>
 
-
 <p>Then we have to implement the FASTA parser, which reads all read entries and converts them through <code>Read</code>. In real world we are dealing with <code>myfasta.fa</code>-like files, but here the input is string.</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Fasta</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code class="language-python"><span class="k">class</span> <span class="nc">Fasta</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse a FASTA formated string.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">raw_str</span> <span class="o">=</span> <span class="n">raw_str</span>
@@ -154,19 +152,17 @@
             <span class="k">yield</span> <span class="n">Read</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </code></pre></div>
 
-
 <p>Here I use <code>yield Read(...)</code>, which may be unfamiliar for Python beginners. It turns <code>parse(self)</code> function as a generator. Generator makes you focus on the incoming data. Once data is parsed and converted, the result is immediated thrown out by <code>yield</code>. We don&rsquo;t care about how to collect all the results. In our case, we catch all the results into a list by <code>list(...)</code>.</p>
 <p>So how should we read FASTA file? A simple rule in this case is that every read consists by two continuous row. Also, the first row will always be the first read id.</p>
 <p>All we need is read two lines at the same time. Here <a href="https://docs.python.org/3/library/functions.html#zip">a Pythonic idiom</a> is introduced. The following code read two non-overlapping lines,</p>
-<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">first_line</span><span class="p">,</span> <span class="n">second_line</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="nb">iter</span><span class="p">(</span><span class="n">raw_lines</span><span class="p">)]</span><span class="o">*</span><span class="mi">2</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code class="language-python"><span class="k">for</span> <span class="n">first_line</span><span class="p">,</span> <span class="n">second_line</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="nb">iter</span><span class="p">(</span><span class="n">raw_lines</span><span class="p">)]</span><span class="o">*</span><span class="mi">2</span><span class="p">):</span>
     <span class="k">yield</span> <span class="n">Read</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">first_line</span><span class="p">,</span> <span class="n">seq</span><span class="o">=</span><span class="n">second_line</span><span class="p">)</span>
 </code></pre></div>
-
 
 <p>By <code>zip(*[iter(s)]*n)</code> magic, we are very close to implement a full parser. You could find a lot of <a href="http://stackoverflow.com/a/2233247">explanations</a> for this magic.</p>
 <p>Read id line percedes with a <code>&gt;</code> sign, so we could use something like <code>first_line[1:]</code> or <code>first_line[len('&gt;'):]</code> for explicity.</p>
 <p>Then sorting the GC% of reads in a FASTA file is easy.</p>
-<div class="highlight"><pre><span></span><code><span class="n">fasta</span> <span class="o">=</span> <span class="n">Fasta</span><span class="p">(</span><span class="s1">&#39;...&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code class="language-python"><span class="n">fasta</span> <span class="o">=</span> <span class="n">Fasta</span><span class="p">(</span><span class="s1">&#39;...&#39;</span><span class="p">)</span>
 <span class="n">sorted_reads</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">fasta</span><span class="o">.</span><span class="n">reads</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">gc</span><span class="p">())</span>  <span class="c1"># note 1</span>
 <span class="n">top_gc_read</span> <span class="o">=</span> <span class="n">sorted_reads</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># note 2</span>
 <span class="nb">print</span><span class="p">(</span>
@@ -175,7 +171,6 @@
     <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">top_gc_read</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">top_gc_read</span><span class="o">.</span><span class="n">gc</span><span class="p">())</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>The code above completes the following steps:</p>
 <ol>

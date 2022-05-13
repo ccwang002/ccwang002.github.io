@@ -8,7 +8,7 @@
 <meta name="author" content="Liang-Bo Wang" />
 <meta name="description" content="I started using GPG key as one of my small experiments in March, 2015. Throughout the setup, I made some mistakes, which I revoked later, and explored several usage scenarios. Although like what was said in the post I’m giving up on PGP, I don’t really use the …" />
 <meta name="keywords" content="en, gpg">
-	<link rel="shortcut icon" href="https://blog.liang2.tw/favicon.ico" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
 	<title>GPG Key Transition</title>
 
 	<!-- og -->
@@ -34,8 +34,8 @@
 	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/css/pygments.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -49,7 +49,7 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
-<article class="post en-post">
+<article class="post">
     <span class="post-meta">
         <time datetime="Dec 06, 2016">Dec 06, 2016</time>
         in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
@@ -63,7 +63,7 @@
     </span>
     <section class="post-content"><p>I started using GPG key as one of my small experiments in March, 2015. Throughout the setup, I made some mistakes, which I revoked later, and explored several usage scenarios. Although like what was said in the post <a href="https://blog.filippo.io/giving-up-on-long-term-pgp/"><em>I&rsquo;m giving up on PGP</em></a>, I don&rsquo;t really use the encryption in daily email communication, it is still good to have an online identity.</p>
 <p>A year later, which is 3 months before my <em>experimental</em> key expires, I think now is a good time to roll out a new one. I followed Alex&rsquo;s post <a href="https://alexcabal.com/creating-the-perfect-gpg-keypair/"><em>Creating the Perfect GPG Keypair</em></a> to create a signing subkey for daily usage and keep my master key sperately in a safe place. The following is my transition statement.</p>
-<div class="highlight"><pre><span></span><code>-----BEGIN PGP SIGNED MESSAGE-----
+<div class="highlight"><pre><span></span><code class="language-text">-----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA512
 
 I am transitioning GPG keys from an old 4192-bit RSA key to a new
