@@ -1,0 +1,6 @@
+*.md linguist-detectable
+content/ linguist-detectable
+hauntr/static/fonts/ linguist-vendored
+hauntr/static/icons/ linguist-vendored
+hauntr/static/katex-*/ linguist-vendored
+hauntr/static/styles/pygments.css linguist-vendored
