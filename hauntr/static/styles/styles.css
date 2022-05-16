@@ -27,7 +27,6 @@ pre {
 
 sub, sup {
     line-height: 0;
-    position: relative;
     vertical-align: baseline;
 }
 sup { top: -0.5em; }
@@ -230,10 +229,16 @@ details p {
    4. General - The main styles for the the theme
    ========================================================================== */
 
+.post,
+.pagination,
+.footer {
+    width: 80ch;
+    max-width: 80vw;
+}
+
 /* Big cover image on the home page */
 
 .site-head {
-    position: relative;
     display: table;
     width: 100%;
     margin: 0 0 4rem 0;
@@ -272,9 +277,6 @@ details p {
 /* Every post, on every page, gets this style on its <article> tag */
 
 .post {
-    position: relative;
-    width: 80ch;
-    max-width: 80vw;
     margin: 1.5rem auto;
     word-break: normal;
     hyphens: auto;
@@ -420,9 +422,6 @@ html[lang="zh"] details p {
 /* The main wrapper for our pagination links */
 
 .pagination {
-    position: relative;
-    width: 80%;
-    max-width: 700px;
     margin: 4em auto;
     font-family: var(--main-en-font), sans-serif;
     color: var(--color-text-muted);
@@ -470,7 +469,6 @@ html[lang="zh"] details p {
    ========================================================================== */
 
 .site-footer {
-    position: relative;
     margin: 2rem 0 0 0;
     padding: 4rem 0;
     border-top: #ebf2f6 1px solid;
@@ -505,6 +503,7 @@ html[lang="zh"] details p {
     .pagination,
     .post {
         width: auto;
+        max-width: unset;
         margin-left: 1.5rem;
         margin-right: 1.5rem;
     }
