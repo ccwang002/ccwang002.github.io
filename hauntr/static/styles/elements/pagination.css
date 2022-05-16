@@ -1,0 +1,48 @@
+/* Pagination */
+
+/* The main wrapper for our pagination links */
+
+.pagination {
+    margin: 4em auto;
+    font-family: var(--main-en-font), sans-serif;
+    color: var(--color-text-muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.pagination a {
+    color: var(--color-text-muted);
+}
+
+/* Push the previous/next links out to the left/right */
+
+.older-posts,
+.newer-posts {
+    width: 13ch;
+    padding: 0 0.75em;
+
+    border: #ebf2f6 2px solid;
+    border-radius: 1em;
+    text-decoration: none;
+
+    transition: border ease 0.3s;
+}
+
+.older-posts:hover,
+.newer-posts:hover {
+    border-color: var(--color-text-muted);
+}
+
+.older-posts {
+    text-align: right;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+    .older-posts,
+    .newer-posts {
+        width: fit-content;
+    }
+}
+

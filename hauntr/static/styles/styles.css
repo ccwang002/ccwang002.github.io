@@ -1,6 +1,7 @@
 @import 'fonts.css';
 @import 'elements/blockquote.css';
 @import 'elements/figure.css';
+@import 'elements/pagination.css';
 @import 'elements/subscribe.css';
 @import 'elements/table.css';
 
@@ -415,53 +416,6 @@ html[lang="zh"] details p {
 }
 
 
-/* ==========================================================================
-   8. Pagination - Tools to let you flick between pages
-   ========================================================================== */
-
-/* The main wrapper for our pagination links */
-
-.pagination {
-    margin: 4em auto;
-    font-family: var(--main-en-font), sans-serif;
-    color: var(--color-text-muted);
-    text-align: center;
-}
-
-.pagination a {
-    color: var(--color-text-muted);
-}
-
-/* Push the previous/next links out to the left/right */
-
-.older-posts,
-.newer-posts {
-    position: absolute;
-    display: inline-block;
-    padding: 0 15px;
-    border: #ebf2f6 2px solid;
-    text-decoration: none;
-    border-radius: 30px;
-    transition: border ease 0.3s;
-}
-
-.older-posts {
-    right: 0;
-}
-
-.page-number {
-    display: inline-block;
-    padding: 2px 0;
-}
-
-.newer-posts {
-    left: 0;
-}
-
-.older-posts:hover,
-.newer-posts:hover {
-    border-color: var(--color-text-muted);
-}
 
 
 /* ==========================================================================
