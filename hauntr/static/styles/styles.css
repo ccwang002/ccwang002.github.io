@@ -34,6 +34,7 @@ sup { top: -0.5em; }
 sub { bottom: -0.25em; }
 
 /* no underline for the footnote hyperlinks */
+
 sup a.footnote-ref {
     text-decoration: none;
 }
@@ -383,15 +384,15 @@ details p {
 
 /* Language specific line height */
 
-html[lang="zh"] p,
-html[lang="zh"] ul,
-html[lang="zh"] ol,
-html[lang="zh"] dl {
+html[lang='zh'] p,
+html[lang='zh'] ul,
+html[lang='zh'] ol,
+html[lang='zh'] dl {
     line-height: 2em;
     margin: 1.5em 0;
 }
 
-html[lang="zh"] details p {
+html[lang='zh'] details p {
     margin: 0.75em 0;
 }
 
@@ -414,8 +415,6 @@ html[lang="zh"] details p {
 .utterances-frame {
     margin: 0;
 }
-
-
 
 
 /* ==========================================================================
@@ -500,16 +499,6 @@ html[lang="zh"] details p {
     .post-footer {
         padding: 1rem 0;
         text-align: center;
-    }
-
-    .older-posts,
-    .newer-posts {
-        position: static;
-        margin: 10px 0;
-    }
-
-    .page-number {
-        display: block;
     }
 
     .site-footer {
