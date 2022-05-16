@@ -33,7 +33,7 @@ figcaption a {
 }
 
 figure a:hover {
-    color: #57a3e8;
+    color: var(--color-link-hover);
 }
 
 figure.full-img img {
