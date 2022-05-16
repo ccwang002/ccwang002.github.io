@@ -4,15 +4,10 @@
 @import 'elements/subscribe.css';
 @import 'elements/table.css';
 
-article,
-aside,
-details,
-footer,
-header,
-hgroup,
-main,
-nav,
-section { display: block; }
+* {
+    box-sizing: border-box;
+}
+
 a:focus { outline: thin dotted; }
 
 code,
@@ -30,8 +25,6 @@ pre {
     overflow-x: auto;
 }
 
-small { font-size: 80%; }
-
 sub, sup {
     line-height: 0;
     position: relative;
@@ -39,8 +32,6 @@ sub, sup {
 }
 sup { top: -0.5em; }
 sub { bottom: -0.25em; }
-img { border: 0; }
-svg:not(:root) { overflow: hidden; }
 
 /* no underline for the footnote hyperlinks */
 sup a.footnote-ref {
@@ -200,8 +191,6 @@ code, tt {
 }
 
 pre {
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
     margin: 1.6em 0 1.6em -2.2em;
     padding: 0 0 0 1.6em;
     border-left: var(--color-text-muted) 0.4em solid;
