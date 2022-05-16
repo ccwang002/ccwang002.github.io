@@ -58,6 +58,7 @@ html {
 
 body {
     --color-text: #3a4145;
+    --color-text-muted: #9eabb3;
     --color-header-footer-background: #f7fafb;
     --color-link-hover: #57a3e8;
     --main-en-font: 'Source Sans 3 VF';
@@ -203,7 +204,7 @@ pre {
     box-sizing: border-box;
     margin: 1.6em 0 1.6em -2.2em;
     padding: 0 0 0 1.6em;
-    border-left: #9eabb3 0.4em solid;
+    border-left: var(--color-text-muted) 0.4em solid;
 }
 
 pre code,
@@ -336,11 +337,11 @@ details p {
 .post-meta {
     display: inline-block;
     margin: 0 0 5px 0;
-    color: #9eabb3;
+    color: var(--color-text-muted);
 }
 
 .post-meta a {
-    color: #9eabb3;
+    color: var(--color-text-muted);
     text-decoration: none;
 }
 
@@ -435,12 +436,12 @@ html[lang="zh"] details p {
     max-width: 700px;
     margin: 4em auto;
     font-family: var(--main-en-font), sans-serif;
-    color: #9eabb3;
+    color: var(--color-text-muted);
     text-align: center;
 }
 
 .pagination a {
-    color: #9eabb3;
+    color: var(--color-text-muted);
 }
 
 /* Push the previous/next links out to the left/right */
@@ -471,7 +472,7 @@ html[lang="zh"] details p {
 
 .older-posts:hover,
 .newer-posts:hover {
-    border-color: #9eabb3;
+    border-color: var(--color-text-muted);
 }
 
 
