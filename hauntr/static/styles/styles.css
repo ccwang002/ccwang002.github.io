@@ -423,6 +423,7 @@ html[lang="zh"] details p {
    ========================================================================== */
 
 .site-footer {
+    position: relative;
     margin: 2rem 0 0 0;
     padding: 4rem 0;
     border-top: #ebf2f6 1px solid;

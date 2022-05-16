@@ -6,7 +6,6 @@
     height: var(--size);
     position: absolute;
     top: calc(var(--size) * -0.5);
-    margin-left: calc(var(--size) * -0.5);
 
     border: #ebf2f6 1px solid;
     text-align: center;
