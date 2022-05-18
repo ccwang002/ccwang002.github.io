@@ -5,6 +5,7 @@
     font-weight: 200 900;
     font-style: normal;
     font-stretch: normal;
+    font-display: fallback;
     src:
         local('Source Sans 3 VF'),
         url('../fonts/source-sans/SourceSans3VF-Roman.ttf.woff2') format('woff2'),
@@ -30,6 +31,7 @@
     font-family: 'Noto Sans TC';
     font-style: normal;
     font-weight: 400;
+    font-display: fallback;
     src:
         local('Noto Sans TC Regular'),
         local('NotoSansTC-Regular'),
@@ -41,6 +43,7 @@
     font-family: 'Noto Sans TC';
     font-style: normal;
     font-weight: 700;
+    font-display: fallback;
     src:
         local('Noto Sans TC Bold'),
         local('NotoSansTC-Bold'),
@@ -55,6 +58,7 @@
     font-family: 'Fira Code';
     font-style: normal;
     font-weight: 300 700;
+    font-display: fallback;
     src:
         local('Fira Code VF'),
         local('Fira Code-VF'),
