@@ -6,6 +6,9 @@
 @import 'elements/subscribe.css';
 @import 'elements/table.css';
 @import 'elements/theme-toggle.css';
+@import 'pygments/light.css';
+@import 'pygments/dark-monokai.css';
+
 
 * {
     box-sizing: border-box;

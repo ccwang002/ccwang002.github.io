@@ -3,4 +3,4 @@ content/ linguist-detectable
 hauntr/static/fonts/ linguist-vendored
 hauntr/static/icons/ linguist-vendored
 hauntr/static/**/*.js linguist-vendored
-hauntr/static/styles/pygments.css linguist-vendored
+hauntr/static/styles/pygments/*.css linguist-vendored
