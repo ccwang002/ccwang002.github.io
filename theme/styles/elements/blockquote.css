@@ -11,15 +11,6 @@ blockquote p {
     font-style: italic;
 }
 
-blockquote small {
-    display: inline-block;
-    margin: 0.8em 0 0.8em 1.5em;
-    font-size: 0.9em;
-    color: #cccccc;
-}
-
-blockquote small::before { content: '\2014 \00A0'; }
-
 blockquote cite {
     font-weight: bold;
 }

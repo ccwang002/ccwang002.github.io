@@ -23,7 +23,6 @@
 		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
 
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/pygments.css" />
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
 </head>
 
@@ -33,7 +32,8 @@
 		<h2 class="blog-description">
 			<a href="https://blog.liang2.tw/about-me/">About</a> |
 			<a href="https://blog.liang2.tw/talks/">Talks</a> |
-			<a href="https://blog.liang2.tw/archives.html">Archives</a>
+			<a href="https://blog.liang2.tw/archives.html">Archives</a> |
+			<button class="theme-toggle" aria-label="auto" aria-live="polite">🌙</button>
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
@@ -243,7 +243,10 @@ shell for macOS, Linux, and the rest of the family.</p>
 			href="https://blog.liang2.tw/feeds/all.atom.xml"
 			data-tooltip="Atom feed"
 		>
-			<img src="https://blog.liang2.tw/theme/icons/feed.svg" alt="Atom feed">
+			<svg viewBox="0 0 24 24" width="24" height="24" alt="Atom feed">
+				<circle cx="6.18" cy="17.82" r="2.18"/>
+				<path d="m4 10.1v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9zm0-5.66v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56z"/>
+			</svg>
 		</a>
 		<div class="inner">
 			<section>
@@ -268,5 +271,6 @@ shell for macOS, Linux, and the rest of the family.</p>
 			</section>
 		</div>
 	</footer>
+	<script src="https://blog.liang2.tw/theme/scripts/theme-toggle.js"></script>
 </body>
 </html>
