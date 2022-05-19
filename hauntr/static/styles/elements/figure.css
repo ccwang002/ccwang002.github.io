@@ -29,7 +29,7 @@ figcaption {
 
 figcaption,
 figcaption a {
-    color: #757575;
+    color: var(--color-text-muted);
 }
 
 figure a:hover {

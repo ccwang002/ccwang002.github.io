@@ -39,7 +39,7 @@
 .newer-posts {
     padding: 0 0.75em;
 
-    border: #ebf2f6 2px solid;
+    border: var(--color-block-border) 2px solid;
     border-radius: 1em;
     text-decoration: none;
 
