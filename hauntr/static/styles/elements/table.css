@@ -16,10 +16,10 @@ table td {
     line-height: 20px;
     text-align: left;
     vertical-align: top;
-    border-top: 1px solid #efefef;
+    border-top: 1px solid var(--color-divider);
 }
 
-table th { color: #000000; }
+table th { color: var(--color-text); }
 
 table caption + thead tr:first-child th,
 table caption + thead tr:first-child td,
@@ -30,13 +30,13 @@ table thead:first-child tr:first-child td {
     border-top: 0;
 }
 
-table tbody + tbody { border-top: 2px solid #efefef; }
+table tbody + tbody { border-top: 2px solid var(--color-divider); }
 
-table table table { background-color: #ffffff; }
+table table table { background-color: var(--color-background); }
 
 table tbody > tr:nth-child(odd) > td,
 table tbody > tr:nth-child(odd) > th {
-    background-color: #f6f6f6;
+    background-color: var(--color-header-footer-background);
 }
 
 table.plain tbody > tr:nth-child(odd) > td,
