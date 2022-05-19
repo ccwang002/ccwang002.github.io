@@ -28,10 +28,7 @@ pre {
 
 sub, sup {
     line-height: 0;
-    vertical-align: baseline;
 }
-sup { top: -0.5em; }
-sub { bottom: -0.25em; }
 
 /* no underline for the footnote hyperlinks */
 
