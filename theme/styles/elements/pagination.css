@@ -1,0 +1,65 @@
+/* Pagination */
+
+/* The main wrapper for our pagination links */
+
+.pagination {
+    margin: 4em auto;
+    font-family: var(--main-en-font), sans-serif;
+    color: var(--color-text-muted);
+    display: grid;
+    grid-template-columns:
+        [prev] 1fr
+        [page-no] 1fr
+        [next] 1fr;
+    align-items: baseline;
+}
+
+.pagination a {
+    color: var(--color-text-muted);
+}
+
+.newer-posts {
+    grid-column: prev / span 1;
+    justify-self: start;
+}
+
+.page-number {
+    grid-column: page-no / span 1;
+    justify-self: center;
+    text-align: center;
+}
+
+.older-posts {
+    grid-column: next / span 1;
+    justify-self: end;
+    text-align: right;
+}
+
+.older-posts,
+.newer-posts {
+    padding: 0 0.75em;
+
+    border: var(--color-block-border) 2px solid;
+    border-radius: 1em;
+    text-decoration: none;
+
+    transition: border ease 0.3s;
+}
+
+.older-posts:hover,
+.newer-posts:hover {
+    border-color: var(--color-text-muted);
+}
+
+
+/* Responsive */
+
+@media (max-width: 500px) {
+    .pagination {
+        grid-template-columns:
+            [prev] auto
+            [page-no] auto
+            [next] auto;
+    }
+}
+

@@ -6,7 +6,6 @@
     height: var(--size);
     position: absolute;
     top: calc(var(--size) * -0.5);
-    margin-left: calc(var(--size) * -0.5);
 
     border: #ebf2f6 1px solid;
     text-align: center;
@@ -25,7 +24,7 @@
 .subscribe::before {
     content: attr(data-tooltip);
     position: absolute;
-    color: #eeeeee;
+    color: var(--color-header-footer-background);
     text-align: center;
     white-space: nowrap;
     max-width: none;
@@ -35,7 +34,7 @@
     padding: 4px 10px;
     display: inline-block;
     visibility: hidden;
-    background: #50585dd0;
+    background: var(--color-text-muted);
     border-radius: 5px;
     transition: opacity 0.1s ease-out;
     z-index: 1;

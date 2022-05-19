@@ -4,7 +4,6 @@ table {
     margin: 1.6em 0;
     width: 100%;
     max-width: 100%;
-    box-sizing: border-box;
 
     border-collapse: collapse;
     border-spacing: 0;
