@@ -1,0 +1,27 @@
+/* Colors */
+
+/* Default to the light color theme */
+
+body {
+    --color-text: #2d3336;
+    --color-text-muted: #4f5b60;
+    --color-background: #ffffff;
+    --color-header-footer-background: #eff4f5;
+    --color-divider: #c9d9e3;
+    --color-link-hover: #57a3e8;
+    --color-code-background: #f0f4f5;
+    --color-code-border: var(--color-divider);
+    --color-block-border: #a3b0b9;
+}
+
+body.dark-theme {
+    --color-text: hsl(210, 20%, 80%);
+    --color-text-muted: hsl(210, 15%, 65%);
+    --color-background: hsl(230, 4%, 11%);
+    --color-header-footer-background: hsl(230, 8%, 15%);
+    --color-divider: hsl(210, 20%, 30%);
+    --color-link-hover: hsl(210, 65%, 60%);
+    --color-code-background: hsl(210, 8%, 15%);
+    --color-code-border: var(--color-divider);
+    --color-block-border: hsl(210, 10%, 25%);
+}

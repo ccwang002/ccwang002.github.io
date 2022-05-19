@@ -1,9 +1,11 @@
+@import 'colors.css';
 @import 'fonts.css';
 @import 'elements/blockquote.css';
 @import 'elements/figure.css';
 @import 'elements/pagination.css';
 @import 'elements/subscribe.css';
 @import 'elements/table.css';
+@import 'elements/theme-toggle.css';
 
 * {
     box-sizing: border-box;
@@ -46,22 +48,10 @@ html {
 }
 
 body {
-    --color-text: #2d3336;
-    --color-text-muted: #4f5b60;
-    --color-background: #ffffff;
-    --color-header-footer-background: #eff4f5;
-    --color-divider: #c9d9e3;
-    --color-link-hover: #57a3e8;
-    --color-code-background: #f0f4f5;
-    --color-code-border: var(--color-divider);
-    --color-block-border: #a3b0b9;
-    --color-selection-background: #d6edff;
     --main-en-font: 'Source Sans 3 VF';
     --main-zh-font: 'Noto Sans TC';
     --font-size: 18px;
-}
 
-body {
     height: 100%;
     max-height: 100%;
     font-size: var(--font-size);
@@ -222,7 +212,6 @@ details p {
 /* Big cover image on the home page */
 
 .site-head {
-    display: table;
     width: 100%;
     margin: 0 0 4rem 0;
     padding: 2.5rem 0;

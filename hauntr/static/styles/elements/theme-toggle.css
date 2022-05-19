@@ -1,0 +1,13 @@
+.theme-toggle {
+    border: none;
+    border-radius: 50%;
+    background: unset;
+    padding: 4px;
+    margin: -4px;
+    line-height: 1em;
+}
+
+.theme-toggle:hover {
+    box-shadow: var(--color-text-muted) 0 0 0 2px;
+    transition: box-shadow 0.25s;
+}
