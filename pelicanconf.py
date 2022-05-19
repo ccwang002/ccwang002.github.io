@@ -93,7 +93,7 @@ def sort_by_len(value, len_key=-1, reversed=False):
         reverse=reversed,
     )
 JINJA_FILTERS = {
-    'sort_by_len': sort_by_len  # required by theme-flex
+    'sort_by_len': sort_by_len  # required by the theme
 }
 
 # Plugin settings
