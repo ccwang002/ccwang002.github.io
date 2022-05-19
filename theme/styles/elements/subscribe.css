@@ -7,11 +7,13 @@
     position: absolute;
     top: calc(var(--size) * -0.5);
 
-    border: var(--color-header-footer-background) 2px solid;
     text-align: center;
+    border: var(--color-header-footer-background) 2px solid;
     border-radius: 50%;
     background: var(--color-background);
-    transition: box-shadow 0.5s;
+
+    transition-property: border-color, box-shadow;
+    transition-duration: 0.3s;
 
     display: flex;
     flex-direction: column;
@@ -45,8 +47,8 @@
 }
 
 .subscribe:hover {
-    box-shadow: var(--color-text-muted) 0 0 0 3px;
-    transition: box-shadow 0.25s;
+    border-color: var(--color-text-muted);
+    box-shadow: var(--color-text-muted) 0 0 0 1px;
 }
 
 .subscribe:hover::before {
