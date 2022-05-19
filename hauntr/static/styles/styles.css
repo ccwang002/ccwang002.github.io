@@ -48,6 +48,7 @@ html {
 body {
     --color-text: #2d3336;
     --color-text-muted: #4f5b60;
+    --color-background: #ffffff;
     --color-header-footer-background: #eff4f5;
     --color-divider: #c9d9e3;
     --color-link-hover: #57a3e8;
@@ -58,13 +59,16 @@ body {
     --main-en-font: 'Source Sans 3 VF';
     --main-zh-font: 'Noto Sans TC';
     --font-size: 18px;
+}
 
+body {
     height: 100%;
     max-height: 100%;
     font-size: var(--font-size);
     font-family: var(--main-en-font), var(--main-zh-font), sans-serif;
     line-height: 1.5em;
     color: var(--color-text);
+    background: var(--color-background);
     margin: 0;
 }
 
