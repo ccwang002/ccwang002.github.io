@@ -26,7 +26,6 @@ DELETE_OUTPUT_DIRECTORY = True
 UTTERANCES_REPO = "ccwang002/ccwang002.github.io"
 UTTERANCES_ISSUE_TERM = "pathname"
 UTTERANCES_LABEL = "Comment"
-UTTERANCES_THEME = "github-light"
 
 
 # GOOGLE_ANALYTICS = ""
