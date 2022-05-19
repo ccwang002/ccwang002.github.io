@@ -2,7 +2,7 @@
 
 .dark-theme .highlight {
     --color-code-text: var(--color-text);
-    --color-code-comment: hsl(50, 10%, 50%);
+    --color-code-comment: hsl(50, 15%, 55%);
 }
 
 .dark-theme .highlight .hll { background-color: #49483e; }
