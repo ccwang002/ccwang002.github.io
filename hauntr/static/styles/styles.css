@@ -396,10 +396,6 @@ html[lang='zh'] details p {
    ========================================================================== */
 
 @media only screen and (max-width: 900px) {
-    blockquote {
-        margin-left: 0;
-    }
-
     .post-template .post {
         padding-bottom: 1rem;
     }
@@ -460,5 +456,12 @@ html[lang='zh'] details p {
 
     .site-footer {
         margin-top: 6rem;
+    }
+
+    blockquote,
+    pre {
+        margin-left: -1.5rem;
+        padding-left: calc(1.5rem - 0.4em);
+        border-left-width: 0.4em;
     }
 }
