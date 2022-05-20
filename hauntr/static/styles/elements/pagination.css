@@ -41,15 +41,14 @@
     border: var(--color-header-footer-background) 2px solid;
     border-radius: 1em;
     text-decoration: none;
-
-    transition-property: color, border;
-    transition-duration: 0.3s;
 }
 
 .older-posts:hover,
 .newer-posts:hover {
     color: var(--color-text);
-    border-color: var(--color-block-border);
+    border-color: var(--color-text-muted);
+    transition-property: color, border;
+    transition-duration: 0.3s;
 }
 
 

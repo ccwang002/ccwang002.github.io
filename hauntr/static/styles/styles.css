@@ -105,11 +105,11 @@ h6 {
 
 a {
     color: var(--color-text);
-    transition: color 0.3s;
 }
 
 a:hover {
     color: var(--color-link-hover);
+    transition: color 0.3s;
 }
 
 h1 a,
