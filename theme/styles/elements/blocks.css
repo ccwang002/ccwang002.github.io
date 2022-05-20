@@ -1,0 +1,44 @@
+/* Block elements
+ * like blockquotes and code blocks */
+
+blockquote,
+pre {
+    margin: 1.6em 0 1.6em -2.2em;
+    padding: 0 0 0 1.6em;
+    border-left: var(--color-block-border) 0.4em solid;
+}
+
+/* Blockquote */
+
+blockquote p {
+    margin: 0.8em 0;
+    font-style: italic;
+}
+
+html[lang='zh'] blockquote p {
+    font-style: normal;
+}
+
+
+
+/* Code block */
+
+pre code,
+pre tt {
+    font-size: inherit;
+    white-space: pre;
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+
+/* Responsive */
+@media only screen and (max-width: 500px) {
+    blockquote,
+    pre {
+        margin-left: -1.5rem;
+        padding-left: calc(1.5rem - 0.4em);
+        border-left-width: 0.4em;
+    }
+}

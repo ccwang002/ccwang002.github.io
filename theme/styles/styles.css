@@ -1,6 +1,6 @@
 @import 'colors.css';
 @import 'fonts.css';
-@import 'elements/blockquote.css';
+@import 'elements/blocks.css';
 @import 'elements/figure.css';
 @import 'elements/pagination.css';
 @import 'elements/subscribe.css';
@@ -173,28 +173,12 @@ code, kbd, tt {
     border-radius: 2px;
 }
 
-pre {
-    margin: 1.6em 0 1.6em -2.2em;
-    padding: 0 0 0 1.6em;
-    border-left: var(--color-block-border) 0.4em solid;
-}
-
-pre code,
-pre tt {
-    font-size: inherit;
-    white-space: pre;
-    background: transparent;
-    border: none;
-    padding: 0;
-}
-
 kbd {
     font-weight: bold;
     box-shadow:
         0 1px 0 rgba(0, 0, 0, 0.2),
         0 1px 0 0 #ffffff inset;
 }
-
 
 details p {
     margin: 0.5em 0;
@@ -396,10 +380,6 @@ html[lang='zh'] details p {
    ========================================================================== */
 
 @media only screen and (max-width: 900px) {
-    blockquote {
-        margin-left: 0;
-    }
-
     .post-template .post {
         padding-bottom: 1rem;
     }
