@@ -4,7 +4,6 @@
 
 .pagination {
     margin: 4em auto;
-    font-family: var(--main-en-font), sans-serif;
     color: var(--color-text-muted);
     display: grid;
     grid-template-columns:
