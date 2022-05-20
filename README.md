@@ -2,7 +2,7 @@
 My static blog site using [Pelican] and a modified theme based on Kura's [Hauntr] theme (MIT license).
 
 [Pelican]: https://blog.getpelican.com/
-[Hauntr]: https://kura.github.io/hauntr/
+[Hauntr]: https://github.com/kura/hauntr
 
 
 ### Setup
