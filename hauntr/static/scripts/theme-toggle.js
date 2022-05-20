@@ -27,10 +27,6 @@ function updateUtterancesTheme(theme) {
 }
 
 
-const themeToggleBtn = document.querySelector(".theme-toggle");
-const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-const currentTheme = localStorage.getItem("theme");
-
 // Toggle the blog theme
 function toggleTheme() {
     if (document.body.classList.contains("dark-theme")) {
@@ -47,8 +43,12 @@ function toggleTheme() {
 
 // Default blog theme is light, so only toggle the theme
 // when a user prefers the dark theme or they previously chose so
-if (currentTheme == "dark"
-    || (currentTheme === null && prefersDarkScheme.matches)) {
+const themeToggleBtn = document.querySelector(".theme-toggle");
+const initialTheme = localStorage.getItem("theme");
+const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+
+if (initialTheme == "dark"
+    || (initialTheme === null && prefersDarkScheme.matches)) {
     toggleTheme();
     loadUtterances("github-dark");
 } else {
