@@ -34,7 +34,7 @@
     text-align: center;
     white-space: nowrap;
     max-width: none;
-    top: -2.75rem;
+    top: -2.5rem;
     left: -2rem;
     font-size: 1rem;
     padding: 2px 10px;
@@ -42,13 +42,11 @@
     visibility: hidden;
     background: var(--color-text-muted);
     border-radius: 6px;
-    transition: opacity 0.1s ease-out;
     z-index: 1;
 }
 
 .subscribe:hover {
     border-color: var(--color-text-muted);
-    box-shadow: var(--color-text-muted) 0 0 0 1px;
 }
 
 .subscribe:hover::before {
