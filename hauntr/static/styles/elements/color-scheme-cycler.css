@@ -28,3 +28,11 @@
 :root[data-color_scheme="dark"] #color-scheme-cycler svg.color-scheme-icon-when-dark {display: initial}
 :root[data-color_scheme="light"] #color-scheme-cycler svg.color-scheme-icon-when-light {display: initial}
 
+/* Only recognize the system color scheme when javascript is disabled */
+.no-js #color-scheme-cycler svg.color-scheme-icon-when-auto {
+    display: initial;
+    cursor: default;
+}
+.no-js #color-scheme-cycler:hover svg {
+    color: unset;
+}
