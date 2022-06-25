@@ -6,6 +6,7 @@
  * Adapted from https://github.com/python/peps/tree/main/pep_sphinx_extensions/pep_theme
  * under MIT license.
  */
+
 @media (prefers-color-scheme: dark) {
     :root {
         --light: ;
@@ -20,17 +21,18 @@
     }
 }
 
-:root[data-color_scheme="dark"] {
+:root[data-color_scheme='dark'] {
     --light: ;
     --dark: initial;
 }
 
-:root[data-color_scheme="light"] {
+:root[data-color_scheme='light'] {
     --dark: ;
     --light: initial;
 }
 
 /* Set master colors */
+
 :root {
     --color-text: var(--light, #2d3336) var(--dark, hsl(210, 20%, 80%));
     --color-text-muted: var(--light, #4f5b60) var(--dark, hsl(210, 15%, 65%));
@@ -44,5 +46,5 @@
 }
 
 :root {
-    color-scheme: light dark
+    color-scheme: light dark;
 }

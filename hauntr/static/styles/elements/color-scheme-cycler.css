@@ -2,37 +2,42 @@
  * Adapted from https://github.com/python/peps/tree/main/pep_sphinx_extensions/pep_theme
  * under MIT license
  */
+
 #color-scheme-cycler {
     --width: 1.6em;
     background: transparent;
     border: none;
     cursor: pointer;
-    padding: 0px;
+    padding: 0;
     width: var(--width);
     height: var(--width);
     transform: translate(0, 25%);
 }
+
 #color-scheme-cycler svg {
     color: var(--color-text);
     width: var(--width);
     height: var(--width);
     display: none;
 }
+
 #color-scheme-cycler:hover svg {
     color: var(--color-link-hover);
     transition: color 0.25s;
 }
 
 /* Color scheme cycle rules */
-:root[data-color_scheme="auto"] #color-scheme-cycler svg.color-scheme-icon-when-auto {display: initial}
-:root[data-color_scheme="dark"] #color-scheme-cycler svg.color-scheme-icon-when-dark {display: initial}
-:root[data-color_scheme="light"] #color-scheme-cycler svg.color-scheme-icon-when-light {display: initial}
+:root[data-color_scheme='auto'] #color-scheme-cycler svg.color-scheme-icon-when-auto { display: initial; }
+:root[data-color_scheme='dark'] #color-scheme-cycler svg.color-scheme-icon-when-dark { display: initial; }
+:root[data-color_scheme='light'] #color-scheme-cycler svg.color-scheme-icon-when-light { display: initial; }
 
 /* Only recognize the system color scheme when javascript is disabled */
+
 .no-js #color-scheme-cycler svg.color-scheme-icon-when-auto {
     display: initial;
     cursor: default;
 }
+
 .no-js #color-scheme-cycler:hover svg {
     color: unset;
 }

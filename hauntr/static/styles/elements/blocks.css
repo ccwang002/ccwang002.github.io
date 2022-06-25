@@ -20,7 +20,6 @@ html[lang='zh'] blockquote p {
 }
 
 
-
 /* Code block */
 
 pre code,
@@ -34,6 +33,7 @@ pre tt {
 
 
 /* Responsive */
+
 @media only screen and (max-width: 500px) {
     blockquote,
     pre {
