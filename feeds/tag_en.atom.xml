@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - en</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_en.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-05-13T18:33:58-05:00</updated><entry><title>Thesis in LaTeX</title><link href="https://blog.liang2.tw/posts/2022/03/thesis-latex/" rel="alternate"></link><published>2022-03-12T00:00:00-06:00</published><updated>2022-05-13T18:33:58-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2022-03-12:/posts/2022/03/thesis-latex/</id><summary type="html">&lt;!-- cSpell:words zotero WUSTL --&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - en</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_en.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-06-25T15:46:57-05:00</updated><entry><title>Thesis in LaTeX</title><link href="https://blog.liang2.tw/posts/2022/03/thesis-latex/" rel="alternate"></link><published>2022-03-12T00:00:00-06:00</published><updated>2022-06-25T15:46:57-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2022-03-12:/posts/2022/03/thesis-latex/</id><summary type="html">&lt;!-- cSpell:words zotero WUSTL --&gt;
 
 &lt;p&gt;A few months ago, I finished &lt;a href="https://github.com/ccwang002/phd-thesis"&gt;my PhD thesis&lt;/a&gt; in LaTeX.
 The WUSTL LaTeX template I could find has a long history&lt;sup id="fnref:note-template-history"&gt;&lt;a class="footnote-ref" href="#fn:note-template-history"&gt;1&lt;/a&gt;&lt;/sup&gt;, which has a relative lengthy implementation and includes unnecessary code.
@@ -63,7 +63,7 @@ If the reference is not a article (mostly websites), it will try to use the auth
 Usually the figure is large, taking up the full page, and has multiple panels combined into one file.
 And the remaining figure legend need to be put at the next page.
 Here&amp;rsquo;s an example of the desired behavior:&lt;/p&gt;
-&lt;figure class="full-img"&gt;
+&lt;figure class="full-img invert-in-dark-mode"&gt;
     &lt;img src="https://blog.liang2.tw/posts/2022/03/thesis-latex/pics/fig_legend_first_half.png"&gt;
     &lt;img src="https://blog.liang2.tw/posts/2022/03/thesis-latex/pics/fig_legend_second_half.png"&gt;
     &lt;figcaption&gt;Example of the figure legend overflow.&lt;/figcaption&gt;

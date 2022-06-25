@@ -5,9 +5,7 @@
 @import 'elements/pagination.css';
 @import 'elements/subscribe.css';
 @import 'elements/table.css';
-@import 'elements/theme-toggle.css';
-@import 'pygments/light.css';
-@import 'pygments/dark-monokai.css';
+@import 'elements/color-scheme-cycler.css';
 
 
 * {
@@ -375,18 +373,30 @@ html[lang='zh'] details p {
 }
 
 
-/* ==========================================================================
-   10. Media Queries - Smaller than 900px
-   ========================================================================== */
+/* Accessibility */
 
-@media only screen and (max-width: 900px) {
-    .post-template .post {
-        padding-bottom: 1rem;
-    }
+/* Follow Bootstrap's .sr-only style
+ * Ref: https://kittygiraudel.com/2016/10/13/css-hide-and-seek/
+ */
+
+.sr-only {
+    /* stylelint-disable declaration-no-important */
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+
+    /* stylelint-enable */
 }
 
+
 /* ==========================================================================
-   11. Media Queries - Smaller than 500px
+   Media Queries
    ========================================================================== */
 
 @media only screen and (max-width: 500px) {

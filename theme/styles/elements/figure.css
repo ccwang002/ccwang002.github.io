@@ -36,11 +36,14 @@ figure a:hover {
     color: var(--color-link-hover);
 }
 
-figure.full-img img {
-    width: calc(100% + 30rem); /* expand with to image + margins */
+figure.full-img > img {
+    width: calc(100% + 30rem);  /* expand with to image + margins */
     max-width: 100vw;
 }
 
+figure.invert-in-dark-mode img {
+    filter: var(--dark, invert(1));
+}
 
 /* Responsive */
 

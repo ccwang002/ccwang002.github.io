@@ -1,27 +1,50 @@
 /* Colors */
 
-/* Default to the light color theme */
+/*
+ * `initial` works like undefined variables, so `var(initial, x)` will resolve to `x`.
+ * A space means an empty value, so `var( , x) y` will resolve to `y`.
+ * Adapted from https://github.com/python/peps/tree/main/pep_sphinx_extensions/pep_theme
+ * under MIT license.
+ */
 
-body {
-    --color-text: #2d3336;
-    --color-text-muted: #4f5b60;
-    --color-background: #ffffff;
-    --color-header-footer-background: #eff4f5;
-    --color-divider: #c9d9e3;
-    --color-link-hover: #57a3e8;
-    --color-code-background: #f0f4f5;
-    --color-code-border: var(--color-divider);
-    --color-block-border: #a3b0b9;
+@media (prefers-color-scheme: dark) {
+    :root {
+        --light: ;
+        --dark: initial;
+    }
 }
 
-body.dark-theme {
-    --color-text: hsl(210, 20%, 80%);
-    --color-text-muted: hsl(210, 15%, 65%);
-    --color-background: hsl(230, 4%, 11%);
-    --color-header-footer-background: hsl(230, 8%, 15%);
-    --color-divider: hsl(210, 20%, 30%);
-    --color-link-hover: hsl(210, 65%, 60%);
-    --color-code-background: hsl(210, 8%, 15%);
+@media (prefers-color-scheme: light) {
+    :root {
+        --dark: ;
+        --light: initial;
+    }
+}
+
+:root[data-color_scheme='dark'] {
+    --light: ;
+    --dark: initial;
+}
+
+:root[data-color_scheme='light'] {
+    --dark: ;
+    --light: initial;
+}
+
+/* Set master colors */
+
+:root {
+    --color-text: var(--light, #2d3336) var(--dark, hsl(210, 20%, 80%));
+    --color-text-muted: var(--light, #4f5b60) var(--dark, hsl(210, 15%, 65%));
+    --color-background: var(--light, #ffffff) var(--dark, hsl(230, 4%, 11%));
+    --color-header-footer-background: var(--light, #eff4f5) var(--dark, hsl(230, 8%, 15%));
+    --color-divider: var(--light, #c9d9e3) var(--dark, hsl(210, 20%, 30%));
+    --color-link-hover: var(--light, #57a3e8) var(--dark, hsl(210, 65%, 60%));
+    --color-code-background: var(--light, #f0f4f5) var(--dark, hsl(210, 8%, 15%));
     --color-code-border: var(--color-divider);
-    --color-block-border: hsl(210, 10%, 25%);
+    --color-block-border: var(--light, #a3b0b9) var(--dark, hsl(210, 10%, 25%));
+}
+
+:root {
+    color-scheme: light dark;
 }
