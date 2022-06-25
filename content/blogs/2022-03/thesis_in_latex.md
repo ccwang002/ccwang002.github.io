@@ -85,7 +85,7 @@ Usually the figure is large, taking up the full page, and has multiple panels co
 And the remaining figure legend need to be put at the next page.
 Here's an example of the desired behavior:
 
-<figure class="full-img">
+<figure class="full-img invert-in-dark-mode">
     <img src="{attach}pics/fig_legend_first_half.png">
     <img src="{attach}pics/fig_legend_second_half.png">
     <figcaption>Example of the figure legend overflow.</figcaption>
