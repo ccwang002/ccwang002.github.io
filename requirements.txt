@@ -1,5 +1,5 @@
 pelican >= 4.0, < 5
-Markdown >= 3.2, < 3.4
+Markdown >= 3.2, < 3.5
 pelican-katex == 1.6.1
 ghp-import
 invoke
