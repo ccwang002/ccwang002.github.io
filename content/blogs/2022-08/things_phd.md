@@ -1,7 +1,7 @@
 ---
 Title: Project management lessons I learned during my PhD
 Slug: project-management-lessons-during-phd
-Date: 2022-05-05
+Date: 2022-08-05
 Tags: en, zh
 Category: misc
 Lang: en
