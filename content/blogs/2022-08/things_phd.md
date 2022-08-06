@@ -1,6 +1,6 @@
 ---
 Title: Project management lessons I learned during my PhD
-Slug: project-management-lessons-during-phd
+Slug: project-management-during-phd
 Date: 2022-08-05
 Tags: en, zh
 Category: misc
@@ -13,46 +13,68 @@ Status: draft
 [en-post]: {filename}./things_phd.md
 [zh-post]: {filename}./things_phd.zh.md
 
-During my PhD in computational biology/bioinformatics, I had the opportunity to lead both independent and collaborative [research projects][google scholar], ranging from a few colleagues (less than 10) to a large list of people (100-ish people) across institutions.
-I admit that my projects didn't cover the full spectrum of the possible teamwork styles.
-Research can definitely be done by much fewer people, like [my wife's phenomenal work][clarice's paper], which is done by just her and the PI.
-That said, I have experience of different collaboration styles due to the nature of the teamwork.
-And a significant proportion of my time went in to project management.
+Modern science is sometimes a science of a teamwork.
+
+I've learned that an effective teamwork requires non-trivial time and effort, however, traditional academic training does not emphasize on how to collaborate *effectively*.
+The training I received generally taught me how to think critically and how to apply my knowledge to problem-solving.
+I only learned how to teamwork professionally through experience.
+And experience-based learning is limiting when the team grows and a new style of teamwork is required.
+
+During my PhD, I had the opportunity to lead [some collaborative projects][google scholar] in computational biology/bioinformatics.
+The scale of my project can range from a few close colleagues (less than 10) to a long list of people (100-ish) across institutions.
+
+As we could imagine, the style of teamwork is very different for a project of just three people sitting in adjacent cubicles versus a project of a few teams of people in different states who I might never meet in person.
+When the team grows, the cost of communications and miscommunications grows *fast*.
+As a result, a significant proportion of my time and effort during PhD went in to project management and learning it from my mistakes.
+
+Thus, I wrote this post to share my lessons and setup for project management.
+My projects are mostly genomic data analysis in academia, so my experience is bespoke to this field and mostly dry lab.
+
+Before we jump in, here are some disclaimers.
+
+My experience won't be comprehensive, nor I have the best solution.
+In fact, I have a very narrow view point for how to conduct research.
+I never run a lab, never do hybrid experiments and analysis on my own, and research in the private sector probably works out quite differently.
+I have been constantly learning from other's approaches and related books even up to now.
+
+Standalone research (by much fewer people) is still very possible and common.
+For example, [my wife's phenomenal work][clarice's paper] is done by just herself and her PI.
+My post focuses on the challenges when we have a large team of people contribute to a research project together.
 
 [google scholar]: https://scholar.google.com/citations?user=-tdb3hcAAAAJ
 [clarice's paper]: https://doi.org/10.1101/gr.276025.121
-
-Thus, this post is to document my project management setup and lessons I learned.
-Since my projects are mostly dry lab genomic data analysis in academia, I will be specific about the tools/services I use, which may not be useful to wet lab experiments, other research fields, or research in the private sector.
-Anyway, my post won't be generic.
 
 [TOC]
 
 <!-- cSpell:words Toggl Todoist -->
 
 
-## Manage the research project *agile-ish*
-Research projects and startups share a lot of similarities, hence both can be benefited by an agile management.
-Research and startups reward innovations and novel discoveries.
-A clear end goal exists for both activities, being either a publication or a product.
-And resources to accomplish the goal are limited (time, people, equipments, and money).
+## Go agile
+A research project is similar to a startup in many ways, so we can learn from the best practices of running a startup.
+Both research and startups reward innovations and novel discoveries.
+A clear end goal exists, being a publication or a product.
+And resources to accomplish the goal are limited (e.g., time, people, equipments, and grants/funds).
 
-[Agile management][agile-software-dev] has been adopted ubiquitously by startups, particularly in software development.
-Actually, the classic book on agile management for software development, [*The Mythical Man-Month*][man-month-book], greatly influenced me regarding how I planned and carried out research projects with large collaborations.
-In my experience, relevant rules of an agile management include:
+[Agile management][agile-software-dev] has been use by startups and software development ubiquitously.
+In fact, in my large collaboration projects, I tried to apply what I learned from a classic book on agile management for software development, [*The Mythical Man-Month*][man-month-book].
+
+I think these agile principles are helpful to research:
 
 1. Make incremental and iterative builds
 2. Keep short and direct feedback cycles
 3. Implement easy (automatic) way to ensure things are going as expected
 
-These rules can be applied to research well.
-For rule #1, instead of targeting for publications or developing all the features of a tool (end goal), set up milestones and minimal viable products (MVP).
-For example, to develop a tool that classify genomic variants, implement a *simpler* tool, a MVP, that checks only one basic rule of the classification (even a dummy rule) but it takes in the inputs and produces outputs in the desired format.
-For analysis, subaims are good milestones because their outcomes are well defined and natural steps toward the completion of the aim.
+For the first principle of incremental builds, instead of targeting straight for publications or developing all the features of a tool (end goal), set up milestones and minimal viable products (MVP).
+For example, to develop a tool that classify genomic variants, implement a *simpler* tool.
+The MVP can just check one basic rule of the classification (even a dummy rule) but it takes in the inputs and produces outputs in the desired format.
+For analysis, sub-aims or tasks in each sub-aim can be a good milestone because their outcomes are well-defined, and sub-aims and tasks are the natural steps toward the completion of the aim and so forth the project.
 
-For rule #2, set up regular feedback on the results, and the key here is short and direct.
+For the second principle on short feedback cycles, set up regular feedback on the results.
+And the feedback being short and direct is the key.
 No one likes a lengthy and boring meeting (conference call).
-And there are many many meetings in a large collaboration on different things, so I want to save time on my analysis and tool development.
+Long meetings also don't scale with the increasing project size and scope.
+
+I want to save time on my analysis and tool development.
 An asynchronous feedback (email or message) can save even more time when it make senses.
 There are a few aspects of being direct: make direct/measurable suggestions and go to direct person involved.
 
@@ -171,3 +193,8 @@ cellranger xxx; slack-me '10x multiome cellranger complete'
 https://fortelabs.co/blog/para/
 https://dsebastien.net/blog/2022-04-03-25-years-of-personal-knowledge-management
 https://news.ycombinator.com/item?id=30903940
+
+
+Collaboration Team Science: A Field Guide by NIH
+https://ombudsman.nih.gov/collaborationTS
+https://www.cancer.gov/about-nci/organization/crs/research-initiatives/team-science-field-guide/collaboration-team-science-guide.pdf
