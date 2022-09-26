@@ -116,7 +116,7 @@
 
 <p>It turns out that Firefox controls its user interface styling using CSS. So we can set the shape of the window tabs, the height of the address bar, and more by adding a CSS file at <code>~/Library/Application Support/Firefox/Profiles/&lt;profile&gt;/chrome/userChrome.css</code>. In Firefox 69+, we need to set <code>toolkit.legacyUserProfileCustomizations.stylesheets=true</code> in <code>about:config</code> to enable the CSS styling (<a href="https://www.userchrome.org/how-create-userchrome-css.html">more details here</a>).</p>
 <p>My modification was based on <a href="https://apple.stackexchange.com/a/313241">this answer on Stack Exchange</a>:</p>
-<div class="highlight"><pre><span></span><code class="language-css"><span class="p">#</span><span class="nn">navigator-toolbox</span><span class="o">[</span><span class="nt">inFullscreen</span><span class="o">]</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="p">#</span><span class="nn">navigator-toolbox</span><span class="o">[</span><span class="nt">inFullscreen</span><span class="o">]</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="k">height</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="kt">rem</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="k">margin-bottom</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.5</span><span class="kt">rem</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="k">opacity</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
@@ -177,7 +177,7 @@
 <p>For more information about modifying the Firefox user interface, there is <a href="https://www.userchrome.org/">a website</a> that introduces <code>userChrome.css</code> in depth.</p>
 <h3 id="notes-for-screencast-encoding">Notes for screencast encoding</h3>
 <p>I modified the command from my <a href="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/">previous post</a> to shrink the file size of the original QuickTime screencasts using FFmpeg. More encoding parameters can be found at FFmpeg&rsquo;s wiki (<a href="https://trac.ffmpeg.org/wiki/Encode/VP9">VP9</a> and <a href="https://trac.ffmpeg.org/wiki/Encode/H.264">H.264</a>).</p>
-<div class="highlight"><pre><span></span><code class="language-bash"><span class="c1"># VP9 (WEBM)</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># VP9 (WEBM)</span>
 ffmpeg -i fullscreen_switch_tabs.mov <span class="se">\</span>
     -vcodec libvpx-vp9 -b:v 200K <span class="se">\</span>
     -pass <span class="m">1</span> -an -r <span class="m">24</span> -f webm /dev/null

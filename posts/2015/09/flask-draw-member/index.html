@@ -165,7 +165,7 @@
 <p>我們先假設所有檔案都放在同個資料夾裡，估且叫 <code>draw_member</code>。之後沒有額外說明的話，都是在這個目錄下操作。</p>
 <p>原始資料用 CSV 格式來儲存，有「名字」以及「團體」兩個欄位。不過考慮到可能會把檔案匯出，在原始檔案多加一個「最近被抽到的日期」欄位，希望最近被抽到的會比其他人再被抽到的機會低一點。</p>
 <p>這個 CSV 檔案命名為 <code>members.csv</code>。一開始沒有人被抽到，所以最後一欄都先設成空的<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>，第一行是每一欄欄位的名稱。如果從資料庫匯出，這欄位就會有值。</p>
-<div class="highlight"><pre><span></span><code class="language-text">&quot;名字&quot;,&quot;團體&quot;,&quot;最近被抽到的日期&quot;
+<div class="highlight"><pre><span></span><code>&quot;名字&quot;,&quot;團體&quot;,&quot;最近被抽到的日期&quot;
 &quot;高坂 穂乃果&quot;,&quot;μ&#39;s&quot;,&quot;&quot;
 &quot;絢瀬 絵里&quot;,&quot;μ&#39;s&quot;,&quot;&quot;
 &quot;南 ことり&quot;,&quot;μ&#39;s&quot;,&quot;&quot;
@@ -183,7 +183,7 @@
 </code></pre></div>
 
 <p>首先我們先確定會用 Python 把資料讀出來。在 Python 當中有個叫 <code>csv</code> 的內建模組（module）可以處理 CSV 的檔案讀寫。在這邊我們選用 <a href="https://docs.python.org/3.5/library/csv.html#csv.DictReader">csv.DictReader</a>，它預設會把檔案的第一行當成欄位名稱，然後根據這名稱，每一行都會產生一個 <code>dict</code> 物件。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="kn">import</span> <span class="nn">csv</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">csv</span>
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./members.csv&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -192,7 +192,7 @@
 </code></pre></div>
 
 <p>可以把這段程式碼直接打在 Python REPL 裡或者存成一個檔案後再用 Python 執行它，結果都會是：</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="p">{</span><span class="s1">&#39;名字&#39;</span><span class="p">:</span> <span class="s1">&#39;高坂 穂乃果&#39;</span><span class="p">,</span> <span class="s1">&#39;團體&#39;</span><span class="p">:</span> <span class="s2">&quot;μ&#39;s&quot;</span><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="s1">&#39;名字&#39;</span><span class="p">:</span> <span class="s1">&#39;高坂 穂乃果&#39;</span><span class="p">,</span> <span class="s1">&#39;團體&#39;</span><span class="p">:</span> <span class="s2">&quot;μ&#39;s&quot;</span><span class="p">}</span>
 <span class="p">{</span><span class="s1">&#39;名字&#39;</span><span class="p">:</span> <span class="s1">&#39;絢瀬 絵里&#39;</span><span class="p">,</span> <span class="s1">&#39;團體&#39;</span><span class="p">:</span> <span class="s2">&quot;μ&#39;s&quot;</span><span class="p">}</span>
 <span class="p">{</span><span class="s1">&#39;名字&#39;</span><span class="p">:</span> <span class="s1">&#39;南 ことり&#39;</span><span class="p">,</span> <span class="s1">&#39;團體&#39;</span><span class="p">:</span> <span class="s2">&quot;μ&#39;s&quot;</span><span class="p">}</span>
 <span class="p">{</span><span class="s1">&#39;名字&#39;</span><span class="p">:</span> <span class="s1">&#39;園田 海未&#39;</span><span class="p">,</span> <span class="s1">&#39;團體&#39;</span><span class="p">:</span> <span class="s2">&quot;μ&#39;s&quot;</span><span class="p">}</span>
@@ -209,7 +209,7 @@
 </code></pre></div>
 
 <p>如果不要直接 <code>print(row)</code> ，而是稍微整理一下資料再輸出，改成：</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="kn">import</span> <span class="nn">csv</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">csv</span>
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./members.csv&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -218,7 +218,7 @@
 </code></pre></div>
 
 <p>則輸出結果會是：</p>
-<div class="highlight"><pre><span></span><code class="language-text">高坂 穂乃果 of μ&#39;s
+<div class="highlight"><pre><span></span><code>高坂 穂乃果 of μ&#39;s
 絢瀬 絵里 of μ&#39;s
 南 ことり of μ&#39;s
 園田 海未 of μ&#39;s
@@ -275,29 +275,29 @@
 </blockquote>
 <h4 id="python">Python 環境</h4>
 <p>使用 <a href="https://www.python.org/downloads/">Python 3.5</a>。理論上 SQLite 就已經裝好了能直接使用。一般在開發 Python 程式的時候會使用虛擬環境，好處虛擬環境安裝的 Python 套件可以獨立管理，不受系統或其他虛擬環境影響。我們用內建的 <a href="https://docs.python.org/3.5/library/venv.html#module-venv">venv</a> 建立一個名稱為 <code>VENV</code> 的虛擬環境：</p>
-<div class="highlight"><pre><span></span><code class="language-bash">$ python3.5 -m venv VENV
+<div class="highlight"><pre><span></span><code>$ python3.5 -m venv VENV
 </code></pre></div>
 
 <p>這時候目錄底下就會多一個 <code>VENV</code> 資料夾，裡面是個完整的 Python 執行結構，就好像在這個路徑安裝 Python 一樣。先暫時不管它怎麼做到虛擬隔離，知道怎麼用就好。使用跟離開分別是：</p>
-<div class="highlight"><pre><span></span><code class="language-bash">$ <span class="nb">source</span> VENV/bin/activate
+<div class="highlight"><pre><span></span><code>$ <span class="nb">source</span> VENV/bin/activate
 <span class="o">(</span>VENV<span class="o">)</span> $ which python
 <span class="c1"># /path/to/draw_member/VENV/bin/python</span>
 </code></pre></div>
 
-<div class="highlight"><pre><span></span><code class="language-bash"><span class="o">(</span>VENV<span class="o">)</span> $ deactivate
+<div class="highlight"><pre><span></span><code><span class="o">(</span>VENV<span class="o">)</span> $ deactivate
 $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </code></pre></div>
 
 <h4 id="flaskjinja2">安裝 Flask、Jinja2 等套件</h4>
 <p>Python 使用 pip 管理安裝的套件，</p>
-<div class="highlight"><pre><span></span><code class="language-bash"><span class="o">(</span>VENV<span class="o">)</span> $ pip install flask jinja2
+<div class="highlight"><pre><span></span><code><span class="o">(</span>VENV<span class="o">)</span> $ pip install flask jinja2
 <span class="c1"># Collecting flask</span>
 <span class="c1"># Collecting jinja2</span>
 <span class="c1"># ... (連帶裝了相關的套件）</span>
 </code></pre></div>
 
 <p>這時候如果查看裝了哪些套件就會看到：</p>
-<div class="highlight"><pre><span></span><code class="language-bash"><span class="o">(</span>VENV<span class="o">)</span> $ pip freeze
+<div class="highlight"><pre><span></span><code><span class="o">(</span>VENV<span class="o">)</span> $ pip freeze
 <span class="c1"># Flask==0.10.1</span>
 <span class="c1"># itsdangerous==0.24</span>
 <span class="c1"># Jinja2==2.8</span>
@@ -306,17 +306,17 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </code></pre></div>
 
 <p>為了方便之後把環境安裝在別的電腦上，記得用</p>
-<div class="highlight"><pre><span></span><code class="language-bash">pip freeze &gt; requirements.txt
+<div class="highlight"><pre><span></span><code>pip freeze &gt; requirements.txt
 </code></pre></div>
 
 <p>把套件版本的資訊都存在一個檔案裡的好處是，下次把要環境架起來就只要</p>
-<div class="highlight"><pre><span></span><code class="language-bash">pip install -r requirements.txt
+<div class="highlight"><pre><span></span><code>pip install -r requirements.txt
 </code></pre></div>
 
 <p>就設定完成了。</p>
 <h4 id="sqlite-database">SQLite Database</h4>
 <p>我們先把 SQLite 每個資料表設定好，這樣之後在寫程式就只要專心讀寫資料就好了。根據前面建的模型，我們可以轉換成 SQL 語法：</p>
-<div class="highlight"><pre><span></span><code class="language-sql"><span class="c1">-- create_db.sql</span>
+<div class="highlight"><pre><span></span><code><span class="c1">-- create_db.sql</span>
 <span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">members</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
 <span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">ASC</span><span class="w"> </span><span class="n">AUTOINCREMENT</span><span class="p">,</span><span class="w"></span>
 <span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
@@ -331,10 +331,10 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </code></pre></div>
 
 <p>把這串 SQL 寫到一個檔案 <code>create_db.sql</code> 後就可以實際測試一下。我們把兩個成員寫到檔案裡面，</p>
-<div class="highlight"><pre><span></span><code class="language-bash">$ sqlite3 -init create_db.sql test.db
+<div class="highlight"><pre><span></span><code>$ sqlite3 -init create_db.sql test.db
 </code></pre></div>
 
-<div class="highlight"><pre><span></span><code class="language-sqlite3"><span class="go">-- Loading resources from create_db.sql</span>
+<div class="highlight"><pre><span></span><code><span class="go">-- Loading resources from create_db.sql</span>
 
 <span class="go">SQLite version 3.8.11.1 2015-07-29 20:00:57</span>
 <span class="go">Enter &quot;.help&quot; for usage hints.</span>
@@ -351,13 +351,13 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 
 <p><code>sqlite3 -init xxx.sql</code> 意思是把 <code>xxx.sql</code> 裡面的 SQL 指令都執行了一遍，所以一進到 SQLite shell 裡面就建立好表格了。</p>
 <p>再來我們模擬幾次抽籤的過程。注意到我們之前有寫 <strong>draw_histories</strong>.time 的預設值，所以抽籤只要寫是誰就可以了，時間 SQLite 會自動根據指令執行的時間給值。不過我們都試一下吧。</p>
-<div class="highlight"><pre><span></span><code class="language-sqlite3"><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">draw_histories</span><span class="w"> </span><span class="p">(</span><span class="n">memberid</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">draw_histories</span><span class="w"> </span><span class="p">(</span><span class="n">memberid</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
 <span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">draw_histories</span><span class="w"> </span><span class="p">(</span><span class="n">memberid</span><span class="p">,</span><span class="w"> </span><span class="k">time</span><span class="p">)</span><span class="w"></span>
 <span class="gp">   ...&gt;</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">datetime</span><span class="p">(</span><span class="s1">&#39;2015-09-25 16:30&#39;</span><span class="p">));</span><span class="w"></span>
 </code></pre></div>
 
 <p>所以第一次 INSERT 指令抽了果果以及小唯各一次。第二次 INSERT 再抽了一次小唯，這次還有額外指定時間為的 9 月 25 號下午 4 點半。關於 SQLite 裡 <code>datetime</code> 的更多使用方式可以參考<a href="https://sqlite.org/lang_datefunc.html">官網說明文件</a>，我們的例子只要這樣就足夠了。</p>
-<div class="highlight"><pre><span></span><code class="language-sqlite3"><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">draw_histories</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">draw_histories</span><span class="p">;</span><span class="w"></span>
 <span class="go">memberid|time</span>
 <span class="go">1|2015-09-28 16:55:03</span>
 <span class="go">2|2015-09-28 16:55:03</span>
@@ -366,7 +366,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 
 <p>前兩個就是第一次 INSERT 所建立的抽籤歷史，跟你下指令的時間有關。第二次 INSERT 有給定時間，所以記錄永遠是 9 月 25 號下午。</p>
 <p><strong>draw_histories</strong> 只儲存了 member_id，我們可以做一個比較複雜的查詢，把成員的名字跟所屬團體一起列出來。</p>
-<div class="highlight"><pre><span></span><code class="language-sqlite3"><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">group_name</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="k">time</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">draw_time</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">group_name</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="k">time</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">draw_time</span><span class="w"></span>
 <span class="gp">   ...&gt;</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">draw_histories</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">members</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">m</span><span class="w"></span>
 <span class="gp">   ...&gt;</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">memberid</span><span class="w"></span>
 <span class="gp">   ...&gt;</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="k">time</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span><span class="w"></span>
@@ -384,12 +384,12 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 <li><code>create_db.sql</code>: 資料庫 schema</li>
 </ul>
 <p>先 import 用到的 module</p>
-<div class="highlight"><pre><span></span><code class="language-pycon"><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sqlite3</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sqlite3</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">csv</span>
 </code></pre></div>
 
 <p>把成員資料從 CSV 讀進來，跟之前一樣，只是我們稍微整理一下格式，存在 <code>members</code> 這個變數。</p>
-<div class="highlight"><pre><span></span><code class="language-pycon"><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./members.csv&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./members.csv&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">csv_reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">members</span> <span class="o">=</span> <span class="p">[</span>
 <span class="gp">... </span>        <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;名字&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;團體&#39;</span><span class="p">])</span>
@@ -406,7 +406,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </code></pre></div>
 
 <p>接著是新的部份，要先用 <code>sqlite3.connect()</code> 建立 SQLite database 連線，然後再用這個連線去下 SQL 指令。首先要把 table 都建立出來：</p>
-<div class="highlight"><pre><span></span><code class="language-pycon"><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;create_db.sql&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;create_db.sql&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">create_db_sql</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;members.db&#39;</span><span class="p">)</span>
@@ -416,13 +416,13 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </code></pre></div>
 
 <p><code>db.executescript('...')</code> 可以執行一系列的 SQL 指令（注意指令間要有分號）。另外使用 <code>with db: ...</code> 作用是會 sqlite3 module 會自動幫我們把中間的 SQL 指令送出<sup id="fnref:sqlite3 auto commit"><a class="footnote-ref" href="#fn:sqlite3 auto commit">2</a></sup>，等同於：</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="o">.</span><span class="n">executescript</span><span class="p">(</span><span class="n">create_db_sql</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </code></pre></div>
 
 <p>再來把讀進來的 <code>members</code> 變數寫到資料表裡面。</p>
-<div class="highlight"><pre><span></span><code class="language-pycon"><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">db</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">db</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">db</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="s1">&#39;INSERT INTO  members (name, group_name) VALUES (?, ?)&#39;</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="n">members</span>
@@ -430,7 +430,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </code></pre></div>
 
 <p>試著把資料讀出來，確定真的存進去了。</p>
-<div class="highlight"><pre><span></span><code class="language-pycon"><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM members LIMIT 3&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM members LIMIT 3&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">c</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 <span class="go">(1, &#39;高坂 穂乃果&#39;, &quot;μ&#39;s&quot;)</span>
@@ -441,7 +441,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 <p>到了這邊我們資料的部份沒問題了，接下來就要處理網站流程本身。</p>
 <h3 id="flask">Flask 基本架構</h3>
 <p><a href="http://flask.pocoo.org/">Flask</a> 的 web server 可以把所有功能都寫在一個檔案，在這邊就以 <code>draw_member.py</code> 為例子。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
 <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
@@ -455,13 +455,13 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </code></pre></div>
 
 <p>以上就是最基本的 Flask server 架構。先來測試看看，都已經等待一千六百多字了。先把 server 跑起來，</p>
-<div class="highlight"><pre><span></span><code class="language-bash"><span class="o">(</span>VENV<span class="o">)</span> $ python draw_member.py
+<div class="highlight"><pre><span></span><code><span class="o">(</span>VENV<span class="o">)</span> $ python draw_member.py
  * Running on http://127.0.0.1:5000/ <span class="o">(</span>Press CTRL+C to quit<span class="o">)</span>
  * Restarting with stat
 </code></pre></div>
 
 <p>再來可以開瀏覽器訪問 <a href="http://localhost:5000/">http://localhost:5000/</a>，或者用 command line 來訪問：</p>
-<div class="highlight"><pre><span></span><code class="language-bash">$ curl <span class="s1">&#39;http://localhost:5000/&#39;</span>
+<div class="highlight"><pre><span></span><code>$ curl <span class="s1">&#39;http://localhost:5000/&#39;</span>
 <span class="c1"># &lt;p&gt;Hello World!&lt;/p&gt;</span>
 </code></pre></div>
 
@@ -470,7 +470,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 <p>我們定義了一個 <code>index</code> function 並且用 decorator 把這個函式綁定在 <code>/</code> 路徑也就是首頁上。使用者訪問 <code>/</code> 就會跑到這個 function 裡來。</p>
 <h3 id="flask-sqlite">Flask 與 SQLite 資料庫讀取</h3>
 <p>我們先把資料庫相關的函式都先寫好，這邊基本上參照 <a href="http://flask.pocoo.org/docs/0.10/patterns/sqlite3/#using-sqlite-3-with-flask">Flask 官網 SQLite 使用方式</a>。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="kn">import</span> <span class="nn">csv</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">csv</span>
 <span class="kn">import</span> <span class="nn">sqlite3</span>
 <span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">g</span>
 
@@ -508,7 +508,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 <p>第二是我們把資料的路徑等等，都寫成變數放在程式碼的最開頭。這是個好習慣，把常數跟程式分開來，管理才方便<sup id="fnref:flask-config"><a class="footnote-ref" href="#fn:flask-config">3</a></sup>。</p>
 <h3 id="first-view-first-template">First view, first template</h3>
 <p>先來做首頁，把 HTML 放在 <code>templates/index.html</code>。</p>
-<div class="highlight"><pre><span></span><code class="language-html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span><span class="p">&gt;</span>
@@ -528,7 +528,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </code></pre></div>
 
 <p>這只是個單純的首頁，有個標題，還有個功能列，但暫時都沒有功能。我們修改一下 <code>draw_member.py</code> 裡定義的 index 讓：</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">render_template</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">render_template</span>
 
 <span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
@@ -552,7 +552,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 <h4 id="form">Form</h4>
 <p>最常見的 POST 就是搭配<a href="https://developer.mozilla.org/en/docs/Web/HTML/Element/form">表單 (form)</a> 使用。像登入要填帳號密碼、問卷問題與回答，就很常用 form 實作。Form 裡面有很多種 input，代表使用者能填的欄位，類型可能是單選、複選、單行、多行、密文等。</p>
 <p>我們就先看一下 form 實際的長相吧。改寫 <code>templates/index.html</code>，加上一個抽籤選團體的 form。</p>
-<div class="highlight"><pre><span></span><code class="language-text">&lt;h1&gt;來抽出快樂的夥伴吧！&lt;/h1&gt;&lt;!-- 本來有的 --&gt;
+<div class="highlight"><pre><span></span><code>&lt;h1&gt;來抽出快樂的夥伴吧！&lt;/h1&gt;&lt;!-- 本來有的 --&gt;
 &lt;p&gt;選擇要被抽的團體&lt;/p&gt;
 &lt;form action=&quot;/draw&quot; method=&quot;post&quot;&gt;
   &lt;label for=&quot;group_name&quot;&gt;團隊名稱：&lt;/label&gt;
@@ -571,7 +571,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 <p>同樣，form 底下也很多細節，歡迎再去 <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms">MDN</a> 了解。</p>
 <h4 id="request-form-post-handling-in-flask">Request (Form / POST) handling in Flask</h4>
 <p>所以我們馬上來寫處理 <code>/draw</code> POST 的 view 吧。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="kn">import</span> <span class="nn">random</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">request</span>
 
 
@@ -637,7 +637,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </ul>
 <p>馬上來改寫一下吧。我們的功能表應該每一頁都要出現，再來我們希望 <code>/draw</code> 的頁面也是個完整的 HTML。</p>
 <p>首先先把常用的部份獨立出來，做成 <code>templates/base.html</code>。</p>
-<div class="highlight"><pre><span></span><code class="language-text">&lt;!-- templates/base.html --&gt;
+<div class="highlight"><pre><span></span><code>&lt;!-- templates/base.html --&gt;
 &lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
@@ -659,7 +659,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </code></pre></div>
 
 <p>像功能列這種不會變的就很適合放在這邊。而我們的首頁就可以重覆使用這個結構，</p>
-<div class="highlight"><pre><span></span><code class="language-text">&lt;!-- templates/index.html --&gt;
+<div class="highlight"><pre><span></span><code>&lt;!-- templates/index.html --&gt;
 {% extends &quot;base.html&quot; %}
 
 {% block content %}
@@ -677,7 +677,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 
 <p>可以看到最大的差異就是我們的 <code>index.html</code> 變簡單了。它就像物件繼承一樣，<code>{% extends "base.html" %}</code>，表示先把 <code>base.html</code> 的內容放進來，而裡面定義了兩個 block：<code>title</code> 以及 <code>content</code>。Index 有定義 content 的內容，所以就取代掉原本定義在 base 裡空的 content。  Index 並沒有定義 title，那就會用原本 block 內的值，即「成員抽籤」。</p>
 <p>再來處理 <code>/draw</code> 的部份，我們除而再利用 <code>base.html</code> 之外，還要引入 template variable 的概念。</p>
-<div class="highlight"><pre><span></span><code class="language-text">&lt;!-- templates/draw.html --&gt;
+<div class="highlight"><pre><span></span><code>&lt;!-- templates/draw.html --&gt;
 {% extends &quot;base.html&quot; %}
 
 {% block title %}抽籤結果{% endblock title %}
@@ -689,7 +689,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </code></pre></div>
 
 <p>特別的是 <code>{{ name }}</code> 和 <code>{{ group }}</code>。這語法表示他們的值分別受 <code>name</code> 和 <code>group</code> 這兩個變數決定，變數的值在 <code>render_template</code> 時才會決定。要怎麼把變數的值傳到 template 裡呢？</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/draw&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<div class="highlight"><pre><span></span><code><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/draw&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">draw</span><span class="p">():</span>
     <span class="c1"># ...</span>
     <span class="c1"># return &#39;&lt;p&gt;%s（團體：%s）&lt;/p&gt;&#39; % (member_name, member_group_name)</span>
@@ -709,7 +709,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 <h3 id="_5">歷史記錄</h3>
 <p>記得要在抽籤的時候把記錄加到 database 裡。因為之前有設好 schema 預設用現在時間當抽籤時間，所以時間的處理完全交給 SQLite。用 SQL 語法 <code>LIMIT 10</code> 以及 <code>ORDER BY</code> 選擇最近的十筆，同時在查結果時，也同時查詢 <strong>members</strong> table 對應的名字與團體。這個專業術語叫 <a href="https://en.wikipedia.org/wiki/Join_%28SQL%29">JOIN</a>。</p>
 <p>把這個 view 放在 <code>/history</code> 路徑。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/draw&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/draw&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">draw</span><span class="p">():</span>
     <span class="c1"># ...</span>
     <span class="c1"># Update draw history</span>
@@ -737,7 +737,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </code></pre></div>
 
 <p>同理也要建立對應的 template。</p>
-<div class="highlight"><pre><span></span><code class="language-text">&lt;!-- templates/history.html --&gt;
+<div class="highlight"><pre><span></span><code>&lt;!-- templates/history.html --&gt;
 {% extends &quot;base.html&quot; %}
 
 {% block title %}抽籤歷史{% endblock title %}
@@ -766,7 +766,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </code></pre></div>
 
 <p>這邊用了新的 template 語法 for loop，每次 loop <code>history</code> 的值都會變，而且還可以再存取它底下的屬性，寫成 Python 就像：</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="k">for</span> <span class="n">history</span> <span class="ow">in</span> <span class="n">recent_histories</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">history</span> <span class="ow">in</span> <span class="n">recent_histories</span><span class="p">:</span>
     <span class="n">history</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div>
 
@@ -777,7 +777,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 
 <h4 id="datetime">時間處理用 datetime</h4>
 <p>如果有注意到的話，我們用的時間從 SQLite 回傳回來其實是字串。想要改寫時間格式怎麼辦？這時候就要用上內建 module <a href="https://docs.python.org/3.5/library/datetime.html#datetime-objects">datetime</a> 裡提供的 <code>datetime</code> 物件。同時我們也順便把本來用 <code>fetchall()</code> 的結果，改成用 dict 表示每一筆歷史。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
 <span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/history&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">history</span><span class="p">():</span>
@@ -799,7 +799,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </code></pre></div>
 
-<div class="highlight"><pre><span></span><code class="language-text">{% for history in recent_histories %}
+<div class="highlight"><pre><span></span><code>{% for history in recent_histories %}
 &lt;tr&gt;
   &lt;td&gt;{{ history.name }}&lt;/td&gt;
   &lt;td&gt;{{ history.group }}&lt;/td&gt;
@@ -831,7 +831,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 <p>底下記了很多技術細節，有興趣再看吧。</p>
 <h4 id="sqlite-table-info">SQLite table info</h4>
 <p>除了用 <code>.schema</code> 去看每個 TABLE 建立時的指令之外，也可以用 <code>PRAGMA table_info</code> 去看某個 table 每個欄位的設定。</p>
-<div class="highlight"><pre><span></span><code class="language-sqlite3"><span class="go">-- Run `sqlite -init create_db.sql`</span>
+<div class="highlight"><pre><span></span><code><span class="go">-- Run `sqlite -init create_db.sql`</span>
 <span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="n">header</span><span class="w"> </span><span class="k">on</span><span class="w"></span>
 <span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="k">mode</span><span class="w"> </span><span class="k">column</span><span class="w"></span>
 <span class="gp">sqlite&gt;</span><span class="w"> </span><span class="n">PRAGMA</span><span class="w"> </span><span class="n">table_info</span><span class="p">(</span><span class="n">members</span><span class="p">);</span><span class="w"></span>
@@ -849,12 +849,12 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 
 <h4 id="sqlite-foreign-key-check">SQLite foreign key check</h4>
 <p>SQLite3 在比較新版才會去處理 foreign key 限制的功能，參考<a href="https://www.sqlite.org/foreignkeys.html#fk_enable">官網的說明</a>，</p>
-<div class="highlight"><pre><span></span><code class="language-sqlite3"><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="n">PRAGMA</span><span class="w"> </span><span class="n">foreign_keys</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="n">PRAGMA</span><span class="w"> </span><span class="n">foreign_keys</span><span class="p">;</span><span class="w"></span>
 <span class="go">0</span>
 </code></pre></div>
 
 <p>如果是 0 的話表示 SQLite 並不會去檢查 foreign key。這可以手動打開檢查。</p>
-<div class="highlight"><pre><span></span><code class="language-sqlite3"><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="n">PRAGMA</span><span class="w"> </span><span class="n">foreign_keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">ON</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="n">PRAGMA</span><span class="w"> </span><span class="n">foreign_keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">ON</span><span class="p">;</span><span class="w"></span>
 <span class="gp">sqlite&gt;</span><span class="w"> </span><span class="n">PRAGMA</span><span class="w"> </span><span class="n">foreign_keys</span><span class="p">;</span><span class="w"></span>
 <span class="go">1</span>
 <span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">draw_histories</span><span class="p">(</span><span class="n">memberid</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span><span class="w"></span>
@@ -863,7 +863,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 
 <h4 id="_7">重新讀入資料</h4>
 <p>我們先包好一個 function <code>reset_db</code>。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="c1"># draw_members.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># draw_members.py</span>
 <span class="k">def</span> <span class="nf">reset_db</span><span class="p">():</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">SQLITE_DB_SCHEMA</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">create_db_sql</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
@@ -895,7 +895,7 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 <p><code>reset_db()</code> 會 DROP 掉舊的 database ，然後再用剛剛介紹的方法再把資料從 CSV 讀進來。</p>
 <p>所以這個 function 要怎麼使用？</p>
 <p>一個是像之前一樣綁定一個路徑 <code>@app.route('/reset')</code>；另一個方式我們可以透過 python shell 達到。</p>
-<div class="highlight"><pre><span></span><code class="language-pycon"><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">draw_member</span> <span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">reset_db</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">draw_member</span> <span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">reset_db</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">app</span><span class="o">.</span><span class="n">app_context</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="n">reset_db</span><span class="p">()</span>
 </code></pre></div>

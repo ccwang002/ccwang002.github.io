@@ -182,7 +182,7 @@
 <p>圖形化介面（GUI），除了使用者的應用程式外，還需要系統輔助、管理等核心套件。一系列的 GUI 套件就稱之為桌面環境。</p>
 <p>Windows、OSX 在安裝系統時都會自動安裝， 即桌面環境只有一種選擇。但在 Linux 上，GUI 的安裝是選擇性的，系統能在只有單純的 terminal 介面便能完整使用（例如選擇安裝 Ubuntu Server 時），不少 server 為了效能、安全性的考量都不會裝桌面環境。</p>
 <p>對 Linux 來說桌面環境是能之後再選擇安裝上去的，而且還有「不同口味」可以選擇，使用者也可以自由的移除它們（但很有可能會炸掉），常見就有 GNOME、KDE、XFCE、LXDE<sup id="fnref:註4"><a class="footnote-ref" href="#fn:註4">3</a></sup> 幾種系統能使用。例如選擇安裝 Ubuntu Server 後，想要再加上 GNOME 列圖形化介面時，</p>
-<div class="highlight"><pre><span></span><code class="language-bash">sudo apt-get install ubuntu-gnome-desktop
+<div class="highlight"><pre><span></span><code>sudo apt-get install ubuntu-gnome-desktop
 </code></pre></div>
 
 <p>這邊不會去細講這些實作方式的不同。簡單而言，GNOME 最流行。XFCE 使用的系統資源較少，在實驗室上的 server 常會裝這個。在 Ubuntu 上，預設是用 Unity，它是從 GNOME 沿伸出來的。</p>
@@ -202,70 +202,70 @@
 <table>
 <thead>
 <tr>
-<th align="center">章節</th>
-<th align="left">章節名</th>
+<th style="text-align: center;">章節</th>
+<th style="text-align: left;">章節名</th>
 <th>重要的內容</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">0</td>
-<td align="left">計算機概論</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: left;">計算機概論</td>
 <td>沒聽過 CPU、RAM、MB GB 單位就從頭看； 不然就讀資料表示方式(3)、軟體程式運作(4)</td>
 </tr>
 <tr>
-<td align="center">5</td>
-<td align="left">首次登入與線上求助 man page</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: left;">首次登入與線上求助 man page</td>
 <td>文字模式下指令的下達(2)、man page 與 info page(3)、nano(4)</td>
 </tr>
 <tr>
-<td align="center">6</td>
-<td align="left">Linux 的檔案權限與目錄配置</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: left;">Linux 的檔案權限與目錄配置</td>
 <td>全</td>
 </tr>
 <tr>
-<td align="center">7</td>
-<td align="left">Linux 檔案與目錄管理</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: left;">Linux 檔案與目錄管理</td>
 <td>除檔案隱藏與特殊屬性(4)外都重要</td>
 </tr>
 <tr>
-<td align="center">8</td>
-<td align="left">Linux 磁碟與檔案系統管理</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: left;">Linux 磁碟與檔案系統管理</td>
 <td>檔案系統的簡單操作(2)</td>
 </tr>
 <tr>
-<td align="center">9</td>
-<td align="left">檔案與檔案系統的壓縮與打包</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: left;">檔案與檔案系統的壓縮與打包</td>
 <td>壓縮檔案的用途與技術(1)、打包指令(3)</td>
 </tr>
 <tr>
-<td align="center">10<sup id="fnref:*"><a class="footnote-ref" href="#fn:*">5</a></sup></td>
-<td align="left">vim 程式編輯器</td>
+<td style="text-align: center;">10<sup id="fnref:*"><a class="footnote-ref" href="#fn:*">5</a></sup></td>
+<td style="text-align: left;">vim 程式編輯器</td>
 <td>語系編碼轉換(4.3)</td>
 </tr>
 <tr>
-<td align="center">11</td>
-<td align="left">認識與學習 BASH</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: left;">認識與學習 BASH</td>
 <td>全。但可視情況忽略 2.4-2.8、6.4</td>
 </tr>
 <tr>
-<td align="center">12<sup id="fnref:†"><a class="footnote-ref" href="#fn:†">6</a></sup></td>
-<td align="left">正規表示法與文件格式化處理</td>
+<td style="text-align: center;">12<sup id="fnref:†"><a class="footnote-ref" href="#fn:†">6</a></sup></td>
+<td style="text-align: left;">正規表示法與文件格式化處理</td>
 <td>前言(1)</td>
 </tr>
 <tr>
-<td align="center">13</td>
-<td align="left">學習 Shell Scripts</td>
+<td style="text-align: center;">13</td>
+<td style="text-align: left;">學習 Shell Scripts</td>
 <td>全（等用到再看）</td>
 </tr>
 <tr>
-<td align="center">22</td>
-<td align="left">軟體安裝：原始碼與 Tarball</td>
+<td style="text-align: center;">22</td>
+<td style="text-align: left;">軟體安裝：原始碼與 Tarball</td>
 <td>全（了解流程、懂有這些關鍵字就好）</td>
 </tr>
 <tr>
-<td align="center">23</td>
-<td align="left">軟體安裝： RPM, SRPM 與 YUM 功能</td>
+<td style="text-align: center;">23</td>
+<td style="text-align: left;">軟體安裝： RPM, SRPM 與 YUM 功能</td>
 <td>Ubuntu 用的是 APT<sup id="fnref:‡"><a class="footnote-ref" href="#fn:‡">7</a></sup></td>
 </tr>
 </tbody>
@@ -286,26 +286,26 @@
 <table>
 <thead>
 <tr>
-<th align="left">Chp. No</th>
-<th align="left">Chp. Name</th>
-<th align="left">Highlights</th>
+<th style="text-align: left;">Chp. No</th>
+<th style="text-align: left;">Chp. Name</th>
+<th style="text-align: left;">Highlights</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">1</td>
-<td align="left">GNU/Linux tutorials</td>
-<td align="left">Everything except for 1.3 Midnight Commander</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">GNU/Linux tutorials</td>
+<td style="text-align: left;">Everything except for 1.3 Midnight Commander</td>
 </tr>
 <tr>
-<td align="left">2</td>
-<td align="left">Debian package management</td>
-<td align="left">Read 2.2 Basic package management operations</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Debian package management</td>
+<td style="text-align: left;">Read 2.2 Basic package management operations</td>
 </tr>
 <tr>
-<td align="left">10</td>
-<td align="left">Data management</td>
-<td align="left">Read 10.1 Sharing, copying, and archiving</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">Data management</td>
+<td style="text-align: left;">Read 10.1 Sharing, copying, and archiving</td>
 </tr>
 </tbody>
 </table>
@@ -320,7 +320,7 @@
 <li>知道環境變數是什麼，怎麼修改</li>
 <li>了解檔案、目錄、相對路徑；權限設定</li>
 <li>使用 <code>&lt;cmd&gt; -h</code> <code>&lt;cmd&gt; --help</code> <code>man &lt;cmd&gt;</code> 來查看指令的功能、可下的參數<ul>
-<li>&lt;cmd> = 任何在 linux 下的指令</li>
+<li>&lt;cmd&gt; = 任何在 linux 下的指令</li>
 </ul>
 </li>
 </ul>

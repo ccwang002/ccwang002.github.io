@@ -151,7 +151,7 @@ Zotero has builtin support to export the reference in BibTeX and BibLaTeX format
 <p>To further integrate Zotero to the LaTeX workflow, <a href="https://retorque.re/zotero-better-bibtex/">Better BibTeX for Zotero</a> plugin comes in handy.
 The plugin can customize the citation key generation, and it can automatically export the <code>.bib</code> file when the reference changes.</p>
 <p>I currently have the following rule for the citation key generation:</p>
-<div class="highlight"><pre><span></span><code class="language-text">[auth+initials:lower]_[authorLast+initials:lower][&gt;1]:[shorttitle2_2][year]
+<div class="highlight"><pre><span></span><code>[auth+initials:lower]_[authorLast+initials:lower][&gt;1]:[shorttitle2_2][year]
 |[Auth+initials:lower:(unknown)]:[Title:capitalize:substring=1,64][year]
 </code></pre></div>
 
@@ -178,7 +178,7 @@ Here&rsquo;s an example of the desired behavior:</p>
 <p>To allow the figure legend/caption to overflow, two figure environments are constructed side by side.
 Then I used a quotation helper function <code>\sourceatright</code> by memoir to place the &ldquo;(legend continued on next page)&rdquo; right aligned to the end of legend.</p>
 <p>Here&rsquo;s the final helper functions in the permeable:</p>
-<div class="highlight"><pre><span></span><code class="language-tex"><span class="c">% Allowing subcaptions when all figure panels are combined</span>
+<div class="highlight"><pre><span></span><code><span class="c">% Allowing subcaptions when all figure panels are combined</span>
 <span class="c">% into one source image. Require subcaption package.</span>
 <span class="c">% Based on https://tex.stackexchange.com/a/255790</span>
 <span class="k">\newcommand</span><span class="nb">{</span><span class="k">\phantomlabel</span><span class="nb">}</span>[1]<span class="nb">{</span><span class="c">%</span>
@@ -193,7 +193,7 @@ Then I used a quotation helper function <code>\sourceatright</code> by memoir to
 </code></pre></div>
 
 <p>And the following shows an example usage:</p>
-<div class="highlight"><pre><span></span><code class="language-tex"><span class="k">\begin</span><span class="nb">{</span>figure<span class="nb">}</span>[p]  <span class="c">% usually large and will need a full page</span>
+<div class="highlight"><pre><span></span><code><span class="k">\begin</span><span class="nb">{</span>figure<span class="nb">}</span>[p]  <span class="c">% usually large and will need a full page</span>
     <span class="k">\centering</span>
     <span class="k">\phantomlabel</span><span class="nb">{</span>fig:panel-a<span class="nb">}</span>  <span class="c">% hidden label of each figure panel</span>
     <span class="k">\phantomlabel</span><span class="nb">{</span>fig:panel-b<span class="nb">}</span>
@@ -223,7 +223,7 @@ Then I used a quotation helper function <code>\sourceatright</code> by memoir to
 
 <h3 id="folder-structure">Folder structure</h3>
 <p>I have a very typical folder structure of a thesis:</p>
-<div class="highlight"><pre><span></span><code class="language-text">wustlthesis.cls     # document class
+<div class="highlight"><pre><span></span><code>wustlthesis.cls     # document class
 thesis.tex          # main file (structure and settings)
 abstract.tex
 acknowledgments.tex
@@ -250,7 +250,7 @@ Also a working LaTeX toolchain always read to use will help others to adapt the 
 On GitHub, such service is <a href="https://docs.github.com/en/actions/using-workflows">GitHub Actions</a>, allowing user to provide custom Docker image and run arbitrary code.</p>
 <p>Luckily, someone has already laid out the ground work by preparing a TeXLive environment into a GitHub Action workflow: <a href="https://github.com/xu-cheng/latex-action">https://github.com/xu-cheng/latex-action</a>.
 Below is an example of creating an online workflow to build the document using LuaLaTeX:</p>
-<div class="highlight"><pre><span></span><code class="language-yaml"><span class="c1"># .github/workflows/build_latex.yml</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="c1"># .github/workflows/build_latex.yml</span><span class="w"></span>
 <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build LaTeX PDF</span><span class="w"></span>
 <span class="nt">on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">push</span><span class="w"></span>
 <span class="nt">jobs</span><span class="p">:</span><span class="w"></span>

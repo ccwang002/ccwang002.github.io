@@ -164,16 +164,16 @@
 </div>
 <h3 id="django">Django 初始設定</h3>
 <p>一樣開一個 Python 虛擬環境（這時候就是它的好處了，能把不同專案的套件隔離）。</p>
-<div class="highlight"><pre><span></span><code class="language-text">pip install django pytz ipython pyyaml
+<div class="highlight"><pre><span></span><code>pip install django pytz ipython pyyaml
 </code></pre></div>
 
 <p><a href="http://pythonhosted.org/pytz/">pytz</a> 在<a href="../../09/datetime-sqlite">前一篇</a>已經介紹過，是處理時區的套件。<a href="http://ipython.org/">IPython</a> 全名是 Interactive Python，同樣是 Python shell 但提供了很多附加功能，最常用的應該是自動補完。<a href="http://pyyaml.org/">PyYAML</a> 用來處理 YAML 物件，可裝可不裝，不裝之後的例子就用 JSON 即可。</p>
 <p>我們的專案根目錄是 <code>demo_django_draw_member</code>。因為 Django 的設定很多，先在這目錄下用 <a href="https://docs.djangoproject.com/en/1.8/ref/contrib/admin/">django-admin</a> 把基本的架構建起來。我們建了一個名為 <code>draw_site</code> 的專案（Project）。</p>
-<div class="highlight"><pre><span></span><code class="language-bash"><span class="o">(</span>VENV<span class="o">)</span> $ django-admin startproject draw_site
+<div class="highlight"><pre><span></span><code><span class="o">(</span>VENV<span class="o">)</span> $ django-admin startproject draw_site
 </code></pre></div>
 
 <p>執行完之後應該會多出一堆檔案，結構如下。注意到有兩層 <code>draw_site</code>。</p>
-<div class="highlight"><pre><span></span><code class="language-text">demo_django_draw_member/
+<div class="highlight"><pre><span></span><code>demo_django_draw_member/
 └── draw_site/
     ├── draw_site/
     │   ├── __init__.py
@@ -193,7 +193,7 @@
 <p>一個 Django 由一個 project 和很多個 apps 所組成。每個 app 就專注在網站的某個功能上，各自包著各自需要的 database schema、template、view logics。這樣的好處是同樣的功能就不用重寫，同時在很大的網站時這樣的結構有助於管理運作的邏輯。</p>
 <h4 id="django-server">Django server</h4>
 <p>先把 Django 跑起來看看吧。</p>
-<div class="highlight"><pre><span></span><code class="language-console"><span class="gp">$ </span>python manage.py runserver
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py runserver
 <span class="go">...</span>
 <span class="go">Django version 1.8.5, using settings &#39;draw_site.settings&#39;</span>
 <span class="go">Starting development server at http://127.0.0.1:8000/</span>
@@ -207,10 +207,10 @@
 <p>這是 Django 內建在什麼 URL 都沒設定時的歡迎畫面。看到這個至少表示基本的 settings 正常。Django 跟 Flask 一樣，內建的 server 會在 source code 有改變的時候 reload，所以一直開著跑也可以。</p>
 <h4 id="django-app">第一個 Django app</h4>
 <p>我們的網站只會用到一個 app，把它建出來取名為 <code>draw_member</code>。</p>
-<div class="highlight"><pre><span></span><code class="language-bash">python manage.py startapp draw_member
+<div class="highlight"><pre><span></span><code>python manage.py startapp draw_member
 </code></pre></div>
 
-<div class="highlight"><pre><span></span><code class="language-text">demo_django_draw_member/
+<div class="highlight"><pre><span></span><code>demo_django_draw_member/
 └── draw_site/
     ├── draw_member/
     │   ├── __init__.py
@@ -226,7 +226,7 @@
 
 <p>可以看到 app 與 project 的架構是不一樣的。</p>
 <p>要把這個新的 app 加到 project 裡，修改 <code>draw_site/settings.py</code>。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="c1"># draw_site/settings.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># draw_site/settings.py</span>
 
 <span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s1">&#39;draw_member&#39;</span><span class="p">,</span>    <span class="c1"># 加這一行</span>
@@ -242,7 +242,7 @@
 <p>預設其實裝了很多 app。暫時不理他們是什麼。</p>
 <h4 id="django-settings">Django settings</h4>
 <p>先簡單介紹一下 <code>draw_site/settings.py</code>。除了剛剛用到 INSTALLED_APPS，講幾個跟這邊比較有關的參數。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="c1"># Database</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Database</span>
 <span class="c1"># https://docs.djangoproject.com/en/1.8/ref/settings/#databases</span>
 
 <span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
@@ -267,7 +267,7 @@
 <p>在之前的例子可以知道，我們會先設計一個資料庫該存什麼東西，整個網站流程會怎麼用這些資料，這些形成 table schema。但是隨著時間，可能網站有新的功能，很難說完全不去更動 schema。</p>
 <p>更動 schema 不是件簡單的事，如果是上 production 的網站，資料庫會有運作以來累積的資料，總不能 schema 改了這些資料就丟掉吧？而且在網站開發的時候，在不同版本的（或不同人開發的）code 就可能有不同的 schema。要怎麼確保 code 與 database 的狀態就要靠 migration。</p>
 <p>……一開始就這麼複雜？好啦我們的例子沒有用到 migration 大多數的功能，只有用它 initiate database。內建的 app 都有自己的 database schema，可以用它把資料庫的 table 建出來。</p>
-<div class="highlight"><pre><span></span><code class="language-console"><span class="gp">$ </span>python manage.py migrate
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py migrate
 <span class="go">Operations to perform:</span>
 <span class="go">  Synchronize unmigrated apps: messages, staticfiles</span>
 <span class="go">  Apply all migrations: sessions, auth, contenttypes, admin</span>
@@ -293,13 +293,13 @@
 <h3 id="url-dispatcher">URL dispatcher</h3>
 <p>我們接下來要改首頁，把 Django 預設的 <code>/</code> 首頁換成 Hello World。</p>
 <p>Flask URL routing 是直接用 decorator 寫在 view function 上面。幫大家回顧一下：</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
     <span class="k">return</span> <span class="s2">&quot;&lt;p&gt;Hello World!&lt;/p&gt;&quot;</span>
 </code></pre></div>
 
 <p>Django 的 view 和 URL 是分開的，首先是 view：</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="c1"># draw_member/views.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># draw_member/views.py</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>  <span class="c1"># 先暫時留著</span>
 <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
 
@@ -309,7 +309,7 @@
 
 <p>結構上大同小異（也因為有 <a href="http://wsgi.org/">WSGI</a> 規範的關係啦）。</p>
 <p>再來是 URL 設定。我們先把 URL 加在 project 設定。這邊可能覺得設定有點分散比較怪，等一下再把它放到 app 裡面。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="c1"># draw_site/urls.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># draw_site/urls.py</span>
 <span class="sd">&quot;&quot;&quot;draw_site URL Configuration</span>
 
 <span class="sd">The `urlpatterns` list routes URLs to views. For more information please see:</span>
@@ -328,13 +328,13 @@
 
 <p>概念也很簡單，把要的 view function 從 app import 進來（所以 app 目錄是個 Python module，底下會 <code>__init__.py</code>），給一個 regex 表示的路徑，後面放上處理 function 以及一個 optional 的名字，這個名字就代表了這個 URL 路徑，之後可以反查。</p>
 <p>測一下確認設定都是正確的。</p>
-<div class="highlight"><pre><span></span><code class="language-console"><span class="gp">$ </span>curl -XGET <span class="s2">&quot;localhost:8000&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>curl -XGET <span class="s2">&quot;localhost:8000&quot;</span>
 <span class="go">&lt;p&gt;Hello World!&lt;/p&gt;</span>
 </code></pre></div>
 
 <p>再看一下 <code>draw_site/urls.py</code>，可以看到 Django 預設放了個 <code>/admin</code> 後面用的是 <code>include(app.urls)</code>，表示這一整包只要是 admin/ 開頭的 URL 都交給 admin.site.urls 去處理路徑。這樣方便 app 在不同網站中重覆利用，因為可能放的路徑都不一樣，但一個 app 內的 URL 處理會有一致性。</p>
 <p>馬上來改寫一下。首先在 app <strong>draw_member</strong> 底下加一個 <code>urls.py</code>。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="c1"># draw_member/urls.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># draw_member/urls.py</span>
 <span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">include</span><span class="p">,</span> <span class="n">url</span>
 <span class="kn">from</span> <span class="nn">.views</span> <span class="kn">import</span> <span class="n">home</span>  <span class="c1"># explicit relative import</span>
 
@@ -345,7 +345,7 @@
 
 <p>基本上格式就是照抄原本就有的。因為放在同個 app 裡面了，import view 時就可以用 explicit relative import（這不是 relative import 喔）</p>
 <p>原本的 urls.py 就改成把 URL 的處理「dispatch」給這個 app，改成底下這樣。</p>
-<div class="highlight"><pre><span></span><code class="language-text"># draw_site/urls.py
+<div class="highlight"><pre><span></span><code># draw_site/urls.py
 from django.conf.urls import include, url
 from django.contrib import admin
 
@@ -379,7 +379,7 @@ urlpatterns = [
 
 <p>回想一下我們的 schema 設計。改用 ORM 來思考我們就會有成員（Member）以及抽籤歷史（History）兩大 models。<strong>Member</strong> 記錄了名字與所屬團體；<strong>History</strong> 會記錄時間、這筆抽籤是屬於哪個成員的。</p>
 <p>在 Django 中，model 定義在 <code>models.py</code> 裡面，馬上來寫寫看。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="c1"># draw_members/models.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># draw_members/models.py</span>
 <span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
 <span class="kn">from</span> <span class="nn">django.utils.timezone</span> <span class="kn">import</span> <span class="n">now</span>
 
@@ -407,7 +407,7 @@ urlpatterns = [
 <h4 id="migration-the-tracker-of-model-changes">Migration the tracker of model changes</h4>
 <p>多說無用，馬上來試一試。</p>
 <p>……等等，想到 migration 了嗎？每次更動 database model 都要跑 migration，確保 code 與資料庫狀態一致。</p>
-<div class="highlight"><pre><span></span><code class="language-console"><span class="gp">$ </span>python manage.py makemigrations draw_member
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py makemigrations draw_member
 <span class="go">python manage.py makemigrations draw_member</span>
 <span class="go">Migrations for &#39;draw_member&#39;:</span>
 <span class="go">  0001_initial.py:</span>
@@ -417,7 +417,7 @@ urlpatterns = [
 </code></pre></div>
 
 <p>可以看到 Django 很聰明的知道我們多定義了兩個 models，裡面有些對應到資料庫的欄位型態。這些資訊會寫在 migration file 裡面，</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="c1"># draw_member/migrations/0001_initial.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># draw_member/migrations/0001_initial.py</span>
 <span class="k">class</span> <span class="nc">Migration</span><span class="p">(</span><span class="n">migrations</span><span class="o">.</span><span class="n">Migration</span><span class="p">):</span>
 
     <span class="n">dependencies</span> <span class="o">=</span> <span class="p">[</span>
@@ -449,7 +449,7 @@ urlpatterns = [
 
 <p>注意到 Django ORM 自動幫我們加了 <code>id</code> 這個 primary key，等等就會用到。Migration 裡面的細節等對 Django 更熟了之後就能慢慢了解了。</p>
 <p>有了新的 migration 就要同步資料庫的狀態，</p>
-<div class="highlight"><pre><span></span><code class="language-console"><span class="gp">$ </span>python manage.py migrate
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py migrate
 <span class="go">...</span>
 <span class="go">Running migrations:</span>
 <span class="go">  Rendering model states... DONE</span>
@@ -458,17 +458,17 @@ urlpatterns = [
 
 <h4 id="orm-queries-in-shell">ORM queries in shell</h4>
 <p>接下來我們操作一下 ORM。</p>
-<div class="highlight"><pre><span></span><code class="language-bash">$ python manage.py shell
+<div class="highlight"><pre><span></span><code>$ python manage.py shell
 </code></pre></div>
 
 <p>就會打開一個 Python shell。如果裝了 IPython 就會打開 IPython shell。
 這個與一般的有什麼差別呢？他會帶有 Django project 的設定。如果是從一般的 shell 可以先跑以下的指令來達到相同的效果。</p>
-<div class="highlight"><pre><span></span><code class="language-pycon"><span class="go">$ DJANGO_SETTINGS_MODULE=&quot;draw_site.settings&quot; python</span>
+<div class="highlight"><pre><span></span><code><span class="go">$ DJANGO_SETTINGS_MODULE=&quot;draw_site.settings&quot; python</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">django</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">django</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
 </code></pre></div>
 
-<div class="highlight"><pre><span></span><code class="language-text">In [1]: from draw_member.models import Member, History
+<div class="highlight"><pre><span></span><code>In [1]: from draw_member.models import Member, History
 In [2]: m1 = Member(name=&quot;高坂 穂乃果&quot;, group_name=&quot;μ&#39;s&quot;)
 In [4]: m2 = Member(name=&quot;平沢 唯&quot;, group_name=&quot;K-ON!&quot;)
 In [5]: m1, m2
@@ -480,7 +480,7 @@ In [9]: h1.save()
 </code></pre></div>
 
 <p>使用上就把資料當作物件來操作，如同 ORM 字面的意思。注意只有在 <code>.save()</code> 才真正被存到資料裡。拿沒有存的 object 來操作 database 就會出現 exception。</p>
-<div class="highlight"><pre><span></span><code class="language-pycon"><span class="gp">&gt;&gt;&gt; </span><span class="n">h_failed</span> <span class="o">=</span> <span class="n">History</span><span class="p">(</span><span class="n">member</span><span class="o">=</span><span class="n">Member</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;FF&#39;</span><span class="p">,</span> <span class="n">group_name</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">h_failed</span> <span class="o">=</span> <span class="n">History</span><span class="p">(</span><span class="n">member</span><span class="o">=</span><span class="n">Member</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;FF&#39;</span><span class="p">,</span> <span class="n">group_name</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h_failed</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 <span class="gt">Traceback (most recent call last):</span>
 <span class="c">...</span>
@@ -488,7 +488,7 @@ In [9]: h1.save()
 </code></pre></div>
 
 <p>覺得麻煩的話，用 <code>Model.objects.create()</code> 就可以一步搞定。正確的存好之後，現在資料庫已經有資料了。我們可以先在 SQLite 裡確認。</p>
-<div class="highlight"><pre><span></span><code class="language-sqlite3"><span class="go">-- sqlite3 db.sqlite3</span>
+<div class="highlight"><pre><span></span><code><span class="go">-- sqlite3 db.sqlite3</span>
 <span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="n">header</span><span class="w"> </span><span class="k">on</span><span class="w"></span>
 <span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">draw_member_member</span><span class="p">;</span><span class="w"></span>
 <span class="go">id|name|group_name</span>
@@ -501,7 +501,7 @@ In [9]: h1.save()
 
 <p>透過像剛剛 object 的操作，我們也能建出如同手寫 SQL 一樣的資料庫，當然像 <code>id</code>、<code>member_id</code> 這些欄位是 ORM engine 自動幫我們做出來的，這些可以自訂，不過預設的行為不難理解。</p>
 <p>要怎麼從 ORM 像剛剛下 SQL 一樣撈資料呢？</p>
-<div class="highlight"><pre><span></span><code class="language-pycon"><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">draw_member.models</span> <span class="kn">import</span> <span class="n">Member</span><span class="p">,</span> <span class="n">History</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">draw_member.models</span> <span class="kn">import</span> <span class="n">Member</span><span class="p">,</span> <span class="n">History</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 <span class="go">[&lt;Member: 高坂 穂乃果 of μ&#39;s&gt;, &lt;Member: 平沢 唯 of K-ON!&gt;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">History</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
@@ -510,7 +510,7 @@ In [9]: h1.save()
 
 <p>資料透過 <code>Model.objects</code> 這個 Manager 去查詢，細節就去看 Django 關於 <a href="https://docs.djangoproject.com/en/1.8/topics/db/queries">Making queries</a> 的內容吧。查詢資料庫就會回傳 <a href="https://docs.djangoproject.com/en/1.8/ref/models/querysets/#django.db.models.query.QuerySet">QuerySet</a>，這並不會真的去「查」資料庫，但先把指令存著等真的要用到值時才去計算，也就是 lazy evaluation。</p>
 <p>QuerySet 底下就有很多對應到 SQL 指令的查詢，像是拿回所有 objects 的 <code>QuerySet.all()</code>，前面已經用過了。或者篩選的 <code>QuerySet.filter()</code>，</p>
-<div class="highlight"><pre><span></span><code class="language-pycon"><span class="gp">&gt;&gt;&gt; </span><span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">group_name</span><span class="o">=</span><span class="s1">&#39;K-ON!&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">group_name</span><span class="o">=</span><span class="s1">&#39;K-ON!&#39;</span><span class="p">)</span>
 <span class="go">[&lt;Member: 平沢 唯 of K-ON!&gt;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">group_name__contains</span><span class="o">=</span><span class="s1">&#39;!&#39;</span><span class="p">)</span>
 <span class="go">[&lt;Member: 平沢 唯 of K-ON!&gt;]</span>
@@ -518,12 +518,12 @@ In [9]: h1.save()
 
 <p>其中 <code>&lt;field&gt;__contains</code> 就是 Django ORM 為了實做像 SQL <code>LIKE</code> 指令的對應欄位。</p>
 <p>先講幾個有關的，首先每個 Model 都有個 primary key <code>pk</code>，預設指到 <code>Model.id</code> 這個欄位上，另用 <code>QuerySet.get()</code> 可以拿到單一物件，這時候萬用的 pk 就派上用場了。</p>
-<div class="highlight"><pre><span></span><code class="language-pycon"><span class="gp">&gt;&gt;&gt; </span><span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="go">&lt;Member: 高坂 穂乃果 of μ&#39;s&gt;</span>
 </code></pre></div>
 
 <p>查 relation 也很簡單，</p>
-<div class="highlight"><pre><span></span><code class="language-pycon"><span class="gp">&gt;&gt;&gt; </span><span class="n">h1</span> <span class="o">=</span> <span class="n">History</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">h1</span> <span class="o">=</span> <span class="n">History</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h1</span><span class="o">.</span><span class="n">member</span>
 <span class="go">&lt;Member: 高坂 穂乃果 of μ&#39;s&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h1</span><span class="o">.</span><span class="n">member</span><span class="o">.</span><span class="n">name</span>
@@ -531,18 +531,18 @@ In [9]: h1.save()
 </code></pre></div>
 
 <p>還記得之前設得 <code>related_name="draw_histories"</code>，表示我們能從 <strong>Member</strong> 反查回去該人相關的歷史，</p>
-<div class="highlight"><pre><span></span><code class="language-pycon"><span class="gp">&gt;&gt;&gt; </span><span class="n">m1</span> <span class="o">=</span> <span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">m1</span> <span class="o">=</span> <span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m1</span><span class="o">.</span><span class="n">draw_histories</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 <span class="go">[&lt;History: 高坂 穂乃果 at 2015-10-05 15:17:32.061384+00:00&gt;]</span>
 </code></pre></div>
 
 <p>最後我們來刪資料，</p>
-<div class="highlight"><pre><span></span><code class="language-pycon"><span class="gp">&gt;&gt;&gt; </span><span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">History</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 </code></pre></div>
 
 <p>當然一開始我們可以暴力把 <code>db.sqlite3</code> 整個刪掉再重新 <code>python manage.py migrate</code> 一次就可以讓 database 對應的 table 都建立好，不過只適用於 SQLite 而已。或者，正確的「清空資料庫」做法是用 <code>flush</code> 指令，</p>
-<div class="highlight"><pre><span></span><code class="language-console"><span class="gp">$ </span>python manage.py flush
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py flush
 <span class="go">You have requested a flush of the database.</span>
 <span class="go">This will IRREVERSIBLY DESTROY all data currently in the &#39;draw_site/db.sqlite3&#39; database,</span>
 <span class="go">and return each table to an empty state.</span>
@@ -555,7 +555,7 @@ In [9]: h1.save()
 
 <h4 id="data-in-orm-and-fixtures">Data in ORM and fixtures</h4>
 <p>我們把 <code>members.csv</code> 的資料填到資料庫吧。這邊就不用細說了。</p>
-<div class="highlight"><pre><span></span><code class="language-text">In [1]: import csv
+<div class="highlight"><pre><span></span><code>In [1]: import csv
 In [2]: with open(&#39;../../draw_member/members.csv&#39;, newline=&#39;&#39;) as f:
    ...:    csv_reader = csv.DictReader(f)
    ...:    members = [
@@ -572,18 +572,18 @@ In [4]: for m in members:
 <p>不過現在有個問題是，之後可能會常常把資料庫砍掉重練，或者要把這些（或很多來源）的資料讀到資料庫，每次都重新讀寫也是可以，但有沒有別的做法能把資料先存起來？</p>
 <p>這邊就要介紹 <a href="https://docs.djangoproject.com/en/1.8/howto/initial-data/#providing-initial-data-with-fixtures">Django fixtures</a> 了。他能把資料庫的資料存成 JSON、YAML（需要 <a href="http://pyyaml.org/">PyYAML</a>）等格式。</p>
 <p>一般 fixtures 是被在 <code>&lt;app&gt;/fixtures/</code> 目錄底下，記得先把目錄建出來。</p>
-<div class="highlight"><pre><span></span><code class="language-bash">mkdir draw_member/fixtures
+<div class="highlight"><pre><span></span><code>mkdir draw_member/fixtures
 </code></pre></div>
 
 <p>根據 database 的內容建立 fixtures 可以使用 <code>dumpdata</code> 指令：</p>
-<div class="highlight"><pre><span></span><code class="language-bash">python manage.py dumpdata <span class="se">\</span>
+<div class="highlight"><pre><span></span><code>python manage.py dumpdata <span class="se">\</span>
     --format<span class="o">=</span>yaml <span class="se">\</span>
     --indent<span class="o">=</span><span class="m">4</span> <span class="se">\</span>
     --output draw_member/fixtures/anime_members.yaml
     draw_member.Member <span class="se">\</span>
 </code></pre></div>
 
-<div class="highlight"><pre><span></span><code class="language-yaml"><span class="c1"># draw_member/fixtures/anime_members.yaml</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="c1"># draw_member/fixtures/anime_members.yaml</span><span class="w"></span>
 <span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">fields</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">group_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\u03BC</span><span class="s">&#39;s&quot;</span><span class="p p-Indicator">,</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\u9AD8\u5742</span><span class="nv"> </span><span class="se">\u7A42\u4E43\u679C</span><span class="s">&quot;</span><span class="p p-Indicator">}</span><span class="w"></span>
 <span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">draw_member.member</span><span class="w"></span>
 <span class="w">    </span><span class="nt">pk</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
@@ -594,7 +594,7 @@ In [4]: for m in members:
 </code></pre></div>
 
 <p>用 JSON 輸出也可以，改成 <code>--format=json</code> 就可以了</p>
-<div class="highlight"><pre><span></span><code class="language-json"><span class="p">[</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="p">[</span><span class="w"></span>
 <span class="p">{</span><span class="w"></span>
 <span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;draw_member.member&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">  </span><span class="nt">&quot;pk&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
@@ -606,14 +606,14 @@ In [4]: for m in members:
 </code></pre></div>
 
 <p>我們可以用 <code>python manage.py flush</code> 把資料庫清掉，模擬資料的讀入。</p>
-<div class="highlight"><pre><span></span><code class="language-console"><span class="gp">$ </span>python manage.py loaddata anime_members.yaml
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py loaddata anime_members.yaml
 <span class="go">Installed 14 object(s) from 1 fixture(s)</span>
 </code></pre></div>
 
 <p>這樣資料的存取就介紹得差不多了。更多的細節可以參考<a href="https://docs.djangoproject.com/en/1.8/#the-model-layer">官網 model layer</a> 的說明。</p>
 <h3 id="django-template">Django Template</h3>
 <p>在進行下去之前，先確認我們的目錄結構是一樣的。</p>
-<div class="highlight"><pre><span></span><code class="language-text">demo_django_draw_member/
+<div class="highlight"><pre><span></span><code>demo_django_draw_member/
 └── draw_site/
     ├── db.sqlite3
     ├── draw_member/
@@ -638,12 +638,12 @@ In [4]: for m in members:
 </code></pre></div>
 
 <p>Django 的 template 預設是放在 <code>&lt;app&gt;/templates/</code> 底下。不過為了在跨 app 時不要衝到名字，我們會多包一層 app 為名的資料夾。</p>
-<div class="highlight"><pre><span></span><code class="language-bash">mkdir -p draw_member/templates/draw_member
+<div class="highlight"><pre><span></span><code>mkdir -p draw_member/templates/draw_member
 </code></pre></div>
 
 <p>它跟 Flask 用的 Jinja2 templates 乍看下非常類似（Jinja2 模仿 Django template），兩者最大的差別是在 Jinja2 裡能很自由的使用 Python function，不過 Django 靠的是 template tag 以及 filter。我們的例子兩者是沒差多少。</p>
 <p>一樣先把 <code>base.html</code> 以及 <code>home.html</code> 做出來。我們也先把 Form 寫上了，暫時先用 GET。</p>
-<div class="highlight"><pre><span></span><code class="language-html+django"><span class="c">{# draw_member/templates/draw_member/base.html #}</span>
+<div class="highlight"><pre><span></span><code><span class="c">{# draw_member/templates/draw_member/base.html #}</span>
 <span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;en&quot;</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
@@ -663,7 +663,7 @@ In [4]: for m in members:
 <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </code></pre></div>
 
-<div class="highlight"><pre><span></span><code class="language-html+django"><span class="c">{# draw_member/templates/draw_member/home.html #}</span>
+<div class="highlight"><pre><span></span><code><span class="c">{# draw_member/templates/draw_member/home.html #}</span>
 <span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;draw_member/base.html&#39;</span> <span class="cp">%}</span>
 
 <span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span>
@@ -681,7 +681,7 @@ In [4]: for m in members:
 
 <p>整體的概念應該很好理解。<code>{% url 'xxxx' %}</code> 就是 URL resolver，還記得在 <code>urls.py</code> 的設定時有給個 <code>name</code> 參數嗎，這邊就會根據那個名字回傳正確的網址。</p>
 <p>順便更新一下 URL 把這些 view 先加好，不然等下 runserver 會說找不到這些網址。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="c1"># draw_members/urls.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># draw_members/urls.py</span>
 <span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">include</span><span class="p">,</span> <span class="n">url</span>
 <span class="kn">from</span> <span class="nn">.views</span> <span class="kn">import</span> <span class="n">home</span><span class="p">,</span> <span class="n">draw</span><span class="p">,</span> <span class="n">history</span>
 
@@ -692,7 +692,7 @@ In [4]: for m in members:
 <span class="p">]</span>
 </code></pre></div>
 
-<div class="highlight"><pre><span></span><code class="language-python"><span class="c1"># draw_members/views.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># draw_members/views.py</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
 <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
 
@@ -710,7 +710,7 @@ In [4]: for m in members:
 </code></pre></div>
 
 <p>緊接著改寫我們的首頁，讓它用上 <code>home.html</code>。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;draw_member/home.html&#39;</span><span class="p">)</span>
 </code></pre></div>
 
@@ -724,7 +724,7 @@ In [4]: for m in members:
 <p>我們把最重要的抽籤功能實作出來吧。</p>
 <p>這邊需要理解的就是，Django 會把傳到 GET / POST 的參數以 dict 存在 <code>request.GET</code> / <code>request.POST</code> 裡面，<code>@require_GET</code> 限制只能使用 GET 去溝通。</p>
 <p>其他的邏輯都是照抄以前的。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="kn">import</span> <span class="nn">random</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
 <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">Http404</span>
 <span class="kn">from</span> <span class="nn">django.views.decorators.http</span> <span class="kn">import</span> <span class="n">require_GET</span>
@@ -755,13 +755,13 @@ In [4]: for m in members:
 
 <p>用 ORM 寫起來比 raw SQL 乾淨多了，不過一開始要把對應的 function 都記起來就是。
 馬上測試一下，一樣偷懶先不去寫 template。</p>
-<div class="highlight"><pre><span></span><code class="language-console"><span class="gp">$ </span>curl -XGET <span class="s2">&quot;localhost:8000/draw/?group=ALL&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>curl -XGET <span class="s2">&quot;localhost:8000/draw/?group=ALL&quot;</span>
 <span class="go">&lt;p&gt;小泉 花陽（團體：μ&#39;s）&lt;/p&gt;</span>
 </code></pre></div>
 
 <p>如果是從首頁去點的，觀察一下網址的變化。例如：<code>http://localhost:8000/draw/?group_name=K-ON!</code>，可以看到 form 的選項直接寫在網址列。這是使用 POST 與 GET 最大的不同。</p>
 <p>再來把歷史記錄的部份也寫一下，也把 template 都補上。</p>
-<div class="highlight"><pre><span></span><code class="language-html+django"><span class="c">{# draw_member/templates/history.html #}</span>
+<div class="highlight"><pre><span></span><code><span class="c">{# draw_member/templates/history.html #}</span>
 <span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;draw_member/base.html&#39;</span> <span class="cp">%}</span>
 
 <span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span>抽籤歷史<span class="cp">{%</span> <span class="k">endblock</span> <span class="nv">title</span> <span class="cp">%}</span>
@@ -790,7 +790,7 @@ In [4]: for m in members:
 </code></pre></div>
 
 <p>history.html 與本來 Flask 不一樣的地方，在用上了 <code>date:"r"</code> 的 filter，傳的參數接在 <code>:</code> 之後。也更新對應 view 的動作，</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="k">def</span> <span class="nf">history</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">history</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="n">recent_draws</span> <span class="o">=</span> <span class="n">History</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-time&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;draw_member/history.html&#39;</span><span class="p">,</span> <span class="p">{</span>
         <span class="s1">&#39;recent_histories&#39;</span><span class="p">:</span> <span class="n">recent_draws</span><span class="p">,</span>
@@ -802,7 +802,7 @@ In [4]: for m in members:
 </figure>
 
 <p>可以看到預設用的是 UTC 時區，時區的轉換細節放到文末吧。我們可以在 view 裡更改要呈現的時區，</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="kn">from</span> <span class="nn">django.utils.timezone</span> <span class="kn">import</span> <span class="n">activate</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">django.utils.timezone</span> <span class="kn">import</span> <span class="n">activate</span>
 
 <span class="k">def</span> <span class="nf">history</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="n">activate</span><span class="p">(</span><span class="s1">&#39;Asia/Taipei&#39;</span><span class="p">)</span>
@@ -817,7 +817,7 @@ In [4]: for m in members:
 <h3 id="django-form">Django Form</h3>
 <p>直接把 form 寫在 template 裡面也是可以，有時候 form 可能跟 model 息息相關，而且 form input 多了之後每個欄位都要自己讀寫也太不直覺。想要驗証使用者的 input 的話就更複雜了。</p>
 <p>於是就有了 Django Form。馬上來看用起來是怎麼樣。</p>
-<div class="highlight"><pre><span></span><code class="language-text"># draw_member/forms.py
+<div class="highlight"><pre><span></span><code># draw_member/forms.py
 from django import forms
 
 class DrawForm(forms.Form):
@@ -837,7 +837,7 @@ class DrawForm(forms.Form):
 
 <p>建了一個新的 form class，像 Model 一樣，裡面規定了每個欄位的屬性。我們這邊只有一個 <code>group</code> 是個單選的 ChoiceField，<code>choices</code> 是個 list of two-item tuples，第一個是內部的值，第二個是顯示的字。其他的都是細節的調整。</p>
 <p>把這個 form 用到 view 裡面。新建一個 form object <code>form</code>，然後把這個變數 <code>form</code> 傳進 template 裡面。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">DrawForm</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">DrawForm</span>
 
 <span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="n">form</span> <span class="o">=</span> <span class="n">DrawForm</span><span class="p">()</span>
@@ -847,7 +847,7 @@ class DrawForm(forms.Form):
 </code></pre></div>
 
 <p>再來修改 template，就不用自己寫 form 的內容了，改成 <code>{{ form }}</code> Django 就會自動產生。</p>
-<div class="highlight"><pre><span></span><code class="language-html+django"><span class="c">{# draw_member/home.html #}</span>
+<div class="highlight"><pre><span></span><code><span class="c">{# draw_member/home.html #}</span>
 <span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;draw_member/base.html&#39;</span> <span class="cp">%}</span>
 
 <span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span>
@@ -865,7 +865,7 @@ class DrawForm(forms.Form):
 </figure>
 
 <p>不過這個長得跟我們原本的 form 不一樣嘛。好在 Django form 是很彈性的，form 在被 render 成 HTML 時可以提供細節的調整，大家可以參考<a href="https://docs.djangoproject.com/en/1.8/topics/forms/#form-rendering-options">官網 Form rendering options</a> 調整。我直接給調好的結果吧。</p>
-<div class="highlight"><pre><span></span><code class="language-html+django">  <span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="s1">&#39;draw&#39;</span> <span class="cp">%}</span><span class="s">&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;get&quot;</span><span class="p">&gt;</span>
+<div class="highlight"><pre><span></span><code>  <span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="s1">&#39;draw&#39;</span> <span class="cp">%}</span><span class="s">&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;get&quot;</span><span class="p">&gt;</span>
     <span class="cp">{{</span> <span class="nv">form.group.label_tag</span> <span class="cp">}}</span>
     <span class="cp">{%</span> <span class="k">for</span> <span class="nv">radio</span> <span class="k">in</span> <span class="nv">form.group</span> <span class="cp">%}</span>
       <span class="cp">{{</span> <span class="nv">radio.tag</span> <span class="cp">}}{{</span> <span class="nv">radio.choice_label</span> <span class="cp">}}</span>
@@ -877,7 +877,7 @@ class DrawForm(forms.Form):
 <p>用結果去對照每個 <code>{{ ... }}</code> 部件對應的 HTML 元素吧。</p>
 <h4 id="more-django-form-in-view">More Django form in view</h4>
 <p>Form 的功能可不只這樣，可以在創建 DrawForm 時直接把 <code>request.GET</code> 傳入。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="c1"># draw_member/views.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># draw_member/views.py</span>
 <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="c1"># Retrieve all related members</span>
     <span class="n">form</span> <span class="o">=</span> <span class="n">DrawForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">)</span>
@@ -898,7 +898,7 @@ class DrawForm(forms.Form):
 
 <p>用 <code>form.is_valid()</code> 可以驗証每個欄位的資料是不是正確的。</p>
 <p>我們也順便把 /draw 加上 template 吧。</p>
-<div class="highlight"><pre><span></span><code class="language-html+django"><span class="c">{# draw_member/draw.html #}</span>
+<div class="highlight"><pre><span></span><code><span class="c">{# draw_member/draw.html #}</span>
 <span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;draw_member/base.html&#39;</span> <span class="cp">%}</span>
 
 <span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span>抽籤結果<span class="cp">{%</span> <span class="k">endblock</span> <span class="nv">title</span> <span class="cp">%}</span>
@@ -909,7 +909,7 @@ class DrawForm(forms.Form):
 <span class="cp">{%</span> <span class="k">endblock</span> <span class="nv">content</span> <span class="cp">%}</span>
 </code></pre></div>
 
-<div class="highlight"><pre><span></span><code class="language-python"><span class="c1"># draw_member/views.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># draw_member/views.py</span>
 <span class="k">def</span> <span class="nf">draw</span><span class="p">():</span>
     <span class="c1"># ...</span>
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;draw_member/draw.html&#39;</span><span class="p">,</span> <span class="p">{</span>
@@ -932,7 +932,7 @@ class DrawForm(forms.Form):
 <h4 id="raw-sql">Raw SQL</h4>
 <p>在介紹 Django Model 的時候直接用了 ORM，但實際上 Django 是可以寫 raw SQL 了，而且還有「聰明版」的 raw SQL 能夠拿回對應的 model object。馬上來看怎麼回事。</p>
 <p>先來看聰明版的 raw SQL，使用 <code>Model.objects.raw</code> 拿回所有團體是 K-ON 類的成員。</p>
-<div class="highlight"><pre><span></span><code class="language-pycon"><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="gp">... </span><span class="s2">SELECT id, name, group_name</span>
 <span class="gp">... </span><span class="s2">FROM draw_member_member</span>
 <span class="gp">... </span><span class="s2">WHERE group_name LIKE &#39;K-ON</span><span class="si">%%</span><span class="s2">&#39;</span>
@@ -946,12 +946,12 @@ class DrawForm(forms.Form):
 
 <p>會回傳一個 RawQuerySet，裡面其實也是 Member objects，這是靠 Django 去認對應的 primary key，也就是說在 raw() SQL query 裡一定要放 primary key。注意那個 <code>%</code> 需要被 escape 因為 raw() 的 SQL query 是能放參數的（就像 Python 內建 str %-formatting）。</p>
 <p>不過我們怎麼知道 Member 是存在哪個 table 呢？預設是 <code>&lt;app&gt;_&lt;model&gt;</code>，但資訊在 meta options 裡的 <code>db_table</code>，也能被覆寫。</p>
-<div class="highlight"><pre><span></span><code class="language-pycon"><span class="gp">&gt;&gt;&gt; </span><span class="n">Member</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">db_table</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">Member</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">db_table</span>
 <span class="go">&#39;draw_member_member&#39;</span>
 </code></pre></div>
 
 <p>因為 Member 裡面有像 name、group_name 等欄位，在下 query 的時候不一定都會寫在 SELECT 裡面把拿值回來，那麼這些欄位就是 deferred 狀態，只有在真的拿值時才會去跟 database 要。一般使用不會有感覺兩者的差異。</p>
-<div class="highlight"><pre><span></span><code class="language-pycon"><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="s2">&quot;SELECT id FROM draw_member_member&quot;</span>
 <span class="gp">... </span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
@@ -961,7 +961,7 @@ class DrawForm(forms.Form):
 </code></pre></div>
 
 <p>但我就是不想用 ORM，速度慢，也沒辦法寫複雜的 query（戰）。這就回歸到最傳統的 database connection, cursor 這些概念，就像沒有 SQLAlchemy 的 Flask。</p>
-<div class="highlight"><pre><span></span><code class="language-pycon"><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">connection</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">connection</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="gp">... </span><span class="s2">SELECT name</span>
@@ -985,7 +985,7 @@ class DrawForm(forms.Form):
 <p>這時候就可以把常用的 query 變成一個 method，例如最近 10 次抽籤記錄就只要用 <code>History.objects.recent(10)</code> 就可以了。</p>
 <p>這其實有很多做法，像是寫一個 classmethod、Override default Manager、Override default QuerySet。哪個方法比較好呢？在 <a href="http://stackoverflow.com/a/2213341">StackOverflow</a>、<a href="https://groups.google.com/forum/#!topic/django-users/0WSdnWFTuUg">mail list</a> 都有討論。基本上都能達到相同的效果，但後兩者的做法是比較偏好的，因為 Manager(or QuerySet for Django 1.7+) 負責處理 model 對應到的 database table 等級的操作，但 classmethod 應該是處理已經從 table row 中拿出的一個 model object 相關的操作。如果把同樣性質的 code 放在一起，就應該使用 Manager(QuerySet)。</p>
 <p>而且 TP 也在 Gitter 上開示了，就是這樣（結案）。來改寫 model。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="c1"># draw_member/models.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># draw_member/models.py</span>
 <span class="k">class</span> <span class="nc">MemberQuerySet</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">QuerySet</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">unique_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1010,7 +1010,7 @@ class DrawForm(forms.Form):
 
 <p>在 Member 我們定義了一個 <code>unique_groups</code> 拿回所有團體的名稱；在 History 定義了 <code>recent</code> 拿出按時間排序最前面 n 個。新定義的 <code>QuerySet.as_manager()</code> 就取代掉本來的 <code>Model.objects</code>。</p>
 <p>接著來改寫 view 把之前寫的 query 換掉。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="c1">#draw_member/views.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1">#draw_member/views.py</span>
 <span class="k">def</span> <span class="nf">history</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="c1"># ...</span>
     <span class="n">recent_draws</span> <span class="o">=</span> <span class="n">History</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">recent</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -1018,7 +1018,7 @@ class DrawForm(forms.Form):
 </code></pre></div>
 
 <p>這樣就簡潔一點。再來順便把 form 改得比較彈性，不要把團體名寫死。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="c1">#draw_member/forms.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1">#draw_member/forms.py</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Member</span>
 
 
@@ -1042,7 +1042,7 @@ class DrawForm(forms.Form):
 <p>感覺最近一直在寫<a href="../../09/datetime-sqlite/">時區相關的東西</a>啊。基本上 server 記錄的時間都用 UTC 問題就少很多，但最後還是要呈現一個使用者用的時區。</p>
 <p>但問題是 HTTP header 裡面並沒有這樣的資訊，所以一來用 geoip 去猜，二來用寫個 javascript 在使用者載入的時候去判斷時區，總之是個要另外記錄的東西。細節<a href="https://docs.djangoproject.com/en/1.8/topics/i18n/timezones/#selecting-the-current-time-zone">官網上也有說明</a>。</p>
 <p>在文中是使用 <code>activate('Aisa/Taipei')</code> 把時區改成 UTC+8。這邊介紹另一個方式，是寫在 template 裡面的。</p>
-<div class="highlight"><pre><span></span><code class="language-html+django"><span class="c">{# draw_member/templates/draw_member/history.html #}</span>
+<div class="highlight"><pre><span></span><code><span class="c">{# draw_member/templates/draw_member/history.html #}</span>
 <span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span>
   <span class="cp">{%</span> <span class="k">load</span> <span class="nv">tz</span> <span class="cp">%}</span>
   <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>抽籤歷史（最近 10 筆）<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
@@ -1061,7 +1061,7 @@ class DrawForm(forms.Form):
 
 <h4 id="post-form-and-csrf">POST form and CSRF</h4>
 <p>忘記講了，我們的 form 目前是用 <code>action="get"</code>，當然可以改回用 POST，也很簡單，就 GET 換成 POST 就好了。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="c1"># draw_site/views.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># draw_site/views.py</span>
 <span class="kn">from</span> <span class="nn">django.views.decorators.http</span> <span class="kn">import</span> <span class="n">require_POST</span>
 
 <span class="nd">@require_POST</span>
@@ -1071,7 +1071,7 @@ class DrawForm(forms.Form):
     <span class="c1"># ...</span>
 </code></pre></div>
 
-<div class="highlight"><pre><span></span><code class="language-html+django"><span class="c">{# draw_site/templates/home.html #}</span>
+<div class="highlight"><pre><span></span><code><span class="c">{# draw_site/templates/home.html #}</span>
   <span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="s1">&#39;draw&#39;</span> <span class="cp">%}</span><span class="s">&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">&gt;</span>
 </code></pre></div>
 
@@ -1083,7 +1083,7 @@ class DrawForm(forms.Form):
 
 <p>拿到了一個 403 Forbidden &ldquo;CSRF verification failed.&rdquo;。CSRF (Cross Site Request Forgery) 在 <a href="https://zh.wikipedia.org/wiki/%E8%B7%A8%E7%AB%99%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0">wiki</a> 有比較完整的介紹，這是一種攻擊手法，在使用者登入網站之後（session 為登入狀態），偽造一個跟網站上一樣的 form 來偽裝使用者的行為。例如購票系統買票，如果沒檢查的話，我可以拿使用者的 session 去網站上隨便買票，網站都會認為是使用者在操作。</p>
 <p>因此 <a href="https://docs.djangoproject.com/en/1.8/ref/csrf/">CSRF token</a> 用來防範這個偽造，在產生 form 的時候，網站會再產生一個欄位的值，這個欄位的值每次都會改變，這樣就能確定這個 form 是從網站上拿到的。Django 處理 CSRF protection 是透過 <a href="https://docs.djangoproject.com/en/1.8/topics/http/middleware/">Middleware</a>，一個以前沒有提到的概念，表示他是比較底層的東西。相對而言，也不用改我們的 code，在這個例子就只要把 <code>{% csrf_token %}</code> 加到 form 裡面就可以了。</p>
-<div class="highlight"><pre><span></span><code class="language-html+django"><span class="c">{# draw_site/templates/home.html #}</span>
+<div class="highlight"><pre><span></span><code><span class="c">{# draw_site/templates/home.html #}</span>
   <span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="s1">&#39;draw&#39;</span> <span class="cp">%}</span><span class="s">&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">&gt;</span>
     <span class="c">{# ... #}</span>
     <span class="cp">{%</span> <span class="k">csrf_token</span> <span class="cp">%}</span>

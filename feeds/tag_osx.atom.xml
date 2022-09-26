@@ -31,20 +31,20 @@
 &lt;/div&gt;
 &lt;h2 id="postgresql"&gt;安裝 PostgreSQL&lt;/h2&gt;
 &lt;h3 id="osx"&gt;安裝在 OSX&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="go"&gt;brew install postgresql&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="go"&gt;brew install postgresql&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;要用的時候手動把 PostgreSQL server 打開，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="go"&gt;postgres -D /usr/local/var/postgres&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="go"&gt;postgres -D /usr/local/var/postgres&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;PostgreSQL 的設定參考 Debian 的版本。&lt;/p&gt;
 &lt;h3 id="debian-jessie"&gt;安裝在 Debian Jessie&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo apt-get install postgresql-9.4
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo apt-get install postgresql-9.4
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;現在系統服務都由 &lt;a href="http://freedesktop.org/wiki/Software/systemd/"&gt;Systemd&lt;/a&gt; 管理了，檢查 PostgreSQL 有沒有跑起來透過 &lt;code&gt;systemctl&lt;/code&gt; 這指令就可以。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;# &lt;/span&gt;systemctl status postgresql.service
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;# &lt;/span&gt;systemctl status postgresql.service
 &lt;span class="go"&gt;● postgresql.service - PostgreSQL RDBMS&lt;/span&gt;
 &lt;span class="go"&gt;   Loaded: loaded (/lib/systemd/system/postgresql.service; enabled)&lt;/span&gt;
 &lt;span class="go"&gt;   Active: inactive (dead) since Mon 2016-01-25 17:26:08 CST; 4s ago&lt;/span&gt;
@@ -53,7 +53,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;不過這 service 看不太到什麼運行的資訊，其實是個 dummy service，它會 trigger 可能很多個 PostgreSQL database cluster 什麼的。預設只有一個 &lt;code&gt;main&lt;/code&gt; 的 cluster。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;# &lt;/span&gt;systemctl status postgresql@9.4-main.service
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;# &lt;/span&gt;systemctl status postgresql@9.4-main.service
 &lt;span class="go"&gt;● postgresql@9.4-main.service - PostgreSQL Cluster 9.4-main&lt;/span&gt;
 &lt;span class="go"&gt;   Loaded: loaded (/lib/systemd/system/postgresql@.service; disabled)&lt;/span&gt;
 &lt;span class="go"&gt;   Active: active (running) since Mon 2016-01-25 17:26:30 CST; 4min 7s ago&lt;/span&gt;
@@ -72,12 +72,12 @@
 &lt;h2 id="database"&gt;初始個人的 Database&lt;/h2&gt;
 &lt;p&gt;在 OSX 上用 homebrew 安裝 PostgreSQL 的使用者會有 superuser 的權限，反正是本地開發也沒差，建 database 等設定都比較簡單。&lt;/p&gt;
 &lt;p&gt;在 Debian 上的話，有這 superuser 權限的使用者為 &lt;code&gt;postgres&lt;/code&gt;。所以預設使用者（這邊以 &lt;code&gt;vm&lt;/code&gt; 為例）會無法連線。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;psql
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;psql
 &lt;span class="go"&gt;psql: FATAL:  role &amp;quot;vm&amp;quot; does not exist&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;切到 root 再切到 postgres 身份就能用 &lt;code&gt;psql&lt;/code&gt; （PostgreSQL 的 REPL shell）連到 database。用 &lt;code&gt;\q&lt;/code&gt; 就可以退出 psql。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo -u postgres psql
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo -u postgres psql
 &lt;span class="go"&gt;[sudo] password for vm:&lt;/span&gt;
 &lt;span class="go"&gt;psql (9.4.5)&lt;/span&gt;
 &lt;span class="go"&gt;Type &amp;quot;help&amp;quot; for help.&lt;/span&gt;
@@ -94,21 +94,21 @@
 &lt;h3 id="postgresql_1"&gt;建立同使用者名稱的 PostgreSQL 帳號&lt;/h3&gt;
 &lt;p&gt;在 Debian 上可以用 &lt;code&gt;$USER&lt;/code&gt; 來抓到現在登入者的帳號，即使用 sudo 切換身份這環境變數的值不會變。（讀 &lt;a href="https://help.ubuntu.com/community/PostgreSQL"&gt;Ubuntu wiki&lt;/a&gt; 看到的技巧）&lt;/p&gt;
 &lt;p&gt;擔心的話就直接在有 &lt;code&gt;$USER&lt;/code&gt; 的地方打出帳號即可。先確認一下，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;vm@vm-debian:~$ echo $&lt;/span&gt;USER
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;vm@vm-debian:~$ echo $&lt;/span&gt;USER
 &lt;span class="go"&gt;vm&lt;/span&gt;
 &lt;span class="gp"&gt;vm@vm-debian:~$ &lt;/span&gt;sudo -u postgres &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$USER&lt;/span&gt;
 &lt;span class="go"&gt;vm&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;建立使用者是透過 &lt;code&gt;createuser&lt;/code&gt; 這指令。這是使用者帳號就不給太多權限。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo -u postgres createuser --interactive &lt;span class="nv"&gt;$USER&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo -u postgres createuser --interactive &lt;span class="nv"&gt;$USER&lt;/span&gt;
 &lt;span class="go"&gt;Shall the new role be a superuser? (y/n) n&lt;/span&gt;
 &lt;span class="go"&gt;Shall the new role be allowed to create databases? (y/n) n&lt;/span&gt;
 &lt;span class="go"&gt;Shall the new role be allowed to create more new roles? (y/n) n&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;這時候透過 &lt;code&gt;psql&lt;/code&gt; 看就會多一個使用者。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-psql"&gt;&lt;span class="c1"&gt;-- Run with command `sudo -u postgres psql`&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;-- Run with command `sudo -u postgres psql`&lt;/span&gt;
 &lt;span class="gp"&gt;postgres=#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kp"&gt;\du&lt;/span&gt;
 &lt;span class="w"&gt;                             &lt;/span&gt;&lt;span class="n"&gt;List&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;of&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;roles&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;Role&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt;                   &lt;/span&gt;&lt;span class="n"&gt;Attributes&lt;/span&gt;&lt;span class="w"&gt;                   &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Member&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;of&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
@@ -119,16 +119,16 @@
 
 &lt;h3 id="database_1"&gt;建立與帳號同名稱的 database&lt;/h3&gt;
 &lt;p&gt;透過 &lt;code&gt;createdb&lt;/code&gt; 這指令。把與帳號同名 database 的 owner 設定成該帳號。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo -u postgres createdb --owner&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$USER&lt;/span&gt; &lt;span class="nv"&gt;$USER&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo -u postgres createdb --owner&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$USER&lt;/span&gt; &lt;span class="nv"&gt;$USER&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;要多建別的 database 給這帳號也沒問題，例如名為 &lt;code&gt;vm_database&lt;/code&gt; 的 database，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo -u postgres createdb --owner&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$USER&lt;/span&gt; vm_database
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo -u postgres createdb --owner&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$USER&lt;/span&gt; vm_database
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h3 id="psql"&gt;用使用者帳號連接 psql&lt;/h3&gt;
 &lt;p&gt;這時候打 &lt;code&gt;psql&lt;/code&gt; 就沒問題了。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;psql
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;psql
 &lt;span class="go"&gt;psql (9.4.5)&lt;/span&gt;
 &lt;span class="go"&gt;Type &amp;quot;help&amp;quot; for help.&lt;/span&gt;
 
@@ -137,7 +137,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Prompt 從 &lt;code&gt;#=&lt;/code&gt; 變成 &lt;code&gt;=&amp;gt;&lt;/code&gt; 表示現在連線的使用者不是 superuser。透過 psql 的指令 &lt;code&gt;\l&lt;/code&gt; 或 &lt;code&gt;\l+&lt;/code&gt; 可以看現在所有的 database：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-psql"&gt;&lt;span class="gp"&gt;vm=&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kp"&gt;\l&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;vm=&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kp"&gt;\l&lt;/span&gt;
 &lt;span class="go"&gt;                                   List of databases&lt;/span&gt;
 &lt;span class="go"&gt;    Name     |  Owner   | Encoding |   Collate   |    Ctype    |   Access privileges&lt;/span&gt;
 &lt;span class="go"&gt;-------------+----------+----------+-------------+-------------+-----------------------&lt;/span&gt;
@@ -152,7 +152,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;連另一個 database &lt;code&gt;vm_database&lt;/code&gt; 也很簡單，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;psql -d vm_database
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;psql -d vm_database
 &lt;span class="go"&gt;psql (9.4.5)&lt;/span&gt;
 &lt;span class="go"&gt;Type &amp;quot;help&amp;quot; for help.&lt;/span&gt;
 
@@ -161,7 +161,7 @@
 
 &lt;h2 id="psql_1"&gt;psql 指令&lt;/h2&gt;
 &lt;p&gt;psql 的指令很多，用 &lt;code&gt;\?&lt;/code&gt; 可以看到列表。完整的版本可以見&lt;a href="http://www.postgresql.org/docs/9.4/static/app-psql.html#APP-PSQL-META-COMMANDS"&gt;官網 psql meta-commands&lt;/a&gt; 的介紹。底下列幾個常用的：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;\l          # list all database
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;\l          # list all database
 \d          # list tables in current database
 \du         # list roles
 \conninfo   # show current SQL connection
@@ -171,14 +171,14 @@ help        # print a hub message for all kinds of help
 
 &lt;h2 id="database_2"&gt;刪除使用者、Database&lt;/h2&gt;
 &lt;p&gt;各有一個指令對應。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;dropuser &amp;lt;usr&amp;gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;dropuser &amp;lt;usr&amp;gt;
 &lt;span class="gp"&gt;$ &lt;/span&gt;dropdb &amp;lt;db&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2 id="_1"&gt;進階主題&lt;/h2&gt;
 &lt;h3 id="psql_2"&gt;透過 psql 創建使用者帳號、資料庫&lt;/h3&gt;
 &lt;p&gt;Ref: &lt;a href="http://www.cyberciti.biz/faq/howto-add-postgresql-user-account/"&gt;http://www.cyberciti.biz/faq/howto-add-postgresql-user-account/&lt;/a&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-psql"&gt;&lt;span class="c1"&gt;-- Run with command `sudo -u postgres psql -d template1`&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;-- Run with command `sudo -u postgres psql -d template1`&lt;/span&gt;
 &lt;span class="gp"&gt;template1=#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;CREATE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;USER&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;WITH&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;PASSWORD&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;lt;pwd&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="gp"&gt;template1=#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;CREATE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;DATABASE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="gp"&gt;template1=#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;GRANT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;ALL&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;PRIVILEGES&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;ON&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;DATABASE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;TO&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
@@ -191,11 +191,11 @@ help        # print a hub message for all kinds of help
 &lt;li&gt;透過 &lt;a href="http://freedesktop.org/wiki/Software/systemd/"&gt;Systemd&lt;/a&gt;：&lt;code&gt;syslog&lt;/code&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;不過我沒深入研究就是，看那個 conf 裡很多設定可以調整。設定修改後要 restart PostgreSQL cluster，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;sudo systemctl restart postgresql.service
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo systemctl restart postgresql.service
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h4 id="logging-postgresql"&gt;Logging 讓 PostgreSQL 自己管&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-ini"&gt;&lt;span class="c1"&gt;# At /etc/postgresql/9.4/main/postgresql.conf&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# At /etc/postgresql/9.4/main/postgresql.conf&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="na"&gt;log_destination&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;#39;stderr&amp;#39; &lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="na"&gt;logging_collector&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;on                              &lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -203,13 +203,13 @@ help        # print a hub message for all kinds of help
 &lt;p&gt;Log files 預設寫在 &lt;code&gt;/var/lib/postgresql/9.4/main/pg_log/&lt;/code&gt;。&lt;/p&gt;
 &lt;h4 id="logging-systemd"&gt;Logging 透過 Systemd&lt;/h4&gt;
 &lt;p&gt;我覺得 systemd 的優點之一就是能把 log 都集中管理，只要照它的規則，就能用一樣的方法管理 logging 是蠻方便的。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-ini"&gt;&lt;span class="c1"&gt;# At /etc/postgresql/9.4/main/postgresql.conf&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# At /etc/postgresql/9.4/main/postgresql.conf&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="na"&gt;log_destination&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;#39;syslog&amp;#39;  &lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="na"&gt;logging_collector&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;off   # on 也只會說被導向到 syslog 了                             &lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;這時候重啟服務，再看 &lt;code&gt;systemctl status&lt;/code&gt; 就能看到最近的 log 了。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;# &lt;/span&gt;systemctl status postgresql@9.4-main
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;# &lt;/span&gt;systemctl status postgresql@9.4-main
 &lt;span class="go"&gt;● postgresql@9.4-main.service - PostgreSQL Cluster 9.4-main&lt;/span&gt;
 &lt;span class="go"&gt;   Loaded: loaded (/lib/systemd/system/postgresql@.service; disabled)&lt;/span&gt;
 &lt;span class="go"&gt;   Active: active (running) since Mon 2016-01-25 17:52:02 CST; 1min 13s ago&lt;/span&gt;
@@ -236,7 +236,7 @@ help        # print a hub message for all kinds of help
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;或用 systemd 標準看 log 的方式 &lt;code&gt;journalctl&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;# &lt;/span&gt;journalctl -u postgresql@9.4-main 
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;# &lt;/span&gt;journalctl -u postgresql@9.4-main 
 &lt;span class="go"&gt;-- Logs begin at Mon 2016-01-25 16:46:25 CST, end at Mon 2016-01-25 19:22:07 CST. --&lt;/span&gt;
 &lt;span class="go"&gt;Jan 25 17:47:06 vm-debian postgres[13699]: [1-1] 2016-01-25 17:47:06 CST [13699-1] LOG:  redirecting log output to logging collector process&lt;/span&gt;
 &lt;span class="go"&gt;Jan 25 17:47:06 vm-debian postgres[13699]: [1-2] 2016-01-25 17:47:06 CST [13699-2] HINT:  Future log output will appear in directory &amp;quot;pg_log&amp;quot;.&lt;/span&gt;

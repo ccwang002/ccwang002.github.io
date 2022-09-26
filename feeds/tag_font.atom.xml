@@ -22,7 +22,7 @@ While tools like &lt;a href="https://twardoch.github.io/fonttools-opentype-featu
 For example, &lt;code&gt;ss08&lt;/code&gt; feature (e.g., &lt;code&gt;==&lt;/code&gt;, &lt;code&gt;!=&lt;/code&gt;, and &lt;code&gt;===&lt;/code&gt;) won&amp;rsquo;t be permanently enabled using this approach.&lt;/p&gt;
 &lt;h2 id="permanently-fix-the-font-features-using-the-official-build-script-update-in-2022-03"&gt;Permanently fix the font features using the official build script (update in 2022-03)&lt;/h2&gt;
 &lt;p&gt;Thanks to the &lt;a href="https://github.com/tonsky/FiraCode/pull/1387"&gt;pull request by &lt;code&gt;@Daxtorim&lt;/code&gt;&lt;/a&gt; a few days after this post was published, we now are able to permanently fix the font features using the official build script:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;docker run -it --rm &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;docker run -it --rm &lt;span class="se"&gt;\&lt;/span&gt;
     -v &lt;span class="nv"&gt;$PWD&lt;/span&gt;:/opt/FiraCode &lt;span class="se"&gt;\&lt;/span&gt;
     tonsky/firacode:latest &lt;span class="se"&gt;\&lt;/span&gt;
     ./FiraCode/script/build.sh &lt;span class="se"&gt;\&lt;/span&gt;
@@ -46,7 +46,7 @@ That should work on the current version of the font, but you’ll need to do you
 &lt;/blockquote&gt;
 &lt;p&gt;And that&amp;rsquo;s exactly my patch for &lt;code&gt;FiraCode.glyphs&lt;/code&gt;.
 Copy all the content of the features (say, ss01, ss03, ss05, and ss08) to &lt;code&gt;calt&lt;/code&gt;. So the original code:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;# FiraCode.glyphs
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# FiraCode.glyphs
 {
 code = &amp;quot;lookup less_bar_greater ...
 ... underscores;\012&amp;quot;;
@@ -55,7 +55,7 @@ name = calt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;becomes:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;{
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;{
 code = &amp;quot;lookup less_bar_greater ...
 ... underscores;\012
 # ss01\012  sub r by r.ss01;
@@ -68,13 +68,13 @@ name = calt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Then build the font from the &lt;code&gt;.glyphs&lt;/code&gt; file using the Docker image:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;docker run -it --rm &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;docker run -it --rm &lt;span class="se"&gt;\&lt;/span&gt;
     -v &lt;span class="nv"&gt;$PWD&lt;/span&gt;:/opt/FiraCode &lt;span class="se"&gt;\&lt;/span&gt;
     tonsky/firacode ./FiraCode/script/build.sh
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;To set a different font name for the feature fixed fonts, I use &lt;a href="https://twardoch.github.io/fonttools-opentype-feature-freezer/"&gt;pyftfeatfreeze&lt;/a&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;parallel &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;parallel &lt;span class="se"&gt;\&lt;/span&gt;
     pyftfeatfreeze &lt;span class="se"&gt;\&lt;/span&gt;
         --suffix --usesuffix&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;#39;ss01 ss03 ss05 ss08&amp;#39;&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
         -v -n &lt;span class="se"&gt;\&lt;/span&gt;

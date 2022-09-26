@@ -113,7 +113,7 @@
     </span>
     <section class="post-content"><p>This is the first post of the series of my common NGS processing workflows and notes.</p>
 <p>Some of the most common operation in sequence processing is FASTQ → FASTA conversion. Tons of conversion scripts using either sed or awk can be found by search. For example,</p>
-<div class="highlight"><pre><span></span><code class="language-bash"><span class="c1"># FASTQ to FASTA</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># FASTQ to FASTA</span>
 <span class="c1"># Assume every read record takes exactly 4 line</span>
 <span class="c1"># Ref: http://stackoverflow.com/a/10359425</span>
 $ sed -n <span class="s1">&#39;1~4s/^@/&gt;/p;2~4p&#39;</span>
@@ -121,14 +121,14 @@ $ sed -n <span class="s1">&#39;1~4s/^@/&gt;/p;2~4p&#39;</span>
 
 <p>The assumption of 4 lines per read usually holds for recent NGS sequencing data, so not a big deal.</p>
 <p>In many case the sequence is gzip&rsquo;d. It is still a piece of cake when combining with pipe editing,</p>
-<div class="highlight"><pre><span></span><code class="language-bash">gzcat myseq.fq.gz <span class="p">|</span> sed -n <span class="s1">&#39;1~4s/^@/&gt;/p;2~4p&#39;</span> <span class="p">|</span> gzip &gt; myseq.fa.gz
+<div class="highlight"><pre><span></span><code>gzcat myseq.fq.gz <span class="p">|</span> sed -n <span class="s1">&#39;1~4s/^@/&gt;/p;2~4p&#39;</span> <span class="p">|</span> gzip &gt; myseq.fa.gz
 </code></pre></div>
 
 <p>However, things can get complex really fast when one wants to additionally do reverse complement, randomly sample a subset of reads, and many other types of sequence manipulation. Efficiency matters if those tasks are applied to tens of millions of reads. Even a few nanoseconds longer of computing time difference per read can make a difference at this scale of reads.</p>
 <h3 id="seqtk">Seqtk</h3>
 <p>So <a href="https://github.com/lh3/seqtk">seqtk</a> comes into rescue. It is written in C and MIT licensed. <a href="https://www.biostars.org/p/85929/#86082">A quick comparison</a> shows it is generally faster than other UNIX-based solutions, let alone implementations based on scripting languages.</p>
 <p>Seqtk bundles many other operations, but I&rsquo;ll just mention those I frequently use.</p>
-<div class="highlight"><pre><span></span><code class="language-bash"><span class="nv">$seqtk</span>
+<div class="highlight"><pre><span></span><code><span class="nv">$seqtk</span>
 
 Usage:   seqtk &lt;command&gt; &lt;arguments&gt;
 Version: <span class="m">1</span>.0-r77-dirty
@@ -153,16 +153,16 @@ Command: seq       common transformation of FASTA/Q
 
 <h3 id="fastq-fasta">FASTQ → FASTA</h3>
 <p>Read (gzip&rsquo;d) FASTQ and write out as FASTA,</p>
-<div class="highlight"><pre><span></span><code class="language-bash">$ seqtk seq -A <span class="k">in</span>.fq<span class="o">[</span>.gz<span class="o">]</span> &gt; out.fa
+<div class="highlight"><pre><span></span><code>$ seqtk seq -A <span class="k">in</span>.fq<span class="o">[</span>.gz<span class="o">]</span> &gt; out.fa
 </code></pre></div>
 
 <p>To make the output gzip&rsquo;d again, piped with gzip,</p>
-<div class="highlight"><pre><span></span><code class="language-bash">$ seqtk seq -A <span class="k">in</span>.fq<span class="o">[</span>.gz<span class="o">]</span> <span class="p">|</span> gzip &gt; out.fa.gz
+<div class="highlight"><pre><span></span><code>$ seqtk seq -A <span class="k">in</span>.fq<span class="o">[</span>.gz<span class="o">]</span> <span class="p">|</span> gzip &gt; out.fa.gz
 </code></pre></div>
 
 <h3 id="reverse-complement">Reverse complement</h3>
 <p>If one wants to debug the R2 reads of pair-end sequencing (second read on forward strand), since they contain reverse complement sequence of the insert DNA, one needs to reverse complement R2 reads again to debug directly by bare human eyes.</p>
-<div class="highlight"><pre><span></span><code class="language-bash">$ seqtk seq -r R2.fq &gt; R2_rc.fq
+<div class="highlight"><pre><span></span><code>$ seqtk seq -r R2.fq &gt; R2_rc.fq
 
 $ <span class="nb">echo</span> <span class="s1">&#39;&gt; Example R2 seq</span>
 <span class="s1">  GCATTGGTGGTTCAGTGGTAGAATTCT&#39;</span> <span class="p">|</span> seqtk seq -r
@@ -173,11 +173,11 @@ $ <span class="nb">echo</span> <span class="s1">&#39;&gt; Example R2 seq</span>
 <h3 id="quality-check">Quality check</h3>
 <p>To be honest, <a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> is more frequently used for quality check because it generates <a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/good_sequence_short_fastqc.html">reports with beautiful figures</a>.</p>
 <p>But for a detail report on each read position, one should consider <code>seqtk fqchk</code>.</p>
-<div class="highlight"><pre><span></span><code class="language-bash">$ seqtk fqchk myseq.fq<span class="o">[</span>.gz<span class="o">]</span>
+<div class="highlight"><pre><span></span><code>$ seqtk fqchk myseq.fq<span class="o">[</span>.gz<span class="o">]</span>
 </code></pre></div>
 
 <p>By default it sets <code>-q 20</code>. This quality threshold determines the threshold of counting a base as low or high quality, shown as <code>%low</code> and <code>%high</code> per read position. In the default case, quality score higher than 20 will be treated as high quality bases.</p>
-<div class="highlight"><pre><span></span><code class="language-text">min_len: 10; max_len: 174; avg_len: 28.92; 37 distinct quality values
+<div class="highlight"><pre><span></span><code>min_len: 10; max_len: 174; avg_len: 28.92; 37 distinct quality values
 POS #bases    %A   %C   %G   %T   %N  avgQ errQ %low %high
 ALL 236344886 17.0 22.5 31.3 29.2 0.0 39.9 37.6 0.1  99.9
 1   8172342   8.9  12.4 57.0 21.7 0.0 39.6 29.0 0.5  99.5
@@ -201,44 +201,44 @@ ALL 236344886 17.0 22.5 31.3 29.2 0.0 39.9 37.6 0.1  99.9
 <table>
 <thead>
 <tr>
-<th align="left">Q</th>
-<th align="right">0</th>
-<th align="right">1</th>
-<th align="right">2</th>
-<th align="right">3<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup></th>
+<th style="text-align: left;">Q</th>
+<th style="text-align: right;">0</th>
+<th style="text-align: right;">1</th>
+<th style="text-align: right;">2</th>
+<th style="text-align: right;">3<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left"><strong>P</strong></td>
-<td align="right">0.5</td>
-<td align="right">0.5</td>
-<td align="right">0.5</td>
-<td align="right">0.5</td>
+<td style="text-align: left;"><strong>P</strong></td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.5</td>
 </tr>
 </tbody>
 </table>
 <table>
 <thead>
 <tr>
-<th align="left">Q</th>
-<th align="right">4</th>
-<th align="right">5</th>
-<th align="center">&hellip;</th>
-<th align="right">38</th>
-<th align="right">39</th>
-<th align="right">40</th>
+<th style="text-align: left;">Q</th>
+<th style="text-align: right;">4</th>
+<th style="text-align: right;">5</th>
+<th style="text-align: center;">&hellip;</th>
+<th style="text-align: right;">38</th>
+<th style="text-align: right;">39</th>
+<th style="text-align: right;">40</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left"><strong>P</strong></td>
-<td align="right">0.398107</td>
-<td align="right">0.316228</td>
-<td align="center">&hellip;</td>
-<td align="right">0.000158</td>
-<td align="right">0.000126</td>
-<td align="right">0.000100</td>
+<td style="text-align: left;"><strong>P</strong></td>
+<td style="text-align: right;">0.398107</td>
+<td style="text-align: right;">0.316228</td>
+<td style="text-align: center;">&hellip;</td>
+<td style="text-align: right;">0.000158</td>
+<td style="text-align: right;">0.000126</td>
+<td style="text-align: right;">0.000100</td>
 </tr>
 </tbody>
 </table>

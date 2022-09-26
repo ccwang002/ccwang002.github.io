@@ -107,7 +107,7 @@
         </header>
         <section class="post-excerpt">
             <p>沒幾天前剛部署一次 Django，記錄在<a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/">《使用 uWSGI、nginx、systemd 部署 Django》</a>。今天又部署了另一個專案。部署的設定跟上次一樣：</p>
-<div class="highlight"><pre><span></span><code class="language-text">nginx -- unix socket -- uWSGI -- Django
+<div class="highlight"><pre><span></span><code>nginx -- unix socket -- uWSGI -- Django
 </code></pre></div>
 
 <p>一樣寫 …</p>
@@ -177,7 +177,8 @@
             <p>Django 帳號的欄位定義在 <code>django.contrib.auth</code> 的 <a href="https://docs.djangoproject.com/en/1.8/ref/contrib/auth/#fields">User</a> 中，對使用者而言包含了：username*、first_name、last_name、email、password*。同時對開發者來說，還有：</p>
 <ul>
 <li>指定 Group 和 Permission</li>
-<li>是否為 staff …</li></ul>
+<li>是否為 staff、superuser</li>
+<li>帳 …</li></ul>
         </section>
     </article>
     <article class="post">

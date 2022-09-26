@@ -116,48 +116,48 @@
 <table>
 <thead>
 <tr>
-<th align="left">Filename</th>
-<th align="right">Original size</th>
-<th align="right"><a href="http://optipng.sourceforge.net/">OptiPNG</a> (lossless)</th>
-<th align="right"><a href="https://github.com/google/zopfli">Zopfli</a> (lossless)</th>
-<th align="right"><a href="https://pngquant.org/">pngquant</a> (lossy)</th>
+<th style="text-align: left;">Filename</th>
+<th style="text-align: right;">Original size</th>
+<th style="text-align: right;"><a href="http://optipng.sourceforge.net/">OptiPNG</a> (lossless)</th>
+<th style="text-align: right;"><a href="https://github.com/google/zopfli">Zopfli</a> (lossless)</th>
+<th style="text-align: right;"><a href="https://pngquant.org/">pngquant</a> (lossy)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left"><a href="../blog-internals/pics/blog_desktop.png">blog_desktop.png</a></td>
-<td align="right">180K</td>
-<td align="right">108K</td>
-<td align="right">100K</td>
-<td align="right">56K</td>
+<td style="text-align: left;"><a href="../blog-internals/pics/blog_desktop.png">blog_desktop.png</a></td>
+<td style="text-align: right;">180K</td>
+<td style="text-align: right;">108K</td>
+<td style="text-align: right;">100K</td>
+<td style="text-align: right;">56K</td>
 </tr>
 <tr>
-<td align="left"><a href="../blog-internals/pics/blog_mobile.png">blog_mobile.png</a></td>
-<td align="right">72K</td>
-<td align="right">52K</td>
-<td align="right">44K</td>
-<td align="right">28K</td>
+<td style="text-align: left;"><a href="../blog-internals/pics/blog_mobile.png">blog_mobile.png</a></td>
+<td style="text-align: right;">72K</td>
+<td style="text-align: right;">52K</td>
+<td style="text-align: right;">44K</td>
+<td style="text-align: right;">28K</td>
 </tr>
 <tr>
-<td align="left"><a href="../blog-internals/pics/justfont_setting.png">justfont_setting.png</a></td>
-<td align="right">272K</td>
-<td align="right">196K</td>
-<td align="right">164K</td>
-<td align="right">84K</td>
+<td style="text-align: left;"><a href="../blog-internals/pics/justfont_setting.png">justfont_setting.png</a></td>
+<td style="text-align: right;">272K</td>
+<td style="text-align: right;">196K</td>
+<td style="text-align: right;">164K</td>
+<td style="text-align: right;">84K</td>
 </tr>
 <tr>
-<td align="left"><a href="../blog-internals/pics/oldsite.png">oldsite.png</a></td>
-<td align="right">604K</td>
-<td align="right">536K</td>
-<td align="right">492K</td>
-<td align="right">288K</td>
+<td style="text-align: left;"><a href="../blog-internals/pics/oldsite.png">oldsite.png</a></td>
+<td style="text-align: right;">604K</td>
+<td style="text-align: right;">536K</td>
+<td style="text-align: right;">492K</td>
+<td style="text-align: right;">288K</td>
 </tr>
 <tr>
-<td align="left"><a href="https://blog.liang2.tw/posts/2015/09/png-optim/pics/oldsite_full.png">oldsite_full.png</a></td>
-<td align="right">816K</td>
-<td align="right">684K</td>
-<td align="right">644K</td>
-<td align="right">376K</td>
+<td style="text-align: left;"><a href="https://blog.liang2.tw/posts/2015/09/png-optim/pics/oldsite_full.png">oldsite_full.png</a></td>
+<td style="text-align: right;">816K</td>
+<td style="text-align: right;">684K</td>
+<td style="text-align: right;">644K</td>
+<td style="text-align: right;">376K</td>
 </tr>
 </tbody>
 </table>
@@ -170,19 +170,19 @@
 (<a href="https://github.com/google/zopfli">Zopfli Readme</a>)</p>
 </blockquote>
 <p>這個 <a href="https://github.com/google/zopfli/blob/master/README.zopflipng">Zopflipng</a> 也是同個 repo 維護。自己編譯簡單，</p>
-<div class="highlight"><pre><span></span><code class="language-text">git clone https://github.com/google/zopfli.git
+<div class="highlight"><pre><span></span><code>git clone https://github.com/google/zopfli.git
 make zopflipng
 </code></pre></div>
 
 <p>如果要一口氣壓縮一堆 PNG，可以這樣使用：</p>
-<div class="highlight"><pre><span></span><code class="language-text">zopflipng --lossy_transparent --prefix *.png
+<div class="highlight"><pre><span></span><code>zopflipng --lossy_transparent --prefix *.png
 </code></pre></div>
 
 <p>速度也蠻慢的，有個 <code>-q</code> 選項可以加速。但壓縮效率比 OptiPNG 還好。</p>
 <p>PS 剛好今天早上看到 Google 又出了另一個壓縮演算法 <a href="https://github.com/google/brotli">Brotli</a>，但這個與 deflate 不相容，應該不能用在 PNG 上面。</p>
 <h3 id="pngquant">pngquant</h3>
 <p>想要有損的 PNG 可以用 <a href="https://pngquant.org/">pngquant</a>。看官網有特別強調在透明度的資訊會被保留，並能像 JPEG 一樣設定 quality。一般 quality 容許越低壓縮比都會越高。</p>
-<div class="highlight"><pre><span></span><code class="language-text">pngquant -f --ext=.png --quality=70-85 --skip-if-larger *.png
+<div class="highlight"><pre><span></span><code>pngquant -f --ext=.png --quality=70-85 --skip-if-larger *.png
 </code></pre></div>
 
 <p>可以看到 pngquant 能很容易達到 50% 以下的壓縮比。就我的例子看不太出現螢幕截圖哪裡失真了，而且失真了……也不會怎麼樣啦。</p>
@@ -191,48 +191,48 @@ make zopflipng
 <table>
 <thead>
 <tr>
-<th align="left">Filename</th>
-<th align="right">Orig. size</th>
-<th align="right">pngquant</th>
-<th align="right">pngquant + Zopfli</th>
-<th align="right">Compress ratio</th>
+<th style="text-align: left;">Filename</th>
+<th style="text-align: right;">Orig. size</th>
+<th style="text-align: right;">pngquant</th>
+<th style="text-align: right;">pngquant + Zopfli</th>
+<th style="text-align: right;">Compress ratio</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left"><a href="../blog-internals/pics/blog_desktop.png">blog_desktop.png</a></td>
-<td align="right">180K</td>
-<td align="right">56K</td>
-<td align="right">60K</td>
-<td align="right">0.33</td>
+<td style="text-align: left;"><a href="../blog-internals/pics/blog_desktop.png">blog_desktop.png</a></td>
+<td style="text-align: right;">180K</td>
+<td style="text-align: right;">56K</td>
+<td style="text-align: right;">60K</td>
+<td style="text-align: right;">0.33</td>
 </tr>
 <tr>
-<td align="left"><a href="../blog-internals/pics/blog_mobile.png">blog_mobile.png</a></td>
-<td align="right">72K</td>
-<td align="right">28K</td>
-<td align="right">28K</td>
-<td align="right">0.39</td>
+<td style="text-align: left;"><a href="../blog-internals/pics/blog_mobile.png">blog_mobile.png</a></td>
+<td style="text-align: right;">72K</td>
+<td style="text-align: right;">28K</td>
+<td style="text-align: right;">28K</td>
+<td style="text-align: right;">0.39</td>
 </tr>
 <tr>
-<td align="left"><a href="../blog-internals/pics/justfont_setting.png">justfont_setting.png</a></td>
-<td align="right">272K</td>
-<td align="right">84K</td>
-<td align="right">76K</td>
-<td align="right">0.28</td>
+<td style="text-align: left;"><a href="../blog-internals/pics/justfont_setting.png">justfont_setting.png</a></td>
+<td style="text-align: right;">272K</td>
+<td style="text-align: right;">84K</td>
+<td style="text-align: right;">76K</td>
+<td style="text-align: right;">0.28</td>
 </tr>
 <tr>
-<td align="left"><a href="../blog-internals/pics/oldsite.png">oldsite.png</a></td>
-<td align="right">604K</td>
-<td align="right">288K</td>
-<td align="right">268K</td>
-<td align="right">0.44</td>
+<td style="text-align: left;"><a href="../blog-internals/pics/oldsite.png">oldsite.png</a></td>
+<td style="text-align: right;">604K</td>
+<td style="text-align: right;">288K</td>
+<td style="text-align: right;">268K</td>
+<td style="text-align: right;">0.44</td>
 </tr>
 <tr>
-<td align="left"><a href="https://blog.liang2.tw/posts/2015/09/png-optim/pics/oldsite_full.png">oldsite_full.png</a></td>
-<td align="right">816K</td>
-<td align="right">376K</td>
-<td align="right">348K</td>
-<td align="right">0.43</td>
+<td style="text-align: left;"><a href="https://blog.liang2.tw/posts/2015/09/png-optim/pics/oldsite_full.png">oldsite_full.png</a></td>
+<td style="text-align: right;">816K</td>
+<td style="text-align: right;">376K</td>
+<td style="text-align: right;">348K</td>
+<td style="text-align: right;">0.43</td>
 </tr>
 </tbody>
 </table>

@@ -117,7 +117,7 @@
 
 <p>With <a href="https://betatark.ensembl.org/">Ensembl Tark</a>, I wrote <a href="https://gist.github.com/ccwang002/829a5420a47adfb3be597ed3ea8a0a29">a Python script</a> to automate the query. Given a list of versioned Ensembl IDs<sup id="fnref:versioned-id"><a class="footnote-ref" href="#fn:versioned-id">1</a></sup>, the script will identify the possible Ensembl releases. The IDs can be genes, transcripts, or proteins. Based on my testing, the script can identify Ensembl release range with less than 30 IDs.</p>
 <p>Here is an example list of IDs:</p>
-<div class="highlight"><pre><span></span><code class="language-text">ENST00000426449.4
+<div class="highlight"><pre><span></span><code>ENST00000426449.4
 ENST00000434817.4
 ENSP00000222254.6
 ENSP00000477864.1
@@ -127,7 +127,7 @@ ENSG00000173705.7
 </code></pre></div>
 
 <p>And the output of the script:</p>
-<div class="highlight"><pre><span></span><code class="language-console"><span class="gp">$ </span>python check_possible_ensembl_releases.py ensembl_ids.list
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python check_possible_ensembl_releases.py ensembl_ids.list
 <span class="go">[2020-06-09 13:00:48][INFO   ] Querying for 7 Ensembl IDs</span>
 <span class="go">[2020-06-09 13:00:49][INFO   ] Only Ensembl releases 75–99 are supported by Ensembl Tark. IDs outside the range may not be identified.</span>
 <span class="go">ENSP00000477864.1 in Ensembl releases 76–99</span>

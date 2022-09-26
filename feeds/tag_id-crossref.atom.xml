@@ -40,7 +40,7 @@
 &lt;/blockquote&gt;
 &lt;p&gt;UniParc is a collection of non-redundant protein sequence archive. The UniParc ID and sequence is permanently stable, but the cross-references associated to one UniParc entry may change over time. All of its properties make UniParc perfect to be the identifer to map across ID camps. UniParc IDs can be queried using the &lt;a href="https://en.wikipedia.org/wiki/Cyclic_redundancy_check"&gt;CRC64-ISO checksum&lt;/a&gt; of the protein sequence.&lt;/p&gt;
 &lt;p&gt;For example, let&amp;rsquo;s find the UniPrac ID of &lt;code&gt;NP_001317366.1&lt;/code&gt;. First, we obtain its protein sequence in FASTA from NCBI:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;refseq_id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;NP_001317366.1&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;refseq_id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;NP_001317366.1&amp;quot;&lt;/span&gt;
 &lt;span class="gp"&gt;$ &lt;/span&gt;curl -Lo &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$refseq_id&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;.fasta &lt;span class="se"&gt;\&lt;/span&gt;
     &lt;span class="s2"&gt;&amp;quot;https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=protein&amp;amp;id=&lt;/span&gt;&lt;span class="nv"&gt;$refseq_id&lt;/span&gt;&lt;span class="s2"&gt;&amp;amp;rettype=fasta&amp;amp;retmode=text&amp;quot;&lt;/span&gt;
 
@@ -51,7 +51,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Then calculate the CRC64 checksum (there are a few packages capable, or use &lt;a href="https://www.ebi.ac.uk/Tools/so/seqcksum/"&gt;EBI&amp;rsquo;s checksum calculator&lt;/a&gt;):&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-pycon"&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;pysam&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;FastaFile&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;pysam&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;FastaFile&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;crc64iso&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;crc64iso&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;fa&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;FastaFile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;NP_001317366.1.fasta&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;seq&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;fa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fetch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;references&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
@@ -69,7 +69,7 @@
 &lt;h3 id="programatic-uniparc-access-using-its-xml"&gt;Programatic UniParc access using its XML&lt;/h3&gt;
 &lt;p&gt;To extract UniParc&amp;rsquo;s cross reference, it&amp;rsquo;s easiest to parse its XML, which is also easy to download in bulk.
 Continue to use &lt;code&gt;UPI000041C017&lt;/code&gt; (&lt;code&gt;NP_001317366.1&lt;/code&gt;) as the example,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;curl -LO https://www.uniprot.org/uniparc/UPI000041C017.xml
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;curl -LO https://www.uniprot.org/uniparc/UPI000041C017.xml
 &lt;span class="gp"&gt;$ &lt;/span&gt;head -n &lt;span class="m"&gt;10&lt;/span&gt; UPI000041C017.xml
 &lt;span class="go"&gt;&amp;lt;?xml version=&amp;#39;1.0&amp;#39; encoding=&amp;#39;UTF-8&amp;#39;?&amp;gt;&lt;/span&gt;
 &lt;span class="go"&gt;&amp;lt;uniparc xmlns=&amp;quot;http://uniprot.org/uniparc&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://uniprot.org/uniparc http://www.uniprot.org/docs/uniparc.xsd&amp;quot; version=&amp;quot;2020_03&amp;quot;&amp;gt;&lt;/span&gt;
@@ -84,7 +84,7 @@ Continue to use &lt;code&gt;UPI000041C017&lt;/code&gt; (&lt;code&gt;NP_001317366
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;While I don&amp;rsquo;t find XML easy to read, I&amp;rsquo;ve figured out &lt;a href="https://blog.liang2.tw/posts/2018/01/read-uniprotkb-xml/"&gt;a way&lt;/a&gt; before to parse XMLs as a JSON-like dictionary given its schema. Let&amp;rsquo;s define a function to flatten the nested structure and only select the information we want:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-python"&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;parse_dbref&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;entry&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;parse_dbref&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;entry&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
 &lt;span class="sd"&gt;    Parse Ensembl/UniProt/RefSeq IDs of an UniParc entry.&lt;/span&gt;
 
@@ -115,7 +115,7 @@ Continue to use &lt;code&gt;UPI000041C017&lt;/code&gt; (&lt;code&gt;NP_001317366
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;a href="https://pypi.org/project/xmlschema/"&gt;xmlschema&lt;/a&gt; makes it really easy to parse a XML with schema:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-pycon"&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;xmlschema&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;xmlschema&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;pprint&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;pprint&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;xs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;xmlschema&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;XMLSchema&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;https://www.uniprot.org/docs/uniparc.xsd&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="gp"&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;errors&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;xs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_dict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;UPI000041C017.xml&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;validation&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;lax&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -127,14 +127,14 @@ Continue to use &lt;code&gt;UPI000041C017&lt;/code&gt; (&lt;code&gt;NP_001317366
 
 &lt;p&gt;&lt;em&gt;Voilà&lt;/em&gt;, we can now map across ID camps with confidence!&lt;/p&gt;
 &lt;p&gt;This method can be applied to a large number of queries efficiently. By reading in a FASTA of protein sequences of interest, we can build URLs to UniParc XML per protein entry using its checksum, and pass the URLs as an &lt;a href="https://aria2.github.io/"&gt;aria2&lt;/a&gt;'s input file &lt;code&gt;xml.links&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;https://www.uniprot.org/uniparc/?query=checksum%3A{crc64_checksum}&amp;amp;format=xml
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;https://www.uniprot.org/uniparc/?query=checksum%3A{crc64_checksum}&amp;amp;format=xml
     out={protein_id}.xml
 
 ...
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;And download all the links in batch:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;aria2c -c -j5 --max-overall-download-limit&lt;span class="o"&gt;=&lt;/span&gt;10M -i xml.links
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;aria2c -c -j5 --max-overall-download-limit&lt;span class="o"&gt;=&lt;/span&gt;10M -i xml.links
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h3 id="summary"&gt;Summary&lt;/h3&gt;

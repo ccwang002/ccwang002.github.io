@@ -139,18 +139,18 @@ You can also use widgets to <strong>synchronize stateful and stateless informati
 <p>……只是要用個進度條而已，哪來這麼多背景知識。更多介紹可以參考 <a href="http://nbviewer.jupyter.org/github/ipython/ipywidgets/blob/master/examples/Index.ipynb">ipywidgets 官方範例</a>。</p>
 <h4 id="_1">安裝</h4>
 <p>使用 Python 3.5 示範。安裝除了 notebook 本身外，還要額外裝上 ipywidgets 這套件。</p>
-<div class="highlight"><pre><span></span><code class="language-text">pip install notebook ipywidgets
+<div class="highlight"><pre><span></span><code>pip install notebook ipywidgets
 </code></pre></div>
 
 <p>再用 <code>jupyter notebook</code> 即可啟用 notebook。</p>
 <h3 id="_2">使用進度條</h3>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">IntProgress</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">IntProgress</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
 </code></pre></div>
 
 <p><code>IntProgress</code> 就是進度條，<code>display</code> 則是 IPython 顯示各種 Python 物件的函數，在這邊用它才能把 widget 以 HTML 顯示並與 python code 聯動。</p>
 <p>建立一個進度條的方式很簡單。建立 <code>IntProgress</code> widget object，然後顯示它：</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="n">p</span> <span class="o">=</span> <span class="n">IntProgress</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="n">p</span> <span class="o">=</span> <span class="n">IntProgress</span><span class="p">()</span>
 <span class="n">display</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </code></pre></div>
 
@@ -159,19 +159,19 @@ You can also use widgets to <strong>synchronize stateful and stateless informati
 </figure>
 
 <p>預設是進度條有 100 個單位，初始值為 0。進度條的值與最大值的狀態分別存在 <code>.value</code>、<code>.max</code> 屬性裡：</p>
-<div class="highlight"><pre><span></span><code class="language-pycon"><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">max</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">max</span>
 <span class="go">(0, 100)</span>
 </code></pre></div>
 
 <p>只要修改 <code>p.value</code> 前面的進度條的狀態就會自動更新（不用重跑 <code>display(p)</code>）：</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="n">p</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">50</span>
+<div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">50</span>
 </code></pre></div>
 
 <figure>
   <img src="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/pics/progressbar_50.png">
 </figure>
 
-<div class="highlight"><pre><span></span><code class="language-python"><span class="n">p</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">100</span>
+<div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">100</span>
 </code></pre></div>
 
 <figure>
@@ -179,7 +179,7 @@ You can also use widgets to <strong>synchronize stateful and stateless informati
 </figure>
 
 <p>當然，最大值調整也會即時更新。此外，還可以透過 <code>.description</code> 給進度條一個 label。重新做一個完整的例子：</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="n">p2</span> <span class="o">=</span> <span class="n">IntProgress</span><span class="p">(</span><span class="nb">max</span><span class="o">=</span><span class="mi">56</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">p2</span> <span class="o">=</span> <span class="n">IntProgress</span><span class="p">(</span><span class="nb">max</span><span class="o">=</span><span class="mi">56</span><span class="p">)</span>
 <span class="n">p2</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="mi">10</span>
 <span class="n">p2</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;Running&#39;</span>
 <span class="n">display</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
@@ -192,13 +192,13 @@ You can also use widgets to <strong>synchronize stateful and stateless informati
 <p>完整的 code 就這樣，用起來非常方便。</p>
 <h3 id="progress-bar-example-in-action">Progress bar example in action</h3>
 <p>模擬一下真實情況，我們通常有一堆待做的 task，在這邊叫 <code>todo_tasks</code> 好了。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="kn">import</span> <span class="nn">time</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">time</span>
 <span class="n">todo_tasks</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;task </span><span class="si">%02d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">)]</span>
 </code></pre></div>
 
 <p>只是個字串，但用 <code>time.sleep(sec)</code> 來模擬有在做事。</p>
 <p>搭配進度條的時候，把實際動態做成底下的動畫。</p>
-<div class="highlight"><pre><span></span><code class="language-python"><span class="c1"># Initialize a progess bar</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Initialize a progess bar</span>
 <span class="n">progress</span> <span class="o">=</span> <span class="n">IntProgress</span><span class="p">()</span>
 <span class="n">progress</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">todo_tasks</span><span class="p">)</span>
 <span class="n">progress</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;(Init)&#39;</span>
@@ -229,7 +229,7 @@ You can also use widgets to <strong>synchronize stateful and stateless informati
 <p>在最後動態的錄製花了不少時間。一開始想說是不是要用 GIF，但<a href="http://blog.imgur.com/2014/10/09/introducing-gifv/">都 2016 年了還用什麼 GIF 啊！</a>，雖然螢幕可以試著改 GIF palette 讓畫面不會很醜體積又小，但覺得用個 H.264 / VP9 簡單多了。</p>
 <p>使用 QuickTime Screen Capture，開始錄的時候能只選擇螢幕一部份區域。以我 13&rdquo; retina 螢幕為例，會得到 1636x736 H.264 .mov 檔。但我覺得解析度不用這麼高，所以最後輸出成 480p (1148x480)  就好，順便裁了一點白邊。</p>
 <p>透過 HTML5 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video"><code>&lt;video&gt;</code></a> 能把 MP4 / WebM 當成動畫來使用：</p>
-<div class="highlight"><pre><span></span><code class="language-html"><span class="p">&lt;</span><span class="nt">video</span> <span class="na">loop</span> <span class="na">autoplay</span><span class="p">&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">video</span> <span class="na">loop</span> <span class="na">autoplay</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">source</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;vid.webm&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;video/webm&quot;</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">source</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;vid.mp4&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;video/mp4&quot;</span><span class="p">&gt;</span>
     Your browser doesn&#39;t support HTML5 video in WebM with VP8
@@ -241,7 +241,7 @@ You can also use widgets to <strong>synchronize stateful and stateless informati
 <p>各家 web browser 的支援度可參考 caniuse.com：<a href="http://caniuse.com/#feat=webm">WebM</a>、<a href="http://caniuse.com/#feat=mpeg4">MP4</a></p>
 <h4 id="ffmpeg">FFmpeg 轉檔</h4>
 <p>筆記而已，沒有認真調參數讓輸出檔案最小。VP9 的部份參考 <a href="https://trac.ffmpeg.org/wiki/Encode/VP9">FFmepg</a><sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>。</p>
-<div class="highlight"><pre><span></span><code class="language-bash"><span class="c1"># H.264 MP4</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># H.264 MP4</span>
 ffmpeg -i Untitled.mov <span class="se">\</span>
     -vcodec h264 <span class="se">\</span>
     -strict -2 -crf <span class="m">22</span> -preset slow -r <span class="m">24</span> <span class="se">\</span>
@@ -257,7 +257,7 @@ ffmpeg -i Untitled.mov <span class="se">\</span>
 </code></pre></div>
 
 <p>4s 的檔案最後大約 60KB，相當不錯。我很多 PNG 截圖都大多了。</p>
-<div class="highlight"><pre><span></span><code class="language-console"><span class="gp">$ </span>du -sh ./* <span class="p">|</span> gsort -rh
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>du -sh ./* <span class="p">|</span> gsort -rh
 <span class="go">744K    ./Untitled.mov</span>
 <span class="go"> 60K    ./out.mp4</span>
 <span class="go"> 52K    ./out.webm</span>

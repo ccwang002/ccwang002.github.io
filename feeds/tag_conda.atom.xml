@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - conda</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_conda.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-02-20T20:07:45-06:00</updated><entry><title>使用 conda env 部署 Django</title><link href="https://blog.liang2.tw/posts/2016/05/django-deploy-conda/" rel="alternate"></link><published>2016-05-24T00:00:00-05:00</published><updated>2022-02-20T20:07:45-06:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-05-24:/posts/2016/05/django-deploy-conda/</id><summary type="html">&lt;p&gt;沒幾天前剛部署一次 Django，記錄在&lt;a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/"&gt;《使用 uWSGI、nginx、systemd 部署 Django》&lt;/a&gt;。今天又部署了另一個專案。部署的設定跟上次一樣：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;nginx -- unix socket -- uWSGI -- Django
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;nginx -- unix socket -- uWSGI -- Django
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;一樣寫 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;沒幾天前剛部署一次 Django，記錄在&lt;a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/"&gt;《使用 uWSGI、nginx、systemd 部署 Django》&lt;/a&gt;。今天又部署了另一個專案。部署的設定跟上次一樣：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;nginx -- unix socket -- uWSGI -- Django
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;nginx -- unix socket -- uWSGI -- Django
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;一樣寫一個 &lt;code&gt;PROJ.service&lt;/code&gt; 的 systemd unit 來管理網站的啟動 (uWSGI)。之後提到 &lt;code&gt;PROJ&lt;/code&gt; 時就換成自己的專案名稱；&lt;code&gt;USER&lt;/code&gt; 就換成執行網站的帳號。&lt;/p&gt;
@@ -19,7 +19,7 @@
 &lt;h3 id="conda"&gt;conda&lt;/h3&gt;
 &lt;p&gt;&lt;a href="http://conda.pydata.org/"&gt;conda&lt;/a&gt; 是一個 Python 套件的管理系統，他的好處是，遇到要使用外部 library 時，會這些套件相依的 library 都一併安裝管理，也可以管理不同 Python 版本。可以想像是加強版的 pip + venv。conda 跟 pip 是相容的。&lt;/p&gt;
 &lt;p&gt;這個 Django 專案就用到很多像 numpy、pandas 的套件。為了維護方便，我考慮用 conda 來安裝。我使用的是 &lt;a href="http://conda.pydata.org/miniconda.html"&gt;miniconda3&lt;/a&gt;，預設會安裝在 &lt;code&gt;~/miniconda3&lt;/code&gt; 底下，虛擬環境會出現在 &lt;code&gt;~/miniconda3/envs/&lt;/code&gt;。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;$ conda create -n VENV &lt;span class="nv"&gt;python&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;.5 numpy pandas django
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ conda create -n VENV &lt;span class="nv"&gt;python&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;.5 numpy pandas django
 $ &lt;span class="nb"&gt;source&lt;/span&gt; activate VENV
 &lt;span class="o"&gt;(&lt;/span&gt;VENV&lt;span class="o"&gt;)&lt;/span&gt; $ pip install uwsgi
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -27,7 +27,7 @@ $ &lt;span class="nb"&gt;source&lt;/span&gt; activate VENV
 &lt;p&gt;uWSGI 沒有在 conda 裡面，所以就用 pip 裝。從&lt;a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/"&gt;上次的文章&lt;/a&gt;知道系統並不用安裝。&lt;/p&gt;
 &lt;h3 id="uwsgi-path"&gt;uWSGI 和 $PATH&lt;/h3&gt;
 &lt;p&gt;理論上，之後就照著上次操作就好，但在 uWSGI 就碰到問題：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-pycon"&gt;&lt;span class="go"&gt;$ sudo /home/USER/miniconda3/envs/VENV/bin/uwsgi --ini PROJ.ini&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="go"&gt;$ sudo /home/USER/miniconda3/envs/VENV/bin/uwsgi --ini PROJ.ini&lt;/span&gt;
 &lt;span class="go"&gt;[uWSGI] getting INI configuration from PROJ.ini&lt;/span&gt;
 &lt;span class="go"&gt;*** Starting uWSGI 2.0.13.1 (64bit) on [Wed May 25 08:04:23 2016] ***&lt;/span&gt;
 &lt;span class="go"&gt;compiled with version: 5.3.1 20160413 on 25 May 2016 01:35:28&lt;/span&gt;
@@ -61,7 +61,7 @@ $ &lt;span class="nb"&gt;source&lt;/span&gt; activate VENV
 &lt;p&gt;但因為步驟實在太簡單，想不出來哪裡有錯，查網路也沒什麼相關的結果。在這邊卡了很久。&lt;/p&gt;
 &lt;p&gt;結果後來才發現，Traceback 那邊 uWSGi 跑去讀到 &lt;code&gt;/usr/lib/python3.5/site.py&lt;/code&gt;，這表示一定有環境設錯才讓它找到這個不是我們要的 python 環境，理論上應該是找到 &lt;code&gt;/home/USER/miniconda3/envs/VENV/lib/python3.5/site.py&lt;/code&gt; 才對。&lt;/p&gt;
 &lt;p&gt;經過一陣嘗試，發現只要修改 &lt;code&gt;$PATH&lt;/code&gt; 環境變數就能運作了。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-console"&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo -i
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo -i
 &lt;span class="gp"&gt;# &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$PATH&lt;/span&gt;
 &lt;span class="go"&gt;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin&lt;/span&gt;
 &lt;span class="gp"&gt;# &lt;/span&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/home/USER/miniconda3/envs/VENV/bin:&lt;span class="nv"&gt;$PATH&lt;/span&gt;
@@ -74,7 +74,7 @@ $ &lt;span class="nb"&gt;source&lt;/span&gt; activate VENV
 &lt;p&gt;Colon-separated list of directories to use when launching executables. Systemd uses a fixed value of /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin. &lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;預設只有以上提到的路徑，如果要修改環境變數的話，就透過 &lt;a href="https://www.freedesktop.org/software/systemd/man/systemd.exec.html#Environment="&gt;&lt;code&gt;Environment=&lt;/code&gt;&lt;/a&gt;，因此多加了一行在 systemd unit 裡。其餘的設定都是相同的。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;[Unit]
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;[Unit]
 Description=PROJ Django server by uWSGI
 After=syslog.target
 

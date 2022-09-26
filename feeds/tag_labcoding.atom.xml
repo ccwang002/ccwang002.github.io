@@ -55,14 +55,14 @@
 &lt;p&gt;&lt;em&gt;You should implement by yourself before looking my solution. Also I didn&amp;rsquo;t see their official solution so my solution can differ a lot from theirs.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;Intuitively, we need to implement a FASTA file parser. FASTA contains a series of sequence reads with unique ID. From a object-oriented viewpoint, we create classes &lt;code&gt;Read&lt;/code&gt; for reads and &lt;code&gt;Fasta&lt;/code&gt; for fasta files.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Read&lt;/code&gt; is easy to design and understand,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-python"&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;seq&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
         &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;id&lt;/span&gt;
         &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;seq&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;seq&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Since we need to compute their GC content, add a method for &lt;code&gt;Read&lt;/code&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-python"&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="c1"&gt;# ... skipped&lt;/span&gt;
     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;gc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
         &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;Compute the GC content (in %) of the read.&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
@@ -72,7 +72,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Then we have to implement the FASTA parser, which reads all read entries and converts them through &lt;code&gt;Read&lt;/code&gt;. In real world we are dealing with &lt;code&gt;myfasta.fa&lt;/code&gt;-like files, but here the input is string.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-python"&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Fasta&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Fasta&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;raw_str&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
         &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;Parse a FASTA formated string.&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
         &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;raw_str&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;raw_str&lt;/span&gt;
@@ -91,14 +91,14 @@
 &lt;p&gt;Here I use &lt;code&gt;yield Read(...)&lt;/code&gt;, which may be unfamiliar for Python beginners. It turns &lt;code&gt;parse(self)&lt;/code&gt; function as a generator. Generator makes you focus on the incoming data. Once data is parsed and converted, the result is immediated thrown out by &lt;code&gt;yield&lt;/code&gt;. We don&amp;rsquo;t care about how to collect all the results. In our case, we catch all the results into a list by &lt;code&gt;list(...)&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;So how should we read FASTA file? A simple rule in this case is that every read consists by two continuous row. Also, the first row will always be the first read id.&lt;/p&gt;
 &lt;p&gt;All we need is read two lines at the same time. Here &lt;a href="https://docs.python.org/3/library/functions.html#zip"&gt;a Pythonic idiom&lt;/a&gt; is introduced. The following code read two non-overlapping lines,&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-python"&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;first_line&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;second_line&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;zip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;iter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;raw_lines&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;first_line&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;second_line&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;zip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;iter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;raw_lines&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="n"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;first_line&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;seq&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;second_line&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;By &lt;code&gt;zip(*[iter(s)]*n)&lt;/code&gt; magic, we are very close to implement a full parser. You could find a lot of &lt;a href="http://stackoverflow.com/a/2233247"&gt;explanations&lt;/a&gt; for this magic.&lt;/p&gt;
 &lt;p&gt;Read id line percedes with a &lt;code&gt;&amp;gt;&lt;/code&gt; sign, so we could use something like &lt;code&gt;first_line[1:]&lt;/code&gt; or &lt;code&gt;first_line[len('&amp;gt;'):]&lt;/code&gt; for explicity.&lt;/p&gt;
 &lt;p&gt;Then sorting the GC% of reads in a FASTA file is easy.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-python"&gt;&lt;span class="n"&gt;fasta&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Fasta&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;...&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;fasta&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Fasta&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;...&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;sorted_reads&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;sorted&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fasta&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reads&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gc&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;  &lt;span class="c1"&gt;# note 1&lt;/span&gt;
 &lt;span class="n"&gt;top_gc_read&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sorted_reads&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  &lt;span class="c1"&gt;# note 2&lt;/span&gt;
 &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
@@ -148,19 +148,19 @@
 &lt;h2 id="homebrew-git-and-python"&gt;Homebrew, Git and Python&lt;/h2&gt;
 &lt;p&gt;OSX 上官方沒有一個管理套件的工具，所以社群自行開發了一個叫做 Homebrew。你可以按照&lt;a href="http://djangogirlstaipei.herokuapp.com/tutorials/installation/"&gt;這篇教學&lt;/a&gt;安裝 Homebrew。&lt;/p&gt;
 &lt;p&gt;裝好了之後你可以以下指令去看它該怎麼操作&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;$ brew --help
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ brew --help
 $ man brew    &lt;span class="c1"&gt;# for full documentation&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;OSX 雖然內建有 git 與 python，但我們可以用 homebrew 安裝比較標準（新）的版本，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;$ brew install git python3
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ brew install git python3
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;如果 homebrew 有問題可以用 &lt;code&gt;brew doctor&lt;/code&gt; 來檢測。把錯誤訊息問 google 通常就能找到解決方式。&lt;/p&gt;
 &lt;h2 id="text-editors"&gt;Text Editors&lt;/h2&gt;
 &lt;p&gt;我最常用的是 Vim。OSX 有內建，但也可以用 homebrew 安裝。&lt;/p&gt;
 &lt;p&gt;除了 console based 的 Vim，OSX 上也有像 gVim 的 MacVim。一樣能用 homebrew 安裝。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;$ brew info macvim  &lt;span class="c1"&gt;# 看 MacVim 在安裝有什麼選項可以調整&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ brew info macvim  &lt;span class="c1"&gt;# 看 MacVim 在安裝有什麼選項可以調整&lt;/span&gt;
 $ brew install macvim --override-system-vim --custom-icons
 $ brew linkapps macvim
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -168,7 +168,7 @@ $ brew linkapps macvim
 &lt;p&gt;使用 Macvim 的時候除了 vim 之外，也可以呼叫 &lt;code&gt;mvim&lt;/code&gt; 打開 MacVim。&lt;/p&gt;
 &lt;h2 id="terminal-multiplexers"&gt;Terminal Multiplexers&lt;/h2&gt;
 &lt;p&gt;你有可能有聽過 screen 或者 tmux。前者在 osx 上有內建但版本很舊，在顯示顏色上會有問題，因此可以透過 homebrew 再安裝新的。但因為 screen 跟系統提供的重覆到了，所以預設不在 homebrew 的 repo 中，要先新增 repo 清單：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;brew tap homebrew/dupes
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;brew tap homebrew/dupes
 brew install screen tmux
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -402,7 +402,7 @@ EDIT 2017-06-20: 更新書籍資訊與 2/3 比較。&lt;/p&gt;</content><categor
 &lt;li&gt;善用條列式說明&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;以下是範例（From &lt;a href="http://git-scm.com/book/ch5-2.html"&gt;Git Book&lt;/a&gt;）：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-text"&gt;Short (50 chars or less) summary of changes
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;Short (50 chars or less) summary of changes
 
 More detailed explanatory text, if necessary.  Wrap it to
 about 72 characters or so.  In some contexts, the first
@@ -561,7 +561,7 @@ Further paragraphs come after blank lines.
 &lt;/ol&gt;
 &lt;h1 id="text-editor"&gt;Text Editor&lt;/h1&gt;
 &lt;p&gt;在 Linux 的世界很多都是純文字檔案，再加上一些規定的語法成為新的格式。前面的 markdown 就是個例子。甚至許多可以執行的程式都只是個腳本檔，能用一般的編輯器（editor）打開就能讀懂。你可以試試&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;&lt;span class="c1"&gt;# cd is a shell script&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# cd is a shell script&lt;/span&gt;
 nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;       &lt;span class="c1"&gt;# thanks TP&amp;#39;s idea&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -751,7 +751,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;p&gt;圖形化介面（GUI），除了使用者的應用程式外，還需要系統輔助、管理等核心套件。一系列的 GUI 套件就稱之為桌面環境。&lt;/p&gt;
 &lt;p&gt;Windows、OSX 在安裝系統時都會自動安裝， 即桌面環境只有一種選擇。但在 Linux 上，GUI 的安裝是選擇性的，系統能在只有單純的 terminal 介面便能完整使用（例如選擇安裝 Ubuntu Server 時），不少 server 為了效能、安全性的考量都不會裝桌面環境。&lt;/p&gt;
 &lt;p&gt;對 Linux 來說桌面環境是能之後再選擇安裝上去的，而且還有「不同口味」可以選擇，使用者也可以自由的移除它們（但很有可能會炸掉），常見就有 GNOME、KDE、XFCE、LXDE&lt;sup id="fnref:註4"&gt;&lt;a class="footnote-ref" href="#fn:註4"&gt;3&lt;/a&gt;&lt;/sup&gt; 幾種系統能使用。例如選擇安裝 Ubuntu Server 後，想要再加上 GNOME 列圖形化介面時，&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code class="language-bash"&gt;sudo apt-get install ubuntu-gnome-desktop
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo apt-get install ubuntu-gnome-desktop
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;這邊不會去細講這些實作方式的不同。簡單而言，GNOME 最流行。XFCE 使用的系統資源較少，在實驗室上的 server 常會裝這個。在 Ubuntu 上，預設是用 Unity，它是從 GNOME 沿伸出來的。&lt;/p&gt;
@@ -771,70 +771,70 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
-&lt;th align="center"&gt;章節&lt;/th&gt;
-&lt;th align="left"&gt;章節名&lt;/th&gt;
+&lt;th style="text-align: center;"&gt;章節&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;章節名&lt;/th&gt;
 &lt;th&gt;重要的內容&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td align="center"&gt;0&lt;/td&gt;
-&lt;td align="left"&gt;計算機概論&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;0&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;計算機概論&lt;/td&gt;
 &lt;td&gt;沒聽過 CPU、RAM、MB GB 單位就從頭看； 不然就讀資料表示方式(3)、軟體程式運作(4)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align="center"&gt;5&lt;/td&gt;
-&lt;td align="left"&gt;首次登入與線上求助 man page&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;5&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;首次登入與線上求助 man page&lt;/td&gt;
 &lt;td&gt;文字模式下指令的下達(2)、man page 與 info page(3)、nano(4)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align="center"&gt;6&lt;/td&gt;
-&lt;td align="left"&gt;Linux 的檔案權限與目錄配置&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;6&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;Linux 的檔案權限與目錄配置&lt;/td&gt;
 &lt;td&gt;全&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align="center"&gt;7&lt;/td&gt;
-&lt;td align="left"&gt;Linux 檔案與目錄管理&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;7&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;Linux 檔案與目錄管理&lt;/td&gt;
 &lt;td&gt;除檔案隱藏與特殊屬性(4)外都重要&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align="center"&gt;8&lt;/td&gt;
-&lt;td align="left"&gt;Linux 磁碟與檔案系統管理&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;8&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;Linux 磁碟與檔案系統管理&lt;/td&gt;
 &lt;td&gt;檔案系統的簡單操作(2)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align="center"&gt;9&lt;/td&gt;
-&lt;td align="left"&gt;檔案與檔案系統的壓縮與打包&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;9&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;檔案與檔案系統的壓縮與打包&lt;/td&gt;
 &lt;td&gt;壓縮檔案的用途與技術(1)、打包指令(3)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align="center"&gt;10&lt;sup id="fnref:*"&gt;&lt;a class="footnote-ref" href="#fn:*"&gt;5&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
-&lt;td align="left"&gt;vim 程式編輯器&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;10&lt;sup id="fnref:*"&gt;&lt;a class="footnote-ref" href="#fn:*"&gt;5&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;vim 程式編輯器&lt;/td&gt;
 &lt;td&gt;語系編碼轉換(4.3)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align="center"&gt;11&lt;/td&gt;
-&lt;td align="left"&gt;認識與學習 BASH&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;11&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;認識與學習 BASH&lt;/td&gt;
 &lt;td&gt;全。但可視情況忽略 2.4-2.8、6.4&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align="center"&gt;12&lt;sup id="fnref:†"&gt;&lt;a class="footnote-ref" href="#fn:†"&gt;6&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
-&lt;td align="left"&gt;正規表示法與文件格式化處理&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;12&lt;sup id="fnref:†"&gt;&lt;a class="footnote-ref" href="#fn:†"&gt;6&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;正規表示法與文件格式化處理&lt;/td&gt;
 &lt;td&gt;前言(1)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align="center"&gt;13&lt;/td&gt;
-&lt;td align="left"&gt;學習 Shell Scripts&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;13&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;學習 Shell Scripts&lt;/td&gt;
 &lt;td&gt;全（等用到再看）&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align="center"&gt;22&lt;/td&gt;
-&lt;td align="left"&gt;軟體安裝：原始碼與 Tarball&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;22&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;軟體安裝：原始碼與 Tarball&lt;/td&gt;
 &lt;td&gt;全（了解流程、懂有這些關鍵字就好）&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align="center"&gt;23&lt;/td&gt;
-&lt;td align="left"&gt;軟體安裝： RPM, SRPM 與 YUM 功能&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;23&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;軟體安裝： RPM, SRPM 與 YUM 功能&lt;/td&gt;
 &lt;td&gt;Ubuntu 用的是 APT&lt;sup id="fnref:‡"&gt;&lt;a class="footnote-ref" href="#fn:‡"&gt;7&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
@@ -855,26 +855,26 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
-&lt;th align="left"&gt;Chp. No&lt;/th&gt;
-&lt;th align="left"&gt;Chp. Name&lt;/th&gt;
-&lt;th align="left"&gt;Highlights&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;Chp. No&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;Chp. Name&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;Highlights&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td align="left"&gt;1&lt;/td&gt;
-&lt;td align="left"&gt;GNU/Linux tutorials&lt;/td&gt;
-&lt;td align="left"&gt;Everything except for 1.3 Midnight Commander&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;1&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;GNU/Linux tutorials&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;Everything except for 1.3 Midnight Commander&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align="left"&gt;2&lt;/td&gt;
-&lt;td align="left"&gt;Debian package management&lt;/td&gt;
-&lt;td align="left"&gt;Read 2.2 Basic package management operations&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;2&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;Debian package management&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;Read 2.2 Basic package management operations&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align="left"&gt;10&lt;/td&gt;
-&lt;td align="left"&gt;Data management&lt;/td&gt;
-&lt;td align="left"&gt;Read 10.1 Sharing, copying, and archiving&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;10&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;Data management&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;Read 10.1 Sharing, copying, and archiving&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -889,7 +889,7 @@ nano &lt;span class="sb"&gt;`&lt;/span&gt;which &lt;span class="nb"&gt;cd&lt;/sp
 &lt;li&gt;知道環境變數是什麼，怎麼修改&lt;/li&gt;
 &lt;li&gt;了解檔案、目錄、相對路徑；權限設定&lt;/li&gt;
 &lt;li&gt;使用 &lt;code&gt;&amp;lt;cmd&amp;gt; -h&lt;/code&gt; &lt;code&gt;&amp;lt;cmd&amp;gt; --help&lt;/code&gt; &lt;code&gt;man &amp;lt;cmd&amp;gt;&lt;/code&gt; 來查看指令的功能、可下的參數&lt;ul&gt;
-&lt;li&gt;&amp;lt;cmd&gt; = 任何在 linux 下的指令&lt;/li&gt;
+&lt;li&gt;&amp;lt;cmd&amp;gt; = 任何在 linux 下的指令&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;

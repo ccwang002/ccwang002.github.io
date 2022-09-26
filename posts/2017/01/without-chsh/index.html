@@ -121,14 +121,14 @@ shell for macOS, Linux, and the rest of the family.</p>
 <p>Most of the time, one can change the login shell by the command <code>chsh</code>. In order to let <code>chsh</code> accept the new fish shell, it must be added into the list of all accepted shells which requires root permission. However, in many occasions including working on a large shared server, one may not has the permission to add new shell and thus the options for the login shell are often limited.  </p>
 <h4 id="replacing-login-shell-by-exec">Replacing login shell by <code>exec</code></h4>
 <p>Alternative solution will be calling the new shell upon the execution of current shell.  A POSIX-compliant shell<sup id="fnref:posix"><a class="footnote-ref" href="#fn:posix">1</a></sup> should always read the <code>.profile</code> configuration file upon login, the following command execute fish and sweep the process with the current running shell (usually, bash). </p>
-<div class="highlight"><pre><span></span><code class="language-bash"><span class="nb">exec</span> -l <span class="nv">$SHELL</span> -l
+<div class="highlight"><pre><span></span><code><span class="nb">exec</span> -l <span class="nv">$SHELL</span> -l
 </code></pre></div>
 
 <p><code>-l</code> tells shell to act like a login shell. For more explanation about login and non-login (as well as (non-)interactive) shells can be found at <a href="http://unix.stackexchange.com/a/46856">this StackOverflow answer</a>. By pointing <code>$SHELL</code> to the desired shell binary, one can achieve the similar behavior to <code>chsh</code>.</p>
 <p>However putting <code>exec</code> in the login profile comes with a risk that if the new shell executable crashes (e.g. failed symlink, erroneous compilation and failed dynamic library linking), one cannot establish proper shell connections. I&rsquo;ve experienced these catastrophic failures for a couple of times. Since the new shell crashes when the original shell is replacing its process, one cannot set up the proper terminal session, or simply put, one will fail to login. It was not fun at all to recover.</p>
 <h4 id="fail-safe-shell-changing">Fail-safe shell changing</h4>
 <p>To provide a fail-safe mechanism, I use the following code in my <code>~/.profile</code> to change the shell. Only login shells will read this file so it won&rsquo;t be executed when one runs a bash script.</p>
-<div class="highlight"><pre><span></span><code class="language-bash"><span class="nv">FISH_BIN</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/.linuxbrew/bin/fish&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nv">FISH_BIN</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/.linuxbrew/bin/fish&quot;</span>
 
 <span class="c1"># The replacement is only done in non-fish login interactive shell in</span>
 <span class="c1"># SSH connection and fish executable exists.</span>
