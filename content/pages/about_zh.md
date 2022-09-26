@@ -9,7 +9,7 @@ sortorder: 1
 
 嗨，我是王亮博（Liang-Bo Wang）。多數的人叫我亮亮（liang<sup>2</sup>），但這發音對外國人有點困難，所以在美國比較多人叫我 Bobo。
 
-我目前在聖路易華盛頓大學（Washington University in St. Louis）就讀計算與系統生物學（Computation and Systems Biology）博士班。我的指導老師是 [Prof. Li Ding][dinglab]，我曾經在微軟亞洲研究院、[Pinkoi] 實習。我在台北長大。
+我取得了在聖路易華盛頓大學（Washington University in St. Louis）計算與系統生物學（Computation and Systems Biology）博士。我的指導老師是 [Prof. Li Ding][dinglab]，我曾經在微軟亞洲研究院、[Pinkoi] 實習。我在台北長大。
 
 [我的 CV](/CV.pdf)。
 

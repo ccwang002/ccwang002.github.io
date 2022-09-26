@@ -4,7 +4,7 @@ Slug: about-me
 sortorder: 1
 ---
 
-I'm a Ph.D. student in [Li Ding's Lab][dinglab] at Washington University in St. Louis. My research focuses on cancer protegenomics in two directions. I process and analyze [CPTAC proteognomic datasets][CPTAC] (mostly glioblastoma) to better understand the disease and potential treatments, and I also build tools and databases to assist the analysis.
+I obtained my Ph.D. at Washington University in St. Louis under [Li Ding's Lab][dinglab]. My research focuses on cancer protegenomics in two directions. I process and analyze [CPTAC proteognomic datasets][CPTAC] (mostly glioblastoma) to better understand the disease and potential treatments, and I also build tools and databases to assist the analysis.
 
 You can find my academic publications [here][google scholar], or my CV [here](/CV.pdf).
 
