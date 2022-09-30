@@ -1,7 +1,7 @@
 ---
 Title: 那些我在博士班學到的專案管理
 Slug: project-management-during-phd
-Date: 2022-08-05
+Date: 2022-10-01
 Tags: en, zh
 Category: misc
 Lang: zh

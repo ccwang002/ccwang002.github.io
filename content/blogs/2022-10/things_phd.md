@@ -1,7 +1,7 @@
 ---
 Title: Project management lessons I learned during my PhD
 Slug: project-management-during-phd
-Date: 2022-08-05
+Date: 2022-10-01
 Tags: en, zh
 Category: misc
 Lang: en
@@ -46,7 +46,7 @@ My post focuses on the challenges when we have a large team of people contribute
 
 [TOC]
 
-<!-- cSpell:words Toggl Todoist -->
+<!-- cSpell:words Toggl Todoist xoxb -->
 
 
 ## Go agile
