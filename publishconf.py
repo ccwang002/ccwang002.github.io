@@ -19,6 +19,10 @@ TAG_FEED_ATOM = 'feeds/tag_{slug}.atom.xml'
 
 DELETE_OUTPUT_DIRECTORY = True
 
+# Don't publish drafts
+DRAFT_SAVE_AS = ''
+DRAFT_LANG_SAVE_AS = ''
+
 # Following items are often useful when publishing
 
 # utterances, comment system built on GitHub issues
