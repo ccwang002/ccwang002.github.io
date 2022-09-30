@@ -400,6 +400,17 @@ html[lang='zh'] details p {
    ========================================================================== */
 
 @media only screen and (max-width: 500px) {
+
+    /* Archive post list */
+
+    dl dt {
+        width: 120px;
+    }
+
+    dl dd {
+        margin-left: 140px;
+    }
+
     .inner,
     .pagination,
     .post {
