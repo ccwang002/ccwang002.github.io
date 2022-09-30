@@ -13,7 +13,7 @@ Status: draft
 [en-post]: {filename}./things_phd.md
 [zh-post]: {filename}./things_phd.zh.md
 
-Modern science is sometimes a science of a teamwork.
+Modern science is often a teamwork.
 
 I've learned that an effective teamwork requires non-trivial time and effort, however, traditional academic training does not emphasize on how to collaborate *effectively*.
 The training I received generally taught me how to think critically and how to apply my knowledge to problem-solving.
@@ -23,26 +23,20 @@ And experience-based learning is limiting when the team grows and a new style of
 During my PhD, I had the opportunity to lead [some collaborative projects][google scholar] in computational biology/bioinformatics.
 The scale of my project can range from a few close colleagues (less than 10) to a long list of people (100-ish) across institutions.
 
-As we could imagine, the style of teamwork is very different for a project of just three people sitting in adjacent cubicles versus a project of a few teams of people in different states who I might never meet in person.
-When the team grows, the cost of communications and miscommunications grows *fast*.
+The style of teamwork is very different for a project of just three people sitting in adjacent cubicles versus a project of a few teams of people in different states who I might never meet in person.
+When the team grows, the cost and overhead for (mis)communications grow *exponentially*.
 As a result, a significant proportion of my time and effort during PhD went in to project management and learning it from my mistakes.
 
-Thus, I wrote this post to share my lessons and setup for project management.
-My projects are mostly genomic data analysis in academia, so my experience is bespoke to this field and mostly dry lab.
+Thus, I decided to write down my lessons and setup for project management.
+This post will focus on the challenges when we have a large team of people contribute to a research project together.
+My projects are mostly about genomic data analysis in academia, so my experience is bespoke to this field and mostly dry lab; YMMV.
 
-Before we jump in, here are some disclaimers.
-
-My experience won't be comprehensive, nor I have the best solution.
-In fact, I have a very narrow view point for how to conduct research.
+Before we jump in, let me put some disclaimers upfront.
+My experience only covers a small aspect of research and teamwork.
 I never run a lab, never do hybrid experiments and analysis on my own, and research in the private sector probably works out quite differently.
-I have been constantly learning from other's approaches and related books even up to now.
-
-Standalone research (by much fewer people) is still very possible and common.
-For example, [my wife's phenomenal work][clarice's paper] is done by just herself and her PI.
-My post focuses on the challenges when we have a large team of people contribute to a research project together.
+I will continue to learn and find a better solution.
 
 [google scholar]: https://scholar.google.com/citations?user=-tdb3hcAAAAJ
-[clarice's paper]: https://doi.org/10.1101/gr.276025.121
 
 [TOC]
 
