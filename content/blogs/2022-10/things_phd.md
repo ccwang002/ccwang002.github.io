@@ -44,38 +44,42 @@ I will continue to learn and find a better solution.
 
 
 ## Go agile
-A research project is similar to a startup in many ways, so we can learn from the best practices of running a startup.
+Managing a research project is similar to running a startup in many ways.
 Both research and startups reward innovations and novel discoveries.
 A clear end goal exists, being a publication or a product.
-And resources to accomplish the goal are limited (e.g., time, people, equipments, and grants/funds).
+And resources to accomplish the goal are limited (e.g., time, people, equipments, and fundings).
 
-[Agile management][agile-software-dev] has been use by startups and software development ubiquitously.
+[Agile management][agile-software-dev] has been used by startups and software development ubiquitously.
 In fact, in my large collaboration projects, I tried to apply what I learned from a classic book on agile management for software development, [*The Mythical Man-Month*][man-month-book].
 
 I think these agile principles are helpful to research:
 
 1. Make incremental and iterative builds
 2. Keep short and direct feedback cycles
-3. Implement easy (automatic) way to ensure things are going as expected
+3. Implement easy or automatic way to ensure things are going as expected
 
-For the first principle of incremental builds, instead of targeting straight for publications or developing all the features of a tool (end goal), set up milestones and minimal viable products (MVP).
-For example, to develop a tool that classify genomic variants, implement a *simpler* tool.
-The MVP can just check one basic rule of the classification (even a dummy rule) but it takes in the inputs and produces outputs in the desired format.
-For analysis, sub-aims or tasks in each sub-aim can be a good milestone because their outcomes are well-defined, and sub-aims and tasks are the natural steps toward the completion of the aim and so forth the project.
+For incremental/iterative builds, instead of planning all the way to a publication or the full features of a tool, set up milestones and minimal viable products (MVP) along the way.
 
-For the second principle on short feedback cycles, set up regular feedback on the results.
-And the feedback being short and direct is the key.
-No one likes a lengthy and boring meeting (conference call).
-Long meetings also don't scale with the increasing project size and scope.
+For example, to develop a tool that classifies genomic variants, implement a *simpler* tool.
+The MVP can just execute one simple rule of the classification (even a dummy rule) but it takes in the inputs and produces outputs in the desired format.
+To complete an analysis project, set sub-aims or tasks in each sub-aim as milestones because their outcomes are well-defined, and sub-aims and tasks are the natural steps toward the completion of the aim and the project eventually.
 
-I want to save time on my analysis and tool development.
-An asynchronous feedback (email or message) can save even more time when it make senses.
-There are a few aspects of being direct: make direct/measurable suggestions and go to direct person involved.
+To have an effective feedback cycles, make the feedback short and direct.
+Everyone hates a lengthy meeting (conference call), and these meetings don't scale well with the increasing size and scope of the project.
+Often a meeting is not even required for a short feedback.
+A message or an email works much better since they are asynchronous both time and space wise.
+To make a direct feedback, go to the person in action directly and provide measurable suggestions.
+Use automatic reminders to periodically follow up on the progress.
 
+On the other hand, to achieve short and direct feedback cycles, we save our effort over simple things.
+Say, unit or behavior tests are great for tool development and positive or negative controls for analysis.
 
-If the feedback can be done automatically, say unit/behavior tests for code, or positive/negative control for analysis, it's better.
-
-
+<!-- Start here -->
+Here are some great articles about agile management in an academic setting.
+For example, [this blog post][pm-academia-101] compares the traditional (waterfall) project management with the agile project management in academia.
+*Nature* publishes a few columns ([1][nature-six-tip], [2][nature-agile], [3][nature-scrum]) covering this subject from the broad concept to the actual methods of running agile methods (scrum).
+Though I never tried to implement the fixed 2-week lab scrum for my research projects, as I find it very intrusive (might face huge pushbacks) and unnecessary (timeline is more flexible in academia).
+More on this in the lesson I learned later.
 
 The rules above definitely are used widely outside of running an agile management.
 They are reasonable and helpful guidelines.
@@ -84,15 +88,6 @@ Hence the *agile-ish* style.
 I just think that agile bundles the rules together as a framework and creates the mindset.
 They are not fixed instructions.
 We should feel free to relax some rules whichever fit the situation.
-
-There are already good articles that talk about implementing agile management in an academic setting.
-For example, [this blog post][pm-academia-101] compares the traditional (waterfall) project management with the agile project management in academia.
-*Nature* publishes a few columns ([1][nature-six-tip], [2][nature-agile], [3][nature-scrum]) covering this subject from the broad concept to the actual methods of running agile methods (scrum).
-Though I never tried to implement the fixed 2-week lab scrum for my research projects, as I find it very intrusive (might face huge pushbacks) and unnecessary (timeline is more flexible in academia).
-More on this in the lesson I learned later.
-
-I was aware of the inevitable complexity when the team grows and the increasing time spent on communications.
-So I prepared for the complexity and beware of my role to keep everyone on the same page, rather than spending all of my time on analysis or things "productive".
 
 
 [agile-software-dev]: https://en.wikipedia.org/wiki/Agile_software_development
