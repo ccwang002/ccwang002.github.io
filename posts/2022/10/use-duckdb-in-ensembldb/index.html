@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2022/10/use-duckdb-in-ensembldb/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2022-10-05 00:00:00-05:00"/>
-<meta property="article:modified_time" content="2022-10-05 18:47:48.989167-05:00"/>
+<meta property="article:modified_time" content="2022-10-05 19:24:42.235653-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Bioinfo"/>
 <meta property="article:tag" content="en"/>
@@ -141,9 +141,7 @@ I tried out some of these user-friendly features in this exercise.</p>
 <li><a href="#use-duckdb-in-ensembldb">Use DuckDB in ensembldb</a></li>
 <li><a href="#benchmark-the-databases">Benchmark the databases</a><ul>
 <li><a href="#genome-wide-annotation-query">Genome-wide annotation query</a></li>
-</ul>
-</li>
-<li><a href="#another-genome-wide-annotation-query">Another genome-wide annotation query</a><ul>
+<li><a href="#another-genome-wide-annotation-query">Another genome-wide annotation query</a></li>
 <li><a href="#gene-specific-lookup">Gene-specific lookup</a></li>
 </ul>
 </li>
@@ -378,7 +376,7 @@ This trend is quite consistent as I re-run the benchmarks multiple times.
 While I haven&rsquo;t investigated these outliers, I think this is due to the first run(s) being un-cached.
 Surprisingly, DuckDB with indices run much slower than that without indices (especially the first run).
 Though the index might be useless in sequential scans, I guess the slowdown could be due to the bigger file (longer to cache) or the query planner accidentally traversing over indices.</p>
-<h2 id="another-genome-wide-annotation-query">Another genome-wide annotation query</h2>
+<h3 id="another-genome-wide-annotation-query">Another genome-wide annotation query</h3>
 <p>The other genome-wide query finds the transcripts of all the genes.</p>
 <div class="highlight"><pre><span></span><code><span class="n">tx_per_gene</span> <span class="o">=</span> <span class="nf">transcriptsBy</span><span class="p">(</span><span class="n">edb</span><span class="p">,</span> <span class="n">by</span> <span class="o">=</span> <span class="s">&quot;gene&quot;</span><span class="p">,</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">standard_filter</span><span class="p">)</span>
 <span class="n">tx_per_gene</span> <span class="o">|&gt;</span> <span class="nf">head</span><span class="p">()</span>
