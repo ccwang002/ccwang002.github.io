@@ -1,4 +1,7 @@
 DuckDB
+ENSE
 Ensembl
 ensembldb
+ENSG
+ENST
 multiome
