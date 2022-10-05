@@ -1,1 +1,4 @@
+DuckDB
+Ensembl
+ensembldb
 multiome
