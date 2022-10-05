@@ -294,7 +294,7 @@ Surprisingly, DuckDB with indices run much slower than that without indices (esp
 Though the index might be useless in sequential scans, I guess the slowdown could be due to the bigger file (longer to cache) or the query planner accidentally traversing over indices.
 
 
-## Another genome-wide annotation query
+### Another genome-wide annotation query
 The other genome-wide query finds the transcripts of all the genes.
 
 ```r
