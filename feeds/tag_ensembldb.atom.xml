@@ -1,52 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - ensembldb</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_ensembldb.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-10-05T15:27:19-05:00</updated><entry><title>Use DuckDB in ensembldb to query Ensembl's genome annotation</title><link href="https://blog.liang2.tw/posts/2022/10/use-duckdb-in-ensembldb/" rel="alternate"></link><published>2022-10-05T00:00:00-05:00</published><updated>2022-10-05T15:27:19-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2022-10-05:/posts/2022/10/use-duckdb-in-ensembldb/</id><summary type="html">&lt;!-- cSpell:words sexchrom OLAP Hsapiens pyarrow ensdb zstandard zstd --&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog - ensembldb</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/tag_ensembldb.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-10-05T18:47:48-05:00</updated><entry><title>Use DuckDB in ensembldb to query Ensembl's genome annotations</title><link href="https://blog.liang2.tw/posts/2022/10/use-duckdb-in-ensembldb/" rel="alternate"></link><published>2022-10-05T00:00:00-05:00</published><updated>2022-10-05T18:47:48-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2022-10-05:/posts/2022/10/use-duckdb-in-ensembldb/</id><summary type="html">&lt;p&gt;I have been using ensembldb to query genome annotations locally, which stores the Ensembl annotations in a offline SQLite database. By replacing the database engine with DuckDB, genome-wide queries are faster with small impact on gene specific queries (depending on the usage). DuckDB database&amp;rsquo;s file size is also smaller, and it can be even smaller by offloading the tables to external Parquet files.&lt;/p&gt;</summary><content type="html">&lt;!-- cSpell:words sexchrom OLAP Hsapiens pyarrow ensdb zstandard zstd --&gt;
 
-&lt;p&gt;To query genome reference and annotations locally, &lt;a href="https://bioconductor.org/packages/release/bioc/html/ensembldb.html"&gt;ensembldb&lt;/a&gt; has been my go-to approach.
-While I&amp;rsquo;ve said many good things about this R package before (&lt;a href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/"&gt;1&lt;/a&gt;, &lt;a href="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/"&gt;2&lt;/a&gt;, &lt;a href="https://blog.liang2.tw/posts/2019/01/build-ensdb-from-local-mysql/"&gt;3&lt;/a&gt;), here&amp;rsquo;s a summary of my favorite features:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;I can use the same Ensembl version throughout my project (as a SQLite database …&lt;/li&gt;&lt;/ol&gt;</summary><content type="html">&lt;!-- cSpell:words sexchrom OLAP Hsapiens pyarrow ensdb zstandard zstd --&gt;
-
-&lt;p&gt;To query genome reference and annotations locally, &lt;a href="https://bioconductor.org/packages/release/bioc/html/ensembldb.html"&gt;ensembldb&lt;/a&gt; has been my go-to approach.
-While I&amp;rsquo;ve said many good things about this R package before (&lt;a href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/"&gt;1&lt;/a&gt;, &lt;a href="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/"&gt;2&lt;/a&gt;, &lt;a href="https://blog.liang2.tw/posts/2019/01/build-ensdb-from-local-mysql/"&gt;3&lt;/a&gt;), here&amp;rsquo;s a summary of my favorite features:&lt;/p&gt;
+&lt;p&gt;To query genome annotations locally, &lt;a href="https://bioconductor.org/packages/release/bioc/html/ensembldb.html"&gt;ensembldb&lt;/a&gt; has been my go-to approach.
+While I&amp;rsquo;ve already said many good things about this R package (&lt;a href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/"&gt;1&lt;/a&gt;, &lt;a href="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/"&gt;2&lt;/a&gt;, &lt;a href="https://blog.liang2.tw/posts/2019/01/build-ensdb-from-local-mysql/"&gt;3&lt;/a&gt;), here&amp;rsquo;s a summary of my favorite features:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;I can use the same Ensembl version throughout my project (as a SQLite database)&lt;/li&gt;
 &lt;li&gt;I can query the genome-wide annotations and their locations easily and offline&lt;/li&gt;
-&lt;li&gt;Integrate the extracted information with my data and other external annotations with the help of &lt;a href="https://bioconductor.org/packages/release/bioc/html/GenomicRanges.html"&gt;GenomicRanges&lt;/a&gt; and &lt;a href="https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html"&gt;SummarizedExperiment&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;The usage is language agnostic (say, &lt;a href="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/"&gt;I can query its db in Python&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Nice integration to R&amp;rsquo;s ecosystem that I can easily combine the extracted annotations with my data and other annotations using &lt;a href="https://bioconductor.org/packages/release/bioc/html/GenomicRanges.html"&gt;GenomicRanges&lt;/a&gt; and &lt;a href="https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html"&gt;SummarizedExperiment&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Language agnostic to use its database (say, &lt;a href="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/"&gt;I can query the same db in Python&lt;/a&gt;)&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;Since &lt;a href="https://duckdb.org/"&gt;DuckDB&lt;/a&gt; is designed for analytical query workloads (aka &lt;a href="https://en.wikipedia.org/wiki/Online_analytical_processing"&gt;OLAP&lt;/a&gt;), I decided to convert ensembl&amp;rsquo;s SQLite database to DuckDB and try it in my usual scenarios.
-DuckDB uses a columnar storage and supports query into external Apache Parquet and Arrow files.
-Otherwise, it has the similar look-and-feel as SQLite.&lt;/p&gt;
+&lt;p&gt;Since &lt;a href="https://duckdb.org/"&gt;DuckDB&lt;/a&gt; is designed for analytical query workloads (aka &lt;a href="https://en.wikipedia.org/wiki/Online_analytical_processing"&gt;OLAP&lt;/a&gt;), I decided to convert ensembldb&amp;rsquo;s SQLite database to DuckDB and try it in some of my common analysis scenarios.
+DuckDB has a similar look-and-feel to SQLite.
+Also, it uses a columnar storage and supports query into external &lt;a href="https://parquet.apache.org/"&gt;Apache Parquet&lt;/a&gt; and &lt;a href="https://arrow.apache.org/"&gt;Apache Arrow&lt;/a&gt; tables.
+I tried out some of these user-friendly features in this exercise.&lt;/p&gt;
 &lt;div class="toc"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="#convert-sqlite-to-duckdb-through-parquet"&gt;Convert SQLite to DuckDB through Parquet&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#load-parquet-tables-to-duckdb"&gt;Load parquet tables to DuckDB&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#convert-ensembldbs-database-to-duckdb-through-parquet"&gt;Convert ensembldb&amp;rsquo;s database to DuckDB through Parquet&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#load-parquet-tables-to-duckdb"&gt;Load Parquet tables to DuckDB&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#database-file-size-comparison"&gt;Database file size comparison&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;a href="#use-duckdb-in-ensembldb"&gt;Use DuckDB in ensembldb&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#benchmark-results"&gt;Benchmark results&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#benchmark-the-databases"&gt;Benchmark the databases&lt;/a&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="#genome-wide-annotation-query"&gt;Genome-wide annotation query&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;a href="#another-genome-wide-annotation-query"&gt;Another genome-wide annotation query&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#a-specific-gene-lookup"&gt;A specific gene lookup&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#gene-specific-lookup"&gt;Gene-specific lookup&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;a href="#summary"&gt;Summary&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;h2 id="convert-sqlite-to-duckdb-through-parquet"&gt;Convert SQLite to DuckDB through Parquet&lt;/h2&gt;
-&lt;p&gt;The first step is to convert ensembl&amp;rsquo;s SQLite database to DuckDB&lt;sup id="fnref:sqlite-to-duckdb"&gt;&lt;a class="footnote-ref" href="#fn:sqlite-to-duckdb"&gt;1&lt;/a&gt;&lt;/sup&gt;.
-I decided to export SQLite tables as individual [Parquet] files, and then reload them back to DuckDB.
+&lt;h2 id="convert-ensembldbs-database-to-duckdb-through-parquet"&gt;Convert ensembldb&amp;rsquo;s database to DuckDB through Parquet&lt;/h2&gt;
+&lt;p&gt;The first step is to convert ensembldb&amp;rsquo;s SQLite database to DuckDB&lt;sup id="fnref:sqlite-to-duckdb"&gt;&lt;a class="footnote-ref" href="#fn:sqlite-to-duckdb"&gt;1&lt;/a&gt;&lt;/sup&gt;.
+I decided to export the SQLite tables as individual Parquet files, and then reload them back to DuckDB.
 So we could also test the DuckDB&amp;rsquo;s ability to query external parquet files directly.&lt;/p&gt;
-&lt;p&gt;For this exercise, I used the latest Ensembl release (v107).
-We can find the corresponding SQLite database from &lt;a href="https://annotationhub.bioconductor.org/package2/AHEnsDbs"&gt;AnnotationHub&amp;rsquo;s web interface&lt;/a&gt; (its object ID is &lt;a href="https://annotationhub.bioconductor.org/ahid/AH104864"&gt;AH104864&lt;/a&gt;):&lt;/p&gt;
+&lt;p&gt;For this exercise, I used the &lt;a href="https://www.ensembl.org/Homo_sapiens/"&gt;latest Ensembl release&lt;/a&gt; (v107).
+We can download the corresponding SQLite database from &lt;a href="https://annotationhub.bioconductor.org/package2/AHEnsDbs"&gt;AnnotationHub&amp;rsquo;s web interface&lt;/a&gt; (its object ID is &lt;a href="https://annotationhub.bioconductor.org/ahid/AH104864"&gt;AH104864&lt;/a&gt;):&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;curl -Lo EnsDb.Hsapiens.v107.sqlite &lt;span class="se"&gt;\&lt;/span&gt;
     https://annotationhub.bioconductor.org/fetch/111610
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;We use &lt;a href="https://www.sqlalchemy.org/"&gt;SQLAlchemy&lt;/a&gt; to fetch the schema of all the tables.&lt;/p&gt;
+&lt;p&gt;We use &lt;a href="https://www.sqlalchemy.org/"&gt;SQLAlchemy&lt;/a&gt; to fetch the schema of all the tables:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sqlalchemy&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;MetaData&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;create_engine&lt;/span&gt;
 
 &lt;span class="n"&gt;engine&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;create_engine&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;sqlite:///EnsDb.Hsapiens.v107.sqlite&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -66,8 +62,8 @@ We can find the corresponding SQLite database from &lt;a href="https://annotatio
 &lt;span class="c1"&gt;# ...&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;So with the correct data type mapping, we can export all the tables as parquet by &lt;a href="https://pandas.pydata.org/"&gt;pandas&lt;/a&gt; and &lt;a href="https://arrow.apache.org/docs/python/index.html"&gt;PyArrow&lt;/a&gt;.
-Since there are quite many text columns, I also used &lt;a href="https://facebook.github.io/zstd/"&gt;zstandard&lt;/a&gt; to compress the Parquet (with a high-than-default compression level):&lt;/p&gt;
+&lt;p&gt;With the correct data type mapping, we can export all the tables as Parquet by &lt;a href="https://pandas.pydata.org/"&gt;pandas&lt;/a&gt; and &lt;a href="https://arrow.apache.org/docs/python/index.html"&gt;PyArrow&lt;/a&gt;.
+Since there are quite many text columns, I also used &lt;a href="https://facebook.github.io/zstd/"&gt;zstandard&lt;/a&gt; to compress the Parquet (with a higher compression level):&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pyarrow&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pa&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pd&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pyarrow.parquet&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pq&lt;/span&gt;
@@ -103,23 +99,23 @@ Since there are quite many text columns, I also used &lt;a href="https://faceboo
     &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h3 id="load-parquet-tables-to-duckdb"&gt;Load parquet tables to DuckDB&lt;/h3&gt;
-&lt;p&gt;Finally, we can load the exported parquet tables to DuckDB.
-Here I tested a few different approaches:&lt;/p&gt;
+&lt;h3 id="load-parquet-tables-to-duckdb"&gt;Load Parquet tables to DuckDB&lt;/h3&gt;
+&lt;p&gt;Finally, we can load the exported Parquet tables to DuckDB.
+Here I tested a few approaches:&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;Create views to the external parquet files&lt;/li&gt;
+&lt;li&gt;Create views to the external Parquet files (no content loaded to the db)&lt;/li&gt;
 &lt;li&gt;Load the full content&lt;/li&gt;
-&lt;li&gt;Load the full content and index the tables (same as the original SQLite database)&lt;/li&gt;
+&lt;li&gt;Load the full content and index the tables (same as the original SQLite db)&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;Since DuckDB has native support for Parquet files, the syntax is straightforward:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;-- Install and activate the extension&lt;/span&gt;
 &lt;span class="n"&gt;INSTALL&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;parquet&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;LOAD&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;parquet&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-&lt;span class="c1"&gt;-- To create views to external parquet&lt;/span&gt;
+&lt;span class="c1"&gt;-- To create views to external Parquet&lt;/span&gt;
 &lt;span class="k"&gt;CREATE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;VIEW&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;table&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;./ensdb_v107/&amp;lt;table&amp;gt;.parquet&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-&lt;span class="c1"&gt;-- To load the full content&lt;/span&gt;
+&lt;span class="c1"&gt;-- To load the full content from external Parquet&lt;/span&gt;
 &lt;span class="k"&gt;CREATE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;TABLE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;table&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;./ensdb_v107/&amp;lt;table&amp;gt;.parquet&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
@@ -133,14 +129,14 @@ Here I tested a few different approaches:&lt;/p&gt;
 &lt;p&gt;Note that I didn&amp;rsquo;t try to &amp;ldquo;optimize&amp;rdquo; the table indices for my queries.
 I simply mirrored the same index definition from the original SQLite database.&lt;/p&gt;
 &lt;p&gt;DuckDB&amp;rsquo;s commandline interface works like SQLite.
-And it keeps the database in a single file too:&lt;/p&gt;
+And it keeps the database in a single file too.
+The full conversion including the Parquet step took about 10 seconds to complete.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;duckdb -echo ensdb_v107.duckdb &amp;lt; create_duckdb.sql
 duckdb -readonly ensdb_v107.duckdb
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;The full conversion including the parquet step took about 10 seconds to complete.&lt;/p&gt;
 &lt;h3 id="database-file-size-comparison"&gt;Database file size comparison&lt;/h3&gt;
-&lt;p&gt;Here are the file size of the databases:&lt;/p&gt;
+&lt;p&gt;Here shows the file size of the databases created with different settings:&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -161,7 +157,7 @@ duckdb -readonly ensdb_v107.duckdb
 &lt;td style="text-align: right;"&gt;&lt;strong&gt;100.0&lt;/strong&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td style="text-align: left;"&gt;DuckDB w. ext. parquets&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;DuckDB with external Parquets&lt;/td&gt;
 &lt;td style="text-align: right;"&gt;37.6MB&lt;/td&gt;
 &lt;td style="text-align: right;"&gt;9.0&lt;/td&gt;
 &lt;/tr&gt;
@@ -177,37 +173,39 @@ duckdb -readonly ensdb_v107.duckdb
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;DuckDB with external parquets yields the smallest file (~9% of the original size).
-It&amp;rsquo;s probably because there are a lot of text columns in the database, and zstd compression works really well for the plain text.
+&lt;p&gt;DuckDB with external Parquets yields the smallest file (~9% of the original size).
+It&amp;rsquo;s probably due to a lot of text columns in the database, and zstd compression works really well for the plain text.
 This approach could make the ensembldb database more portable.
 Say, it&amp;rsquo;s possible to commit it directly into the analysis project&amp;rsquo;s GitHub repo.&lt;/p&gt;
-&lt;p&gt;By loading the actual data into DuckDB (without indices), the file grows considerably due to no compression and it is slightly smaller than SQLite.
+&lt;p&gt;By loading the actual data into DuckDB (without indices), the file grows considerably due to no compression.
+Though it is slightly smaller than its SQLite counterpart.
 I wonder if this is due to the columnar storage being more space efficient than row storage.
-By indexing the DuckDB database, the file surprisingly grows to be larger than SQLite.
-Since DuckDB is still actively developing its indexing algorithm, I suppose there might be a room for future improvement.&lt;/p&gt;
-&lt;p&gt;We have the databases ready.
-Now let&amp;rsquo;s see how they perform.&lt;/p&gt;
-&lt;!-- cSpell:words dbdir mircrobenchmark --&gt;
+After indexing the DuckDB database, it surprisingly grows to be much larger than SQLite.
+I don&amp;rsquo;t know DuckDB&amp;rsquo;s indexing methods enough to understand what happened here.
+Since DuckDB is still actively developing its indexing algorithm, I suppose this could be optimized in the future.&lt;/p&gt;
+&lt;p&gt;Now we have the databases ready.
+Let&amp;rsquo;s see how they perform.&lt;/p&gt;
+&lt;!-- cSpell:words dbdir mircrobenchmark noidx EGFR --&gt;
 
 &lt;h2 id="use-duckdb-in-ensembldb"&gt;Use DuckDB in ensembldb&lt;/h2&gt;
 &lt;p&gt;It&amp;rsquo;s painless to tell ensembldb to use DuckDB instead.
-&lt;a href="https://duckdb.org/docs/api/r"&gt;DuckDB&amp;rsquo;s R client&lt;/a&gt; already implements R&amp;rsquo;s DBI interface, and ensembldb accepts a DBI connection to create a EnsDb object.
+&lt;a href="https://duckdb.org/docs/api/r"&gt;DuckDB&amp;rsquo;s R client&lt;/a&gt; already implements R&amp;rsquo;s DBI interface, and ensembldb &lt;a href="https://jorainer.github.io/ensembldb/reference/EnsDb.html"&gt;accepts a DBI connection&lt;/a&gt; to create a EnsDb object.
 So we already have everything we need:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;duckdb&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ensembldb&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 &lt;span class="n"&gt;edb_sqlite&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;EnsDb&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;EnsDb.Hsapiens.v107.sqlite&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
-&lt;span class="n"&gt;conn&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;dbConnect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;duckdb&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;dbdir&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ensdb_v107.duckdb&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;read_only&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;conn&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;dbConnect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;duckdb&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;dbdir&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;ensdb_v107.duckdb&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;read_only&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;edb_duckdb&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;EnsDb&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="nf"&gt;dbDisconnect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shutdown&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  &lt;span class="c1"&gt;# disconnect after usage&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;All the downstream usage of ensembldb is the same from here.&lt;/p&gt;
-&lt;h2 id="benchmark-results"&gt;Benchmark results&lt;/h2&gt;
+&lt;h2 id="benchmark-the-databases"&gt;Benchmark the databases&lt;/h2&gt;
 &lt;p&gt;Now we have the original SQLite database and three DuckDB databases constructed with various settings ready to use in ensembldb.
-Here I tested mainly two scenarios: a genome-wide annotation query and a specific gene lookup.&lt;/p&gt;
-&lt;p&gt;To make the query more realistic and complicated, I applied a filter for annotations only from the canonical chromosomes and remove all LRG genes:&lt;/p&gt;
+Here I tested two scenarios: a genome-wide annotation query and a gene-specific lookup.&lt;/p&gt;
+&lt;p&gt;To make the query more realistic and complicated, I also applied a filter to all queries to select annotations only from the canonical chromosomes and remove all LRG genes:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;standard_filter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;AnnotationFilter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="n"&gt;seq_name&lt;/span&gt; &lt;span class="o"&gt;%in%&lt;/span&gt; &lt;span class="nf"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;22&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;X&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Y&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;MT&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;
         &lt;span class="n"&gt;gene_biotype&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;LRG_gene&amp;#39;&lt;/span&gt;
@@ -215,7 +213,7 @@ Here I tested mainly two scenarios: a genome-wide annotation query and a specifi
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;I use &lt;a href="https://cran.r-project.org/web/packages/microbenchmark/index.html"&gt;microbenchmark&lt;/a&gt; to benchmark the same query from different databases.
-Conceptually, it works like this:&lt;/p&gt;
+It works like this:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;mbm&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;microbenchmark&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="s"&gt;&amp;quot;sqlite_noidx&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;some&lt;/span&gt; &lt;span class="n"&gt;query&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;},&lt;/span&gt;
     &lt;span class="s"&gt;&amp;quot;sqlite&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="kc"&gt;...&lt;/span&gt; &lt;span class="p"&gt;},&lt;/span&gt;
@@ -228,7 +226,7 @@ Conceptually, it works like this:&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h3 id="genome-wide-annotation-query"&gt;Genome-wide annotation query&lt;/h3&gt;
-&lt;p&gt;The first genome-wide query finds the 5&amp;rsquo;UTRs of all the transcripts.
+&lt;p&gt;The first genome-wide query finds the 5&amp;rsquo;UTR genomic ranges of all the transcripts.
 This is one of the most computationally intensive built-in queries I know, involving some genomic range arithmics and querying over multiple tables.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;five_utr_per_tx&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;fiveUTRsByTranscript&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;edb&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;standard_filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;five_utr_per_tx&lt;/span&gt; &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="nf"&gt;head&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
@@ -249,18 +247,19 @@ This is one of the most computationally intensive built-in queries I know, invol
 &lt;span class="c1"&gt;## ...&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
+&lt;p&gt;Here is the microbenchmark results by running the same query in all databases:&lt;/p&gt;
 &lt;figure class="invert-in-dark-mode"&gt;
     &lt;img src="https://blog.liang2.tw/posts/2022/10/use-duckdb-in-ensembldb/pics/benchmark_genomewide_5utr_by_tx.png"&gt;
-    &lt;figcaption&gt;Benchmark of extracting genome-wide 5'UTR locations per transcript.&lt;/figcaption&gt;
+    &lt;figcaption&gt;Benchmark results of extracting genome-wide 5'UTR locations per transcript.&lt;/figcaption&gt;
 &lt;/figure&gt;
 
-&lt;p&gt;We see a huge performance increase for all DuckDB databases, since this query pretty much scans over the full table.
-Overall, DuckDB runs 3–4 times faster than SQLite.&lt;/p&gt;
-&lt;p&gt;In many cases, there are always a few runs that take significantly more time.
-This trend is quite consistent even after I re-run the benchmarks for multiple times.
-While I haven&amp;rsquo;t investigated it, I think this is due to the first run(s) being un-cached.
+&lt;p&gt;There is a huge performance increase for all DuckDB databases, since this query pretty much scans over the full table.
+Overall, DuckDB runs 3+ times faster than SQLite.&lt;/p&gt;
+&lt;p&gt;In many cases, there are always a few runs in each database that take significantly more time.
+This trend is quite consistent as I re-run the benchmarks multiple times.
+While I haven&amp;rsquo;t investigated these outliers, I think this is due to the first run(s) being un-cached.
 Surprisingly, DuckDB with indices run much slower than that without indices (especially the first run).
-Though the index might not be very helpful in sequential scans, I guess the slowdown could be because of the bigger file to cache or the query planner unnecessarily traversing over indices.&lt;/p&gt;
+Though the index might be useless in sequential scans, I guess the slowdown could be due to the bigger file (longer to cache) or the query planner accidentally traversing over indices.&lt;/p&gt;
 &lt;h2 id="another-genome-wide-annotation-query"&gt;Another genome-wide annotation query&lt;/h2&gt;
 &lt;p&gt;The other genome-wide query finds the transcripts of all the genes.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;tx_per_gene&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;transcriptsBy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;edb&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;by&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;gene&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;standard_filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -285,16 +284,19 @@ Though the index might not be very helpful in sequential scans, I guess the slow
 &lt;span class="c1"&gt;## ...&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
+&lt;p&gt;Similarly, here are the benchmark results:&lt;/p&gt;
 &lt;figure class="invert-in-dark-mode"&gt;
     &lt;img src="https://blog.liang2.tw/posts/2022/10/use-duckdb-in-ensembldb/pics/benchmark_genomewide_tx_by_gene.png"&gt;
     &lt;figcaption&gt;Benchmark of extracting genome-wide gene isoforms.&lt;/figcaption&gt;
 &lt;/figure&gt;
 
 &lt;p&gt;This query tells more or less the same story with only a notable difference.
-In this case, fully loaded DuckDB with and without indices share the same performance.&lt;/p&gt;
-&lt;h3 id="a-specific-gene-lookup"&gt;A specific gene lookup&lt;/h3&gt;
-&lt;p&gt;My another main scenario is to look up the annotation of a specific gene.
-Let&amp;rsquo;s simulate this kind of queries using a gene &amp;ldquo;EGFR&amp;rdquo;, whose annotations can be retrieved by:&lt;/p&gt;
+In this case, fully loaded DuckDB with and without indices share the same performance.
+Interestingly, all the DuckDB runtimes are in a bimodal distribution.
+I don&amp;rsquo;t know why.&lt;/p&gt;
+&lt;h3 id="gene-specific-lookup"&gt;Gene-specific lookup&lt;/h3&gt;
+&lt;p&gt;My another main scenario is to look up the annotations of a specific gene.
+Let&amp;rsquo;s simulate this kind of queries by retrieving all the transcripts of a gene &amp;ldquo;EGFR&amp;rdquo;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;egfr_tx&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;transcripts&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;edb&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;AnnotationFilter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="n"&gt;gene_name&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;EGFR&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;span class="n"&gt;egfr_tx&lt;/span&gt;
 &lt;span class="c1"&gt;## GRanges object with 14 ranges and 12 metadata columns:&lt;/span&gt;
@@ -316,17 +318,19 @@ Let&amp;rsquo;s simulate this kind of queries using a gene &amp;ldquo;EGFR&amp;r
 
 &lt;figure class="invert-in-dark-mode"&gt;
     &lt;img src="https://blog.liang2.tw/posts/2022/10/use-duckdb-in-ensembldb/pics/benchmark_extract_specific_gene.png"&gt;
-    &lt;figcaption&gt;Benchmark of extracting the annotaiton of a specific gene.&lt;/figcaption&gt;
+    &lt;figcaption&gt;Benchmark of extracting the annotations of a specific gene.&lt;/figcaption&gt;
 &lt;/figure&gt;
 
 &lt;p&gt;SQLite with indices undoubtedly has the best performance.
-It&amp;rsquo;s been fined for this use case (extracting a few rows using indices).
-And SQLite without an index takes the most time to complete.
-The performance of all three DuckDB databases fall in between.
-Unlike SQLite, indexing DuckDB only speeds up the query a little bit.&lt;/p&gt;
+Understandably, it&amp;rsquo;s been fine tuned for this very use case (extracting a few rows using indices).
+And SQLite without an index takes the most time to complete, so it&amp;rsquo;s necessary to always index the tables.&lt;/p&gt;
+&lt;p&gt;The performance of all three DuckDB databases fall in between the two extremes of SQLite dbs.
+Unlike SQLite, indexed DuckDB only speeds up the query a little bit (21.0ms vs 22.4ms on average).
+Given the worse performance of one of the genome-wide queries above using the indexed DuckDB db,
+I think it&amp;rsquo;s optional to create indices for ensembldb&amp;rsquo;s DuckDB dbs.&lt;/p&gt;
 &lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
-&lt;p&gt;Here is the overview of the benchmarking results combined with the database file size.
-The table shows the average speed-up ratio (and the worst case ratio) over the original SQLite database (ratio the higher the better):&lt;/p&gt;
+&lt;p&gt;Here is the overview of the benchmarking results together with the db&amp;rsquo;s file size.
+The table below displays the performance in average speed-up ratio (and the worst case ratio) over the original SQLite db (ratio the higher the better):&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -353,7 +357,7 @@ The table shows the average speed-up ratio (and the worst case ratio) over the o
 &lt;td style="text-align: right;"&gt;&lt;strong&gt;1.00 (1.00)&lt;/strong&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td style="text-align: left;"&gt;DuckDB w. ext. parquets&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;DuckDB w. ext. Parquets&lt;/td&gt;
 &lt;td style="text-align: right;"&gt;9.0&lt;/td&gt;
 &lt;td style="text-align: right;"&gt;3.36 (3.69)&lt;/td&gt;
 &lt;td style="text-align: right;"&gt;4.14 (4.63)&lt;/td&gt;
@@ -377,23 +381,23 @@ The table shows the average speed-up ratio (and the worst case ratio) over the o
 &lt;/table&gt;
 &lt;p&gt;Overall, DuckDB shows impressive performance increase for genome-wide queries.
 It uses up less storage too.
-While DuckDB is slower than SQLite when it comes to gene-specific lookups.
-Since we are talking about tens of milliseconds, unless there are thousands of lookups, the performance impact is insignificant.
-On the other hand, genome-wide queries are saving seconds of time.&lt;/p&gt;
-&lt;p&gt;We could replace the original ensembldb database with a DuckDB database by loading the tables and removing the indices.
-If the user is willing to sacrifice some performance in gene-specific lookups, DuckDB with external parquet files only uses less than 10% of the space but still runs significantly faster for genome-wide queries.
-While the default indices copied from SQLite are not very helpful, I didn&amp;rsquo;t tune the indices to maximally speed up the gene-specific lookups.
+While DuckDB is slower than SQLite when it comes to gene-specific lookups, since we are talking about tens of milliseconds per query, unless we are running thousands of these queries, the performance impact is minimal.
+On the other hand, genome-wide queries are saving seconds per query.&lt;/p&gt;
+&lt;p&gt;As the benchmark results shown, we could replace the original ensembldb database with a DuckDB database by loading the tables and removing the indices.
+If the user is willing to sacrifice some performance in gene-specific lookups, DuckDB with external Parquet files only uses &amp;lt; 10% of the original disk space but it still runs faster for genome-wide queries.&lt;/p&gt;
+&lt;p&gt;While the default indices copied from SQLite are not very helpful, I didn&amp;rsquo;t tune the indices to maximally speed up the gene-specific lookups.
+We can probably also tune the Parquet compression ratio to find a better balance between the decompression speed and file size.
 Note that DuckDB&amp;rsquo;s file format is not stabilized yet, so the database needs to be re-created in newer DuckDB versions.&lt;/p&gt;
 &lt;p&gt;All in all, I think DuckDB advertises itself accurately when it comes to analytical query workloads.
 It shows good performance when it queries a large portion of its content.
 By having a similar interface to SQLite and clients in popular languages (R, Python, and etc),
-converting an existing SQLite usecase to use DuckDB is easy.
+it&amp;rsquo;s easy to change an existing SQLite usecase to use DuckDB.
 My small exercise with ensembldb has convinced me to try out DuckDB in more scenarios too.&lt;/p&gt;
 &lt;div class="footnote"&gt;
 &lt;hr&gt;
 &lt;ol&gt;
 &lt;li id="fn:sqlite-to-duckdb"&gt;
-&lt;p&gt;There is an official extension &lt;a href="https://github.com/duckdblabs/sqlite_scanner"&gt;sqlite_scanner&lt;/a&gt; currently under development that can attach directly to a SQLite database inside a DuckDB database.
+&lt;p&gt;There is an official extension &lt;a href="https://github.com/duckdblabs/sqlite_scanner"&gt;sqlite_scanner&lt;/a&gt; currently under development that lets a DuckDB attach directly to a SQLite database.
 So in the future, it could be much easier to convert SQLite to DuckDB.&amp;#160;&lt;a class="footnote-backref" href="#fnref:sqlite-to-duckdb" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;

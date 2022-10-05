@@ -91,7 +91,7 @@
                 <time datetime="Oct 05, 2022">Oct 05, 2022</time>
                 in <a href="https://blog.liang2.tw/category/bioinfo/">Bioinfo</a>
             </span>
-            <h2 class="post-title"><a href="https://blog.liang2.tw/posts/2022/10/use-duckdb-in-ensembldb/" rel="bookmark" title="Permalink to Use DuckDB in ensembldb to query Ensembl's genome annotation">Use DuckDB in ensembldb to query Ensembl's genome annotation</a></h2>
+            <h2 class="post-title"><a href="https://blog.liang2.tw/posts/2022/10/use-duckdb-in-ensembldb/" rel="bookmark" title="Permalink to Use DuckDB in ensembldb to query Ensembl's genome annotations">Use DuckDB in ensembldb to query Ensembl's genome annotations</a></h2>
             <span class="post-meta">
                         <a href="https://blog.liang2.tw/tag/en/">en</a>
                         <a href="https://blog.liang2.tw/tag/r/">r</a>
@@ -102,12 +102,7 @@
             </span>
         </header>
         <section class="post-excerpt">
-            <!-- cSpell:words sexchrom OLAP Hsapiens pyarrow ensdb zstandard zstd -->
-
-<p>To query genome reference and annotations locally, <a href="https://bioconductor.org/packages/release/bioc/html/ensembldb.html">ensembldb</a> has been my go-to approach.
-While I&rsquo;ve said many good things about this R package before (<a href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/">1</a>, <a href="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/">2</a>, <a href="https://blog.liang2.tw/posts/2019/01/build-ensdb-from-local-mysql/">3</a>), here&rsquo;s a summary of my favorite features:</p>
-<ol>
-<li>I can use the same Ensembl version throughout my project (as a SQLite database …</li></ol>
+            <p>I have been using ensembldb to query genome annotations locally, which stores the Ensembl annotations in a offline SQLite database. By replacing the database engine with DuckDB, genome-wide queries are faster with small impact on gene specific queries (depending on the usage). DuckDB database&rsquo;s file size is also smaller, and it can be even smaller by offloading the tables to external Parquet files.</p>
         </section>
     </article>
     <article class="post">
