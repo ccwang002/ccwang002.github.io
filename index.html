@@ -25,7 +25,7 @@
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
 	<link rel="stylesheet" href="https://blog.liang2.tw/theme/styles/pygments/light.css" type="text/css" media="(prefers-color-scheme: light)" id="pyg-light" />
     <link rel="stylesheet" href="https://blog.liang2.tw/theme/styles/pygments/dark-monokai.css" type="text/css" media="(prefers-color-scheme: dark)" id="pyg-dark" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.15.3/katex.min.css">
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.16.2/katex.min.css">
 </head>
 
 <body class="post-template no-js">
@@ -85,6 +85,31 @@
 		</h2>
 	</header>
 	<main id="content" class="content" role="main">
+    <article class="post">
+        <header class="post-header">
+            <span class="post-meta">
+                <time datetime="Oct 05, 2022">Oct 05, 2022</time>
+                in <a href="https://blog.liang2.tw/category/bioinfo/">Bioinfo</a>
+            </span>
+            <h2 class="post-title"><a href="https://blog.liang2.tw/posts/2022/10/use-duckdb-in-ensembldb/" rel="bookmark" title="Permalink to Use DuckDB in ensembldb to query Ensembl's genome annotation">Use DuckDB in ensembldb to query Ensembl's genome annotation</a></h2>
+            <span class="post-meta">
+                        <a href="https://blog.liang2.tw/tag/en/">en</a>
+                        <a href="https://blog.liang2.tw/tag/r/">r</a>
+                        <a href="https://blog.liang2.tw/tag/python/">python</a>
+                        <a href="https://blog.liang2.tw/tag/ensembldb/">ensembldb</a>
+                        <a href="https://blog.liang2.tw/tag/sqlite/">sqlite</a>
+                        <a href="https://blog.liang2.tw/tag/duckdb/">duckdb</a>
+            </span>
+        </header>
+        <section class="post-excerpt">
+            <!-- cSpell:words sexchrom OLAP Hsapiens pyarrow ensdb zstandard zstd -->
+
+<p>To query genome reference and annotations locally, <a href="https://bioconductor.org/packages/release/bioc/html/ensembldb.html">ensembldb</a> has been my go-to approach.
+While I&rsquo;ve said many good things about this R package before (<a href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/">1</a>, <a href="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/">2</a>, <a href="https://blog.liang2.tw/posts/2019/01/build-ensdb-from-local-mysql/">3</a>), here&rsquo;s a summary of my favorite features:</p>
+<ol>
+<li>I can use the same Ensembl version throughout my project (as a SQLite database …</li></ol>
+        </section>
+    </article>
     <article class="post">
         <header class="post-header">
             <span class="post-meta">
@@ -241,25 +266,8 @@ It makes my plain text documents look neat.</p>
 <p>Firefox fullscreen on macOS by default contains the address bar and the tab bar. I usually don&rsquo;t really need the full …</p>
         </section>
     </article>
-    <article class="post">
-        <header class="post-header">
-            <span class="post-meta">
-                <time datetime="Oct 20, 2018">Oct 20, 2018</time>
-                in <a href="https://blog.liang2.tw/category/coding/">Coding</a>
-            </span>
-            <h2 class="post-title"><a href="https://blog.liang2.tw/posts/2018/10/gpg-key-transition-2018/" rel="bookmark" title="Permalink to GPG Key Transition">GPG Key Transition</a></h2>
-            <span class="post-meta">
-                        <a href="https://blog.liang2.tw/tag/en/">en</a>
-                        <a href="https://blog.liang2.tw/tag/gpg/">gpg</a>
-            </span>
-        </header>
-        <section class="post-excerpt">
-            <p>I am transiting my GPG key again.  However, for this time, I expect to use the new GPG master key longer and will start building this identity unless there is a concern about the key strength or I accidentally lose the key. </p>
-<p>Back in <a href="https://blog.liang2.tw/posts/2016/12/gpg-key-transition-2016/">my GPG key transition in 2016 …</a></p>
-        </section>
-    </article>
 <nav class="pagination" role="navigation">
-		<span class="page-number">Page 1 of 5</span>
+		<span class="page-number">Page 1 of 6</span>
 	<a class="older-posts" href="https://blog.liang2.tw/index2.html">Next &rarr;</a>
 </nav>
 	</main>

@@ -1,5 +1,403 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/all.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-06-25T15:46:57-05:00</updated><entry><title>Thesis in LaTeX</title><link href="https://blog.liang2.tw/posts/2022/03/thesis-latex/" rel="alternate"></link><published>2022-03-12T00:00:00-06:00</published><updated>2022-06-25T15:46:57-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2022-03-12:/posts/2022/03/thesis-latex/</id><summary type="html">&lt;!-- cSpell:words zotero WUSTL --&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Liang-Bo Wang's Blog</title><link href="https://blog.liang2.tw/" rel="alternate"></link><link href="https://blog.liang2.tw/feeds/all.atom.xml" rel="self"></link><id>https://blog.liang2.tw/</id><updated>2022-10-05T15:27:19-05:00</updated><entry><title>Use DuckDB in ensembldb to query Ensembl's genome annotation</title><link href="https://blog.liang2.tw/posts/2022/10/use-duckdb-in-ensembldb/" rel="alternate"></link><published>2022-10-05T00:00:00-05:00</published><updated>2022-10-05T15:27:19-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2022-10-05:/posts/2022/10/use-duckdb-in-ensembldb/</id><summary type="html">&lt;!-- cSpell:words sexchrom OLAP Hsapiens pyarrow ensdb zstandard zstd --&gt;
+
+&lt;p&gt;To query genome reference and annotations locally, &lt;a href="https://bioconductor.org/packages/release/bioc/html/ensembldb.html"&gt;ensembldb&lt;/a&gt; has been my go-to approach.
+While I&amp;rsquo;ve said many good things about this R package before (&lt;a href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/"&gt;1&lt;/a&gt;, &lt;a href="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/"&gt;2&lt;/a&gt;, &lt;a href="https://blog.liang2.tw/posts/2019/01/build-ensdb-from-local-mysql/"&gt;3&lt;/a&gt;), here&amp;rsquo;s a summary of my favorite features:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;I can use the same Ensembl version throughout my project (as a SQLite database …&lt;/li&gt;&lt;/ol&gt;</summary><content type="html">&lt;!-- cSpell:words sexchrom OLAP Hsapiens pyarrow ensdb zstandard zstd --&gt;
+
+&lt;p&gt;To query genome reference and annotations locally, &lt;a href="https://bioconductor.org/packages/release/bioc/html/ensembldb.html"&gt;ensembldb&lt;/a&gt; has been my go-to approach.
+While I&amp;rsquo;ve said many good things about this R package before (&lt;a href="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/"&gt;1&lt;/a&gt;, &lt;a href="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/"&gt;2&lt;/a&gt;, &lt;a href="https://blog.liang2.tw/posts/2019/01/build-ensdb-from-local-mysql/"&gt;3&lt;/a&gt;), here&amp;rsquo;s a summary of my favorite features:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;I can use the same Ensembl version throughout my project (as a SQLite database)&lt;/li&gt;
+&lt;li&gt;I can query the genome-wide annotations and their locations easily and offline&lt;/li&gt;
+&lt;li&gt;Integrate the extracted information with my data and other external annotations with the help of &lt;a href="https://bioconductor.org/packages/release/bioc/html/GenomicRanges.html"&gt;GenomicRanges&lt;/a&gt; and &lt;a href="https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html"&gt;SummarizedExperiment&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;The usage is language agnostic (say, &lt;a href="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/"&gt;I can query its db in Python&lt;/a&gt;)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Since &lt;a href="https://duckdb.org/"&gt;DuckDB&lt;/a&gt; is designed for analytical query workloads (aka &lt;a href="https://en.wikipedia.org/wiki/Online_analytical_processing"&gt;OLAP&lt;/a&gt;), I decided to convert ensembl&amp;rsquo;s SQLite database to DuckDB and try it in my usual scenarios.
+DuckDB uses a columnar storage and supports query into external Apache Parquet and Arrow files.
+Otherwise, it has the similar look-and-feel as SQLite.&lt;/p&gt;
+&lt;div class="toc"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#convert-sqlite-to-duckdb-through-parquet"&gt;Convert SQLite to DuckDB through Parquet&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#load-parquet-tables-to-duckdb"&gt;Load parquet tables to DuckDB&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#database-file-size-comparison"&gt;Database file size comparison&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="#use-duckdb-in-ensembldb"&gt;Use DuckDB in ensembldb&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#benchmark-results"&gt;Benchmark results&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#genome-wide-annotation-query"&gt;Genome-wide annotation query&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="#another-genome-wide-annotation-query"&gt;Another genome-wide annotation query&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#a-specific-gene-lookup"&gt;A specific gene lookup&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="#summary"&gt;Summary&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;h2 id="convert-sqlite-to-duckdb-through-parquet"&gt;Convert SQLite to DuckDB through Parquet&lt;/h2&gt;
+&lt;p&gt;The first step is to convert ensembl&amp;rsquo;s SQLite database to DuckDB&lt;sup id="fnref:sqlite-to-duckdb"&gt;&lt;a class="footnote-ref" href="#fn:sqlite-to-duckdb"&gt;1&lt;/a&gt;&lt;/sup&gt;.
+I decided to export SQLite tables as individual [Parquet] files, and then reload them back to DuckDB.
+So we could also test the DuckDB&amp;rsquo;s ability to query external parquet files directly.&lt;/p&gt;
+&lt;p&gt;For this exercise, I used the latest Ensembl release (v107).
+We can find the corresponding SQLite database from &lt;a href="https://annotationhub.bioconductor.org/package2/AHEnsDbs"&gt;AnnotationHub&amp;rsquo;s web interface&lt;/a&gt; (its object ID is &lt;a href="https://annotationhub.bioconductor.org/ahid/AH104864"&gt;AH104864&lt;/a&gt;):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;curl -Lo EnsDb.Hsapiens.v107.sqlite &lt;span class="se"&gt;\&lt;/span&gt;
+    https://annotationhub.bioconductor.org/fetch/111610
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We use &lt;a href="https://www.sqlalchemy.org/"&gt;SQLAlchemy&lt;/a&gt; to fetch the schema of all the tables.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sqlalchemy&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;MetaData&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;create_engine&lt;/span&gt;
+
+&lt;span class="n"&gt;engine&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;create_engine&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;sqlite:///EnsDb.Hsapiens.v107.sqlite&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;metadata&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;MetaData&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;metadata&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reflect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bind&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;engine&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We can then list all the tables and their column data types:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;db_tables&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;metadata&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sorted_tables&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;table&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;db_tables&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;table&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s1"&gt;: &amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;end&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;, &amp;#39;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s1"&gt; (&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s1"&gt;)&amp;#39;&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;table&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;columns&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="c1"&gt;# chromosome: seq_name (TEXT), seq_length (INTEGER), is_circular (INTEGER)&lt;/span&gt;
+&lt;span class="c1"&gt;# gene: gene_id (TEXT), gene_name (TEXT), gene_biotype (TEXT),&lt;/span&gt;
+&lt;span class="c1"&gt;#   gene_seq_start (INTEGER), gene_seq_end (INTEGER),&lt;/span&gt;
+&lt;span class="c1"&gt;#   seq_name (TEXT), seq_strand (INTEGER),...&lt;/span&gt;
+&lt;span class="c1"&gt;# ...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So with the correct data type mapping, we can export all the tables as parquet by &lt;a href="https://pandas.pydata.org/"&gt;pandas&lt;/a&gt; and &lt;a href="https://arrow.apache.org/docs/python/index.html"&gt;PyArrow&lt;/a&gt;.
+Since there are quite many text columns, I also used &lt;a href="https://facebook.github.io/zstd/"&gt;zstandard&lt;/a&gt; to compress the Parquet (with a high-than-default compression level):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pyarrow&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pa&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pd&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pyarrow.parquet&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pq&lt;/span&gt;
+
+&lt;span class="n"&gt;sqlite_to_pyarrow_type_mapping&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="s1"&gt;&amp;#39;TEXT&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;pa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;
+    &lt;span class="s1"&gt;&amp;#39;INTEGER&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;pa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;int64&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;
+    &lt;span class="s1"&gt;&amp;#39;REAL&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;pa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;float64&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Read each SQLite table as a Arrow table&lt;/span&gt;
+&lt;span class="n"&gt;arrow_tables&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;engine&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;connect&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;table&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;metadata&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sorted_tables&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="c1"&gt;# Construct the corresponding pyarrow schema&lt;/span&gt;
+        &lt;span class="n"&gt;schema&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;schema&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;
+            &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sqlite_to_pyarrow_type_mapping&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;
+            &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;table&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;columns&lt;/span&gt;
+        &lt;span class="p"&gt;])&lt;/span&gt;
+        &lt;span class="n"&gt;arrow_tables&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;table&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Table&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;from_pandas&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+            &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_sql_table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;table&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;coerce_float&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+            &lt;span class="n"&gt;schema&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;schema&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+            &lt;span class="n"&gt;preserve_index&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Write each Arrow table to a zstd compressed Parquet&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;table_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;table&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;arrow_tables&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+    &lt;span class="n"&gt;pq&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;write_table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+        &lt;span class="n"&gt;table&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;ensdb_v107/&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;table_name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s1"&gt;.parquet&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="n"&gt;compression&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;zstd&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="n"&gt;compression_level&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id="load-parquet-tables-to-duckdb"&gt;Load parquet tables to DuckDB&lt;/h3&gt;
+&lt;p&gt;Finally, we can load the exported parquet tables to DuckDB.
+Here I tested a few different approaches:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Create views to the external parquet files&lt;/li&gt;
+&lt;li&gt;Load the full content&lt;/li&gt;
+&lt;li&gt;Load the full content and index the tables (same as the original SQLite database)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Since DuckDB has native support for Parquet files, the syntax is straightforward:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;-- Install and activate the extension&lt;/span&gt;
+&lt;span class="n"&gt;INSTALL&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;parquet&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;LOAD&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;parquet&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="c1"&gt;-- To create views to external parquet&lt;/span&gt;
+&lt;span class="k"&gt;CREATE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;VIEW&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;table&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;./ensdb_v107/&amp;lt;table&amp;gt;.parquet&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="c1"&gt;-- To load the full content&lt;/span&gt;
+&lt;span class="k"&gt;CREATE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;TABLE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;table&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;./ensdb_v107/&amp;lt;table&amp;gt;.parquet&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="c1"&gt;-- To index the table (use .schema to get the original index definitions)&lt;/span&gt;
+&lt;span class="k"&gt;CREATE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;UNIQUE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;INDEX&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;gene_gene_id_idx&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;on&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;gene&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;gene_id&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="k"&gt;CREATE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;INDEX&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;gene_gene_name_idx&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;on&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;gene&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;gene_name&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="k"&gt;CREATE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;INDEX&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;gene_seq_name_idx&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;on&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;gene&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;seq_name&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Note that I didn&amp;rsquo;t try to &amp;ldquo;optimize&amp;rdquo; the table indices for my queries.
+I simply mirrored the same index definition from the original SQLite database.&lt;/p&gt;
+&lt;p&gt;DuckDB&amp;rsquo;s commandline interface works like SQLite.
+And it keeps the database in a single file too:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;duckdb -echo ensdb_v107.duckdb &amp;lt; create_duckdb.sql
+duckdb -readonly ensdb_v107.duckdb
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The full conversion including the parquet step took about 10 seconds to complete.&lt;/p&gt;
+&lt;h3 id="database-file-size-comparison"&gt;Database file size comparison&lt;/h3&gt;
+&lt;p&gt;Here are the file size of the databases:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left;"&gt;Database&lt;/th&gt;
+&lt;th style="text-align: right;"&gt;File size&lt;/th&gt;
+&lt;th style="text-align: right;"&gt;(%)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;SQLite no indexed&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;243MB&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;57.9&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;&lt;strong&gt;SQLite (original)&lt;/strong&gt;&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;&lt;strong&gt;420MB&lt;/strong&gt;&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;&lt;strong&gt;100.0&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;DuckDB w. ext. parquets&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;37.6MB&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;9.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;DuckDB&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;169MB&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;40.2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;DuckDB indexed&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;528MB&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;125.7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;DuckDB with external parquets yields the smallest file (~9% of the original size).
+It&amp;rsquo;s probably because there are a lot of text columns in the database, and zstd compression works really well for the plain text.
+This approach could make the ensembldb database more portable.
+Say, it&amp;rsquo;s possible to commit it directly into the analysis project&amp;rsquo;s GitHub repo.&lt;/p&gt;
+&lt;p&gt;By loading the actual data into DuckDB (without indices), the file grows considerably due to no compression and it is slightly smaller than SQLite.
+I wonder if this is due to the columnar storage being more space efficient than row storage.
+By indexing the DuckDB database, the file surprisingly grows to be larger than SQLite.
+Since DuckDB is still actively developing its indexing algorithm, I suppose there might be a room for future improvement.&lt;/p&gt;
+&lt;p&gt;We have the databases ready.
+Now let&amp;rsquo;s see how they perform.&lt;/p&gt;
+&lt;!-- cSpell:words dbdir mircrobenchmark --&gt;
+
+&lt;h2 id="use-duckdb-in-ensembldb"&gt;Use DuckDB in ensembldb&lt;/h2&gt;
+&lt;p&gt;It&amp;rsquo;s painless to tell ensembldb to use DuckDB instead.
+&lt;a href="https://duckdb.org/docs/api/r"&gt;DuckDB&amp;rsquo;s R client&lt;/a&gt; already implements R&amp;rsquo;s DBI interface, and ensembldb accepts a DBI connection to create a EnsDb object.
+So we already have everything we need:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;duckdb&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nf"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ensembldb&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;edb_sqlite&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;EnsDb&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;EnsDb.Hsapiens.v107.sqlite&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;conn&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;dbConnect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;duckdb&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;dbdir&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ensdb_v107.duckdb&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;read_only&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;edb_duckdb&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;EnsDb&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nf"&gt;dbDisconnect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shutdown&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  &lt;span class="c1"&gt;# disconnect after usage&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;All the downstream usage of ensembldb is the same from here.&lt;/p&gt;
+&lt;h2 id="benchmark-results"&gt;Benchmark results&lt;/h2&gt;
+&lt;p&gt;Now we have the original SQLite database and three DuckDB databases constructed with various settings ready to use in ensembldb.
+Here I tested mainly two scenarios: a genome-wide annotation query and a specific gene lookup.&lt;/p&gt;
+&lt;p&gt;To make the query more realistic and complicated, I applied a filter for annotations only from the canonical chromosomes and remove all LRG genes:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;standard_filter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;AnnotationFilter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+    &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="n"&gt;seq_name&lt;/span&gt; &lt;span class="o"&gt;%in%&lt;/span&gt; &lt;span class="nf"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;22&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;X&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Y&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;MT&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;
+        &lt;span class="n"&gt;gene_biotype&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;LRG_gene&amp;#39;&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I use &lt;a href="https://cran.r-project.org/web/packages/microbenchmark/index.html"&gt;microbenchmark&lt;/a&gt; to benchmark the same query from different databases.
+Conceptually, it works like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;mbm&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;microbenchmark&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+    &lt;span class="s"&gt;&amp;quot;sqlite_noidx&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;some&lt;/span&gt; &lt;span class="n"&gt;query&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+    &lt;span class="s"&gt;&amp;quot;sqlite&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="kc"&gt;...&lt;/span&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+    &lt;span class="s"&gt;&amp;quot;duckdb_parquet&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="kc"&gt;...&lt;/span&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+    &lt;span class="s"&gt;&amp;quot;duckdb&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="kc"&gt;...&lt;/span&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+    &lt;span class="s"&gt;&amp;quot;duckdb_idx&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="kc"&gt;...&lt;/span&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+    &lt;span class="n"&gt;times&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;20&lt;/span&gt;  &lt;span class="c1"&gt;# 50 times for faster queries&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nf"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mbm&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id="genome-wide-annotation-query"&gt;Genome-wide annotation query&lt;/h3&gt;
+&lt;p&gt;The first genome-wide query finds the 5&amp;rsquo;UTRs of all the transcripts.
+This is one of the most computationally intensive built-in queries I know, involving some genomic range arithmics and querying over multiple tables.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;five_utr_per_tx&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;fiveUTRsByTranscript&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;edb&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;standard_filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;five_utr_per_tx&lt;/span&gt; &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="nf"&gt;head&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="c1"&gt;## GRangesList object of length 6:&lt;/span&gt;
+&lt;span class="c1"&gt;## $ENST00000000442&lt;/span&gt;
+&lt;span class="c1"&gt;## GRanges object with 2 ranges and 4 metadata columns:&lt;/span&gt;
+&lt;span class="c1"&gt;##       seqnames            ranges strand |   gene_biotype    seq_name&lt;/span&gt;
+&lt;span class="c1"&gt;##          &amp;lt;Rle&amp;gt;         &amp;lt;IRanges&amp;gt;  &amp;lt;Rle&amp;gt; |    &amp;lt;character&amp;gt; &amp;lt;character&amp;gt;&lt;/span&gt;
+&lt;span class="c1"&gt;##   [1]       11 64305524-64305736      + | protein_coding          11&lt;/span&gt;
+&lt;span class="c1"&gt;##   [2]       11 64307168-64307179      + | protein_coding          11&lt;/span&gt;
+&lt;span class="c1"&gt;##               exon_id exon_rank&lt;/span&gt;
+&lt;span class="c1"&gt;##           &amp;lt;character&amp;gt; &amp;lt;integer&amp;gt;&lt;/span&gt;
+&lt;span class="c1"&gt;##   [1] ENSE00001884684         1&lt;/span&gt;
+&lt;span class="c1"&gt;##   [2] ENSE00001195360         2&lt;/span&gt;
+&lt;span class="c1"&gt;##   -------&lt;/span&gt;
+&lt;span class="c1"&gt;##   seqinfo: 25 sequences (1 circular) from GRCh38 genome&lt;/span&gt;
+&lt;span class="c1"&gt;##&lt;/span&gt;
+&lt;span class="c1"&gt;## ...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;figure class="invert-in-dark-mode"&gt;
+    &lt;img src="https://blog.liang2.tw/posts/2022/10/use-duckdb-in-ensembldb/pics/benchmark_genomewide_5utr_by_tx.png"&gt;
+    &lt;figcaption&gt;Benchmark of extracting genome-wide 5'UTR locations per transcript.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;We see a huge performance increase for all DuckDB databases, since this query pretty much scans over the full table.
+Overall, DuckDB runs 3–4 times faster than SQLite.&lt;/p&gt;
+&lt;p&gt;In many cases, there are always a few runs that take significantly more time.
+This trend is quite consistent even after I re-run the benchmarks for multiple times.
+While I haven&amp;rsquo;t investigated it, I think this is due to the first run(s) being un-cached.
+Surprisingly, DuckDB with indices run much slower than that without indices (especially the first run).
+Though the index might not be very helpful in sequential scans, I guess the slowdown could be because of the bigger file to cache or the query planner unnecessarily traversing over indices.&lt;/p&gt;
+&lt;h2 id="another-genome-wide-annotation-query"&gt;Another genome-wide annotation query&lt;/h2&gt;
+&lt;p&gt;The other genome-wide query finds the transcripts of all the genes.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;tx_per_gene&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;transcriptsBy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;edb&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;by&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;gene&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;standard_filter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;tx_per_gene&lt;/span&gt; &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="nf"&gt;head&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="c1"&gt;## GRangesList object of length 6:&lt;/span&gt;
+&lt;span class="c1"&gt;## $ENSG00000000003&lt;/span&gt;
+&lt;span class="c1"&gt;## GRanges object with 5 ranges and 12 metadata columns:&lt;/span&gt;
+&lt;span class="c1"&gt;##       seqnames              ranges strand |           tx_id&lt;/span&gt;
+&lt;span class="c1"&gt;##          &amp;lt;Rle&amp;gt;           &amp;lt;IRanges&amp;gt;  &amp;lt;Rle&amp;gt; |     &amp;lt;character&amp;gt;&lt;/span&gt;
+&lt;span class="c1"&gt;##   [1]        X 100633442-100639991      - | ENST00000494424&lt;/span&gt;
+&lt;span class="c1"&gt;##   [2]        X 100627109-100637104      - | ENST00000612152&lt;/span&gt;
+&lt;span class="c1"&gt;##   [3]        X 100632063-100637104      - | ENST00000614008&lt;/span&gt;
+&lt;span class="c1"&gt;##   [4]        X 100627108-100636806      - | ENST00000373020&lt;/span&gt;
+&lt;span class="c1"&gt;##   [5]        X 100632541-100636689      - | ENST00000496771&lt;/span&gt;
+&lt;span class="c1"&gt;##                 tx_biotype tx_cds_seq_start tx_cds_seq_end         gene_id&lt;/span&gt;
+&lt;span class="c1"&gt;##                &amp;lt;character&amp;gt;        &amp;lt;integer&amp;gt;      &amp;lt;integer&amp;gt;     &amp;lt;character&amp;gt;&lt;/span&gt;
+&lt;span class="c1"&gt;##   [1] processed_transcript             &amp;lt;NA&amp;gt;           &amp;lt;NA&amp;gt; ENSG00000000003&lt;/span&gt;
+&lt;span class="c1"&gt;##   [2]       protein_coding        100630798      100635569 ENSG00000000003&lt;/span&gt;
+&lt;span class="c1"&gt;##   [3]       protein_coding        100632063      100635569 ENSG00000000003&lt;/span&gt;
+&lt;span class="c1"&gt;##   [4]       protein_coding        100630798      100636694 ENSG00000000003&lt;/span&gt;
+&lt;span class="c1"&gt;##   [5] processed_transcript             &amp;lt;NA&amp;gt;           &amp;lt;NA&amp;gt; ENSG00000000003&lt;/span&gt;
+&lt;span class="c1"&gt;## ...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;figure class="invert-in-dark-mode"&gt;
+    &lt;img src="https://blog.liang2.tw/posts/2022/10/use-duckdb-in-ensembldb/pics/benchmark_genomewide_tx_by_gene.png"&gt;
+    &lt;figcaption&gt;Benchmark of extracting genome-wide gene isoforms.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;This query tells more or less the same story with only a notable difference.
+In this case, fully loaded DuckDB with and without indices share the same performance.&lt;/p&gt;
+&lt;h3 id="a-specific-gene-lookup"&gt;A specific gene lookup&lt;/h3&gt;
+&lt;p&gt;My another main scenario is to look up the annotation of a specific gene.
+Let&amp;rsquo;s simulate this kind of queries using a gene &amp;ldquo;EGFR&amp;rdquo;, whose annotations can be retrieved by:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;egfr_tx&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;transcripts&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;edb&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;AnnotationFilter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="n"&gt;gene_name&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;EGFR&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;egfr_tx&lt;/span&gt;
+&lt;span class="c1"&gt;## GRanges object with 14 ranges and 12 metadata columns:&lt;/span&gt;
+&lt;span class="c1"&gt;##                   seqnames            ranges strand |           tx_id&lt;/span&gt;
+&lt;span class="c1"&gt;##                      &amp;lt;Rle&amp;gt;         &amp;lt;IRanges&amp;gt;  &amp;lt;Rle&amp;gt; |     &amp;lt;character&amp;gt;&lt;/span&gt;
+&lt;span class="c1"&gt;##   ENST00000344576        7 55019017-55171037      + | ENST00000344576&lt;/span&gt;
+&lt;span class="c1"&gt;##   ENST00000275493        7 55019017-55211628      + | ENST00000275493&lt;/span&gt;
+&lt;span class="c1"&gt;##   ENST00000455089        7 55019021-55203076      + | ENST00000455089&lt;/span&gt;
+&lt;span class="c1"&gt;##   ENST00000342916        7 55019032-55168635      + | ENST00000342916&lt;/span&gt;
+&lt;span class="c1"&gt;##         LRG_304t1        7 55019032-55207338      + |       LRG_304t1&lt;/span&gt;
+&lt;span class="c1"&gt;##               ...      ...               ...    ... .             ...&lt;/span&gt;
+&lt;span class="c1"&gt;##   ENST00000450046        7 55109723-55211536      + | ENST00000450046&lt;/span&gt;
+&lt;span class="c1"&gt;##   ENST00000700145        7 55163753-55205865      + | ENST00000700145&lt;/span&gt;
+&lt;span class="c1"&gt;##   ENST00000485503        7 55192811-55200802      + | ENST00000485503&lt;/span&gt;
+&lt;span class="c1"&gt;##   ENST00000700146        7 55198272-55208067      + | ENST00000700146&lt;/span&gt;
+&lt;span class="c1"&gt;##   ENST00000700147        7 55200573-55206016      + | ENST00000700147&lt;/span&gt;
+&lt;span class="c1"&gt;## ...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;figure class="invert-in-dark-mode"&gt;
+    &lt;img src="https://blog.liang2.tw/posts/2022/10/use-duckdb-in-ensembldb/pics/benchmark_extract_specific_gene.png"&gt;
+    &lt;figcaption&gt;Benchmark of extracting the annotaiton of a specific gene.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;SQLite with indices undoubtedly has the best performance.
+It&amp;rsquo;s been fined for this use case (extracting a few rows using indices).
+And SQLite without an index takes the most time to complete.
+The performance of all three DuckDB databases fall in between.
+Unlike SQLite, indexing DuckDB only speeds up the query a little bit.&lt;/p&gt;
+&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
+&lt;p&gt;Here is the overview of the benchmarking results combined with the database file size.
+The table shows the average speed-up ratio (and the worst case ratio) over the original SQLite database (ratio the higher the better):&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left;"&gt;Database&lt;/th&gt;
+&lt;th style="text-align: right;"&gt;Size (%)&lt;/th&gt;
+&lt;th style="text-align: right;"&gt;Genome I&lt;/th&gt;
+&lt;th style="text-align: right;"&gt;Genome II&lt;/th&gt;
+&lt;th style="text-align: right;"&gt;Gene-specific lookup&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;SQLite no indexed&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;57.9&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.61 (0.78)&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.88 (1.02)&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.044 (0.12)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;&lt;strong&gt;SQLite (original)&lt;/strong&gt;&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;&lt;strong&gt;100.0&lt;/strong&gt;&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;&lt;strong&gt;1.00 (1.00)&lt;/strong&gt;&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;&lt;strong&gt;1.00 (1.00)&lt;/strong&gt;&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;&lt;strong&gt;1.00 (1.00)&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;DuckDB w. ext. parquets&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;9.0&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;3.36 (3.69)&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;4.14 (4.63)&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.15 (0.35)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;DuckDB&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;40.2&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;4.70 (4.76)&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;6.30 (6.73)&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.61 (0.81)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;DuckDB indexed&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;125.7&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;3.66 (1.87)&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;6.29 (6.33)&lt;/td&gt;
+&lt;td style="text-align: right;"&gt;0.65 (1.80)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Overall, DuckDB shows impressive performance increase for genome-wide queries.
+It uses up less storage too.
+While DuckDB is slower than SQLite when it comes to gene-specific lookups.
+Since we are talking about tens of milliseconds, unless there are thousands of lookups, the performance impact is insignificant.
+On the other hand, genome-wide queries are saving seconds of time.&lt;/p&gt;
+&lt;p&gt;We could replace the original ensembldb database with a DuckDB database by loading the tables and removing the indices.
+If the user is willing to sacrifice some performance in gene-specific lookups, DuckDB with external parquet files only uses less than 10% of the space but still runs significantly faster for genome-wide queries.
+While the default indices copied from SQLite are not very helpful, I didn&amp;rsquo;t tune the indices to maximally speed up the gene-specific lookups.
+Note that DuckDB&amp;rsquo;s file format is not stabilized yet, so the database needs to be re-created in newer DuckDB versions.&lt;/p&gt;
+&lt;p&gt;All in all, I think DuckDB advertises itself accurately when it comes to analytical query workloads.
+It shows good performance when it queries a large portion of its content.
+By having a similar interface to SQLite and clients in popular languages (R, Python, and etc),
+converting an existing SQLite usecase to use DuckDB is easy.
+My small exercise with ensembldb has convinced me to try out DuckDB in more scenarios too.&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn:sqlite-to-duckdb"&gt;
+&lt;p&gt;There is an official extension &lt;a href="https://github.com/duckdblabs/sqlite_scanner"&gt;sqlite_scanner&lt;/a&gt; currently under development that can attach directly to a SQLite database inside a DuckDB database.
+So in the future, it could be much easier to convert SQLite to DuckDB.&amp;#160;&lt;a class="footnote-backref" href="#fnref:sqlite-to-duckdb" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="Bioinfo"></category><category term="en"></category><category term="r"></category><category term="python"></category><category term="ensembldb"></category><category term="sqlite"></category><category term="duckdb"></category></entry><entry><title>Thesis in LaTeX</title><link href="https://blog.liang2.tw/posts/2022/03/thesis-latex/" rel="alternate"></link><published>2022-03-12T00:00:00-06:00</published><updated>2022-06-25T15:46:57-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2022-03-12:/posts/2022/03/thesis-latex/</id><summary type="html">&lt;!-- cSpell:words zotero WUSTL --&gt;
 
 &lt;p&gt;A few months ago, I finished &lt;a href="https://github.com/ccwang002/phd-thesis"&gt;my PhD thesis&lt;/a&gt; in LaTeX.
 The WUSTL LaTeX template I could find has a long history&lt;sup id="fnref:note-template-history"&gt;&lt;a class="footnote-ref" href="#fn:note-template-history"&gt;1&lt;/a&gt;&lt;/sup&gt;, which has a relative lengthy implementation and includes unnecessary code.
