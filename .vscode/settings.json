@@ -9,5 +9,13 @@
         },
         "custom": true,  // Enable the `custom` dictionary
         "internal-terms": false  // Disable the `internal-terms` dictionary
-    }
+    },
+    "markdown.validate.enabled": true,
+    "markdown.validate.fileLinks.enabled": "warning",
+    "markdown.validate.ignoredLinks": [
+        "{filename}*/**",
+        "{filename}*",
+        "/tag/*",
+    ],
+    "markdown.validate.referenceLinks.enabled": "ignore"
 }
