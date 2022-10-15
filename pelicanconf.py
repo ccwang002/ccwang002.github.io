@@ -112,6 +112,7 @@ PLUGINS = [
 # Plugin is adapted from https://github.com/noirbizarre/pelican-drafts
 # (MIT License)
 SHOW_DRAFTS = True
+DRAFTS_URL = 'drafts/'
 
 
 # Pelican KaTeX plugin settings
