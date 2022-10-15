@@ -103,9 +103,16 @@ JINJA_FILTERS = {
 # Plugin settings
 PLUGIN_PATHS = ['plugins', ]
 PLUGINS = [
+    'drafts',
     'touch',
     'pelican_katex.plugin',
 ]
+
+# Pelican draft plugin settings
+# Plugin is adapted from https://github.com/noirbizarre/pelican-drafts
+# (MIT License)
+SHOW_DRAFTS = True
+
 
 # Pelican KaTeX plugin settings
 # Use newer KaTeX version
