@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8;charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Liang-Bo Wang" />
+<meta name="description" content="This post demonstrates the FASTQ to FASTA conversion and sequence quality check using seqtk." />
+<meta name="keywords" content="en, seqtk, NGS">
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.95em%22 font-size=%2295%22>📖</text></svg>">
+	<title>FASTA/Q sequence processing toolkit -- seqtk</title>
+
+	<!-- og -->
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Liang-Bo Wang's Blog"/>
+<meta property="og:title" content="FASTA/Q sequence processing toolkit -- seqtk"/>
+<meta property="og:description" content="This post demonstrates the FASTQ to FASTA conversion and sequence quality check using seqtk."/>
+<meta property="og:locale" content=""/>
+<meta property="og:url" content="https://blog.liang2.tw/posts/2015/09/seqtk/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2015-09-27 14:11:00-05:00"/>
+<meta property="article:modified_time" content="2022-10-27 13:49:17.487967-05:00"/>
+<meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
+<meta property="article:section" content="Bioinfo"/>
+<meta property="article:tag" content="en"/>
+<meta property="article:tag" content="seqtk"/>
+<meta property="article:tag" content="NGS"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ccwang002">
+<meta name="twitter:title" content="FASTA/Q sequence processing toolkit -- seqtk">
+<meta name="twitter:description" content="This post demonstrates the FASTQ to FASTA conversion and sequence quality check using seqtk.">
+
+	<!-- Feeds -->
+	<link href="https://blog.liang2.tw/feeds/all.atom.xml"
+		type="application/atom+xml" rel="alternate" title="Liang-Bo Wang's Blog" />
+
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
+	<link rel="stylesheet" href="https://blog.liang2.tw/theme/styles/pygments/light.css" type="text/css" media="(prefers-color-scheme: light)" id="pyg-light" />
+    <link rel="stylesheet" href="https://blog.liang2.tw/theme/styles/pygments/dark-monokai.css" type="text/css" media="(prefers-color-scheme: dark)" id="pyg-dark" />
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.16.2/katex.min.css">
+</head>
+
+<body class="post-template no-js">
+	<script>document.body.classList.remove('no-js');</script>
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	style="display: none;"
+>
+	<symbol id="svg-sun-half" viewBox="0 0 24 24" pointer-events="all">
+		<title>Following system color scheme</title>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+			stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<circle cx="12" cy="12" r="9"></circle>
+			<path d="M12 3v18m0-12l4.65-4.65M12 14.3l7.37-7.37M12 19.6l8.85-8.85"></path>
+		</svg>
+	</symbol>
+	<symbol id="svg-moon" viewBox="0 0 24 24" pointer-events="all">
+		<title>Selected dark color scheme</title>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+			stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+			<path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"></path>
+		</svg>
+	</symbol>
+	<symbol id="svg-sun" viewBox="0 0 24 24" pointer-events="all">
+		<title>Selected light color scheme</title>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+			stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<circle cx="12" cy="12" r="5"></circle>
+			<line x1="12" y1="1" x2="12" y2="3"></line>
+			<line x1="12" y1="21" x2="12" y2="23"></line>
+			<line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+			<line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+			<line x1="1" y1="12" x2="3" y2="12"></line>
+			<line x1="21" y1="12" x2="23" y2="12"></line>
+			<line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+			<line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+		</svg>
+	</symbol>
+</svg>
+
+<script>
+	document.documentElement.dataset.color_scheme = localStorage.getItem("color_scheme") || "auto"
+</script>
+	<header class="site-head">
+		<h1 class="blog-title"><a href="https://blog.liang2.tw">Liang-Bo Wang's Blog</a></h1>
+		<h2 class="blog-description">
+			<a href="https://blog.liang2.tw/about-me/">About</a> |
+			<a href="https://blog.liang2.tw/talks/">Talks</a> |
+			<a href="https://blog.liang2.tw/archives.html">Archives</a> |
+			<button id="color-scheme-cycler" onClick="setColorScheme(nextColorScheme())">
+                <svg aria-hidden="true" class="color-scheme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+                <svg aria-hidden="true" class="color-scheme-icon-when-dark"><use href="#svg-moon"></use></svg>
+                <svg aria-hidden="true" class="color-scheme-icon-when-light"><use href="#svg-sun"></use></svg>
+                <span class="sr-only">Toggle light / dark / auto color theme</span>
+            </button>
+		</h2>
+	</header>
+	<main id="content" class="content" role="main">
+<article class="post">
+    <span class="post-meta">
+        <time datetime="2015-09-27">Sep 27, 2015</time>
+        in <a href="https://blog.liang2.tw/category/bioinfo/">Bioinfo</a>
+    </span>
+    <h1 class="post-title">
+        <a href="https://blog.liang2.tw/posts/2015/09/seqtk/" rel="bookmark" title="Permalink to FASTA/Q sequence processing toolkit -- seqtk">FASTA/Q sequence processing toolkit -- seqtk</a>
+    </h1>
+    <span class="post-meta">
+                <a href="https://blog.liang2.tw/tag/en/">en</a>
+                <a href="https://blog.liang2.tw/tag/seqtk/">seqtk</a>
+                <a href="https://blog.liang2.tw/tag/ngs/">NGS</a>
+    </span>
+    <section class="post-content"><p>This is the first post of the series of my common NGS processing workflows and notes.</p>
+<p>Some of the most common operation in sequence processing is FASTQ → FASTA conversion. Tons of conversion scripts using either sed or awk can be found by search. For example,</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># FASTQ to FASTA</span>
+<span class="c1"># Assume every read record takes exactly 4 line</span>
+<span class="c1"># Ref: http://stackoverflow.com/a/10359425</span>
+$ sed -n <span class="s1">&#39;1~4s/^@/&gt;/p;2~4p&#39;</span>
+</code></pre></div>
+
+<p>The assumption of 4 lines per read usually holds for recent NGS sequencing data, so not a big deal.</p>
+<p>In many case the sequence is gzip&rsquo;d. It is still a piece of cake when combining with pipe editing,</p>
+<div class="highlight"><pre><span></span><code>gzcat myseq.fq.gz <span class="p">|</span> sed -n <span class="s1">&#39;1~4s/^@/&gt;/p;2~4p&#39;</span> <span class="p">|</span> gzip &gt; myseq.fa.gz
+</code></pre></div>
+
+<p>However, things can get complex really fast when one wants to additionally do reverse complement, randomly sample a subset of reads, and many other types of sequence manipulation. Efficiency matters if those tasks are applied to tens of millions of reads. Even a few nanoseconds longer of computing time difference per read can make a difference at this scale of reads.</p>
+<h3 id="seqtk">Seqtk</h3>
+<p>So <a href="https://github.com/lh3/seqtk">seqtk</a> comes into rescue. It is written in C and MIT licensed. <a href="https://www.biostars.org/p/85929/#86082">A quick comparison</a> shows it is generally faster than other UNIX-based solutions, let alone implementations based on scripting languages.</p>
+<p>Seqtk bundles many other operations, but I&rsquo;ll just mention those I frequently use.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">$seqtk</span>
+
+Usage:   seqtk &lt;command&gt; &lt;arguments&gt;
+Version: <span class="m">1</span>.0-r77-dirty
+
+Command: seq       common transformation of FASTA/Q
+         comp      get the nucleotide composition of FASTA/Q
+         sample    subsample sequences
+         subseq    extract subsequences from FASTA/Q
+         fqchk     fastq QC <span class="o">(</span>base/quality summary<span class="o">)</span>
+         mergepe   interleave two PE FASTA/Q files
+         trimfq    trim FASTQ using the Phred algorithm
+
+         hety      regional heterozygosity
+         mutfa     point mutate FASTA at specified positions
+         mergefa   merge two FASTA/Q files
+         dropse    drop unpaired from interleaved PE FASTA/Q
+         rename    rename sequence names
+         randbase  choose a random base from hets
+         cutN      cut sequence at long N
+         listhet   extract the position of each het
+</code></pre></div>
+
+<h3 id="fastq-fasta">FASTQ → FASTA</h3>
+<p>Read (gzip&rsquo;d) FASTQ and write out as FASTA,</p>
+<div class="highlight"><pre><span></span><code>$ seqtk seq -A <span class="k">in</span>.fq<span class="o">[</span>.gz<span class="o">]</span> &gt; out.fa
+</code></pre></div>
+
+<p>To make the output gzip&rsquo;d again, piped with gzip,</p>
+<div class="highlight"><pre><span></span><code>$ seqtk seq -A <span class="k">in</span>.fq<span class="o">[</span>.gz<span class="o">]</span> <span class="p">|</span> gzip &gt; out.fa.gz
+</code></pre></div>
+
+<h3 id="reverse-complement">Reverse complement</h3>
+<p>If one wants to debug the R2 reads of pair-end sequencing (second read on forward strand), since they contain reverse complement sequence of the insert DNA, one needs to reverse complement R2 reads again to debug directly by bare human eyes.</p>
+<div class="highlight"><pre><span></span><code>$ seqtk seq -r R2.fq &gt; R2_rc.fq
+
+$ <span class="nb">echo</span> <span class="s1">&#39;&gt; Example R2 seq</span>
+<span class="s1">  GCATTGGTGGTTCAGTGGTAGAATTCT&#39;</span> <span class="p">|</span> seqtk seq -r
+<span class="c1"># &gt; Example R2 seq</span>
+<span class="c1"># AGAATTCTACCACTGAACCACCAATGC</span>
+</code></pre></div>
+
+<h3 id="quality-check">Quality check</h3>
+<p>To be honest, <a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> is more frequently used for quality check because it generates <a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/good_sequence_short_fastqc.html">reports with beautiful figures</a>.</p>
+<p>But for a detail report on each read position, one should consider <code>seqtk fqchk</code>.</p>
+<div class="highlight"><pre><span></span><code>$ seqtk fqchk myseq.fq<span class="o">[</span>.gz<span class="o">]</span>
+</code></pre></div>
+
+<p>By default it sets <code>-q 20</code>. This quality threshold determines the threshold of counting a base as low or high quality, shown as <code>%low</code> and <code>%high</code> per read position. In the default case, quality score higher than 20 will be treated as high quality bases.</p>
+<div class="highlight"><pre><span></span><code>min_len: 10; max_len: 174; avg_len: 28.92; 37 distinct quality values
+POS #bases    %A   %C   %G   %T   %N  avgQ errQ %low %high
+ALL 236344886 17.0 22.5 31.3 29.2 0.0 39.9 37.6 0.1  99.9
+1   8172342   8.9  12.4 57.0 21.7 0.0 39.6 29.0 0.5  99.5
+2   8172342   7.7  62.5 16.2 13.7 0.0 39.8 37.8 0.2  99.8
+3   8172342   50.3 24.1 11.9 13.6 0.0 39.8 38.2 0.1  99.9
+4   8172342   10.4 22.9 15.3 51.3 0.0 39.9 38.7 0.1  99.9
+5   8172342   14.3 12.9 22.3 50.5 0.0 39.8 37.0 0.2  99.8
+# ... (trimmed)
+</code></pre></div>
+
+<p>The following columns, <code>avgQ</code> and <code>errQ</code>, need more explanation. Average quality (<code>avgQ</code>) is computed by weighted mean of each base&rsquo;s quality,</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">a</mi><mi mathvariant="normal">v</mi><mi mathvariant="normal">g</mi><mi mathvariant="normal">Q</mi></mrow><mo>=</mo><mfrac><mrow><munderover><mo>∑</mo><mrow><mi>q</mi><mo>=</mo><mn>0</mn></mrow><mn>93</mn></munderover><mi>q</mi><mo>⋅</mo><msub><mi>n</mi><mi>q</mi></msub></mrow><mrow><munderover><mo>∑</mo><mrow><mi>q</mi><mo>=</mo><mn>0</mn></mrow><mn>93</mn></munderover><msub><mi>n</mi><mi>q</mi></msub></mrow></mfrac><mo separator="true">,</mo></mrow><annotation encoding="application/x-tex">
+    \mathrm{avgQ} = \dfrac{\sum_{q=0}^{93} q \cdot n_q}{\sum_{q = 0}^{93} n_q},
+</annotation></semantics></math></span><span aria-hidden="true" class="katex-html"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathrm">avgQ</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.0597em;vertical-align:-1.2798em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.7798em;"><span style="top:-2.156em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.954em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">93</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4358em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.8258em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.954em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">93</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4358em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2798em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span></span></span></span></span></p>
+<p>where <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mi>q</mi></msub></mrow><annotation encoding="application/x-tex">n_q</annotation></semantics></math></span><span aria-hidden="true" class="katex-html"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> is the number of bases with quality score being <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi></mrow><annotation encoding="application/x-tex">q</annotation></semantics></math></span><span aria-hidden="true" class="katex-html"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span></span>. The magic number 93 comes from the quality score of Sanger sequencing<sup id="fnref:sanger-qual-score"><a class="footnote-ref" href="#fn:sanger-qual-score">1</a></sup>, whose score ranges from 0 to 93.</p>
+<p>For <code>errQ</code> we need more background knowledge about how quality score is computed. A base with quality score <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi></mrow><annotation encoding="application/x-tex">q</annotation></semantics></math></span><span aria-hidden="true" class="katex-html"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span></span> implies the probability of being erroneously called, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>q</mi></msub></mrow><annotation encoding="application/x-tex">P_q</annotation></semantics></math></span><span aria-hidden="true" class="katex-html"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>, is</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>q</mi></msub><mo>=</mo><mn>1</mn><msup><mn>0</mn><mfrac><mrow><mo>−</mo><mi>q</mi></mrow><mn>10</mn></mfrac></msup><mo separator="true">,</mo><mspace width="1em"></mspace><mi>q</mi><mo>=</mo><mo>−</mo><mn>10</mn><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>10</mn></msub><msub><mi>P</mi><mi>q</mi></msub><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">
+    P_q = 10^{\frac{-q}{10}}, \hspace{1em} q = -10\log_{10}{P_q}.
+</annotation></semantics></math></span><span aria-hidden="true" class="katex-html"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.2228em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.0283em;"><span style="top:-3.413em;margin-right:0.05em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mopen nulldelimiter sizing reset-size3 size6"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.879em;"><span style="top:-2.656em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span><span style="top:-3.2255em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line mtight" style="border-bottom-width:0.049em;"></span></span><span style="top:-3.4624em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.344em;"><span></span></span></span></span></span><span class="mclose nulldelimiter sizing reset-size3 size6"></span></span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9805em;vertical-align:-0.2861em;"></span><span class="mord">−</span><span class="mord">10</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop"><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.207em;"><span style="top:-2.4559em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2441em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span><span class="mord">.</span></span></span></span></span></p>
+<p>Therefore, given <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi></mrow><annotation encoding="application/x-tex">q</annotation></semantics></math></span><span aria-hidden="true" class="katex-html"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span></span> being <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo separator="true">,</mo><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">0, 1, 2, \ldots</annotation></semantics></math></span><span aria-hidden="true" class="katex-html"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span></span></span></span>, seqtk has a conversion table <code>perr</code> from quality score to probability,</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Q</th>
+<th style="text-align: right;">0</th>
+<th style="text-align: right;">1</th>
+<th style="text-align: right;">2</th>
+<th style="text-align: right;">3<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>P</strong></td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.5</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Q</th>
+<th style="text-align: right;">4</th>
+<th style="text-align: right;">5</th>
+<th style="text-align: center;">&hellip;</th>
+<th style="text-align: right;">38</th>
+<th style="text-align: right;">39</th>
+<th style="text-align: right;">40</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>P</strong></td>
+<td style="text-align: right;">0.398107</td>
+<td style="text-align: right;">0.316228</td>
+<td style="text-align: center;">&hellip;</td>
+<td style="text-align: right;">0.000158</td>
+<td style="text-align: right;">0.000126</td>
+<td style="text-align: right;">0.000100</td>
+</tr>
+</tbody>
+</table>
+<p>Based on the probability, it computes the expected number of base call errors, num_err, and the empirical probability of having a base call error at this position, errP,</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">n</mi><mi mathvariant="normal">u</mi><mi mathvariant="normal">m</mi></mrow><mtext>err</mtext></msub><mo>=</mo><munder><mo>∑</mo><mi>q</mi></munder><msub><mi>P</mi><mi>q</mi></msub><mo>⋅</mo><msub><mi>n</mi><mi>q</mi></msub><mo separator="true">,</mo><mspace width="1em"></mspace><mtext>errP</mtext><mo>=</mo><mfrac><msub><mrow><mi mathvariant="normal">n</mi><mi mathvariant="normal">u</mi><mi mathvariant="normal">m</mi></mrow><mtext>err</mtext></msub><mrow><munder><mo>∑</mo><mi>q</mi></munder><msub><mi>n</mi><mi>q</mi></msub></mrow></mfrac><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">
+    \mathrm{num}_\text{err} = \sum_q P_q \cdot n_q, \hspace{1em} \text{errP} = \frac{\mathrm{num}_\text{err}}{\sum_q n_q}.
+</annotation></semantics></math></span><span aria-hidden="true" class="katex-html"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">num</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">err</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4361em;vertical-align:-1.3861em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.05em;"><span style="top:-1.9em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.3861em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord text"><span class="mord">errP</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.2294em;vertical-align:-1.1218em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1076em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.0017em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4358em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord mathrm">num</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">err</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.1218em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord">.</span></span></span></span></span></p>
+<p>Thus the <code>errQ</code> is the equivalent quality score of errP, which better interprets the probability of base call error than <code>avgQ</code>,</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">Q</mi></mrow><mo>=</mo><mo>−</mo><mn>10</mn><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>10</mn></msub><mrow><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">P</mi></mrow><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">
+    \mathrm{errQ} = -10\log_{10}{\mathrm{errP}}.
+</annotation></semantics></math></span><span aria-hidden="true" class="katex-html"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathrm">errQ</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9386em;vertical-align:-0.2441em;"></span><span class="mord">−</span><span class="mord">10</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop"><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.207em;"><span style="top:-2.4559em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2441em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">errP</span></span></span><span class="mord">.</span></span></span></span></span></p>
+<p>By passing <code>-q 0</code> to <code>seqtk fqchk</code>, one can get the proportion of all distinct quality scores at each position. This information is pretty useful if the sequencing data is all a mess and one needs to figure out the cause.</p>
+<p>Though some of the <code>seqtk fqchk</code>&lsquo;s behavior is not documented, it should be straight forward enough to understand. All in all, the details can always be found in the <a href="https://github.com/lh3/seqtk/blob/4feb6e81444ab6bc44139dd3a125068f81ae4ad8/seqtk.c#L1483">source code</a>.</p>
+<h3 id="summary">Summary</h3>
+<p><a href="https://github.com/lh3/seqtk">Seqtk</a> is fast to use for daily routines of FASTA/Q conversion. On top of that it provide various functionalities such as read random sampling, quality check, and many I haven&rsquo;t tried or mentioned.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:sanger-qual-score">
+<p>See multiple specifications of quality score at <a href="http://scikit-bio.org/docs/latest/generated/skbio.io.format.fastq.html#quality-score-variants">sckit-bio doc</a>. The score is <a href="https://en.wikipedia.org/wiki/Phred_quality_score">Phred quality score</a>. More other score representations can be found at <a href="https://en.wikipedia.org/wiki/FASTQ_format">FASTQ wiki</a>.&#160;<a class="footnote-backref" href="#fnref:sanger-qual-score" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>Note that the probability of q less than 4 is fixed with 0.5. A quick computation can see when <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">q = 3</annotation></semantics></math></span><span aria-hidden="true" class="katex-html"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span>, its actual Phred probability is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mrow><mo>−</mo><mn>0.3</mn></mrow></msup><mo>=</mo><mn>0.501</mn></mrow><annotation encoding="application/x-tex">10 ^ {-0.3} = 0.501</annotation></semantics></math></span><span aria-hidden="true" class="katex-html"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">0.3</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.501</span></span></span></span>.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div></section>
+    <footer class="post-footer">
+	<section
+		class="utterances"
+		data-repo="ccwang002/ccwang002.github.io"
+		data-issue-term="pathname"
+		data-label="Comment">
+	</section>
+	</footer>
+</article>
+	</main>
+	<footer class="site-footer">
+		<a class="subscribe"
+			href="https://blog.liang2.tw/feeds/all.atom.xml"
+			aria-label="Subscribe the Atom feed"
+			data-tooltip="Subscribe"
+		>
+			<svg viewBox="0 0 24 24" width="24" height="24">
+				<title>Atom feed</title>
+				<circle cx="6.18" cy="17.82" r="2.18"/>
+				<path d="m4 10.1v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9zm0-5.66v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56z"/>
+			</svg>
+		</a>
+		<div class="inner">
+			<section>
+				Browse articles by
+				<a href="https://blog.liang2.tw/tags.html">Tags</a> |
+				<a href="https://blog.liang2.tw/categories.html">Categories</a>
+			</section>
+			<section class="contact">
+				Contact me by
+				<a href="https://twitter.com/lbwang2">Twitter</a> |
+				<a href="https://www.facebook.com/lbwang.2">Facebook</a> |
+				<a href="https://github.com/ccwang002">GitHub</a> |
+				<a href="mailto:me+blog@liang2.tw">Email</a> |
+				<a href="https://www.linkedin.com/in/liangbowang/">LinkedIn</a>
+			</section>
+			<section class="copyright">
+				This work is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+			</section>
+			<section class="powered-by">
+				Built using <a href="https://getpelican.com/">Pelican</a>.
+				Powered by the <a href="https://github.com/kura/hauntr">Hauntr</a> theme.
+			</section>
+		</div>
+	</footer>
+	<script src="https://blog.liang2.tw/theme/scripts/color_scheme.js"></script>
+</body>
+</html>
