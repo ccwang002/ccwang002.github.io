@@ -8,8 +8,13 @@ The followings are talks I gave in the open source communities. Since I have dev
 
 
 ### 2022
+
+[**Genomic Data Processing and Visualization in R**](https://blog.liang2.tw/2022Talk-genomics-heatmap/) Nov 28, 2022<br>
+R Ladies Taipei
+
 [**Snakemake—simple data processing for researchers**](https://blog.liang2.tw/2022Talk-snakemake/) Sep 25, 2022<br>
 Taipei Bioinformatics Omnibus
+
 
 ### 2019
 
