@@ -4,13 +4,24 @@ Slug: about-me
 sortorder: 1
 ---
 
-I obtained my Ph.D. at Washington University in St. Louis under [Li Ding's Lab][dinglab]. My research focuses on cancer protegenomics in two directions. I process and analyze [CPTAC proteognomic datasets][CPTAC] (mostly glioblastoma) to better understand the disease and potential treatments, and I also build tools and databases to assist the analysis.
+I obtained my Ph.D. at Washington University in St. Louis under [Li Ding's Lab][dinglab].
+My research focused on cancer protegenomics in two directions.
+I processed and analyzed [CPTAC proteogenomic datasets][CPTAC] (mostly glioblastoma) to better understand the disease and potential treatments.
+I also built some tools and databases to assist the analysis.
+I have been contributed to open source projects for quite some time, since I tend to fix the problems that I encounter for whichever tool I use daily :)
 
-You can find my academic publications [here][google scholar], or my CV [here](/CV.pdf).
+You can find my CV [here](/CV.pdf) and my academic publications [here][google scholar].
 
-Before graduate school, I interned in [Microsoft Research Asia][MSRA] and [Pinkoi], where I had a lot of fun in imaging deep learning and Chinese/Mandarin text search. I grew up in Taipei, Taiwan. Back in Taiwan, I went by liang<sup>2</sup> (pronounced as *liang-liang*). While in the United States, my lab calls me Bobo. I was offered with two options at the time, LB and Bobo, so [you know why][LB] I picked the latter :)
+I grew up in Taipei, Taiwan.
+Back in Taiwan, I went by liang<sup>2</sup> (pronounced as *liang-liang*).
+While in the United States, my lab called me Bobo.
+I was offered with two options at the time, LB and Bobo, so [you know why][LB] I picked the latter :)
 
-I was active in Taipei Python and R programming communities and enjoyed giving talks. You can find my previous talks [here][talks]. I give much less talks nowadays, mostly because I've been working on quite specific bioinformatic topics for a while so it's harder to find the audience. Feel free to contact me if you are interested in my stuff and I'd love to share.
+Before my PhD, I interned at [Microsoft Research Asia][MSRA] and [Pinkoi], where I had a lot of fun in using deep learning for imaging and improving Chinese/Mandarin text search.
+I was active in Taipei Python and R programming communities and enjoyed giving talks.
+You can find my previous talks [here][talks].
+I give much fewer talks nowadays, mostly because the topics of my work has been quite domain specific.
+Feel free to contact me if you are interested in my stuff and I'd love to share.
 
 [dinglab]: http://dinglab.wustl.edu/
 [CPTAC]: https://proteomics.cancer.gov/programs/cptac
