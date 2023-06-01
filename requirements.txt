@@ -1,6 +1,6 @@
 pelican >= 4.0, < 5
 Markdown >= 3.2, < 3.5
-pelican-katex == 1.6.1
+pelican-katex == 1.7.0
 ghp-import
 invoke
 livereload
