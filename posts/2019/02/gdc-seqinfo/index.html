@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2019/02/gdc-seqinfo/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2019-02-26 00:00:00-06:00"/>
-<meta property="article:modified_time" content="2022-10-27 13:49:17.523932-05:00"/>
+<meta property="article:modified_time" content="2023-08-13 23:05:21.759190-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Bioinfo"/>
 <meta property="article:tag" content="en"/>
@@ -115,14 +115,14 @@
 <p>Anyway, I was trying to correctly store the full GRCh38.d1.vd1 genome information in the <code>GRanges</code> and <code>GRangesList</code> R objects, which can be done by creating a <code>Seqinfo</code> object representing all its chromosomes. It was also fun to get familiar with the genomic data structures in R. </p>
 <h3 id="build-gdcs-seqinfo">Build GDC&rsquo;s Seqinfo</h3>
 <p>First, we need the length and the name of all chromosomes in GRCh38.d1.vd1.  I used samtools to extract the information as a <code>.dict</code> file from the genome reference FASTA file.</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">GDC_REF_FA_URL</span><span class="o">=</span><span class="s1">&#39;https://api.gdc.cancer.gov/data/254f697d-310d-4d7d-a27b-27fbf767a834&#39;</span>
-curl -Lo GRCh38.d1.vd1.fa.tar.gz <span class="nv">$GDC_REF_FA_URL</span>
-samtools dict <span class="se">\</span>
-    -a <span class="s1">&#39;GRCh38.d1.vd1&#39;</span> -s <span class="s1">&#39;Homo sapiens&#39;</span> <span class="se">\</span>
-    -u <span class="nv">$GDC_REF_FA_URL</span> <span class="se">\</span>
-    GRCh38.d1.vd1.fa.tar.gz &gt; GRCh38.d1.vd1.dict
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">GDC_REF_FA_URL</span><span class="o">=</span><span class="s1">&#39;https://api.gdc.cancer.gov/data/254f697d-310d-4d7d-a27b-27fbf767a834&#39;</span>
+curl<span class="w"> </span>-Lo<span class="w"> </span>GRCh38.d1.vd1.fa.tar.gz<span class="w"> </span><span class="nv">$GDC_REF_FA_URL</span>
+samtools<span class="w"> </span>dict<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-a<span class="w"> </span><span class="s1">&#39;GRCh38.d1.vd1&#39;</span><span class="w"> </span>-s<span class="w"> </span><span class="s1">&#39;Homo sapiens&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-u<span class="w"> </span><span class="nv">$GDC_REF_FA_URL</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>GRCh38.d1.vd1.fa.tar.gz<span class="w"> </span>&gt;<span class="w"> </span>GRCh38.d1.vd1.dict
 
-head -n <span class="m">3</span> GRCh38.d1.vd1.dict
+head<span class="w"> </span>-n<span class="w"> </span><span class="m">3</span><span class="w"> </span>GRCh38.d1.vd1.dict
 <span class="c1"># @HD   VN:1.0  SO:unsorted</span>
 <span class="c1"># @SQ   SN:chr1 LN:248956422    M5:6aef897c3d6ff0c78aff06ac189178dd UR:https://api.gdc.cancer.gov/data/254f697d-310d-4d7d-a27b-27fbf767a834 AS:GRCh38.d1.vd1    SP:Homo sapiens</span>
 <span class="c1"># @SQ   SN:chr2 LN:242193529    M5:f98db672eb0993dcfdabafe2a882905c UR:https://api.gdc.cancer.gov/data/254f697d-310d-4d7d-a27b-27fbf767a834 AS:GRCh38.d1.vd1    SP:Homo sapiens</span>
@@ -132,26 +132,26 @@ head -n <span class="m">3</span> GRCh38.d1.vd1.dict
 <div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">GenomeInfoDb</span><span class="p">)</span>
 
-<span class="n">gdc_simple_tbl</span> <span class="o">&lt;-</span> <span class="nf">read_tsv</span><span class="p">(</span>
-    <span class="s">&#39;./GRCh38.d1.vd1.dict&#39;</span><span class="p">,</span> 
-    <span class="n">skip</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span>  <span class="c1"># Skip the first line (@HQ ...)</span>
-    <span class="n">col_names</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;SQ&#39;</span><span class="p">,</span> <span class="s">&#39;chrom&#39;</span><span class="p">,</span> <span class="s">&#39;length&#39;</span><span class="p">,</span> <span class="s">&#39;md5sum&#39;</span><span class="p">,</span> <span class="s">&#39;URI&#39;</span><span class="p">,</span> <span class="s">&#39;assembly&#39;</span><span class="p">,</span> <span class="s">&#39;species&#39;</span><span class="p">)</span>
-<span class="p">)</span> <span class="o">%&gt;%</span>
-    <span class="nf">select</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span> <span class="o">%&gt;%</span>
-    <span class="nf">mutate</span><span class="p">(</span><span class="n">chrom</span> <span class="o">=</span> <span class="nf">str_sub</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="n">start</span> <span class="o">=</span> <span class="m">4</span><span class="p">),</span> 
-           <span class="n">length</span> <span class="o">=</span> <span class="nf">as.integer</span><span class="p">(</span><span class="nf">str_sub</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">start</span> <span class="o">=</span> <span class="m">4</span><span class="p">)),</span>
-           <span class="n">circular</span> <span class="o">=</span> <span class="nf">case_when</span><span class="p">(</span>
-               <span class="n">chrom</span> <span class="o">==</span> <span class="s">&#39;chrM&#39;</span> <span class="o">~</span> <span class="kc">TRUE</span><span class="p">,</span>
-               <span class="n">chrom</span> <span class="o">==</span> <span class="s">&#39;chrEBV&#39;</span> <span class="o">~</span> <span class="kc">TRUE</span><span class="p">,</span>
-               <span class="nf">startsWith</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="s">&#39;HPV&#39;</span><span class="p">)</span> <span class="o">~</span> <span class="kc">TRUE</span><span class="p">,</span>
-               <span class="kc">TRUE</span> <span class="o">~</span> <span class="kc">FALSE</span>
-           <span class="p">))</span>
+<span class="n">gdc_simple_tbl</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read_tsv</span><span class="p">(</span>
+<span class="w">    </span><span class="s">&#39;./GRCh38.d1.vd1.dict&#39;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">    </span><span class="n">skip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w">  </span><span class="c1"># Skip the first line (@HQ ...)</span>
+<span class="w">    </span><span class="n">col_names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;SQ&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;chrom&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;length&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;md5sum&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;URI&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;assembly&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;species&#39;</span><span class="p">)</span>
+<span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">    </span><span class="nf">select</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">    </span><span class="nf">mutate</span><span class="p">(</span><span class="n">chrom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">str_sub</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">),</span><span class="w"> </span>
+<span class="w">           </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.integer</span><span class="p">(</span><span class="nf">str_sub</span><span class="p">(</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">)),</span>
+<span class="w">           </span><span class="n">circular</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">case_when</span><span class="p">(</span>
+<span class="w">               </span><span class="n">chrom</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&#39;chrM&#39;</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span>
+<span class="w">               </span><span class="n">chrom</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&#39;chrEBV&#39;</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span>
+<span class="w">               </span><span class="nf">startsWith</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;HPV&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span>
+<span class="w">               </span><span class="kc">TRUE</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="kc">FALSE</span>
+<span class="w">           </span><span class="p">))</span>
 
-<span class="n">gdc_seqinfo</span> <span class="o">&lt;-</span> <span class="nf">Seqinfo</span><span class="p">(</span>
-    <span class="n">seqnames</span> <span class="o">=</span> <span class="n">gdc_simple_tbl</span><span class="o">$</span><span class="n">chrom</span><span class="p">,</span>
-    <span class="n">seqlengths</span> <span class="o">=</span> <span class="n">gdc_simple_tbl</span><span class="o">$</span><span class="n">length</span><span class="p">,</span>
-    <span class="n">isCircular</span> <span class="o">=</span> <span class="n">gdc_simple_tbl</span><span class="o">$</span><span class="n">circular</span><span class="p">,</span>
-    <span class="n">genome</span> <span class="o">=</span> <span class="s">&#39;GRCh38.d1.vd1&#39;</span>
+<span class="n">gdc_seqinfo</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">Seqinfo</span><span class="p">(</span>
+<span class="w">    </span><span class="n">seqnames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gdc_simple_tbl</span><span class="o">$</span><span class="n">chrom</span><span class="p">,</span>
+<span class="w">    </span><span class="n">seqlengths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gdc_simple_tbl</span><span class="o">$</span><span class="n">length</span><span class="p">,</span>
+<span class="w">    </span><span class="n">isCircular</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gdc_simple_tbl</span><span class="o">$</span><span class="n">circular</span><span class="p">,</span>
+<span class="w">    </span><span class="n">genome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;GRCh38.d1.vd1&#39;</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -173,7 +173,7 @@ head -n <span class="m">3</span> GRCh38.d1.vd1.dict
 </code></pre></div>
 
 <p>I store the <code>gdc_seqinfo</code> as a RDS file (<a href="https://blog.liang2.tw/posts/2019/02/gdc-seqinfo/results/seqinfo_GRCh38.d1.vd1.rds">link</a> here) so I can re-use it easily.</p>
-<div class="highlight"><pre><span></span><code><span class="n">gdc_seqinfo</span> <span class="o">&lt;-</span> <span class="nf">readRDS</span><span class="p">(</span><span class="s">&#39;seqinfo_GRCh38.d1.vd1.rds&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">gdc_seqinfo</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">readRDS</span><span class="p">(</span><span class="s">&#39;seqinfo_GRCh38.d1.vd1.rds&#39;</span><span class="p">)</span>
 </code></pre></div></section>
     <footer class="post-footer">
 	<section

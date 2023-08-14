@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2022/03/fix-fira-code-font-features/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2022-03-01 00:00:00-06:00"/>
-<meta property="article:modified_time" content="2022-10-27 13:49:17.527473-05:00"/>
+<meta property="article:modified_time" content="2023-08-13 23:05:21.762355-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="en"/>
@@ -128,15 +128,15 @@ While tools like <a href="https://twardoch.github.io/fonttools-opentype-feature-
 For example, <code>ss08</code> feature (e.g., <code>==</code>, <code>!=</code>, and <code>===</code>) won&rsquo;t be permanently enabled using this approach.</p>
 <h2 id="permanently-fix-the-font-features-using-the-official-build-script-update-in-2022-03">Permanently fix the font features using the official build script (update in 2022-03)</h2>
 <p>Thanks to the <a href="https://github.com/tonsky/FiraCode/pull/1387">pull request by <code>@Daxtorim</code></a> a few days after this post was published, we now are able to permanently fix the font features using the official build script:</p>
-<div class="highlight"><pre><span></span><code>docker run -it --rm <span class="se">\</span>
-    -v <span class="nv">$PWD</span>:/opt/FiraCode <span class="se">\</span>
-    tonsky/firacode:latest <span class="se">\</span>
-    ./FiraCode/script/build.sh <span class="se">\</span>
-    -f <span class="s2">&quot;ss01,ss03,ss05,ss08&quot;</span> <span class="se">\</span>
-    -n <span class="s2">&quot;Fira Code ss01 ss03 ss05 ss08&quot;</span>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--rm<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span><span class="nv">$PWD</span>:/opt/FiraCode<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>tonsky/firacode:latest<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>./FiraCode/script/build.sh<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-f<span class="w"> </span><span class="s2">&quot;ss01,ss03,ss05,ss08&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-n<span class="w"> </span><span class="s2">&quot;Fira Code ss01 ss03 ss05 ss08&quot;</span>
 
 <span class="c1"># Rename the generated TTFs</span>
-parallel <span class="s1">&#39;mv {} {.}.ss1358_enabled.ttf&#39;</span> ::: distr/ttf/<span class="s1">&#39;Fira Code ss01 ss03 ss05 ss08&#39;</span>/*.ttf
+parallel<span class="w"> </span><span class="s1">&#39;mv {} {.}.ss1358_enabled.ttf&#39;</span><span class="w"> </span>:::<span class="w"> </span>distr/ttf/<span class="s1">&#39;Fira Code ss01 ss03 ss05 ss08&#39;</span>/*.ttf
 </code></pre></div>
 
 <p>And that&rsquo;s it!
@@ -174,18 +174,18 @@ name = calt;
 </code></pre></div>
 
 <p>Then build the font from the <code>.glyphs</code> file using the Docker image:</p>
-<div class="highlight"><pre><span></span><code>docker run -it --rm <span class="se">\</span>
-    -v <span class="nv">$PWD</span>:/opt/FiraCode <span class="se">\</span>
-    tonsky/firacode ./FiraCode/script/build.sh
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--rm<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span><span class="nv">$PWD</span>:/opt/FiraCode<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>tonsky/firacode<span class="w"> </span>./FiraCode/script/build.sh
 </code></pre></div>
 
 <p>To set a different font name for the feature fixed fonts, I use <a href="https://twardoch.github.io/fonttools-opentype-feature-freezer/">pyftfeatfreeze</a>:</p>
-<div class="highlight"><pre><span></span><code>parallel <span class="se">\</span>
-    pyftfeatfreeze <span class="se">\</span>
-        --suffix --usesuffix<span class="o">=</span><span class="s2">&quot;&#39;ss01 ss03 ss05 ss08&#39;&quot;</span> <span class="se">\</span>
-        -v -n <span class="se">\</span>
-        <span class="s1">&#39;{}&#39;</span> <span class="s1">&#39;features_enabled/{/.}.ss1358_enabled.ttf&#39;</span> <span class="se">\</span>
-        ::: ttf/*.ttf
+<div class="highlight"><pre><span></span><code>parallel<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>pyftfeatfreeze<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>--suffix<span class="w"> </span>--usesuffix<span class="o">=</span><span class="s2">&quot;&#39;ss01 ss03 ss05 ss08&#39;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>-v<span class="w"> </span>-n<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span><span class="s1">&#39;{}&#39;</span><span class="w"> </span><span class="s1">&#39;features_enabled/{/.}.ss1358_enabled.ttf&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>:::<span class="w"> </span>ttf/*.ttf
 </code></pre></div></section>
     <footer class="post-footer">
 	<section

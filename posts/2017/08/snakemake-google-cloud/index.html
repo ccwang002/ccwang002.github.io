@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2017/08/snakemake-google-cloud/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2017-08-10 00:00:00-05:00"/>
-<meta property="article:modified_time" content="2022-10-27 13:49:17.518386-05:00"/>
+<meta property="article:modified_time" content="2023-08-13 23:05:21.754271-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Bioinfo"/>
 <meta property="article:tag" content="en"/>
@@ -154,9 +154,9 @@
 <p>(From the wiki page <a href="[griffith-lab-data]">&ldquo;RNA-seq Data&rdquo;</a> of the tutorial)</p>
 </blockquote>
 <p>Our RNA-seq raw data are the 10% downsampled FASTQ files for these samples. For the human genome reference, only the chromosome 22 from GRCh38 is used. The gene annotation is from <a href="http://dec2016.archive.ensembl.org/Homo_sapiens/Info/Index">Ensembl Version 87</a>.  Let&rsquo;s download all the samples and annotations.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">cd</span> ~/snakemake_example
-<span class="gp">$ </span>wget https://storage.googleapis.com/lbwang-playground/snakemake_rnaseq/griffithlab_brain_vs_uhr.tar.gz
-<span class="gp">$ </span>tar xf griffithlab_brain_vs_uhr.tar.gz
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>~/snakemake_example
+<span class="gp">$ </span>wget<span class="w"> </span>https://storage.googleapis.com/lbwang-playground/snakemake_rnaseq/griffithlab_brain_vs_uhr.tar.gz
+<span class="gp">$ </span>tar<span class="w"> </span>xf<span class="w"> </span>griffithlab_brain_vs_uhr.tar.gz
 </code></pre></div>
 
 <p>Now you should have the following file structure:</p>
@@ -176,14 +176,14 @@
 
 <h2 id="installation-of-snakemake-and-all-related-tools">Installation of snakemake and all related tools</h2>
 <p>After installing <a href="https://conda.io/miniconda.html">conda</a> and setting up <a href="https://bioconda.github.io/">bioconda</a>, the installation is simple. All the dependencies are kept in a conda environment called <code>new_tuxedo</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>conda create -n new_tuxedo <span class="se">\</span>
-    <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6 snakemake hisat2 stringtie samtools
-<span class="gp">$ </span><span class="nb">source</span> activate new_tuxedo        <span class="c1"># Use the conda env</span>
-<span class="gp gp-VirtualEnv">(new_tuxedo)</span> <span class="gp">$ </span>hisat2 --version     <span class="c1"># Tools are available in the env</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>new_tuxedo<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6<span class="w"> </span>snakemake<span class="w"> </span>hisat2<span class="w"> </span>stringtie<span class="w"> </span>samtools
+<span class="gp">$ </span><span class="nb">source</span><span class="w"> </span>activate<span class="w"> </span>new_tuxedo<span class="w">        </span><span class="c1"># Use the conda env</span>
+<span class="gp gp-VirtualEnv">(new_tuxedo)</span> <span class="gp">$ </span>hisat2<span class="w"> </span>--version<span class="w">     </span><span class="c1"># Tools are available in the env</span>
 <span class="go">/Users/liang/miniconda3/envs/new_tuxedo/bin/hisat2-align-s version 2.1.0</span>
 <span class="go">...</span>
-<span class="gp gp-VirtualEnv">(new_tuxedo)</span> <span class="gp">$ </span>deactivate           <span class="c1"># Exit the env</span>
-<span class="gp">$ </span>hisat2 --version                  <span class="c1"># Tools are isolated in the env</span>
+<span class="gp gp-VirtualEnv">(new_tuxedo)</span> <span class="gp">$ </span>deactivate<span class="w">           </span><span class="c1"># Exit the env</span>
+<span class="gp">$ </span>hisat2<span class="w"> </span>--version<span class="w">                  </span><span class="c1"># Tools are isolated in the env</span>
 <span class="go">bash: hisat2: command not found</span>
 </code></pre></div>
 
@@ -232,9 +232,9 @@
 <p>In case one hasn&rsquo;t read the <a href="https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html">Snakemake Tutorial</a>, here is an overview of the Snakemake pipeline execution.  A Snakemake rule is similar to a Makefile rule.  In a rule, one can specify the input pattern and the output pattern of a rule, as well as the command to run for this rule.  When snakemake runs, all the output user wants to generate will be translated into a sets of rules to be run.  Based on the desired output, Snakemake will find the rule that can generate them (matching the rule&rsquo;s output pattern) and the required input.  The finding process can be traversed rules after rules, that is, some input of a rule depends on the output of another rule, until all the inputs are available.  Then Snakemake will start to generate the output by running the commands each rule gives.</p>
 <p>Now we can look at the three rules in our current <code>Snakefile</code>.</p>
 <p>The first rule <code>extract_genome_splice_sites</code> extracts the genome splice sites. The input file is <code>GENOME_GTF</code> which is the Ensembl gene annotation. The output is a file at <code>hisat2_index/chr22_ERCC92.ss</code>. The command to generate the output from the given input is a shell command. The command contains some variables, <code>{input}</code> and <code>{output}</code>, where Snakemake will fill in them with the sepcified intput and output. So when the first rule is activated, Snakemake will let Bash shell to run:</p>
-<div class="highlight"><pre><span></span><code>hisat2_extract_splice_sites.py <span class="se">\</span>
-    griffithlab_brain_vs_uhr/GRCh38_Ens87_chr22_ERCC/genes_chr22_ERCC92.gtf <span class="se">\</span>
-    &gt; hisat2_index/chr22_ERCC92.ss
+<div class="highlight"><pre><span></span><code>hisat2_extract_splice_sites.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>griffithlab_brain_vs_uhr/GRCh38_Ens87_chr22_ERCC/genes_chr22_ERCC92.gtf<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>&gt;<span class="w"> </span>hisat2_index/chr22_ERCC92.ss
 </code></pre></div>
 
 <p>The second rule <code>extract_genome_exons</code> is quite similar to the first one, but extracts the genome exons and stores it in <code>hisat2_index/chr22_ERCC92.exon</code>.</p>
@@ -248,7 +248,7 @@
 <p>For the rest of the entries such as <code>threads</code>, and <code>log</code>, one can find more information at <a href="https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html">the Snakemake documentation about Rules</a>.</p>
 <h3 id="run-snakemake">Run Snakemake</h3>
 <p>Let&rsquo;s build the genome reference index.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>snakemake -j <span class="m">8</span> -p build_hisat_index
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>snakemake<span class="w"> </span>-j<span class="w"> </span><span class="m">8</span><span class="w"> </span>-p<span class="w"> </span>build_hisat_index
 <span class="go">Provided cores: 8</span>
 <span class="go">Rules claiming more threads will be scaled down.</span>
 <span class="go">Job counts:</span>
@@ -275,7 +275,7 @@
 <li><code>build_hisat_index</code>: The rule or certain output to be generated</li>
 </ul>
 <p>If one runs it again, one will find that snakemake won&rsquo;t do anything since all the output are present and updated.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>snakemake -j <span class="m">8</span> -p build_hisat_index
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>snakemake<span class="w"> </span>-j<span class="w"> </span><span class="m">8</span><span class="w"> </span>-p<span class="w"> </span>build_hisat_index
 <span class="go">Nothing to be done.</span>
 </code></pre></div>
 
@@ -455,10 +455,10 @@
 </code></pre></div>
 
 <p>The full <code>Snakefile</code> can be found <a href="https://gist.github.com/ccwang002/2686840e90574a67a673ec4b48e9f036">here</a>. Now run the Snakemake with the following options:</p>
-<div class="highlight"><pre><span></span><code>snakemake --timestamp -p --verbose --keep-remote -j <span class="m">8</span> <span class="se">\</span>
-        --default-remote-provider GS <span class="se">\</span>
-        --default-remote-prefix <span class="o">{</span>WRITABLE_BUCKET_PATH<span class="o">}</span> &gt; <span class="se">\</span>
-        quant_all_samples
+<div class="highlight"><pre><span></span><code>snakemake<span class="w"> </span>--timestamp<span class="w"> </span>-p<span class="w"> </span>--verbose<span class="w"> </span>--keep-remote<span class="w"> </span>-j<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>--default-remote-provider<span class="w"> </span>GS<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>--default-remote-prefix<span class="w"> </span><span class="o">{</span>WRITABLE_BUCKET_PATH<span class="o">}</span><span class="w"> </span>&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>quant_all_samples
 </code></pre></div>
 
 <p>To understand how the whole remote files work, here is the the folder structure after the exection:</p>
@@ -480,92 +480,92 @@
 <p>Although bioconda has made the package installation very easy, it would be easier to just isolate the whole environment at the operating system level. One common approach is to use <a href="https://www.docker.com/">Docker</a>.</p>
 <p>A minimal working Dockerfile would be:</p>
 <div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">continuumio/miniconda3</span>
-<span class="k">RUN</span><span class="w"> </span>conda install -y <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6 nomkl <span class="se">\</span>
-        stringtie samtools hisat2 snakemake google-cloud-storage <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> conda clean -y --all
+<span class="k">RUN</span><span class="w"> </span>conda<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6<span class="w"> </span>nomkl<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>stringtie<span class="w"> </span>samtools<span class="w"> </span>hisat2<span class="w"> </span>snakemake<span class="w"> </span>google-cloud-storage<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>conda<span class="w"> </span>clean<span class="w"> </span>-y<span class="w"> </span>--all
 </code></pre></div>
 
 <p>However there are some details required extra care at the time of writing, so I&rsquo;ve created a Docker image for this pipeline on Docker Hub, <a href="https://hub.docker.com/r/lbwang/snakemake-conda-rnaseq/"><code>lbwang/snakemake-conda-rnaseq</code></a>. One could be able to run the snakemake by:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span> ~/snakemake_example
-docker run -t                       <span class="se">\</span>
-    -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/analysis             <span class="se">\</span>
-    lbwang/snakemake-conda-rnaseq   <span class="se">\</span>
-    snakemake -j <span class="m">2</span> --timestamp      <span class="se">\</span>
-        -s /analysis/Snakefile --directory /analysis <span class="se">\</span>
-        quant_all_samples
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>~/snakemake_example
+docker<span class="w"> </span>run<span class="w"> </span>-t<span class="w">                       </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/analysis<span class="w">             </span><span class="se">\</span>
+<span class="w">    </span>lbwang/snakemake-conda-rnaseq<span class="w">   </span><span class="se">\</span>
+<span class="w">    </span>snakemake<span class="w"> </span>-j<span class="w"> </span><span class="m">2</span><span class="w"> </span>--timestamp<span class="w">      </span><span class="se">\</span>
+<span class="w">        </span>-s<span class="w"> </span>/analysis/Snakefile<span class="w"> </span>--directory<span class="w"> </span>/analysis<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>quant_all_samples
 </code></pre></div>
 
 <h3 id="use-google-cloud-storage-in-docker-image">Use Google Cloud Storage in Docker image</h3>
 <p>To use Google&rsquo;s Cloud products in a Docker image, one needs to install <a href="https://cloud.google.com/sdk/downloads">Google Cloud SDK</a> inside the Docker image. Refer to <a href="https://github.com/GoogleCloudPlatform/cloud-sdk-docker/blob/master/debian_slim/Dockerfile">Google&rsquo;s Dockerfile with Cloud SDK</a> for detail. <a href="https://hub.docker.com/r/lbwang/snakemake-conda-rnaseq/"><code>lbwang/snakemake-conda-rnaseq</code></a> has installed the Cloud SDK.</p>
-<div class="highlight"><pre><span></span><code>sudo docker run -t -i                           <span class="se">\</span>
-    -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/analysis                         <span class="se">\</span>
-    -v ~/.config/gcloud:/root/.config/gcloud    <span class="se">\</span>
-    lbwang/snakemake-conda-rnaseq               <span class="se">\</span>
-    snakemake -j <span class="m">4</span> --timestamp --verbose -p --keep-remote   <span class="se">\</span>
-        -s /analysis/Snakefile --directory /analysis        <span class="se">\</span>
-        --default-remote-provider GS --default-remote-prefix <span class="s2">&quot;{WRITABLE_BUCKET_PATH}&quot;</span> <span class="se">\</span>
-        quant_all_samples
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-t<span class="w"> </span>-i<span class="w">                           </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/analysis<span class="w">                         </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span>~/.config/gcloud:/root/.config/gcloud<span class="w">    </span><span class="se">\</span>
+<span class="w">    </span>lbwang/snakemake-conda-rnaseq<span class="w">               </span><span class="se">\</span>
+<span class="w">    </span>snakemake<span class="w"> </span>-j<span class="w"> </span><span class="m">4</span><span class="w"> </span>--timestamp<span class="w"> </span>--verbose<span class="w"> </span>-p<span class="w"> </span>--keep-remote<span class="w">   </span><span class="se">\</span>
+<span class="w">        </span>-s<span class="w"> </span>/analysis/Snakefile<span class="w"> </span>--directory<span class="w"> </span>/analysis<span class="w">        </span><span class="se">\</span>
+<span class="w">        </span>--default-remote-provider<span class="w"> </span>GS<span class="w"> </span>--default-remote-prefix<span class="w"> </span><span class="s2">&quot;{WRITABLE_BUCKET_PATH}&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>quant_all_samples
 </code></pre></div>
 
 <p>To run Docker on a GCE VM instance, it requires the host machine (the VM instance) to have Docker installed. One may refer to Docker&rsquo;s <a href="https://docs.docker.com/engine/installation/linux/docker-ce/debian/#install-using-the-repository">official installation guide</a> to install it. VM instance by default inherit the user&rsquo;s permission (via the automatically created service account), thus the command above should apply to the GCE instance as well.</p>
 <h2 id="google-container-engine-gke">Google Container Engine (GKE)</h2>
 <p>To scale up the pipeline execution across multiple machines, Snakemake could use <a href="https://cloud.google.com/container-engine/">Google Container Engine</a> (GKE, implemented on top of Kubernetes). This method is built on Docker which each node will pull down the given Docker image to load the environment. After <a href="https://bitbucket.org/snakemake/snakemake/issues/602">some discussions</a> about how to specify user input image <sup id="fnref:kubernetes-docker"><a class="footnote-ref" href="#fn:kubernetes-docker">1</a></sup>, on Snakemake 4.1+ one is able to specify the Docker image Kubernete&rsquo;s node uses by <code>--container-image &lt;image&gt;</code>.</p>
 <p>To install the master branch of Snakemake, run:</p>
-<div class="highlight"><pre><span></span><code>pip install git+https://bitbucket.org/snakemake/snakemake.git@master
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>git+https://bitbucket.org/snakemake/snakemake.git@master
 </code></pre></div>
 
 <p>Following Snakemake&rsquo;s <a href="https://snakemake.readthedocs.io/en/stable/executable.html#executing-a-snakemake-workflow-via-kubernetes">GKE guide</a>, extra packages need to be installed to talk to GKE (Kubernetes) cluster:</p>
-<div class="highlight"><pre><span></span><code>pip install kubernetes
-gcloud components install kubectl
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>kubernetes
+gcloud<span class="w"> </span>components<span class="w"> </span>install<span class="w"> </span>kubectl
 <span class="c1"># or Debian on GCE:</span>
 <span class="c1"># sudo apt-get install kubectl</span>
 </code></pre></div>
 
 <p>First we create the GKE cluster by:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">CLUSTER_NAME</span><span class="o">=</span><span class="s2">&quot;snakemake-cluster&quot;</span>
-<span class="nb">export</span> <span class="nv">ZONE</span><span class="o">=</span><span class="s2">&quot;us-central1-a&quot;</span>
-gcloud container clusters create <span class="nv">$CLUSTER_NAME</span> <span class="se">\</span>
-    --zone<span class="o">=</span><span class="nv">$ZONE</span> --num-nodes<span class="o">=</span><span class="m">3</span> <span class="se">\</span>
-    --machine-type<span class="o">=</span><span class="s2">&quot;n1-standard-4&quot;</span> <span class="se">\</span>
-    --scopes storage-rw
-gcloud container clusters get-credentials --zone<span class="o">=</span><span class="nv">$ZONE</span> <span class="nv">$CLUSTER_NAME</span>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">CLUSTER_NAME</span><span class="o">=</span><span class="s2">&quot;snakemake-cluster&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ZONE</span><span class="o">=</span><span class="s2">&quot;us-central1-a&quot;</span>
+gcloud<span class="w"> </span>container<span class="w"> </span>clusters<span class="w"> </span>create<span class="w"> </span><span class="nv">$CLUSTER_NAME</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--zone<span class="o">=</span><span class="nv">$ZONE</span><span class="w"> </span>--num-nodes<span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--machine-type<span class="o">=</span><span class="s2">&quot;n1-standard-4&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--scopes<span class="w"> </span>storage-rw
+gcloud<span class="w"> </span>container<span class="w"> </span>clusters<span class="w"> </span>get-credentials<span class="w"> </span>--zone<span class="o">=</span><span class="nv">$ZONE</span><span class="w"> </span><span class="nv">$CLUSTER_NAME</span>
 </code></pre></div>
 
 <p>This will launch 3 GCE VM instances using <code>n1-standard-4</code> machine type (4 CPUs). Therefore in the cluster there are total 12 CPUs available for computation. Modify the variables to fit one&rsquo;s setting.</p>
 <p>Note that some rule may specify a number of CPUs that no node in the clusters has, say the rule <code>build_hisat_index</code> specifies 8 threads. In this case, the cluster cannot find a node with enough free CPUs to forward the job to a <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod/">pod</a> and the cluster will halt. Therefore, make sure to lower the <code>threads</code> to a reasonable number (or use <a href="https://snakemake.readthedocs.io/en/stable/snakefiles/configuration.html">configfile</a> to apply to mulitple samples). We will continue to use the same Docker image <a href="https://hub.docker.com/r/lbwang/snakemake-conda-rnaseq/"><code>lbwang/snakemake-conda-rnaseq</code></a> as the Kubernetes&rsquo; container image.</p>
 <p>By default, Snakemake will always check if the output files are outdated, that is, older than the rule that generated them. To ensure it re-runs the pipeline, one might need to remove the generated output before calling Snakemake again:</p>
-<div class="highlight"><pre><span></span><code>gsutil -m rm -r gs://<span class="o">{</span>WRITABLE_BUCKET_PATH<span class="o">}</span>/<span class="o">{</span>align_hisat2,hisat2_index,stringtie<span class="o">}</span>
+<div class="highlight"><pre><span></span><code>gsutil<span class="w"> </span>-m<span class="w"> </span>rm<span class="w"> </span>-r<span class="w"> </span>gs://<span class="o">{</span>WRITABLE_BUCKET_PATH<span class="o">}</span>/<span class="o">{</span>align_hisat2,hisat2_index,stringtie<span class="o">}</span>
 </code></pre></div>
 
 <p>Then we are able to run the pipeline again.</p>
-<div class="highlight"><pre><span></span><code>snakemake                                            <span class="se">\</span>
-    --timestamp -p --verbose --keep-remote           <span class="se">\</span>
-    -j <span class="m">12</span> --kubernetes                               <span class="se">\</span>
-    --container-image lbwang/snakemake-conda-rnaseq <span class="se">\</span>
-    --default-remote-provider GS                     <span class="se">\</span>
-    --default-remote-prefix <span class="o">{</span>WRITABLE_BUCKET_PATH<span class="o">}</span>   <span class="se">\</span>
-    quant_all_samples
+<div class="highlight"><pre><span></span><code>snakemake<span class="w">                                            </span><span class="se">\</span>
+<span class="w">    </span>--timestamp<span class="w"> </span>-p<span class="w"> </span>--verbose<span class="w"> </span>--keep-remote<span class="w">           </span><span class="se">\</span>
+<span class="w">    </span>-j<span class="w"> </span><span class="m">12</span><span class="w"> </span>--kubernetes<span class="w">                               </span><span class="se">\</span>
+<span class="w">    </span>--container-image<span class="w"> </span>lbwang/snakemake-conda-rnaseq<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--default-remote-provider<span class="w"> </span>GS<span class="w">                     </span><span class="se">\</span>
+<span class="w">    </span>--default-remote-prefix<span class="w"> </span><span class="o">{</span>WRITABLE_BUCKET_PATH<span class="o">}</span><span class="w">   </span><span class="se">\</span>
+<span class="w">    </span>quant_all_samples
 </code></pre></div>
 
 <p>Note that since we change the container image, we have to make sure the version of Snakemake in the Docker image and the machine starting the pipeline matches. An easy way to ensure that the versions are matched is to start the workflow inside the same Docker image.</p>
 <p>To connect the Kubernete cluster inside Docker, we need to pass kubectl&rsquo;s config file as well, which is at <code>~/.kube/config</code>. So the full command becomes:</p>
-<div class="highlight"><pre><span></span><code>sudo docker run -t -i                           <span class="se">\</span>
-    -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/analysis                         <span class="se">\</span>
-    -v ~/.config/gcloud:/root/.config/gcloud    <span class="se">\</span>
-    -v ~/.kube/config:/root/.kube/config        <span class="se">\</span>
-    lbwang/snakemake-conda-rnaseq               <span class="se">\</span>
-    snakemake                                           <span class="se">\</span>
-        -s /analysis/Snakefile --directory /analysis    <span class="se">\</span>
-        --timestamp -p --verbose --keep-remote          <span class="se">\</span>
-        -j <span class="m">12</span> --kubernetes                              <span class="se">\</span>
-        --container-image lbwang/snakemake-conda-rnaseq <span class="se">\</span>
-        --default-remote-provider GS                    <span class="se">\</span>
-        --default-remote-prefix <span class="o">{</span>WRITABLE_BUCKET_PATH<span class="o">}</span>  <span class="se">\</span>
-        quant_all_samples
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-t<span class="w"> </span>-i<span class="w">                           </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/analysis<span class="w">                         </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span>~/.config/gcloud:/root/.config/gcloud<span class="w">    </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span>~/.kube/config:/root/.kube/config<span class="w">        </span><span class="se">\</span>
+<span class="w">    </span>lbwang/snakemake-conda-rnaseq<span class="w">               </span><span class="se">\</span>
+<span class="w">    </span>snakemake<span class="w">                                           </span><span class="se">\</span>
+<span class="w">        </span>-s<span class="w"> </span>/analysis/Snakefile<span class="w"> </span>--directory<span class="w"> </span>/analysis<span class="w">    </span><span class="se">\</span>
+<span class="w">        </span>--timestamp<span class="w"> </span>-p<span class="w"> </span>--verbose<span class="w"> </span>--keep-remote<span class="w">          </span><span class="se">\</span>
+<span class="w">        </span>-j<span class="w"> </span><span class="m">12</span><span class="w"> </span>--kubernetes<span class="w">                              </span><span class="se">\</span>
+<span class="w">        </span>--container-image<span class="w"> </span>lbwang/snakemake-conda-rnaseq<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>--default-remote-provider<span class="w"> </span>GS<span class="w">                    </span><span class="se">\</span>
+<span class="w">        </span>--default-remote-prefix<span class="w"> </span><span class="o">{</span>WRITABLE_BUCKET_PATH<span class="o">}</span><span class="w">  </span><span class="se">\</span>
+<span class="w">        </span>quant_all_samples
 </code></pre></div>
 
 <p>After running our pipeline, make sure to delete the GKE cluster by:</p>
-<div class="highlight"><pre><span></span><code>gcloud container clusters delete --zone<span class="o">=</span><span class="nv">$ZONE</span> <span class="nv">$CLUSTER_NAME</span>
+<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>container<span class="w"> </span>clusters<span class="w"> </span>delete<span class="w"> </span>--zone<span class="o">=</span><span class="nv">$ZONE</span><span class="w"> </span><span class="nv">$CLUSTER_NAME</span>
 </code></pre></div>
 
 <h3 id="potential-issues-of-using-gke-with-snakemake">Potential issues of using GKE with Snakemake</h3>

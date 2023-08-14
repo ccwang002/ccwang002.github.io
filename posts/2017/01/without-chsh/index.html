@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2017/01/without-chsh/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2017-01-23 00:00:00-06:00"/>
-<meta property="article:modified_time" content="2022-10-27 13:49:17.517991-05:00"/>
+<meta property="article:modified_time" content="2023-08-13 23:05:21.753720-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="en"/>
@@ -121,7 +121,7 @@ shell for macOS, Linux, and the rest of the family.</p>
 <p>Most of the time, one can change the login shell by the command <code>chsh</code>. In order to let <code>chsh</code> accept the new fish shell, it must be added into the list of all accepted shells which requires root permission. However, in many occasions including working on a large shared server, one may not has the permission to add new shell and thus the options for the login shell are often limited.  </p>
 <h4 id="replacing-login-shell-by-exec">Replacing login shell by <code>exec</code></h4>
 <p>Alternative solution will be calling the new shell upon the execution of current shell.  A POSIX-compliant shell<sup id="fnref:posix"><a class="footnote-ref" href="#fn:posix">1</a></sup> should always read the <code>.profile</code> configuration file upon login, the following command execute fish and sweep the process with the current running shell (usually, bash). </p>
-<div class="highlight"><pre><span></span><code><span class="nb">exec</span> -l <span class="nv">$SHELL</span> -l
+<div class="highlight"><pre><span></span><code><span class="nb">exec</span><span class="w"> </span>-l<span class="w"> </span><span class="nv">$SHELL</span><span class="w"> </span>-l
 </code></pre></div>
 
 <p><code>-l</code> tells shell to act like a login shell. For more explanation about login and non-login (as well as (non-)interactive) shells can be found at <a href="http://unix.stackexchange.com/a/46856">this StackOverflow answer</a>. By pointing <code>$SHELL</code> to the desired shell binary, one can achieve the similar behavior to <code>chsh</code>.</p>
@@ -132,19 +132,19 @@ shell for macOS, Linux, and the rest of the family.</p>
 
 <span class="c1"># The replacement is only done in non-fish login interactive shell in</span>
 <span class="c1"># SSH connection and fish executable exists.</span>
-<span class="k">if</span> <span class="o">[</span>                                                            <span class="se">\</span>
-     <span class="s2">&quot;</span><span class="nv">$SHELL</span><span class="s2">&quot;</span> !<span class="o">=</span> <span class="s2">&quot;</span><span class="nv">$FISH_BIN</span><span class="s2">&quot;</span> -a -n <span class="s2">&quot;</span><span class="nv">$SSH_TTY</span><span class="s2">&quot;</span> -a -x <span class="s2">&quot;</span><span class="nv">$FISH_BIN</span><span class="s2">&quot;</span> <span class="se">\</span>
-<span class="o">]</span> <span class="p">;</span> <span class="k">then</span>
-    <span class="c1"># we first check whether fish can be executed, otherwise the</span>
-    <span class="c1"># replacement will cause immediate crash at login (not fun)</span>
-    <span class="k">if</span> <span class="s2">&quot;</span><span class="nv">$FISH_BIN</span><span class="s2">&quot;</span> -c <span class="s1">&#39;echo &quot;Test fish running&quot; &gt;/dev/null&#39;</span> <span class="p">;</span> <span class="k">then</span>
-        <span class="nb">export</span> <span class="nv">SHELL</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$FISH_BIN</span><span class="s2">&quot;</span>
-        <span class="nb">echo</span> <span class="s2">&quot;One can launch the fish shell by &#39;exec -l \$SHELL -l&#39;&quot;</span>
-        <span class="c1"># exec -l $SHELL -l   # launch the fish login shell</span>
-    <span class="k">else</span>
-        <span class="nb">echo</span> <span class="s2">&quot;Failed to launch fish shell. Go check its installation!&quot;</span>
-        <span class="nb">echo</span> <span class="s2">&quot;Fall back to default shell </span><span class="nv">$SHELL</span><span class="s2"> ...&quot;</span>
-    <span class="k">fi</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w">                                                            </span><span class="se">\</span>
+<span class="w">     </span><span class="s2">&quot;</span><span class="nv">$SHELL</span><span class="s2">&quot;</span><span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$FISH_BIN</span><span class="s2">&quot;</span><span class="w"> </span>-a<span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$SSH_TTY</span><span class="s2">&quot;</span><span class="w"> </span>-a<span class="w"> </span>-x<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$FISH_BIN</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="o">]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="c1"># we first check whether fish can be executed, otherwise the</span>
+<span class="w">    </span><span class="c1"># replacement will cause immediate crash at login (not fun)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$FISH_BIN</span><span class="s2">&quot;</span><span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;echo &quot;Test fish running&quot; &gt;/dev/null&#39;</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nb">export</span><span class="w"> </span><span class="nv">SHELL</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$FISH_BIN</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;One can launch the fish shell by &#39;exec -l \$SHELL -l&#39;&quot;</span>
+<span class="w">        </span><span class="c1"># exec -l $SHELL -l   # launch the fish login shell</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Failed to launch fish shell. Go check its installation!&quot;</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Fall back to default shell </span><span class="nv">$SHELL</span><span class="s2"> ...&quot;</span>
+<span class="w">    </span><span class="k">fi</span>
 <span class="k">fi</span>
 </code></pre></div>
 

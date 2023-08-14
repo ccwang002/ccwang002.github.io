@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2015/09/flask-draw-member/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2015-09-28 12:00:00-05:00"/>
-<meta property="article:modified_time" content="2022-10-27 13:49:17.488264-05:00"/>
+<meta property="article:modified_time" content="2023-08-13 23:05:21.730374-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="zh"/>
@@ -275,29 +275,29 @@
 </blockquote>
 <h4 id="python">Python 環境</h4>
 <p>使用 <a href="https://www.python.org/downloads/">Python 3.5</a>。理論上 SQLite 就已經裝好了能直接使用。一般在開發 Python 程式的時候會使用虛擬環境，好處虛擬環境安裝的 Python 套件可以獨立管理，不受系統或其他虛擬環境影響。我們用內建的 <a href="https://docs.python.org/3.5/library/venv.html#module-venv">venv</a> 建立一個名稱為 <code>VENV</code> 的虛擬環境：</p>
-<div class="highlight"><pre><span></span><code>$ python3.5 -m venv VENV
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python3.5<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>VENV
 </code></pre></div>
 
 <p>這時候目錄底下就會多一個 <code>VENV</code> 資料夾，裡面是個完整的 Python 執行結構，就好像在這個路徑安裝 Python 一樣。先暫時不管它怎麼做到虛擬隔離，知道怎麼用就好。使用跟離開分別是：</p>
-<div class="highlight"><pre><span></span><code>$ <span class="nb">source</span> VENV/bin/activate
-<span class="o">(</span>VENV<span class="o">)</span> $ which python
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>VENV/bin/activate
+<span class="o">(</span>VENV<span class="o">)</span><span class="w"> </span>$<span class="w"> </span>which<span class="w"> </span>python
 <span class="c1"># /path/to/draw_member/VENV/bin/python</span>
 </code></pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="o">(</span>VENV<span class="o">)</span> $ deactivate
-$  <span class="c1"># 前面的 (VENV) 會消失</span>
+<div class="highlight"><pre><span></span><code><span class="o">(</span>VENV<span class="o">)</span><span class="w"> </span>$<span class="w"> </span>deactivate
+$<span class="w">  </span><span class="c1"># 前面的 (VENV) 會消失</span>
 </code></pre></div>
 
 <h4 id="flaskjinja2">安裝 Flask、Jinja2 等套件</h4>
 <p>Python 使用 pip 管理安裝的套件，</p>
-<div class="highlight"><pre><span></span><code><span class="o">(</span>VENV<span class="o">)</span> $ pip install flask jinja2
+<div class="highlight"><pre><span></span><code><span class="o">(</span>VENV<span class="o">)</span><span class="w"> </span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>flask<span class="w"> </span>jinja2
 <span class="c1"># Collecting flask</span>
 <span class="c1"># Collecting jinja2</span>
 <span class="c1"># ... (連帶裝了相關的套件）</span>
 </code></pre></div>
 
 <p>這時候如果查看裝了哪些套件就會看到：</p>
-<div class="highlight"><pre><span></span><code><span class="o">(</span>VENV<span class="o">)</span> $ pip freeze
+<div class="highlight"><pre><span></span><code><span class="o">(</span>VENV<span class="o">)</span><span class="w"> </span>$<span class="w"> </span>pip<span class="w"> </span>freeze
 <span class="c1"># Flask==0.10.1</span>
 <span class="c1"># itsdangerous==0.24</span>
 <span class="c1"># Jinja2==2.8</span>
@@ -306,44 +306,44 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </code></pre></div>
 
 <p>為了方便之後把環境安裝在別的電腦上，記得用</p>
-<div class="highlight"><pre><span></span><code>pip freeze &gt; requirements.txt
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>freeze<span class="w"> </span>&gt;<span class="w"> </span>requirements.txt
 </code></pre></div>
 
 <p>把套件版本的資訊都存在一個檔案裡的好處是，下次把要環境架起來就只要</p>
-<div class="highlight"><pre><span></span><code>pip install -r requirements.txt
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
 </code></pre></div>
 
 <p>就設定完成了。</p>
 <h4 id="sqlite-database">SQLite Database</h4>
 <p>我們先把 SQLite 每個資料表設定好，這樣之後在寫程式就只要專心讀寫資料就好了。根據前面建的模型，我們可以轉換成 SQL 語法：</p>
 <div class="highlight"><pre><span></span><code><span class="c1">-- create_db.sql</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">members</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">ASC</span><span class="w"> </span><span class="n">AUTOINCREMENT</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">group_name</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"></span>
-<span class="p">);</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">members</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">ASC</span><span class="w"> </span><span class="n">AUTOINCREMENT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">group_name</span><span class="w"> </span><span class="nb">TEXT</span>
+<span class="p">);</span>
 
-<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">draw_histories</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="n">memberid</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="k">time</span><span class="w"> </span><span class="n">DATETIME</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="s1">&#39;now&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;localtime&#39;</span><span class="p">)),</span><span class="w"></span>
-<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">memberid</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">members</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"></span>
-<span class="p">);</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">draw_histories</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">memberid</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="k">time</span><span class="w"> </span><span class="n">DATETIME</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="s1">&#39;now&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;localtime&#39;</span><span class="p">)),</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">memberid</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">members</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
+<span class="p">);</span>
 </code></pre></div>
 
 <p>把這串 SQL 寫到一個檔案 <code>create_db.sql</code> 後就可以實際測試一下。我們把兩個成員寫到檔案裡面，</p>
-<div class="highlight"><pre><span></span><code>$ sqlite3 -init create_db.sql test.db
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>sqlite3<span class="w"> </span>-init<span class="w"> </span>create_db.sql<span class="w"> </span>test.db
 </code></pre></div>
 
 <div class="highlight"><pre><span></span><code><span class="go">-- Loading resources from create_db.sql</span>
 
 <span class="go">SQLite version 3.8.11.1 2015-07-29 20:00:57</span>
 <span class="go">Enter &quot;.help&quot; for usage hints.</span>
-<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">members</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">group_name</span><span class="p">)</span><span class="w"></span>
-<span class="gp">   ...&gt;</span><span class="w"> </span><span class="k">VALUES</span><span class="w"></span>
-<span class="gp">   ...&gt;</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;高坂 穂乃果&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;μ&#39;&#39;s&#39;</span><span class="p">),</span><span class="w"></span>
-<span class="gp">   ...&gt;</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;平沢 唯&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;K-ON!&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="n">header</span><span class="w"> </span><span class="k">on</span><span class="w"></span>
-<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">members</span><span class="p">;</span><span class="w"></span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">members</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">group_name</span><span class="p">)</span>
+<span class="gp">   ...&gt;</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="gp">   ...&gt;</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;高坂 穂乃果&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;μ&#39;&#39;s&#39;</span><span class="p">),</span>
+<span class="gp">   ...&gt;</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;平沢 唯&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;K-ON!&#39;</span><span class="p">);</span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="n">header</span><span class="w"> </span><span class="k">on</span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">members</span><span class="p">;</span>
 <span class="go">id|name|group_name</span>
 <span class="go">1|高坂 穂乃果|μ&#39;s</span>
 <span class="go">2|平沢 唯|K-ON!</span>
@@ -351,13 +351,13 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 
 <p><code>sqlite3 -init xxx.sql</code> 意思是把 <code>xxx.sql</code> 裡面的 SQL 指令都執行了一遍，所以一進到 SQLite shell 裡面就建立好表格了。</p>
 <p>再來我們模擬幾次抽籤的過程。注意到我們之前有寫 <strong>draw_histories</strong>.time 的預設值，所以抽籤只要寫是誰就可以了，時間 SQLite 會自動根據指令執行的時間給值。不過我們都試一下吧。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">draw_histories</span><span class="w"> </span><span class="p">(</span><span class="n">memberid</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">draw_histories</span><span class="w"> </span><span class="p">(</span><span class="n">memberid</span><span class="p">,</span><span class="w"> </span><span class="k">time</span><span class="p">)</span><span class="w"></span>
-<span class="gp">   ...&gt;</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">datetime</span><span class="p">(</span><span class="s1">&#39;2015-09-25 16:30&#39;</span><span class="p">));</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">draw_histories</span><span class="w"> </span><span class="p">(</span><span class="n">memberid</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">draw_histories</span><span class="w"> </span><span class="p">(</span><span class="n">memberid</span><span class="p">,</span><span class="w"> </span><span class="k">time</span><span class="p">)</span>
+<span class="gp">   ...&gt;</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">datetime</span><span class="p">(</span><span class="s1">&#39;2015-09-25 16:30&#39;</span><span class="p">));</span>
 </code></pre></div>
 
 <p>所以第一次 INSERT 指令抽了果果以及小唯各一次。第二次 INSERT 再抽了一次小唯，這次還有額外指定時間為的 9 月 25 號下午 4 點半。關於 SQLite 裡 <code>datetime</code> 的更多使用方式可以參考<a href="https://sqlite.org/lang_datefunc.html">官網說明文件</a>，我們的例子只要這樣就足夠了。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">draw_histories</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">draw_histories</span><span class="p">;</span>
 <span class="go">memberid|time</span>
 <span class="go">1|2015-09-28 16:55:03</span>
 <span class="go">2|2015-09-28 16:55:03</span>
@@ -366,10 +366,10 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 
 <p>前兩個就是第一次 INSERT 所建立的抽籤歷史，跟你下指令的時間有關。第二次 INSERT 有給定時間，所以記錄永遠是 9 月 25 號下午。</p>
 <p><strong>draw_histories</strong> 只儲存了 member_id，我們可以做一個比較複雜的查詢，把成員的名字跟所屬團體一起列出來。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">group_name</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="k">time</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">draw_time</span><span class="w"></span>
-<span class="gp">   ...&gt;</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">draw_histories</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">members</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">m</span><span class="w"></span>
-<span class="gp">   ...&gt;</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">memberid</span><span class="w"></span>
-<span class="gp">   ...&gt;</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="k">time</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">group_name</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="k">time</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">draw_time</span>
+<span class="gp">   ...&gt;</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">draw_histories</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">members</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">m</span>
+<span class="gp">   ...&gt;</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">memberid</span>
+<span class="gp">   ...&gt;</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="k">time</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span>
 <span class="go">id|name|group_name|draw_time</span>
 <span class="go">2|平沢 唯|K-ON!|2015-09-25 16:30:00</span>
 <span class="go">1|高坂 穂乃果|μ&#39;s|2015-09-28 16:55:03</span>
@@ -455,13 +455,13 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 </code></pre></div>
 
 <p>以上就是最基本的 Flask server 架構。先來測試看看，都已經等待一千六百多字了。先把 server 跑起來，</p>
-<div class="highlight"><pre><span></span><code><span class="o">(</span>VENV<span class="o">)</span> $ python draw_member.py
- * Running on http://127.0.0.1:5000/ <span class="o">(</span>Press CTRL+C to quit<span class="o">)</span>
- * Restarting with stat
+<div class="highlight"><pre><span></span><code><span class="o">(</span>VENV<span class="o">)</span><span class="w"> </span>$<span class="w"> </span>python<span class="w"> </span>draw_member.py
+<span class="w"> </span>*<span class="w"> </span>Running<span class="w"> </span>on<span class="w"> </span>http://127.0.0.1:5000/<span class="w"> </span><span class="o">(</span>Press<span class="w"> </span>CTRL+C<span class="w"> </span>to<span class="w"> </span>quit<span class="o">)</span>
+<span class="w"> </span>*<span class="w"> </span>Restarting<span class="w"> </span>with<span class="w"> </span>stat
 </code></pre></div>
 
 <p>再來可以開瀏覽器訪問 <a href="http://localhost:5000/">http://localhost:5000/</a>，或者用 command line 來訪問：</p>
-<div class="highlight"><pre><span></span><code>$ curl <span class="s1">&#39;http://localhost:5000/&#39;</span>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>curl<span class="w"> </span><span class="s1">&#39;http://localhost:5000/&#39;</span>
 <span class="c1"># &lt;p&gt;Hello World!&lt;/p&gt;</span>
 </code></pre></div>
 
@@ -832,15 +832,15 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 <h4 id="sqlite-table-info">SQLite table info</h4>
 <p>除了用 <code>.schema</code> 去看每個 TABLE 建立時的指令之外，也可以用 <code>PRAGMA table_info</code> 去看某個 table 每個欄位的設定。</p>
 <div class="highlight"><pre><span></span><code><span class="go">-- Run `sqlite -init create_db.sql`</span>
-<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="n">header</span><span class="w"> </span><span class="k">on</span><span class="w"></span>
-<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="k">mode</span><span class="w"> </span><span class="k">column</span><span class="w"></span>
-<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="n">PRAGMA</span><span class="w"> </span><span class="n">table_info</span><span class="p">(</span><span class="n">members</span><span class="p">);</span><span class="w"></span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="n">header</span><span class="w"> </span><span class="k">on</span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="k">mode</span><span class="w"> </span><span class="k">column</span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="n">PRAGMA</span><span class="w"> </span><span class="n">table_info</span><span class="p">(</span><span class="n">members</span><span class="p">);</span>
 <span class="go">cid  name         type       notnul  dflt_value                    pk</span>
 <span class="go">---  -----------  ---------  ------  ----------------------------  --</span>
 <span class="go">0    id           INTEGER    0                                     1</span>
 <span class="go">1    name         TEXT       1                                     0</span>
 <span class="go">2    group_name   TEXT       0                                     0</span>
-<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="n">PRAGMA</span><span class="w"> </span><span class="n">table_info</span><span class="p">(</span><span class="n">draw_histories</span><span class="p">);</span><span class="w"></span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="n">PRAGMA</span><span class="w"> </span><span class="n">table_info</span><span class="p">(</span><span class="n">draw_histories</span><span class="p">);</span>
 <span class="go">cid  name         type       notnul  dflt_value                    pk</span>
 <span class="go">---  -----------  ---------  ------  ----------------------------  --</span>
 <span class="go">0    memberid     INTEGER    0                                     0</span>
@@ -849,15 +849,15 @@ $  <span class="c1"># 前面的 (VENV) 會消失</span>
 
 <h4 id="sqlite-foreign-key-check">SQLite foreign key check</h4>
 <p>SQLite3 在比較新版才會去處理 foreign key 限制的功能，參考<a href="https://www.sqlite.org/foreignkeys.html#fk_enable">官網的說明</a>，</p>
-<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="n">PRAGMA</span><span class="w"> </span><span class="n">foreign_keys</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="n">PRAGMA</span><span class="w"> </span><span class="n">foreign_keys</span><span class="p">;</span>
 <span class="go">0</span>
 </code></pre></div>
 
 <p>如果是 0 的話表示 SQLite 並不會去檢查 foreign key。這可以手動打開檢查。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="n">PRAGMA</span><span class="w"> </span><span class="n">foreign_keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">ON</span><span class="p">;</span><span class="w"></span>
-<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="n">PRAGMA</span><span class="w"> </span><span class="n">foreign_keys</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="n">PRAGMA</span><span class="w"> </span><span class="n">foreign_keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">ON</span><span class="p">;</span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="n">PRAGMA</span><span class="w"> </span><span class="n">foreign_keys</span><span class="p">;</span>
 <span class="go">1</span>
-<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">draw_histories</span><span class="p">(</span><span class="n">memberid</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span><span class="w"></span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">draw_histories</span><span class="p">(</span><span class="n">memberid</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
 <span class="go">Error: FOREIGN KEY constraint failed</span>
 </code></pre></div>
 

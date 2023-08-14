@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2016/02/pydoctw-server/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2016-02-14 21:00:00-06:00"/>
-<meta property="article:modified_time" content="2022-10-27 13:49:17.509016-05:00"/>
+<meta property="article:modified_time" content="2023-08-13 23:05:21.746096-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="zh"/>
@@ -284,17 +284,17 @@ $ sudo apt-get install python3.5 python3.5-venv python3.5-dev
 <p>因為 Amazon EBS SSD I/O 數不會另外收錢（應該吧？），就建 swap file 在主硬碟裡。</p>
 <p>Swap 設定的教學很多，這邊就參考 <a href="https://wiki.archlinux.org/index.php/swap">Arch Wiki</a> 上的做法，我選擇放在 <code>/var/swap.1</code>。大小設定為 RAM 的 2 倍，即 1GB。</p>
 <p>首先把這個檔案建出來，權限改為 600。</p>
-<div class="highlight"><pre><span></span><code>sudo /bin/dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/var/swap.1 <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span><span class="m">1024</span>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>/bin/dd<span class="w"> </span><span class="k">if</span><span class="o">=</span>/dev/zero<span class="w"> </span><span class="nv">of</span><span class="o">=</span>/var/swap.1<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1M<span class="w"> </span><span class="nv">count</span><span class="o">=</span><span class="m">1024</span>
 <span class="c1"># or faster with fallocate</span>
-sudo fallocate -l 1G /var/swap.1
+sudo<span class="w"> </span>fallocate<span class="w"> </span>-l<span class="w"> </span>1G<span class="w"> </span>/var/swap.1
 </code></pre></div>
 
-<div class="highlight"><pre><span></span><code>sudo chmod <span class="m">600</span> /var/swap.1
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span>/var/swap.1
 </code></pre></div>
 
 <p>再來把這個檔案改成 swap 格式並啟用它，</p>
-<div class="highlight"><pre><span></span><code>sudo /sbin/mkswap /var/swap.1
-sudo /sbin/swapon /var/swap.1
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>/sbin/mkswap<span class="w"> </span>/var/swap.1
+sudo<span class="w"> </span>/sbin/swapon<span class="w"> </span>/var/swap.1
 </code></pre></div>
 
 <p>修改 fstab 讓每次開機都有這個 swap 設定，</p>
@@ -319,8 +319,8 @@ Host github-cpython_tw
 </code></pre></div>
 
 <p>建立對應的 SSH keypair，</p>
-<div class="highlight"><pre><span></span><code>ssh-keygen -t rsa -f ~/.ssh/id_rsa.pydoc_autobuild
-ssh-keygen -t rsa -f ~/.ssh/id_rsa.cpython_tw
+<div class="highlight"><pre><span></span><code>ssh-keygen<span class="w"> </span>-t<span class="w"> </span>rsa<span class="w"> </span>-f<span class="w"> </span>~/.ssh/id_rsa.pydoc_autobuild
+ssh-keygen<span class="w"> </span>-t<span class="w"> </span>rsa<span class="w"> </span>-f<span class="w"> </span>~/.ssh/id_rsa.cpython_tw
 </code></pre></div>
 
 <p>把兩個 repo 的 URL host 換掉，</p>
@@ -343,46 +343,46 @@ ssh-keygen -t rsa -f ~/.ssh/id_rsa.cpython_tw
 <p>對本網站而言，/static 導到 Django staticfiles；/3/、/3.5/ 導到 pydoc build HTML 的路徑；其餘路徑再交給 Django 處理。其中，/3.5/* 的連結將重新導向到 /3/* 上。</p>
 <p>整理上述的需求，寫個 nginx 設定檔在 <code>/etc/nginx/sites-available/pydoc_autobuild.conf</code>：</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Upstream Django setting; the socket nginx connects to</span>
-<span class="k">upstream</span><span class="w"> </span><span class="s">django</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kn">server</span><span class="w"> </span><span class="s">unix:///run/django/pydoc_autobuild.sock</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="k">upstream</span><span class="w"> </span><span class="s">django</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kn">server</span><span class="w"> </span><span class="s">unix:///run/django/pydoc_autobuild.sock</span><span class="p">;</span>
+<span class="p">}</span>
 
-<span class="k">server</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kn">listen</span><span class="w">      </span><span class="mi">80</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kn">listen</span><span class="w">      </span><span class="mi">443</span><span class="w"> </span><span class="s">default</span><span class="w"> </span><span class="s">ssl</span><span class="p">;</span><span class="w"></span>
+<span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kn">listen</span><span class="w">      </span><span class="mi">80</span><span class="p">;</span>
+<span class="w">    </span><span class="kn">listen</span><span class="w">      </span><span class="mi">443</span><span class="w"> </span><span class="s">default</span><span class="w"> </span><span class="s">ssl</span><span class="p">;</span>
 
-<span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">docs.python.org.tw</span><span class="w"></span>
-<span class="w">                </span><span class="mi">52</span><span class="s">.69.170.26</span><span class="w"></span>
-<span class="w">                </span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kn">charset</span><span class="w">     </span><span class="s">utf-8</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">docs.python.org.tw</span>
+<span class="w">                </span><span class="mi">52</span><span class="s">.69.170.26</span>
+<span class="w">                </span><span class="p">;</span>
+<span class="w">    </span><span class="kn">charset</span><span class="w">     </span><span class="s">utf-8</span><span class="p">;</span>
 
 <span class="w">    </span><span class="kn">client_max_body_size</span><span class="w"> </span><span class="s">10M</span><span class="p">;</span><span class="w">  </span><span class="c1"># max upload size</span>
-<span class="w">    </span><span class="kn">keepalive_timeout</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kn">keepalive_timeout</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span>
 
-<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/static</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="kn">alias</span><span class="w"> </span><span class="s">/path/to/code/pydoc_autobuild/assets</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/static</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kn">alias</span><span class="w"> </span><span class="s">/path/to/code/pydoc_autobuild/assets</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 
-<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/3</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="kn">alias</span><span class="w"> </span><span class="s">/path/to/code/cpython-tw/Doc/build/html</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/3</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kn">alias</span><span class="w"> </span><span class="s">/path/to/code/cpython-tw/Doc/build/html</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 
-<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="p">~</span><span class="w"> </span><span class="sr">/3\.5/(.*)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="kn">return</span><span class="w"> </span><span class="mi">302</span><span class="w"> </span><span class="s">/3/</span><span class="nv">$1</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="p">~</span><span class="w"> </span><span class="sr">/3\.5/(.*)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kn">return</span><span class="w"> </span><span class="mi">302</span><span class="w"> </span><span class="s">/3/</span><span class="nv">$1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 
 <span class="w">    </span><span class="c1"># Finally, send all non-media requests to the Django server.</span>
-<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="kn">uwsgi_pass</span><span class="w">  </span><span class="s">django</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="kn">include</span><span class="w">     </span><span class="s">/etc/nginx/uwsgi_params</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kn">uwsgi_pass</span><span class="w">  </span><span class="s">django</span><span class="p">;</span>
+<span class="w">        </span><span class="kn">include</span><span class="w">     </span><span class="s">/etc/nginx/uwsgi_params</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>再把檔案 soft link 到 <code>/etc/nginx/sites-enabled/</code>，更新 nginx 設定：</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span> /etc/nginx/sites-available/
-sudo ln -s pydoc_autobuild.conf ../sites-enabled/
-sudo systemctl reload nginx
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>/etc/nginx/sites-available/
+sudo<span class="w"> </span>ln<span class="w"> </span>-s<span class="w"> </span>pydoc_autobuild.conf<span class="w"> </span>../sites-enabled/
+sudo<span class="w"> </span>systemctl<span class="w"> </span>reload<span class="w"> </span>nginx
 </code></pre></div>
 
 <p>確定 pydoc 上線就可以專心處理 uWSGI 了。</p>
@@ -434,45 +434,45 @@ vacuum       = true
 <p>Autobuild server 包含兩個部份：Django Server 與 Django-Q cluster。所以寫成 systemd service 時會有兩個服務。</p>
 <p>Debian system service 放在 <code>/etc/systemd/system/</code> 底下，因此建立 <code>uwsgi.service</code> 和 <code>qcluster.service</code> 分別管理 uWSGI Emperor mode 和 Django-Q cluster。</p>
 <p><code>uwsgi.service</code> 參考 uWSGI 官網 <a href="http://uwsgi-docs.readthedocs.org/en/latest/Systemd.html"><em>Django and Systemd</em></a> 一文的設定：</p>
-<div class="highlight"><pre><span></span><code>[Unit]
-Description=uWSGI Emperor
-After=syslog.target
+<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">uWSGI Emperor</span>
+<span class="na">After</span><span class="o">=</span><span class="s">syslog.target</span>
 
-[Service]
-ExecStart=/usr/local/bin/uwsgi --emperor /etc/uwsgi/vassals
-RuntimeDirectory=uwsgi
-Restart=always
-KillSignal=SIGQUIT
-Type=notify
-StandardError=syslog
-NotifyAccess=all
+<span class="k">[Service]</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/local/bin/uwsgi --emperor /etc/uwsgi/vassals</span>
+<span class="na">RuntimeDirectory</span><span class="o">=</span><span class="s">uwsgi</span>
+<span class="na">Restart</span><span class="o">=</span><span class="s">always</span>
+<span class="na">KillSignal</span><span class="o">=</span><span class="s">SIGQUIT</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">notify</span>
+<span class="na">StandardError</span><span class="o">=</span><span class="s">syslog</span>
+<span class="na">NotifyAccess</span><span class="o">=</span><span class="s">all</span>
 
-[Install]
-WantedBy=multi-user.target
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
 </code></pre></div>
 
 <p><code>qcluster.service</code> 算是自己硬寫模擬 <code>python manage.py qcluster</code> 行為。因此環境變數都要設定好（當然用絕對路徑就沒問題了，我只是覺得這樣 build log 內的執行檔路徑都很長會很醜 xd）</p>
-<div class="highlight"><pre><span></span><code>[Unit]
-Description=Django-Q Cluster for site pydoc_autobuild
-After=syslog.target
-Wants=uwsgi.service
+<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Django-Q Cluster for site pydoc_autobuild</span>
+<span class="na">After</span><span class="o">=</span><span class="s">syslog.target</span>
+<span class="na">Wants</span><span class="o">=</span><span class="s">uwsgi.service</span>
 
-[Service]
-User=pydoc
-Group=www-data
-Environment=VIRTUAL_ENV=/path/to/VENV
-Environment=PATH=/path/to/VENV/bin:$PATH
-Environment=DJANGO_SETTINGS_MODULE=pydoc_autobuild.settings.production
-WorkingDirectory=/path/to/code/pydoc_autobuild
-ExecStart=/path/to/VENV/bin/python manage.py qcluster
-Restart=always
-KillSignal=SIGQUIT
-Type=simple
-NotifyAccess=none
-StandardError=syslog
+<span class="k">[Service]</span>
+<span class="na">User</span><span class="o">=</span><span class="s">pydoc</span>
+<span class="na">Group</span><span class="o">=</span><span class="s">www-data</span>
+<span class="na">Environment</span><span class="o">=</span><span class="s">VIRTUAL_ENV=/path/to/VENV</span>
+<span class="na">Environment</span><span class="o">=</span><span class="s">PATH=/path/to/VENV/bin:$PATH</span>
+<span class="na">Environment</span><span class="o">=</span><span class="s">DJANGO_SETTINGS_MODULE=pydoc_autobuild.settings.production</span>
+<span class="na">WorkingDirectory</span><span class="o">=</span><span class="s">/path/to/code/pydoc_autobuild</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/path/to/VENV/bin/python manage.py qcluster</span>
+<span class="na">Restart</span><span class="o">=</span><span class="s">always</span>
+<span class="na">KillSignal</span><span class="o">=</span><span class="s">SIGQUIT</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">simple</span>
+<span class="na">NotifyAccess</span><span class="o">=</span><span class="s">none</span>
+<span class="na">StandardError</span><span class="o">=</span><span class="s">syslog</span>
 
-[Install]
-WantedBy=multi-user.target
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
 </code></pre></div>
 
 <p>這樣的設定檔應該不是 systemd 的慣例，我還在想是不是應該要改寫到 user service 去（但我不會）。</p>

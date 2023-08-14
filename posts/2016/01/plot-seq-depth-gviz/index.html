@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2016/01/plot-seq-depth-gviz/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2016-01-15 23:50:00-06:00"/>
-<meta property="article:modified_time" content="2022-10-27 13:49:17.500933-05:00"/>
+<meta property="article:modified_time" content="2023-08-13 23:05:21.739735-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Bioinfo"/>
 <meta property="article:tag" content="en"/>
@@ -188,11 +188,11 @@
 </tbody>
 </table>
 <p>So we need to convert the alignment result as BedGraph format, which can be done by <a href="http://bedtools.readthedocs.org/en/latest/content/tools/genomecov.html">BEDTools&rsquo; genomecov</a> command. On BEDTools&rsquo; documentation, it notes that the BAM file should be sorted.</p>
-<div class="highlight"><pre><span></span><code>bedtools genomecov -bg -ibam myseq.bam &gt; myseq.bedGraph
+<div class="highlight"><pre><span></span><code>bedtools<span class="w"> </span>genomecov<span class="w"> </span>-bg<span class="w"> </span>-ibam<span class="w"> </span>myseq.bam<span class="w"> </span>&gt;<span class="w"> </span>myseq.bedGraph
 </code></pre></div>
 
 <p>The plain text BedGraph can be huge, pipe&rsquo;d with gzip will reduce file size to around 30% of the original.</p>
-<div class="highlight"><pre><span></span><code>bedtools genomecov -bg -ibam myseq.bam <span class="p">|</span> gzip &gt; myseq.bedGraph.gz
+<div class="highlight"><pre><span></span><code>bedtools<span class="w"> </span>genomecov<span class="w"> </span>-bg<span class="w"> </span>-ibam<span class="w"> </span>myseq.bam<span class="w"> </span><span class="p">|</span><span class="w"> </span>gzip<span class="w"> </span>&gt;<span class="w"> </span>myseq.bedGraph.gz
 </code></pre></div>
 
 <h2 id="plot-depth-in-gviz">Plot depth in Gviz</h2>
@@ -202,26 +202,26 @@
 <div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">data.table</span><span class="p">)</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">Gviz</span><span class="p">)</span>
 
-<span class="n">bedgraph_dt</span> <span class="o">&lt;-</span> <span class="nf">fread</span><span class="p">(</span>
-    <span class="s">&#39;./coverage.bedGraph&#39;</span><span class="p">,</span>
-    <span class="n">col.names</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;chromosome&#39;</span><span class="p">,</span> <span class="s">&#39;start&#39;</span><span class="p">,</span> <span class="s">&#39;end&#39;</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">)</span>
+<span class="n">bedgraph_dt</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">fread</span><span class="p">(</span>
+<span class="w">    </span><span class="s">&#39;./coverage.bedGraph&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">col.names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;chromosome&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;start&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;end&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;value&#39;</span><span class="p">)</span>
 <span class="p">)</span>
 
 <span class="c1"># Specifiy the range to plot</span>
-<span class="n">thechr</span> <span class="o">&lt;-</span> <span class="s">&quot;chr17&quot;</span>
-<span class="n">st</span> <span class="o">&lt;-</span> <span class="m">41176e3</span>
-<span class="n">en</span> <span class="o">&lt;-</span> <span class="m">41324e3</span>
+<span class="n">thechr</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s">&quot;chr17&quot;</span>
+<span class="n">st</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">41176e3</span>
+<span class="n">en</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">41324e3</span>
 
-<span class="n">bedgraph_dt_one_chr</span> <span class="o">&lt;-</span> <span class="n">bedgraph_dt</span><span class="p">[</span><span class="n">chromosome</span> <span class="o">==</span> <span class="n">thechr</span><span class="p">]</span>
-<span class="n">dtrack</span> <span class="o">&lt;-</span> <span class="nf">DataTrack</span><span class="p">(</span>
-    <span class="n">range</span> <span class="o">=</span> <span class="n">bedgraph_dt_one_chr</span><span class="p">,</span>
-    <span class="n">type</span> <span class="o">=</span> <span class="s">&quot;a&quot;</span><span class="p">,</span>
-    <span class="n">genome</span> <span class="o">=</span> <span class="s">&#39;hg19&#39;</span><span class="p">,</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Seq. Depth&quot;</span>
+<span class="n">bedgraph_dt_one_chr</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">bedgraph_dt</span><span class="p">[</span><span class="n">chromosome</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">thechr</span><span class="p">]</span>
+<span class="n">dtrack</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">DataTrack</span><span class="p">(</span>
+<span class="w">    </span><span class="n">range</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bedgraph_dt_one_chr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;a&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">genome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;hg19&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Seq. Depth&quot;</span>
 <span class="p">)</span>
 <span class="nf">plotTracks</span><span class="p">(</span>
-    <span class="nf">list</span><span class="p">(</span><span class="n">dtrack</span><span class="p">),</span>
-    <span class="n">from</span> <span class="o">=</span> <span class="n">st</span><span class="p">,</span> <span class="n">to</span> <span class="o">=</span> <span class="n">en</span>
+<span class="w">    </span><span class="nf">list</span><span class="p">(</span><span class="n">dtrack</span><span class="p">),</span>
+<span class="w">    </span><span class="n">from</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">st</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">en</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -233,14 +233,14 @@
 <h3 id="add-genome-axis">Add genome axis</h3>
 <p>The figure is a bit weird and lack of information without the genomic location.</p>
 <p>Adding genomic location can be done automatically by Gviz through a new track <code>GenomeAxisTrack</code>. Also, we&rsquo;d like to show which region of chromosome we are at. This can be done by adding another track, <code>IdeogramTrack</code>, to show the chromosome ideogram. Note that the latter track will download cytoband data from UCSC so the given genome must have a valid name.</p>
-<div class="highlight"><pre><span></span><code><span class="n">itrack</span> <span class="o">&lt;-</span> <span class="nf">IdeogramTrack</span><span class="p">(</span>
-    <span class="n">genome</span> <span class="o">=</span> <span class="s">&quot;hg19&quot;</span><span class="p">,</span> <span class="n">chromosome</span> <span class="o">=</span> <span class="n">thechr</span>
+<div class="highlight"><pre><span></span><code><span class="n">itrack</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">IdeogramTrack</span><span class="p">(</span>
+<span class="w">    </span><span class="n">genome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;hg19&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">chromosome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thechr</span>
 <span class="p">)</span>
-<span class="n">gtrack</span> <span class="o">&lt;-</span> <span class="nf">GenomeAxisTrack</span><span class="p">()</span>
+<span class="n">gtrack</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">GenomeAxisTrack</span><span class="p">()</span>
 
 <span class="nf">plotTracks</span><span class="p">(</span>
-    <span class="nf">list</span><span class="p">(</span><span class="n">itrack</span><span class="p">,</span> <span class="n">gtrack</span><span class="p">,</span> <span class="n">dtrack</span><span class="p">),</span>
-    <span class="n">from</span> <span class="o">=</span> <span class="n">st</span><span class="p">,</span> <span class="n">to</span> <span class="o">=</span> <span class="n">en</span>
+<span class="w">    </span><span class="nf">list</span><span class="p">(</span><span class="n">itrack</span><span class="p">,</span><span class="w"> </span><span class="n">gtrack</span><span class="p">,</span><span class="w"> </span><span class="n">dtrack</span><span class="p">),</span>
+<span class="w">    </span><span class="n">from</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">st</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">en</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -253,18 +253,18 @@
 <p>Since we are using exome sequencing, the curve of sequencing depth only makes senses when combined with the transcript annotations.</p>
 <p>Gviz has <code>GeneRegionTrack</code> to extract annotation from the R annotation packages. Package Homo.sapiens includes the gene annotation package using UCSC knownGene database. Adding this new track and we will have annotation on our plot.</p>
 <div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">TxDb.Hsapiens.UCSC.hg19.knownGene</span><span class="p">)</span>
-<span class="n">txdb</span> <span class="o">&lt;-</span> <span class="n">TxDb.Hsapiens.UCSC.hg19.knownGene</span>
+<span class="n">txdb</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">TxDb.Hsapiens.UCSC.hg19.knownGene</span>
 
-<span class="n">grtrack</span> <span class="o">&lt;-</span> <span class="nf">GeneRegionTrack</span><span class="p">(</span>
-    <span class="n">txdb</span><span class="p">,</span>
-    <span class="n">chromosome</span> <span class="o">=</span> <span class="n">thechr</span><span class="p">,</span> <span class="n">start</span> <span class="o">=</span> <span class="n">st</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">en</span><span class="p">,</span>
-    <span class="n">showId</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Gene Annotation&quot;</span>
+<span class="n">grtrack</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">GeneRegionTrack</span><span class="p">(</span>
+<span class="w">    </span><span class="n">txdb</span><span class="p">,</span>
+<span class="w">    </span><span class="n">chromosome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thechr</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">st</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">en</span><span class="p">,</span>
+<span class="w">    </span><span class="n">showId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Gene Annotation&quot;</span>
 <span class="p">)</span>
 
 <span class="nf">plotTracks</span><span class="p">(</span>
-    <span class="nf">list</span><span class="p">(</span><span class="n">itrack</span><span class="p">,</span> <span class="n">gtrack</span><span class="p">,</span> <span class="n">dtrack</span><span class="p">,</span> <span class="n">grtrack</span><span class="p">),</span>
-    <span class="n">from</span> <span class="o">=</span> <span class="n">st</span><span class="p">,</span> <span class="n">to</span> <span class="o">=</span> <span class="n">en</span>
+<span class="w">    </span><span class="nf">list</span><span class="p">(</span><span class="n">itrack</span><span class="p">,</span><span class="w"> </span><span class="n">gtrack</span><span class="p">,</span><span class="w"> </span><span class="n">dtrack</span><span class="p">,</span><span class="w"> </span><span class="n">grtrack</span><span class="p">),</span>
+<span class="w">    </span><span class="n">from</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">st</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">en</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -282,17 +282,17 @@
 <h2 id="plot-fine-tune">Plot fine tune</h2>
 <p>Say, we only care about gene <em>BRCA1</em>. So we need to get its location, or specifically, the genomic range that cover all <em>BRCA1</em> isoforms. In the following example, I will demonstrate the Gviz&rsquo;s annotation fine tuning.</p>
 <h3 id="genome-annotation-query-in-bioconductorr">Genome annotation query in Bioconductor/R</h3>
-<p>If you are not familiar with how to query annotations in Bioconductor, it&rsquo;s easier to think by breaking our goal of finding <em>BRCA1</em>&lsquo;s ranges into two steps:</p>
+<p>If you are not familiar with how to query annotations in Bioconductor, it&rsquo;s easier to think by breaking our goal of finding <em>BRCA1</em>&rsquo;s ranges into two steps:</p>
 <ol>
 <li>Get the transcript IDs</li>
 <li>Query the transcript locations by their IDs</li>
 </ol>
 <p>Getting transcript IDs given their gene symbol is a <code>select()</code> on OrganismDb object,</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Get all transcript IDs of gene BRCA1</span>
-<span class="n">BRCA1_txnames</span> <span class="o">&lt;-</span> <span class="nf">select</span><span class="p">(</span>
-    <span class="n">Homo.sapiens</span><span class="p">,</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="s">&quot;BRCA1&quot;</span><span class="p">,</span> <span class="n">keytype</span> <span class="o">=</span> <span class="s">&quot;SYMBOL&quot;</span><span class="p">,</span>
-    <span class="n">columns</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;ENTREZID&quot;</span><span class="p">,</span> <span class="s">&quot;TXNAME&quot;</span><span class="p">)</span>
+<span class="n">BRCA1_txnames</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">select</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Homo.sapiens</span><span class="p">,</span>
+<span class="w">    </span><span class="n">keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;BRCA1&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">keytype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;SYMBOL&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">columns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;ENTREZID&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;TXNAME&quot;</span><span class="p">)</span>
 <span class="p">)</span><span class="o">$</span><span class="n">TXNAME</span>
 </code></pre></div>
 
@@ -307,10 +307,10 @@
 <p>Look like it has plenty of isoforms!</p>
 <h4 id="via-transcripts">via <code>transcripts()</code></h4>
 <p>For the transcript location, the easiest way will be querying the txDb via <code>transcript()</code>,</p>
-<div class="highlight"><pre><span></span><code><span class="n">BRCA1_txs</span> <span class="o">&lt;-</span> <span class="nf">transcripts</span><span class="p">(</span>
-    <span class="n">Homo.sapiens</span><span class="p">,</span>
-    <span class="n">vals</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="n">tx_name</span> <span class="o">=</span> <span class="n">BRCA1_txnames</span><span class="p">),</span>
-    <span class="n">columns</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;TXNAME&quot;</span><span class="p">,</span><span class="s">&quot;SYMBOL&quot;</span><span class="p">,</span> <span class="s">&quot;EXONID&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">BRCA1_txs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">transcripts</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Homo.sapiens</span><span class="p">,</span>
+<span class="w">    </span><span class="n">vals</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="n">tx_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BRCA1_txnames</span><span class="p">),</span>
+<span class="w">    </span><span class="n">columns</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;TXNAME&quot;</span><span class="p">,</span><span class="s">&quot;SYMBOL&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;EXONID&quot;</span><span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -342,14 +342,14 @@ en &lt;- max(end(BRCA1_txs)) + 1e3
 </code></pre></div>
 
 <p>Some space are added at both ends so the plot won&rsquo;t tightly fit all transcripts and leave some room for the transcript names.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">&gt; </span><span class="nf">c</span><span class="p">(</span><span class="n">thechr</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">en</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt; </span><span class="nf">c</span><span class="p">(</span><span class="n">thechr</span><span class="p">,</span><span class="w"> </span><span class="n">st</span><span class="p">,</span><span class="w"> </span><span class="n">en</span><span class="p">)</span>
 <span class="go">[1] &quot;chr17&quot;    &quot;41176312&quot; &quot;41323420&quot;</span>
 </code></pre></div>
 
 <h4 id="via-exonsby">via <code>exonsBy()</code></h4>
 <p>Another way to obtain the genomic range is getting the exact range of CDS (e.g. exons and UTRs) for each transcript via <code>exonsBy()</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="n">BRCA1_cds_by_tx</span> <span class="o">&lt;-</span> <span class="nf">exonsBy</span><span class="p">(</span>
-    <span class="n">Homo.sapiens</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s">&quot;tx&quot;</span><span class="p">,</span> <span class="n">use.names</span><span class="o">=</span><span class="kc">TRUE</span>
+<div class="highlight"><pre><span></span><code><span class="n">BRCA1_cds_by_tx</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">exonsBy</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Homo.sapiens</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="o">=</span><span class="s">&quot;tx&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">use.names</span><span class="o">=</span><span class="kc">TRUE</span>
 <span class="p">)[</span><span class="n">BRCA1_txnames</span><span class="p">]</span>
 </code></pre></div>
 
@@ -387,7 +387,7 @@ en &lt;- max(end(BRCA1_txs)) + 1e3
 </code></pre></div>
 
 <p>Here we only cares about the widest range, so the hierarchical structure is not useful. It would be better to flatten the <code>GRangesList</code> first,</p>
-<div class="highlight"><pre><span></span><code><span class="gp">&gt; </span><span class="n">BRCA1_cds_flatten</span> <span class="o">&lt;-</span> <span class="nf">unlist</span><span class="p">(</span><span class="n">BRCA1_cds_by_tx</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="gp">&gt; </span><span class="n">BRCA1_cds_flatten</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">unlist</span><span class="p">(</span><span class="n">BRCA1_cds_by_tx</span><span class="p">)</span>
 <span class="gp">&gt; </span><span class="n">BRCA1_cds_flatten</span>
 <span class="go">GRanges object with 284 ranges and 3 metadata columns:</span>
 <span class="go">             seqnames               ranges strand   |   exon_id   exon_name exon_rank</span>
@@ -429,23 +429,23 @@ en &lt;- max(end(BRCA1_txs)) + 1e3
 <span class="go">  seqinfo: 1 sequence from hg19 genome; no seqlengths</span>
 </code></pre></div>
 
-<p>So we filter out unrelated ranges by checking if the value of metadata column <code>transcript</code> is one of <em>BRCA1</em>&lsquo;s transcript IDs,</p>
-<div class="highlight"><pre><span></span><code><span class="n">BRCA_only_range</span> <span class="o">&lt;-</span> <span class="n">grtrack</span><span class="o">@</span><span class="n">range</span><span class="p">[</span>
-    <span class="nf">mcols</span><span class="p">(</span><span class="n">grtrack</span><span class="o">@</span><span class="n">range</span><span class="p">)</span><span class="o">$</span><span class="n">transcript</span> <span class="o">%in%</span> <span class="n">BRCA1_txnames</span>
+<p>So we filter out unrelated ranges by checking if the value of metadata column <code>transcript</code> is one of <em>BRCA1</em>&rsquo;s transcript IDs,</p>
+<div class="highlight"><pre><span></span><code><span class="n">BRCA_only_range</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">grtrack</span><span class="o">@</span><span class="n">range</span><span class="p">[</span>
+<span class="w">    </span><span class="nf">mcols</span><span class="p">(</span><span class="n">grtrack</span><span class="o">@</span><span class="n">range</span><span class="p">)</span><span class="o">$</span><span class="n">transcript</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="n">BRCA1_txnames</span>
 <span class="p">]</span>
-<span class="n">grtrack</span><span class="o">@</span><span class="n">range</span> <span class="o">&lt;-</span> <span class="n">BRCA_only_range</span>
+<span class="n">grtrack</span><span class="o">@</span><span class="n">range</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">BRCA_only_range</span>
 </code></pre></div>
 
 <p>or by less hacky way that use the new range to construct another <code>GeneRegionTrack</code>,</p>
-<div class="highlight"><pre><span></span><code><span class="n">grtrack_BRCA_only</span> <span class="o">&lt;-</span> <span class="nf">GeneRegionTrack</span><span class="p">(</span>
-    <span class="n">BRCA_only_range</span><span class="p">,</span>
-    <span class="n">chromosome</span> <span class="o">=</span> <span class="n">thechr</span><span class="p">,</span> <span class="n">start</span> <span class="o">=</span> <span class="n">st</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">en</span><span class="p">,</span>
-    <span class="n">showId</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Gene Annotation (BRCA1 only)&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="n">grtrack_BRCA_only</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">GeneRegionTrack</span><span class="p">(</span>
+<span class="w">    </span><span class="n">BRCA_only_range</span><span class="p">,</span>
+<span class="w">    </span><span class="n">chromosome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thechr</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">st</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">en</span><span class="p">,</span>
+<span class="w">    </span><span class="n">showId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Gene Annotation (BRCA1 only)&quot;</span>
 <span class="p">)</span>
 <span class="nf">plotTracks</span><span class="p">(</span>
-    <span class="nf">list</span><span class="p">(</span><span class="n">itrack</span><span class="p">,</span> <span class="n">gtrack</span><span class="p">,</span> <span class="n">dtrack</span><span class="p">,</span> <span class="n">grtrack_BRCA_only</span><span class="p">),</span>
-    <span class="n">from</span> <span class="o">=</span> <span class="n">st</span><span class="p">,</span> <span class="n">to</span> <span class="o">=</span> <span class="n">en</span>
+<span class="w">    </span><span class="nf">list</span><span class="p">(</span><span class="n">itrack</span><span class="p">,</span><span class="w"> </span><span class="n">gtrack</span><span class="p">,</span><span class="w"> </span><span class="n">dtrack</span><span class="p">,</span><span class="w"> </span><span class="n">grtrack_BRCA_only</span><span class="p">),</span>
+<span class="w">    </span><span class="n">from</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">st</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">en</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -456,12 +456,12 @@ en &lt;- max(end(BRCA1_txs)) + 1e3
 <h3 id="display-gene-symbols-at-annotation-track">Display gene symbols at annotation track</h3>
 <p>It&rsquo;s more obvious now about how Gviz stores the annotation. All we need is to replace the symbol name with whatever we desire.</p>
 <p>First, we extract the metadata of the <code>GeneRegionTrack</code>, and query for their gene symbols. Using either the transcript ID or Entrez ID will do.</p>
-<div class="highlight"><pre><span></span><code><span class="n">grtrack_range</span> <span class="o">&lt;-</span> <span class="n">grtrack</span><span class="o">@</span><span class="n">range</span>
-<span class="n">range_mapping</span> <span class="o">&lt;-</span> <span class="nf">select</span><span class="p">(</span>
-    <span class="n">Homo.sapiens</span><span class="p">,</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="nf">mcols</span><span class="p">(</span><span class="n">grtrack_range</span><span class="p">)</span><span class="o">$</span><span class="n">symbol</span><span class="p">,</span>
-    <span class="n">keytype</span> <span class="o">=</span> <span class="s">&quot;TXNAME&quot;</span><span class="p">,</span>
-    <span class="n">columns</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;ENTREZID&quot;</span><span class="p">,</span> <span class="s">&quot;SYMBOL&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">grtrack_range</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">grtrack</span><span class="o">@</span><span class="n">range</span>
+<span class="n">range_mapping</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">select</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Homo.sapiens</span><span class="p">,</span>
+<span class="w">    </span><span class="n">keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">mcols</span><span class="p">(</span><span class="n">grtrack_range</span><span class="p">)</span><span class="o">$</span><span class="n">symbol</span><span class="p">,</span>
+<span class="w">    </span><span class="n">keytype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;TXNAME&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">columns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;ENTREZID&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;SYMBOL&quot;</span><span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -477,9 +477,9 @@ en &lt;- max(end(BRCA1_txs)) + 1e3
 
 <p>Then we concatenate the information of transcript ID and gene symbol using <a href="https://cran.r-project.org/web/packages/stringr/index.html">stringr</a>.</p>
 <div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">stringr</span><span class="p">)</span>
-<span class="n">new_symbols</span> <span class="o">&lt;-</span> <span class="nf">with</span><span class="p">(</span>
-    <span class="n">range_mapping</span><span class="p">,</span>
-    <span class="nf">str_c</span><span class="p">(</span><span class="n">SYMBOL</span><span class="p">,</span> <span class="s">&quot; (&quot;</span><span class="p">,</span> <span class="n">TXNAME</span><span class="p">,</span> <span class="s">&quot;)&quot;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+<span class="n">new_symbols</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">with</span><span class="p">(</span>
+<span class="w">    </span><span class="n">range_mapping</span><span class="p">,</span>
+<span class="w">    </span><span class="nf">str_c</span><span class="p">(</span><span class="n">SYMBOL</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; (&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TXNAME</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -489,16 +489,16 @@ en &lt;- max(end(BRCA1_txs)) + 1e3
 </code></pre></div>
 
 <p>Like how we extract <em>BRCA1</em>-only annotations, we construct a new <code>GeneRegionTrack</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="n">grtrack_symbol</span> <span class="o">&lt;-</span> <span class="nf">GeneRegionTrack</span><span class="p">(</span>
-    <span class="n">grtrack</span><span class="o">@</span><span class="n">range</span><span class="p">,</span>
-    <span class="n">chromosome</span> <span class="o">=</span> <span class="n">thechr</span><span class="p">,</span> <span class="n">start</span> <span class="o">=</span> <span class="n">st</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">en</span><span class="p">,</span>
-    <span class="n">showId</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Gene Annotation w. Symbol&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="n">grtrack_symbol</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">GeneRegionTrack</span><span class="p">(</span>
+<span class="w">    </span><span class="n">grtrack</span><span class="o">@</span><span class="n">range</span><span class="p">,</span>
+<span class="w">    </span><span class="n">chromosome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thechr</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">st</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">en</span><span class="p">,</span>
+<span class="w">    </span><span class="n">showId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Gene Annotation w. Symbol&quot;</span>
 <span class="p">)</span>
-<span class="nf">symbol</span><span class="p">(</span><span class="n">grtrack_symbol</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">new_symbols</span>
+<span class="nf">symbol</span><span class="p">(</span><span class="n">grtrack_symbol</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">new_symbols</span>
 <span class="nf">plotTracks</span><span class="p">(</span>
-    <span class="nf">list</span><span class="p">(</span><span class="n">itrack</span><span class="p">,</span> <span class="n">gtrack</span><span class="p">,</span> <span class="n">dtrack</span><span class="p">,</span> <span class="n">grtrack_symbol</span><span class="p">),</span>
-    <span class="n">from</span> <span class="o">=</span> <span class="n">st</span><span class="p">,</span> <span class="n">to</span> <span class="o">=</span> <span class="n">en</span>
+<span class="w">    </span><span class="nf">list</span><span class="p">(</span><span class="n">itrack</span><span class="p">,</span><span class="w"> </span><span class="n">gtrack</span><span class="p">,</span><span class="w"> </span><span class="n">dtrack</span><span class="p">,</span><span class="w"> </span><span class="n">grtrack_symbol</span><span class="p">),</span>
+<span class="w">    </span><span class="n">from</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">st</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">en</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -511,15 +511,15 @@ en &lt;- max(end(BRCA1_txs)) + 1e3
 <p>Really glad I&rsquo;ve tried it :)</p>
 <h2 id="supplementary-plot-bam-files-directly">Supplementary - Plot BAM files directly</h2>
 <p>We will start by replacing <code>DataTrack</code> with <code>AlignmentsTrack</code>. Also we select a smaller region this time so the read mapping can be clearly seen.</p>
-<div class="highlight"><pre><span></span><code><span class="n">st</span> <span class="o">&lt;-</span> <span class="m">41.196e6L</span>
-<span class="n">en</span> <span class="o">&lt;-</span> <span class="m">41.202e6L</span>
-<span class="n">gtrack</span> <span class="o">&lt;-</span> <span class="nf">GenomeAxisTrack</span><span class="p">(</span><span class="n">cex</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span>  <span class="c1"># set the font size larger</span>
-<span class="n">altrack</span> <span class="o">&lt;-</span> <span class="nf">AlignmentsTrack</span><span class="p">(</span>
-    <span class="s">&quot;myseq.bam&quot;</span><span class="p">,</span> <span class="n">isPaired</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> <span class="n">col.mates</span> <span class="o">=</span> <span class="s">&quot;deeppink&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="n">st</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">41.196e6L</span>
+<span class="n">en</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">41.202e6L</span>
+<span class="n">gtrack</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">GenomeAxisTrack</span><span class="p">(</span><span class="n">cex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">  </span><span class="c1"># set the font size larger</span>
+<span class="n">altrack</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">AlignmentsTrack</span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;myseq.bam&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">isPaired</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">col.mates</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;deeppink&quot;</span>
 <span class="p">)</span>
 <span class="nf">plotTracks</span><span class="p">(</span>
-    <span class="nf">list</span><span class="p">(</span><span class="n">gtrack</span><span class="p">,</span> <span class="n">altrack</span><span class="p">,</span> <span class="n">grtrack</span><span class="p">),</span>
-    <span class="n">from</span> <span class="o">=</span> <span class="n">st</span><span class="p">,</span> <span class="n">to</span> <span class="o">=</span> <span class="n">en</span>
+<span class="w">    </span><span class="nf">list</span><span class="p">(</span><span class="n">gtrack</span><span class="p">,</span><span class="w"> </span><span class="n">altrack</span><span class="p">,</span><span class="w"> </span><span class="n">grtrack</span><span class="p">),</span>
+<span class="w">    </span><span class="n">from</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">st</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">en</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -528,8 +528,8 @@ en &lt;- max(end(BRCA1_txs)) + 1e3
 </figure>
 
 <p>To plot only the coverage, set the type as <code>coverage</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="n">altrack</span> <span class="o">&lt;-</span> <span class="nf">AlignmentsTrack</span><span class="p">(</span>
-    <span class="s">&quot;myseq.bam&quot;</span><span class="p">,</span> <span class="n">type</span> <span class="o">=</span> <span class="s">&quot;coverage&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="n">altrack</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">AlignmentsTrack</span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;myseq.bam&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;coverage&quot;</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -540,33 +540,33 @@ en &lt;- max(end(BRCA1_txs)) + 1e3
 <h3 id="fancier-alignment-display">Fancier alignment display</h3>
 <p>Spend some time reading the documentation, the alignment can be much more fancier.</p>
 <p>For example, when looking at a much smaller genome region, we many want to see the sequence and read mismatches. It could be done by adding a new track <code>SequenceTrack</code> to include the genome sequence,</p>
-<div class="highlight"><pre><span></span><code><span class="n">small_st</span> <span class="o">&lt;-</span> <span class="m">41267.735e3L</span>
-<span class="n">small_en</span> <span class="o">&lt;-</span> <span class="m">41267.805e3L</span>
+<div class="highlight"><pre><span></span><code><span class="n">small_st</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">41267.735e3L</span>
+<span class="n">small_en</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">41267.805e3L</span>
 
 <span class="nf">library</span><span class="p">(</span><span class="n">BSgenome.Hsapiens.UCSC.hg19</span><span class="p">)</span>
-<span class="n">strack</span> <span class="o">&lt;-</span> <span class="nf">SequenceTrack</span><span class="p">(</span>
-    <span class="n">Hsapiens</span><span class="p">,</span>
-    <span class="n">chromosome</span> <span class="o">=</span> <span class="n">thechr</span><span class="p">,</span> <span class="n">from</span> <span class="o">=</span> <span class="n">small_en</span><span class="p">,</span> <span class="n">to</span> <span class="o">=</span> <span class="n">small_st</span><span class="p">,</span>
-    <span class="n">cex</span><span class="o">=</span><span class="m">0.8</span>
+<span class="n">strack</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">SequenceTrack</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Hsapiens</span><span class="p">,</span>
+<span class="w">    </span><span class="n">chromosome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thechr</span><span class="p">,</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">small_en</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">small_st</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cex</span><span class="o">=</span><span class="m">0.8</span>
 <span class="p">)</span>
 </code></pre></div>
 
 <p>We tweak other tracks as well to make sure the figure won&rsquo;t explode by too much information. Gene annotations are collapsed down to one liner. Also, aligned read&rsquo;s height is increased to fit in individual letters (e.g., ATCG).</p>
-<div class="highlight"><pre><span></span><code><span class="n">grtrack_small</span> <span class="o">&lt;-</span> <span class="nf">GeneRegionTrack</span><span class="p">(</span>
-   <span class="n">grtrack</span><span class="o">@</span><span class="n">range</span><span class="p">,</span>
-   <span class="n">chromosome</span> <span class="o">=</span> <span class="n">thechr</span><span class="p">,</span>
-   <span class="n">start</span> <span class="o">=</span> <span class="n">small_st</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">small_en</span><span class="p">,</span>
-   <span class="n">stacking</span> <span class="o">=</span> <span class="s">&quot;dense&quot;</span><span class="p">,</span>
-   <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Gene Annotation&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="n">grtrack_small</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">GeneRegionTrack</span><span class="p">(</span>
+<span class="w">   </span><span class="n">grtrack</span><span class="o">@</span><span class="n">range</span><span class="p">,</span>
+<span class="w">   </span><span class="n">chromosome</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thechr</span><span class="p">,</span>
+<span class="w">   </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">small_st</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">small_en</span><span class="p">,</span>
+<span class="w">   </span><span class="n">stacking</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dense&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Gene Annotation&quot;</span>
 <span class="p">)</span>
-<span class="n">altrack</span> <span class="o">&lt;-</span> <span class="nf">AlignmentsTrack</span><span class="p">(</span>
-    <span class="s">&quot;myseq.bam&quot;</span><span class="p">,</span>
-    <span class="n">isPaired</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span>
-    <span class="n">min.height</span> <span class="o">=</span> <span class="m">12</span><span class="p">,</span> <span class="n">max.height</span> <span class="o">=</span> <span class="m">15</span><span class="p">,</span> <span class="n">coverageHeight</span> <span class="o">=</span> <span class="m">0.15</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="m">50</span>
+<span class="n">altrack</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">AlignmentsTrack</span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;myseq.bam&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">isPaired</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">min.height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12</span><span class="p">,</span><span class="w"> </span><span class="n">max.height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">,</span><span class="w"> </span><span class="n">coverageHeight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.15</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">50</span>
 <span class="p">)</span>
 <span class="nf">plotTracks</span><span class="p">(</span>
-    <span class="nf">list</span><span class="p">(</span><span class="n">gtrack</span><span class="p">,</span> <span class="n">altrack</span><span class="p">,</span> <span class="n">grtrack_small</span><span class="p">,</span> <span class="n">strack</span><span class="p">),</span>
-    <span class="n">from</span> <span class="o">=</span> <span class="n">small_st</span><span class="p">,</span> <span class="n">to</span> <span class="o">=</span> <span class="n">small_en</span>
+<span class="w">    </span><span class="nf">list</span><span class="p">(</span><span class="n">gtrack</span><span class="p">,</span><span class="w"> </span><span class="n">altrack</span><span class="p">,</span><span class="w"> </span><span class="n">grtrack_small</span><span class="p">,</span><span class="w"> </span><span class="n">strack</span><span class="p">),</span>
+<span class="w">    </span><span class="n">from</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">small_st</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">small_en</span>
 <span class="p">)</span>
 </code></pre></div>
 

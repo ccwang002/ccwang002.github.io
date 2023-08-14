@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2015/10/django-draw-member/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2015-10-04 14:55:00-05:00"/>
-<meta property="article:modified_time" content="2022-10-27 13:49:17.499063-05:00"/>
+<meta property="article:modified_time" content="2023-08-13 23:05:21.738237-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="zh"/>
@@ -169,7 +169,7 @@
 
 <p><a href="http://pythonhosted.org/pytz/">pytz</a> 在<a href="../../09/datetime-sqlite">前一篇</a>已經介紹過，是處理時區的套件。<a href="http://ipython.org/">IPython</a> 全名是 Interactive Python，同樣是 Python shell 但提供了很多附加功能，最常用的應該是自動補完。<a href="http://pyyaml.org/">PyYAML</a> 用來處理 YAML 物件，可裝可不裝，不裝之後的例子就用 JSON 即可。</p>
 <p>我們的專案根目錄是 <code>demo_django_draw_member</code>。因為 Django 的設定很多，先在這目錄下用 <a href="https://docs.djangoproject.com/en/1.8/ref/contrib/admin/">django-admin</a> 把基本的架構建起來。我們建了一個名為 <code>draw_site</code> 的專案（Project）。</p>
-<div class="highlight"><pre><span></span><code><span class="o">(</span>VENV<span class="o">)</span> $ django-admin startproject draw_site
+<div class="highlight"><pre><span></span><code><span class="o">(</span>VENV<span class="o">)</span><span class="w"> </span>$<span class="w"> </span>django-admin<span class="w"> </span>startproject<span class="w"> </span>draw_site
 </code></pre></div>
 
 <p>執行完之後應該會多出一堆檔案，結構如下。注意到有兩層 <code>draw_site</code>。</p>
@@ -193,7 +193,7 @@
 <p>一個 Django 由一個 project 和很多個 apps 所組成。每個 app 就專注在網站的某個功能上，各自包著各自需要的 database schema、template、view logics。這樣的好處是同樣的功能就不用重寫，同時在很大的網站時這樣的結構有助於管理運作的邏輯。</p>
 <h4 id="django-server">Django server</h4>
 <p>先把 Django 跑起來看看吧。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py runserver
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>runserver
 <span class="go">...</span>
 <span class="go">Django version 1.8.5, using settings &#39;draw_site.settings&#39;</span>
 <span class="go">Starting development server at http://127.0.0.1:8000/</span>
@@ -207,7 +207,7 @@
 <p>這是 Django 內建在什麼 URL 都沒設定時的歡迎畫面。看到這個至少表示基本的 settings 正常。Django 跟 Flask 一樣，內建的 server 會在 source code 有改變的時候 reload，所以一直開著跑也可以。</p>
 <h4 id="django-app">第一個 Django app</h4>
 <p>我們的網站只會用到一個 app，把它建出來取名為 <code>draw_member</code>。</p>
-<div class="highlight"><pre><span></span><code>python manage.py startapp draw_member
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>manage.py<span class="w"> </span>startapp<span class="w"> </span>draw_member
 </code></pre></div>
 
 <div class="highlight"><pre><span></span><code>demo_django_draw_member/
@@ -267,7 +267,7 @@
 <p>在之前的例子可以知道，我們會先設計一個資料庫該存什麼東西，整個網站流程會怎麼用這些資料，這些形成 table schema。但是隨著時間，可能網站有新的功能，很難說完全不去更動 schema。</p>
 <p>更動 schema 不是件簡單的事，如果是上 production 的網站，資料庫會有運作以來累積的資料，總不能 schema 改了這些資料就丟掉吧？而且在網站開發的時候，在不同版本的（或不同人開發的）code 就可能有不同的 schema。要怎麼確保 code 與 database 的狀態就要靠 migration。</p>
 <p>……一開始就這麼複雜？好啦我們的例子沒有用到 migration 大多數的功能，只有用它 initiate database。內建的 app 都有自己的 database schema，可以用它把資料庫的 table 建出來。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py migrate
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>migrate
 <span class="go">Operations to perform:</span>
 <span class="go">  Synchronize unmigrated apps: messages, staticfiles</span>
 <span class="go">  Apply all migrations: sessions, auth, contenttypes, admin</span>
@@ -328,7 +328,7 @@
 
 <p>概念也很簡單，把要的 view function 從 app import 進來（所以 app 目錄是個 Python module，底下會 <code>__init__.py</code>），給一個 regex 表示的路徑，後面放上處理 function 以及一個 optional 的名字，這個名字就代表了這個 URL 路徑，之後可以反查。</p>
 <p>測一下確認設定都是正確的。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>curl -XGET <span class="s2">&quot;localhost:8000&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>curl<span class="w"> </span>-XGET<span class="w"> </span><span class="s2">&quot;localhost:8000&quot;</span>
 <span class="go">&lt;p&gt;Hello World!&lt;/p&gt;</span>
 </code></pre></div>
 
@@ -407,7 +407,7 @@ urlpatterns = [
 <h4 id="migration-the-tracker-of-model-changes">Migration the tracker of model changes</h4>
 <p>多說無用，馬上來試一試。</p>
 <p>……等等，想到 migration 了嗎？每次更動 database model 都要跑 migration，確保 code 與資料庫狀態一致。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py makemigrations draw_member
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>makemigrations<span class="w"> </span>draw_member
 <span class="go">python manage.py makemigrations draw_member</span>
 <span class="go">Migrations for &#39;draw_member&#39;:</span>
 <span class="go">  0001_initial.py:</span>
@@ -449,7 +449,7 @@ urlpatterns = [
 
 <p>注意到 Django ORM 自動幫我們加了 <code>id</code> 這個 primary key，等等就會用到。Migration 裡面的細節等對 Django 更熟了之後就能慢慢了解了。</p>
 <p>有了新的 migration 就要同步資料庫的狀態，</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py migrate
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>migrate
 <span class="go">...</span>
 <span class="go">Running migrations:</span>
 <span class="go">  Rendering model states... DONE</span>
@@ -458,7 +458,7 @@ urlpatterns = [
 
 <h4 id="orm-queries-in-shell">ORM queries in shell</h4>
 <p>接下來我們操作一下 ORM。</p>
-<div class="highlight"><pre><span></span><code>$ python manage.py shell
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>shell
 </code></pre></div>
 
 <p>就會打開一個 Python shell。如果裝了 IPython 就會打開 IPython shell。
@@ -489,12 +489,12 @@ In [9]: h1.save()
 
 <p>覺得麻煩的話，用 <code>Model.objects.create()</code> 就可以一步搞定。正確的存好之後，現在資料庫已經有資料了。我們可以先在 SQLite 裡確認。</p>
 <div class="highlight"><pre><span></span><code><span class="go">-- sqlite3 db.sqlite3</span>
-<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="n">header</span><span class="w"> </span><span class="k">on</span><span class="w"></span>
-<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">draw_member_member</span><span class="p">;</span><span class="w"></span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="n">header</span><span class="w"> </span><span class="k">on</span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">draw_member_member</span><span class="p">;</span>
 <span class="go">id|name|group_name</span>
 <span class="go">1|高坂 穂乃果|μ&#39;s</span>
 <span class="go">2|平沢 唯|K-ON!</span>
-<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">draw_member_history</span><span class="p">;</span><span class="w"></span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">draw_member_history</span><span class="p">;</span>
 <span class="go">id|time|member_id</span>
 <span class="go">1|2015-10-05 15:17:32.061384|1</span>
 </code></pre></div>
@@ -542,7 +542,7 @@ In [9]: h1.save()
 </code></pre></div>
 
 <p>當然一開始我們可以暴力把 <code>db.sqlite3</code> 整個刪掉再重新 <code>python manage.py migrate</code> 一次就可以讓 database 對應的 table 都建立好，不過只適用於 SQLite 而已。或者，正確的「清空資料庫」做法是用 <code>flush</code> 指令，</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py flush
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>flush
 <span class="go">You have requested a flush of the database.</span>
 <span class="go">This will IRREVERSIBLY DESTROY all data currently in the &#39;draw_site/db.sqlite3&#39; database,</span>
 <span class="go">and return each table to an empty state.</span>
@@ -572,41 +572,41 @@ In [4]: for m in members:
 <p>不過現在有個問題是，之後可能會常常把資料庫砍掉重練，或者要把這些（或很多來源）的資料讀到資料庫，每次都重新讀寫也是可以，但有沒有別的做法能把資料先存起來？</p>
 <p>這邊就要介紹 <a href="https://docs.djangoproject.com/en/1.8/howto/initial-data/#providing-initial-data-with-fixtures">Django fixtures</a> 了。他能把資料庫的資料存成 JSON、YAML（需要 <a href="http://pyyaml.org/">PyYAML</a>）等格式。</p>
 <p>一般 fixtures 是被在 <code>&lt;app&gt;/fixtures/</code> 目錄底下，記得先把目錄建出來。</p>
-<div class="highlight"><pre><span></span><code>mkdir draw_member/fixtures
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>draw_member/fixtures
 </code></pre></div>
 
 <p>根據 database 的內容建立 fixtures 可以使用 <code>dumpdata</code> 指令：</p>
-<div class="highlight"><pre><span></span><code>python manage.py dumpdata <span class="se">\</span>
-    --format<span class="o">=</span>yaml <span class="se">\</span>
-    --indent<span class="o">=</span><span class="m">4</span> <span class="se">\</span>
-    --output draw_member/fixtures/anime_members.yaml
-    draw_member.Member <span class="se">\</span>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>manage.py<span class="w"> </span>dumpdata<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--format<span class="o">=</span>yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--indent<span class="o">=</span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output<span class="w"> </span>draw_member/fixtures/anime_members.yaml
+<span class="w">    </span>draw_member.Member<span class="w"> </span><span class="se">\</span>
 </code></pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="c1"># draw_member/fixtures/anime_members.yaml</span><span class="w"></span>
-<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">fields</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">group_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\u03BC</span><span class="s">&#39;s&quot;</span><span class="p p-Indicator">,</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\u9AD8\u5742</span><span class="nv"> </span><span class="se">\u7A42\u4E43\u679C</span><span class="s">&quot;</span><span class="p p-Indicator">}</span><span class="w"></span>
-<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">draw_member.member</span><span class="w"></span>
-<span class="w">    </span><span class="nt">pk</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
-<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">fields</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">group_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\u03BC</span><span class="s">&#39;s&quot;</span><span class="p p-Indicator">,</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\u7D62\u702C</span><span class="nv"> </span><span class="se">\u7D75\u91CC</span><span class="s">&quot;</span><span class="p p-Indicator">}</span><span class="w"></span>
-<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">draw_member.member</span><span class="w"></span>
-<span class="w">    </span><span class="nt">pk</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
-<span class="c1"># ...</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="c1"># draw_member/fixtures/anime_members.yaml</span>
+<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">fields</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">group_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\u03BC</span><span class="s">&#39;s&quot;</span><span class="p p-Indicator">,</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\u9AD8\u5742</span><span class="nv"> </span><span class="se">\u7A42\u4E43\u679C</span><span class="s">&quot;</span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">draw_member.member</span>
+<span class="w">    </span><span class="nt">pk</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">fields</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">group_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\u03BC</span><span class="s">&#39;s&quot;</span><span class="p p-Indicator">,</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\u7D62\u702C</span><span class="nv"> </span><span class="se">\u7D75\u91CC</span><span class="s">&quot;</span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">draw_member.member</span>
+<span class="w">    </span><span class="nt">pk</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="c1"># ...</span>
 </code></pre></div>
 
 <p>用 JSON 輸出也可以，改成 <code>--format=json</code> 就可以了</p>
-<div class="highlight"><pre><span></span><code><span class="p">[</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;draw_member.member&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;pk&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;\u9ad8\u5742 \u7a42\u4e43\u679c&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;group_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;\u03bc&#39;s&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="p">},</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;draw_member.member&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;pk&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;\u9ad8\u5742 \u7a42\u4e43\u679c&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;group_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;\u03bc&#39;s&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">},</span>
 </code></pre></div>
 
 <p>我們可以用 <code>python manage.py flush</code> 把資料庫清掉，模擬資料的讀入。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py loaddata anime_members.yaml
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>loaddata<span class="w"> </span>anime_members.yaml
 <span class="go">Installed 14 object(s) from 1 fixture(s)</span>
 </code></pre></div>
 
@@ -638,7 +638,7 @@ In [4]: for m in members:
 </code></pre></div>
 
 <p>Django 的 template 預設是放在 <code>&lt;app&gt;/templates/</code> 底下。不過為了在跨 app 時不要衝到名字，我們會多包一層 app 為名的資料夾。</p>
-<div class="highlight"><pre><span></span><code>mkdir -p draw_member/templates/draw_member
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>draw_member/templates/draw_member
 </code></pre></div>
 
 <p>它跟 Flask 用的 Jinja2 templates 乍看下非常類似（Jinja2 模仿 Django template），兩者最大的差別是在 Jinja2 裡能很自由的使用 Python function，不過 Django 靠的是 template tag 以及 filter。我們的例子兩者是沒差多少。</p>
@@ -755,7 +755,7 @@ In [4]: for m in members:
 
 <p>用 ORM 寫起來比 raw SQL 乾淨多了，不過一開始要把對應的 function 都記起來就是。
 馬上測試一下，一樣偷懶先不去寫 template。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>curl -XGET <span class="s2">&quot;localhost:8000/draw/?group=ALL&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>curl<span class="w"> </span>-XGET<span class="w"> </span><span class="s2">&quot;localhost:8000/draw/?group=ALL&quot;</span>
 <span class="go">&lt;p&gt;小泉 花陽（團體：μ&#39;s）&lt;/p&gt;</span>
 </code></pre></div>
 
@@ -966,7 +966,7 @@ class DrawForm(forms.Form):
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="gp">... </span><span class="s2">SELECT name</span>
 <span class="gp">... </span><span class="s2">FROM draw_member_member</span>
-<span class="gp">... </span><span class="s2">WHERE group_name LIKE </span><span class="si">%s</span><span class="s2"></span>
+<span class="gp">... </span><span class="s2">WHERE group_name LIKE </span><span class="si">%s</span>
 <span class="gp">... </span><span class="s2">&quot;&quot;&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;K-ON&quot;</span><span class="p">]))</span>
 <span class="go">[(&#39;平沢 唯&#39;,), (&#39;秋山 澪&#39;,), (&#39;田井中 律&#39;,), (&#39;琴吹 紬&#39;,), (&#39;中野 梓&#39;,)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>

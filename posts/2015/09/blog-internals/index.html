@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2015/09/blog-internals/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2015-09-21 00:00:00-05:00"/>
-<meta property="article:modified_time" content="2022-10-27 13:49:17.487480-05:00"/>
+<meta property="article:modified_time" content="2023-08-13 23:05:21.729648-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="zh"/>
@@ -155,7 +155,7 @@
 </code></pre></div>
 
 <p>Blog source 都放在 content 底下，設定檔分成 local 用的 <code>pelicanconf.py</code> 以及 deploy 用的 <code>publishconf.py</code>。並且提供了像 Fabric、Make、shell script 等自動化腳本把 source 用 theme template render 成一個靜態網站，</p>
-<div class="highlight"><pre><span></span><code>make html
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>html
 </code></pre></div>
 
 <p>預設會輸出到 <code>output/</code>，到時候 deploy 就把這個資料夾的內容丟到 server 上。</p>
@@ -263,9 +263,9 @@ Hello World_
 <p>最後內文寬 738px (41em) 或 828px (46em)，實際一行最大為 612px (34em)。一行最多 34 個中文字、大約 14 個英文字（80 個字元）；程式碼一行最多只能放 74 個字元，短了一點點但還可以接受。</p>
 <p>意外的小發現，在內文變窄之後，還可以加上右側的 sidenote，像是 <a href="http://www.daveliepmann.com/tufte-css/">Tufte CSS</a> 這樣，有時會比 footnote 好用，但可能又變回內容太擠的狀態。</p>
 <p>最後是在段落前後距離調整，把標題接內文的間距變小了，但段落間的間距調大。學到了一些以前不會的 CSS 語法，像</p>
-<div class="highlight"><pre><span></span><code><span class="nt">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nt">p</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="k">margin-top</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5</span><span class="kt">em</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="nt">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nt">p</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">margin-top</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5</span><span class="kt">em</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>代表選取相鄰的 p 元素，這樣可以避免直接改 p 的 margin 讓 p 與 h<em>、ul、pre 等間距太寬的狀況。</em><em>前端真的太神妙了。</em>*</p>

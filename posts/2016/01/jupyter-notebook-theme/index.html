@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2016/01/jupyter-notebook-theme/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2016-01-07 00:00:00-06:00"/>
-<meta property="article:modified_time" content="2022-10-27 13:49:17.500730-05:00"/>
+<meta property="article:modified_time" content="2023-08-13 23:05:21.739566-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="zh"/>
@@ -123,11 +123,11 @@
 </div>
 <h3 id="jupyter-notebook">Jupyter Notebook</h3>
 <p>用 Python 裝十分簡單，</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>pip install jupyter
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>jupyter
 </code></pre></div>
 
 <p>Jupyter 預設走 web 介面，會跑一個 tornado server 預設在 <a href="http://localhost:8888">http://localhost:8888</a> 上。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>jupyter notebook
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>jupyter<span class="w"> </span>notebook
 <span class="go">[I 23:50:58.449 NotebookApp] Serving notebooks from local directory: /Users/liang</span>
 <span class="go">[I 23:50:58.449 NotebookApp] 0 active kernels</span>
 <span class="go">[I 23:50:58.450 NotebookApp] The IPython Notebook is running at: http://localhost:8888/</span>
@@ -150,16 +150,16 @@
 <p>EDIT: 2016-01-11 <a href="https://blog.jupyter.org/2016/01/08/notebook-4-1-release/">Jupyter Notebook 4.1</a> 已釋出，設定路徑預設都在 <code>~/.jupyter</code> 底下。</p>
 <p>今天重點是換主題嘛。趕快來做吧。</p>
 <p>可以透過 <code>jupyter --config-dir</code> 或 <code>jupyter --paths</code> 找到設定檔應該放的位置。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>jupyter --config-dir
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>jupyter<span class="w"> </span>--config-dir
 <span class="go">~/.jupyter</span>
-<span class="gp">$ </span>jupyter notebook --generate-config  <span class="c1"># 建立 Notebook 設定檔</span>
+<span class="gp">$ </span>jupyter<span class="w"> </span>notebook<span class="w"> </span>--generate-config<span class="w">  </span><span class="c1"># 建立 Notebook 設定檔</span>
 <span class="go">Writing default config to: ~/.jupyter/jupyter_notebook_config.py</span>
 </code></pre></div>
 
 <p>如果只是改主題，不需要更動 Notebook 設定檔。</p>
 <p>目前自己使用的主題來自 <a href="https://github.com/dunovank/jupyter-themes">dunovank</a>，他有收集了至少深淺兩色，應該足夠使用了。CSS 從別人的基礎上來調整也相對簡單，我自己有<a href="https://github.com/ccwang002/dotfiles/tree/master/ipy_profile/ipython3">改寫了一點</a>（忘了改什麼)。dunovank 有寫個安裝 theme 的套件，不過不用也沒關係，只要準備好 CSS 就能用。我用 Grade3 這個主題來示範。</p>
 <p>把 <code>custom.css</code> 放到 <code>~/.jupyter/static/custom.css</code>。設定的目錄長得如下：</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>tree ~/.jupyter -F -L <span class="m">3</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>tree<span class="w"> </span>~/.jupyter<span class="w"> </span>-F<span class="w"> </span>-L<span class="w"> </span><span class="m">3</span>
 <span class="go">~/.jupyter</span>
 <span class="go">├── custom/</span>
 <span class="go">│   └── custom.css -&gt; /path/to/custom_light.css</span>

@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2017/11/use-ensdb-database-in-python/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2017-11-17 00:00:00-06:00"/>
-<meta property="article:modified_time" content="2022-10-27 13:49:17.518866-05:00"/>
+<meta property="article:modified_time" content="2023-08-13 23:05:21.754690-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Bioinfo"/>
 <meta property="article:tag" content="en"/>
@@ -140,10 +140,10 @@ Now AnnotationHub has a nice <a href="https://annotationhub.bioconductor.org/">w
 <h2 id="manual-query-in-annotationhub">Manual query in AnnotationHub</h2>
 <p>When one wants to use the R package AnnotationHub, the common usage is</p>
 <div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">AnnotationHub</span><span class="p">)</span>
-<span class="n">ah</span> <span class="o">&lt;-</span> <span class="nf">AnnotationHub</span><span class="p">()</span>
+<span class="n">ah</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">AnnotationHub</span><span class="p">()</span>
 <span class="c1">## snapshotDate(): 2017-10-27</span>
 
-<span class="nf">query</span><span class="p">(</span><span class="n">ah</span><span class="p">,</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;EnsDb&quot;</span><span class="p">,</span> <span class="s">&quot;Homo sapiens&quot;</span><span class="p">))</span>
+<span class="nf">query</span><span class="p">(</span><span class="n">ah</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;EnsDb&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Homo sapiens&quot;</span><span class="p">))</span>
 </code></pre></div>
 
 <p>The function call <code>AnnotationHub()</code> will download the latest version of the metadata of all available annotation object. The subsequent <code>query(...)</code> function will talk to the local metadata database.</p>
@@ -159,23 +159,23 @@ Now AnnotationHub has a nice <a href="https://annotationhub.bioconductor.org/">w
 </code></pre></div>
 
 <p>Some useful commands to inspect a foreign database (or the ultimate help command <code>.help</code>):</p>
-<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="n">header</span><span class="w"> </span><span class="k">on</span><span class="w"></span>
-<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="k">mode</span><span class="w"> </span><span class="k">column</span><span class="w"></span>
-<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="n">tables</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="n">header</span><span class="w"> </span><span class="k">on</span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="k">mode</span><span class="w"> </span><span class="k">column</span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="n">tables</span>
 <span class="go">biocversions       rdatapaths         schema_info        test</span>
 <span class="go">input_sources      recipes            statuses           timestamp</span>
 <span class="go">location_prefixes  resources          tags</span>
-<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="k">schema</span><span class="w"> </span><span class="n">rdatapaths</span><span class="w"></span>
+<span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="k">schema</span><span class="w"> </span><span class="n">rdatapaths</span>
 <span class="go">CREATE TABLE `rdatapaths`(`id` integer DEFAULT (NULL) NOT NULL PRIMARY KEY , `rdatapath` varchar(255) DEFAULT (NULL) NULL, `rdataclass` varchar(255) DEFAULT (NULL) NULL, `resource_id` integer DEFAULT (NULL) NULL, `dispatchclass` varchar(255) DEFAULT (NULL) NULL, CONSTRAINT `rdatapaths_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources`(`id`));</span>
 <span class="go">CREATE INDEX `rdatapaths_resource_id` ON `rdatapaths` (`resource_id`);</span>
 </code></pre></div>
 
 <p>So let&rsquo;s make a SQL query to find all Human&rsquo;s EnsDb:</p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">ah_id</span><span class="p">,</span><span class="w"> </span><span class="n">rdp</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">rdatapaths_id</span><span class="p">,</span><span class="w"> </span><span class="n">rdp</span><span class="p">.</span><span class="n">rdatapath</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">title</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">resources</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">r</span><span class="w"></span>
-<span class="k">JOIN</span><span class="w"> </span><span class="n">rdatapaths</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">rdp</span><span class="w"></span>
-<span class="k">ON</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rdp</span><span class="p">.</span><span class="n">resource_id</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">title</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%EnsDb for Homo Sapiens%&#39;</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">ah_id</span><span class="p">,</span><span class="w"> </span><span class="n">rdp</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">rdatapaths_id</span><span class="p">,</span><span class="w"> </span><span class="n">rdp</span><span class="p">.</span><span class="n">rdatapath</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">title</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">resources</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">r</span>
+<span class="k">JOIN</span><span class="w"> </span><span class="n">rdatapaths</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">rdp</span>
+<span class="k">ON</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rdp</span><span class="p">.</span><span class="n">resource_id</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">title</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%EnsDb for Homo Sapiens%&#39;</span><span class="p">;</span>
 <span class="c1">-- ah_id       rdatapaths_id  rdatapath                               title</span>
 <span class="c1">-- ----------  -------------  --------------------------------------  -- ---------------------------------</span>
 <span class="c1">-- AH53211     59949          AHEnsDbs/v87/EnsDb.Hsapiens.v87.sqlite  Ensembl 87 EnsDb for Homo Sapiens</span>
@@ -193,25 +193,25 @@ Now AnnotationHub has a nice <a href="https://annotationhub.bioconductor.org/">w
 <p>EnsDb SQLite database are Ensembl annotation databases created by the R package <a href="https://bioconductor.org/packages/release/bioc/html/ensembldb.html">ensembldb</a>.</p>
 <p>Here I will show how to find a transcript&rsquo;s gene name, its genomic location, and all its exon locations given its Ensembl transcript ID.</p>
 <p>First connect the database by <code>sqlite3 EnsDb.Hsapiens.v90.sqlite</code>. Its table design is very straightforward:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="n">tables</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="gp">sqlite&gt;</span><span class="w"> </span><span class="p">.</span><span class="n">tables</span>
 <span class="go">chromosome      exon            metadata        protein_domain  tx2exon</span>
 <span class="go">entrezgene      gene            protein         tx              uniprot</span>
 </code></pre></div>
 
 <p>So it didn&rsquo;t take me long to figure out how to join the transcript and gene information:</p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">tx</span><span class="p">.</span><span class="n">tx_id</span><span class="p">,</span><span class="w"> </span><span class="n">tx</span><span class="p">.</span><span class="n">gene_id</span><span class="p">,</span><span class="w"> </span><span class="n">gene</span><span class="p">.</span><span class="n">gene_name</span><span class="p">,</span><span class="w"> </span><span class="n">seq_name</span><span class="p">,</span><span class="w"> </span><span class="n">seq_strand</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">tx</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">gene</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">tx</span><span class="p">.</span><span class="n">gene_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gene</span><span class="p">.</span><span class="n">gene_id</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">tx_id</span><span class="o">=</span><span class="s1">&#39;ENST00000358731&#39;</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">tx</span><span class="p">.</span><span class="n">tx_id</span><span class="p">,</span><span class="w"> </span><span class="n">tx</span><span class="p">.</span><span class="n">gene_id</span><span class="p">,</span><span class="w"> </span><span class="n">gene</span><span class="p">.</span><span class="n">gene_name</span><span class="p">,</span><span class="w"> </span><span class="n">seq_name</span><span class="p">,</span><span class="w"> </span><span class="n">seq_strand</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">tx</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">gene</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">tx</span><span class="p">.</span><span class="n">gene_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gene</span><span class="p">.</span><span class="n">gene_id</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">tx_id</span><span class="o">=</span><span class="s1">&#39;ENST00000358731&#39;</span><span class="p">;</span>
 <span class="c1">-- tx_id            gene_id          gene_name   seq_name    seq_strand</span>
 <span class="c1">-- ---------------  ---------------  ----------  ----------  ----------</span>
 <span class="c1">-- ENST00000358731  ENSG00000145734  BDP1        5           1</span>
 </code></pre></div>
 
 <p>And for the genomic ranges of its exon:</p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">tx_id</span><span class="p">,</span><span class="w"> </span><span class="n">exon_idx</span><span class="p">,</span><span class="w"> </span><span class="n">exon_seq_start</span><span class="p">,</span><span class="w"> </span><span class="n">exon_seq_end</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">tx2exon</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">exon</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">tx2exon</span><span class="p">.</span><span class="n">exon_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">exon</span><span class="p">.</span><span class="n">exon_id</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">tx_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ENST00000380139&#39;</span><span class="w"></span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">exon_idx</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">tx_id</span><span class="p">,</span><span class="w"> </span><span class="n">exon_idx</span><span class="p">,</span><span class="w"> </span><span class="n">exon_seq_start</span><span class="p">,</span><span class="w"> </span><span class="n">exon_seq_end</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">tx2exon</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">exon</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">tx2exon</span><span class="p">.</span><span class="n">exon_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">exon</span><span class="p">.</span><span class="n">exon_id</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">tx_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ENST00000380139&#39;</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">exon_idx</span><span class="p">;</span>
 <span class="c1">-- tx_id            exon_idx    exon_seq_start  exon_seq_end</span>
 <span class="c1">-- ---------------  ----------  --------------  ------------</span>
 <span class="c1">-- ENST00000380139  1           32427904        32428133</span>

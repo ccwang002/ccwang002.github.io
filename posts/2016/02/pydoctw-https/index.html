@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2016/02/pydoctw-https/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2016-02-21 14:00:00-06:00"/>
-<meta property="article:modified_time" content="2022-10-27 13:49:17.509246-05:00"/>
+<meta property="article:modified_time" content="2023-08-13 23:05:21.746291-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="zh"/>
@@ -152,19 +152,19 @@
 <p>更新 certificate 的指令寫在 <code>/etc/letsencrypt/renew_cert.sh</code>。Shell script 的內容與參考文章一樣。</p>
 <h4 id="systemd-service">Systemd service</h4>
 <p>首先建立一個 renew_cert，以 Debian 為例放在 <code>/etc/systemd/system/renew_cert.service</code>，</p>
-<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span><span class="w"></span>
-<span class="na">Description</span><span class="o">=</span><span class="s">Renew Let&#39;s Encrypt cert</span><span class="w"></span>
-<span class="na">After</span><span class="o">=</span><span class="s">syslog.target</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Renew Let&#39;s Encrypt cert</span>
+<span class="na">After</span><span class="o">=</span><span class="s">syslog.target</span>
 
-<span class="k">[Service]</span><span class="w"></span>
-<span class="na">User</span><span class="o">=</span><span class="s">letsencrypt</span><span class="w"></span>
-<span class="na">Group</span><span class="o">=</span><span class="s">letsencrypt</span><span class="w"></span>
-<span class="na">ExecStart</span><span class="o">=</span><span class="s">/etc/letsencrypt/renew_cert.sh</span><span class="w"></span>
-<span class="na">Type</span><span class="o">=</span><span class="s">simple</span><span class="w"></span>
-<span class="na">StandardError</span><span class="o">=</span><span class="s">syslog</span><span class="w"></span>
+<span class="k">[Service]</span>
+<span class="na">User</span><span class="o">=</span><span class="s">letsencrypt</span>
+<span class="na">Group</span><span class="o">=</span><span class="s">letsencrypt</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/etc/letsencrypt/renew_cert.sh</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">simple</span>
+<span class="na">StandardError</span><span class="o">=</span><span class="s">syslog</span>
 
-<span class="k">[Install]</span><span class="w"></span>
-<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span><span class="w"></span>
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
 </code></pre></div>
 
 <p>要手動更新 certificate 的時候執行這個 service 即可，</p>
@@ -178,15 +178,15 @@ journalctl -e -u renew_cert
 
 <h4 id="systemd-timer">Systemd Timer</h4>
 <p>建立一個 <code>/etc/systemd/system/renew_cert.timer</code></p>
-<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span><span class="w"></span>
-<span class="na">Description</span><span class="o">=</span><span class="s">Update Let&#39;s Encrypt certificate every two months</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Update Let&#39;s Encrypt certificate every two months</span>
 
-<span class="k">[Timer]</span><span class="w"></span>
-<span class="na">OnCalendar</span><span class="o">=</span><span class="s">*-1/2-1 16:00:00</span><span class="w"></span>
-<span class="na">Unit</span><span class="o">=</span><span class="s">renew_cert.service</span><span class="w"></span>
+<span class="k">[Timer]</span>
+<span class="na">OnCalendar</span><span class="o">=</span><span class="s">*-1/2-1 16:00:00</span>
+<span class="na">Unit</span><span class="o">=</span><span class="s">renew_cert.service</span>
 
-<span class="k">[Install]</span><span class="w"></span>
-<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span><span class="w"></span>
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
 </code></pre></div>
 
 <p>重點只有 <code>[Timer]</code> 這 directive。<code>Unit=</code> 表示要啟動的 service。<code>OnCalendar=</code><sup id="fnref:calendar"><a class="footnote-ref" href="#fn:calendar">1</a></sup> 則是設定這 timer 根據指定的時間點 (UTC 時間<sup id="fnref:utc"><a class="footnote-ref" href="#fn:utc">2</a></sup>) 啟動。</p>
@@ -197,7 +197,7 @@ systemctl start renew_cert.timer
 </code></pre></div>
 
 <p>可以用 <code>systemctl list-timers</code> 檢查它下次執行的時間：</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo systemctl list-timers renew_cert.timer
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>list-timers<span class="w"> </span>renew_cert.timer
 <span class="go">NEXT                         LEFT                LAST PASSED UNIT             ACTIVATES</span>
 <span class="go">Tue 2016-03-01 16:00:00 UTC  1 weeks 2 days left n/a  n/a    renew_cert.timer renew_cert.service</span>
 </code></pre></div>
@@ -206,20 +206,20 @@ systemctl start renew_cert.timer
 <p>（這邊設定我沒信心，有更好的設定方法歡迎告訴我 &gt; &lt;）</p>
 <p>要解決的問題為，ACME challenge 是透過 HTTP，其餘的連線都轉到 HTTPS。</p>
 <p>在 nginx 中把主要的設定檔中拿掉 <code>listen 80;</code> 與 ACM challenge 的部份。把它們移成新的 server block：</p>
-<div class="highlight"><pre><span></span><code><span class="k">server</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">docs.python.org.tw</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span>
+<span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">docs.python.org.tw</span><span class="p">;</span>
 
 <span class="w">    </span><span class="c1"># For Let&#39;s Encrypt ACME challenge files</span>
-<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/.well-known/acme-challenge/</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="kn">alias</span><span class="w"> </span><span class="s">/var/www/challenges/</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="kn">try_files</span><span class="w"> </span><span class="nv">$uri</span><span class="w"> </span><span class="p">=</span><span class="mi">404</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/.well-known/acme-challenge/</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kn">alias</span><span class="w"> </span><span class="s">/var/www/challenges/</span><span class="p">;</span>
+<span class="w">        </span><span class="kn">try_files</span><span class="w"> </span><span class="nv">$uri</span><span class="w"> </span><span class="p">=</span><span class="mi">404</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 
-<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="kn">return</span><span class="w"> </span><span class="mi">301</span><span class="w"> </span><span class="s">https://</span><span class="nv">$host$request_uri</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kn">return</span><span class="w"> </span><span class="mi">301</span><span class="w"> </span><span class="s">https://</span><span class="nv">$host$request_uri</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <h3 id="https">測試 HTTPS 設定</h3>
@@ -240,10 +240,10 @@ systemctl start renew_cert.timer
 <p>要注意目前 public beta 階段，相同 domain 在 7 天只能被簽署 5 次，測試的時候不要太衝動不然就要等一週了。</p>
 <h3 id="misc">Misc.</h3>
 <p>建立 CSR (Certificate Signing Request) 檔時，可以加入自己的 email 地址，不然預設是 <code>webmaster@&lt;domain&gt;</code>：</p>
-<div class="highlight"><pre><span></span><code>openssl req -new -sha256 <span class="se">\</span>
-    -key /etc/letsencrypt/private/domain.key <span class="se">\</span>
-    -subj <span class="s2">&quot;/CN=docs.python.org.tw/emailAddress=me+pydoctw@liang2.tw&quot;</span> <span class="se">\</span>
-    &gt; /etc/letsencrypt/private/domain.csr
+<div class="highlight"><pre><span></span><code>openssl<span class="w"> </span>req<span class="w"> </span>-new<span class="w"> </span>-sha256<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-key<span class="w"> </span>/etc/letsencrypt/private/domain.key<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-subj<span class="w"> </span><span class="s2">&quot;/CN=docs.python.org.tw/emailAddress=me+pydoctw@liang2.tw&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>&gt;<span class="w"> </span>/etc/letsencrypt/private/domain.csr
 </code></pre></div>
 
 <div class="footnote">

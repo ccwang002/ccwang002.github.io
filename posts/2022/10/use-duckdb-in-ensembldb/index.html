@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2022/10/use-duckdb-in-ensembldb/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2022-10-05 00:00:00-05:00"/>
-<meta property="article:modified_time" content="2022-10-27 13:49:17.529379-05:00"/>
+<meta property="article:modified_time" content="2023-08-13 23:05:21.769002-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Bioinfo"/>
 <meta property="article:tag" content="en"/>
@@ -154,8 +154,8 @@ I decided to export the SQLite tables as individual Parquet files, and then relo
 So we could also test the DuckDB&rsquo;s ability to query external parquet files directly.</p>
 <p>For this exercise, I used the <a href="https://www.ensembl.org/Homo_sapiens/">latest Ensembl release</a> (v107).
 We can download the corresponding SQLite database from <a href="https://annotationhub.bioconductor.org/package2/AHEnsDbs">AnnotationHub&rsquo;s web interface</a> (its object ID is <a href="https://annotationhub.bioconductor.org/ahid/AH104864">AH104864</a>):</p>
-<div class="highlight"><pre><span></span><code>curl -Lo EnsDb.Hsapiens.v107.sqlite <span class="se">\</span>
-    https://annotationhub.bioconductor.org/fetch/111610
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-Lo<span class="w"> </span>EnsDb.Hsapiens.v107.sqlite<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>https://annotationhub.bioconductor.org/fetch/111610
 </code></pre></div>
 
 <p>We use <a href="https://www.sqlalchemy.org/">SQLAlchemy</a> to fetch the schema of all the tables:</p>
@@ -225,21 +225,21 @@ Here I tested a few approaches:</p>
 </ol>
 <p>Since DuckDB has native support for Parquet files, the syntax is straightforward:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">-- Install and activate the extension</span>
-<span class="n">INSTALL</span><span class="w"> </span><span class="n">parquet</span><span class="p">;</span><span class="w"> </span><span class="k">LOAD</span><span class="w"> </span><span class="n">parquet</span><span class="p">;</span><span class="w"></span>
+<span class="n">INSTALL</span><span class="w"> </span><span class="n">parquet</span><span class="p">;</span><span class="w"> </span><span class="k">LOAD</span><span class="w"> </span><span class="n">parquet</span><span class="p">;</span>
 
 <span class="c1">-- To create views to external Parquet</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table</span><span class="o">&gt;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="s1">&#39;./ensdb_v107/&lt;table&gt;.parquet&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="p">...</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table</span><span class="o">&gt;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="s1">&#39;./ensdb_v107/&lt;table&gt;.parquet&#39;</span><span class="p">;</span>
+<span class="p">...</span>
 
 <span class="c1">-- To load the full content from external Parquet</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table</span><span class="o">&gt;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="s1">&#39;./ensdb_v107/&lt;table&gt;.parquet&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="p">...</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table</span><span class="o">&gt;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="s1">&#39;./ensdb_v107/&lt;table&gt;.parquet&#39;</span><span class="p">;</span>
+<span class="p">...</span>
 
 <span class="c1">-- To index the table (use .schema to get the original index definitions)</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">gene_gene_id_idx</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">gene</span><span class="w"> </span><span class="p">(</span><span class="n">gene_id</span><span class="p">);</span><span class="w"></span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">gene_gene_name_idx</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">gene</span><span class="w"> </span><span class="p">(</span><span class="n">gene_name</span><span class="p">);</span><span class="w"></span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">gene_seq_name_idx</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">gene</span><span class="w"> </span><span class="p">(</span><span class="n">seq_name</span><span class="p">);</span><span class="w"></span>
-<span class="p">...</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">gene_gene_id_idx</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">gene</span><span class="w"> </span><span class="p">(</span><span class="n">gene_id</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">gene_gene_name_idx</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">gene</span><span class="w"> </span><span class="p">(</span><span class="n">gene_name</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">gene_seq_name_idx</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">gene</span><span class="w"> </span><span class="p">(</span><span class="n">seq_name</span><span class="p">);</span>
+<span class="p">...</span>
 </code></pre></div>
 
 <p>Note that I didn&rsquo;t try to &ldquo;optimize&rdquo; the table indices for my queries.
@@ -247,8 +247,8 @@ I simply mirrored the same index definition from the original SQLite database.</
 <p>DuckDB&rsquo;s commandline interface works like SQLite.
 And it keeps the database in a single file too.
 The full conversion including the Parquet step took about 10 seconds to complete.</p>
-<div class="highlight"><pre><span></span><code>duckdb -echo ensdb_v107.duckdb &lt; create_duckdb.sql
-duckdb -readonly ensdb_v107.duckdb
+<div class="highlight"><pre><span></span><code>duckdb<span class="w"> </span>-echo<span class="w"> </span>ensdb_v107.duckdb<span class="w"> </span>&lt;<span class="w"> </span>create_duckdb.sql
+duckdb<span class="w"> </span>-readonly<span class="w"> </span>ensdb_v107.duckdb
 </code></pre></div>
 
 <h3 id="database-file-size-comparison">Database file size comparison</h3>
@@ -310,11 +310,11 @@ So we already have everything we need:</p>
 <div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">duckdb</span><span class="p">)</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">ensembldb</span><span class="p">)</span>
 
-<span class="n">edb_sqlite</span> <span class="o">=</span> <span class="nf">EnsDb</span><span class="p">(</span><span class="s">&#39;EnsDb.Hsapiens.v107.sqlite&#39;</span><span class="p">)</span>
+<span class="n">edb_sqlite</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">EnsDb</span><span class="p">(</span><span class="s">&#39;EnsDb.Hsapiens.v107.sqlite&#39;</span><span class="p">)</span>
 
-<span class="n">conn</span> <span class="o">=</span> <span class="nf">dbConnect</span><span class="p">(</span><span class="nf">duckdb</span><span class="p">(),</span> <span class="n">dbdir</span> <span class="o">=</span> <span class="s">&quot;ensdb_v107.duckdb&quot;</span><span class="p">,</span> <span class="n">read_only</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
-<span class="n">edb_duckdb</span> <span class="o">=</span> <span class="nf">EnsDb</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
-<span class="nf">dbDisconnect</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">shutdown</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>  <span class="c1"># disconnect after usage</span>
+<span class="n">conn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">dbConnect</span><span class="p">(</span><span class="nf">duckdb</span><span class="p">(),</span><span class="w"> </span><span class="n">dbdir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ensdb_v107.duckdb&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">read_only</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="n">edb_duckdb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">EnsDb</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+<span class="nf">dbDisconnect</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">shutdown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">  </span><span class="c1"># disconnect after usage</span>
 </code></pre></div>
 
 <p>All the downstream usage of ensembldb is the same from here.</p>
@@ -322,21 +322,21 @@ So we already have everything we need:</p>
 <p>Now we have the original SQLite database and three DuckDB databases constructed with various settings ready to use in ensembldb.
 Here I tested two scenarios: a genome-wide annotation query and a gene-specific lookup.</p>
 <p>To make the query more realistic and complicated, I also applied a filter to all queries to select annotations only from the canonical chromosomes and remove all LRG genes:</p>
-<div class="highlight"><pre><span></span><code><span class="n">standard_filter</span> <span class="o">=</span> <span class="nf">AnnotationFilter</span><span class="p">(</span>
-    <span class="o">~</span> <span class="n">seq_name</span> <span class="o">%in%</span> <span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">22</span><span class="p">,</span> <span class="s">&#39;X&#39;</span><span class="p">,</span> <span class="s">&#39;Y&#39;</span><span class="p">,</span> <span class="s">&#39;MT&#39;</span><span class="p">)</span> <span class="o">&amp;</span>
-        <span class="n">gene_biotype</span> <span class="o">!=</span> <span class="s">&#39;LRG_gene&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="n">standard_filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">AnnotationFilter</span><span class="p">(</span>
+<span class="w">    </span><span class="o">~</span><span class="w"> </span><span class="n">seq_name</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">22</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;X&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Y&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;MT&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span>
+<span class="w">        </span><span class="n">gene_biotype</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s">&#39;LRG_gene&#39;</span>
 <span class="p">)</span>
 </code></pre></div>
 
 <p>I use <a href="https://cran.r-project.org/web/packages/microbenchmark/index.html">microbenchmark</a> to benchmark the same query from different databases.
 It works like this:</p>
-<div class="highlight"><pre><span></span><code><span class="n">mbm</span> <span class="o">=</span> <span class="nf">microbenchmark</span><span class="p">(</span>
-    <span class="s">&quot;sqlite_noidx&quot;</span> <span class="o">=</span> <span class="p">{</span> <span class="o">&lt;</span><span class="n">some</span> <span class="n">query</span><span class="o">&gt;</span> <span class="p">},</span>
-    <span class="s">&quot;sqlite&quot;</span> <span class="o">=</span> <span class="p">{</span> <span class="kc">...</span> <span class="p">},</span>
-    <span class="s">&quot;duckdb_parquet&quot;</span> <span class="o">=</span> <span class="p">{</span> <span class="kc">...</span> <span class="p">},</span>
-    <span class="s">&quot;duckdb&quot;</span> <span class="o">=</span> <span class="p">{</span> <span class="kc">...</span> <span class="p">},</span>
-    <span class="s">&quot;duckdb_idx&quot;</span> <span class="o">=</span> <span class="p">{</span> <span class="kc">...</span> <span class="p">},</span>
-    <span class="n">times</span> <span class="o">=</span> <span class="m">20</span>  <span class="c1"># 50 times for faster queries</span>
+<div class="highlight"><pre><span></span><code><span class="n">mbm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">microbenchmark</span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;sqlite_noidx&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">&lt;</span><span class="n">some</span><span class="w"> </span><span class="n">query</span><span class="o">&gt;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="s">&quot;sqlite&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kc">...</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="s">&quot;duckdb_parquet&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kc">...</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="s">&quot;duckdb&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kc">...</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="s">&quot;duckdb_idx&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kc">...</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="n">times</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="w">  </span><span class="c1"># 50 times for faster queries</span>
 <span class="p">)</span>
 <span class="nf">summary</span><span class="p">(</span><span class="n">mbm</span><span class="p">)</span>
 </code></pre></div>
@@ -344,8 +344,8 @@ It works like this:</p>
 <h3 id="genome-wide-annotation-query">Genome-wide annotation query</h3>
 <p>The first genome-wide query finds the 5&rsquo;UTR genomic ranges of all the transcripts.
 This is one of the most computationally intensive built-in queries I know, involving some genomic range arithmics and querying over multiple tables.</p>
-<div class="highlight"><pre><span></span><code><span class="n">five_utr_per_tx</span> <span class="o">=</span> <span class="nf">fiveUTRsByTranscript</span><span class="p">(</span><span class="n">edb</span><span class="p">,</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">standard_filter</span><span class="p">)</span>
-<span class="n">five_utr_per_tx</span> <span class="o">|&gt;</span> <span class="nf">head</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="n">five_utr_per_tx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">fiveUTRsByTranscript</span><span class="p">(</span><span class="n">edb</span><span class="p">,</span><span class="w"> </span><span class="n">filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">standard_filter</span><span class="p">)</span>
+<span class="n">five_utr_per_tx</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="nf">head</span><span class="p">()</span>
 <span class="c1">## GRangesList object of length 6:</span>
 <span class="c1">## $ENST00000000442</span>
 <span class="c1">## GRanges object with 2 ranges and 4 metadata columns:</span>
@@ -378,8 +378,8 @@ Surprisingly, DuckDB with indices run much slower than that without indices (esp
 Though the index might be useless in sequential scans, I guess the slowdown could be due to the bigger file (longer to cache) or the query planner accidentally traversing over indices.</p>
 <h3 id="another-genome-wide-annotation-query">Another genome-wide annotation query</h3>
 <p>The other genome-wide query finds the transcripts of all the genes.</p>
-<div class="highlight"><pre><span></span><code><span class="n">tx_per_gene</span> <span class="o">=</span> <span class="nf">transcriptsBy</span><span class="p">(</span><span class="n">edb</span><span class="p">,</span> <span class="n">by</span> <span class="o">=</span> <span class="s">&quot;gene&quot;</span><span class="p">,</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">standard_filter</span><span class="p">)</span>
-<span class="n">tx_per_gene</span> <span class="o">|&gt;</span> <span class="nf">head</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="n">tx_per_gene</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">transcriptsBy</span><span class="p">(</span><span class="n">edb</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;gene&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">standard_filter</span><span class="p">)</span>
+<span class="n">tx_per_gene</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="nf">head</span><span class="p">()</span>
 <span class="c1">## GRangesList object of length 6:</span>
 <span class="c1">## $ENSG00000000003</span>
 <span class="c1">## GRanges object with 5 ranges and 12 metadata columns:</span>
@@ -413,7 +413,7 @@ I don&rsquo;t know why.</p>
 <h3 id="gene-specific-lookup">Gene-specific lookup</h3>
 <p>My another main scenario is to look up the annotations of a specific gene.
 Let&rsquo;s simulate this kind of queries by retrieving all the transcripts of a gene &ldquo;EGFR&rdquo;:</p>
-<div class="highlight"><pre><span></span><code><span class="n">egfr_tx</span> <span class="o">=</span> <span class="nf">transcripts</span><span class="p">(</span><span class="n">edb</span><span class="p">,</span> <span class="n">filter</span> <span class="o">=</span> <span class="nf">AnnotationFilter</span><span class="p">(</span><span class="o">~</span> <span class="n">gene_name</span> <span class="o">==</span> <span class="s">&#39;EGFR&#39;</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="n">egfr_tx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">transcripts</span><span class="p">(</span><span class="n">edb</span><span class="p">,</span><span class="w"> </span><span class="n">filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">AnnotationFilter</span><span class="p">(</span><span class="o">~</span><span class="w"> </span><span class="n">gene_name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&#39;EGFR&#39;</span><span class="p">))</span>
 <span class="n">egfr_tx</span>
 <span class="c1">## GRanges object with 14 ranges and 12 metadata columns:</span>
 <span class="c1">##                   seqnames            ranges strand |           tx_id</span>

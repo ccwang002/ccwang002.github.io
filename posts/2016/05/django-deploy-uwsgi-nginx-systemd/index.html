@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2016-05-19 00:00:00-05:00"/>
-<meta property="article:modified_time" content="2022-10-27 13:49:17.511266-05:00"/>
+<meta property="article:modified_time" content="2023-08-13 23:05:21.747977-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="zh"/>
@@ -148,12 +148,12 @@
 <p>參考<a href="https://blog.liang2.tw/posts/2016/01/postgresql-install/">《安裝 PostgreSQL 9 於 Debian Jessie / OSX》</a>一文設定。建立跟 OS user 同名的 PostgreSQL 帳號，給了建立 database 的權限，這樣開發比較方便。不用設定密碼。</p>
 <h3 id="django-proj">Django PROJ</h3>
 <p>使用內建 <a href="https://docs.python.org/3/library/venv.html">venv</a> 在自己家目錄下某處，建立名為 <code>VENV</code> 的虛擬環境：</p>
-<div class="highlight"><pre><span></span><code>python3.5 -m venv VENV
+<div class="highlight"><pre><span></span><code>python3.5<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>VENV
 </code></pre></div>
 
 <p>有關部署的設定（即 <code>settings.py</code>），利用 <a href="https://github.com/joke2k/django-environ">django-environ</a> 把 secret key、database 連線資訊、寄信 SMTP server 等設定寫在獨立的檔案，就可以讓 local 和 production 環境讀到各自的設定。具體的做法可以參考 <a href="https://github.com/pycontw/pycontw2016/blob/master/src/pycontw2016/settings/production.py">PyCon Taiwan 2016 網站管理設定</a> 的寫法。</p>
 <p>在連 PostgreSQL 時使用 local connection (Unix-domain socket)，即使用者同名的身份。</p>
-<div class="highlight"><pre><span></span><code><span class="na">DATABASE_URL</span><span class="o">=</span><span class="s">postgres:///TABLE_NAME</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="na">DATABASE_URL</span><span class="o">=</span><span class="s">postgres:///TABLE_NAME</span>
 </code></pre></div>
 
 <h3 id="tmpfilesd">tmpfiles.d</h3>
@@ -161,90 +161,90 @@
 <h3 id="nginx">nginx</h3>
 <p>nginx 設定跟<a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/">舊文</a>一樣。放在 <code>/etc/nginx/sites-available/PROJ.conf</code></p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Upstream Django setting; the socket nginx connects to</span>
-<span class="k">upstream</span><span class="w"> </span><span class="s">django</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kn">server</span><span class="w"> </span><span class="s">unix:///run/PROJ/django.sock</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="k">upstream</span><span class="w"> </span><span class="s">django</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kn">server</span><span class="w"> </span><span class="s">unix:///run/PROJ/django.sock</span><span class="p">;</span>
+<span class="p">}</span>
 
-<span class="k">server</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kn">listen</span><span class="w">      </span><span class="mi">80</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kn">listen</span><span class="w">      </span><span class="mi">443</span><span class="w"> </span><span class="s">default</span><span class="w"> </span><span class="s">ssl</span><span class="p">;</span><span class="w"></span>
+<span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kn">listen</span><span class="w">      </span><span class="mi">80</span><span class="p">;</span>
+<span class="w">    </span><span class="kn">listen</span><span class="w">      </span><span class="mi">443</span><span class="w"> </span><span class="s">default</span><span class="w"> </span><span class="s">ssl</span><span class="p">;</span>
 
-<span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="mi">123</span><span class="s">.123.123.123</span><span class="w"></span>
-<span class="w">                </span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kn">charset</span><span class="w">     </span><span class="s">utf-8</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="mi">123</span><span class="s">.123.123.123</span>
+<span class="w">                </span><span class="p">;</span>
+<span class="w">    </span><span class="kn">charset</span><span class="w">     </span><span class="s">utf-8</span><span class="p">;</span>
 
 <span class="w">    </span><span class="kn">client_max_body_size</span><span class="w"> </span><span class="s">10M</span><span class="p">;</span><span class="w">  </span><span class="c1"># max upload size</span>
-<span class="w">    </span><span class="kn">keepalive_timeout</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kn">keepalive_timeout</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span>
 
-<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/static</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="kn">alias</span><span class="w"> </span><span class="s">/path/to/PROJ/assets</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/static</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kn">alias</span><span class="w"> </span><span class="s">/path/to/PROJ/assets</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 
 <span class="w">    </span><span class="c1"># Finally, send all non-media requests to the Django server.</span>
-<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="kn">uwsgi_pass</span><span class="w">  </span><span class="s">django</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="kn">include</span><span class="w">     </span><span class="s">/etc/nginx/uwsgi_params</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kn">uwsgi_pass</span><span class="w">  </span><span class="s">django</span><span class="p">;</span>
+<span class="w">        </span><span class="kn">include</span><span class="w">     </span><span class="s">/etc/nginx/uwsgi_params</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p><code>/path/to/PROJ/assets</code> 是 Django <a href="https://docs.djangoproject.com/en/1.9/ref/settings/#std:setting-STATIC_ROOT">STATIC_ROOT</a> 的路徑。只要執行 <code>python manage.py collectstatic</code> 後，即使 uWSGI 還沒設定就可以測試 /static/&hellip;/ 有沒有被 nginx 抓到。 </p>
 <p>啟動時，先把檔案連結到 <code>/etc/nginx/site-enabled/</code>，重載 nginx 設定：</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span> /etc/nginx/sites-enabled/
-sudo ln -s ../sites-available/PROJ.conf .
-sudo systemctl reload nginx
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>/etc/nginx/sites-enabled/
+sudo<span class="w"> </span>ln<span class="w"> </span>-s<span class="w"> </span>../sites-available/PROJ.conf<span class="w"> </span>.
+sudo<span class="w"> </span>systemctl<span class="w"> </span>reload<span class="w"> </span>nginx
 </code></pre></div>
 
 <h3 id="uwsgi">uWSGI</h3>
 <p>跟舊文最大的差別，只要裝在 VENV 裡面就好了；然後也不使用 emperor mode。寫一個 <code>/etc/uwsgi/vassals/PROJ.ini</code> 放設定：</p>
-<div class="highlight"><pre><span></span><code><span class="k">[uwsgi]</span><span class="w"></span>
-<span class="na">chdir</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s">/path/to/PROJ</span><span class="w"></span>
-<span class="c1"># Django&#39;s wsgi file</span><span class="w"></span>
-<span class="na">module</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s">PROJ.wsgi:application</span><span class="w"></span>
-<span class="na">env</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="s">DJANGO_SETTINGS_MODULE=PROJ.settings.production</span><span class="w"></span>
-<span class="c1"># the virtualenv (full path)</span><span class="w"></span>
-<span class="na">home</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="s">/path/to/VENV</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="k">[uwsgi]</span>
+<span class="na">chdir</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s">/path/to/PROJ</span>
+<span class="c1"># Django&#39;s wsgi file</span>
+<span class="na">module</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s">PROJ.wsgi:application</span>
+<span class="na">env</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="s">DJANGO_SETTINGS_MODULE=PROJ.settings.production</span>
+<span class="c1"># the virtualenv (full path)</span>
+<span class="na">home</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="s">/path/to/VENV</span>
 
-<span class="c1"># process-related settings</span><span class="w"></span>
-<span class="c1"># master</span><span class="w"></span>
-<span class="na">master</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s">true</span><span class="w"></span>
-<span class="c1"># maximum number of worker processes</span><span class="w"></span>
-<span class="na">processes</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s">4</span><span class="w"></span>
-<span class="c1"># the socket (use the full path to be safe</span><span class="w"></span>
-<span class="na">socket</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s">/run/PROJ/django.sock</span><span class="w"></span>
-<span class="c1"># ... with appropriate permissions - may be needed</span><span class="w"></span>
-<span class="na">chmod-socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">664</span><span class="w"></span>
-<span class="na">uid</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="s">USER</span><span class="w"></span>
-<span class="na">gid</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="s">www-data</span><span class="w"></span>
-<span class="c1"># clear environment on exit</span><span class="w"></span>
-<span class="na">vacuum</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s">true</span><span class="w"></span>
+<span class="c1"># process-related settings</span>
+<span class="c1"># master</span>
+<span class="na">master</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s">true</span>
+<span class="c1"># maximum number of worker processes</span>
+<span class="na">processes</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s">4</span>
+<span class="c1"># the socket (use the full path to be safe</span>
+<span class="na">socket</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s">/run/PROJ/django.sock</span>
+<span class="c1"># ... with appropriate permissions - may be needed</span>
+<span class="na">chmod-socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">664</span>
+<span class="na">uid</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="s">USER</span>
+<span class="na">gid</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="s">www-data</span>
+<span class="c1"># clear environment on exit</span>
+<span class="na">vacuum</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s">true</span>
 </code></pre></div>
 
 <p>設定好後執行以下指令，就應該能看到網站能動了。</p>
-<div class="highlight"><pre><span></span><code>sudo /path/to/VENV/bin/uwsgi --ini /etc/uwsgi/vassals/PROJ.ini
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>/path/to/VENV/bin/uwsgi<span class="w"> </span>--ini<span class="w"> </span>/etc/uwsgi/vassals/PROJ.ini
 </code></pre></div>
 
 <h3 id="systemd">systemd</h3>
 <p>這邊除了執行 uWSGI 的指令不同外，都跟<a href="https://blog.liang2.tw/posts/2016/02/pydoctw-server/">舊文</a>相同。Debian 系 systemd system unit 設定檔放在 <code>/etc/systemd/system/PROJ.service</code>：</p>
-<div class="highlight"><pre><span></span><code>[Unit]
-Description=PROJ&#39;s Django server by uWSGI
-After=syslog.target
+<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">PROJ&#39;s Django server by uWSGI</span>
+<span class="na">After</span><span class="o">=</span><span class="s">syslog.target</span>
 
-[Service]
-ExecStart=/path/to/VENV/bin/uwsgi --ini /etc/uwsgi/vassals/PROJ.ini
-Restart=always
-KillSignal=SIGQUIT
-Type=notify
-StandardError=syslog
-NotifyAccess=all
+<span class="k">[Service]</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/path/to/VENV/bin/uwsgi --ini /etc/uwsgi/vassals/PROJ.ini</span>
+<span class="na">Restart</span><span class="o">=</span><span class="s">always</span>
+<span class="na">KillSignal</span><span class="o">=</span><span class="s">SIGQUIT</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">notify</span>
+<span class="na">StandardError</span><span class="o">=</span><span class="s">syslog</span>
+<span class="na">NotifyAccess</span><span class="o">=</span><span class="s">all</span>
 
-[Install]
-WantedBy=multi-user.target
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
 </code></pre></div>
 
 <p>這邊設定它會（有錯誤時）自動重新起動，並把 stderr 導到 syslog。接著，就要啟動這個 <code>PROJ.service</code> 服務：</p>
-<div class="highlight"><pre><span></span><code>sudo systemctl <span class="nb">enable</span> PROJ
-sudo systemctl status PROJ
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>PROJ
+sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>PROJ
 </code></pre></div>
 
 <p>可以透過 <code>sudo journalctl -xe -u PROJ</code> 來查看 uWSGI 執行、連線 log。</p>

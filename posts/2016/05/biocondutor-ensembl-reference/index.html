@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2016/05/biocondutor-ensembl-reference/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2016-05-21 18:00:00-05:00"/>
-<meta property="article:modified_time" content="2022-10-27 13:49:17.511430-05:00"/>
+<meta property="article:modified_time" content="2023-08-13 23:05:21.748111-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Bioinfo"/>
 <meta property="article:tag" content="en"/>
@@ -181,13 +181,13 @@
 <h2 id="orgdb">OrgDb</h2>
 <p>The same OrgDb object for human (<code>org.Hs.eg.db</code>) can be used. It relates different gene IDs, including Entrez and Ensembl gene ID. From its metadata, human&rsquo;s OrgDb gets updated frequently. Most of its data source were fetched during this March. So one should be able to use it for both hg19 and hg38 human reference.</p>
 <div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">org.Hs.eg.db</span><span class="p">)</span>
-<span class="n">human</span> <span class="o">&lt;-</span> <span class="n">org.Hs.eg.db</span>
+<span class="n">human</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">org.Hs.eg.db</span>
 
-<span class="n">mapk_gene_family_info</span> <span class="o">&lt;-</span> <span class="nf">select</span><span class="p">(</span>
-    <span class="n">human</span><span class="p">,</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;MAPK1&quot;</span><span class="p">,</span> <span class="s">&quot;MAPK3&quot;</span><span class="p">,</span> <span class="s">&quot;MAPK6&quot;</span><span class="p">),</span>
-    <span class="n">keytype</span> <span class="o">=</span> <span class="s">&quot;SYMBOL&quot;</span><span class="p">,</span>
-    <span class="n">columns</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;ENTREZID&quot;</span><span class="p">,</span> <span class="s">&quot;ENSEMBL&quot;</span><span class="p">,</span> <span class="s">&quot;GENENAME&quot;</span><span class="p">)</span>
+<span class="n">mapk_gene_family_info</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">select</span><span class="p">(</span>
+<span class="w">    </span><span class="n">human</span><span class="p">,</span>
+<span class="w">    </span><span class="n">keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;MAPK1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;MAPK3&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;MAPK6&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">keytype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;SYMBOL&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">columns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;ENTREZID&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ENSEMBL&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;GENENAME&quot;</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="n">mapk_gene_family_info</span>
 </code></pre></div>
@@ -224,10 +224,10 @@
 </table>
 <p>Here comes a small pitfall for Ensembl annotation. We cannot sufficiently map Ensembl&rsquo;s gene ID to its transcript ID,</p>
 <div class="highlight"><pre><span></span><code><span class="nf">select</span><span class="p">(</span>
-    <span class="n">human</span><span class="p">,</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="n">mapk_gene_family_info</span><span class="o">$</span><span class="n">ENSEMBL</span><span class="p">[[</span><span class="m">1</span><span class="p">]],</span>
-    <span class="n">keytype</span> <span class="o">=</span> <span class="s">&quot;ENSEMBL&quot;</span><span class="p">,</span>
-    <span class="n">columns</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;ENSEMBLTRANS&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">human</span><span class="p">,</span>
+<span class="w">    </span><span class="n">keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mapk_gene_family_info</span><span class="o">$</span><span class="n">ENSEMBL</span><span class="p">[[</span><span class="m">1</span><span class="p">]],</span>
+<span class="w">    </span><span class="n">keytype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ENSEMBL&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">columns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;ENSEMBLTRANS&quot;</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="c1"># &#39;select()&#39; returned 1:1 mapping between keys and columns</span>
 <span class="c1">#           ENSEMBL ENSEMBLTRANS</span>
@@ -240,18 +240,18 @@
 <p>Following the instructions in ensembldb&rsquo;s <a href="http://bioconductor.org/packages/release/bioc/vignettes/ensembldb/inst/doc/ensembldb.html">vignette file</a>, we can build the TxDb object from the Ensembl latest release, which is release 84 (Mar, 2016) at the time of writing. Ensembl releases all human transcript records as GTF file, which can be found here <a href="ftp://ftp.ensembl.org/pub/release-84/gtf/homo_sapiens/Homo_sapiens.GRCh38.84.gtf.gz">ftp://ftp.ensembl.org/pub/release-84/gtf/homo_sapiens/Homo_sapiens.GRCh38.84.gtf.gz</a>.</p>
 <p>After processing GTF file via <code>ensDbFromGtf()</code>, the generated data for creating the TxDb object will be stored in a SQLite3 database file <code>Homo_sapiens.GRCh38.84.sqlite</code> at the R working directory. Building TxDB is just one command away, <code>EnsDb()</code>. Putting two commands together, the script for building Ensembl TxDb is listed below. To prevent from rebuilding the TxDb every time the script is executed, we first check if the sqlite file exists,</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># xxx_DB in the vignette is just a string to the SQLite db file path</span>
-<span class="n">ens84_txdb_pth</span> <span class="o">&lt;-</span> <span class="s">&#39;./Homo_sapiens.GRCh38.84.sqlite&#39;</span>
-<span class="nf">if </span><span class="p">(</span><span class="o">!</span><span class="nf">file.exists</span><span class="p">(</span><span class="n">ens84_human_txdb_pth</span><span class="p">))</span> <span class="p">{</span>
-    <span class="n">ens84_txdb_pth</span> <span class="o">&lt;-</span> <span class="nf">ensDbFromGtf</span><span class="p">(</span><span class="n">gtf</span><span class="o">=</span><span class="s">&quot;Homo_sapiens.GRCh38.84.gtf.gz&quot;</span><span class="p">)</span>
+<span class="n">ens84_txdb_pth</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s">&#39;./Homo_sapiens.GRCh38.84.sqlite&#39;</span>
+<span class="nf">if </span><span class="p">(</span><span class="o">!</span><span class="nf">file.exists</span><span class="p">(</span><span class="n">ens84_human_txdb_pth</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ens84_txdb_pth</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ensDbFromGtf</span><span class="p">(</span><span class="n">gtf</span><span class="o">=</span><span class="s">&quot;Homo_sapiens.GRCh38.84.gtf.gz&quot;</span><span class="p">)</span>
 <span class="p">}</span>
-<span class="n">txdb_ens84</span> <span class="o">&lt;-</span> <span class="nf">EnsDb</span><span class="p">(</span><span class="n">ens84txdb_pth</span><span class="p">)</span>
-<span class="n">txdb_ens84</span>  <span class="c1"># Preview the metadata</span>
+<span class="n">txdb_ens84</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">EnsDb</span><span class="p">(</span><span class="n">ens84txdb_pth</span><span class="p">)</span>
+<span class="n">txdb_ens84</span><span class="w">  </span><span class="c1"># Preview the metadata</span>
 </code></pre></div>
 
 <p>The filtering syntax for finding desired genes or transcripts is different to the built-in TxDb object,</p>
 <div class="highlight"><pre><span></span><code><span class="nf">transcripts</span><span class="p">(</span>
-    <span class="n">txdb_ens84</span><span class="p">,</span>
-    <span class="n">filter</span><span class="o">=</span><span class="nf">GeneidFilter</span><span class="p">(</span><span class="n">mapk_gene_family_info</span><span class="o">$</span><span class="n">ENSEMBL</span><span class="p">[[</span><span class="m">1</span><span class="p">]])</span>
+<span class="w">    </span><span class="n">txdb_ens84</span><span class="p">,</span>
+<span class="w">    </span><span class="n">filter</span><span class="o">=</span><span class="nf">GeneidFilter</span><span class="p">(</span><span class="n">mapk_gene_family_info</span><span class="o">$</span><span class="n">ENSEMBL</span><span class="p">[[</span><span class="m">1</span><span class="p">]])</span>
 <span class="p">)</span>
 <span class="c1"># GRanges object with 4 ranges and 5 metadata columns:</span>
 <span class="c1">#                   seqnames               ranges strand |           tx_id           tx_biotype</span>
@@ -271,9 +271,9 @@
 </code></pre></div>
 
 <p>So filtering is done by passing special filter functions to <code>filter=</code>. Likewise, there are <code>TxidFilter</code>, <code>TxbiotypeFilter</code>, and <code>GRangesFilter</code> for filtering on the respective columns.</p>
-<div class="highlight"><pre><span></span><code><span class="n">tx_gr</span> <span class="o">&lt;-</span> <span class="nf">transcripts</span><span class="p">(</span>
-    <span class="n">txdb_ens84</span><span class="p">,</span>
-    <span class="n">filter</span><span class="o">=</span><span class="nf">TxidFilter</span><span class="p">(</span><span class="s">&quot;ENST00000215832&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">tx_gr</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">transcripts</span><span class="p">(</span>
+<span class="w">    </span><span class="n">txdb_ens84</span><span class="p">,</span>
+<span class="w">    </span><span class="n">filter</span><span class="o">=</span><span class="nf">TxidFilter</span><span class="p">(</span><span class="s">&quot;ENST00000215832&quot;</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="n">tr_gr</span>
 <span class="c1"># GRanges object with 1 range and 5 metadata columns:</span>
@@ -288,8 +288,8 @@
 <h2 id="bsgenome-and-annotationhub">BSgenome and AnnotationHub</h2>
 <p>We can load the sequence from <code>BSgenome.Hsapiens.UCSC.hg38</code>, however, we can obtain the genome (chromosome) sequence of Ensembl using <a href="https://bioconductor.org/packages/release/bioc/html/AnnotationHub.html">AnnotationHub</a>. References of non-model organisms can be found on AnnotationHub, many of which are extracted from Ensembl. But they can be downloaded as Bioconductor objects directly so it should be easier to use.</p>
 <p>First we create a AnnotationHub instance, it cached the metadata all available annotations locally for us to query.</p>
-<div class="highlight"><pre><span></span><code><span class="n">ah</span> <span class="o">&lt;-</span> <span class="nf">AnnotationHub</span><span class="p">()</span>
-<span class="nf">query</span><span class="p">(</span><span class="n">ah</span><span class="p">,</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;Homo sapiens&quot;</span><span class="p">,</span> <span class="s">&quot;release-84&quot;</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="n">ah</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">AnnotationHub</span><span class="p">()</span>
+<span class="nf">query</span><span class="p">(</span><span class="n">ah</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;Homo sapiens&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;release-84&quot;</span><span class="p">))</span>
 <span class="c1"># AnnotationHub with 5 records</span>
 <span class="c1"># # snapshotDate(): 2016-05-12</span>
 <span class="c1"># # $dataprovider: Ensembl</span>
@@ -311,11 +311,11 @@
 <span class="c1"># GRCh38.dna.*.2bit     genome sequence</span>
 <span class="c1"># GRCh38.dna_rm.*.2bit  hard-masked genome sequence (masked regions are replaced with N&#39;s)</span>
 <span class="c1"># GRCh38.dna_sm.*.2bit  soft-masked genome sequence (.............. are lower cased)</span>
-<span class="n">ens84_human_dna</span> <span class="o">&lt;-</span> <span class="n">ah</span><span class="p">[[</span><span class="s">&quot;AH50559&quot;</span><span class="p">]]</span>
+<span class="n">ens84_human_dna</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ah</span><span class="p">[[</span><span class="s">&quot;AH50559&quot;</span><span class="p">]]</span>
 </code></pre></div>
 
 <p>Then we can use it to obtain the DNA sequence of desired genomic range (in <code>GRagnes</code>).</p>
-<div class="highlight"><pre><span></span><code><span class="nf">getSeq</span><span class="p">(</span><span class="n">ens84_human_dna</span><span class="p">,</span> <span class="n">tx_gr</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">getSeq</span><span class="p">(</span><span class="n">ens84_human_dna</span><span class="p">,</span><span class="w"> </span><span class="n">tx_gr</span><span class="p">)</span>
 
 <span class="c1">#   A DNAStringSet instance of length 1</span>
 <span class="c1">#      width seq                              names</span>
@@ -335,20 +335,20 @@
 </code></pre></div>
 
 <p>Here we will use Ensembl&rsquo;s biomart. Each mart contains multiple datasets, usually separated by different organisms. In our case, human&rsquo;s dataset is <code>hsapiens_gene_ensembl</code>. For other organisms, you can find their dataset by <code>listDatasets(ensembl)</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="n">ensembl</span> <span class="o">&lt;-</span> <span class="nf">useMart</span><span class="p">(</span><span class="s">&quot;ensembl&quot;</span><span class="p">)</span>
-<span class="n">ensembl</span> <span class="o">&lt;-</span> <span class="nf">useDataset</span><span class="p">(</span><span class="s">&quot;hsapiens_gene_ensembl&quot;</span><span class="p">,</span> <span class="n">mart</span><span class="o">=</span><span class="n">ensembl</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">ensembl</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">useMart</span><span class="p">(</span><span class="s">&quot;ensembl&quot;</span><span class="p">)</span>
+<span class="n">ensembl</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">useDataset</span><span class="p">(</span><span class="s">&quot;hsapiens_gene_ensembl&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">mart</span><span class="o">=</span><span class="n">ensembl</span><span class="p">)</span>
 <span class="c1"># or equivalently</span>
-<span class="n">ensembl</span> <span class="o">&lt;-</span> <span class="nf">useMart</span><span class="p">(</span><span class="s">&quot;ensembl&quot;</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="s">&quot;hsapiens_gene_ensembl&quot;</span><span class="p">)</span>
+<span class="n">ensembl</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">useMart</span><span class="p">(</span><span class="s">&quot;ensembl&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">dataset</span><span class="o">=</span><span class="s">&quot;hsapiens_gene_ensembl&quot;</span><span class="p">)</span>
 </code></pre></div>
 
 <h3 id="compatibility-with-annotationdbs-interface">Compatibility with AnnotationDb&rsquo;s interface</h3>
 <p>The way to query the <code>ensembl</code> Mart object is slightly different to how we query a AnnotationDb object. The major difference is the terminology. Luckily, Mart object provides a compatibility layer so we can still call functions such as <code>select(db, ...)</code>, <code>keytypes(db)</code>, <code>keys(db)</code> and <code>columns(db)</code>, which we frequently do<sup id="fnref:select-compat"><a class="footnote-ref" href="#fn:select-compat">1</a></sup> when using NCBI/UCSC references.</p>
 <p>A Mart can have hundreds of keys and columns. So we select a part of them out by <code>grep()</code>,</p>
-<div class="highlight"><pre><span></span><code><span class="nf">grep</span><span class="p">(</span><span class="s">&quot;^refseq&quot;</span><span class="p">,</span> <span class="nf">keytypes</span><span class="p">(</span><span class="n">ensembl</span><span class="p">),</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">grep</span><span class="p">(</span><span class="s">&quot;^refseq&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">keytypes</span><span class="p">(</span><span class="n">ensembl</span><span class="p">),</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
 <span class="c1"># [1] &quot;refseq_mrna&quot; &quot;refseq_mrna_predicted&quot; ...</span>
-<span class="nf">grep</span><span class="p">(</span><span class="s">&quot;^ensembl&quot;</span><span class="p">,</span> <span class="nf">keytypes</span><span class="p">(</span><span class="n">ensembl</span><span class="p">),</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+<span class="nf">grep</span><span class="p">(</span><span class="s">&quot;^ensembl&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">keytypes</span><span class="p">(</span><span class="n">ensembl</span><span class="p">),</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
 <span class="c1"># [1] &quot;ensembl_exon_id&quot; &quot;ensembl_gene_id&quot; ...</span>
-<span class="nf">grep</span><span class="p">(</span><span class="s">&quot;hsapiens_paralog_&quot;</span><span class="p">,</span> <span class="nf">columns</span><span class="p">(</span><span class="n">ensembl</span><span class="p">),</span> <span class="n">value</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="nf">grep</span><span class="p">(</span><span class="s">&quot;hsapiens_paralog_&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">columns</span><span class="p">(</span><span class="n">ensembl</span><span class="p">),</span><span class="w"> </span><span class="n">value</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
 <span class="c1"># [1] &quot;hsapiens_paralog_associated_gene_name&quot;</span>
 <span class="c1"># [2] &quot;hsapiens_paralog_canonical_transcript_protein&quot;</span>
 <span class="c1"># [3] &quot;hsapiens_paralog_chrom_end&quot;</span>
@@ -357,15 +357,15 @@
 
 <p>We start by finding the MAPK1&rsquo;s RefSeq transcript IDs and their corresponding Ensembl transcript IDs, which is something we cannot do by our locally built Ensembl TxDb nor the human OrgDb.</p>
 <div class="highlight"><pre><span></span><code><span class="nf">select</span><span class="p">(</span>
-    <span class="n">ensembl</span><span class="p">,</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;MAPK1&quot;</span><span class="p">),</span>
-    <span class="n">keytype</span> <span class="o">=</span> <span class="s">&quot;hgnc_symbol&quot;</span><span class="p">,</span>
-    <span class="n">columns</span> <span class="o">=</span>  <span class="nf">c</span><span class="p">(</span>
-        <span class="s">&quot;refseq_mrna&quot;</span><span class="p">,</span> <span class="s">&quot;ensembl_transcript_id&quot;</span><span class="p">,</span>
-        <span class="s">&quot;hgnc_symbol&quot;</span><span class="p">,</span> <span class="s">&quot;entrezgene&quot;</span><span class="p">,</span>
-        <span class="s">&quot;chromosome_name&quot;</span><span class="p">,</span>
-        <span class="s">&quot;transcript_start&quot;</span><span class="p">,</span> <span class="s">&quot;transcript_end&quot;</span><span class="p">,</span> <span class="s">&quot;strand&quot;</span>
-    <span class="p">)</span>
+<span class="w">    </span><span class="n">ensembl</span><span class="p">,</span>
+<span class="w">    </span><span class="n">keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;MAPK1&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">keytype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;hgnc_symbol&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">columns</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="nf">c</span><span class="p">(</span>
+<span class="w">        </span><span class="s">&quot;refseq_mrna&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ensembl_transcript_id&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;hgnc_symbol&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;entrezgene&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;chromosome_name&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;transcript_start&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;transcript_end&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;strand&quot;</span>
+<span class="w">    </span><span class="p">)</span>
 <span class="p">)</span>
 <span class="c1">#   refseq_mrna ensembl_transcript_id hgnc_symbol entrezgene</span>
 <span class="c1"># 1   NM_002745       ENST00000215832       MAPK1       5594</span>
@@ -383,14 +383,14 @@
 <p>Moreover, what&rsquo;s awesome about BioMart is that almost all the information on the Ensembl genome browser can be retreived by BioMart. For example, getting the paralog and the mouse homolog of MAPK1,</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Get paralog of MAPK1</span>
 <span class="nf">select</span><span class="p">(</span>
-    <span class="n">ensembl</span><span class="p">,</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;ENSG00000100030&quot;</span><span class="p">),</span>
-    <span class="n">keytype</span> <span class="o">=</span> <span class="s">&quot;ensembl_gene_id&quot;</span><span class="p">,</span>
-    <span class="n">columns</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span>
-        <span class="s">&quot;hsapiens_paralog_associated_gene_name&quot;</span><span class="p">,</span>
-        <span class="s">&quot;hsapiens_paralog_orthology_type&quot;</span><span class="p">,</span>
-        <span class="s">&quot;hsapiens_paralog_ensembl_peptide&quot;</span>
-    <span class="p">)</span>
+<span class="w">    </span><span class="n">ensembl</span><span class="p">,</span>
+<span class="w">    </span><span class="n">keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;ENSG00000100030&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">keytype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ensembl_gene_id&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">columns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span>
+<span class="w">        </span><span class="s">&quot;hsapiens_paralog_associated_gene_name&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;hsapiens_paralog_orthology_type&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;hsapiens_paralog_ensembl_peptide&quot;</span>
+<span class="w">    </span><span class="p">)</span>
 <span class="p">)</span>
 <span class="c1">#   hsapiens_paralog_associated_gene_name hsapiens_paralog_orthology_type hsapiens_paralog_ensembl_peptide</span>
 <span class="c1"># 1                                 MAPK3          within_species_paralog                  ENSP00000263025</span>
@@ -401,14 +401,14 @@
 
 <span class="c1"># Get homolog of MAPK1 in mouse</span>
 <span class="nf">select</span><span class="p">(</span>
-    <span class="n">ensembl</span><span class="p">,</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;ENSG00000100030&quot;</span><span class="p">),</span>
-    <span class="n">keytype</span> <span class="o">=</span> <span class="s">&quot;ensembl_gene_id&quot;</span><span class="p">,</span>
-    <span class="n">columns</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span>
-        <span class="s">&quot;mmusculus_homolog_associated_gene_name&quot;</span><span class="p">,</span>
-        <span class="s">&quot;mmusculus_homolog_orthology_type&quot;</span><span class="p">,</span>
-        <span class="s">&quot;mmusculus_homolog_ensembl_peptide&quot;</span>
-    <span class="p">)</span>
+<span class="w">    </span><span class="n">ensembl</span><span class="p">,</span>
+<span class="w">    </span><span class="n">keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;ENSG00000100030&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">keytype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ensembl_gene_id&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">columns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span>
+<span class="w">        </span><span class="s">&quot;mmusculus_homolog_associated_gene_name&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;mmusculus_homolog_orthology_type&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;mmusculus_homolog_ensembl_peptide&quot;</span>
+<span class="w">    </span><span class="p">)</span>
 <span class="p">)</span>
 <span class="c1">#   mmusculus_homolog_associated_gene_name mmusculus_homolog_orthology_type mmusculus_homolog_ensembl_peptide</span>
 <span class="c1"># 1                                  Mapk1                 ortholog_one2one                ENSMUSP00000065983</span>
@@ -416,22 +416,22 @@
 
 <h3 id="biomarts-original-interface">biomaRt&rsquo;s original interface</h3>
 <p>The <code>select()</code> function we use is not the original biomaRt&rsquo;s interface. In fact, keys and columns are interpreted as BioMart&rsquo;s <strong>filters</strong> and <strong>attributes</strong> respectively. To find all available filters and attributes,</p>
-<div class="highlight"><pre><span></span><code><span class="n">filters</span> <span class="o">=</span> <span class="nf">listFilters</span><span class="p">(</span><span class="n">ensembl</span><span class="p">)</span>
-<span class="n">attributes</span> <span class="o">=</span> <span class="nf">listAttributes</span><span class="p">(</span><span class="n">ensembl</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">filters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">listFilters</span><span class="p">(</span><span class="n">ensembl</span><span class="p">)</span>
+<span class="n">attributes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">listAttributes</span><span class="p">(</span><span class="n">ensembl</span><span class="p">)</span>
 </code></pre></div>
 
 <p>each of the command return a data.frame that contains each filter&rsquo;s or attribute&rsquo;s name and description.</p>
 <p>Behind the scene, arguments of <code>select(db, ...)</code> is converted to <code>getBM(mart, ...)</code>. For the same example of finding RefSeq and Ensembl transcript IDs, it can be re-written as</p>
 <div class="highlight"><pre><span></span><code><span class="nf">getBM</span><span class="p">(</span>
-    <span class="n">attributes</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span>
-        <span class="s">&quot;refseq_mrna&quot;</span><span class="p">,</span> <span class="s">&quot;ensembl_transcript_id&quot;</span><span class="p">,</span>
-        <span class="s">&quot;chromosome_name&quot;</span><span class="p">,</span>
-        <span class="s">&quot;transcript_start&quot;</span><span class="p">,</span> <span class="s">&quot;transcript_end&quot;</span><span class="p">,</span> <span class="s">&quot;strand&quot;</span><span class="p">,</span>
-        <span class="s">&quot;hgnc_symbol&quot;</span><span class="p">,</span> <span class="s">&quot;entrezgene&quot;</span><span class="p">,</span> <span class="s">&quot;ensembl_gene_id&quot;</span>
-    <span class="p">),</span>
-    <span class="n">filters</span> <span class="o">=</span> <span class="s">&quot;hgnc_symbol&quot;</span><span class="p">,</span>
-    <span class="n">values</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;MAPK1&quot;</span><span class="p">),</span>
-    <span class="n">mart</span> <span class="o">=</span> <span class="n">ensembl</span>
+<span class="w">    </span><span class="n">attributes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span>
+<span class="w">        </span><span class="s">&quot;refseq_mrna&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ensembl_transcript_id&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;chromosome_name&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;transcript_start&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;transcript_end&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;strand&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;hgnc_symbol&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;entrezgene&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ensembl_gene_id&quot;</span>
+<span class="w">    </span><span class="p">),</span>
+<span class="w">    </span><span class="n">filters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;hgnc_symbol&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;MAPK1&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">mart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ensembl</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -445,16 +445,16 @@
 <p>We still use MAPK1 as an example of conversion. First extract MAPK1&rsquo;s genomic ranges in hg38 and hg19 respectively,</p>
 <div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">TxDb.Hsapiens.UCSC.hg38.knownGene</span><span class="p">)</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">TxDb.Hsapiens.UCSC.hg19.knownGene</span>
-<span class="n">tx38</span> <span class="o">&lt;-</span> <span class="n">TxDb.Hsapiens.UCSC.hg38.knownGene</span>
-<span class="n">tx19</span> <span class="o">&lt;-</span> <span class="n">TxDb.Hsapiens.UCSC.hg19.knownGene</span>
-<span class="n">MAPK1_hg38</span> <span class="o">&lt;-</span> <span class="nf">genes</span><span class="p">(</span><span class="n">tx38</span><span class="p">,</span> <span class="n">filter</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="n">gene_id</span><span class="o">=</span><span class="s">&quot;5594&quot;</span><span class="p">))</span>
-<span class="n">MAPK1_hg19</span> <span class="o">&lt;-</span> <span class="nf">genes</span><span class="p">(</span><span class="n">tx19</span><span class="p">,</span> <span class="n">filter</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="n">gene_id</span><span class="o">=</span><span class="s">&quot;5594&quot;</span><span class="p">))</span>
+<span class="n">tx38</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">TxDb.Hsapiens.UCSC.hg38.knownGene</span>
+<span class="n">tx19</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">TxDb.Hsapiens.UCSC.hg19.knownGene</span>
+<span class="n">MAPK1_hg38</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">genes</span><span class="p">(</span><span class="n">tx38</span><span class="p">,</span><span class="w"> </span><span class="n">filter</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="n">gene_id</span><span class="o">=</span><span class="s">&quot;5594&quot;</span><span class="p">))</span>
+<span class="n">MAPK1_hg19</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">genes</span><span class="p">(</span><span class="n">tx19</span><span class="p">,</span><span class="w"> </span><span class="n">filter</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="n">gene_id</span><span class="o">=</span><span class="s">&quot;5594&quot;</span><span class="p">))</span>
 </code></pre></div>
 
 <p>Then we convert <code>MAPK1_hg38</code> to use the hg19 coordinate system.</p>
 <div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">rtracklayer</span><span class="p">)</span>
-<span class="n">ch</span> <span class="o">&lt;-</span> <span class="nf">import.chain</span><span class="p">(</span><span class="s">&quot;./hg38ToHg19.over.chain&quot;</span><span class="p">)</span>
-<span class="n">MAPK1_hg19_lifted</span> <span class="o">&lt;-</span> <span class="nf">liftOver</span><span class="p">(</span><span class="n">MAPK1_hg38</span><span class="p">,</span> <span class="n">ch</span><span class="p">)</span>
+<span class="n">ch</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">import.chain</span><span class="p">(</span><span class="s">&quot;./hg38ToHg19.over.chain&quot;</span><span class="p">)</span>
+<span class="n">MAPK1_hg19_lifted</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">liftOver</span><span class="p">(</span><span class="n">MAPK1_hg38</span><span class="p">,</span><span class="w"> </span><span class="n">ch</span><span class="p">)</span>
 
 <span class="n">MAPK1_hg19</span>
 <span class="c1"># GRanges object with 1 range and 1 metadata column:</span>

@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2016/05/django-deploy-conda/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2016-05-24 00:00:00-05:00"/>
-<meta property="article:modified_time" content="2022-10-27 13:49:17.511541-05:00"/>
+<meta property="article:modified_time" content="2023-08-13 23:05:21.748201-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="zh"/>
@@ -141,9 +141,9 @@
 <h3 id="conda">conda</h3>
 <p><a href="http://conda.pydata.org/">conda</a> 是一個 Python 套件的管理系統，他的好處是，遇到要使用外部 library 時，會這些套件相依的 library 都一併安裝管理，也可以管理不同 Python 版本。可以想像是加強版的 pip + venv。conda 跟 pip 是相容的。</p>
 <p>這個 Django 專案就用到很多像 numpy、pandas 的套件。為了維護方便，我考慮用 conda 來安裝。我使用的是 <a href="http://conda.pydata.org/miniconda.html">miniconda3</a>，預設會安裝在 <code>~/miniconda3</code> 底下，虛擬環境會出現在 <code>~/miniconda3/envs/</code>。</p>
-<div class="highlight"><pre><span></span><code>$ conda create -n VENV <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.5 numpy pandas django
-$ <span class="nb">source</span> activate VENV
-<span class="o">(</span>VENV<span class="o">)</span> $ pip install uwsgi
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>VENV<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.5<span class="w"> </span>numpy<span class="w"> </span>pandas<span class="w"> </span>django
+$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>activate<span class="w"> </span>VENV
+<span class="o">(</span>VENV<span class="o">)</span><span class="w"> </span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>uwsgi
 </code></pre></div>
 
 <p>uWSGI 沒有在 conda 裡面，所以就用 pip 裝。從<a href="https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/">上次的文章</a>知道系統並不用安裝。</p>
@@ -173,7 +173,7 @@ $ <span class="nb">source</span> activate VENV
 <span class="go">Failed to import the site module</span>
 <span class="gt">Traceback (most recent call last):</span>
   File <span class="nb">&quot;/usr/lib/python3.5/site.py&quot;</span>, line <span class="m">580</span>, in <span class="n">&lt;module&gt;</span>
-    <span class="n">main</span><span class="p">()</span>
+<span class="w">    </span><span class="n">main</span><span class="p">()</span>
 <span class="gr">  …… </span>
 <span class="gr">  File &quot;/usr/lib/python3.5/_sysconfigdata.py&quot;, line 6, in &lt;module&gt;</span>
 <span class="gr">    from _sysconfigdata_m import *</span>
@@ -183,11 +183,11 @@ $ <span class="nb">source</span> activate VENV
 <p>但因為步驟實在太簡單，想不出來哪裡有錯，查網路也沒什麼相關的結果。在這邊卡了很久。</p>
 <p>結果後來才發現，Traceback 那邊 uWSGi 跑去讀到 <code>/usr/lib/python3.5/site.py</code>，這表示一定有環境設錯才讓它找到這個不是我們要的 python 環境，理論上應該是找到 <code>/home/USER/miniconda3/envs/VENV/lib/python3.5/site.py</code> 才對。</p>
 <p>經過一陣嘗試，發現只要修改 <code>$PATH</code> 環境變數就能運作了。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo -i
-<span class="gp"># </span><span class="nb">echo</span> <span class="nv">$PATH</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo<span class="w"> </span>-i
+<span class="gp"># </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$PATH</span>
 <span class="go">/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin</span>
-<span class="gp"># </span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/home/USER/miniconda3/envs/VENV/bin:<span class="nv">$PATH</span>
-<span class="gp"># </span>/home/USER/miniconda3/envs/VENV/bin/uwsgi --ini PROJ.ini
+<span class="gp"># </span><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span>/home/USER/miniconda3/envs/VENV/bin:<span class="nv">$PATH</span>
+<span class="gp"># </span>/home/USER/miniconda3/envs/VENV/bin/uwsgi<span class="w"> </span>--ini<span class="w"> </span>PROJ.ini
 </code></pre></div>
 
 <h3 id="sysmted-unit">在 sysmted unit 使用環境變數</h3>
@@ -196,21 +196,21 @@ $ <span class="nb">source</span> activate VENV
 <p>Colon-separated list of directories to use when launching executables. Systemd uses a fixed value of /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin. </p>
 </blockquote>
 <p>預設只有以上提到的路徑，如果要修改環境變數的話，就透過 <a href="https://www.freedesktop.org/software/systemd/man/systemd.exec.html#Environment="><code>Environment=</code></a>，因此多加了一行在 systemd unit 裡。其餘的設定都是相同的。</p>
-<div class="highlight"><pre><span></span><code>[Unit]
-Description=PROJ Django server by uWSGI
-After=syslog.target
+<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">PROJ Django server by uWSGI</span>
+<span class="na">After</span><span class="o">=</span><span class="s">syslog.target</span>
 
-[Service]
-Environment=&quot;PATH=/home/USER/miniconda3/envs/VENV/bin:$PATH&quot;
-ExecStart=/home/USER/miniconda3/envs/VENV/bin/uwsgi --ini /etc/uwsgi/vassals/PROJ.ini
-Restart=always
-KillSignal=SIGQUIT
-Type=notify
-StandardError=syslog
-NotifyAccess=all
+<span class="k">[Service]</span>
+<span class="na">Environment</span><span class="o">=</span><span class="s">&quot;PATH=/home/USER/miniconda3/envs/VENV/bin:$PATH&quot;</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/home/USER/miniconda3/envs/VENV/bin/uwsgi --ini /etc/uwsgi/vassals/PROJ.ini</span>
+<span class="na">Restart</span><span class="o">=</span><span class="s">always</span>
+<span class="na">KillSignal</span><span class="o">=</span><span class="s">SIGQUIT</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">notify</span>
+<span class="na">StandardError</span><span class="o">=</span><span class="s">syslog</span>
+<span class="na">NotifyAccess</span><span class="o">=</span><span class="s">all</span>
 
-[Install]
-WantedBy=multi-user.target
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
 </code></pre></div>
 
 <h3 id="_1">結論</h3>

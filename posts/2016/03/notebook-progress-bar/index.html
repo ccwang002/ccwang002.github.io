@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2016/03/notebook-progress-bar/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2016-03-23 02:00:00-05:00"/>
-<meta property="article:modified_time" content="2022-10-27 13:49:17.510040-05:00"/>
+<meta property="article:modified_time" content="2023-08-13 23:05:21.746906-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Coding"/>
 <meta property="article:tag" content="zh"/>
@@ -242,22 +242,22 @@ You can also use widgets to <strong>synchronize stateful and stateless informati
 <h4 id="ffmpeg">FFmpeg 轉檔</h4>
 <p>筆記而已，沒有認真調參數讓輸出檔案最小。VP9 的部份參考 <a href="https://trac.ffmpeg.org/wiki/Encode/VP9">FFmepg</a><sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>。</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># H.264 MP4</span>
-ffmpeg -i Untitled.mov <span class="se">\</span>
-    -vcodec h264 <span class="se">\</span>
-    -strict -2 -crf <span class="m">22</span> -preset slow -r <span class="m">24</span> <span class="se">\</span>
-    -vf <span class="s2">&quot;crop=iw:ih-52:0:10, scale=-1:480&quot;</span> <span class="se">\</span>
-    out.mp4
+ffmpeg<span class="w"> </span>-i<span class="w"> </span>Untitled.mov<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-vcodec<span class="w"> </span>h264<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-strict<span class="w"> </span>-2<span class="w"> </span>-crf<span class="w"> </span><span class="m">22</span><span class="w"> </span>-preset<span class="w"> </span>slow<span class="w"> </span>-r<span class="w"> </span><span class="m">24</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-vf<span class="w"> </span><span class="s2">&quot;crop=iw:ih-52:0:10, scale=-1:480&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>out.mp4
 
 <span class="c1"># VP9 WebM</span>
-ffmpeg -i Untitled.mov <span class="se">\</span>
-    -vcodec libvpx-vp9 <span class="se">\</span>
-    -b:v 150K -r <span class="m">24</span> <span class="se">\</span>
-    -vf <span class="s2">&quot;crop=iw:ih-52:0:10, scale=-1:480&quot;</span> <span class="se">\</span>
-    out.webm
+ffmpeg<span class="w"> </span>-i<span class="w"> </span>Untitled.mov<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-vcodec<span class="w"> </span>libvpx-vp9<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-b:v<span class="w"> </span>150K<span class="w"> </span>-r<span class="w"> </span><span class="m">24</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-vf<span class="w"> </span><span class="s2">&quot;crop=iw:ih-52:0:10, scale=-1:480&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>out.webm
 </code></pre></div>
 
 <p>4s 的檔案最後大約 60KB，相當不錯。我很多 PNG 截圖都大多了。</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>du -sh ./* <span class="p">|</span> gsort -rh
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>du<span class="w"> </span>-sh<span class="w"> </span>./*<span class="w"> </span><span class="p">|</span><span class="w"> </span>gsort<span class="w"> </span>-rh
 <span class="go">744K    ./Untitled.mov</span>
 <span class="go"> 60K    ./out.mp4</span>
 <span class="go"> 52K    ./out.webm</span>

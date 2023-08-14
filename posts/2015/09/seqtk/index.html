@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://blog.liang2.tw/posts/2015/09/seqtk/"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2015-09-27 14:11:00-05:00"/>
-<meta property="article:modified_time" content="2022-10-27 13:49:17.487967-05:00"/>
+<meta property="article:modified_time" content="2023-08-13 23:05:21.730186-05:00"/>
 <meta property="article:author" content="https://blog.liang2.tw/author/liang-bo-wang.html">
 <meta property="article:section" content="Bioinfo"/>
 <meta property="article:tag" content="en"/>
@@ -116,12 +116,12 @@
 <div class="highlight"><pre><span></span><code><span class="c1"># FASTQ to FASTA</span>
 <span class="c1"># Assume every read record takes exactly 4 line</span>
 <span class="c1"># Ref: http://stackoverflow.com/a/10359425</span>
-$ sed -n <span class="s1">&#39;1~4s/^@/&gt;/p;2~4p&#39;</span>
+$<span class="w"> </span>sed<span class="w"> </span>-n<span class="w"> </span><span class="s1">&#39;1~4s/^@/&gt;/p;2~4p&#39;</span>
 </code></pre></div>
 
 <p>The assumption of 4 lines per read usually holds for recent NGS sequencing data, so not a big deal.</p>
 <p>In many case the sequence is gzip&rsquo;d. It is still a piece of cake when combining with pipe editing,</p>
-<div class="highlight"><pre><span></span><code>gzcat myseq.fq.gz <span class="p">|</span> sed -n <span class="s1">&#39;1~4s/^@/&gt;/p;2~4p&#39;</span> <span class="p">|</span> gzip &gt; myseq.fa.gz
+<div class="highlight"><pre><span></span><code>gzcat<span class="w"> </span>myseq.fq.gz<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span>-n<span class="w"> </span><span class="s1">&#39;1~4s/^@/&gt;/p;2~4p&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>gzip<span class="w"> </span>&gt;<span class="w"> </span>myseq.fa.gz
 </code></pre></div>
 
 <p>However, things can get complex really fast when one wants to additionally do reverse complement, randomly sample a subset of reads, and many other types of sequence manipulation. Efficiency matters if those tasks are applied to tens of millions of reads. Even a few nanoseconds longer of computing time difference per read can make a difference at this scale of reads.</p>
@@ -130,42 +130,42 @@ $ sed -n <span class="s1">&#39;1~4s/^@/&gt;/p;2~4p&#39;</span>
 <p>Seqtk bundles many other operations, but I&rsquo;ll just mention those I frequently use.</p>
 <div class="highlight"><pre><span></span><code><span class="nv">$seqtk</span>
 
-Usage:   seqtk &lt;command&gt; &lt;arguments&gt;
-Version: <span class="m">1</span>.0-r77-dirty
+Usage:<span class="w">   </span>seqtk<span class="w"> </span>&lt;command&gt;<span class="w"> </span>&lt;arguments&gt;
+Version:<span class="w"> </span><span class="m">1</span>.0-r77-dirty
 
-Command: seq       common transformation of FASTA/Q
-         comp      get the nucleotide composition of FASTA/Q
-         sample    subsample sequences
-         subseq    extract subsequences from FASTA/Q
-         fqchk     fastq QC <span class="o">(</span>base/quality summary<span class="o">)</span>
-         mergepe   interleave two PE FASTA/Q files
-         trimfq    trim FASTQ using the Phred algorithm
+Command:<span class="w"> </span>seq<span class="w">       </span>common<span class="w"> </span>transformation<span class="w"> </span>of<span class="w"> </span>FASTA/Q
+<span class="w">         </span>comp<span class="w">      </span>get<span class="w"> </span>the<span class="w"> </span>nucleotide<span class="w"> </span>composition<span class="w"> </span>of<span class="w"> </span>FASTA/Q
+<span class="w">         </span>sample<span class="w">    </span>subsample<span class="w"> </span>sequences
+<span class="w">         </span>subseq<span class="w">    </span>extract<span class="w"> </span>subsequences<span class="w"> </span>from<span class="w"> </span>FASTA/Q
+<span class="w">         </span>fqchk<span class="w">     </span>fastq<span class="w"> </span>QC<span class="w"> </span><span class="o">(</span>base/quality<span class="w"> </span>summary<span class="o">)</span>
+<span class="w">         </span>mergepe<span class="w">   </span>interleave<span class="w"> </span>two<span class="w"> </span>PE<span class="w"> </span>FASTA/Q<span class="w"> </span>files
+<span class="w">         </span>trimfq<span class="w">    </span>trim<span class="w"> </span>FASTQ<span class="w"> </span>using<span class="w"> </span>the<span class="w"> </span>Phred<span class="w"> </span>algorithm
 
-         hety      regional heterozygosity
-         mutfa     point mutate FASTA at specified positions
-         mergefa   merge two FASTA/Q files
-         dropse    drop unpaired from interleaved PE FASTA/Q
-         rename    rename sequence names
-         randbase  choose a random base from hets
-         cutN      cut sequence at long N
-         listhet   extract the position of each het
+<span class="w">         </span>hety<span class="w">      </span>regional<span class="w"> </span>heterozygosity
+<span class="w">         </span>mutfa<span class="w">     </span>point<span class="w"> </span>mutate<span class="w"> </span>FASTA<span class="w"> </span>at<span class="w"> </span>specified<span class="w"> </span>positions
+<span class="w">         </span>mergefa<span class="w">   </span>merge<span class="w"> </span>two<span class="w"> </span>FASTA/Q<span class="w"> </span>files
+<span class="w">         </span>dropse<span class="w">    </span>drop<span class="w"> </span>unpaired<span class="w"> </span>from<span class="w"> </span>interleaved<span class="w"> </span>PE<span class="w"> </span>FASTA/Q
+<span class="w">         </span>rename<span class="w">    </span>rename<span class="w"> </span>sequence<span class="w"> </span>names
+<span class="w">         </span>randbase<span class="w">  </span>choose<span class="w"> </span>a<span class="w"> </span>random<span class="w"> </span>base<span class="w"> </span>from<span class="w"> </span>hets
+<span class="w">         </span>cutN<span class="w">      </span>cut<span class="w"> </span>sequence<span class="w"> </span>at<span class="w"> </span>long<span class="w"> </span>N
+<span class="w">         </span>listhet<span class="w">   </span>extract<span class="w"> </span>the<span class="w"> </span>position<span class="w"> </span>of<span class="w"> </span>each<span class="w"> </span>het
 </code></pre></div>
 
 <h3 id="fastq-fasta">FASTQ → FASTA</h3>
 <p>Read (gzip&rsquo;d) FASTQ and write out as FASTA,</p>
-<div class="highlight"><pre><span></span><code>$ seqtk seq -A <span class="k">in</span>.fq<span class="o">[</span>.gz<span class="o">]</span> &gt; out.fa
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>seqtk<span class="w"> </span>seq<span class="w"> </span>-A<span class="w"> </span><span class="k">in</span>.fq<span class="o">[</span>.gz<span class="o">]</span><span class="w"> </span>&gt;<span class="w"> </span>out.fa
 </code></pre></div>
 
 <p>To make the output gzip&rsquo;d again, piped with gzip,</p>
-<div class="highlight"><pre><span></span><code>$ seqtk seq -A <span class="k">in</span>.fq<span class="o">[</span>.gz<span class="o">]</span> <span class="p">|</span> gzip &gt; out.fa.gz
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>seqtk<span class="w"> </span>seq<span class="w"> </span>-A<span class="w"> </span><span class="k">in</span>.fq<span class="o">[</span>.gz<span class="o">]</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>gzip<span class="w"> </span>&gt;<span class="w"> </span>out.fa.gz
 </code></pre></div>
 
 <h3 id="reverse-complement">Reverse complement</h3>
 <p>If one wants to debug the R2 reads of pair-end sequencing (second read on forward strand), since they contain reverse complement sequence of the insert DNA, one needs to reverse complement R2 reads again to debug directly by bare human eyes.</p>
-<div class="highlight"><pre><span></span><code>$ seqtk seq -r R2.fq &gt; R2_rc.fq
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>seqtk<span class="w"> </span>seq<span class="w"> </span>-r<span class="w"> </span>R2.fq<span class="w"> </span>&gt;<span class="w"> </span>R2_rc.fq
 
-$ <span class="nb">echo</span> <span class="s1">&#39;&gt; Example R2 seq</span>
-<span class="s1">  GCATTGGTGGTTCAGTGGTAGAATTCT&#39;</span> <span class="p">|</span> seqtk seq -r
+$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;&gt; Example R2 seq</span>
+<span class="s1">  GCATTGGTGGTTCAGTGGTAGAATTCT&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>seqtk<span class="w"> </span>seq<span class="w"> </span>-r
 <span class="c1"># &gt; Example R2 seq</span>
 <span class="c1"># AGAATTCTACCACTGAACCACCAATGC</span>
 </code></pre></div>
@@ -173,7 +173,7 @@ $ <span class="nb">echo</span> <span class="s1">&#39;&gt; Example R2 seq</span>
 <h3 id="quality-check">Quality check</h3>
 <p>To be honest, <a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> is more frequently used for quality check because it generates <a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/good_sequence_short_fastqc.html">reports with beautiful figures</a>.</p>
 <p>But for a detail report on each read position, one should consider <code>seqtk fqchk</code>.</p>
-<div class="highlight"><pre><span></span><code>$ seqtk fqchk myseq.fq<span class="o">[</span>.gz<span class="o">]</span>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>seqtk<span class="w"> </span>fqchk<span class="w"> </span>myseq.fq<span class="o">[</span>.gz<span class="o">]</span>
 </code></pre></div>
 
 <p>By default it sets <code>-q 20</code>. This quality threshold determines the threshold of counting a base as low or high quality, shown as <code>%low</code> and <code>%high</code> per read position. In the default case, quality score higher than 20 will be treated as high quality bases.</p>
@@ -251,7 +251,7 @@ ALL 236344886 17.0 22.5 31.3 29.2 0.0 39.9 37.6 0.1  99.9
     \mathrm{errQ} = -10\log_{10}{\mathrm{errP}}.
 </annotation></semantics></math></span><span aria-hidden="true" class="katex-html"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathrm">errQ</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9386em;vertical-align:-0.2441em;"></span><span class="mord">−</span><span class="mord">10</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop"><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.207em;"><span style="top:-2.4559em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2441em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">errP</span></span></span><span class="mord">.</span></span></span></span></span></p>
 <p>By passing <code>-q 0</code> to <code>seqtk fqchk</code>, one can get the proportion of all distinct quality scores at each position. This information is pretty useful if the sequencing data is all a mess and one needs to figure out the cause.</p>
-<p>Though some of the <code>seqtk fqchk</code>&lsquo;s behavior is not documented, it should be straight forward enough to understand. All in all, the details can always be found in the <a href="https://github.com/lh3/seqtk/blob/4feb6e81444ab6bc44139dd3a125068f81ae4ad8/seqtk.c#L1483">source code</a>.</p>
+<p>Though some of the <code>seqtk fqchk</code>&rsquo;s behavior is not documented, it should be straight forward enough to understand. All in all, the details can always be found in the <a href="https://github.com/lh3/seqtk/blob/4feb6e81444ab6bc44139dd3a125068f81ae4ad8/seqtk.c#L1483">source code</a>.</p>
 <h3 id="summary">Summary</h3>
 <p><a href="https://github.com/lh3/seqtk">Seqtk</a> is fast to use for daily routines of FASTA/Q conversion. On top of that it provide various functionalities such as read random sampling, quality check, and many I haven&rsquo;t tried or mentioned.</p>
 <div class="footnote">
