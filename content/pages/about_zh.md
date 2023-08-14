@@ -7,9 +7,9 @@ sortorder: 1
 
 (This page is also available in [English](./))
 
-嗨，我是王亮博（Liang-Bo Wang）。多數的人叫我亮亮（liang<sup>2</sup>），但這發音對外國人有點困難，所以在美國比較多人叫我 Bobo。
+嗨，我是王亮博（Liang-Bo Wang）。歡迎叫我亮亮或 Bobo。我目前在 Moderna 擔任科學家，從事與個人化癌症疫苗的相關研究。
 
-我在聖路易華盛頓大學（Washington University in St. Louis）完成了我的計算與系統生物學（Computation and Systems Biology）博士學士。我的指導老師是 [Prof. Li Ding][dinglab]，我曾經在微軟亞洲研究院、[Pinkoi] 實習。我在台北長大。
+在這之前，我在聖路易華盛頓大學（Washington University in St. Louis）就讀計算與系統生物學（Computation and Systems Biology）博士學位，指導老師是 [Prof. Li Ding][dinglab]。我曾經在微軟亞洲研究院、[Pinkoi] 實習。我在台北長大。
 
 [我的 CV](/CV.pdf)。
 
@@ -18,7 +18,7 @@ sortorder: 1
 
 
 ### 聯絡我
-可以透過 [Twitter] 或者 [email] 與我聯繫。有需要的話，這是[我的 pubic PGP key](/0x69BAE333BC4DC4BA.pub.asc)，它的 fingerprint：
+可以透過 [Twitter] 或者 [email] 與我聯繫。以下是[我的 pubic PGP key](/0x69BAE333BC4DC4BA.pub.asc)，它的 fingerprint：
 
 ```
 978B 49B8 EFB7 02F3 3B3F  F2E5 69BA E333 BC4D C4BA

@@ -4,20 +4,22 @@ Slug: about-me
 sortorder: 1
 ---
 
+Hi, I am Liang-Bo.
+I also go by Bobo (and Liang-Liang in Mandarin).
+Welcome to my personal blog :)
+
+I am currently an Oncology Bioinformatics Scientist at Moderna working on personalized cancer vaccine (aka individualized neoantigen therapy, or INT).
+
 I obtained my Ph.D. at Washington University in St. Louis under [Li Ding's Lab][dinglab].
-My research focused on cancer protegenomics in two directions.
+Back then, my research focused on cancer protegenomics in two directions.
 I processed and analyzed [CPTAC proteogenomic datasets][CPTAC] (mostly glioblastoma) to better understand the disease and potential treatments.
-I also built some tools and databases to assist the analysis.
-I have been contributed to open source projects for quite some time, since I tend to fix the problems that I encounter for whichever tool I use daily :)
+I also built some tools and databases to assist my analysis.
 
 You can find my CV [here](/CV.pdf) and my academic publications [here][google scholar].
 
 I grew up in Taipei, Taiwan.
-Back in Taiwan, I went by liang<sup>2</sup> (pronounced as *liang-liang*).
-While in the United States, my lab called me Bobo.
-I was offered with two options at the time, LB and Bobo, so [you know why][LB] I picked the latter :)
 
-Before my PhD, I interned at [Microsoft Research Asia][MSRA] and [Pinkoi], where I had a lot of fun in using deep learning for imaging and improving Chinese/Mandarin text search.
+Before my PhD, I interned at [Microsoft Research Asia][MSRA] and [Pinkoi].
 I was active in Taipei Python and R programming communities and enjoyed giving talks.
 You can find my previous talks [here][talks].
 I give much fewer talks nowadays, mostly because the topics of my work has been quite domain specific.
@@ -41,13 +43,18 @@ You can find me on [Twitter] or by [email]. My current GPG key is [0x69BAE333BC4
 [email]: mailto:me+blog@liang2.tw
 
 
-### How to pronounce my (nick)name?
-To pronounce my nickname in Mandarin (*liang-liang*), just repeat [the same pronunciation][liang on wiktionary] *lia-ng* twice (Pinyin notation is liàng). [Google Translate](https://translate.google.com/?hl=zh-TW#zh-CN/zh-TW/%E4%BA%AE%E4%BA%AE) pronounces it right. You can find out what *liang* means on [Wiktionary][liang on wiktionary] and [moedict][liang on moedict].
+### How to pronounce my Mandarin name?
 
-My Mandarin name is 王亮博. The three characters [王][wang on wiktionary]/[亮][liang on wiktionary]/[博][bo on wiktionary] maps to Wang/Liang/Bo, respectively (links have their individual meaning and pronunciation). Last name (王/Wang) goes first in Mandarin. [Google Translate](https://translate.google.com.tw/?hl=zh-TW#zh-CN/zh-TW/%E7%8E%8B%E4%BA%AE%E5%8D%9A) pronounces my full name right.
+My Mandarin name is 王亮博.
+Here's the breakdown of how the three characters mapped to my English translated name (and links to their individual meaning and pronunciation):
+
+- [王][wang on wiktionary]: Wang
+- [亮][liang on wiktionary]: Liang
+- [博][bo on wiktionary]: Bo
+
+[Google Translate](https://translate.google.com/?sl=zh-TW&tl=en&text=%E7%8E%8B%E4%BA%AE%E5%8D%9A) pronounces my full name correctly.
 
 [liang on wiktionary]: https://en.wiktionary.org/wiki/%E4%BA%AE
-[liang on moedict]: https://www.moedict.tw/%E4%BA%AE
 [wang on wiktionary]: https://en.wiktionary.org/wiki/%E7%8E%8B
 [bo on wiktionary]: https://en.wiktionary.org/wiki/%E5%8D%9A
 
