@@ -36,11 +36,12 @@
 :root {
     --color-text: var(--light, #2d3336) var(--dark, hsl(210, 20%, 80%));
     --color-text-muted: var(--light, #4f5b60) var(--dark, hsl(210, 15%, 65%));
-    --color-background: var(--light, #ffffff) var(--dark, hsl(230, 4%, 11%));
-    --color-header-footer-background: var(--light, #eff4f5) var(--dark, hsl(230, 8%, 15%));
+    --color-background: var(--light, hsl(195, 20%, 97%)) var(--dark, hsl(230, 4%, 11%));
+    --color-selection-background: var(--light, hsl(200, 45%, 65%)) var(--dark, hsl(230, 20%, 35%));
+    --color-header-footer-background: var(--light, hsl(200, 30%, 90%)) var(--dark, hsl(230, 8%, 15%));
     --color-divider: var(--light, #c9d9e3) var(--dark, hsl(210, 20%, 30%));
     --color-link-hover: var(--light, #57a3e8) var(--dark, hsl(210, 65%, 60%));
-    --color-code-background: var(--light, #f0f4f5) var(--dark, hsl(210, 8%, 15%));
+    --color-code-background: var(--light, hsl(195, 20%, 93%)) var(--dark, hsl(210, 8%, 15%));
     --color-code-border: var(--color-divider);
     --color-block-border: var(--light, #a3b0b9) var(--dark, hsl(210, 10%, 25%));
 }

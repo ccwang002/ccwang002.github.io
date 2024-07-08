@@ -182,6 +182,9 @@ details p {
     margin: 0.5em 0;
 }
 
+::selection {
+    background: var(--color-selection-background);
+}
 
 /* ==========================================================================
    4. General - The main styles for the the theme
