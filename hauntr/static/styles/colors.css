@@ -37,7 +37,7 @@
     --color-text: var(--light, #2d3336) var(--dark, hsl(210, 20%, 80%));
     --color-text-muted: var(--light, #4f5b60) var(--dark, hsl(210, 15%, 65%));
     --color-background: var(--light, hsl(195, 20%, 97%)) var(--dark, hsl(230, 4%, 11%));
-    --color-selection-background: var(--light, hsl(200, 50%, 75%)) var(--dark, hsl(230, 20%, 25%));
+    --color-selection-background: var(--light, hsl(200, 35%, 85%)) var(--dark, hsl(230, 30%, 25%));
     --color-header-footer-background: var(--light, hsl(200, 30%, 90%)) var(--dark, hsl(230, 8%, 15%));
     --color-divider: var(--light, #c9d9e3) var(--dark, hsl(210, 20%, 30%));
     --color-link-hover: var(--light, #57a3e8) var(--dark, hsl(210, 65%, 60%));
