@@ -7,12 +7,13 @@ sortorder: 1
 
 (This page is also available in [English](./))
 
-嗨，我是王亮博（Liang-Bo Wang）。歡迎叫我亮亮或 Bobo。我目前在 Moderna 擔任科學家，從事與個人化癌症疫苗的相關研究。
+嗨，我是王亮博（Liang-Bo Wang）。歡迎叫我亮亮或 Bobo。我目前在 Moderna 擔任科學家，從事與[個人化癌症疫苗][INT]的相關研究。
 
 在這之前，我在聖路易華盛頓大學（Washington University in St. Louis）就讀計算與系統生物學（Computation and Systems Biology）博士學位，指導老師是 [Prof. Li Ding][dinglab]。我曾經在微軟亞洲研究院、[Pinkoi] 實習。我在台北長大。
 
 [我的 CV](/CV.pdf)。
 
+[INT]: https://en.wikipedia.org/wiki/MRNA-4157/V940
 [dinglab]: http://dinglab.wustl.edu/
 [Pinkoi]: http://www.pinkoi.com/
 

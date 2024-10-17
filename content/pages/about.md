@@ -8,7 +8,7 @@ Hi, I am Liang-Bo.
 I also go by Bobo (and Liang-Liang in Mandarin).
 Welcome to my personal blog :)
 
-I am currently an Oncology Bioinformatics Scientist at Moderna working on personalized cancer vaccine (aka individualized neoantigen therapy, or INT).
+I am currently an Oncology Bioinformatics Scientist at Moderna working on personalized cancer vaccine (aka individualized neoantigen therapy, or [INT]).
 
 I obtained my Ph.D. at Washington University in St. Louis under [Li Ding's Lab][dinglab].
 Back then, my research focused on cancer protegenomics in two directions.
@@ -25,6 +25,7 @@ You can find my previous talks [here][talks].
 I give much fewer talks nowadays, mostly because the topics of my work has been quite domain specific.
 Feel free to contact me if you are interested in my stuff and I'd love to share.
 
+[INT]: https://en.wikipedia.org/wiki/MRNA-4157/V940
 [dinglab]: http://dinglab.wustl.edu/
 [CPTAC]: https://proteomics.cancer.gov/programs/cptac
 [google scholar]: https://scholar.google.com/citations?user=-tdb3hcAAAAJ
