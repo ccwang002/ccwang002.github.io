@@ -2413,7 +2413,7 @@ EDIT 2017-11-17: Add instructions to run the Snakemake on Kubernete inside Docke
 &lt;li&gt;Lamina Associated Domains (LADs)&lt;/li&gt;
 &lt;li&gt;CTCF/Cohesin&lt;/li&gt;
 &lt;li&gt;Topologically associating domains (TADs)&lt;/li&gt;
-&lt;li&gt;3D genome&lt;sup id="fnref:3D genome"&gt;&lt;a class="footnote-ref" href="#fn:3D genome"&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;li&gt;3D genome&lt;sup id="fnref:3D genome"&gt;&lt;a class="footnote-ref" href="#fn:3D genome"&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;Methylation&lt;/li&gt;
@@ -2422,7 +2422,7 @@ EDIT 2017-11-17: Add instructions to run the Snakemake on Kubernete inside Docke
 &lt;blockquote&gt;
 &lt;p&gt;&amp;ldquo;Something you can measure does not mean it is interesting.&amp;rdquo;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;然後建議我們去讀一篇批評 ENCODE 的論文&lt;sup id="fnref:ENCODE paper"&gt;&lt;a class="footnote-ref" href="#fn:ENCODE paper"&gt;2&lt;/a&gt;&lt;/sup&gt;，被他評之為近十年最辛辣，標題也非常有趣。&lt;/p&gt;
+&lt;p&gt;然後建議我們去讀一篇批評 ENCODE 的論文&lt;sup id="fnref:ENCODE paper"&gt;&lt;a class="footnote-ref" href="#fn:ENCODE paper"&gt;1&lt;/a&gt;&lt;/sup&gt;，被他評之為近十年最辛辣，標題也非常有趣。&lt;/p&gt;
 &lt;h3 id="noncoding-variants"&gt;Noncoding variants&lt;/h3&gt;
 &lt;p&gt;從 non-coding elements 我們能知道控制 gene expression 可以從很多面向切入，於是討論 non-coding variant 時就會有很多不同的機制影響 gene expression。底下針對所謂的 enhancers (RE) 和 promoters 來畫個簡單的示意圖：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;     TF1  TF2  TF3         TF4  [RNA PolII]
@@ -2463,13 +2463,13 @@ EDIT 2017-11-17: Add instructions to run the Snakemake on Kubernete inside Docke
 &lt;div class="footnote"&gt;
 &lt;hr&gt;
 &lt;ol&gt;
+&lt;li id="fn:ENCODE paper"&gt;
+&lt;p&gt;針對 ENCODE 所謂 80% genome are functional 非常有名的戰文：&lt;br&gt;Dan &lt;em&gt;et al.&lt;/em&gt;, &lt;a href="https://academic.oup.com/gbe/article-lookup/doi/10.1093/gbe/evt028"&gt;&lt;em&gt;On the Immortality of Television Sets: “Function” in the Human Genome According to the Evolution-Free Gospel of ENCODE&lt;/em&gt;&lt;/a&gt;, Genome Biol Evol, 2013.&amp;#160;&lt;a class="footnote-backref" href="#fnref:ENCODE paper" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
 &lt;li id="fn:3D genome"&gt;
 &lt;p&gt;關於 3D genome 就要提一下這篇論文：&lt;br&gt;
 Adrian and Suhas &lt;em&gt;el al.&lt;/em&gt;, &lt;a href="http://www.pnas.org/content/112/47/E6456.abstract"&gt;&lt;em&gt;Chromatin extrusion explains key features of loop and domain formation in wild-type and engineered genomes&lt;/em&gt;&lt;/a&gt;, PNAS, 2015.&lt;br&gt;
-裡面用碎形 (fractal globule) 去解釋 CTCF 形成 TADs 造成怎麼樣的染色體摺疊，並如何透過這樣的摺疊產生 long distance interaction，因為可能在立體空間他們是接近的。模型用來解釋 Hi-C 數據。這篇論文使用數學之抽象和複雜，甚至請丘成桐來當 reviewer。&amp;#160;&lt;a class="footnote-backref" href="#fnref:3D genome" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li id="fn:ENCODE paper"&gt;
-&lt;p&gt;針對 ENCODE 所謂 80% genome are functional 非常有名的戰文：&lt;br&gt;Dan &lt;em&gt;et al.&lt;/em&gt;, &lt;a href="https://academic.oup.com/gbe/article-lookup/doi/10.1093/gbe/evt028"&gt;&lt;em&gt;On the Immortality of Television Sets: “Function” in the Human Genome According to the Evolution-Free Gospel of ENCODE&lt;/em&gt;&lt;/a&gt;, Genome Biol Evol, 2013.&amp;#160;&lt;a class="footnote-backref" href="#fnref:ENCODE paper" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+裡面用碎形 (fractal globule) 去解釋 CTCF 形成 TADs 造成怎麼樣的染色體摺疊，並如何透過這樣的摺疊產生 long distance interaction，因為可能在立體空間他們是接近的。模型用來解釋 Hi-C 數據。這篇論文使用數學之抽象和複雜，甚至請丘成桐來當 reviewer。&amp;#160;&lt;a class="footnote-backref" href="#fnref:3D genome" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</content><category term="Bioinfo"></category><category term="zh"></category><category term="bio"></category></entry><entry><title>Changing login shell without chsh</title><link href="https://blog.liang2.tw/posts/2017/01/without-chsh/" rel="alternate"></link><published>2017-01-23T00:00:00-06:00</published><updated>2024-09-08T17:21:08-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2017-01-23:/posts/2017/01/without-chsh/</id><summary type="html">&lt;p&gt;For my daily terminal life, I use &lt;a href="https://fishshell.com/"&gt;fish shell&lt;/a&gt;. Fish shell can be largely described by the headline on its official website:&lt;/p&gt;
@@ -3717,7 +3717,7 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。&lt;/p&gt;
 &lt;h2 id="pydoc-autobuild-server"&gt;PyDoc Autobuild Server&lt;/h2&gt;
 &lt;p&gt;簡單整理幾個需求：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;PyDoc 結果網址對應本家 &lt;a href="https://docs.python.org/"&gt;https://docs.python.org/&lt;/a&gt;。例如 /3/ 就是 Python 3.x 版最新的，而現在 /3.5/ 就會自動轉址到 /3/&lt;sup id="fnref:pydoc-url"&gt;&lt;a class="footnote-ref" href="#fn:pydoc-url"&gt;2&lt;/a&gt;&lt;/sup&gt;。&lt;/li&gt;
+&lt;li&gt;PyDoc 結果網址對應本家 &lt;a href="https://docs.python.org/"&gt;https://docs.python.org/&lt;/a&gt;。例如 /3/ 就是 Python 3.x 版最新的，而現在 /3.5/ 就會自動轉址到 /3/&lt;sup id="fnref:pydoc-url"&gt;&lt;a class="footnote-ref" href="#fn:pydoc-url"&gt;6&lt;/a&gt;&lt;/sup&gt;。&lt;/li&gt;
 &lt;li&gt;每一頁都有個更新翻譯連結，點一下就會從 Transifex 上抓新的翻譯，並更新輸出。&lt;/li&gt;
 &lt;li&gt;更新每頁翻譯的指令輸出都要保留，方便檢查 rst 語法等錯誤。&lt;/li&gt;
 &lt;li&gt;更新翻譯要有個 queue，才可以多人合作時不炸掉 autobuild server。&lt;/li&gt;
@@ -3727,7 +3727,7 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。&lt;/p&gt;
 &lt;h3 id="_2"&gt;實作&lt;/h3&gt;
 &lt;p&gt;目標就是完成上述的需求。pydoc 基本上就是個 static site，交給 nginx 設好路徑 host static files 就可以。Pydoc Sphinx 用 &lt;a href="http://jinja.pocoo.org/docs/dev/"&gt;Jinja2&lt;/a&gt; 作 HTML template，所以只要多加一些變數就能控制頁面的輸出，在 autobuild server 上時就可以加上額外的連結。而 Autobuild server 本身是個 task queue，其實功能很簡單，但為了維護方便，並考慮到 local、production 環境都要能動的話，選擇 &lt;a href="https://www.djangoproject.com/"&gt;Django&lt;/a&gt; 為基礎。真的給 Django 管理的就顯示 task queue、task result、接受 rebuild doc request 這幾個 view。&lt;/p&gt;
 &lt;h4 id="sphinx_1"&gt;Sphinx 文件&lt;/h4&gt;
-&lt;p&gt;在 Sphinx 文件部份不想搞太複雜，就在每一頁加上一個自己的專屬連結，打這個網址就會加入一個更新該頁面的 task 到 autobuild server&lt;sup id="fnref:build-link"&gt;&lt;a class="footnote-ref" href="#fn:build-link"&gt;3&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;p&gt;在 Sphinx 文件部份不想搞太複雜，就在每一頁加上一個自己的專屬連結，打這個網址就會加入一個更新該頁面的 task 到 autobuild server&lt;sup id="fnref:build-link"&gt;&lt;a class="footnote-ref" href="#fn:build-link"&gt;2&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
 &lt;p&gt;在 autobuild 時加入專屬連結只要修改 Sphinx doc template 即可。Sphinx 在 build doc 時可以透過 &lt;a href="http://www.sphinx-doc.org/en/stable/man/sphinx-build.html#options"&gt;&lt;code&gt;-A &amp;lt;name=value&amp;gt;&lt;/code&gt;&lt;/a&gt; 增加 Jinja2 template 的變數，就可控制 template render 行為：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;{# &amp;lt;cpython-src&amp;gt;/Doc/tools/templates/layout.html #}&lt;/span&gt;
 &lt;span class="cp"&gt;{%&lt;/span&gt;- &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nv"&gt;autobuildi18n&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
@@ -3749,7 +3749,7 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。&lt;/p&gt;
 &lt;li&gt;&lt;a href="http://policystat.github.io/jobtastic/"&gt;jobtastic&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://django-q.readthedocs.org/"&gt;django-Q&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;扣掉不支援 Python 3 的套件&lt;sup id="fnref:python3"&gt;&lt;a class="footnote-ref" href="#fn:python3"&gt;4&lt;/a&gt;&lt;/sup&gt;後，就剩 django-celery、django-RQ、django-Q 可以選。這裡面最紅也最老牌的是 django-celery ，它與 &lt;a href="http://www.celeryproject.org/"&gt;Celery&lt;/a&gt; 整合，功能完整且穩定，我用過也覺得十分不錯，缺點是功能太多有點複雜，加上不同 message queue 時會有很多設定要調整，需要一段時間上手。一般 Celery 常見的搭配使用 &lt;a href="https://www.rabbitmq.com/"&gt;Rabbit-MQ&lt;/a&gt; 和 &lt;a href="http://redis.io/"&gt;Redis&lt;/a&gt;，的確在 task 很多時有必要，但我們這個 build doc 一天可能才十幾次，在不隔離 build doc 環境的情況同時間的 worker 只能有一個，不會有效能上的問題。因此我傾向只要使用與 Django 同一個 database 就好，不要再有額外非 Python 的 dependency，讓 local 開發簡單一點。&lt;/p&gt;
+&lt;p&gt;扣掉不支援 Python 3 的套件&lt;sup id="fnref:python3"&gt;&lt;a class="footnote-ref" href="#fn:python3"&gt;3&lt;/a&gt;&lt;/sup&gt;後，就剩 django-celery、django-RQ、django-Q 可以選。這裡面最紅也最老牌的是 django-celery ，它與 &lt;a href="http://www.celeryproject.org/"&gt;Celery&lt;/a&gt; 整合，功能完整且穩定，我用過也覺得十分不錯，缺點是功能太多有點複雜，加上不同 message queue 時會有很多設定要調整，需要一段時間上手。一般 Celery 常見的搭配使用 &lt;a href="https://www.rabbitmq.com/"&gt;Rabbit-MQ&lt;/a&gt; 和 &lt;a href="http://redis.io/"&gt;Redis&lt;/a&gt;，的確在 task 很多時有必要，但我們這個 build doc 一天可能才十幾次，在不隔離 build doc 環境的情況同時間的 worker 只能有一個，不會有效能上的問題。因此我傾向只要使用與 Django 同一個 database 就好，不要再有額外非 Python 的 dependency，讓 local 開發簡單一點。&lt;/p&gt;
 &lt;p&gt;最後選擇 &lt;a href="https://django-q.readthedocs.org/"&gt;django-Q&lt;/a&gt;。雖然很新但作者維護得很勤，worker 可以只用 Python 內建的 multiprocessing 完成。功能簡單卻完整，包含 monitor，跟 django-admin 整合，還可以排程。所以要啟動 django-Q 的 cluster，只要多一個 &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;python manage.py qcluster
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -3769,7 +3769,7 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。&lt;/p&gt;
 &lt;p&gt;基本的設定與教學來自 &lt;a href="http://uwsgi-docs.readthedocs.org/en/latest/index.html"&gt;uWSGI&lt;/a&gt; 官網的 &lt;a href="http://uwsgi-docs.readthedocs.org/en/latest/tutorials/Django_and_nginx.html"&gt;&lt;em&gt;Setting up Django and your web server with uWSGI and nginx&lt;/em&gt;&lt;/a&gt; 一文，搭配 &lt;a href="http://uwsgi-docs.readthedocs.org/en/latest/Systemd.html"&gt;&lt;em&gt;uWGSI and Systemd&lt;/em&gt;&lt;/a&gt; 與 &lt;a href="https://www.freedesktop.org/wiki/Software/systemd/"&gt;systemd&lt;/a&gt; 整合。&lt;/p&gt;
 &lt;p&gt;這也是目前 Pydoc production 的設定，記錄一下方便未來的維護。&lt;/p&gt;
 &lt;h3 id="_3"&gt;作業系統&lt;/h3&gt;
-&lt;p&gt;作業系統用 Debian Jessie，架設於 Amazon EC2 上，使用 t2.nano&lt;sup id="fnref:ec2-nano"&gt;&lt;a class="footnote-ref" href="#fn:ec2-nano"&gt;5&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;p&gt;作業系統用 Debian Jessie，架設於 Amazon EC2 上，使用 t2.nano&lt;sup id="fnref:ec2-nano"&gt;&lt;a class="footnote-ref" href="#fn:ec2-nano"&gt;4&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
 &lt;p&gt;Python web deploy 都會把套件裝在虛擬環境中，避免不同專案間互衝或與系統衝突。在 Debian 上可以用 &lt;code&gt;apt buid-dep python3-&amp;lt;pkg&amp;gt;&lt;/code&gt; 把 Python &lt;pkg&gt; 套件所需的 header 或 library 安裝好，十分簡單。&lt;/p&gt;
 &lt;h4 id="python-35-and-apt-pinning"&gt;Python 3.5 and APT-pinning&lt;/h4&gt;
 &lt;p&gt;我的 code 裡用到了 &lt;a href="https://docs.python.org/3/library/subprocess.html#subprocess.run"&gt;&lt;code&gt;subprocess.run&lt;/code&gt;&lt;/a&gt;，這是 Python 3.5+ 才有的 API。但 Jessie 只有 Python 3.4，但我覺得很好用一點都不想改寫成相容舊版的 code。&lt;/p&gt;
@@ -3850,7 +3850,7 @@ ssh-keygen&lt;span class="w"&gt; &lt;/span&gt;-t&lt;span class="w"&gt; &lt;/span
 
 &lt;p&gt;這樣兩個 repo 會透過給定的 ssh key 連線。GitHub 會顯示每個 key 最近使用的時間，檢查時間就能確認設定正確與否（而且改 host 沒設定對應該直接連不上）。&lt;/p&gt;
 &lt;h4 id="tmpfilesd"&gt;tmpfiles.d&lt;/h4&gt;
-&lt;p&gt;之後 nginx 和 uwsgi 溝通用的 socket 打算放在 &lt;code&gt;/run/django/xxxx.sock&lt;/code&gt; &lt;sup id="fnref:/run"&gt;&lt;a class="footnote-ref" href="#fn:/run"&gt;6&lt;/a&gt;&lt;/sup&gt;。因為只需要非 root 的權限，修改 &lt;a href="https://www.freedesktop.org/software/systemd/man/tmpfiles.d.html"&gt;tmpfiles.d&lt;/a&gt; 的設定，讓這個資料夾能在開機時自動建立。增加設定檔 &lt;code&gt;/etc/tmpfiles.d/pydoc_autobuild.conf&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;之後 nginx 和 uwsgi 溝通用的 socket 打算放在 &lt;code&gt;/run/django/xxxx.sock&lt;/code&gt; &lt;sup id="fnref:/run"&gt;&lt;a class="footnote-ref" href="#fn:/run"&gt;5&lt;/a&gt;&lt;/sup&gt;。因為只需要非 root 的權限，修改 &lt;a href="https://www.freedesktop.org/software/systemd/man/tmpfiles.d.html"&gt;tmpfiles.d&lt;/a&gt; 的設定，讓這個資料夾能在開機時自動建立。增加設定檔 &lt;code&gt;/etc/tmpfiles.d/pydoc_autobuild.conf&lt;/code&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;d /run/django 0755 pydoc www-data
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -4023,20 +4023,20 @@ sudo systemctl status qcluster
 &lt;li id="fn:zh-Hant"&gt;
 &lt;p&gt;八卦是，臺灣繁體中文的 language code (or locale identifier) 究竟是 zh_TW、zh-Hant、zh-Hant-TW、zh-Hant_TW、zh_Hant 還是 zh_Hant_TW？這問題本身就可以寫一篇了。&lt;br&gt;&lt;br&gt;查國際規範 &lt;a href="http://www.ietf.org/rfc/bcp/bcp47.txt"&gt;BCP 47&lt;/a&gt; 的話，只有 &lt;a href="http://www.iana.org/assignments/lang-tags/zh-Hant"&gt;zh-Hant&lt;/a&gt; 和 &lt;a href="http://www.iana.org/assignments/lang-tags/zh-Hant-TW"&gt;zh-Hant-TW&lt;/a&gt;，更多關於標準的說明與定義可以參考 &lt;a href="https://www.w3.org/International/articles/bcp47/"&gt;&lt;em&gt;Understanding the New Language Tags&lt;/em&gt;, W3C&lt;/a&gt; 一文。&lt;br&gt;&lt;br&gt;不過現狀是很奇妙的。參考 OSX 定義 &lt;a href="https://developer.apple.com/library/ios/documentation/MacOSX/Conceptual/BPInternational/LanguageandLocaleIDs/LanguageandLocaleIDs.html"&gt;&lt;em&gt;Language and Locale IDs&lt;/em&gt;&lt;/a&gt; 的話應該是 zh_TW、zh-Hant 或 zh-Hant_TW。而在 Debain 中，所有支援的 locale 寫在 &lt;code&gt;/usr/share/i18n/SUPPORTED&lt;/code&gt;，裡面只有 zh_TW，不過 Debian 只用 &lt;code&gt;language[_country][.charset]&lt;/code&gt; 所以不會有定義中為 script 的 Hant，雖然在 locale 中使用底線與 &lt;a href="http://www.ietf.org/rfc/bcp/bcp47.txt"&gt;BCP 47&lt;/a&gt; 的定義不同。Sphinx 透過 &lt;a href="http://babel.pocoo.org/"&gt;Babel&lt;/a&gt; 處理 locale，但它不允許 locale 中有 &lt;code&gt;-&lt;/code&gt;，因此只能考慮 zh_Hant 或 zh_Hant_TW。更有趣的是，locale 應該是 case-insensitive 所以大小寫是不重要的 XD&amp;#160;&lt;a class="footnote-backref" href="#fnref:zh-Hant" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id="fn:pydoc-url"&gt;
-&lt;p&gt;其實在 &lt;a href="https://docs.python.org/"&gt;https://docs.python.org/&lt;/a&gt; 上面 &lt;a href="https://docs.python.org/3/"&gt;/3/&lt;/a&gt; 和 &lt;a href="https://docs.python.org/3.5/"&gt;/3.5/&lt;/a&gt; 是不同份文件，即使是同個版本號它們更新的時間不相同。蠻意外會是這樣的情況。不過我們不用搞這麼複雜，只要轉址就好。&amp;#160;&lt;a class="footnote-backref" href="#fnref:pydoc-url" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
 &lt;li id="fn:build-link"&gt;
-&lt;p&gt;開發時一直都是用 GET，即如文中所說，有個專屬的 link。但發現會有 robot / crawler 打這些路徑，因此最後改成 POST，把 &lt;code&gt;{{ pagename }}&lt;/code&gt; 用 data-* 即 &lt;code&gt;&amp;lt;a href="#" data-pagename="{{ pagename }}"&amp;gt;...&amp;lt;/a&amp;gt;&lt;/code&gt; 的方式存起來，在用 jQuery 綁定 click listener。&amp;#160;&lt;a class="footnote-backref" href="#fnref:build-link" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;開發時一直都是用 GET，即如文中所說，有個專屬的 link。但發現會有 robot / crawler 打這些路徑，因此最後改成 POST，把 &lt;code&gt;{{ pagename }}&lt;/code&gt; 用 data-* 即 &lt;code&gt;&amp;lt;a href="#" data-pagename="{{ pagename }}"&amp;gt;...&amp;lt;/a&amp;gt;&lt;/code&gt; 的方式存起來，在用 jQuery 綁定 click listener。&amp;#160;&lt;a class="footnote-backref" href="#fnref:build-link" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li id="fn:python3"&gt;
-&lt;p&gt;看 &lt;a href="https://github.com/coleifer/huey"&gt;huey&lt;/a&gt; 和 &lt;a href="https://github.com/PolicyStat/jobtastic"&gt;jobtastic&lt;/a&gt; master branch 上有 py3k 的 commit 但感覺是最近的事，有待觀察。&amp;#160;&lt;a class="footnote-backref" href="#fnref:python3" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;看 &lt;a href="https://github.com/coleifer/huey"&gt;huey&lt;/a&gt; 和 &lt;a href="https://github.com/PolicyStat/jobtastic"&gt;jobtastic&lt;/a&gt; master branch 上有 py3k 的 commit 但感覺是最近的事，有待觀察。&amp;#160;&lt;a class="footnote-backref" href="#fnref:python3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li id="fn:ec2-nano"&gt;
-&lt;p&gt;吐嘈一下，t2.nano vCPU 真的時快時慢，有時 build doc 幾分鐘就搞定了，有時要幾十分鐘，有一天超慢，然後又被 web crawler 抓到，讓 task queue timeout 陷入了 timeout、restart、timeout 的無限地獄……&amp;#160;&lt;a class="footnote-backref" href="#fnref:ec2-nano" title="Jump back to footnote 5 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;吐嘈一下，t2.nano vCPU 真的時快時慢，有時 build doc 幾分鐘就搞定了，有時要幾十分鐘，有一天超慢，然後又被 web crawler 抓到，讓 task queue timeout 陷入了 timeout、restart、timeout 的無限地獄……&amp;#160;&lt;a class="footnote-backref" href="#fnref:ec2-nano" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li id="fn:/run"&gt;
-&lt;p&gt;/var/run = /run，這個路徑是個 tmpfs 所以每次重開機就會清空，目錄要記得重建。&amp;#160;&lt;a class="footnote-backref" href="#fnref:/run" title="Jump back to footnote 6 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;/var/run = /run，這個路徑是個 tmpfs 所以每次重開機就會清空，目錄要記得重建。&amp;#160;&lt;a class="footnote-backref" href="#fnref:/run" title="Jump back to footnote 5 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:pydoc-url"&gt;
+&lt;p&gt;其實在 &lt;a href="https://docs.python.org/"&gt;https://docs.python.org/&lt;/a&gt; 上面 &lt;a href="https://docs.python.org/3/"&gt;/3/&lt;/a&gt; 和 &lt;a href="https://docs.python.org/3.5/"&gt;/3.5/&lt;/a&gt; 是不同份文件，即使是同個版本號它們更新的時間不相同。蠻意外會是這樣的情況。不過我們不用搞這麼複雜，只要轉址就好。&amp;#160;&lt;a class="footnote-backref" href="#fnref:pydoc-url" title="Jump back to footnote 6 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</content><category term="Coding"></category><category term="zh"></category><category term="pydoctw"></category><category term="python"></category><category term="django"></category><category term="postgresql"></category><category term="deploy"></category><category term="debian"></category><category term="systemd"></category><category term="nginx"></category><category term="uwsgi"></category></entry><entry><title>安裝 PostgreSQL 9 於 Debian Jessie / OSX</title><link href="https://blog.liang2.tw/posts/2016/01/postgresql-install/" rel="alternate"></link><published>2016-01-25T17:00:00-06:00</published><updated>2024-09-08T17:21:08-05:00</updated><author><name>Liang-Bo Wang</name></author><id>tag:blog.liang2.tw,2016-01-25:/posts/2016/01/postgresql-install/</id><summary type="html">&lt;p&gt;平常用最多的是 &lt;a href="https://www.sqlite.org/"&gt;SQLite&lt;/a&gt;，但 &lt;a href="http://www.postgresql.org/"&gt;PostgreSQL&lt;/a&gt; 有很多好用的功能，每次要用想不起來怎麼裝。總之把相關設定的筆記存在這。&lt;/p&gt;
