@@ -344,18 +344,6 @@ html[lang='zh'] details p {
     border-top: var(--color-divider) 1px solid;
 }
 
-/* utterances GitHub issue based comments widget
- * https://utteranc.es/ */
-
-.utterances {
-    max-width: 100%;
-}
-
-.utterances-frame {
-    margin: 0;
-}
-
-
 /* ==========================================================================
    9. Footer - The bottom of every page
    ========================================================================== */

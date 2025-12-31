@@ -10,7 +10,7 @@ const setColorScheme = (colorScheme = getColorScheme()) => {
     document.documentElement.dataset.color_scheme = colorScheme
     localStorage.setItem("color_scheme", colorScheme)
     setPygments(colorScheme)
-    updateUtterancesTheme(colorScheme)
+    updateGiscusTheme(colorScheme)
 }
 
 // Map system theme to a cycle of steps
@@ -19,11 +19,11 @@ const cycles = {
     light: ["auto", "dark", "light"],  // auto (light) → dark → light
 }
 
-// Map the current color scheme to Utterances theme
-const utterancesThemes = {
-    auto: prefersDark.matches ? "github-dark" : "github-light",
-    light: "github-light",
-    dark: "github-dark",
+// Map the current color scheme to Giscus theme
+const giscusThemes = {
+    auto: prefersDark.matches ? "noborder_gray" : "noborder_light",
+    light: "noborder_light",
+    dark: "noborder_gray",
 }
 
 const nextColorScheme = (colorScheme = getColorScheme()) => {
@@ -41,37 +41,47 @@ const setPygments = (colorScheme = getColorScheme()) => {
 }
 
 // Dynamically load utterances based on the current theme
-const loadUtterances = (colorScheme = getColorScheme()) => {
-    const theme = utterancesThemes[colorScheme]
-    const section = document.querySelector('.utterances')
+const loadGiscus = (colorScheme = getColorScheme()) => {
+    const theme = giscusThemes[colorScheme]
+    const section = document.querySelector('.giscus')
     if (section) {
         let s = document.createElement('script');
-        s.src = 'https://utteranc.es/client.js';
-        s.setAttribute('repo', section.getAttribute('data-repo'));
-        s.setAttribute('issue-term', section.getAttribute('data-issue-term'));
-        s.setAttribute('theme', theme);
+        s.src = 'https://giscus.app/client.js';
+        s.setAttribute('data-repo', section.getAttribute('data-repo'));
+        s.setAttribute('data-repo-id', section.getAttribute('data-repo-id'));
+        s.setAttribute('data-category', section.getAttribute('data-category'));
+        s.setAttribute('data-category-id', section.getAttribute('data-category-id'));
+        s.setAttribute('data-mapping', section.getAttribute('data-mapping'));
+        s.setAttribute('data-strict', section.getAttribute('data-strict'));
+        s.setAttribute('data-reactions-enabled', section.getAttribute('data-reactions-enabled'));
+        s.setAttribute('data-emit-metadata', section.getAttribute('data-emit-metadata'));
+        s.setAttribute('data-input-position', section.getAttribute('data-input-position'));
+        s.setAttribute('data-theme', theme);
+        s.setAttribute('data-lang', section.getAttribute('data-lang'));
+        s.setAttribute('data-loading', 'lazy');
         s.setAttribute('crossorigin', 'anonymous');
         s.setAttribute('async', '');  // optional
         section.appendChild(s);
     }
 }
 
-// Update utterances theme when the blog theme changes
-const updateUtterancesTheme = (colorSheme = getColorScheme()) => {
-    const theme = utterancesThemes[colorSheme]
-    const iframe = document.querySelector('.utterances-frame')
+// Update Giscus theme when the blog theme changes
+const updateGiscusTheme = (colorSheme = getColorScheme()) => {
+    const theme = giscusThemes[colorSheme]
+    const iframe = document.querySelector('iframe.giscus-frame')
     if (iframe) {
         const message = {
-            type: 'set-theme',
-            theme: theme
+            setConfig: {
+                theme: theme
+            }
         }
-        iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+        iframe.contentWindow.postMessage({giscus: message}, 'https://giscus.app')
     }
 }
 
 // Update Pygments state (the page theme is initialised inline, see page.html)
 document.addEventListener("DOMContentLoaded", () => {
     setColorScheme()
-    loadUtterances()  // load Utternances later to only set its theme once
+    loadGiscus()  // load Giscus later to only set its theme once
 })
 
