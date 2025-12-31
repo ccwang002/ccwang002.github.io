@@ -24,11 +24,5 @@ DRAFT_LANG_SAVE_AS = ''
 
 # Following items are often useful when publishing
 
-# utterances, comment system built on GitHub issues
-# https://utteranc.es/
-UTTERANCES_REPO = "ccwang002/ccwang002.github.io"
-UTTERANCES_ISSUE_TERM = "pathname"
-UTTERANCES_LABEL = "Comment"
-
 
 # GOOGLE_ANALYTICS = ""
