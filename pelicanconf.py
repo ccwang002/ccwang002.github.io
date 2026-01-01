@@ -117,4 +117,4 @@ DRAFTS_URL = 'drafts/'
 
 # Pelican KaTeX plugin settings
 # Use newer KaTeX version
-KATEX_PATH = Path(THEME, 'static/katex-0.16.2/katex.js').resolve()
+KATEX_PATH = Path(THEME, 'static/katex-0.16.27/katex.js').resolve()
