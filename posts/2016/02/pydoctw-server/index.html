@@ -45,7 +45,7 @@
 	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/styles/styles.css" />
 	<link rel="stylesheet" href="https://blog.liang2.tw/theme/styles/pygments/light.css" type="text/css" media="(prefers-color-scheme: light)" id="pyg-light" />
     <link rel="stylesheet" href="https://blog.liang2.tw/theme/styles/pygments/dark-monokai.css" type="text/css" media="(prefers-color-scheme: dark)" id="pyg-dark" />
-	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.16.2/katex.min.css">
+	<link rel="stylesheet" type="text/css" href="https://blog.liang2.tw/theme/katex-0.16.27/katex.min.css">
 </head>
 
 <body class="post-template no-js">
@@ -196,7 +196,7 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。</p>
 <h2 id="pydoc-autobuild-server">PyDoc Autobuild Server</h2>
 <p>簡單整理幾個需求：</p>
 <ul>
-<li>PyDoc 結果網址對應本家 <a href="https://docs.python.org/">https://docs.python.org/</a>。例如 /3/ 就是 Python 3.x 版最新的，而現在 /3.5/ 就會自動轉址到 /3/<sup id="fnref:pydoc-url"><a class="footnote-ref" href="#fn:pydoc-url">6</a></sup>。</li>
+<li>PyDoc 結果網址對應本家 <a href="https://docs.python.org/">https://docs.python.org/</a>。例如 /3/ 就是 Python 3.x 版最新的，而現在 /3.5/ 就會自動轉址到 /3/<sup id="fnref:pydoc-url"><a class="footnote-ref" href="#fn:pydoc-url">2</a></sup>。</li>
 <li>每一頁都有個更新翻譯連結，點一下就會從 Transifex 上抓新的翻譯，並更新輸出。</li>
 <li>更新每頁翻譯的指令輸出都要保留，方便檢查 rst 語法等錯誤。</li>
 <li>更新翻譯要有個 queue，才可以多人合作時不炸掉 autobuild server。</li>
@@ -206,7 +206,7 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。</p>
 <h3 id="_2">實作</h3>
 <p>目標就是完成上述的需求。pydoc 基本上就是個 static site，交給 nginx 設好路徑 host static files 就可以。Pydoc Sphinx 用 <a href="http://jinja.pocoo.org/docs/dev/">Jinja2</a> 作 HTML template，所以只要多加一些變數就能控制頁面的輸出，在 autobuild server 上時就可以加上額外的連結。而 Autobuild server 本身是個 task queue，其實功能很簡單，但為了維護方便，並考慮到 local、production 環境都要能動的話，選擇 <a href="https://www.djangoproject.com/">Django</a> 為基礎。真的給 Django 管理的就顯示 task queue、task result、接受 rebuild doc request 這幾個 view。</p>
 <h4 id="sphinx_1">Sphinx 文件</h4>
-<p>在 Sphinx 文件部份不想搞太複雜，就在每一頁加上一個自己的專屬連結，打這個網址就會加入一個更新該頁面的 task 到 autobuild server<sup id="fnref:build-link"><a class="footnote-ref" href="#fn:build-link">2</a></sup>。</p>
+<p>在 Sphinx 文件部份不想搞太複雜，就在每一頁加上一個自己的專屬連結，打這個網址就會加入一個更新該頁面的 task 到 autobuild server<sup id="fnref:build-link"><a class="footnote-ref" href="#fn:build-link">3</a></sup>。</p>
 <p>在 autobuild 時加入專屬連結只要修改 Sphinx doc template 即可。Sphinx 在 build doc 時可以透過 <a href="http://www.sphinx-doc.org/en/stable/man/sphinx-build.html#options"><code>-A &lt;name=value&gt;</code></a> 增加 Jinja2 template 的變數，就可控制 template render 行為：</p>
 <div class="highlight"><pre><span></span><code><span class="c">{# &lt;cpython-src&gt;/Doc/tools/templates/layout.html #}</span>
 <span class="cp">{%</span>- <span class="k">if</span> <span class="nv">autobuildi18n</span> <span class="cp">%}</span>
@@ -228,7 +228,7 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。</p>
 <li><a href="http://policystat.github.io/jobtastic/">jobtastic</a></li>
 <li><a href="https://django-q.readthedocs.org/">django-Q</a></li>
 </ul>
-<p>扣掉不支援 Python 3 的套件<sup id="fnref:python3"><a class="footnote-ref" href="#fn:python3">3</a></sup>後，就剩 django-celery、django-RQ、django-Q 可以選。這裡面最紅也最老牌的是 django-celery ，它與 <a href="http://www.celeryproject.org/">Celery</a> 整合，功能完整且穩定，我用過也覺得十分不錯，缺點是功能太多有點複雜，加上不同 message queue 時會有很多設定要調整，需要一段時間上手。一般 Celery 常見的搭配使用 <a href="https://www.rabbitmq.com/">Rabbit-MQ</a> 和 <a href="http://redis.io/">Redis</a>，的確在 task 很多時有必要，但我們這個 build doc 一天可能才十幾次，在不隔離 build doc 環境的情況同時間的 worker 只能有一個，不會有效能上的問題。因此我傾向只要使用與 Django 同一個 database 就好，不要再有額外非 Python 的 dependency，讓 local 開發簡單一點。</p>
+<p>扣掉不支援 Python 3 的套件<sup id="fnref:python3"><a class="footnote-ref" href="#fn:python3">4</a></sup>後，就剩 django-celery、django-RQ、django-Q 可以選。這裡面最紅也最老牌的是 django-celery ，它與 <a href="http://www.celeryproject.org/">Celery</a> 整合，功能完整且穩定，我用過也覺得十分不錯，缺點是功能太多有點複雜，加上不同 message queue 時會有很多設定要調整，需要一段時間上手。一般 Celery 常見的搭配使用 <a href="https://www.rabbitmq.com/">Rabbit-MQ</a> 和 <a href="http://redis.io/">Redis</a>，的確在 task 很多時有必要，但我們這個 build doc 一天可能才十幾次，在不隔離 build doc 環境的情況同時間的 worker 只能有一個，不會有效能上的問題。因此我傾向只要使用與 Django 同一個 database 就好，不要再有額外非 Python 的 dependency，讓 local 開發簡單一點。</p>
 <p>最後選擇 <a href="https://django-q.readthedocs.org/">django-Q</a>。雖然很新但作者維護得很勤，worker 可以只用 Python 內建的 multiprocessing 完成。功能簡單卻完整，包含 monitor，跟 django-admin 整合，還可以排程。所以要啟動 django-Q 的 cluster，只要多一個 </p>
 <div class="highlight"><pre><span></span><code>python manage.py qcluster
 </code></pre></div>
@@ -248,7 +248,7 @@ EDIT 2016-02-20: 加上 tmpfiles.d 的設定。</p>
 <p>基本的設定與教學來自 <a href="http://uwsgi-docs.readthedocs.org/en/latest/index.html">uWSGI</a> 官網的 <a href="http://uwsgi-docs.readthedocs.org/en/latest/tutorials/Django_and_nginx.html"><em>Setting up Django and your web server with uWSGI and nginx</em></a> 一文，搭配 <a href="http://uwsgi-docs.readthedocs.org/en/latest/Systemd.html"><em>uWGSI and Systemd</em></a> 與 <a href="https://www.freedesktop.org/wiki/Software/systemd/">systemd</a> 整合。</p>
 <p>這也是目前 Pydoc production 的設定，記錄一下方便未來的維護。</p>
 <h3 id="_3">作業系統</h3>
-<p>作業系統用 Debian Jessie，架設於 Amazon EC2 上，使用 t2.nano<sup id="fnref:ec2-nano"><a class="footnote-ref" href="#fn:ec2-nano">4</a></sup>。</p>
+<p>作業系統用 Debian Jessie，架設於 Amazon EC2 上，使用 t2.nano<sup id="fnref:ec2-nano"><a class="footnote-ref" href="#fn:ec2-nano">5</a></sup>。</p>
 <p>Python web deploy 都會把套件裝在虛擬環境中，避免不同專案間互衝或與系統衝突。在 Debian 上可以用 <code>apt buid-dep python3-&lt;pkg&gt;</code> 把 Python <pkg> 套件所需的 header 或 library 安裝好，十分簡單。</p>
 <h4 id="python-35-and-apt-pinning">Python 3.5 and APT-pinning</h4>
 <p>我的 code 裡用到了 <a href="https://docs.python.org/3/library/subprocess.html#subprocess.run"><code>subprocess.run</code></a>，這是 Python 3.5+ 才有的 API。但 Jessie 只有 Python 3.4，但我覺得很好用一點都不想改寫成相容舊版的 code。</p>
@@ -329,7 +329,7 @@ ssh-keygen<span class="w"> </span>-t<span class="w"> </span>rsa<span class="w"> 
 
 <p>這樣兩個 repo 會透過給定的 ssh key 連線。GitHub 會顯示每個 key 最近使用的時間，檢查時間就能確認設定正確與否（而且改 host 沒設定對應該直接連不上）。</p>
 <h4 id="tmpfilesd">tmpfiles.d</h4>
-<p>之後 nginx 和 uwsgi 溝通用的 socket 打算放在 <code>/run/django/xxxx.sock</code> <sup id="fnref:/run"><a class="footnote-ref" href="#fn:/run">5</a></sup>。因為只需要非 root 的權限，修改 <a href="https://www.freedesktop.org/software/systemd/man/tmpfiles.d.html">tmpfiles.d</a> 的設定，讓這個資料夾能在開機時自動建立。增加設定檔 <code>/etc/tmpfiles.d/pydoc_autobuild.conf</code></p>
+<p>之後 nginx 和 uwsgi 溝通用的 socket 打算放在 <code>/run/django/xxxx.sock</code> <sup id="fnref:/run"><a class="footnote-ref" href="#fn:/run">6</a></sup>。因為只需要非 root 的權限，修改 <a href="https://www.freedesktop.org/software/systemd/man/tmpfiles.d.html">tmpfiles.d</a> 的設定，讓這個資料夾能在開機時自動建立。增加設定檔 <code>/etc/tmpfiles.d/pydoc_autobuild.conf</code></p>
 <div class="highlight"><pre><span></span><code>d /run/django 0755 pydoc www-data
 </code></pre></div>
 
@@ -502,20 +502,20 @@ sudo systemctl status qcluster
 <li id="fn:zh-Hant">
 <p>八卦是，臺灣繁體中文的 language code (or locale identifier) 究竟是 zh_TW、zh-Hant、zh-Hant-TW、zh-Hant_TW、zh_Hant 還是 zh_Hant_TW？這問題本身就可以寫一篇了。<br><br>查國際規範 <a href="http://www.ietf.org/rfc/bcp/bcp47.txt">BCP 47</a> 的話，只有 <a href="http://www.iana.org/assignments/lang-tags/zh-Hant">zh-Hant</a> 和 <a href="http://www.iana.org/assignments/lang-tags/zh-Hant-TW">zh-Hant-TW</a>，更多關於標準的說明與定義可以參考 <a href="https://www.w3.org/International/articles/bcp47/"><em>Understanding the New Language Tags</em>, W3C</a> 一文。<br><br>不過現狀是很奇妙的。參考 OSX 定義 <a href="https://developer.apple.com/library/ios/documentation/MacOSX/Conceptual/BPInternational/LanguageandLocaleIDs/LanguageandLocaleIDs.html"><em>Language and Locale IDs</em></a> 的話應該是 zh_TW、zh-Hant 或 zh-Hant_TW。而在 Debain 中，所有支援的 locale 寫在 <code>/usr/share/i18n/SUPPORTED</code>，裡面只有 zh_TW，不過 Debian 只用 <code>language[_country][.charset]</code> 所以不會有定義中為 script 的 Hant，雖然在 locale 中使用底線與 <a href="http://www.ietf.org/rfc/bcp/bcp47.txt">BCP 47</a> 的定義不同。Sphinx 透過 <a href="http://babel.pocoo.org/">Babel</a> 處理 locale，但它不允許 locale 中有 <code>-</code>，因此只能考慮 zh_Hant 或 zh_Hant_TW。更有趣的是，locale 應該是 case-insensitive 所以大小寫是不重要的 XD&#160;<a class="footnote-backref" href="#fnref:zh-Hant" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
+<li id="fn:pydoc-url">
+<p>其實在 <a href="https://docs.python.org/">https://docs.python.org/</a> 上面 <a href="https://docs.python.org/3/">/3/</a> 和 <a href="https://docs.python.org/3.5/">/3.5/</a> 是不同份文件，即使是同個版本號它們更新的時間不相同。蠻意外會是這樣的情況。不過我們不用搞這麼複雜，只要轉址就好。&#160;<a class="footnote-backref" href="#fnref:pydoc-url" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
 <li id="fn:build-link">
-<p>開發時一直都是用 GET，即如文中所說，有個專屬的 link。但發現會有 robot / crawler 打這些路徑，因此最後改成 POST，把 <code>{{ pagename }}</code> 用 data-* 即 <code>&lt;a href="#" data-pagename="{{ pagename }}"&gt;...&lt;/a&gt;</code> 的方式存起來，在用 jQuery 綁定 click listener。&#160;<a class="footnote-backref" href="#fnref:build-link" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<p>開發時一直都是用 GET，即如文中所說，有個專屬的 link。但發現會有 robot / crawler 打這些路徑，因此最後改成 POST，把 <code>{{ pagename }}</code> 用 data-* 即 <code>&lt;a href="#" data-pagename="{{ pagename }}"&gt;...&lt;/a&gt;</code> 的方式存起來，在用 jQuery 綁定 click listener。&#160;<a class="footnote-backref" href="#fnref:build-link" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
 <li id="fn:python3">
-<p>看 <a href="https://github.com/coleifer/huey">huey</a> 和 <a href="https://github.com/PolicyStat/jobtastic">jobtastic</a> master branch 上有 py3k 的 commit 但感覺是最近的事，有待觀察。&#160;<a class="footnote-backref" href="#fnref:python3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+<p>看 <a href="https://github.com/coleifer/huey">huey</a> 和 <a href="https://github.com/PolicyStat/jobtastic">jobtastic</a> master branch 上有 py3k 的 commit 但感覺是最近的事，有待觀察。&#160;<a class="footnote-backref" href="#fnref:python3" title="Jump back to footnote 4 in the text">&#8617;</a></p>
 </li>
 <li id="fn:ec2-nano">
-<p>吐嘈一下，t2.nano vCPU 真的時快時慢，有時 build doc 幾分鐘就搞定了，有時要幾十分鐘，有一天超慢，然後又被 web crawler 抓到，讓 task queue timeout 陷入了 timeout、restart、timeout 的無限地獄……&#160;<a class="footnote-backref" href="#fnref:ec2-nano" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+<p>吐嘈一下，t2.nano vCPU 真的時快時慢，有時 build doc 幾分鐘就搞定了，有時要幾十分鐘，有一天超慢，然後又被 web crawler 抓到，讓 task queue timeout 陷入了 timeout、restart、timeout 的無限地獄……&#160;<a class="footnote-backref" href="#fnref:ec2-nano" title="Jump back to footnote 5 in the text">&#8617;</a></p>
 </li>
 <li id="fn:/run">
-<p>/var/run = /run，這個路徑是個 tmpfs 所以每次重開機就會清空，目錄要記得重建。&#160;<a class="footnote-backref" href="#fnref:/run" title="Jump back to footnote 5 in the text">&#8617;</a></p>
-</li>
-<li id="fn:pydoc-url">
-<p>其實在 <a href="https://docs.python.org/">https://docs.python.org/</a> 上面 <a href="https://docs.python.org/3/">/3/</a> 和 <a href="https://docs.python.org/3.5/">/3.5/</a> 是不同份文件，即使是同個版本號它們更新的時間不相同。蠻意外會是這樣的情況。不過我們不用搞這麼複雜，只要轉址就好。&#160;<a class="footnote-backref" href="#fnref:pydoc-url" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+<p>/var/run = /run，這個路徑是個 tmpfs 所以每次重開機就會清空，目錄要記得重建。&#160;<a class="footnote-backref" href="#fnref:/run" title="Jump back to footnote 6 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div></section>
