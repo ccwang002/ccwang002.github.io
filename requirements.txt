@@ -1,4 +1,4 @@
-pelican >= 4.0, < 5
+pelican >= 4.12.0, < 5
 Markdown >= 3.2, < 3.11
 pelican-katex == 1.8.5
 ghp-import
